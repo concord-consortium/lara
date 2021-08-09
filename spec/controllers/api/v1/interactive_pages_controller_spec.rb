@@ -99,11 +99,11 @@ describe Api::V1::InteractivePagesController do
         expect(response.body).to eql({
           success: true,
           interactives: [
-            {id: interactive3.interactive_item_id, pageId: page.id, name: interactive3.name, section: "assessment_block", url: interactive3.url, thumbnailUrl: nil, supportsSnapshots: true},
-            {id: interactive2.interactive_item_id, pageId: page.id, name: interactive2.name, section: InteractivePage::HEADER_BLOCK, url: interactive2.url, thumbnailUrl: nil, supportsSnapshots: false},
-            {id: interactive5.interactive_item_id, pageId: page.id, name: interactive5.name, section: InteractivePage::HEADER_BLOCK, url: "http://bar.com/test2", thumbnailUrl: "http://thumbnail.url", supportsSnapshots: false},
-            {id: interactive1.interactive_item_id, pageId: page.id, name: interactive1.name, section: InteractivePage::INTERACTIVE_BOX, url: interactive1.url, thumbnailUrl: nil, supportsSnapshots: true},
-            {id: interactive4.interactive_item_id, pageId: page.id, name: interactive4.name, section: InteractivePage::INTERACTIVE_BOX, url: "http://foo.com/test1", thumbnailUrl: nil, supportsSnapshots: true}
+            {id: interactive3.interactive_item_id, pageId: page.id, name: interactive3.name, old_section: "assessment_block", url: interactive3.url, thumbnailUrl: nil, supportsSnapshots: true},
+            {id: interactive2.interactive_item_id, pageId: page.id, name: interactive2.name, old_section: InteractivePage::HEADER_BLOCK, url: interactive2.url, thumbnailUrl: nil, supportsSnapshots: false},
+            {id: interactive5.interactive_item_id, pageId: page.id, name: interactive5.name, old_section: InteractivePage::HEADER_BLOCK, url: "http://bar.com/test2", thumbnailUrl: "http://thumbnail.url", supportsSnapshots: false},
+            {id: interactive1.interactive_item_id, pageId: page.id, name: interactive1.name, old_section: InteractivePage::INTERACTIVE_BOX, url: interactive1.url, thumbnailUrl: nil, supportsSnapshots: true},
+            {id: interactive4.interactive_item_id, pageId: page.id, name: interactive4.name, old_section: InteractivePage::INTERACTIVE_BOX, url: "http://foo.com/test1", thumbnailUrl: nil, supportsSnapshots: true}
           ]
         }.to_json)
       end
@@ -115,9 +115,9 @@ describe Api::V1::InteractivePagesController do
         expect(response.body).to eql({
           success: true,
           interactives: [
-            {id: interactive3.interactive_item_id, pageId: page.id, name: interactive3.name, section: "assessment_block", url: interactive3.url, thumbnailUrl: nil, supportsSnapshots: true},
-            {id: interactive1.interactive_item_id, pageId: page.id, name: interactive1.name, section: InteractivePage::INTERACTIVE_BOX, url: interactive1.url, thumbnailUrl: nil, supportsSnapshots: true},
-            {id: interactive4.interactive_item_id, pageId: page.id, name: interactive4.name, section: InteractivePage::INTERACTIVE_BOX, url: "http://foo.com/test1", thumbnailUrl: nil, supportsSnapshots: true}
+            {id: interactive3.interactive_item_id, pageId: page.id, name: interactive3.name, old_section: "assessment_block", url: interactive3.url, thumbnailUrl: nil, supportsSnapshots: true},
+            {id: interactive1.interactive_item_id, pageId: page.id, name: interactive1.name, old_section: InteractivePage::INTERACTIVE_BOX, url: interactive1.url, thumbnailUrl: nil, supportsSnapshots: true},
+            {id: interactive4.interactive_item_id, pageId: page.id, name: interactive4.name, old_section: InteractivePage::INTERACTIVE_BOX, url: "http://foo.com/test1", thumbnailUrl: nil, supportsSnapshots: true}
           ]
         }.to_json)
       end
@@ -129,8 +129,8 @@ describe Api::V1::InteractivePagesController do
         expect(response.body).to eql({
           success: true,
           interactives: [
-            {id: interactive2.interactive_item_id, pageId: page.id, name: interactive2.name, section: InteractivePage::HEADER_BLOCK, url: interactive2.url, thumbnailUrl: nil, supportsSnapshots: false},
-            {id: interactive5.interactive_item_id, pageId: page.id, name: interactive5.name, section: InteractivePage::HEADER_BLOCK, url: "http://bar.com/test2", thumbnailUrl: "http://thumbnail.url", supportsSnapshots: false}
+            {id: interactive2.interactive_item_id, pageId: page.id, name: interactive2.name, old_section: InteractivePage::HEADER_BLOCK, url: interactive2.url, thumbnailUrl: nil, supportsSnapshots: false},
+            {id: interactive5.interactive_item_id, pageId: page.id, name: interactive5.name, old_section: InteractivePage::HEADER_BLOCK, url: "http://bar.com/test2", thumbnailUrl: "http://thumbnail.url", supportsSnapshots: false}
           ]
         }.to_json)
       end
