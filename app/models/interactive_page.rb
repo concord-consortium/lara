@@ -31,7 +31,7 @@ class InteractivePage < ActiveRecord::Base
   validates :sidebar, :html => true
 
   # PageItem is a join model; if this is deleted, it should go too
-  has_many :page_items, :order => [:section, :position], :dependent => :destroy, :include => [:embeddable]
+  has_many :page_items, :order => [:old_section, :position], :dependent => :destroy, :include => [:embeddable]
 
   has_many :sections, :order => :position, :dependent => :destroy, :include => [:page_items]
 
@@ -102,7 +102,7 @@ class InteractivePage < ActiveRecord::Base
   def embeddables
     ordered_embeddables = []
     self.class.registered_sections.each do |rs|
-      ordered_embeddables += page_items.where(section: rs[:name]).collect{ |qi| qi.embeddable }
+      ordered_embeddables += page_items.where(old_section: rs[:name]).collect{ |qi| qi.embeddable }
     end
     ordered_embeddables
   end
@@ -116,7 +116,7 @@ class InteractivePage < ActiveRecord::Base
   end
 
   def section_embeddables(section)
-    page_items.where(section: section).collect{ |qi| qi.embeddable }
+    page_items.where(old_section: section).collect{ |qi| qi.embeddable }
   end
 
   def main_embeddables
