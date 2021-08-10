@@ -130,6 +130,23 @@ class InteractivePagesController < ApplicationController
     edit_embeddable_redirect(e)
   end
 
+  def add_section
+    authorize! :update, @page
+    update_activity_changed_by
+    @page.add_section
+    puts "====================================================="
+    puts "====================================================="
+    puts "====================================================="
+    puts "====================================================="
+    puts "====================================================="
+    puts "====================================================="
+    puts "====================================================="
+    puts "====================================================="
+    puts "====================================================="
+    puts @page
+    render text: "yes"
+  end
+
   def remove_page_item
     authorize! :update, @page
     update_activity_changed_by
