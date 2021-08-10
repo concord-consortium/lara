@@ -180,8 +180,14 @@ class InteractivePage < ActiveRecord::Base
     else
       page_item.move_to_top
     end
-
   end
+
+  # 2021-08-05 NP: Add a new section.
+  def add_section(position = nil, section_type = nil)
+    section = self.sections.create(Section::DEFAULT_PARAMS)
+    section.move_to_bottom
+  end
+
 
   def add_interactive(interactive, position = nil, validate = true)
     self[:show_interactive] = true
