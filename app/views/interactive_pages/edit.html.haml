@@ -68,29 +68,45 @@
             .menu-start
               %span= fa_icon "bars"
               %span Section Layout
-              = select :layout, options_for_select(Section::LAYOUT_OPTIONS.map { |l| [l[:name], l[:class_val]] }, @page.layout), {},  { :onchange => 'this.form.submit();', :title => 'Page layout'}
+              = select("section", "layout", options_for_select(Section::LAYOUT_OPTIONS.map { |l| [l[:name], l[:name]] }, s.layout), {},  {onchange: "setLayout(this, #{s.id})", title: 'Page layout'})
 
             .menu-end
               %span= fa_icon "cog"
-              %span= fa_icon "trash"
+              %span= link_to fa_icon("trash"), remove_section_path(s), method: 'delete'
               %span= fa_icon "close"
 
-          .section-container.section-40
+          .section-container{class: s.css_class_for_item_index(0)}
             %button.small-button
               + Add Item
-          .section-container.section-60
+          .section-container{class: s.css_class_for_item_index(1)}
             %button.small-button
               + Add Item
 
   .edit-page-grid-container
     .section-container.new-section
       = form_tag add_section_activity_page_path(@activity, @page), :class => 'embeddables-form' do
-        = submit_tag 'Add', {class:"big-button"}
-      -# = button_to "+ Add Section new", add_section_activity_page_path(@activity, @page), {class:"big-button"}
-      -# %button.big-button
-      -#   + Add Section
+        = submit_tag '+ Add Section', {class:"big-button"}
+
 
   :javascript
+    function setLayout(select, section_id) {
+      const layout = select.value;
+      const post_path = `/sections/${section_id}.json`;
+      const changes = {layout: layout};
+      console.log(layout);
+      console.log(section_id);
+      console.log(post_path);
+      $.ajax({
+        type: "PUT",
+        url: post_path,
+        contentType: "application/json",
+        data: JSON.stringify(changes),
+        success: (d) => console.log(`success: ${d}`),
+        error: (e) => console.log(`success: ${e}`)
+      });
+
+    };
+
     $(function() {
       if ((navigator.userAgent.indexOf("MSIE"))!=-1){
         $('#page-section-controls').removeAttr("id");

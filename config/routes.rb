@@ -79,6 +79,8 @@ LightweightStandalone::Application.routes.draw do
 
   devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }
 
+  resources :sections, :controller => 'sections', :constraints => { :id => /\d+/ }
+  
   resources :activities, :controller => 'lightweight_activities', :constraints => { :id => /\d+/ } do
     member do
       get 'reorder_pages'
@@ -97,11 +99,13 @@ LightweightStandalone::Application.routes.draw do
       # TODO: dpeprecate this Dashboard route
       get :dashboard_toc, to: redirect(path: "/api/v1/dashboard_toc/activities/%{id}")
     end
+
     resources :pages, :controller => 'interactive_pages', :constraints => { :id => /\d+/ } do
       member do
         get 'reorder_embeddables'
         post 'add_embeddable'
         post 'add_section'
+        post 'delete_section'
         get  'add_tracked'
         get 'move_up', :controller => 'lightweight_activities'
         get 'move_down', :controller => 'lightweight_activities'
@@ -213,6 +217,7 @@ LightweightStandalone::Application.routes.draw do
   delete "/embeddable/multiple_choice/:id/remove_choice/:choice_id" => 'embeddable/multiple_choices#remove_choice', :as => 'remove_choice_embeddable_multiple_choice', :constraints => { :id => /\d+/, :choice_id => /\d+/ }
   delete "/video_interactives/:id/remove_source/:source_id" => "video_interactives#remove_source", :as => 'remove_source_video_interactive', :constraints => { :id => /\d+/, :source_id => /\d+/ }
   post "/remove_page_item/:page_item_id" => 'interactive_pages#remove_page_item', :as => 'remove_page_item', :constraints => { :page_item_id => /\d+/ }
+  delete "/remove_section/:section_id" => 'interactive_pages#remove_section', :as => 'remove_section', :constraints => { :section_item_id => /\d+/ }
   post "/hideshow_page_item/:page_item_id" => 'interactive_pages#toggle_hideshow_page_item', :as => 'toggle_hideshow_page_item', :constraints => { :page_item_id => /\d+/ }
   get "/embeddable/multiple_choice/:id/check" => 'embeddable/multiple_choices#check', :as => 'check_multiple_choice_answer', :constraints => { :id => /\d+/ }
   get "/activities/:activity_id/pages/:id/:run_key" => 'interactive_pages#show', :as => 'page_with_run', :constraints => { :id => /\d+/, :activity_id => /\d+/, :run_key => /[-\w]{36}/ }

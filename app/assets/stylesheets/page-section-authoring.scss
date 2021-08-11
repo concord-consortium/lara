@@ -113,12 +113,15 @@
     color: white;
     font-size: 14pt;
     text-transform: uppercase;
+    a {
+      color: white;
+    }
   }
-  
+
   .menu-start > span {
      margin-right: 15px;
   }
-  
+
   .menu-end > span {
      margin-left: 15px;
   }
@@ -150,5 +153,10 @@
   .section-70 {
     grid-column: span 7;
   }
-
+  .section-responsive {
+    grid-column: span 10;
+  }
+  .section-full-width {
+    grid-column: span 10;
+  }
 }
