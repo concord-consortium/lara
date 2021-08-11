@@ -132,19 +132,17 @@ class InteractivePagesController < ApplicationController
 
   def add_section
     authorize! :update, @page
-    update_activity_changed_by
+    update_activity_changed_bya
     @page.add_section
-    puts "====================================================="
-    puts "====================================================="
-    puts "====================================================="
-    puts "====================================================="
-    puts "====================================================="
-    puts "====================================================="
-    puts "====================================================="
-    puts "====================================================="
-    puts "====================================================="
-    puts @page
-    render text: "yes"
+    redirect_to edit_activity_page_path(@activity, @page)
+  end
+
+  def remove_section
+    authorize! :update, @page
+    update_activity_changed_by
+    @section.destroy
+    # We aren't removing the embeddable itself. But we would remove the tracked_question of the embeddable.
+    redirect_to edit_activity_page_path(@activity, @page)
   end
 
   def remove_page_item
@@ -230,6 +228,10 @@ class InteractivePagesController < ApplicationController
     elsif params[:page_item_id]
       @page_item = PageItem.find_by_id(params[:page_item_id])
       @page = @page_item.interactive_page
+      @activity = @page.lightweight_activity
+    elsif params[:section_id]
+      @section = Section.find_by_id(params[:section_id])
+      @page = @section.interactive_page
       @activity = @page.lightweight_activity
     else
       # I don't like this method much.
