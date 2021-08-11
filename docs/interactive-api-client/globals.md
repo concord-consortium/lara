@@ -885,22 +885,6 @@ ___
 
 ▸ **setInteractiveState**‹**InteractiveState**›(`newInteractiveState`: InteractiveState | null): *void*
 
-Note that state will become frozen and should never be mutated.
-Each time you update state, make sure that a new object is passed.
-
-Good:
-```
-setInteractiveState(Object.assign({}, previousState, {someProperty: "a new value"}));
-// or
-setInteractiveState({...previousState, someProperty: "a new value"});
-```
-
-Bad:
-```
-previousState.someProperty = "a new value";
-setInteractiveState(previousState);
-```
-
 **Type parameters:**
 
 ▪ **InteractiveState**

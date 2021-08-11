@@ -49,11 +49,16 @@ describe("api", () => {
   });
 
   it("supports setInteractiveState and getInteractiveState", (done) => {
-    api.setInteractiveState({foo: true});
-    expect(api.getInteractiveState()).toEqual({foo: true});
+    const newState = {foo: true};
+    api.setInteractiveState(newState);
+    expect(api.getInteractiveState()).toEqual(newState);
+    expect(Object.isExtensible(newState)).toBe(true);
+    // it seems that postMessage makes objects non-extensible
+    expect(Object.isExtensible(getClient().managedState.interactiveState)).toBe(false);
+    expect(Object.isExtensible(api.getInteractiveState())).toBe(true);
     expect(getClient().managedState.interactiveStateDirty).toEqual(true);
     setTimeout(() => {
-      expect(mockedPhone.messages).toEqual([{type: "interactiveState", content: {foo: true}}]);
+      expect(mockedPhone.messages).toEqual([{type: "interactiveState", content: newState}]);
       expect(getClient().managedState.interactiveStateDirty).toEqual(false);
       done();
     }, api.setInteractiveStateTimeout + 1);

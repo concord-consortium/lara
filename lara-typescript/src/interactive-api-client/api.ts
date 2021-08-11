@@ -33,6 +33,7 @@ import {
 } from "./types";
 import { getClient } from "./client";
 import { v4 as uuidv4 } from "uuid";
+const cloneDeep = require("clone-deep");
 
 const THROW_NOT_IMPLEMENTED_YET = (method: string) => {
   throw new Error(`${method} is not yet implemented in the client!`);
@@ -56,35 +57,22 @@ export const getMode = () => {
 };
 
 export const getInteractiveState = <InteractiveState>(): InteractiveState | null => {
-  return getClient().managedState.interactiveState;
+  // clone so it's extensible and so client can't change it without calling setInteractiveState
+  return cloneDeep(getClient().managedState.interactiveState);
 };
 
 let setInteractiveStateTimeoutId: number;
 let delayedInteractiveStateUpdate: (() => void) | null = null;
 export const setInteractiveStateTimeout = 2000; // ms
-/**
- * Note that state will become frozen and should never be mutated.
- * Each time you update state, make sure that a new object is passed.
- *
- * Good:
- * ```
- * setInteractiveState(Object.assign({}, previousState, {someProperty: "a new value"}));
- * // or
- * setInteractiveState({...previousState, someProperty: "a new value"});
- * ```
- *
- * Bad:
- * ```
- * previousState.someProperty = "a new value";
- * setInteractiveState(previousState);
- * ```
- */
+
 export const setInteractiveState = <InteractiveState>(newInteractiveState: InteractiveState | null) => {
   const client = getClient();
-  client.managedState.interactiveState = newInteractiveState;
+  // clone so that we don't make the client's object non-extensible
+  const _newInteractiveState = cloneDeep(newInteractiveState);
+  client.managedState.interactiveState = _newInteractiveState;
   window.clearTimeout(setInteractiveStateTimeoutId);
   delayedInteractiveStateUpdate = () => {
-    client.post("interactiveState", newInteractiveState);
+    client.post("interactiveState", _newInteractiveState);
     client.managedState.interactiveStateDirty = false;
     delayedInteractiveStateUpdate = null;
   };
