@@ -17,129 +17,116 @@
         \/
         = @page.name
 
-  = render :partial => "publications/publication_failures", :locals =>{ :publication => @activity}
+= render :partial => "publications/publication_failures", :locals =>{ :publication => @activity}
 
 
-  = form_for @page do |f|
-    .edit-page-grid-container
-      .part-label= "Activity"
-      .activity-name= @activity.name
-      .page-numbers.page-nav
-        - if @page.higher_item
-          %a{:class => 'previous', :href => edit_activity_page_path(@activity, @page.higher_item)}
-            ! &nbsp;
-        - else
-          %a{:class => 'previous disabled'}
-            ! &nbsp;
-        - page_counter = 1
-        - @activity.pages.each do |p|
-          = link_to page_counter, edit_activity_page_path(@activity, p), :class => (p === @page) ? 'active' : ''
-          - page_counter = page_counter + 1
-        = link_to '+', new_activity_page_path(@activity), {:title => "Add another page to #{@activity.name}"}
-        - if @page.lower_item
-          %a{:class => 'next', :href => edit_activity_page_path(@activity, @page.lower_item)}
-            ! &nbsp;
-        - else
-          %a{:class => 'next disabled'}
-            ! &nbsp;
-
-      .part-label= "Page"
-      .page-name= editable_field @page, :name, { :placeholder => 'page title' }
-      #preview-menu
-        %label{for: "preview-options-select"}
-          %strong
-            Preview in:
-        = select_tag :preview_options_select, options_for_select(activity_preview_options(@activity, @page)), {id: 'preview-options-select'}
-      .page-settings.full-row
-        %span.teal-label= "Page Settings"
-        %label
-          -# There is no typical :onchange => 'this.form.submit();' handler, as we also need confirmation dialog.
-          -# It's handled separately in the JavaScript block at the end of this partial.
-          = f.check_box :is_hidden, :id => 'hide-page-checkbox'
-          Page is hidden from students
-        %label
-          = f.check_box :is_completion, :onchange => 'this.form.submit();'
-          Page is Completion page
-
-    - @page.sections.each do |s|
-      = form_for @page do |f|
-        .edit-page-grid-container
-          .section-menu.full-row
-            .menu-start
-              %span= fa_icon "bars"
-              %span Section Layout
-              = select("section", "layout", options_for_select(Section::LAYOUT_OPTIONS.map { |l| [l[:name], l[:name]] }, s.layout), {},  {onchange: "setLayout(this, #{s.id})", title: 'Page layout'})
-
-            .menu-end
-              %span= fa_icon "cog"
-              %span= link_to fa_icon("trash"), remove_section_path(s), method: 'delete'
-              %span= fa_icon "close"
-
-          .section-container{class: s.css_class_for_item_index(0)}
-            %button.small-button
-              + Add Item
-          .section-container{class: s.css_class_for_item_index(1)}
-            %button.small-button
-              + Add Item
-
+= form_for @page do |f|
   .edit-page-grid-container
-    .section-container.new-section
-      = form_tag add_section_activity_page_path(@activity, @page), :class => 'embeddables-form' do
-        = submit_tag '+ Add Section', {class:"big-button"}
+    .part-label= "Activity"
+    .activity-name= @activity.name
+    .page-numbers.page-nav
+      - if @page.higher_item
+        %a{:class => 'previous', :href => edit_activity_page_path(@activity, @page.higher_item)}
+          ! &nbsp;
+      - else
+        %a{:class => 'previous disabled'}
+          ! &nbsp;
+      - page_counter = 1
+      - @activity.pages.each do |p|
+        = link_to page_counter, edit_activity_page_path(@activity, p), :class => (p === @page) ? 'active' : ''
+        - page_counter = page_counter + 1
+      = link_to '+', new_activity_page_path(@activity), {:title => "Add another page to #{@activity.name}"}
+      - if @page.lower_item
+        %a{:class => 'next', :href => edit_activity_page_path(@activity, @page.lower_item)}
+          ! &nbsp;
+      - else
+        %a{:class => 'next disabled'}
+          ! &nbsp;
+
+    .part-label= "Page"
+    .page-name= editable_field @page, :name, { :placeholder => 'page title' }
+    #preview-menu
+      %label{for: "preview-options-select"}
+        %strong
+          Preview in:
+      = select_tag :preview_options_select, options_for_select(activity_preview_options(@activity, @page)), {id: 'preview-options-select'}
+    .page-settings.full-row
+      %span.teal-label= "Page Settings"
+      %label
+        -# There is no typical :onchange => 'this.form.submit();' handler, as we also need confirmation dialog.
+        -# It's handled separately in the JavaScript block at the end of this partial.
+        = f.check_box :is_hidden, :id => 'hide-page-checkbox'
+        Page is hidden from students
+      %label
+        = f.check_box :is_completion, :onchange => 'this.form.submit();'
+        Page is Completion page
+
+  #sections-container
+
+.edit-page-grid-container
+  .section-container.new-section
+    = form_tag add_section_activity_page_path(@activity, @page), :class => 'embeddables-form' do
+      = submit_tag '+ Add Section', {class:"big-button"}
 
 
-  :javascript
-    function setLayout(select, section_id) {
-      const layout = select.value;
-      const post_path = `/sections/${section_id}.json`;
-      const changes = {layout: layout};
-      console.log(layout);
-      console.log(section_id);
-      console.log(post_path);
-      $.ajax({
-        type: "PUT",
-        url: post_path,
-        contentType: "application/json",
-        data: JSON.stringify(changes),
-        success: (d) => console.log(`success: ${d}`),
-        error: (e) => console.log(`success: ${e}`)
-      });
-
-    };
-
-    $(function() {
-      if ((navigator.userAgent.indexOf("MSIE"))!=-1){
-        $('#page-section-controls').removeAttr("id");
-      }
-      // Hide page checkbox handling.
-      var confirmHideMessage = "Are you sure you want to hide this page? You will lose data from #{pluralize(@activity.active_runs, "learner")} that have run this activity.";
-      var activeRuns = #{@activity.active_runs};
-      $('#hide-page-checkbox').on('change', function(e) {
-        if (this.checked && activeRuns > 0) {
-          if (confirm(confirmHideMessage)) {
-            this.form.submit();
-          } else {
-            this.checked = false;
-          }
-        } else {
-          this.form.submit();
-        }
-      });
-
-      // set the hidden plugin fields when embeddable plugins are selected
-      $('select[name=embeddable_type]').on('change', function() {
-        var selected = $(this).find(':selected');
-        var form = $(this).closest("form");
-        form.find('[name=approved_script_id]').val(selected.data('approved-script-id') || "")
-        form.find('[name=component_label]').val(selected.data('component-label') || "")
-      })
-
-      // set the hidden plugin fields when wrapped embeddable plugins are selected
-      $('.wrapped-embeddable-type').on('change', function() {
-        var $this = $(this);
-        var selected = $this.find(':selected');
-        var form = $this.closest("form");
-        form.find('[name=approved_script_id]').val(selected.data('approved-script-id') || "")
-        form.find('[name=component_label]').val(selected.data('component-label') || "")
-      })
+:javascript
+  function updateFunction(changes, section_id) {
+    const post_path = `/sections/${section_id}.json`;
+    $.ajax({
+      type: "PUT",
+      url: post_path,
+      contentType: "application/json",
+      data: JSON.stringify(changes),
+      success: (d) => console.log(`success: ${d}`),
+      error: (e) => console.log(`success: ${e}`)
     });
+  };
+
+  $(function() {
+    if ((navigator.userAgent.indexOf("MSIE"))!=-1){
+      $('#page-section-controls').removeAttr("id");
+    }
+    // Hide page checkbox handling.
+    var confirmHideMessage = "Are you sure you want to hide this page? You will lose data from #{pluralize(@activity.active_runs, "learner")} that have run this activity.";
+    var activeRuns = #{@activity.active_runs};
+    $('#hide-page-checkbox').on('change', function(e) {
+      if (this.checked && activeRuns > 0) {
+        if (confirm(confirmHideMessage)) {
+          this.form.submit();
+        } else {
+          this.checked = false;
+        }
+      } else {
+        this.form.submit();
+      }
+    });
+
+    // set the hidden plugin fields when embeddable plugins are selected
+    $('select[name=embeddable_type]').on('change', function() {
+      var selected = $(this).find(':selected');
+      var form = $(this).closest("form");
+      form.find('[name=approved_script_id]').val(selected.data('approved-script-id') || "")
+      form.find('[name=component_label]').val(selected.data('component-label') || "")
+    })
+
+    // set the hidden plugin fields when wrapped embeddable plugins are selected
+    $('.wrapped-embeddable-type').on('change', function() {
+      var $this = $(this);
+      var selected = $this.find(':selected');
+      var form = $this.closest("form");
+      form.find('[name=approved_script_id]').val(selected.data('approved-script-id') || "")
+      form.find('[name=component_label]').val(selected.data('component-label') || "")
+    })
+  });
+
+%script{type:  'text/javascript' }
+  let params = {};
+  let element;
+  const container = document.querySelector("#sections-container");
+
+  - @page.sections.each do |s|
+    params.id = #{s.id};
+    element = container.appendChild(document.createElement("div"));
+    params.layout = "#{s.layout}";
+    params.updateFunction = updateFunction;
+    LARA.SectionAuthoring.renderAuthoringSection(element, params);
