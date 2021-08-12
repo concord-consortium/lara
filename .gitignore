@@ -61,3 +61,4 @@ config/environments/local-development.rb
 # simplecov output
 coverage/
 .DS_Store
+lara-typescript/yarn-error.log
