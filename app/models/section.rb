@@ -1,9 +1,9 @@
 class Section < ActiveRecord::Base
   attr_accessible :title, :position, :show, :layout, :interactive_page, :interactive_page_id, :can_collapse_small
-  acts_as_list :scope => :interactive_page
+  acts_as_list scope: :interactive_page
 
   belongs_to :interactive_page
-  has_many :page_items, :dependent => :destroy
+  has_many :page_items, dependent: :destroy
 
   HEADER_BLOCK = 'header_block'
   INTERACTIVE_BOX = 'interactive_box'
@@ -17,12 +17,12 @@ class Section < ActiveRecord::Base
   LAYOUT_DFEAULT=LAYOUT_FULL_WIDTH
 
   LAYOUT_OPTIONS = [
-    { :name => LAYOUT_FULL_WIDTH, :class_vals => ['section-full-width']},
-    { :name => LAYOUT_60_40,      :class_vals => ['section-60','section-40'] },
-    { :name => LAYOUT_40_60,      :class_vals => ['section-40','section-60'] },
-    { :name => LAYOUT_70_30,      :class_vals => ['section-70','section-30'] },
-    { :name => LAYOUT_30_70,      :class_vals => ['section-30','section-70'] },
-    { :name => LAYOUT_RESPONSIVE, :class_vals => ['section-responsive'] }
+    { name: LAYOUT_FULL_WIDTH,  class_vals: ['section-full-width']},
+    { name: LAYOUT_60_40,       class_vals: ['section-60','section-40'] },
+    { name: LAYOUT_40_60,       class_vals: ['section-40','section-60'] },
+    { name: LAYOUT_70_30,       class_vals: ['section-70','section-30'] },
+    { name: LAYOUT_30_70,       class_vals: ['section-30','section-70'] },
+    { name: LAYOUT_RESPONSIVE,  class_vals: ['section-responsive'] }
   ]
 
   EMBEDDABLE_DISPLAY_OPTIONS = ['stacked','carousel']
