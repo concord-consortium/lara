@@ -30245,6 +30245,7 @@ var Events = __webpack_require__(/*! ./events */ "./src/events/index.ts");
 exports.Events = Events;
 var PageItemAuthoring = __webpack_require__(/*! ./page-item-authoring */ "./src/page-item-authoring/index.tsx");
 exports.PageItemAuthoring = PageItemAuthoring;
+var SectionAuthoring = __webpack_require__(/*! ./section-authoring */ "./src/section-authoring/index.tsx");
 // Note that LARA namespace is defined for the first time by V2 API. Once V2 is removed, this code should also be
 // removed and "library": "LARA" option in webpack.config.js should be re-enabled.
 window.LARA || (window.LARA = {}); // create if it doesn't exist
@@ -30253,6 +30254,7 @@ window.LARA.Plugins = Plugins;
 window.LARA.Events = Events;
 window.LARA.InteractiveAPI = InteractiveAPI;
 window.LARA.PageItemAuthoring = PageItemAuthoring;
+window.LARA.SectionAuthoring = SectionAuthoring;
 // for clients that don't require LARA to be a global on window
 function initializeLara() {
     return window.LARA;
@@ -33017,6 +33019,133 @@ var registerPlugin = function (options) {
     }
 };
 exports.registerPlugin = registerPlugin;
+
+
+/***/ }),
+
+/***/ "./src/section-authoring/components/authoring-section.css":
+/*!****************************************************************!*\
+  !*** ./src/section-authoring/components/authoring-section.css ***!
+  \****************************************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ }),
+
+/***/ "./src/section-authoring/components/authoring-section.tsx":
+/*!****************************************************************!*\
+  !*** ./src/section-authoring/components/authoring-section.tsx ***!
+  \****************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var _a;
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.AuthoringSection = exports.Layouts = void 0;
+var React = __webpack_require__(/*! react */ "react");
+// NP 2021-08-12 -- default imports aren't working correctly when evaled on page
+__webpack_require__(/*! ./authoring-section.css */ "./src/section-authoring/components/authoring-section.css");
+var Layouts;
+(function (Layouts) {
+    Layouts["LAYOUT_FULL_WIDTH"] = "Full Width";
+    Layouts["LAYOUT_60_40"] = "60-40";
+    Layouts["LAYOUT_40_60"] = "40-60";
+    Layouts["LAYOUT_70_30"] = "70-30";
+    Layouts["LAYOUT_30_70"] = "30-70";
+    Layouts["LAYOUT_RESPONSIVE"] = "Responsive";
+})(Layouts = exports.Layouts || (exports.Layouts = {}));
+var defaultLayout = Layouts.LAYOUT_FULL_WIDTH;
+var layoutClassNames = (_a = {},
+    _a[Layouts.LAYOUT_FULL_WIDTH] = ["section-full-width"],
+    _a[Layouts.LAYOUT_60_40] = ["section-60", "section-40"],
+    _a[Layouts.LAYOUT_40_60] = ["section-40", "section-60"],
+    _a[Layouts.LAYOUT_70_30] = ["section-70", "section-30"],
+    _a[Layouts.LAYOUT_30_70] = ["section-30", "section-70"],
+    _a[Layouts.LAYOUT_RESPONSIVE] = ["section-responsive"],
+    _a);
+var classNameForItem = function (layout, itemIndex) {
+    var layouts = layoutClassNames[layout];
+    var classNameIndex = itemIndex % layouts.length;
+    return layoutClassNames[layout][classNameIndex];
+};
+/**
+ * Primary UI component for user interaction
+ */
+var AuthoringSection = function (_a) {
+    var id = _a.id, updateFunction = _a.updateFunction, _b = _a.layout, initLayout = _b === void 0 ? defaultLayout : _b;
+    var _c = React.useState(initLayout), layout = _c[0], setLayout = _c[1];
+    React.useEffect(function () {
+        setLayout(initLayout);
+    }, [initLayout]);
+    var selectionChanged = function (change) {
+        var newLayout = change.target.value;
+        updateFunction === null || updateFunction === void 0 ? void 0 : updateFunction({ layout: newLayout }, id);
+        setLayout(newLayout);
+    };
+    // TODO: There is probably a more react-like way to handle this
+    var deleteTag = React.createElement("a", { href: "/remove_section/" + id, "data-method": "delete", rel: "nofollow" },
+        React.createElement("i", { className: "fa fa-trash" }));
+    return (React.createElement("div", { className: "edit-page-grid-container" },
+        React.createElement("div", { className: "section-menu full-row" },
+            React.createElement("div", { className: "menu-start" },
+                React.createElement("span", null,
+                    React.createElement("i", { className: "fa fa-bars" })),
+                React.createElement("span", null, "Section Layout"),
+                React.createElement("select", { id: "section_layout", name: "section[layout]", onChange: selectionChanged, defaultValue: layout, title: "Section layout" }, Object.values(Layouts).map(function (l) {
+                    return (React.createElement("option", { key: l, value: l }, l));
+                }))),
+            React.createElement("div", { className: "menu-end" },
+                React.createElement("span", null,
+                    React.createElement("i", { className: "fa fa-cog" })),
+                React.createElement("span", null, deleteTag),
+                React.createElement("span", null,
+                    React.createElement("i", { className: "fa fa-close" })))),
+        React.createElement("div", { className: "section-container " + classNameForItem(layout, 0) },
+            React.createElement("button", { className: "small-button" }, "+ Add Item")),
+        React.createElement("div", { className: "section-container " + classNameForItem(layout, 1) },
+            React.createElement("button", { className: "small-button" }, "+ Add Item"))));
+};
+exports.AuthoringSection = AuthoringSection;
+
+
+/***/ }),
+
+/***/ "./src/section-authoring/index.tsx":
+/*!*****************************************!*\
+  !*** ./src/section-authoring/index.tsx ***!
+  \*****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.renderAuthoringSection = void 0;
+var React = __webpack_require__(/*! react */ "react");
+var ReactDOM = __webpack_require__(/*! react-dom */ "react-dom");
+var authoring_section_1 = __webpack_require__(/*! ./components/authoring-section */ "./src/section-authoring/components/authoring-section.tsx");
+var renderAuthoringSection = function (root, props) {
+    return ReactDOM.render(React.createElement(authoring_section_1.AuthoringSection, __assign({}, props)), root);
+};
+exports.renderAuthoringSection = renderAuthoringSection;
 
 
 /***/ }),
