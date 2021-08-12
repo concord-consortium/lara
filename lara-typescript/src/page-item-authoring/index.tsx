@@ -51,6 +51,10 @@ const renderInteractiveAuthoringPreview = (root: HTMLElement, props: IInteractiv
 };
 
 export {
+  IRenderManagedInteractiveAuthoringProps,
+  IRenderMWInteractiveAuthoringProps,
+  IInteractiveAuthoringPreviewProps,
+
   ManagedInteractiveAuthoring,
   renderManagedInteractiveAuthoring,
 
