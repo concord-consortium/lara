@@ -5,6 +5,7 @@ import * as InteractiveAPI from "./interactive-api-parent";
 import * as Plugins from "./plugins";
 import * as Events from "./events";
 import * as PageItemAuthoring from "./page-item-authoring";
+import * as SectionAuthoring from "./section-authoring";
 
 export interface LaraGlobalType {
   PluginAPI_V3: typeof PluginAPI;
@@ -28,6 +29,7 @@ export {
 (window as any).LARA.Events = Events;
 (window as any).LARA.InteractiveAPI = InteractiveAPI;
 (window as any).LARA.PageItemAuthoring = PageItemAuthoring;
+(window as any).LARA.SectionAuthoring = SectionAuthoring;
 
 // for clients that don't require LARA to be a global on window
 export function initializeLara(): LaraGlobalType {
