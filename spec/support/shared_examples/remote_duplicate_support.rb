@@ -26,13 +26,6 @@ shared_examples "remote duplicate support" do
       let(:user) { FactoryGirl.create(:author) }
       let(:secret) { 'very secure secret' }
       let(:portal_url) { 'http://portal.concord.org' }
-      let(:author_url) do
-        if resource.methods.include?(:activities) 
-          "http://authoring.concord.org#{Rails.application.routes.url_helpers.sequence_path(resource)}/edit"
-        else
-          "http://authoring.concord.org#{Rails.application.routes.url_helpers.activity_path(resource)}/edit"
-        end
-      end
       let(:portal_name) { 'test portal' }
       let(:fake_portal_struct) { Struct.new(:name, :url, :publishing_url, :secret) }
       let(:fake_portal) { fake_portal_struct.new(portal_name, portal_url, portal_url, secret) }
@@ -48,7 +41,11 @@ shared_examples "remote duplicate support" do
       end
 
       def make_request
-        post :remote_duplicate, id: resource.id, user_email: user_email, add_to_portal: portal_url, author_url: author_url
+        params = { :id => resource.id, :user_email => user_email, :add_to_portal => portal_url }
+        if defined?(author_url)
+          params[:author_url] = author_url
+        end
+        post :remote_duplicate, params
       end
 
       def get_copy
