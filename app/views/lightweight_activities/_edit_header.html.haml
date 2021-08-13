@@ -6,7 +6,7 @@
       = link_to "Edit in Standard Mode", "#{edit_activity_path(@activity)}?mode=standard"
     %span.edit-in
       = link_to "Edit in ITSI Mode", "#{edit_activity_path(@activity)}?mode=itsi"
-  - if ENV['CONVERSION_SCRIPT_URL'].present?
+  - if (can? :export, @activity) && ENV['CONVERSION_SCRIPT_URL'].present?
     %span.convert
       = link_to "Convert", activity_player_conversion_url(@activity), :target => 'new'
   #preview-menu
