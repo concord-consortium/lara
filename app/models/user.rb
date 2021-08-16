@@ -61,11 +61,21 @@ class User < ActiveRecord::Base
     Devise.friendly_token[0,20]
   end
 
+  def self.possibly_make_user_author(auth, user)
+    # assign the author role if user is author on portal but not locally
+    # the chain of tests are needed because under rspec the auth object is generated inside OmniAuth and it does not include the extra info
+    if !user.is_author && (auth.respond_to? :extra) && (auth.extra.roles.include? "author")
+      user.is_author = true
+      user.save
+    end
+  end
+
   def self.find_for_concord_portal_oauth(auth, signed_in_resource=nil)
     authentication = Authentication.find_by_provider_and_uid auth.provider, auth.uid
     if authentication
       # update the authentication token for this user to make sure it stays fresh
       authentication.update_attribute(:token, auth.credentials.token)
+      possibly_make_user_author(auth, authentication.user)
       return authentication.user
     end
 
@@ -93,13 +103,7 @@ class User < ActiveRecord::Base
       )
     end
 
-    # assign the author role if user is author on portal but not locally
-    # the chain of tests are needed because under rspec the auth object is generated inside OmniAuth and it does not include the extra info
-    if !user.is_author && (auth.respond_to? :extra) && (auth.extra.roles.include? "author")
-      user.is_author = true
-      user.save
-    end
-
+    possibly_make_user_author(auth, user)
     # create new authentication for this user that we found or created
     user.authentications.create(
       provider: auth.provider,

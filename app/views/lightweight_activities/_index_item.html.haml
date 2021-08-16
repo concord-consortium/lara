@@ -8,13 +8,17 @@
     %div.action_menu_header_right
       %ul.menu
         %li.export= link_to('Export', show_status_activity_path(activity), :remote => true) if can? :export, activity
-        - if ENV['CONVERSION_SCRIPT_URL'].present?
-          %li.convert= link_to('Convert', activity_player_conversion_url(activity), target: :_blank) if can? :export, activity
-        %li.copy= link_to "Copy", duplicate_activity_path(activity) if can? :duplicate, activity
-        %li.edit= link_to "Edit", edit_activity_path(activity) if can? :edit, activity
-        - confirm_message = "Are you sure you want to delete this activity? You will lose data from #{pluralize(activity.active_runs, "learner")} that #{"has".pluralize(activity.active_runs)} attempted this activity."
-        %li.delete= link_to 'Delete', activity_path(activity), method: :delete, data: { confirm: (activity.active_runs > 0) ? confirm_message : 'Are you sure?' } if can? :destroy, activity
-        %li.publish= link_to('Publish', publication_show_status_path(activity.class,activity.id), :remote => true) if can? :publish, activity
+        - if (can? :export, activity) && ENV['CONVERSION_SCRIPT_URL'].present?
+          %li.convert= link_to('Convert', activity_player_conversion_url(activity), target: :_blank)
+        - if can? :duplicate, activity
+          %li.copy= link_to "Copy", duplicate_activity_path(activity)
+        - if can? :edit, activity
+          %li.edit= link_to "Edit", edit_activity_path(activity)
+        - if can? :destroy, activity
+          - confirm_message = "Are you sure you want to delete this activity? You will lose data from #{pluralize(activity.active_runs, "learner")} that #{"has".pluralize(activity.active_runs)} attempted this activity."
+          %li.delete= link_to 'Delete', activity_path(activity), method: :delete, data: { confirm: (activity.active_runs > 0) ? confirm_message : 'Are you sure?' }
+        - if can? :publish, activity
+          %li.publish= link_to('Publish', publication_show_status_path(activity.class,activity.id), :remote => true)
         - if can? :read, activity
           %li.print
             = link_to "print", print_blank_activity_path(activity), :target => 'new'
