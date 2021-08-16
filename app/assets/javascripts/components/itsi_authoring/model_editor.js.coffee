@@ -86,36 +86,7 @@ modulejs.define 'components/itsi_authoring/model_editor',
         container = @iframeContainer.current
         container.style.height = Math.round(container.offsetWidth / info.features.aspectRatio) + 'px'
 
-    fetchModelList: ->
-      url = @props.jsonListUrls?.models or 'https://s3.amazonaws.com/sensorconnector-s3.concord.org/model_list.json'
-      cachedAjax
-        url: url
-        success: (data) =>
-          if @isMounted()
-            models = data?.models
-            modelOptions = []
-            modelsByLibraryId = {}
-
-            if models
-              models.sort (a, b) ->
-                [lowerA, lowerB] = [a.name?.toLowerCase(), b.name?.toLowerCase()]
-                return -1 if lowerA < lowerB
-                return 1 if lowerA > lowerB
-                return 0
-              for model, i in models
-                # e.g. https://itsi.portal.concord.org/interactives/export_model_library#123
-                libraryId = url + '#' + model.id
-                modelsByLibraryId[libraryId] = model
-                modelOptions.push
-                  name: if model.id then "#{model.id}: #{model.name}" else model.name
-                  value: libraryId
-
-            @setState
-              modelOptions: modelOptions
-              modelsByLibraryId: modelsByLibraryId
-
     switchToEditMode: ->
-      @fetchModelList() if @state.modelOptions.length == 0
       @edit()
 
     render: ->
@@ -125,11 +96,6 @@ modulejs.define 'components/itsi_authoring/model_editor',
         if @state.edit
           (SectionEditorForm {onSave: @save, onCancel: @cancel},
             (label {}, 'Model')
-            if @state.modelOptions.length > 0
-              (@select {name: 'mw_interactive[model_library_url]', options: @state.modelOptions, onChange: @onSelectChange})
-            else
-              'Loading models...'
-
             (div {className: "ia-interactive-container #{unless authorable then 'not-authorable' else ''}"},
               if authorable
                 (div {className: 'ia-authoring-status'},
@@ -158,12 +124,9 @@ modulejs.define 'components/itsi_authoring/model_editor',
           )
         else
           (div {className: 'ia-section-text'},
-            if @state.values['mw_interactive[name]']
-              (div {},
-                (div {}, @state.values['mw_interactive[name]'])
-                (img {src: @state.values['mw_interactive[image_url]'], style: {maxWidth: '800px'}})
-              )
-            else
-              'No model selected'
+            (div {},
+              (div {}, @state.values['mw_interactive[name]'])
+              (img {src: @state.values['mw_interactive[image_url]'], style: {maxWidth: '800px'}})
+            )
           )
       )

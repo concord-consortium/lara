@@ -44,6 +44,8 @@ class Ability
       can :export, LightweightActivity
       can :export, Sequence
     end
+    # Everyone (author and regular user) can update activities they own.
+    can :update, LightweightActivity, :user_id => user.id
     # Everyone (author and regular user) can read public, hidden and archived sequences or activities.
     ['public', 'hidden', 'archive'].each do |allowed_status|
       can :read, Sequence, :publication_status => allowed_status

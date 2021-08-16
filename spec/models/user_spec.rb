@@ -36,14 +36,14 @@ describe User do
     context 'when is an author' do
       let(:user) { FactoryGirl.build(:author) }
       let(:other_user) { FactoryGirl.build(:author) }
+      let (:pages) { FactoryGirl.create(:page) }
       let(:self_activity) { stub_model(LightweightActivity, :user_id => user.id) }
-      let (:other_activity) do
-        oa = FactoryGirl.create(:public_activity)
-        oa.user = other_user
-        oa.pages << FactoryGirl.create(:page)
-        oa.save
-        oa
-      end
+      let (:other_activity) { stub_model(
+                                         LightweightActivity, 
+                                         :user_id => 15,
+                                         :pages => [pages],
+                                         :publication_status => 'public'
+                                        ) }
       let (:self_sequence) { stub_model(Sequence, :user_id => user.id) }
       let (:other_sequence) { stub_model(Sequence, :user_id => 15) }
 
@@ -76,8 +76,18 @@ describe User do
     end
 
     context 'when is anonymous' do
-      let(:user) { FactoryGirl.build(:user) }
-      let(:other_user) { FactoryGirl.build(:author) }
+      let(:user) do
+        u = FactoryGirl.build(:user)
+        u.id = 2
+        u.save
+        u
+      end
+      let(:other_user) do
+        ou = FactoryGirl.build(:author)
+        ou.id = 3
+        ou.save
+        ou
+      end
       let(:hidden_activity) do
         act = FactoryGirl.create(:activity)
         act.user = other_user
@@ -87,14 +97,24 @@ describe User do
       let(:public_activity) do
         oa = FactoryGirl.create(:public_activity)
         oa.user = other_user
+        oa.user_id = other_user.id
+        oa.pages << FactoryGirl.create(:page)
+        oa.save
+        oa
+      end
+      let(:own_activity) do
+        oa = FactoryGirl.create(:private_activity)
+        oa.user = user
+        oa.user_id = user.id
         oa.pages << FactoryGirl.create(:page)
         oa.save
         oa
       end
 
       it { is_expected.not_to be_able_to(:manage, User) }
-      it { is_expected.not_to be_able_to(:update, LightweightActivity) }
       it { is_expected.not_to be_able_to(:create, LightweightActivity) }
+      it { is_expected.not_to be_able_to(:update, public_activity) }
+      it { is_expected.to be_able_to(:update, own_activity) }
       it { is_expected.to be_able_to(:read, Sequence) }
       it { is_expected.to be_able_to(:read, public_activity) }
       it { is_expected.to be_able_to(:read, hidden_activity) } # But it won't be in lists
@@ -162,7 +182,7 @@ describe User do
     end
 
     describe "with matching email address and wrong uid" do
-      it "should throw an excpetion" do
+      it "should throw an exception" do
         expected = FactoryGirl.create(:user,
           { :email => auth_email}  )
         authentication = FactoryGirl.create(:authentication,

@@ -51,6 +51,13 @@ FactoryGirl.define do
     description { generate(:description) }
   end
 
+  factory :private_activity, :class => LightweightActivity do
+    name { generate(:name) }
+    publication_status 'private'
+    related { generate(:related) }
+    description { generate(:description) }
+  end
+
   factory :locked_activity, :class => LightweightActivity do
     name { generate(:name) }
     publication_status 'public'
