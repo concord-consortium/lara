@@ -41,7 +41,11 @@ shared_examples "remote duplicate support" do
       end
 
       def make_request
-        post :remote_duplicate, id: resource.id, user_email: user_email, add_to_portal: portal_url
+        params = { :id => resource.id, :user_email => user_email, :add_to_portal => portal_url }
+        if defined?(author_url)
+          params[:author_url] = author_url
+        end
+        post :remote_duplicate, params
       end
 
       def get_copy

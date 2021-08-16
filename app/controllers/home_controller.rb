@@ -1,4 +1,7 @@
 class HomeController < ApplicationController
+
+  include RemoteDuplicateSupport
+
   def home
     attributes = (params[:filter] || {})
     if params.has_key?('search')

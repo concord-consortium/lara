@@ -8,14 +8,29 @@ module RemoteDuplicateSupport
     end
   end
 
+  def self.get_resource
+
+  end
+
   # Action triggered by Portal. Duplicates an activity or sequence and returns its publication data.
-  # It excepts @activity or @sequence to be available.
+  # It expects an author_url param or @activity or @sequence to be available.
   def remote_duplicate
     authorize_peer!
 
-    resource = @activity || @sequence
+    if params[:author_url].present?
+      resource_path = URI.parse(params[:author_url]).path
+      resource_type = resource_path.split("/")[1]
+      resource_id = resource_path.split("/")[2]
+      if resource_type == 'sequences'
+        resource = Sequence.find(resource_id)
+      else
+        resource = LightweightActivity.find(resource_id)
+      end
+    else
+      resource = @activity || @sequence
+    end
 
-    # Make sure that user exists. It might not if he never opened LARA before and it's just copying an activity using Portal.
+    # Make sure that user exists. It might not if the user never opened LARA before and it's just copying an activity using Portal.
     user = User.find_by_email params[:user_email]
     unless user
       user = User.create(

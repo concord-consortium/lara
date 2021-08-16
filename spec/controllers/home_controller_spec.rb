@@ -2,6 +2,26 @@ require 'spec_helper'
 
 describe HomeController do
 
+  it_behaves_like "remote duplicate support" do
+    let(:user) { FactoryGirl.create(:user) }
+    let(:resource) { FactoryGirl.create(:activity) }
+    let(:author_url) { "http://authoring.concord.org#{Rails.application.routes.url_helpers.activity_path(resource)}/edit" }
+  end
+
+  it_behaves_like "remote duplicate support" do
+    let(:project) { FactoryGirl.create(:project) }
+    let(:theme) { FactoryGirl.create(:theme) }
+    let(:sequence) { FactoryGirl.create(:sequence,
+      publication_status: 'public',
+      theme: theme,
+      project: project,
+      user: user) }
+    let(:activity) { FactoryGirl.create(:public_activity) }
+    let(:user) { FactoryGirl.create(:user) }
+    let(:resource) { FactoryGirl.create(:sequence) }
+    let(:author_url) { "http://authoring.concord.org#{Rails.application.routes.url_helpers.sequence_path(resource)}/edit" }
+  end
+
   describe '#home' do
     before(:each) do
       make_collection_with_rand_modication_time(:public_activity,15)
