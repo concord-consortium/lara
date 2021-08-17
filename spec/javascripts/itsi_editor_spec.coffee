@@ -263,22 +263,6 @@ describe "ITSI Editor", () ->
       text = jasmine.react.findClass modelEditor, "ia-section-text"
       expect(ReactDOM.findDOMNode(text).innerHTML).toContain(props.data.name)
 
-
-    it "loads remote model list when edit clicked", ->
-      props =
-        title: "test title"
-        data:
-          is_hidden: false
-          name: 'test model'
-          url: 'test-model.txt'
-          image_url: 'test-model.jpg'
-      modelEditor = jasmine.react.renderComponent "itsi_authoring/model_editor", props
-
-      request = jasmine.react.captureRequest ->
-        jasmine.react.click (jasmine.react.findClass modelEditor, "ia-section-editor-edit")
-
-      expect(request).toBeDefined()
-
     it "loads iframe in edit mode when model is provided", ->
       props =
         title: "test title"
