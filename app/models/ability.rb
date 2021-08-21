@@ -46,6 +46,8 @@ class Ability
     end
     # Everyone (author and regular user) can update activities they own.
     can :update, LightweightActivity, :user_id => user.id
+    # Everyone (author and regular user) can update pages in the activities they own.
+    can :update, InteractivePage, :lightweight_activity => { :user_id => user.id }
     # Everyone (author and regular user) can read public, hidden and archived sequences or activities.
     ['public', 'hidden', 'archive'].each do |allowed_status|
       can :read, Sequence, :publication_status => allowed_status
