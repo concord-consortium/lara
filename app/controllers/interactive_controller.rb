@@ -38,6 +38,9 @@ class InteractiveController < ApplicationController
     if params[:page_id]
       @page = InteractivePage.find(params[:page_id], :include => :lightweight_activity)
       @activity = @page.lightweight_activity
+    elsif @interactive
+      @page = @interactive.page
+      @activity = @interactive.activity
     end
   end
 
