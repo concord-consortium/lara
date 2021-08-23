@@ -23,22 +23,9 @@ class InteractiveController < ApplicationController
     end
   end
 
-  def toggle_visibility
-    new_val = !@interactive.is_hidden
-    @interactive.update_attributes!(is_hidden: new_val)
-    if request.xhr?
-      render json: {is_hidden: new_val}
-    else
-      redirect_to :back
-    end
-  end
-
   protected
   def set_page
-    if params[:page_id]
-      @page = InteractivePage.find(params[:page_id], :include => :lightweight_activity)
-      @activity = @page.lightweight_activity
-    elsif @interactive
+    if @interactive
       @page = @interactive.page
       @activity = @interactive.activity
     end

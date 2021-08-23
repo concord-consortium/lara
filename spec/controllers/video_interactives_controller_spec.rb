@@ -6,6 +6,10 @@ describe VideoInteractivesController do
   let (:page) { activity.pages.first }
   let (:int) { FactoryGirl.create(:video_interactive, :poster_url => 'http://example.com/poster.png') }
 
+  before(:each) {
+    page.add_embeddable(int)
+  }
+
   describe 'show' do
     it 'is not routable' do
       begin
@@ -37,7 +41,7 @@ describe VideoInteractivesController do
 
           expect(response.headers['Content-Type']).to match /text\/json/
           value_hash = JSON.parse(response.body)
-          expect(value_hash['html']).to match %r[<form[^>]+action=\"/pages\/#{page.id}\/video_interactives\/#{int.id}\"[^<]+method=\"post]
+          expect(value_hash['html']).to match %r[<form[^>]+action=\"\/video_interactives\/#{int.id}\"[^<]+method=\"post]
         end
       end
 
