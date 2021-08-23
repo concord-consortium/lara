@@ -21,6 +21,11 @@ button.big-button {
   background: var(--med-teal);
   border-radius: 8px;
 }
+
+a {
+  color: inherit;
+}
+
 input[type="submit"].big-button {
   border: none;
   color: white;
@@ -31,6 +36,7 @@ input[type="submit"].big-button {
   background: var(--med-teal);
   border-radius: 8px;
 }
+
 button.small-button {
   border: none;
   color: var(--med-teal);

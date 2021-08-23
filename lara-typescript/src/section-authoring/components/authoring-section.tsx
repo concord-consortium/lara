@@ -1,4 +1,9 @@
 import * as React from "react";
+import { GripLines } from "./icons/grip-lines";
+import { MinusSquare } from "./icons/minus-square";
+import { Cog } from "./icons/cog";
+import { Trash } from "./icons/trash";
+
 // NP 2021-08-12 -- default imports aren't working correctly when evaled on page
 import "./authoring-section.css";
 
@@ -27,7 +32,7 @@ const classNameForItem = (layout: Layouts, itemIndex: number) => {
   return layoutClassNames[layout][classNameIndex];
 };
 
-export interface SectionProps {
+export interface ISectionProps {
 
   /**
    * Can the smaller side collapse?
@@ -53,22 +58,28 @@ export interface SectionProps {
    * Optional function to update the section (elsewhere)
    * Todo: maybe we change the return type to be a Promise<SectionProps|error>
    */
-   updateFunction?: (changes: Partial<SectionProps>, id: number) => void;
+   updateFunction?: (changes: Partial<ISectionProps>, id: number) => void;
 
   /**
    * Or display order on the page
    */
   position?: number;
+
+  /**
+   * Something to display in the header
+   */
+   title?: string;
 }
 
 /**
  * Primary UI component for user interaction
  */
-export const AuthoringSection = ({
+export const AuthoringSection: React.FC<ISectionProps> = ({
   id,
   updateFunction,
   layout: initLayout = defaultLayout,
-  }: SectionProps) => {
+  title
+  }: ISectionProps) => {
 
   const [layout, setLayout] = React.useState(initLayout);
 
@@ -87,15 +98,16 @@ export const AuthoringSection = ({
       href={`/remove_section/${id}`}
       data-method="delete"
       rel="nofollow">
-      <i className="fa fa-trash"/>
+      <Trash />
     </a>;
 
   return (
     <div className="edit-page-grid-container">
       <div className="section-menu full-row">
         <div className="menu-start">
-          <span><i className="fa fa-bars"/></span>
-          <span>Section Layout</span>
+          <GripLines />
+          <span>{title}</span>
+          <span>Layout</span>
           <select
             id="section_layout"
             name="section[layout]"
@@ -112,10 +124,10 @@ export const AuthoringSection = ({
           </select>
         </div>
         <div className="menu-end">
-          <span><i className="fa fa-cog"/></span>
+          <span><Cog /></span>
           <span>{deleteTag}
           </span>
-          <span><i className="fa fa-close"/></span>
+          <span><MinusSquare /></span>
         </div>
         </div>
         <div className={`section-container ${classNameForItem(layout, 0)}`}>
