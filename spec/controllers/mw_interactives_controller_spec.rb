@@ -10,6 +10,10 @@ describe MwInteractivesController do
   let (:page) { activity.pages.first }
   let (:int) { FactoryGirl.create(:mw_interactive, :name => 'Test Interactive') }
 
+  before(:each) {
+    page.add_embeddable(int)
+  }
+
   describe 'edit' do
     it 'shows a form which renders the React-based MW Interactive editor' do
       get :edit, :id => int.id
@@ -22,7 +26,7 @@ describe MwInteractivesController do
 
       expect(response.headers['Content-Type']).to match /text\/json/
       value_hash = JSON.parse(response.body)
-      expect(value_hash['html']).to match %r[<form[^>]+action=\"/pages\/#{page.id}\/mw_interactives\/#{int.id}\"[^<]+method=\"post]
+      expect(value_hash['html']).to match %r[<form[^>]+action=\"\/mw_interactives\/#{int.id}\"[^<]+method=\"post]
     end
   end
 

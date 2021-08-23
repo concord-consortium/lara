@@ -129,26 +129,6 @@ LightweightStandalone::Application.routes.draw do
   end
 
   resources :pages, :controller => 'interactive_pages', :constraints => { :id => /\d+/ }, :except => :create do
-    resources :mw_interactives, :controller => 'mw_interactives', :constraints => { :id => /\d+/ }, :except => :show do
-      member do
-        post 'toggle_visibility'
-      end
-    end
-    resources :managed_interactives, :controller => 'managed_interactives', :constraints => { :id => /\d+/ }, :except => :show do
-      member do
-        post 'toggle_visibility'
-      end
-    end
-    resources :image_interactives, :constraints => { :id => /\d+/ }, :except => :show do
-      member do
-        post 'toggle_visibility'
-      end
-    end
-    resources :video_interactives, :constraints => { :id => /\d+/ }, :except => :show do
-      member do
-        post 'toggle_visibility'
-      end
-    end
     member do
       get 'preview'
     end

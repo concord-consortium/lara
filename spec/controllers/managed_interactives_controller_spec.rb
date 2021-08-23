@@ -10,6 +10,10 @@ describe ManagedInteractivesController do
   let (:page) { activity.pages.first }
   let (:int) { FactoryGirl.create(:managed_interactive, :name => 'Test Managed Interactive', :url_fragment => '/interactive') }
 
+  before(:each) {
+    page.add_embeddable(int)
+  }
+
   describe 'edit' do
     it 'shows a form with values of the Managed Interactive filled in' do
       get :edit, :id => int.id
@@ -22,7 +26,7 @@ describe ManagedInteractivesController do
 
       expect(response.headers['Content-Type']).to match /text\/json/
       value_hash = JSON.parse(response.body)
-      expect(value_hash['html']).to match %r[<form[^>]+action=\"/pages\/#{page.id}\/managed_interactives\/#{int.id}\"[^<]+method=\"post]
+      expect(value_hash['html']).to match %r[<form[^>]+action=\"\/managed_interactives\/#{int.id}\"[^<]+method=\"post]
     end
   end
 

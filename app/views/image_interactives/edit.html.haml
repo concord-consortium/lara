@@ -1,4 +1,4 @@
-- form_url = defined?(@page) ? page_image_interactive_path(@page, @interactive) : image_interactive_path(@interactive)
+- form_url = image_interactive_path(@interactive)
 = form_for @interactive, :url => form_url do |f|
   = f.error_messages
   =# f.hidden_field 'investigation_id', :value =>@activity.investigation.id # LightweightActivities currently don't belong_to Investigations
