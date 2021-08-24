@@ -2,6 +2,16 @@ class Api::V1::InteractivePagesController < ApplicationController
   layout false
   before_filter :set_interactive_page
 
+  def get_sections
+    sections = @interactive_page.sections.map do |s|
+      {
+        id: s.id.to_s,
+        layout: s.layout
+      }
+    end
+    render :json => { :success => true, sections: sections, id: params[:id]}
+  end
+
   def get_interactive_list
     begin
       authorize! :read, @interactive_page

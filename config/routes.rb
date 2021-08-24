@@ -80,7 +80,7 @@ LightweightStandalone::Application.routes.draw do
   devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }
 
   resources :sections, :controller => 'sections', :constraints => { :id => /\d+/ }
-  
+
   resources :activities, :controller => 'lightweight_activities', :constraints => { :id => /\d+/ } do
     member do
       get 'reorder_pages'
@@ -193,6 +193,7 @@ LightweightStandalone::Application.routes.draw do
 
       match 'get_firebase_jwt(/:run_id)' => 'jwt#get_firebase_jwt', :as => 'get_firebase_jwt', :via => 'post'
       match 'get_interactive_list/:id' => 'interactive_pages#get_interactive_list', :as => 'get_interactive_list', :via => 'get'
+      match 'get_page_sections/:id' => 'interactive_pages#get_sections', :as => 'get_page_sections', :via => 'get'
 
       match 'plugin_learner_states/:plugin_id/:run_id' =>
         'plugin_learner_states#load', as: 'show_plugin_learner_state', via: 'get'

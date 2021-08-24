@@ -112,9 +112,7 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
     updateFunction?.({collapsed: nextCollapsed}, id);
   };
 
-  // TODO: There is probably a more react-like way to handle this
   const handleDelete = () => {
-    console.log(`deleted ${id}`);
     deleteFunction?.(id);
   };
 

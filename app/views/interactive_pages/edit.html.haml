@@ -63,12 +63,6 @@
 
   #sections-container
 
-.edit-page-grid-container
-  .section-container.new-section
-    = form_tag add_section_activity_page_path(@activity, @page), :class => 'embeddables-form' do
-      = submit_tag '+ Add Section', {class:"big-button"}
-
-
 :javascript
   function updateFunction(changes, section_id) {
     const post_path = `/sections/${section_id}.json`;
@@ -116,17 +110,13 @@
       var form = $this.closest("form");
       form.find('[name=approved_script_id]').val(selected.data('approved-script-id') || "")
       form.find('[name=component_label]').val(selected.data('component-label') || "")
-    })
+    });
+
+    $(document).ready(function() {
+      console.error("WHAT THE HELL");
+      var params = {id: "#{@page.id}"};
+      var element;
+      var container = $("#sections-container")[0];
+      LARA.SectionAuthoring.renderAuthoringPage(container, params);
+    });
   });
-
-%script{type:  'text/javascript' }
-  let params = {};
-  let element;
-  const container = document.querySelector("#sections-container");
-
-  - @page.sections.each do |s|
-    params.id = #{s.id};
-    element = container.appendChild(document.createElement("div"));
-    params.layout = "#{s.layout}";
-    params.updateFunction = updateFunction;
-    LARA.SectionAuthoring.renderAuthoringSection(element, params);

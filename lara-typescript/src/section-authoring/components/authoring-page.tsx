@@ -62,7 +62,6 @@ export const AuthoringPage: React.FC<IPageProps> = ({
   };
 
   const handleDelete = (sectionId: string) => {
-    console.log(`handle delete ${sectionId}`);
     if (setSections) {
       const nextSections: ISectionProps[] = [];
       sections.forEach(s => {
@@ -74,24 +73,18 @@ export const AuthoringPage: React.FC<IPageProps> = ({
       setSections(nextSections);
     }
   };
+
   /*
    * When a new section is dragged somewhere else:
    */
   const onDragEnd = (e: DropResult) => {
-    if (e.destination && e.destination.index != e.source.index) {
-      console.log(e.source.index);
-      console.log(e.destination.index);
+    if (e.destination && e.destination.index !== e.source.index) {
       const nextSections = swapIndexes(sections, e.source.index, e.destination.index);
       if (setSections) {
         setSections(nextSections);
       }
-      else {
-        console.log(e);
-        console.log(nextSections);
-      }
     }
   };
-
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
@@ -112,10 +105,10 @@ export const AuthoringPage: React.FC<IPageProps> = ({
                     {...draggableProvided.draggableProps}
                     {...draggableProvided.dragHandleProps}
                     ref={draggableProvided.innerRef}>
-                    <AuthoringSection {...sProps}
-                      key={sProps.id}
-                      updateFunction={changeSection}
-                      deleteFunction={handleDelete} />
+                      <AuthoringSection {...sProps}
+                        key={sProps.id}
+                        updateFunction={changeSection}
+                        deleteFunction={handleDelete} />
                     </div>
                   )
               }
