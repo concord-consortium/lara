@@ -4,9 +4,9 @@ import { withReactContext } from "storybook-react-context";
 import {Layouts, ISectionProps } from "../section-authoring/components/authoring-section";
 import {IPageProps, AuthoringPage} from "../section-authoring/components/authoring-page";
 
-const pageId = 1;
+const pageId = "1";
 const initialState = {
-  sections: [ { id: 1, layout: Layouts.LAYOUT_30_70 } ]
+  sections: [ { id: "1", layout: Layouts.LAYOUT_30_70 } ]
 };
 
 interface IContext {
@@ -20,7 +20,7 @@ export const AuthoringPageStory = (_: any, { context: [state, dispatch] }: ICont
     const nextState: Partial<IPageProps> = {
       sections: [...state.sections,
         {
-          id: ++sectionIdCounter,
+          id: `${++sectionIdCounter}`,
           layout: Layouts.LAYOUT_30_70,
           interactive_page_id: pageId
         }
@@ -29,7 +29,7 @@ export const AuthoringPageStory = (_: any, { context: [state, dispatch] }: ICont
     dispatch(nextState);
   };
 
-  const changeSection = (changes: Partial<ISectionProps>, id: number) => {
+  const changeSection = (changes: Partial<ISectionProps>, id: string) => {
     const newSections = state.sections.map (section => {
       if (section.id === id) {
         return {...section, ...changes};
@@ -39,10 +39,15 @@ export const AuthoringPageStory = (_: any, { context: [state, dispatch] }: ICont
     dispatch({sections: newSections});
   };
 
+  const setSections = (newSections: ISectionProps[]) => {
+    dispatch({sections: newSections});
+  };
+
   return (
     <AuthoringPage
       sections={state.sections}
       addSection={addSection}
+      setSections={setSections}
       id={pageId}
       changeSection={changeSection}
       />
@@ -50,7 +55,7 @@ export const AuthoringPageStory = (_: any, { context: [state, dispatch] }: ICont
 };
 
 AuthoringPageStory.decorators = [withReactContext({initialState})];
-AuthoringPageStory.title = "Authoring Section (new)";
+AuthoringPageStory.title = "Authoring Page (with sections)";
 
 export default AuthoringPageStory;
 

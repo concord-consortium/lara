@@ -144,6 +144,7 @@ button.small-button {
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: white;
 }
 
 .section-30 {

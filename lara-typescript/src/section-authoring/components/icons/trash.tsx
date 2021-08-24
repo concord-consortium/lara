@@ -4,6 +4,7 @@ const kDefaultHight = "1em";
 
 export interface ITrashProps {
   height?: string;
+  onClick?: () => void;
 }
 
 export const Trash = (props: ITrashProps) => {
@@ -11,6 +12,7 @@ export const Trash = (props: ITrashProps) => {
 
   return(
     <svg
+      onClick={props.onClick}
       aria-hidden="true"
       focusable="false"
       role="img"

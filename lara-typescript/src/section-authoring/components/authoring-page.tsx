@@ -1,36 +1,42 @@
 import * as React from "react";
 import { AuthoringSection, ISectionProps } from "./authoring-section";
+import { DragDropContext, Droppable, Draggable, DropResult } from "react-beautiful-dnd";
 
 import "./authoring-page.css";
+import { isCompositeComponentWithType } from "react-dom/test-utils";
 
 export interface IPageProps {
 
   /**
    * Record ID
    */
-  id: number;
+  id: string;
 
   /**
    * Optional title for the page
    */
   title?: string;
 
-
   /**
    * Sections on this page:
    */
    sections: ISectionProps[];
-
 
   /**
    * how to add a new section
    */
    addSection?: () => void;
 
-   /**
-   * how to change a section
+  /**
+   *
    */
-  changeSection?: (changes: Partial<ISectionProps>, id: number) => void;
+  changeSection?: (changes: Partial<ISectionProps>, id: string) => void;
+
+  /*
+   * Call back to invoke when sections have been rearranged or deleted
+   */
+  setSections?: (sections: ISectionProps[]) => void;
+
 }
 
 /**
@@ -41,15 +47,88 @@ export const AuthoringPage: React.FC<IPageProps> = ({
   title,
   sections = [],
   addSection,
-  changeSection
+  changeSection,
+  setSections,
   }: IPageProps) => {
 
+  /*
+   * Return a new array with array[a] and array[b] swapped.
+   */
+  const swapIndexes = (array: any[], a: number, b: number) => {
+    const bItem = array[b];
+    array[b] = array[a];
+    array[a] = bItem;
+    return [...array];
+  };
+
+  const handleDelete = (sectionId: string) => {
+    console.log(`handle delete ${sectionId}`);
+    if (setSections) {
+      const nextSections: ISectionProps[] = [];
+      sections.forEach(s => {
+        if (s.id !== sectionId) {
+          nextSections.push(s);
+        }
+      });
+      sections = nextSections;
+      setSections(nextSections);
+    }
+  };
+  /*
+   * When a new section is dragged somewhere else:
+   */
+  const onDragEnd = (e: DropResult) => {
+    if (e.destination && e.destination.index != e.source.index) {
+      console.log(e.source.index);
+      console.log(e.destination.index);
+      const nextSections = swapIndexes(sections, e.source.index, e.destination.index);
+      if (setSections) {
+        setSections(nextSections);
+      }
+      else {
+        console.log(e);
+        console.log(nextSections);
+      }
+    }
+  };
+
+
   return (
-    <div className="edit-page-container">
-      {sections.map(sProps => <AuthoringSection {...sProps} key={sProps.id} updateFunction={changeSection} />)}
-      <button className="big-button" onClick={addSection}>
-        + Add Section
-      </button>
-    </div>
+    <DragDropContext onDragEnd={onDragEnd}>
+    <Droppable droppableId="droppable">
+      {(droppableProvided, snapshot) => (
+        <div ref={droppableProvided.innerRef}
+          className="edit-page-container"
+          {...droppableProvided.droppableProps}>
+          {
+            sections.map( (sProps, index) => (
+              <Draggable
+                key={sProps.id}
+                draggableId={sProps.id}
+                index={index}>
+              {
+                (draggableProvided) => (
+                  <div
+                    {...draggableProvided.draggableProps}
+                    {...draggableProvided.dragHandleProps}
+                    ref={draggableProvided.innerRef}>
+                    <AuthoringSection {...sProps}
+                      key={sProps.id}
+                      updateFunction={changeSection}
+                      deleteFunction={handleDelete} />
+                    </div>
+                  )
+              }
+              </Draggable>
+            ))
+          }
+          { droppableProvided.placeholder }
+          <button className="big-button" onClick={addSection}>
+            + Add Section
+          </button>
+        </div>
+      )}
+    </Droppable>
+    </DragDropContext>
   );
 };

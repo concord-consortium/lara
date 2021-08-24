@@ -42,12 +42,12 @@ export interface ISectionProps {
   /**
    * Record ID
    */
-  id: number;
+  id: string;
 
   /**
    * Associated Page for this section
    */
-  interactive_page_id: number;
+  interactive_page_id: string;
 
   /**
    * How are the items positioned in the section
@@ -58,7 +58,12 @@ export interface ISectionProps {
    * Optional function to update the section (elsewhere)
    * Todo: maybe we change the return type to be a Promise<SectionProps|error>
    */
-   updateFunction?: (changes: Partial<ISectionProps>, id: number) => void;
+  updateFunction?: (changes: Partial<ISectionProps>, id: string) => void;
+
+  /**
+   * Optional function to delete the section (elsewhere)
+   */
+   deleteFunction?: (id: string) => void;
 
   /**
    * Or display order on the page
@@ -66,9 +71,14 @@ export interface ISectionProps {
   position?: number;
 
   /**
-   * Something to display in the header
+   * Name of the section will be displayed in the header
    */
-   title?: string;
+  title?: string;
+
+  /**
+   * Should the section be collapsed?
+   */
+  collapsed?: boolean;
 }
 
 /**
@@ -77,29 +87,36 @@ export interface ISectionProps {
 export const AuthoringSection: React.FC<ISectionProps> = ({
   id,
   updateFunction,
+  deleteFunction,
   layout: initLayout = defaultLayout,
+  collapsed: initCollapsed = false,
   title
   }: ISectionProps) => {
 
   const [layout, setLayout] = React.useState(initLayout);
+  const [collapsed, setCollapsed] = React.useState(initCollapsed);
 
   React.useEffect(() => {
     setLayout(initLayout);
   }, [initLayout]);
 
-  const selectionChanged = (change: React.ChangeEvent<HTMLSelectElement>) => {
+  const layoutChanged = (change: React.ChangeEvent<HTMLSelectElement>) => {
     const newLayout = change.target.value as Layouts;
-    updateFunction?.({layout: newLayout}, id);
     setLayout(newLayout);
+    updateFunction?.({layout: newLayout}, id);
+  };
+
+  const toggleCollapse = () => {
+    const nextCollapsed = !collapsed;
+    setCollapsed(nextCollapsed);
+    updateFunction?.({collapsed: nextCollapsed}, id);
   };
 
   // TODO: There is probably a more react-like way to handle this
-  const deleteTag = <a
-      href={`/remove_section/${id}`}
-      data-method="delete"
-      rel="nofollow">
-      <Trash />
-    </a>;
+  const handleDelete = () => {
+    console.log(`deleted ${id}`);
+    deleteFunction?.(id);
+  };
 
   return (
     <div className="edit-page-grid-container">
@@ -111,7 +128,7 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
           <select
             id="section_layout"
             name="section[layout]"
-            onChange={selectionChanged}
+            onChange={layoutChanged}
             defaultValue={layout}
             title="Section layout">
             {
@@ -125,11 +142,12 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
         </div>
         <div className="menu-end">
           <span><Cog /></span>
-          <span>{deleteTag}
-          </span>
-          <span><MinusSquare /></span>
+          <span><Trash onClick={handleDelete}/></span>
+          <span><MinusSquare onClick={toggleCollapse}/></span>
         </div>
-        </div>
+      </div>
+    { !collapsed &&
+      <>
         <div className={`section-container ${classNameForItem(layout, 0)}`}>
           <button className="small-button">
             + Add Item
@@ -140,6 +158,8 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
             + Add Item
           </button>
         </div>
-      </div>
+      </>
+    }
+    </div>
   );
 };

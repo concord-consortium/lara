@@ -4,6 +4,7 @@ const kDefaultHight = "1em";
 
 export interface IMinusSquareProps {
   height?: string;
+  onClick?: () => void;
 }
 
 export const MinusSquare = (props: IMinusSquareProps) => {
@@ -11,6 +12,7 @@ export const MinusSquare = (props: IMinusSquareProps) => {
 
   return(
     <svg
+      onClick={props.onClick}
       aria-hidden="true"
       focusable="false"
       role="img"
