@@ -10,7 +10,15 @@
     width: 100%
   }
   h1 {
-    margin-left: 0.5em;
+    margin: 0 1em;
+
+    &.title {
+      width: auto;
+
+      .buttons-menu {
+        font-size: .9rem;
+      }
+    }
   }
   a {
     color: #479492;
