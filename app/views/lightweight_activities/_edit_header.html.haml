@@ -9,11 +9,16 @@
   - if (can? :export, @activity) && ENV['CONVERSION_SCRIPT_URL'].present?
     %span.convert
       = link_to "Convert", activity_player_conversion_url(@activity), :target => 'new'
-  #preview-menu
-    %label{for: "preview-options-select"}
-      %strong
-        Preview in:
-    = select_tag :preview_options_select, options_for_select(activity_preview_options(@activity)), {id: 'preview-options-select'}
+  - if @editor_mode == LightweightActivity::ITSI_EDITOR_MODE
+    %div{class: "buttons-menu"}
+      %button{onclick: "window.open('#{itsi_preview_url(@activity)}', '_blank')"}
+        Preview
+  - else    
+    #preview-menu
+      %label{for: "preview-options-select"}
+        %strong
+          Preview in:
+      = select_tag :preview_options_select, options_for_select(activity_preview_options(@activity)), {id: 'preview-options-select'}
 
 - if show_publication_details
   = render :partial => "publications/publication_details", :locals =>{ :publication => @activity}

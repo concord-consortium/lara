@@ -74,6 +74,21 @@ describe LightweightActivityHelper do
     end
   end
 
+  describe "#itsi_preview_url" do
+  context "with an activity player runtime preview" do
+    it "returns an activity player url" do
+      url = "https://activity-player.concord.org/branch/master" +
+        "?activity=http%3A%2F%2Ftest.host%2Fapi%2Fv1%2Factivities%2F#{activity_player_activity.id}.json&preview"
+      expect(helper.itsi_preview_url(activity_player_activity)).to eq(url)
+    end
+  end
+  context "with a LARA runtime preview" do
+    it "returns a LARA url" do
+      expect(helper.itsi_preview_url(activity)).to eq("/activities/#{activity.id}/preview")
+    end
+  end
+end
+
   describe "#runtime_url" do
     context "with an activity player runtime" do
       it "returns an activity player url" do

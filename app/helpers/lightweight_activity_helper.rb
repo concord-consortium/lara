@@ -103,6 +103,16 @@ module LightweightActivityHelper
     return preview_options
   end
 
+  def itsi_preview_url(activity)
+    base_url = request.base_url
+    if activity.runtime == "Activity Player"
+      preview_activity_url = activity.activity_player_url(request.base_url, preview: true)
+    else
+      preview_activity_url = preview_activity_path(activity)
+    end
+    return preview_activity_url
+  end
+
   def runtime_url(activity)
     if activity.runtime == "Activity Player"
       view_activity_url = activity.activity_player_url(request.base_url, preview: true)
