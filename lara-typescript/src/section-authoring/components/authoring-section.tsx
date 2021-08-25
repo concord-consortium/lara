@@ -26,7 +26,8 @@ const layoutClassNames = {
   [Layouts.LAYOUT_RESPONSIVE]: ["section-responsive"]
 };
 
-const classNameForItem = (layout: Layouts, itemIndex: number) => {
+const classNameForItem = (_layout: Layouts, itemIndex: number) => {
+  const layout = _layout || defaultLayout;
   const layouts = layoutClassNames[layout];
   const classNameIndex = itemIndex % layouts.length;
   return layoutClassNames[layout][classNameIndex];
@@ -121,7 +122,7 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
       <div className="section-menu full-row">
         <div className="menu-start">
           <GripLines />
-          <span>{title}</span>
+          <span>{title}{id}</span>
           <span>Layout</span>
           <select
             id="section_layout"

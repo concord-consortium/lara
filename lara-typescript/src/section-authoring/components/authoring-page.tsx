@@ -35,7 +35,7 @@ export interface IPageProps {
   /*
    * Call back to invoke when sections have been rearranged or deleted
    */
-  setSections?: (sections: ISectionProps[]) => void;
+  setSections?: (pageData: IPageProps) => void;
 
 }
 
@@ -65,12 +65,17 @@ export const AuthoringPage: React.FC<IPageProps> = ({
     if (setSections) {
       const nextSections: ISectionProps[] = [];
       sections.forEach(s => {
-        if (s.id !== sectionId) {
+        if (s.id != sectionId) {
           nextSections.push(s);
+          console.log(`keeping ID : ${s.id}`);
+        }
+        else {
+          console.log(`removing ID : ${s.id}`);
         }
       });
-      sections = nextSections;
-      setSections(nextSections);
+      const update: IPageProps = {id, sections: nextSections };
+      console.warn(update);
+      setSections(update);
     }
   };
 
@@ -81,7 +86,7 @@ export const AuthoringPage: React.FC<IPageProps> = ({
     if (e.destination && e.destination.index !== e.source.index) {
       const nextSections = swapIndexes(sections, e.source.index, e.destination.index);
       if (setSections) {
-        setSections(nextSections);
+        setSections({id, sections: nextSections});
       }
     }
   };

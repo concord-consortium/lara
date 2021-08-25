@@ -1,8 +1,10 @@
 import React from "react";
 import { withReactContext } from "storybook-react-context";
+import { QueryClient, QueryClientProvider} from "react-query";
 
 import {Layouts, ISectionProps } from "../section-authoring/components/authoring-section";
 import {IPageProps, AuthoringPage} from "../section-authoring/components/authoring-page";
+import { QueryBoundPage } from "../section-authoring/components/query-bound-page";
 
 const pageId = "1";
 const initialState = {
@@ -39,8 +41,8 @@ export const AuthoringPageStory = (_: any, { context: [state, dispatch] }: ICont
     dispatch({sections: newSections});
   };
 
-  const setSections = (newSections: ISectionProps[]) => {
-    dispatch({sections: newSections});
+  const setSections = (newPage: IPageProps) => {
+    dispatch({sections: newPage.sections});
   };
 
   return (
@@ -58,6 +60,17 @@ AuthoringPageStory.decorators = [withReactContext({initialState})];
 AuthoringPageStory.title = "Authoring Page (with sections)";
 
 export default AuthoringPageStory;
+
+export const LaraConnectedPageStory = () => {
+  const queryClient = new QueryClient();
+  return(
+    <QueryClientProvider client={queryClient}>
+      <QueryBoundPage host="https://app.lara.docker" id="698" sections={[]}/>
+    </QueryClientProvider>
+  );
+};
+LaraConnectedPageStory.title = "Connected to LARA ... ";
+// /api/v1/get_sections/698.json
 
 // const Template: ComponentStory<typeof AuthoringPage> = (args: IPageProps) => <AuthoringPage {...args} />;
 

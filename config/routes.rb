@@ -193,7 +193,13 @@ LightweightStandalone::Application.routes.draw do
 
       match 'get_firebase_jwt(/:run_id)' => 'jwt#get_firebase_jwt', :as => 'get_firebase_jwt', :via => 'post'
       match 'get_interactive_list/:id' => 'interactive_pages#get_interactive_list', :as => 'get_interactive_list', :via => 'get'
+
+      # React authoring related routes. ()
       match 'get_page_sections/:id' => 'interactive_pages#get_sections', :as => 'get_page_sections', :via => 'get'
+      # This will handle the delete case too ...
+      match 'set_page_sections/:id' => 'interactive_pages#set_sections', :as => 'set_page_sections', :via => 'put'
+      match 'create_page_section/:id' => 'interactive_pages#create_section', :as => 'create_page_section', :via => 'post'
+      match 'update_page_section/:id' => 'interactive_pages#update_section', :as => 'update_page_section', :via => 'post'
 
       match 'plugin_learner_states/:plugin_id/:run_id' =>
         'plugin_learner_states#load', as: 'show_plugin_learner_state', via: 'get'

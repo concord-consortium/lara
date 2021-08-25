@@ -2,14 +2,45 @@ class Api::V1::InteractivePagesController < ApplicationController
   layout false
   before_filter :set_interactive_page
 
+  ## Queries:
   def get_sections
-    sections = @interactive_page.sections.map do |s|
-      {
-        id: s.id.to_s,
-        layout: s.layout
-      }
+    render_page_sections_json
+  end
+
+  ## Mutations
+  def set_sections
+    param_sections = params['sections'] # array of [{:id,:layout}]
+    old_sections = @interactive_page.sections
+    # Put them in the correct order:
+    index = 1
+    new_sections = param_sections.map do |s|
+      section = Section.find(s['id'])
+      position = index
+      if section.position != position
+        section.position = position
+        section.save!(validate: false)
+      end
+      index = index + 1
+      section
     end
-    render :json => { :success => true, sections: sections, id: params[:id]}
+    # TBD: Remove 'unused' sections?
+    # sections.to_remove = old_sections.filter { |s| s.id != }
+    @interactive_page.sections = new_sections
+    @interactive_page.save!
+    render_page_sections_json
+  end
+
+  def create_section
+    @interactive_page.add_section
+    render_page_sections_json
+  end
+
+  def update_section
+    section_params = params['section']
+    section_id = section_params.delete('id')
+    section = Section.find(section_id)
+    section.update(section_params)
+    render_pages_sections_json
   end
 
   def get_interactive_list
@@ -60,6 +91,20 @@ class Api::V1::InteractivePagesController < ApplicationController
   end
 
   private
+
+  def render_page_sections_json
+    sections = @interactive_page.sections.map do |s|
+      {
+        id: s.id.to_s,
+        layout: s.layout
+      }
+    end
+    render :json => {
+      :success => true,
+      sections: sections,
+      id: @interactive_page.id
+    }
+  end
 
   def set_interactive_page
     begin
