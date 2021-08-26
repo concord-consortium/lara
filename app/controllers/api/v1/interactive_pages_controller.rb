@@ -39,8 +39,8 @@ class Api::V1::InteractivePagesController < ApplicationController
     section_params = params['section']
     section_id = section_params.delete('id')
     section = Section.find(section_id)
-    section.update(section_params)
-    render_pages_sections_json
+    section.update_attributes(section_params)
+    render_page_sections_json
   end
 
   def get_interactive_list
