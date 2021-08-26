@@ -30,7 +30,7 @@ export interface IPageProps {
   /**
    *
    */
-  changeSection?: (changes: Partial<ISectionProps>, id: string) => void;
+  changeSection?: (changes: {section: Partial<ISectionProps>, sectionID: string}) => void;
 
   /*
    * Call back to invoke when sections have been rearranged or deleted
@@ -65,16 +65,11 @@ export const AuthoringPage: React.FC<IPageProps> = ({
     if (setSections) {
       const nextSections: ISectionProps[] = [];
       sections.forEach(s => {
-        if (s.id != sectionId) {
+        if (s.id !== sectionId) {
           nextSections.push(s);
-          console.log(`keeping ID : ${s.id}`);
-        }
-        else {
-          console.log(`removing ID : ${s.id}`);
         }
       });
       const update: IPageProps = {id, sections: nextSections };
-      console.warn(update);
       setSections(update);
     }
   };

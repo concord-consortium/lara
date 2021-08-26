@@ -59,7 +59,7 @@ export interface ISectionProps {
    * Optional function to update the section (elsewhere)
    * Todo: maybe we change the return type to be a Promise<SectionProps|error>
    */
-  updateFunction?: (changes: Partial<ISectionProps>, id: string) => void;
+  updateFunction?: (changes: {section: Partial<ISectionProps>}) => void;
 
   /**
    * Optional function to delete the section (elsewhere)
@@ -104,13 +104,13 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
   const layoutChanged = (change: React.ChangeEvent<HTMLSelectElement>) => {
     const newLayout = change.target.value as Layouts;
     setLayout(newLayout);
-    updateFunction?.({layout: newLayout}, id);
+    updateFunction?.({section: {layout: newLayout, id}});
   };
 
   const toggleCollapse = () => {
     const nextCollapsed = !collapsed;
     setCollapsed(nextCollapsed);
-    updateFunction?.({collapsed: nextCollapsed}, id);
+    updateFunction?.({section: {collapsed: nextCollapsed, id}});
   };
 
   const handleDelete = () => {

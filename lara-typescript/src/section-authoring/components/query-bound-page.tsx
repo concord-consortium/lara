@@ -46,9 +46,8 @@ export const QueryBoundPage = (props: IQueryBoundPage) => {
     });
   };
 
-  const _changeSection = (newSectionProps: Partial<ISectionProps>, sectionID: string) => {
-    const updateSectionData = {id, section: {...newSectionProps, id: sectionID }};
-    console.warn(updateSectionData);
+  const _changeSection = (changes: {section: Partial<ISectionProps>}) => {
+    const updateSectionData = {id, section: {...changes.section}};
     return fetch(updateSectionUrl, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -66,9 +65,7 @@ export const QueryBoundPage = (props: IQueryBoundPage) => {
     onSuccess: updatePageQueryData
   });
 
-  const changeSectionMutation = useMutation(_changeSection, {
-    onSuccess: updatePageQueryData
-  });
+  const changeSectionMutation = useMutation(_changeSection);
 
   const { isLoading, error, data} = useQuery("authoringPage", () =>
     fetch(pageSectionsUrl)

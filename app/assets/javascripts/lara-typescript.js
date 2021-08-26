@@ -45931,7 +45931,7 @@ exports.offPluginSyncRequest = offPluginSyncRequest;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.initializeLara = exports.PageItemAuthoring = exports.Events = exports.Plugins = exports.InteractiveAPI = exports.PluginAPI_V3 = void 0;
+exports.initializeLara = exports.SectionAuthoring = exports.PageItemAuthoring = exports.Events = exports.Plugins = exports.InteractiveAPI = exports.PluginAPI_V3 = void 0;
 __webpack_require__(/*! ./plugin-api/normalize.scss */ "./src/plugin-api/normalize.scss");
 var PluginAPI = __webpack_require__(/*! ./plugin-api */ "./src/plugin-api/index.ts");
 exports.PluginAPI_V3 = PluginAPI;
@@ -45944,6 +45944,7 @@ exports.Events = Events;
 var PageItemAuthoring = __webpack_require__(/*! ./page-item-authoring */ "./src/page-item-authoring/index.tsx");
 exports.PageItemAuthoring = PageItemAuthoring;
 var SectionAuthoring = __webpack_require__(/*! ./section-authoring */ "./src/section-authoring/index.tsx");
+exports.SectionAuthoring = SectionAuthoring;
 // Note that LARA namespace is defined for the first time by V2 API. Once V2 is removed, this code should also be
 // removed and "library": "LARA" option in webpack.config.js should be re-enabled.
 window.LARA || (window.LARA = {}); // create if it doesn't exist
@@ -48788,8 +48789,8 @@ var AuthoringPage = function (_a) {
                     nextSections_1.push(s);
                 }
             });
-            sections = nextSections_1;
-            setSections(nextSections_1);
+            var update = { id: id, sections: nextSections_1 };
+            setSections(update);
         }
     };
     /*
@@ -48799,7 +48800,7 @@ var AuthoringPage = function (_a) {
         if (e.destination && e.destination.index !== e.source.index) {
             var nextSections = swapIndexes(sections, e.source.index, e.destination.index);
             if (setSections) {
-                setSections(nextSections);
+                setSections({ id: id, sections: nextSections });
             }
         }
     };
@@ -48866,7 +48867,8 @@ var layoutClassNames = (_a = {},
     _a[Layouts.LAYOUT_30_70] = ["section-30", "section-70"],
     _a[Layouts.LAYOUT_RESPONSIVE] = ["section-responsive"],
     _a);
-var classNameForItem = function (layout, itemIndex) {
+var classNameForItem = function (_layout, itemIndex) {
+    var layout = _layout || defaultLayout;
     var layouts = layoutClassNames[layout];
     var classNameIndex = itemIndex % layouts.length;
     return layoutClassNames[layout][classNameIndex];
@@ -48884,12 +48886,12 @@ var AuthoringSection = function (_a) {
     var layoutChanged = function (change) {
         var newLayout = change.target.value;
         setLayout(newLayout);
-        updateFunction === null || updateFunction === void 0 ? void 0 : updateFunction({ layout: newLayout }, id);
+        updateFunction === null || updateFunction === void 0 ? void 0 : updateFunction({ section: { layout: newLayout, id: id } });
     };
     var toggleCollapse = function () {
         var nextCollapsed = !collapsed;
         setCollapsed(nextCollapsed);
-        updateFunction === null || updateFunction === void 0 ? void 0 : updateFunction({ collapsed: nextCollapsed }, id);
+        updateFunction === null || updateFunction === void 0 ? void 0 : updateFunction({ section: { collapsed: nextCollapsed, id: id } });
     };
     var handleDelete = function () {
         deleteFunction === null || deleteFunction === void 0 ? void 0 : deleteFunction(id);
@@ -48898,7 +48900,9 @@ var AuthoringSection = function (_a) {
         React.createElement("div", { className: "section-menu full-row" },
             React.createElement("div", { className: "menu-start" },
                 React.createElement(grip_lines_1.GripLines, null),
-                React.createElement("span", null, title),
+                React.createElement("span", null,
+                    title,
+                    id),
                 React.createElement("span", null, "Layout"),
                 React.createElement("select", { id: "section_layout", name: "section[layout]", onChange: layoutChanged, defaultValue: layout, title: "Section layout" }, Object.values(Layouts).map(function (l) {
                     return (React.createElement("option", { key: l, value: l }, l));
@@ -49014,6 +49018,102 @@ exports.Trash = Trash;
 
 /***/ }),
 
+/***/ "./src/section-authoring/components/query-bound-page.tsx":
+/*!***************************************************************!*\
+  !*** ./src/section-authoring/components/query-bound-page.tsx ***!
+  \***************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.QueryBoundPage = void 0;
+var React = __webpack_require__(/*! react */ "react");
+var react_query_1 = __webpack_require__(/*! react-query */ "./node_modules/react-query/es/index.js");
+var authoring_page_1 = __webpack_require__(/*! ./authoring-page */ "./src/section-authoring/components/authoring-page.tsx");
+var APIBase = "/api/v1";
+var QueryBoundPage = function (props) {
+    var queryClient = react_query_1.useQueryClient();
+    var host = props.host || "";
+    var prefix = host + "/" + APIBase;
+    var id = props.id;
+    var pageSectionsUrl = prefix + "/get_page_sections/" + id + ".json";
+    var updatePageSectionsURL = prefix + "/set_page_sections/" + id + ".json";
+    var createPageSectionUrl = prefix + "/create_page_section/" + id + ".json";
+    var updateSectionUrl = prefix + "/update_page_section/" + id + ".json";
+    var updatePageQueryData = function (response, variables) {
+        queryClient.setQueryData("authoringPage", response);
+    };
+    var updateSections = function (nextPage) {
+        return fetch(updatePageSectionsURL, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(nextPage)
+        }).then(function (res) {
+            return res.json();
+        });
+    };
+    var createSection = function () {
+        return fetch(createPageSectionUrl, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ id: id })
+        }).then(function (res) {
+            return res.json();
+        });
+    };
+    var _changeSection = function (changes) {
+        var updateSectionData = { id: id, section: __assign({}, changes.section) };
+        return fetch(updateSectionUrl, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(updateSectionData)
+        }).then(function (res) {
+            return res.json();
+        });
+    };
+    var updatePageSectionsMutation = react_query_1.useMutation(updateSections, {
+        onSuccess: updatePageQueryData
+    });
+    var createSectionMutation = react_query_1.useMutation(createSection, {
+        onSuccess: updatePageQueryData
+    });
+    var changeSectionMutation = react_query_1.useMutation(_changeSection);
+    var _a = react_query_1.useQuery("authoringPage", function () {
+        return fetch(pageSectionsUrl)
+            .then(function (res) {
+            return res.json();
+        });
+    }), isLoading = _a.isLoading, error = _a.error, data = _a.data;
+    if (isLoading)
+        return React.createElement("div", null, "Loading...");
+    if (error)
+        return React.createElement("div", null,
+            "Something went wrong: $",
+            error);
+    var _b = data, success = _b.success, sections = _b.sections;
+    var setSections = updatePageSectionsMutation.mutate;
+    var addSection = createSectionMutation.mutate;
+    var changeSection = changeSectionMutation.mutate;
+    return React.createElement(authoring_page_1.AuthoringPage, __assign({}, { id: id, sections: sections, setSections: setSections, addSection: addSection, changeSection: changeSection }));
+};
+exports.QueryBoundPage = QueryBoundPage;
+
+
+/***/ }),
+
 /***/ "./src/section-authoring/index.tsx":
 /*!*****************************************!*\
   !*** ./src/section-authoring/index.tsx ***!
@@ -49040,38 +49140,15 @@ var React = __webpack_require__(/*! react */ "react");
 var ReactDOM = __webpack_require__(/*! react-dom */ "react-dom");
 var react_query_1 = __webpack_require__(/*! react-query */ "./node_modules/react-query/es/index.js");
 var authoring_section_1 = __webpack_require__(/*! ./components/authoring-section */ "./src/section-authoring/components/authoring-section.tsx");
-var authoring_page_1 = __webpack_require__(/*! ./components/authoring-page */ "./src/section-authoring/components/authoring-page.tsx");
+var query_bound_page_1 = __webpack_require__(/*! ./components/query-bound-page */ "./src/section-authoring/components/query-bound-page.tsx");
 var renderAuthoringSection = function (root, props) {
     return ReactDOM.render(React.createElement(authoring_section_1.AuthoringSection, __assign({}, props)), root);
 };
 exports.renderAuthoringSection = renderAuthoringSection;
-var QueryBoundPage = function (props) {
-    var id = props.id;
-    var url = "/api/v1/get_page_sections/" + id + ".json";
-    // tslint:disable-next-line:no-console
-    console.log(url);
-    var _a = react_query_1.useQuery("authoringPage", function () {
-        return fetch("/api/v1/get_page_sections/" + id + ".json")
-            .then(function (res) {
-            var resJson = res.json();
-            // tslint:disable-next-line:no-console
-            console.log(resJson);
-            return resJson;
-        });
-    }), isLoading = _a.isLoading, error = _a.error, data = _a.data;
-    if (isLoading)
-        return React.createElement("div", null, "Loading...");
-    if (error)
-        return React.createElement("div", null,
-            "Something went wrong: $",
-            error);
-    var _b = data, success = _b.success, sections = _b.sections;
-    return React.createElement(authoring_page_1.AuthoringPage, __assign({}, { id: id, sections: sections }));
-};
 var renderAuthoringPage = function (root, props) {
     var queryClient = new react_query_1.QueryClient();
     var App = React.createElement(react_query_1.QueryClientProvider, { client: queryClient },
-        React.createElement(QueryBoundPage, __assign({}, props)));
+        React.createElement(query_bound_page_1.QueryBoundPage, __assign({}, props)));
     return ReactDOM.render(App, root);
 };
 exports.renderAuthoringPage = renderAuthoringPage;
@@ -49114,4 +49191,3 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_react_dom__;
 
 /******/ });
 });
-//# sourceMappingURL=lara-typescript.js.map

@@ -31,12 +31,13 @@ export const AuthoringPageStory = (_: any, { context: [state, dispatch] }: ICont
     dispatch(nextState);
   };
 
-  const changeSection = (changes: Partial<ISectionProps>, id: string) => {
-    const newSections = state.sections.map (section => {
-      if (section.id === id) {
-        return {...section, ...changes};
+  const changeSection = (changes: {section: Partial<ISectionProps>}) => {
+    const { section } = changes;
+    const newSections = state.sections.map (s => {
+      if (s.id === section.id) {
+        return {...s, ...changes};
       }
-      return section;
+      return s;
     });
     dispatch({sections: newSections});
   };
@@ -70,7 +71,6 @@ export const LaraConnectedPageStory = () => {
   );
 };
 LaraConnectedPageStory.title = "Connected to LARA ... ";
-// /api/v1/get_sections/698.json
 
 // const Template: ComponentStory<typeof AuthoringPage> = (args: IPageProps) => <AuthoringPage {...args} />;
 
@@ -85,14 +85,3 @@ LaraConnectedPageStory.title = "Connected to LARA ... ";
 //     layout: Layouts.LAYOUT_70_30
 //   }
 // ];
-
-// const addSection = () => {
-//   console.log("Nee!");
-//   sections.push({id: 3, layout: Layouts.LAYOUT_FULL_WIDTH});
-// };
-
-// withTwoSections.args  = {
-//   id: 1,
-//   sections,
-//   addSection
-// } as IPageProps;

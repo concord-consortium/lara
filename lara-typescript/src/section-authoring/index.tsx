@@ -8,7 +8,6 @@ const renderAuthoringSection = (root: HTMLElement, props: ISectionProps) => {
   return ReactDOM.render(<AuthoringSection {...props} />, root);
 };
 
-
 const renderAuthoringPage = (root: HTMLElement, props: IPageProps) => {
   const queryClient = new QueryClient();
   const App =

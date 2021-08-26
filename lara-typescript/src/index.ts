@@ -18,7 +18,8 @@ export {
   InteractiveAPI,
   Plugins,
   Events,
-  PageItemAuthoring
+  PageItemAuthoring,
+  SectionAuthoring
 };
 
 // Note that LARA namespace is defined for the first time by V2 API. Once V2 is removed, this code should also be
