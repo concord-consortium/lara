@@ -33,7 +33,6 @@ export const AuthoringPageStory = (_: any, { context: [state, dispatch] }: ICont
 
   const changeSection = (changes: {section: Partial<ISectionProps>}) => {
     const { section } = changes;
-    debugger;
     const newSections = state.sections.map (s => {
       if (s.id === section.id) {
         return {...s, ...changes.section};
