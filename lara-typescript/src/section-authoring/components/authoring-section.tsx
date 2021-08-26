@@ -3,7 +3,7 @@ import { GripLines } from "./icons/grip-lines";
 import { MinusSquare } from "./icons/minus-square";
 import { Cog } from "./icons/cog";
 import { Trash } from "./icons/trash";
-
+import { SectionItem, ISectionItemProps} from "./section-item";
 // NP 2021-08-12 -- default imports aren't working correctly when evaled on page
 import "./authoring-section.css";
 
@@ -80,6 +80,12 @@ export interface ISectionProps {
    * Should the section be collapsed?
    */
   collapsed?: boolean;
+
+  /**
+   * Section Items in this section
+   */
+   items?: ISectionItemProps[];
+
 }
 
 /**
@@ -90,16 +96,22 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
   updateFunction,
   deleteFunction,
   layout: initLayout = defaultLayout,
+  items: initItems = [] as ISectionItemProps[],
   collapsed: initCollapsed = false,
   title
   }: ISectionProps) => {
 
   const [layout, setLayout] = React.useState(initLayout);
   const [collapsed, setCollapsed] = React.useState(initCollapsed);
+  const [items, setItems] = React.useState([...initItems]); // TODO: Initial Items as in layout
 
   React.useEffect(() => {
     setLayout(initLayout);
   }, [initLayout]);
+
+  // React.useEffect(() => {
+  //   setItems([...initItems]);
+  // }, [initItems]);
 
   const layoutChanged = (change: React.ChangeEvent<HTMLSelectElement>) => {
     const newLayout = change.target.value as Layouts;
@@ -116,6 +128,28 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
   const handleDelete = () => {
     deleteFunction?.(id);
   };
+
+  const sortedItems = () => {
+    return items.sort((a, b) => a.position - b.position);
+  };
+
+  const addItem = () => {
+    const nextId = items.length;
+    const position = nextId + 1;
+    const newItem: ISectionItemProps = {
+      id: `${nextId}`,
+      position,
+      title: `item ${position}`
+    };
+    setItems([...items, newItem]);
+  };
+
+  const displayItems = items.map(i => <SectionItem {...i} key={i.id} /> );
+  displayItems.push(
+    <button className="small-button" onClick={addItem}>
+      + Add Item
+    </button>
+  );
 
   return (
     <div className="edit-page-grid-container">
@@ -146,18 +180,14 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
         </div>
       </div>
     { !collapsed &&
-      <>
-        <div className={`section-container ${classNameForItem(layout, 0)}`}>
-          <button className="small-button">
-            + Add Item
-          </button>
-        </div>
-        <div className={`section-container ${classNameForItem(layout, 1)}`}>
-          <button className="small-button">
-            + Add Item
-          </button>
-        </div>
-      </>
+      displayItems.map((element, index) => {
+        const className = `section-container ${classNameForItem(layout, index)}`;
+        return (
+          <div className={className} key={index}>
+            {element}
+          </div>
+        );
+      })
     }
     </div>
   );
