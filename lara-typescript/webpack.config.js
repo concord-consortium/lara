@@ -143,6 +143,56 @@ module.exports = (env, argv) => {
   },
 
   // Outputs built by this configuration:
+  // - interactive-api-host: for use by interactive developers
+  //   this needs separate config as the externals are handled differently and
+  //   different files are copied.
+  {
+    context: __dirname, // to automatically find tsconfig.json
+    devtool: 'source-map',
+    entry: {
+      'interactive-api-host': './src/interactive-api-host/index.ts',
+    },
+    mode: 'development',
+    output: {
+      filename: '[name]/index.js',
+      libraryTarget: 'umd'
+    },
+    performance: { hints: false },
+    module: {
+      rules: [
+        {
+          test: /\.tsx?$/,
+          enforce: 'pre',
+          use: [
+            {
+              loader: 'tslint-loader'
+            }
+          ]
+        },
+        {
+          test: /\.tsx?$/,
+          loader: 'ts-loader'
+        }
+      ]
+    },
+    resolve: {
+      extensions: [ '.ts', '.tsx', '.js' ]
+    },
+    stats: {
+      // suppress "export not found" warnings about re-exported types
+      warningsFilter: /export .* was not found in/
+    },
+    plugins: [
+      new CopyPlugin({
+        patterns: [
+          { from: 'src/interactive-api-host/package.json', to: 'interactive-api-host' },
+          { from: 'src/interactive-api-host/README.md', to: 'interactive-api-host' }
+        ]
+      })
+    ]
+  },
+
+  // Outputs built by this configuration:
   // - example-interactive: for use by developers and testers
   //   needs separate config as different files are copied,
   //   and no externals should be used
