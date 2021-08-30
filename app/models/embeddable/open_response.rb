@@ -8,7 +8,8 @@ module Embeddable
 
     # PageItem instances are join models, so if the embeddable is gone the join should go too.
     has_many :page_items, :as => :embeddable, :dependent => :destroy
-    has_many :interactive_pages, :through => :page_items
+    has_many :sections, through: :page_items
+    has_many :interactive_pages, through: :sections
     has_many :answers,
       :class_name  => 'Embeddable::OpenResponseAnswer',
       :foreign_key => 'open_response_id',
