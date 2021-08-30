@@ -16,7 +16,8 @@ module Embeddable
       :show_in_featured_question_report, :interactive, :hint, :is_full_width
 
     has_many :page_items, :as => :embeddable, :dependent => :destroy
-    has_many :interactive_pages, :through => :page_items
+    has_many :sections, through: :page_items
+    has_many :interactive_pages, through: :sections
 
     # "Answer" isn't the best word probably, but it fits the rest of names and convention.
     # LabbookAnswer is an instance related to particular activity run and user.

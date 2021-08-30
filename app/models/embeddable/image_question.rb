@@ -6,7 +6,8 @@ class Embeddable::ImageQuestion < ActiveRecord::Base
     :is_prediction, :show_in_featured_question_report, :give_prediction_feedback, :prediction_feedback, :is_hidden
 
   has_many :page_items, :as => :embeddable, :dependent => :destroy
-  has_many :interactive_pages, :through => :page_items
+  has_many :sections, through: :page_items
+  has_many :interactive_pages, through: :sections
 
   has_many :answers,
     :class_name  => 'Embeddable::ImageQuestionAnswer',

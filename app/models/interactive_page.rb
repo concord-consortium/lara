@@ -31,9 +31,10 @@ class InteractivePage < ActiveRecord::Base
   validates :sidebar, :html => true
 
   # PageItem is a join model; if this is deleted, it should go too
-  has_many :page_items, :order => [:old_section, :position], :dependent => :destroy, :include => [:embeddable]
+  # has_many :page_items, :order => [:old_section, :position], :dependent => :destroy, :include => [:embeddable]
 
   has_many :sections, :order => :position, :dependent => :destroy, :include => [:page_items]
+  has_many :page_items, through: :sections, order: :position
 
   def toggle_info_assessment
     self[:toggle_info_assessment].nil? ? true : self[:toggle_info_assessment]
@@ -178,7 +179,7 @@ class InteractivePage < ActiveRecord::Base
     if (position)
       page_item.insert_at(position) if position
     else
-      page_item.move_to_top
+      page_item.move_to_bottom
     end
   end
 

@@ -13,7 +13,8 @@ module Embeddable
     has_one :plugin, as: :plugin_scope, autosave: true
 
     has_many :page_items, :as => :embeddable, :dependent => :destroy
-    has_many :interactive_pages, :through => :page_items
+    has_many :sections, through: :page_items
+    has_many :interactive_pages, through: :sections
 
     delegate :approved_script,  to: :plugin
     delegate :approved_script=,  to: :plugin

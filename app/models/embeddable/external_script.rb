@@ -6,7 +6,8 @@ module Embeddable
     # PageItem instances are join models, so if the embeddable is gone the join should go too.
     belongs_to :approved_script
     has_many :page_items, :as => :embeddable, :dependent => :destroy
-    has_many :interactive_pages, :through => :page_items
+    has_many :sections, through: :page_items
+    has_many :interactive_pages, through: :sections
     delegate :name,  to: :approved_script, allow_nil: true
     delegate :label, to: :approved_script, allow_nil: true
     delegate :url,   to: :approved_script, allow_nil: true

@@ -8,7 +8,8 @@ module Embeddable
     # PageItem instances are join models, so if the embeddable is gone
     # the join should go too.
 
-    has_many :interactive_pages, :through => :page_items
+    has_many :sections, through: :page_items
+    has_many :interactive_pages, through: :sections
 
     validates :content, :html => true
 
