@@ -174,7 +174,7 @@ class InteractivePage < ActiveRecord::Base
       self.sections.create(Section::DEFAULT_PARAMS)
     end
     section = self.sections.find { |s| s.id == section_id } || self.sections.first
-    page_item = section.page_items.create!(embeddable: Embeddable, position: position)
+    page_item = section.page_items.create!(embeddable: embeddable, position: position)
     if (position)
       page_item.insert_at(position) if position
     else
