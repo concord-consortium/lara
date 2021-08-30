@@ -103,9 +103,9 @@ export const AuthoringPage: React.FC<IPageProps> = ({
                 (draggableProvided) => (
                   <div
                     {...draggableProvided.draggableProps}
-                    {...draggableProvided.dragHandleProps}
                     ref={draggableProvided.innerRef}>
                       <AuthoringSection {...sProps}
+                        {...draggableProvided}
                         key={sProps.id}
                         updateFunction={changeSection}
                         deleteFunction={handleDelete} />

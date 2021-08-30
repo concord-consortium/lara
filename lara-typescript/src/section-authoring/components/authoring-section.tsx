@@ -4,8 +4,10 @@ import { MinusSquare } from "./icons/minus-square";
 import { Cog } from "./icons/cog";
 import { Trash } from "./icons/trash";
 import { SectionItem, ISectionItemProps} from "./section-item";
-// NP 2021-08-12 -- default imports aren't working correctly when evaled on page
+// NP 2021-08-12 -- default imports aren"t working correctly when evaled on page
 import "./authoring-section.css";
+
+
 
 export enum Layouts {
   LAYOUT_FULL_WIDTH = "Full Width",
@@ -84,7 +86,14 @@ export interface ISectionProps {
   /**
    * Section Items in this section
    */
-   items?: ISectionItemProps[];
+  items?: ISectionItemProps[];
+
+  /**
+   * Drag handle.
+   * DragHandleProps is a private type documented at
+   * https://github.com/atlassian/react-beautiful-dnd/blob/master/docs/api/draggable.md
+   */
+  dragHandleProps?: any;
 
 }
 
@@ -98,7 +107,8 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
   layout: initLayout = defaultLayout,
   items: initItems = [] as ISectionItemProps[],
   collapsed: initCollapsed = false,
-  title
+  title,
+  dragHandleProps
   }: ISectionProps) => {
 
   const [layout, setLayout] = React.useState(initLayout);
@@ -155,7 +165,9 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
     <div className="edit-page-grid-container">
       <div className="section-menu full-row">
         <div className="menu-start">
-          <GripLines />
+          <span  {...dragHandleProps}>
+            <GripLines/>
+          </span>
           <span>{title}{id}</span>
           <span>Layout</span>
           <select
