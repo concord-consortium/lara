@@ -16,6 +16,10 @@ class API::APIController < ApplicationController
     error(e.message, 500)
   end
 
+  rescue_from ActiveRecord::RecordNotFound do |e|
+    error(e.message, 404)
+  end
+
   public
 
   def show
