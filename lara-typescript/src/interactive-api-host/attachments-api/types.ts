@@ -50,6 +50,7 @@ export interface IHandleGetAttachmentUrlOptions {
   writeOptions?: {
     // This is necessary only for write operation.
     interactiveId: string;
+    // This callback should save the updated answer metadata.
     onAnswerMetaUpdate: (newAnswerMeta: IAnswerMetadataWithAttachmentsInfo) => void;
   };
 }

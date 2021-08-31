@@ -1,5 +1,5 @@
 import { IAttachmentUrlResponse } from "../types";
-import { attachmentsManager } from "./attachments-manager-global";
+import { getAttachmentsManager } from "./attachments-manager-global";
 import { IHandleGetAttachmentUrlOptions, ISignedWriteUrlOptions } from "./types";
 
 export const handleGetAttachmentUrl =
@@ -7,8 +7,11 @@ export const handleGetAttachmentUrl =
 
   const { name, operation, contentType, expiresIn, requestId } = options.request;
   const response: IAttachmentUrlResponse = { requestId };
-  const attachmentsMgr = await attachmentsManager;
-  if (!attachmentsMgr) {
+  let attachmentsMgr;
+
+  try {
+    attachmentsMgr = await getAttachmentsManager();
+  } catch (e) {
     response.error = "error getting attachment url: the host environment did not initialize the attachments manager";
     return response;
   }

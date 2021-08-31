@@ -24,7 +24,7 @@ ___
 
 ###  request
 
-• **request**: *IAttachmentUrlRequest*
+• **request**: *[IAttachmentUrlRequest](iattachmenturlrequest.md)*
 
 ___
 
