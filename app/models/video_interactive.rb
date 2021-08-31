@@ -53,7 +53,7 @@ class VideoInteractive < ActiveRecord::Base
   end
 
   def page_section
-    page_item && page_item.old_section
+    page_item && page_item.section && page_item.section.title
   end
 
   def to_hash

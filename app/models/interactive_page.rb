@@ -34,7 +34,7 @@ class InteractivePage < ActiveRecord::Base
   # has_many :page_items, :order => [:old_section, :position], :dependent => :destroy, :include => [:embeddable]
 
   has_many :sections, :order => :position, :dependent => :destroy, :include => [:page_items]
-  has_many :page_items, through: :sections, order: :position
+  has_many :page_items, through: :sections, order: "sections.position, position"
 
   def toggle_info_assessment
     self[:toggle_info_assessment].nil? ? true : self[:toggle_info_assessment]
@@ -99,13 +99,9 @@ class InteractivePage < ActiveRecord::Base
 
   InteractivePage.register_section({name: INTERACTIVE_BOX, show_method: 'show_interactive'})
 
-  # This is a sort of polymorphic has_many :through.
+  # This is a sort of polymorphic has_many :through (which is forbidden in AR)
   def embeddables
-    sections.map { |s| s.page_items.map { |pi| pi.embeddable}.flatten}.flatten
-    # self.class.registered_sections.each do |rs|
-    #   ordered_embeddables += page_items.where(old_section: rs[:name]).collect{ |qi| qi.embeddable }
-    # end
-    # ordered_embeddables
+    page_items.map { |pi| pi.embeddable}.flatten
   end
 
   def interactives
@@ -173,20 +169,29 @@ class InteractivePage < ActiveRecord::Base
     visible_embeddables.select { |item| item.reportable? }
   end
 
-  # 2021-08-05 NP: Lets add embeddables this way still,
-  # Just look for a section index value
-  def add_embeddable(embeddable, position = nil, section_id = nil)
+  # 2021-08-05 NP: Lets continue to add embeddables this way and
+  ## look for a section identifier value
+  def add_embeddable(embeddable, position = nil, section_identifier = nil)
+
+    section_identifier ||= Section::DEFAULT_SECTION_TITLE
+
+    # Local function to test whether section_identifier is a numeric value
     def numeric (x)
       Float(x) != nil rescue false
     end
-    if section_id
-      if !numeric(section_id)
-        section = sections.find { |s| s.title == section_id }
-        section = sections.create({title: section_id}) unless section
-      else
-        section = sections.find { |s| s.id = section_id}
-        throw "Cant find section #{section_id}" unless section
+
+    # look for a section specified by title or ID
+    if !numeric(section_identifier)
+      section = sections.find { |s| s.title == section_identifier }
+      unless section
+        section = sections.create(Section::DEFAULT_PARAMS.merge({title: section_identifier}))
+        if section.title == Section::HEADER_BLOCK
+          section.move_to_top
+        end
       end
+    else
+      section = sections.find { |s| s.id = section_identifier}
+      throw "Cant find section #{section_identifier}" unless section
     end
 
     unless section

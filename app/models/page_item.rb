@@ -9,6 +9,7 @@ class PageItem < ActiveRecord::Base
   has_many :secondary_linked_items, :foreign_key => :secondary_id, :class_name => LinkedPageItem, :dependent => :destroy
   has_one :interactive_page, through: :section
 
+  default_scope order('position ASC')
   def toggle_hideshow_embeddable
     embeddable.is_hidden = !embeddable.is_hidden
     embeddable.save
