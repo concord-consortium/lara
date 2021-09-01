@@ -19,8 +19,8 @@ class InteractivePage < ActiveRecord::Base
 
   EMBEDDABLE_DISPLAY_OPTIONS = ['stacked','carousel']
 
-  HEADER_BLOCK = 'header_block'
-  INTERACTIVE_BOX = 'interactive_box'
+  HEADER_BLOCK = Section::HEADER_BLOCK
+  INTERACTIVE_BOX = Section::INTERACTIVE_BOX
 
   validates :sidebar_title, presence: true
   validates :layout, :inclusion => { :in => LAYOUT_OPTIONS.map { |l| l[:class_val] } }
@@ -31,9 +31,10 @@ class InteractivePage < ActiveRecord::Base
   validates :sidebar, :html => true
 
   # PageItem is a join model; if this is deleted, it should go too
-  has_many :page_items, :order => [:old_section, :position], :dependent => :destroy, :include => [:embeddable]
+  # has_many :page_items, :order => [:old_section, :position], :dependent => :destroy, :include => [:embeddable]
 
   has_many :sections, :order => :position, :dependent => :destroy, :include => [:page_items]
+  has_many :page_items, through: :sections, order: "sections.position, position"
 
   def toggle_info_assessment
     self[:toggle_info_assessment].nil? ? true : self[:toggle_info_assessment]
@@ -98,13 +99,9 @@ class InteractivePage < ActiveRecord::Base
 
   InteractivePage.register_section({name: INTERACTIVE_BOX, show_method: 'show_interactive'})
 
-  # This is a sort of polymorphic has_many :through.
+  # This is a sort of polymorphic has_many :through (which is forbidden in AR)
   def embeddables
-    ordered_embeddables = []
-    self.class.registered_sections.each do |rs|
-      ordered_embeddables += page_items.where(old_section: rs[:name]).collect{ |qi| qi.embeddable }
-    end
-    ordered_embeddables
+    page_items.map { |pi| pi.embeddable}.flatten
   end
 
   def interactives
@@ -115,13 +112,18 @@ class InteractivePage < ActiveRecord::Base
     page_items.select{ |pi| Embeddable::is_interactive?(pi.embeddable) }
   end
 
-  def section_embeddables(section)
-    page_items.where(old_section: section).collect{ |qi| qi.embeddable }
+  def section_embeddables(section_title)
+    section = sections.find { |s| s.title = section_title }
+    if section
+      section.page_items.map { |i| i.embeddable }
+    else
+      []
+    end
   end
 
   def main_embeddables
     # Embeddables that do not have section specified (nil section).
-    section_embeddables(nil)
+    section_embeddables(Section::DEFAULT_SECTION_TITLE)
   end
 
   def visible_embeddables
@@ -167,18 +169,41 @@ class InteractivePage < ActiveRecord::Base
     visible_embeddables.select { |item| item.reportable? }
   end
 
-  # 2021-08-05 NP: Lets add embeddables this way still,
-  # Just look for a section index value
-  def add_embeddable(embeddable, position = nil, section_id = nil)
-    if(self.sections.empty?)
-      self.sections.create(Section::DEFAULT_PARAMS)
+  # 2021-08-05 NP: Lets continue to add embeddables this way and
+  ## look for a section identifier value
+  def add_embeddable(embeddable, position = nil, section_identifier = nil)
+
+    section_identifier ||= Section::DEFAULT_SECTION_TITLE
+
+    # Local function to test whether section_identifier is a numeric value
+    def numeric (x)
+      Float(x) != nil rescue false
     end
-    section = self.sections.find { |s| s.id == section_id } || self.sections.first
+
+    # look for a section specified by title or ID
+    if !numeric(section_identifier)
+      section = sections.find { |s| s.title == section_identifier }
+      unless section
+        section = sections.create(Section::DEFAULT_PARAMS.merge({title: section_identifier}))
+        if section.title == Section::HEADER_BLOCK
+          section.move_to_top
+        end
+      end
+    else
+      section = sections.find { |s| s.id = section_identifier}
+      throw "Cant find section #{section_identifier}" unless section
+    end
+
+    unless section
+      section = self.sections.create(Section::DEFAULT_PARAMS)
+    end
+
     page_item = section.page_items.create!(embeddable: embeddable, position: position)
+
     if (position)
       page_item.insert_at(position) if position
     else
-      page_item.move_to_top
+      page_item.move_to_bottom
     end
   end
 

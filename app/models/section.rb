@@ -3,10 +3,13 @@ class Section < ActiveRecord::Base
   acts_as_list scope: :interactive_page
 
   belongs_to :interactive_page
-  has_many :page_items, dependent: :destroy
+  has_many :page_items, order: :position, dependent: :destroy
+
+  default_scope order('position ASC')
 
   HEADER_BLOCK = 'header_block'
   INTERACTIVE_BOX = 'interactive_box'
+  DEFAULT_SECTION_TITLE = "main"
 
   LAYOUT_FULL_WIDTH="Full Width"
   LAYOUT_60_40="60-40"
@@ -28,7 +31,7 @@ class Section < ActiveRecord::Base
   EMBEDDABLE_DISPLAY_OPTIONS = ['stacked','carousel']
 
   DEFAULT_PARAMS = {
-    title: "Default section",
+    title: DEFAULT_SECTION_TITLE,
     show: true,
     layout: LAYOUT_DFEAULT,
     can_collapse_small: false

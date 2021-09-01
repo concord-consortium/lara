@@ -68,9 +68,9 @@ describe InteractivePage do
     it 'has a header block to which an embeddable can be added' do
       embed_text = "This is an embeddable in the header block."
       embed = FactoryGirl.create(:xhtml, :name => "", :content => embed_text)
-      page.add_embeddable(embed, 1, InteractivePage::HEADER_BLOCK)
+      page.add_embeddable(embed, 1, Section::HEADER_BLOCK)
       expect(page.embeddables.size).to eq(4)
-      expect(page.page_items.last.old_section).to eq(InteractivePage::HEADER_BLOCK)
+      expect(page.page_items.first.section.title).to eq(Section::HEADER_BLOCK)
       expect(page.embeddables.first.content).to eq(embed_text)
     end
   end
@@ -221,8 +221,9 @@ describe InteractivePage do
         expect(interactive).not_to be_nil
         expect(labbook.interactive).not_to be_nil
         export_data = page.export.as_json
-        interactive_id = export_data['embeddables'].select { |e| e['section'] == 'interactive_box' }.first['embeddable']['ref_id']
-        labbook = export_data['embeddables'].select { |e| e['section'] == nil }.last['embeddable']
+        interactive_box_embeddables = export_data['embeddables'].select { |e| e['section'] == 'interactive_box' }
+        interactive_id = interactive_box_embeddables.first['embeddable']['ref_id']
+        labbook = export_data['embeddables'].select { |e| e['section'] == "main" }.last['embeddable']
         expect(labbook).to match a_hash_including('interactive_ref_id' => interactive_id)
       end
     end

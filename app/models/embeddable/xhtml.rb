@@ -8,7 +8,8 @@ module Embeddable
     # PageItem instances are join models, so if the embeddable is gone
     # the join should go too.
 
-    has_many :interactive_pages, :through => :page_items
+    has_many :sections, through: :page_items
+    has_many :interactive_pages, through: :sections
 
     validates :content, :html => true
 
@@ -36,7 +37,7 @@ module Embeddable
 
     def page_section
       # In practice one question can't be added to multiple pages. Perhaps it should be refactored to has_one / belongs_to relation.
-      page_items.count > 0 && page_items.first.old_section
+      page_items.count > 0 && page_items.first.section && page_items.first.section.title
     end
 
     def self.import(import_hash)
