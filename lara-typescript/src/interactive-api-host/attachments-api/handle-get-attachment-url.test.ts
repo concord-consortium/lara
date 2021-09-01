@@ -27,9 +27,9 @@ let attachmentsManagerOptions: IAttachmentsManagerInitOptions | null = null;
 jest.mock("./attachments-manager-global", () => ({
   ...jest.requireActual("./attachments-manager-global"),
   getAttachmentsManager: () =>
-    attachmentsManagerOptions ?
-      Promise.resolve(new AttachmentsManager(attachmentsManagerOptions)) :
-      Promise.reject("AttachmentsManager hasn't been initialized"),
+    attachmentsManagerOptions
+      ? Promise.resolve(new AttachmentsManager(attachmentsManagerOptions))
+      : Promise.reject("AttachmentsManager hasn't been initialized"),
   initializeAttachmentsManager: (options: IAttachmentsManagerInitOptions) => attachmentsManagerOptions = options
 }));
 
