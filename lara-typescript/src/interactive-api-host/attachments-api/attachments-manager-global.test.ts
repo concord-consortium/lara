@@ -1,12 +1,18 @@
 import { EnvironmentName } from "@concord-consortium/token-service";
 import { AttachmentsManager } from "./attachments-manager";
-import { getAttachmentsManager, initializeAttachmentsManager, setAttachmentsManagerTimeout } from "./attachments-manager-global";
+import { getAttachmentsManager, initializeAttachmentsManager, timeoutValue } from "./attachments-manager-global";
 
 describe("getAttachmentsManager", () => {
+  afterEach(() => {
+    jest.useRealTimers();
+  });
+
   it("fails if initializeAttachmentsManager hasn't been called before", async () => {
-    setAttachmentsManagerTimeout(200);
+    jest.useFakeTimers();
     try {
-      await getAttachmentsManager();
+      const getAttachmentsManagerPromise = getAttachmentsManager();
+      jest.advanceTimersByTime(timeoutValue + 100);
+      await getAttachmentsManagerPromise;
     } catch (e) {
       expect(e).toEqual("AttachmentsManager hasn't been initialized");
     }

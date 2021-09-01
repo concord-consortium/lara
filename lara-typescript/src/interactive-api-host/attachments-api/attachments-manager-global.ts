@@ -1,7 +1,7 @@
 import { AttachmentsManager } from "./attachments-manager";
 import { IAttachmentsManagerInitOptions } from "./types";
 
-let timeoutValue = 20000; // ms
+export let timeoutValue = 20000; // ms
 
 let resolveAttachmentsManager: (manager: AttachmentsManager) => void;
 const attachmentsManager = new Promise<AttachmentsManager>((resolve, reject) => {
