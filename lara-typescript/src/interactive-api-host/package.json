@@ -1,0 +1,22 @@
+{
+  "name": "@concord-consortium/interactive-api-host",
+  "version": "0.1.0-pre.3",
+  "description": "Interactive API host helpers and types",
+  "main": "./index.js",
+  "types": "./index-bundle.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/concord-consortium/lara.git"
+  },
+  "author": "Concord Consortium",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/concord-consortium/lara/issues"
+  },
+  "homepage": "https://github.com/concord-consortium/lara/tree/master/lara-typescript/src/interactive-api-client#readme",
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.27.0",
+    "@aws-sdk/s3-request-presigner": "^3.27.0",
+    "@concord-consortium/token-service": "^2.1.0"
+  }
+}
