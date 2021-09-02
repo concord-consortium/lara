@@ -103,11 +103,6 @@ class Embeddable::ImageQuestion < ActiveRecord::Base
     true
   end
 
-  def page_section
-    # In practice one question can't be added to multiple pages. Perhaps it should be refactored to has_one / belongs_to relation.
-    page_items.count > 0 && page_items.first.section && page_items.first.section.title
-  end
-
   def configuration_error
     return I18n.t('SNAPSHOT_WITHOUT_INTERACTIVE') if is_shutterbug? && interactive.nil?
     nil

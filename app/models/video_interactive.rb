@@ -52,10 +52,6 @@ class VideoInteractive < ActiveRecord::Base
     false
   end
 
-  def page_section
-    page_item && page_item.section && page_item.section.title
-  end
-
   def to_hash
     {
       poster_url: poster_url,

@@ -35,11 +35,6 @@ module Embeddable
       false
     end
 
-    def page_section
-      # In practice one question can't be added to multiple pages. Perhaps it should be refactored to has_one / belongs_to relation.
-      page_items.count > 0 && page_items.first.section && page_items.first.section.title
-    end
-
     def self.import(import_hash)
       return self.new(import_hash)
     end

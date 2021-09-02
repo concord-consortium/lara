@@ -48,6 +48,10 @@ module Embeddable
     respond_to?(:page_item) ? page_item : page_items.first
   end
 
+  def page_section
+    p_item&.section&.title
+  end
+
   def page
     # Some embeddables define interactive_page, some interactive_pages.
     # In practice, there's always just one page, so many to many relationship isn't necessary.

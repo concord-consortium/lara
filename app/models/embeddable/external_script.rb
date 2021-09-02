@@ -58,11 +58,6 @@ module Embeddable
       is_hidden
     end
 
-    def page_section
-      # In practice one question can't be added to multiple pages. Perhaps it should be refactored to has_one / belongs_to relation.
-      page_items.count > 0 && page_items.first.section && page_items.first.section.title
-    end
-
     def export
       return self.as_json(only:[:name, :url, :configuration, :description])
     end
