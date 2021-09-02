@@ -45,7 +45,7 @@ class CRater::ArgumentationBlocksController < ApplicationController
   end
 
   def remove_embeddables
-    @page.page_items.where(section: CRater::ARG_SECTION_NAME).destroy_all
+    @page.sections.where(title: CRater::ARG_SECTION_NAME).destroy_all
     redirect_to(:back)
   end
 

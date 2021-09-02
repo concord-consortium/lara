@@ -9,7 +9,7 @@ class ITSIAuthoring::Editor
     {
       metadata: metadata_json,
       sections: @activity.pages
-        .includes(:page_items)
+        .includes(sections: :page_items)
         .map { |p| section_json(p) },
       active_runs: @activity.active_runs,
       publication_details: {
