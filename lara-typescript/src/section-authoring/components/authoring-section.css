@@ -1,6 +1,7 @@
 :root {
   --med-teal: #218389;
   --med-orange: orange;
+  --gold: #fdc32d;
   --lt-gray: hsl(0,0%,90%);
    font-family: arial, helvetica, sas-serif;
 }
@@ -90,11 +91,11 @@ button.small-button {
 .page-numbers {
   grid-column: 8/11;
   justify-self: end;
-  &.page-nav {
-    position: unset;
-    right: unset;
-    top: unset;
-  }
+}
+.page-numbers.page-nav {
+  position: unset;
+  right: unset;
+  top: unset;
 }
 
 #preview-menu {
@@ -127,8 +128,32 @@ button.small-button {
     margin-right: 15px;
 }
 
-.menu-end > span {
-    margin-left: 15px;
+.menu-end button {
+  background: transparent;
+  border: none;
+  border-right: solid 1px white;
+  color: white;
+  cursor: pointer;
+  margin: 0;
+  padding: 0 10px 0 0;
+  text-transform: uppercase;
+  transition: .2s;
+}
+.menu-end button:hover {
+  color: var(--gold);
+}
+.menu-end ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.menu-end ul li {
+  display: inline-block;
+  margin: 0 10px 0 0;
+  padding: 0;
+}
+.menu-end ul li:last-child button {
+  border-right: none;
 }
 
 .new-section {
@@ -136,7 +161,7 @@ button.small-button {
   border: 1px solid var(--lt-gray);
 }
 
-.section-container {
+.section-container, .sectionItem {
   min-height: 200px;
   justify-self: stretch;
   border: 1px solid var(--med-teal);
@@ -146,7 +171,11 @@ button.small-button {
   align-items: center;
   background-color: white;
 }
-
+.itemsContainer {
+  border: solid 1px var(--med-teal);
+  border-radius: 4px;
+  padding: 10px;
+}
 .section-30 {
   grid-column: span 3;
 }

@@ -15,7 +15,19 @@ export interface ISectionItemProps {
   /**
    * Optional function to delete the item
    */
-   deleteFunction?: (id: string) => void;
+  deleteFunction?: (id: string) => void;
+
+  /**
+   * Section the item belongs in
+   */
+
+  section_id: string;
+
+   /**
+   * Section column item belongs in
+   */
+
+  section_col: number;
 
   /**
    * Display order within the section
