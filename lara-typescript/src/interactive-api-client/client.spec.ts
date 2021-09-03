@@ -1,4 +1,4 @@
-import { mockIFramePhone, MockPhone } from "../interactive-api-parent/mock-iframe-phone";
+import { mockIFramePhone, MockPhone } from "../interactive-api-lara-host/mock-iframe-phone";
 import { Client } from "./client";
 import * as iframePhone from "iframe-phone";
 

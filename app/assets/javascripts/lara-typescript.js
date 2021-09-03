@@ -30237,7 +30237,7 @@ exports.initializeLara = exports.PageItemAuthoring = exports.Events = exports.Pl
 __webpack_require__(/*! ./plugin-api/normalize.scss */ "./src/plugin-api/normalize.scss");
 var PluginAPI = __webpack_require__(/*! ./plugin-api */ "./src/plugin-api/index.ts");
 exports.PluginAPI_V3 = PluginAPI;
-var InteractiveAPI = __webpack_require__(/*! ./interactive-api-parent */ "./src/interactive-api-parent/index.ts");
+var InteractiveAPI = __webpack_require__(/*! ./interactive-api-lara-host */ "./src/interactive-api-lara-host/index.ts");
 exports.InteractiveAPI = InteractiveAPI;
 var Plugins = __webpack_require__(/*! ./plugins */ "./src/plugins/index.ts");
 exports.Plugins = Plugins;
@@ -30262,10 +30262,10 @@ exports.initializeLara = initializeLara;
 
 /***/ }),
 
-/***/ "./src/interactive-api-parent/global-iframe-saver.ts":
-/*!***********************************************************!*\
-  !*** ./src/interactive-api-parent/global-iframe-saver.ts ***!
-  \***********************************************************/
+/***/ "./src/interactive-api-lara-host/global-iframe-saver.ts":
+/*!**************************************************************!*\
+  !*** ./src/interactive-api-lara-host/global-iframe-saver.ts ***!
+  \**************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -30273,7 +30273,7 @@ exports.initializeLara = initializeLara;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.GlobalIframeSaver = void 0;
-var iframe_phone_manager_1 = __webpack_require__(/*! ./iframe-phone-manager */ "./src/interactive-api-parent/iframe-phone-manager.ts");
+var iframe_phone_manager_1 = __webpack_require__(/*! ./iframe-phone-manager */ "./src/interactive-api-lara-host/iframe-phone-manager.ts");
 var GlobalIframeSaver = /** @class */ (function () {
     function GlobalIframeSaver(config) {
         this.saveUrl = config.save_url;
@@ -30341,10 +30341,10 @@ exports.GlobalIframeSaver = GlobalIframeSaver;
 
 /***/ }),
 
-/***/ "./src/interactive-api-parent/iframe-phone-manager.ts":
-/*!************************************************************!*\
-  !*** ./src/interactive-api-parent/iframe-phone-manager.ts ***!
-  \************************************************************/
+/***/ "./src/interactive-api-lara-host/iframe-phone-manager.ts":
+/*!***************************************************************!*\
+  !*** ./src/interactive-api-lara-host/iframe-phone-manager.ts ***!
+  \***************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -30427,10 +30427,10 @@ exports.IframePhoneManager = IframePhoneManager;
 
 /***/ }),
 
-/***/ "./src/interactive-api-parent/iframe-saver.ts":
-/*!****************************************************!*\
-  !*** ./src/interactive-api-parent/iframe-saver.ts ***!
-  \****************************************************/
+/***/ "./src/interactive-api-lara-host/iframe-saver.ts":
+/*!*******************************************************!*\
+  !*** ./src/interactive-api-lara-host/iframe-saver.ts ***!
+  \*******************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -30439,8 +30439,8 @@ exports.IframePhoneManager = IframePhoneManager;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.IFrameSaver = void 0;
 var DOMPurify = __webpack_require__(/*! dompurify */ "./node_modules/dompurify/dist/purify.js");
-var iframe_phone_manager_1 = __webpack_require__(/*! ./iframe-phone-manager */ "./src/interactive-api-parent/iframe-phone-manager.ts");
-var modal_api_plugin_1 = __webpack_require__(/*! ./modal-api-plugin */ "./src/interactive-api-parent/modal-api-plugin.ts");
+var iframe_phone_manager_1 = __webpack_require__(/*! ./iframe-phone-manager */ "./src/interactive-api-lara-host/iframe-phone-manager.ts");
+var modal_api_plugin_1 = __webpack_require__(/*! ./modal-api-plugin */ "./src/interactive-api-lara-host/modal-api-plugin.ts");
 // Shutterbug is imported globally and used by the old LARA JS code.
 var Shutterbug = window.Shutterbug;
 var getAuthoredState = function ($dataDiv) {
@@ -30873,10 +30873,10 @@ exports.IFrameSaver = IFrameSaver;
 
 /***/ }),
 
-/***/ "./src/interactive-api-parent/index.ts":
-/*!*********************************************!*\
-  !*** ./src/interactive-api-parent/index.ts ***!
-  \*********************************************/
+/***/ "./src/interactive-api-lara-host/index.ts":
+/*!************************************************!*\
+  !*** ./src/interactive-api-lara-host/index.ts ***!
+  \************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -30893,10 +30893,10 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
     for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var global_iframe_saver_1 = __webpack_require__(/*! ./global-iframe-saver */ "./src/interactive-api-parent/global-iframe-saver.ts");
-__exportStar(__webpack_require__(/*! ./iframe-phone-manager */ "./src/interactive-api-parent/iframe-phone-manager.ts"), exports);
-__exportStar(__webpack_require__(/*! ./global-iframe-saver */ "./src/interactive-api-parent/global-iframe-saver.ts"), exports);
-__exportStar(__webpack_require__(/*! ./iframe-saver */ "./src/interactive-api-parent/iframe-saver.ts"), exports);
+var global_iframe_saver_1 = __webpack_require__(/*! ./global-iframe-saver */ "./src/interactive-api-lara-host/global-iframe-saver.ts");
+__exportStar(__webpack_require__(/*! ./iframe-phone-manager */ "./src/interactive-api-lara-host/iframe-phone-manager.ts"), exports);
+__exportStar(__webpack_require__(/*! ./global-iframe-saver */ "./src/interactive-api-lara-host/global-iframe-saver.ts"), exports);
+__exportStar(__webpack_require__(/*! ./iframe-saver */ "./src/interactive-api-lara-host/iframe-saver.ts"), exports);
 $(document).ready(function () {
     if (gon.globalInteractiveState != null) {
         window.globalIframeSaver = new global_iframe_saver_1.GlobalIframeSaver(gon.globalInteractiveState);
@@ -30906,10 +30906,10 @@ $(document).ready(function () {
 
 /***/ }),
 
-/***/ "./src/interactive-api-parent/modal-api-plugin.ts":
-/*!********************************************************!*\
-  !*** ./src/interactive-api-parent/modal-api-plugin.ts ***!
-  \********************************************************/
+/***/ "./src/interactive-api-lara-host/modal-api-plugin.ts":
+/*!***********************************************************!*\
+  !*** ./src/interactive-api-lara-host/modal-api-plugin.ts ***!
+  \***********************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
