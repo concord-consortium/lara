@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import classNames from 'classnames';
 
 import "./section-item-picker.css"
 
@@ -24,10 +25,10 @@ export const SectionItemPicker: React.FC<IProps> = (props) => {
   const [isSearching, setIsSearching] = useState(false);
 
   const setItemClasses = (isSelectedItem: boolean) => {
-    const classes = isSelectedItem ? "assessmentItemOption selected" 
-                                   : currentSelectedItem !== "" 
-                                     ? "assessmentItemOption disabled"
-                                     : "assessmentItemOption";
+    const classes = classNames("assessmentItemOption", {
+      selected: isSelectedItem,
+      disabled: !isSelectedItem && currentSelectedItem !== ""
+    });
     return classes;
   }
 
