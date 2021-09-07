@@ -1,14 +1,17 @@
 import { mockIFramePhone, MockedIframePhoneManager, setAutoConnect } from "./mock-iframe-phone";
 import { IFrameSaver } from "./iframe-saver";
+import { IAttachmentUrlRequest } from "@concord-consortium/interactive-api-host";
 
 const parentEl = document.createElement("iframe");
 
 jest.mock("iframe-phone", () => mockIFramePhone(parentEl));
 
-const successResponse = {
-  status: 200,
-  responseText: "{}"
-};
+const mockInitializeAttachmentsManager = jest.fn();
+const mockHandleGetAttachmentUrl = jest.fn();
+jest.mock("@concord-consortium/interactive-api-host", () => ({
+  initializeAttachmentsManager: (options: any) => mockInitializeAttachmentsManager(options),
+  handleGetAttachmentUrl: (options: any) => mockHandleGetAttachmentUrl(options)
+}));
 
 const mockSaveIndicator = () => {
   return jest.fn().mockImplementation(() => ({
@@ -130,6 +133,7 @@ describe("IFrameSaver", () => {
         $.ajax = jest.fn().mockImplementation((params: any) => {
           params.success({
             raw_data: JSON.stringify({interactiveState: 321}),
+            metadata: JSON.stringify({metadata: 321}),
             created_at: "2017",
             updated_at: "2018",
             activity_name: "test act",
@@ -184,6 +188,11 @@ describe("IFrameSaver", () => {
             }
           }
         });
+      });
+
+      it("should parse interactive state and metadata", () => {
+        expect((saver as any).savedState).toEqual({ interactiveState: 321 });
+        expect((saver as any).metadata).toEqual({ metadata: 321 });
       });
     });
 
@@ -249,7 +258,6 @@ describe("IFrameSaver", () => {
     });
 
     it("should support rich text (HTML) hints", () => {
-      const $helpIcon = $(".help-icon");
       const richText = "<strong>Bold</strong> <em>Text</em>";
       MockedIframePhoneManager.postMessageFrom($("#interactive")[0], { type: "hint", content: {text: richText} });
       expect($(".help-content .text").html()).toEqual(richText);
@@ -261,7 +269,6 @@ describe("IFrameSaver", () => {
   });
 
   describe("showModal/closeModal iframe-phone messages", () => {
-
     beforeEach(() => {
       saver = getSaver();
       MockedIframePhoneManager.connect();
@@ -271,6 +278,55 @@ describe("IFrameSaver", () => {
       expect(MockedIframePhoneManager.hasListener("showModal")).toBe(true);
       expect(MockedIframePhoneManager.hasListener("closeModal")).toBe(true);
     });
+  });
 
+  describe("Attachments API iframe-phone messages", () => {
+
+    beforeEach(() => {
+      $.ajax = jest.fn().mockImplementation((params: any) => {
+        params.success({
+          metadata: JSON.stringify({
+            attachmentFolder: { id: 123 },
+            attachments: {
+              "file.json": { publicPath: "123/123" }
+            }
+          }),
+        });
+      });
+      $("#interactive_data_div").data("enable-learner-state", true);
+
+      saver = getSaver();
+      MockedIframePhoneManager.connect();
+    });
+
+    it("should have installed listeners for getAttachmentUrl", () => {
+      expect(mockInitializeAttachmentsManager).toHaveBeenCalledTimes(1);
+      expect(MockedIframePhoneManager.hasListener("getAttachmentUrl")).toBe(true);
+    });
+
+    it("should handle getAttachmentUrl", () => {
+      expect(mockHandleGetAttachmentUrl).toHaveBeenCalledTimes(0);
+
+      const content: IAttachmentUrlRequest = {
+        name: "file.json",
+        operation: "read",
+        requestId: 1
+      };
+      MockedIframePhoneManager.postMessageFrom($("#interactive")[0], { type: "getAttachmentUrl", content });
+
+      expect(mockHandleGetAttachmentUrl).toHaveBeenCalledTimes(1);
+      expect(mockHandleGetAttachmentUrl.mock.calls[0][0].answerMeta).toEqual({
+        attachmentFolder: {
+          id: 123
+        },
+        attachments: {
+          "file.json": {
+            publicPath: "123/123"
+          }
+        }
+      });
+      expect(mockHandleGetAttachmentUrl.mock.calls[0][0].request).toEqual(content);
+      expect(mockHandleGetAttachmentUrl.mock.calls[0][0].writeOptions.interactiveId).toEqual("1");
+    });
   });
 });

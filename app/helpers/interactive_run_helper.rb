@@ -39,6 +39,8 @@ module InteractiveRunHelper
       data['authprovider'] = (Concord::AuthPortal.url_for_strategy_name(run.user.most_recent_authentication.provider) rescue nil) if data['loggedin'] == "true"
       data['user-email'] = run.user.email if data['loggedin'] == "true"
       data['class-info-url'] = run.class_info_url
+      data['run-key'] = run.key
+      data['run-remote-endpoint'] = run.remote_endpoint
       if run.id
         data['get-firebase-jwt-url'] = api_v1_get_firebase_jwt_url(run.id)
       end
@@ -48,6 +50,7 @@ module InteractiveRunHelper
     data['interactive-id'] = interactive.id
     data['interactive-name'] = interactive.name
     data['linked-interactives'] = interactive.linked_interactives_list.to_json
+    data['token-service-env'] = ENV["RAILS_ENV"] == "production" ? "production" : "staging"
 
     opts = {
       :src => interactive.url,

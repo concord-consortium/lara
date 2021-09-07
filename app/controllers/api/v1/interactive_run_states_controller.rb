@@ -25,6 +25,9 @@ class Api::V1::InteractiveRunStatesController < ApplicationController
       if params.has_key?('learner_url')
         @run.learner_url = params['learner_url']
       end
+      if params.has_key?('metadata')
+        @run.metadata = params['metadata']
+      end
       if @run.save
         render :json => @run.to_runtime_json(request.protocol, request.host_with_port)
       else

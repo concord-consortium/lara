@@ -24,6 +24,7 @@ describe InteractiveRunHelper do
       sequence_run: sequence_run,
       collaboration_run: nil,
       user: user,
+      remote_endpoint: 'http://portal.com/remote_endpoint/123',
       class_info_url: 'http://example.com/'
     }
   end
@@ -46,6 +47,8 @@ describe InteractiveRunHelper do
         expect(subject).not_to include("data-user-email")
         expect(subject).not_to include("data-class-info-url")
         expect(subject).not_to include("data-get-firebase-jwt-url")
+        expect(subject).not_to include("run-key")
+        expect(subject).not_to include("run-remote-endpoint")
       end
 
       it "should include non-run info" do
@@ -54,6 +57,7 @@ describe InteractiveRunHelper do
         expect(subject).to include("data-interactive-id")
         expect(subject).to include("data-interactive-name")
         expect(subject).to include("data-linked-interactive")
+        expect(subject).to include("token-service-env")
       end
     end
 
@@ -65,6 +69,8 @@ describe InteractiveRunHelper do
         expect(subject).to include("data-user-email")
         expect(subject).to include("data-class-info-url")
         expect(subject).to include("data-get-firebase-jwt-url")
+        expect(subject).to include("run-key")
+        expect(subject).to include("run-remote-endpoint")
       end
 
       it "should include non-run info" do
@@ -73,6 +79,7 @@ describe InteractiveRunHelper do
         expect(subject).to include("data-interactive-id")
         expect(subject).to include("data-interactive-name")
         expect(subject).to include("data-linked-interactive")
+        expect(subject).to include("token-service-env")
       end
     end
 

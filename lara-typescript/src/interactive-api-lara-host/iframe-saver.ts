@@ -5,8 +5,11 @@ import { IframePhoneManager } from "./iframe-phone-manager";
 import { IFrameSaverPluginApi } from "./iframe-saver-plugin";
 import { ModalApiPlugin } from "./modal-api-plugin";
 import {
-  IGetInteractiveSnapshotRequest, IGetInteractiveSnapshotResponse, ILinkedInteractive
-} from "../interactive-api-client";
+  handleGetAttachmentUrl, IAnswerMetadataWithAttachmentsInfo, IAttachmentUrlRequest,
+  IGetInteractiveSnapshotRequest, IGetInteractiveSnapshotResponse, ILinkedInteractive, initializeAttachmentsManager
+} from "@concord-consortium/interactive-api-host";
+import { EnvironmentName } from "@concord-consortium/token-service";
+
 // Shutterbug is imported globally and used by the old LARA JS code.
 const Shutterbug = (window as any).Shutterbug;
 
@@ -45,6 +48,7 @@ interface IInteractiveRunStateResponse {
   page_number: number;
   page_name: string;
   activity_name: string;
+  metadata: string;
 }
 
 const safeJSONParse = (obj: any) => {
@@ -97,6 +101,7 @@ type IGetFirebaseJwtResponseOptionalRequestId = LaraInteractiveApi.IGetFirebaseJ
 export class IFrameSaver {
 
   private static instances: IFrameSaver[] = [];
+  private static isAttachmentsManagerInitialized = false;
 
   private static defaultSuccess() {
     // tslint:disable-next-line:no-console
@@ -118,6 +123,10 @@ export class IFrameSaver {
   private interactiveId: number;
   private interactiveName: string;
   private getFirebaseJWTUrl: string;
+  private runKey: string | undefined;
+  private runRemoteEndpoint: string | undefined;
+  private tokenServiceEnv: EnvironmentName;
+  private metadata: object | undefined;
   private savedState: object | string | null;
   private autoSaveIntervalId: number | null;
   private alreadySetup: boolean;
@@ -140,6 +149,9 @@ export class IFrameSaver {
     this.interactiveId = $dataDiv.data("interactive-id");
     this.interactiveName = $dataDiv.data("interactive-name");
     this.getFirebaseJWTUrl = $dataDiv.data("get-firebase-jwt-url");
+    this.runKey = $dataDiv.data("run-key");
+    this.runRemoteEndpoint = $dataDiv.data("run-remote-endpoint");
+    this.tokenServiceEnv = $dataDiv.data("token-service-env");
     this.linkedInteractives = getLinkedInteractives($dataDiv);
 
     this.saveIndicator = SaveIndicator.instance();
@@ -158,6 +170,8 @@ export class IFrameSaver {
     this.iframePhone = IframePhoneManager.getPhone($iframe[0] as HTMLIFrameElement, () => this.phoneAnswered());
 
     this.plugins = [ModalApiPlugin(this.iframePhone)];
+
+    this.initializeAttachmentsManager();
   }
 
   public save(successCallback?: SuccessCallback | null) {
@@ -204,6 +218,53 @@ export class IFrameSaver {
         this.error("couldn't save interactive");
       }
     });
+  }
+
+  public saveMetadata(metadata: object) {
+    if (!this.learnerStateSavingEnabled()) { return; }
+
+    if (JSON.stringify(metadata) === JSON.stringify(this.metadata)) {
+      return;
+    }
+
+    this.saveIndicator.showSaving();
+    $.ajax({
+      type: "PUT",
+      dataType: "json",
+      url: this.interactiveRunStateUrl,
+      data: { metadata: JSON.stringify(metadata) },
+      success: response => {
+        this.metadata = metadata;
+        this.saveIndicator.showSaved("Saved Interactive");
+      },
+      error: () => {
+        this.error("couldn't save interactive metadata");
+      }
+    });
+  }
+
+  private async initializeAttachmentsManager() {
+    if (!IFrameSaver.isAttachmentsManagerInitialized) {
+      // Try to initialize manager only once.
+      IFrameSaver.isAttachmentsManagerInitialized = true;
+      try {
+        // Lack of runRemoteEndpoint means that the run is anonymous.
+        const tokenServiceJWT = this.runRemoteEndpoint ? (await this.getFirebaseJwt("token-service")).token : undefined;
+        initializeAttachmentsManager({
+          tokenServiceEnv: this.tokenServiceEnv,
+          tokenServiceFirestoreJWT: tokenServiceJWT,
+          writeOptions: {
+            // LARA non-anonymous runs have both runRemoteEndpoint and runKey. In this case don't provide runKey
+            // to ensure that AttachmentsManager uses runRemoteEndpoint only.
+            runKey: this.runRemoteEndpoint ? undefined : this.runKey,
+            runRemoteEndpoint: this.runRemoteEndpoint
+          }
+        });
+      } catch (error) {
+        // tslint:disable-next-line:no-console
+        console.error("AttachmentsManager can't be initialized", error);
+      }
+    }
   }
 
   private phoneAnswered() {
@@ -282,7 +343,37 @@ export class IFrameSaver {
     });
 
     this.addListener("getFirebaseJWT", (request?: IGetFirebaseJwtRequestOptionalRequestId) => {
-      return this.getFirebaseJwt(request);
+      if (!request) {
+        // This doesn't seem likely, but the old code was checking for empty / non-existing request, so let's do it too.
+        // It's a bit of documentation too.
+        this.post("firebaseJWT", {response_type: "ERROR", message: "Missing request data with firebase_app parameter"});
+        return;
+      }
+      const requestId = request.requestId;
+      const firebaseAppName = request.firebase_app;
+
+      this.getFirebaseJwt(firebaseAppName)
+        .then(data => {
+          this.post("firebaseJWT", { requestId, token: data.token });
+        })
+        .catch(error => {
+          this.post("firebaseJWT", { requestId, response_type: "ERROR", message: error });
+        });
+    });
+
+    this.addListener("getAttachmentUrl", async (request: IAttachmentUrlRequest) => {
+      const answerMeta: IAnswerMetadataWithAttachmentsInfo = this.metadata || {};
+      const response = await handleGetAttachmentUrl({
+        request,
+        answerMeta,
+        writeOptions: {
+          interactiveId: this.interactiveId.toString(),
+          onAnswerMetaUpdate: newMeta => {
+            this.saveMetadata({...answerMeta, ...newMeta});
+          }
+        }
+      });
+      this.post("attachmentUrl", response);
     });
 
     if (this.learnerStateSavingEnabled()) {
@@ -362,6 +453,7 @@ export class IFrameSaver {
             this.$deleteButton.show();
           }
         }
+        this.metadata = safeJSONParse(response.metadata);
         this.initInteractive(null, response);
       },
       error: () => {
@@ -451,31 +543,20 @@ export class IFrameSaver {
     }
   }
 
-  private getFirebaseJwt(request?: IGetFirebaseJwtRequestOptionalRequestId) {
-    const requestId = request ? request.requestId : undefined;
-    const opts: any = request || {};
-    if (opts.requestId) {
-      delete opts.requestId;
-    }
-
-    const createResponse = (baseResponse: IGetFirebaseJwtResponseOptionalRequestId) => {
-      if (requestId) {
-        baseResponse.requestId = requestId;
-      }
-      return baseResponse;
-    };
-
-    // TODO: after typescript upgrade remove `requestId: requestId!, `
-    return $.ajax({
-      type: "POST",
-      url: this.getFirebaseJWTUrl,
-      data: opts,
-      success: (data: {token: string}) => {
-        this.post("firebaseJWT", createResponse({requestId: requestId!, token: data.token}));
-      },
-      error: (jqxhr, status, error) => {
-        this.post("firebaseJWT", createResponse({requestId: requestId!, response_type: "ERROR", message: error}));
-      }});
+  private getFirebaseJwt(firebaseAppName: string): Promise<{token: string}> {
+    return new Promise<{token: string}>((resolve, reject) => {
+      $.ajax({
+        type: "POST",
+        url: this.getFirebaseJWTUrl,
+        data: { firebase_app: firebaseAppName },
+        success: (data: {token: string}) => {
+          resolve(data);
+        },
+        error: (jqxhr, status, error) => {
+          reject(error);
+        }}
+      );
+    });
   }
 
   private getInteractiveSnapshot({ requestId, interactiveItemId }: IGetInteractiveSnapshotRequest) {

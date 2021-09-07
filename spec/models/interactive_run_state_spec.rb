@@ -307,6 +307,30 @@ describe InteractiveRunState do
         end
       end
 
+      describe "when interactive has a generic metadata" do
+        let(:interactive) { FactoryGirl.create(:mw_interactive, enable_learner_state: true) }
+        let(:metadata) { '{"metadataProp1": 1, "metadataProp2": {"a": "b"}, "question_type": "INVALID_QUESTION_TYPE"}' }
+        let(:interactive_run_state) { InteractiveRunState.create(run: run, interactive: interactive, metadata: metadata) }
+
+        it "should provide required set of properties" do
+          expect(subject).to include({
+            type: "interactive_state",
+            id: interactive_run_state.answer_id,
+            question_type: "iframe_interactive",
+            question_id: interactive.embeddable_id,
+            metadataProp1: 1,
+            metadataProp2: { "a" => "b" }
+          })
+          # note that metadata is NOT able to overwrite predefined properties
+          expect(subject).not_to include({
+            question_type: "INVALID_QUESTION_TYPE",
+          })
+          expect(subject).not_to include({
+            "question_type" => "INVALID_QUESTION_TYPE",
+          })
+        end
+      end
+
       describe "when interactive run state pretends to be open response answer" do
         let(:interactive) { FactoryGirl.create(:mw_interactive, enable_learner_state: true) }
         let(:run_data) { JSON({answerType: "open_response_answer", answerText: "Test answer", submitted: true}) }

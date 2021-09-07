@@ -61,6 +61,9 @@
     "coveragePathIgnorePatterns": [
       "/node_modules/"
     ],
+    "modulePathIgnorePatterns": [
+      "dist"
+    ],
     "moduleFileExtensions": [
       "ts",
       "tsx",
@@ -124,6 +127,7 @@
   "dependencies": {
     "@aws-sdk/client-s3": "^3.27.0",
     "@aws-sdk/s3-request-presigner": "^3.27.0",
+    "@concord-consortium/interactive-api-host": "^0.2.0",
     "@concord-consortium/text-decorator": "^1.0.2",
     "@concord-consortium/token-service": "^2.1.0",
     "deep-freeze": "0.0.1",
