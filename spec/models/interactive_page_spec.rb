@@ -224,7 +224,7 @@ describe InteractivePage do
         export_data = page.export.as_json
         interactive_box_embeddables = export_data['embeddables'].select { |e| e['section'] == 'interactive_box' }
         interactive_id = interactive_box_embeddables.first['embeddable']['ref_id']
-        labbook = export_data['embeddables'].select { |e| e['section'] == "main" }.last['embeddable']
+        labbook = export_data['embeddables'].select { |e| e['section'] == Section::DEFAULT_SECTION_TITLE }.last['embeddable']
         expect(labbook).to match a_hash_including('interactive_ref_id' => interactive_id)
       end
     end

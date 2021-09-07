@@ -4,7 +4,7 @@ shared_examples "a question" do
 
   def add_question
     q = described_class.create
-    q.interactive_pages << page
+    page.add_embeddable(q)
     q
   end
 
