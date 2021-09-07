@@ -121,6 +121,8 @@ describe("handleGetAttachmentUrl", () => {
       expect(mockCreateFolder).toHaveBeenCalled();
       expect(mockGetSignedWriteUrl).toHaveBeenCalled();
       expect(options.writeOptions?.onAnswerMetaUpdate).toHaveBeenCalled();
+      // Ensure that the original answer meta hasn't been modified.
+      expect(options.answerMeta).toEqual({});
 
       expect(response).toEqual({
         url: "https://concord.org/write/url",
