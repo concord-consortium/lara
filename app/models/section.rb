@@ -9,8 +9,8 @@ class Section < ActiveRecord::Base
 
   HEADER_BLOCK = 'header_block'
   INTERACTIVE_BOX = 'interactive_box'
-  DEFAULT_SECTION_TITLE = "main"
-
+  ASSESSMENT_BLOCK = "assessment_block"
+  DEFAULT_SECTION_TITLE = ASSESSMENT_BLOCK
   LAYOUT_FULL_WIDTH="Full Width"
   LAYOUT_60_40="60-40"
   LAYOUT_40_60="40-60"

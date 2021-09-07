@@ -116,11 +116,6 @@ module Embeddable
       action_type == SNAPSHOT_ACTION
     end
 
-    def page_section
-      # In practice one question can't be added to multiple pages. Perhaps it should be refactored to has_one / belongs_to relation.
-      page_items.count > 0 && page_items.first.section && page_items.first.section.title
-    end
-
     def action_label
       return custom_action_label unless custom_action_label.blank?
       case action_type

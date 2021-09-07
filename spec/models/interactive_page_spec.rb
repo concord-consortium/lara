@@ -69,6 +69,7 @@ describe InteractivePage do
       embed_text = "This is an embeddable in the header block."
       embed = FactoryGirl.create(:xhtml, :name => "", :content => embed_text)
       page.add_embeddable(embed, 1, Section::HEADER_BLOCK)
+      page.reload # We have to reload to get the order of page_items correct.
       expect(page.embeddables.size).to eq(4)
       expect(page.page_items.first.section.title).to eq(Section::HEADER_BLOCK)
       expect(page.embeddables.first.content).to eq(embed_text)
@@ -408,7 +409,6 @@ describe InteractivePage do
 
       it "should link the interactives" do
         dup_int_1, dup_int_2, dup_int_3, dup_int_4 = dupe.embeddables.last(4)
-
         dup_int_1_linked_items = dup_int_1.primary_linked_items
         expect(dup_int_1_linked_items.length).to be 2
         expect(dup_int_1_linked_items[0].secondary.embeddable).to eq dup_int_2
@@ -425,7 +425,6 @@ describe InteractivePage do
         expect(dup_int_4_linked_items[0].label).to eq "three"
       end
     end
-
   end
 
   ## TODO: Test that 'additional_sections' imports from json.
@@ -441,7 +440,7 @@ describe InteractivePage do
     describe "from a valid_lightweight_activity" do
       let(:example_json_file) { 'valid_lightweight_activity_import' }
       it 'imports page from json' do
-        activity_json[:pages].each_with_index do |p, i|
+        activity_json[:pages].each do |p|
           page = InteractivePage.import(p)
           expect(page).to be_a(InteractivePage)
           expect(p[:name]).to eq(page.name)
@@ -453,7 +452,7 @@ describe InteractivePage do
         # This case used to cause problems before, so test it explicitly.
         page = InteractivePage.import(activity_json[:pages].last).reload
         expect(page.interactives.last).to be_a ImageInteractive
-        expect(page.embeddables.first.interactive).to eq page.interactives.last
+        expect(page.embeddables.last.interactive).to eq page.interactives.last
       end
     end
 
@@ -523,7 +522,7 @@ describe InteractivePage do
 
     context 'with a basic set of items' do
       let(:interactives) { [reportable_interactive, reportable_interactive2] }
-      let(:embeddables) { [or_question, im_question, mc_question]}
+      let(:embeddables) { [or_question, im_question, mc_question] }
       it { is_expected.to eql(embeddables + interactives) }
     end
 
@@ -531,7 +530,7 @@ describe InteractivePage do
       let(:interactives) { [reportable_interactive, reportable_interactive2, video_interactive, image_interactive]}
       let(:embeddables) { [or_question, im_question, mc_question, labbook_question, xhtml]}
       it 'returns just those that are reportable' do
-        expect(subject.length).to eql(6)
+        expect(page.reportable_items.length).to eql(6)
       end
     end
 

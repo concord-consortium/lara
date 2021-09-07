@@ -16,10 +16,6 @@ class ImageInteractive < ActiveRecord::Base
     false
   end
 
-  def page_section
-    page_item && page_item.section && page_item.section.title
-  end
-
   def no_snapshots
     false
   end

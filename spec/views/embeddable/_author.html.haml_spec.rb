@@ -8,11 +8,13 @@ describe "The standard authoring view of the labbook" do
   let(:activity_stubs){ { active_runs: 0} }
   let(:fake_activity) { double("activity", activity_stubs) }
   let(:_page)         { mock_model(InteractivePage)}
+  let(:_section)      { mock_model(Section)}
   let(:_locals)       { { page: _page, embeddable: labbook, allow_hide: true } }
   let(:show_in_runtime) { true }
   let(:labbook) do
+    _section.interactive_pages << _page
     lb = Embeddable::Labbook.create
-    lb.interactive_pages << _page
+    lb.section = _section
     unless show_in_runtime
       # Snapshot type won't show in runtime, as it also needs to point to another interactive.
       lb.action_type = Embeddable::Labbook::SNAPSHOT_ACTION
