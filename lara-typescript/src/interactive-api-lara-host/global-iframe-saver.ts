@@ -1,6 +1,8 @@
 import { ParentEndpoint } from "iframe-phone";
 import { IframePhoneManager } from "./iframe-phone-manager";
-import { GlobalIFrameSaverClientMessage, GlobalIFrameSaverServerMessage } from "../interactive-api-client/types";
+import {
+  GlobalIFrameSaverClientMessage, GlobalIFrameSaverServerMessage
+} from "@concord-consortium/interactive-api-host";
 
 export interface IGlobalIframeSaverConfig {
   save_url: string;

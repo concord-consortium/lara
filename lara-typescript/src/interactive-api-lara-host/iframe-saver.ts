@@ -1,12 +1,13 @@
 import { ParentEndpoint } from "iframe-phone";
 import * as DOMPurify from "dompurify";
-import * as LaraInteractiveApi from "../interactive-api-client";
 import { IframePhoneManager } from "./iframe-phone-manager";
 import { IFrameSaverPluginApi } from "./iframe-saver-plugin";
 import { ModalApiPlugin } from "./modal-api-plugin";
 import {
-  handleGetAttachmentUrl, IAnswerMetadataWithAttachmentsInfo, IAttachmentUrlRequest,
-  IGetInteractiveSnapshotRequest, IGetInteractiveSnapshotResponse, ILinkedInteractive, initializeAttachmentsManager
+  handleGetAttachmentUrl, ClientMessage, IAnswerMetadataWithAttachmentsInfo, IAttachmentUrlRequest, IGetAuthInfoRequest,
+  IGetAuthInfoResponse, IGetFirebaseJwtRequest, IGetFirebaseJwtResponse, IGetInteractiveSnapshotRequest,
+  IGetInteractiveSnapshotResponse, IHintRequest, IInitInteractive, IInteractiveStateProps, ILinkedInteractive,
+  INavigationOptions, initializeAttachmentsManager, ISupportedFeaturesRequest, ServerMessage
 } from "@concord-consortium/interactive-api-host";
 import { EnvironmentName } from "@concord-consortium/token-service";
 
@@ -60,7 +61,7 @@ const safeJSONParse = (obj: any) => {
 };
 
 // tslint:disable-next-line:max-line-length
-const interactiveStateProps = (data: IInteractiveRunStateResponse | null): LaraInteractiveApi.IInteractiveStateProps => ({
+const interactiveStateProps = (data: IInteractiveRunStateResponse | null): IInteractiveStateProps => ({
   interactiveState: (data != null ? safeJSONParse(data.raw_data) : undefined),
   hasLinkedInteractive: (data != null ? data.has_linked_interactive : undefined),
   linkedState: (data != null ? safeJSONParse(data.linked_state) : undefined),
@@ -89,14 +90,14 @@ type SuccessCallback = () => void;
 // these types allow for the requestId to be set in the client but be optional here
 // TODO: AFTER TYPESCRIPT UPGRADE REPLACE WITH OPTIONAL TYPES (Omit not avaiable in current version)
 // type Optional<T, K extends keyof T> = Pick<Partial<T>, K> & Omit<T, K>;
-// type IGetAuthInfoRequestOptionalRequestId = Optional<LaraInteractiveApi.IGetAuthInfoRequest, "requestId">;
-// type IGetAuthInfoResponseOptionalRequestId = Optional<LaraInteractiveApi.IGetAuthInfoResponse, "requestId">;
-// type IGetFirebaseJwtRequestOptionalRequestId = Optional<LaraInteractiveApi.IGetFirebaseJwtRequest, "requestId">;
-// type IGetFirebaseJwtResponseOptionalRequestId = Optional<LaraInteractiveApi.IGetFirebaseJwtResponse, "requestId">;
-type IGetAuthInfoRequestOptionalRequestId = LaraInteractiveApi.IGetAuthInfoRequest;
-type IGetAuthInfoResponseOptionalRequestId = LaraInteractiveApi.IGetAuthInfoResponse;
-type IGetFirebaseJwtRequestOptionalRequestId = LaraInteractiveApi.IGetFirebaseJwtRequest;
-type IGetFirebaseJwtResponseOptionalRequestId = LaraInteractiveApi.IGetFirebaseJwtResponse;
+// type IGetAuthInfoRequestOptionalRequestId = Optional<IGetAuthInfoRequest, "requestId">;
+// type IGetAuthInfoResponseOptionalRequestId = Optional<IGetAuthInfoResponse, "requestId">;
+// type IGetFirebaseJwtRequestOptionalRequestId = Optional<IGetFirebaseJwtRequest, "requestId">;
+// type IGetFirebaseJwtResponseOptionalRequestId = Optional<IGetFirebaseJwtResponse, "requestId">;
+type IGetAuthInfoRequestOptionalRequestId = IGetAuthInfoRequest;
+type IGetAuthInfoResponseOptionalRequestId = IGetAuthInfoResponse;
+type IGetFirebaseJwtRequestOptionalRequestId = IGetFirebaseJwtRequest;
+type IGetFirebaseJwtResponseOptionalRequestId = IGetFirebaseJwtResponse;
 
 export class IFrameSaver {
 
@@ -304,7 +305,7 @@ export class IFrameSaver {
       this.$iframe.trigger("sizeUpdate");
     });
 
-    this.addListener("hint", (hintRequest: LaraInteractiveApi.IHintRequest) => {
+    this.addListener("hint", (hintRequest: IHintRequest) => {
       const $container = this.$iframe.closest(".embeddable-container");
       const $helpIcon = $container.find(".help-icon");
       if (hintRequest.text) {
@@ -316,7 +317,7 @@ export class IFrameSaver {
       $container.find(".help-content .text").html(html);
     });
 
-    this.addListener("supportedFeatures", (info: LaraInteractiveApi.ISupportedFeaturesRequest) => {
+    this.addListener("supportedFeatures", (info: ISupportedFeaturesRequest) => {
       if (info.features && info.features.aspectRatio) {
         // If the author specifies the aspect-ratio-method as "DEFAULT"
         // then the Interactive can provide suggested aspect-ratio.
@@ -327,7 +328,7 @@ export class IFrameSaver {
       }
     });
 
-    this.addListener("navigation", (opts: LaraInteractiveApi.INavigationOptions) => {
+    this.addListener("navigation", (opts: INavigationOptions) => {
       if (opts == null) { opts = {}; }
       if (opts.hasOwnProperty("enableForwardNav")) {
         if (opts.enableForwardNav) {
@@ -472,7 +473,7 @@ export class IFrameSaver {
     const  globalInteractiveState = (typeof globalIframeSaver !== "undefined" && globalIframeSaver !== null)
       ? globalIframeSaver.globalState
       : null;
-    const initInteractiveMsg: LaraInteractiveApi.IInitInteractive = {
+    const initInteractiveMsg: IInitInteractive = {
       version: 1,
       error: err,
       mode: "runtime",
@@ -589,11 +590,11 @@ export class IFrameSaver {
     });
   }
 
-  private post(message: LaraInteractiveApi.ServerMessage, content?: object | string | number | null) {
+  private post(message: ServerMessage, content?: object | string | number | null) {
     this.iframePhone.post(message, content);
   }
 
-  private addListener(message: LaraInteractiveApi.ClientMessage, listener: (content: any) => void) {
+  private addListener(message: ClientMessage, listener: (content: any) => void) {
     this.iframePhone.addListener(message, listener);
   }
 

@@ -1,4 +1,6 @@
-import { ICloseModal, IShowAlert, IShowDialog, IShowLightbox, IShowModal, ModalType } from "../interactive-api-client";
+import {
+  ICloseModal, IShowAlert, IShowDialog, IShowLightbox, IShowModal, ModalType
+} from "@concord-consortium/interactive-api-host";
 import { IFramePhoneStub } from "./iframe-saver-plugin";
 import { addPopup } from "../plugin-api";
 

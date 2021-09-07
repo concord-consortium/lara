@@ -1,5 +1,5 @@
 import { ModalApiPlugin } from "./modal-api-plugin";
-import { IShowModal, ICloseModal } from "../interactive-api-client";
+import { IShowModal, ICloseModal } from "@concord-consortium/interactive-api-host";
 import { MockPhone } from "./mock-iframe-phone";
 import "../../../app/assets/javascripts/jquery.colorbox";
 
