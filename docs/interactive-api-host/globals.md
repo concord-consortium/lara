@@ -101,6 +101,10 @@
 * [S3Operation](globals.md#s3operation)
 * [ServerMessage](globals.md#servermessage)
 
+### Variables
+
+* [timeoutValue](globals.md#let-timeoutvalue)
+
 ### Functions
 
 * [getAttachmentsManager](globals.md#const-getattachmentsmanager)
@@ -259,6 +263,12 @@ ___
 ###  ServerMessage
 
 Ƭ **ServerMessage**: *[IframePhoneServerMessage](globals.md#iframephoneservermessage) | [DeprecatedRuntimeServerMessage](globals.md#deprecatedruntimeservermessage) | [IRuntimeServerMessage](globals.md#iruntimeservermessage) | [IAuthoringServerMessage](globals.md#iauthoringservermessage) | [GlobalIFrameSaverServerMessage](globals.md#globaliframesaverservermessage)*
+
+## Variables
+
+### `Let` timeoutValue
+
+• **timeoutValue**: *number* = 20000
 
 ## Functions
 

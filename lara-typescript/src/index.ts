@@ -1,7 +1,7 @@
 import "./plugin-api/normalize.scss";
 
 import * as PluginAPI from "./plugin-api";
-import * as InteractiveAPI from "./interactive-api-parent";
+import * as InteractiveAPI from "./interactive-api-lara-host";
 import * as Plugins from "./plugins";
 import * as Events from "./events";
 import * as PageItemAuthoring from "./page-item-authoring";
