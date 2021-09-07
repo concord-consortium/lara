@@ -73,7 +73,6 @@
 * [ITextDecorationHandlerInfo](interfaces/itextdecorationhandlerinfo.md)
 * [ITextDecorationInfo](interfaces/itextdecorationinfo.md)
 * [IThemeInfo](interfaces/ithemeinfo.md)
-* [IWritableAttachmentsFolder](interfaces/iwritableattachmentsfolder.md)
 * [IWriteAttachmentRequest](interfaces/iwriteattachmentrequest.md)
 
 ### Type aliases

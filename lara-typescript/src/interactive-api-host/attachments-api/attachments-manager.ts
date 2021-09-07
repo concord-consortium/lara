@@ -2,9 +2,7 @@ import { S3Client, GetObjectCommand, PutObjectCommand } from "@aws-sdk/client-s3
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { v4 as uuid } from "uuid";
 import { Credentials, S3Resource, TokenServiceClient } from "@concord-consortium/token-service";
-import {
-  IAttachmentsFolder, IAttachmentsManagerInitOptions, IReadableAttachmentInfo, IWritableAttachmentsFolder
-} from "./types";
+import { IAttachmentsFolder, IAttachmentsManagerInitOptions, IReadableAttachmentInfo } from "./types";
 
 export type S3Operation = "getObject" | "putObject";
 
@@ -23,9 +21,6 @@ export interface IS3SignedUrlOptions extends ISignedWriteUrlOptions {
 const kTokenServiceToolName = "interactive-attachments";
 const kDefaultWriteExpirationSec = 5 * 60;
 const kDefaultReadExpirationSec = 2 * 60 * 60;
-
-export const isWritableAttachmentsFolder = (folder: IAttachmentsFolder): folder is IWritableAttachmentsFolder =>
-              !!(folder as IWritableAttachmentsFolder).readWriteToken;
 
 export class AttachmentsManager {
   private sessionId = uuid();
@@ -56,7 +51,7 @@ export class AttachmentsManager {
     return this.sessionId;
   }
 
-  public async createFolder(interactiveId: string): Promise<IWritableAttachmentsFolder> {
+  public async createFolder(interactiveId: string): Promise<IAttachmentsFolder> {
     const folderResource = await this.tokenServiceClient.createResource({
       tool: kTokenServiceToolName,
       type: "s3Folder",
@@ -80,11 +75,13 @@ export class AttachmentsManager {
     const publicPath = this.tokenServiceClient.getPublicS3Path(folderResource, `${this.sessionId}/${name}`);
     const url = await this.getSignedUrl(folder, "putObject", { Key: publicPath, ContentType, expiresIn });
     // returns the writable url and the information required to read it
-    return [url, { folder: { id: folder.id }, publicPath }];
+    return [url, { publicPath }];
   }
 
-  public getSignedReadUrl(attachmentInfo: IReadableAttachmentInfo, options?: ISignedReadUrlOptions) {
-    const { folder, publicPath } = attachmentInfo;
+  public getSignedReadUrl(
+    folder: IAttachmentsFolder, attachmentInfo: IReadableAttachmentInfo, options?: ISignedReadUrlOptions
+  ) {
+    const { publicPath } = attachmentInfo;
     const { expiresIn = kDefaultReadExpirationSec } = options || {};
     return this.getSignedUrl(folder, "getObject", { Key: publicPath, expiresIn });
   }
@@ -99,8 +96,7 @@ export class AttachmentsManager {
   }
 
   private getCredentials(folder: IAttachmentsFolder): Promise<Credentials> {
-    const readWriteToken = isWritableAttachmentsFolder(folder) ? folder.readWriteToken : undefined;
-    return this.tokenServiceClient.getCredentials(folder.id, readWriteToken);
+    return this.tokenServiceClient.getCredentials(folder.id, folder.readWriteToken);
   }
 
   private async getSignedUrl(folder: IAttachmentsFolder, operation: S3Operation, options: IS3SignedUrlOptions) {

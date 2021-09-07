@@ -47,8 +47,9 @@ export const handleGetAttachmentUrl =
     }
     else if (operation === "read") {
       if (answerMeta.attachmentsFolder && answerMeta.attachments && answerMeta.attachments[name]) {
-        // TODO: this won't work for run-with-others where we won't have a readWriteToken
-        response.url = await attachmentsMgr.getSignedReadUrl(answerMeta.attachments[name], { expiresIn });
+        response.url = await attachmentsMgr.getSignedReadUrl(
+          answerMeta.attachmentsFolder, answerMeta.attachments[name], { expiresIn }
+        );
       } else {
         response.error = `error getting attachment url: ${name} ["No attachment info in answer metadata"]`;
         return response;

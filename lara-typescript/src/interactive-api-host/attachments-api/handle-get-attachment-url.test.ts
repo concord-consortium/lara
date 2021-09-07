@@ -150,7 +150,7 @@ describe("handleGetAttachmentUrl", () => {
         onAnswerMetaUpdate: jest.fn()
       },
       answerMeta: {
-        attachments: { "test.json": { folder: { id: "folder-id" }, publicPath: "public/path" } },
+        attachments: { "test.json": { publicPath: "public/path" } },
         attachmentsFolder: { id: "folder-id" }
       }
     };

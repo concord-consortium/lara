@@ -6,16 +6,21 @@
 
 * **IAttachmentsFolder**
 
-  ↳ [IWritableAttachmentsFolder](iwritableattachmentsfolder.md)
-
 ## Index
 
 ### Properties
 
 * [id](iattachmentsfolder.md#id)
+* [readWriteToken](iattachmentsfolder.md#optional-readwritetoken)
 
 ## Properties
 
 ###  id
 
 • **id**: *string*
+
+___
+
+### `Optional` readWriteToken
+
+• **readWriteToken**? : *undefined | string*

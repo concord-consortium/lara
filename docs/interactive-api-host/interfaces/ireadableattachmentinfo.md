@@ -10,16 +10,9 @@
 
 ### Properties
 
-* [folder](ireadableattachmentinfo.md#folder)
 * [publicPath](ireadableattachmentinfo.md#publicpath)
 
 ## Properties
-
-###  folder
-
-• **folder**: *[IAttachmentsFolder](iattachmentsfolder.md)*
-
-___
 
 ###  publicPath
 

@@ -17,14 +17,10 @@ export interface IS3SignedUrlOptions extends ISignedWriteUrlOptions {
 
 export interface IAttachmentsFolder {
   id: string;
-}
-
-export interface IWritableAttachmentsFolder extends IAttachmentsFolder {
   readWriteToken?: string;
 }
 
 export interface IReadableAttachmentInfo {
-  folder: IAttachmentsFolder;
   publicPath: string;
 }
 
