@@ -64,18 +64,6 @@
   #sections-container
 
 :javascript
-  function updateFunction(changes, section_id) {
-    const post_path = `/sections/${section_id}.json`;
-    $.ajax({
-      type: "PUT",
-      url: post_path,
-      contentType: "application/json",
-      data: JSON.stringify(changes),
-      success: (d) => console.log(`success: ${d}`),
-      error: (e) => console.log(`success: ${e}`)
-    });
-  };
-
   $(function() {
     if ((navigator.userAgent.indexOf("MSIE"))!=-1){
       $('#page-section-controls').removeAttr("id");
