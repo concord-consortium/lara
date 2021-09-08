@@ -49,7 +49,7 @@ module Embeddable
   end
 
   def page_section
-    p_item&.section&.title
+    p_item&.section&.title || false
   end
 
   def page

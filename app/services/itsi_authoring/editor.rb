@@ -41,9 +41,9 @@ class ITSIAuthoring::Editor
       is_hidden: page.is_hidden,
       update_url: interactive_page_path(page),
       interactives: page.section_embeddables(InteractivePage::INTERACTIVE_BOX).map { |i| interactive_json(i, page) },
-      embeddables: page.embeddables.select { |e| e.page_section.nil? }
+      embeddables: page.embeddables.select { |e| e.page_section.nil? || e.page_section == Section::DEFAULT_SECTION_TITLE }
                                    .map { |e| embeddable_json(e) },
-      header_embeddables: page.embeddables.select { |e| e.page_section == InteractivePage::HEADER_BLOCK }
+      header_embeddables: page.embeddables.select { |e| e.page_section == Section::HEADER_BLOCK }
                                           .map { |he| embeddable_json(he) }
     }
   end

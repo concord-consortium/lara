@@ -1,10 +1,10 @@
 require File.expand_path('../../../spec_helper', __FILE__)
 
 describe Embeddable::ExternalScript do
-  let (:props)  { {} }
-  let (:script) { Embeddable::ExternalScript.create(props) }
+  let(:props)  { {} }
+  let(:script) { Embeddable::ExternalScript.create(props) }
 
-  let (:page) do
+  let(:page) do
     p = FactoryGirl.create(:interactive_page)
   end
 
@@ -33,8 +33,8 @@ describe Embeddable::ExternalScript do
       end
 
       describe 'when there is no section' do
-        it "the page_section should be returned as nil" do
-          expect(script.reload.page_section).to eql(nil)
+        it "the page_section should be returned as the default section" do
+          expect(script.reload.page_section).to eql(Section::DEFAULT_SECTION_TITLE)
         end
         describe 'the page export' do
           it "should include an ebmeddables section" do

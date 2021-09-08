@@ -5,16 +5,13 @@ describe "The standard authoring view of the labbook" do
     I18n.t('LABBOOK.WONT_DISPLAY')
   end
 
-  let(:activity_stubs){ { active_runs: 0} }
-  let(:fake_activity) { double("activity", activity_stubs) }
-  let(:_page)         { mock_model(InteractivePage)}
-  let(:_section)      { mock_model(Section)}
-  let(:_locals)       { { page: _page, embeddable: labbook, allow_hide: true } }
+  let(:act) { FactoryGirl.create(:public_activity) }
+  let(:_page) { FactoryGirl.create(:page, lightweight_activity: act) }
+  let(:_locals) { { page: _page, embeddable: labbook, allow_hide: true } }
   let(:show_in_runtime) { true }
   let(:labbook) do
-    _section.interactive_pages << _page
     lb = Embeddable::Labbook.create
-    lb.section = _section
+    _page.add_embeddable(lb)
     unless show_in_runtime
       # Snapshot type won't show in runtime, as it also needs to point to another interactive.
       lb.action_type = Embeddable::Labbook::SNAPSHOT_ACTION
@@ -23,7 +20,7 @@ describe "The standard authoring view of the labbook" do
   end
 
   before :each do
-    assign('activity', fake_activity)
+    assign('activity', act)
   end
 
   describe "When the labbook won't show in the runtime" do

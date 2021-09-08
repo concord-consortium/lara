@@ -150,7 +150,7 @@ class InteractivePage < ActiveRecord::Base
 
   def main_visible_embeddables
     # Visible embeddables that do not have section specified (nil section).
-    section_visible_embeddables(nil)
+    section_visible_embeddables(Section::DEFAULT_SECTION_TITLE)
   end
 
   def header_block_embeddables
