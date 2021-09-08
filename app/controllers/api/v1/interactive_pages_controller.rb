@@ -1,6 +1,6 @@
 class Api::V1::InteractivePagesController < API::APIController
   layout false
-  before_filter :set_interactive_page
+  before_filter :set_interactive_page, except: [:get_library_interactives_list]
 
   ## Queries:
   def get_sections
@@ -72,6 +72,15 @@ class Api::V1::InteractivePagesController < API::APIController
 
     # TODO: in follow on work change the returned json to include the page items
     render_page_sections_json
+  end
+
+  def get_library_interactives_list
+    render :json => {
+      success: true,
+      library_interactives: LibraryInteractive.select([:id, :name]).order(:name).map do |li|
+        {id: li.serializeable_id, name: li.name }
+      end
+    }
   end
 
   def get_interactive_list
