@@ -56,8 +56,10 @@ module CRater::ArgumentationBlocksReport
           ON #{LightweightActivity.table_name}.id = #{Run.table_name}.activity_id
         INNER JOIN #{InteractivePage.table_name}
           ON #{InteractivePage.table_name}.lightweight_activity_id = #{LightweightActivity.table_name}.id
+        INNER JOIN #{Section.table_name}
+          ON #{Section.table_name}.interactive_page_id = #{InteractivePage.table_name}.id
         INNER JOIN #{PageItem.table_name}
-          ON #{PageItem.table_name}.interactive_page_id = #{InteractivePage.table_name}.id
+          ON #{PageItem.table_name}.section_id = #{Section.table_name}.id
         INNER JOIN #{s[:question_type].table_name}
           ON #{s[:question_type].table_name}.id = #{PageItem.table_name}.embeddable_id
         INNER JOIN #{s[:answer_type].table_name}
@@ -69,7 +71,7 @@ module CRater::ArgumentationBlocksReport
         INNER JOIN #{CRater::FeedbackSubmission.table_name}
           ON #{CRater::FeedbackSubmission.table_name}.id = #{s[:feedback_type].table_name}.feedback_submission_id
       WHERE
-        #{PageItem.table_name}.old_section = "arg_block"
+        #{Section.table_name}.title = '#{CRater::ARG_SECTION_NAME}'
         AND
         embeddable_type = "#{s[:question_type].name}"
         AND
