@@ -14,6 +14,17 @@ import { EnvironmentName } from "@concord-consortium/token-service";
 // Shutterbug is imported globally and used by the old LARA JS code.
 const Shutterbug = (window as any).Shutterbug;
 
+const getTokenServiceEnv = () => {
+  const host = window.location.hostname;
+  if (host.match(/staging\./)) {
+    return "staging";
+  }
+  if (host.match(/concord\.org/)) {
+    return "production";
+  }
+  return "staging";
+};
+
 const getAuthoredState = ($dataDiv: JQuery) => {
   let authoredState = $dataDiv.data("authored-state");
   if ((authoredState == null) || (authoredState === "")) {
@@ -126,7 +137,6 @@ export class IFrameSaver {
   private getFirebaseJWTUrl: string;
   private runKey: string | undefined;
   private runRemoteEndpoint: string | undefined;
-  private tokenServiceEnv: EnvironmentName;
   private metadata: object | undefined;
   private savedState: object | string | null;
   private autoSaveIntervalId: number | null;
@@ -152,7 +162,6 @@ export class IFrameSaver {
     this.getFirebaseJWTUrl = $dataDiv.data("get-firebase-jwt-url");
     this.runKey = $dataDiv.data("run-key");
     this.runRemoteEndpoint = $dataDiv.data("run-remote-endpoint");
-    this.tokenServiceEnv = $dataDiv.data("token-service-env");
     this.linkedInteractives = getLinkedInteractives($dataDiv);
 
     this.saveIndicator = SaveIndicator.instance();
@@ -252,7 +261,7 @@ export class IFrameSaver {
         // Lack of runRemoteEndpoint means that the run is anonymous.
         const tokenServiceJWT = this.runRemoteEndpoint ? (await this.getFirebaseJwt("token-service")).token : undefined;
         initializeAttachmentsManager({
-          tokenServiceEnv: this.tokenServiceEnv,
+          tokenServiceEnv: getTokenServiceEnv(),
           tokenServiceFirestoreJWT: tokenServiceJWT,
           writeOptions: {
             // LARA non-anonymous runs have both runRemoteEndpoint and runKey. In this case don't provide runKey

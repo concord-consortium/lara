@@ -50,7 +50,6 @@ module InteractiveRunHelper
     data['interactive-id'] = interactive.id
     data['interactive-name'] = interactive.name
     data['linked-interactives'] = interactive.linked_interactives_list.to_json
-    data['token-service-env'] = ENV["RAILS_ENV"] == "production" ? "production" : "staging"
 
     opts = {
       :src => interactive.url,
