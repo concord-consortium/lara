@@ -11,16 +11,9 @@
 ### Properties
 
 * [attachments](ianswermetadatawithattachmentsinfo.md#optional-attachments)
-* [attachmentsFolder](ianswermetadatawithattachmentsinfo.md#optional-attachmentsfolder)
 
 ## Properties
 
 ### `Optional` attachments
 
 • **attachments**? : *Record‹string, [IReadableAttachmentInfo](ireadableattachmentinfo.md)›*
-
-___
-
-### `Optional` attachmentsFolder
-
-• **attachmentsFolder**? : *[IAttachmentsFolder](iattachmentsfolder.md)*
