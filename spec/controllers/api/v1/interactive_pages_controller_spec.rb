@@ -139,7 +139,6 @@ describe Api::V1::InteractivePagesController do
 
   describe "#create_page_item" do
     let(:section) { FactoryGirl.create(:section, :interactive_page => page, :layout => Section::LAYOUT_FULL_WIDTH) }
-    let(:library_interactive) { FactoryGirl.create(:library_interactive) }
 
     before :each do
       sign_in author
@@ -210,13 +209,32 @@ describe Api::V1::InteractivePagesController do
     it "succeeds with valid parameters" do
       xhr :post, "create_page_item", {id: page.id, page_item: {
         section_id: section.id,
-        embeddable: library_interactive.serializeable_id,
+        embeddable: library_interactive1.serializeable_id,
         position: 1,
         section_position: 1,
         column: 1
       }}
       expect(response.status).to eq(200)
       expect(response.content_type).to eq("application/json")
+    end
+  end
+
+  describe "#get_library_interactives_list" do
+    it "returns the list of library interactives" do
+      # make sure the mocks exist
+      library_interactive1
+      library_interactive2
+
+      xhr :get, "get_library_interactives_list"
+      expect(response.status).to eq(200)
+      expect(response.content_type).to eq("application/json")
+      expect(response.body).to eql({
+        success: true,
+        library_interactives: [
+          {id: library_interactive1.serializeable_id, name: library_interactive1.name},
+          {id: library_interactive2.serializeable_id, name: library_interactive2.name}
+        ]
+      }.to_json)
     end
   end
 end
