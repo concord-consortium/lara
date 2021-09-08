@@ -136,4 +136,87 @@ describe Api::V1::InteractivePagesController do
       end
     end
   end
+
+  describe "#create_page_item" do
+    let(:section) { FactoryGirl.create(:section, :interactive_page => page, :layout => Section::LAYOUT_FULL_WIDTH) }
+    let(:library_interactive) { FactoryGirl.create(:library_interactive) }
+
+    before :each do
+      sign_in author
+    end
+
+    describe "fails" do
+      it "without a page_item parameter" do
+        xhr :post, "create_page_item", {id: page.id}
+        expect(response.status).to eq(500)
+        expect(response.content_type).to eq("application/json")
+        expect(response.body).to include "Missing page_item parameter"
+      end
+
+      it "without a section_id parameter" do
+        xhr :post, "create_page_item", {id: page.id, page_item: {}}
+        expect(response.status).to eq(500)
+        expect(response.content_type).to eq("application/json")
+        expect(response.body).to include "Missing page_item[section_id] parameter"
+      end
+
+      it "with an invalid section_id parameter" do
+        xhr :post, "create_page_item", {id: page.id, page_item: {section_id: 0}}
+        expect(response.status).to eq(500)
+        expect(response.content_type).to eq("application/json")
+        expect(response.body).to include "Invalid page_item[section_id] parameter"
+      end
+
+      it "fails with a missing embeddable parameter" do
+        xhr :post, "create_page_item", {id: page.id, page_item: {
+          section_id: section.id,
+          position: 1,
+          section_position: 1,
+          column: 1
+        }}
+        expect(response.body).to include "Missing page_item[embeddable] parameter"
+        expect(response.status).to eq(500)
+        expect(response.content_type).to eq("application/json")
+        expect(response.body).to include "Missing page_item[embeddable] parameter"
+      end
+
+      it "fails with an invalid embeddable parameter" do
+        xhr :post, "create_page_item", {id: page.id, page_item: {
+          section_id: section.id,
+          embeddable: "MwInteractive_1",
+          position: 1,
+          section_position: 1,
+          column: 1
+        }}
+        expect(response.status).to eq(500)
+        expect(response.content_type).to eq("application/json")
+        expect(response.body).to include "Only library interactive embeddables are currently supported"
+      end
+
+      it "fails with an invalid library interactive parameter" do
+        xhr :post, "create_page_item", {id: page.id, page_item: {
+          section_id: section.id,
+          embeddable: "LibraryInteractive_0",
+          position: 1,
+          section_position: 1,
+          column: 1
+        }}
+        expect(response.status).to eq(500)
+        expect(response.content_type).to eq("application/json")
+        expect(response.body).to include "Invalid page_item[embeddable] parameter"
+      end
+    end
+
+    it "succeeds with valid parameters" do
+      xhr :post, "create_page_item", {id: page.id, page_item: {
+        section_id: section.id,
+        embeddable: library_interactive.serializeable_id,
+        position: 1,
+        section_position: 1,
+        column: 1
+      }}
+      expect(response.status).to eq(200)
+      expect(response.content_type).to eq("application/json")
+    end
+  end
 end

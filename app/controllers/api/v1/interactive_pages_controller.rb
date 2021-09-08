@@ -1,4 +1,4 @@
-class Api::V1::InteractivePagesController < ApplicationController
+class Api::V1::InteractivePagesController < API::APIController
   layout false
   before_filter :set_interactive_page
 
@@ -40,6 +40,37 @@ class Api::V1::InteractivePagesController < ApplicationController
     section_id = section_params.delete('id')
     section = Section.find(section_id)
     section.update_attributes(section_params)
+    render_page_sections_json
+  end
+
+  def create_page_item
+    authorize! :update, @interactive_page
+
+    page_item_params = params["page_item"]
+    return error("Missing page_item parameter") if page_item_params.nil?
+
+    # verify the parameters
+    section_id = page_item_params["section_id"]
+    return error("Missing page_item[section_id] parameter") if section_id.nil?
+    section = @interactive_page.sections.where(id: section_id).first
+    return error("Invalid page_item[section_id] parameter") if section.nil?
+    serializeable_id = page_item_params["embeddable"]
+    return error("Missing page_item[embeddable] parameter") if serializeable_id.nil?
+    position = page_item_params["position"]
+    position = position.to_i unless position.nil?
+
+    # currently we only support library interactives, this will change later
+    if serializeable_id.start_with?("LibraryInteractive")
+      library_interactive = LibraryInteractive.find_by_serializeable_id(serializeable_id)
+      return error("Invalid page_item[embeddable] parameter") if library_interactive.nil?
+      embeddable = ManagedInteractive.create(library_interactive_id: library_interactive.id)
+    else
+      return error("Only library interactive embeddables are currently supported")
+    end
+
+    @interactive_page.add_embeddable(embeddable, position, section.id)
+
+    # TODO: in follow on work change the returned json to include the page items
     render_page_sections_json
   end
 

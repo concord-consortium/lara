@@ -94,4 +94,13 @@ class LibraryInteractive < ActiveRecord::Base
     ManagedInteractive.where(library_interactive_id: self.id).length
   end
 
+  def serializeable_id
+    "#{self.class.to_s}_#{self.id}"
+  end
+
+  def self.find_by_serializeable_id(_serializeable_id)
+    class_name, id = _serializeable_id.split("_")
+    class_name.constantize.find_by_id(id)
+  end
+
 end
