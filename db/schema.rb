@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20210727180747) do
+ActiveRecord::Schema.define(:version => 20210903171847) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "kind"
@@ -375,6 +375,7 @@ ActiveRecord::Schema.define(:version => 20210727180747) do
     t.text     "learner_url"
     t.boolean  "is_dirty",                             :default => false
     t.string   "key"
+    t.text     "metadata"
   end
 
   add_index "interactive_run_states", ["key"], :name => "interactive_run_states_key_idx"
@@ -432,7 +433,6 @@ ActiveRecord::Schema.define(:version => 20210727180747) do
     t.boolean  "student_report_enabled",                 :default => true
     t.text     "last_report_service_hash"
     t.boolean  "show_submit_button",                     :default => true
-    t.boolean  "activity_player_only"
     t.string   "runtime",                                :default => "LARA"
     t.string   "background_image"
   end
@@ -686,7 +686,6 @@ ActiveRecord::Schema.define(:version => 20210727180747) do
     t.string   "publication_hash",         :limit => 40
     t.string   "imported_activity_url"
     t.text     "last_report_service_hash"
-    t.boolean  "activity_player_only"
     t.string   "runtime",                                :default => "LARA"
     t.string   "background_image"
   end

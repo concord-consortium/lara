@@ -2,7 +2,7 @@ class InteractiveRunState < ActiveRecord::Base
   alias_method :original_json, :to_json  # make sure we can still generate json of the base model after including Answer
   include Embeddable::Answer # Common methods for Answer models
 
-  attr_accessible :interactive_id, :interactive_type, :run_id, :raw_data, :interactive, :run, :key
+  attr_accessible :interactive_id, :interactive_type, :run_id, :raw_data, :interactive, :run, :key, :metadata
 
   belongs_to :run
   belongs_to :interactive, :polymorphic => true
@@ -124,20 +124,36 @@ class InteractiveRunState < ActiveRecord::Base
     # IRuntime<...>Metadata interfaces.
     # Metadata is simply provided as a part of interactive state. It's optional and everything should work if there's
     # no metadata defined or interactive state is empty.
-    metadata = parsed_interactive_state
+    intStateMetadata = parsed_interactive_state
 
     # This property is defined in IRuntimeMetadataBase:
-    type = metadata[:answerType] || (interactive.has_report_url ? "external_link" : "interactive_state")
+    type = intStateMetadata[:answerType] || (interactive.has_report_url ? "external_link" : "interactive_state")
 
-    result = {
-      # type can be overwritten by metadata[:answerType] prop (e.g. to "open_response_answer").
+    result = {}
+
+    # Custom metadata provided by the host environment (LARA JS env). Different from the interactive state metadata
+    # defined above. This metadata is used to store attachment data. In the future can be used for other things.
+    if self.metadata
+      # Note that the custom metadata should extend record at the very beginning. This will ensure that it cannot
+      # overwrite one of the properties defined below.
+      begin
+        # symbolize_keys is important, as it ensures that all the important properties will be set below and can't
+        # be overwritten by metadata JSON.
+        result.merge!(JSON.parse(self.metadata).symbolize_keys)
+      rescue JSON::ParserError
+        # Ignore invalid JSONs
+      end
+    end
+
+    result.merge!({
+      # type can be overwritten by intStateMetadata[:answerType] prop (e.g. to "open_response_answer").
       # Otherwise, the default "interactive_state" or "external_link" will be used.
       type: type,
       # question_type should match answer type.
       question_type: InteractiveRunState.question_type_for(type),
       # These properties are defined in IRuntimeMetadataBase:
-      submitted: metadata[:submitted],
-      answer_text: metadata[:answerText],
+      submitted: intStateMetadata[:submitted],
+      answer_text: intStateMetadata[:answerText],
       # These properties are stored in LARA. They're basic interactive run state properties. Some of them might be
       # unused by Report or Portal when interactive pretends to be a basic question type. But these services might be
       # extended to show both basic question answer and optionally provide iframe report view.
@@ -146,7 +162,7 @@ class InteractiveRunState < ActiveRecord::Base
       # Even when interactive pretends to be one of the basic questions, it makes sense to add full report state
       # (combination of authored and interactive state), so the full reporting view can be displayed if necessary.
       report_state: report_state.to_json
-    }
+    })
 
     case type
     when "multiple_choice_answer"
@@ -154,18 +170,18 @@ class InteractiveRunState < ActiveRecord::Base
       # but still be compatible with Report and Portal format.
       # selectedChoiceIds is defined in IRuntimeMultipleChoiceMetadata.
       result[:answer] = {
-        choice_ids: metadata[:selectedChoiceIds]
+        choice_ids: intStateMetadata[:selectedChoiceIds]
       }
     when "open_response_answer"
       # answerText is defined in IRuntimeMetadataBase.
       # Use answer key to be compatible with current Report and Portal format.
-      result[:answer] = metadata[:answerText]
+      result[:answer] = intStateMetadata[:answerText]
     when "image_question_answer"
       # answerImageUrl is defined in IRuntimeImageQuestionMetadata.
       # # Use answer key to be compatible with current Report service format.
       result[:answer] = {
-        image_url: metadata[:answerImageUrl],
-        text: metadata[:answerText]
+        image_url: intStateMetadata[:answerImageUrl],
+        text: intStateMetadata[:answerText]
       }
     when "external_link"
       result[:answer] = reporting_url
@@ -261,6 +277,7 @@ class InteractiveRunState < ActiveRecord::Base
         id: id,
         key: key,
         raw_data: raw_data,
+        metadata: metadata,
         learner_url: learner_url,
         run_remote_endpoint: run_remote_endpoint,
         interactive_state_url: interactive_state_url(protocol, host),

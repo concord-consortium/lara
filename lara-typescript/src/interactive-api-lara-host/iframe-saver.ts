@@ -1,14 +1,29 @@
 import { ParentEndpoint } from "iframe-phone";
 import * as DOMPurify from "dompurify";
-import * as LaraInteractiveApi from "../interactive-api-client";
 import { IframePhoneManager } from "./iframe-phone-manager";
 import { IFrameSaverPluginApi } from "./iframe-saver-plugin";
 import { ModalApiPlugin } from "./modal-api-plugin";
 import {
-  IGetInteractiveSnapshotRequest, IGetInteractiveSnapshotResponse, ILinkedInteractive
-} from "../interactive-api-client";
+  handleGetAttachmentUrl, ClientMessage, IAnswerMetadataWithAttachmentsInfo, IAttachmentUrlRequest, IGetAuthInfoRequest,
+  IGetAuthInfoResponse, IGetFirebaseJwtRequest, IGetFirebaseJwtResponse, IGetInteractiveSnapshotRequest,
+  IGetInteractiveSnapshotResponse, IHintRequest, IInitInteractive, IInteractiveStateProps, ILinkedInteractive,
+  INavigationOptions, initializeAttachmentsManager, ISupportedFeaturesRequest, ServerMessage
+} from "@concord-consortium/interactive-api-host";
+import { EnvironmentName } from "@concord-consortium/token-service";
+
 // Shutterbug is imported globally and used by the old LARA JS code.
 const Shutterbug = (window as any).Shutterbug;
+
+const getTokenServiceEnv = () => {
+  const host = window.location.hostname;
+  if (host.match(/staging\./)) {
+    return "staging";
+  }
+  if (host.match(/concord\.org/)) {
+    return "production";
+  }
+  return "staging";
+};
 
 const getAuthoredState = ($dataDiv: JQuery) => {
   let authoredState = $dataDiv.data("authored-state");
@@ -45,6 +60,7 @@ interface IInteractiveRunStateResponse {
   page_number: number;
   page_name: string;
   activity_name: string;
+  metadata: string;
 }
 
 const safeJSONParse = (obj: any) => {
@@ -56,7 +72,7 @@ const safeJSONParse = (obj: any) => {
 };
 
 // tslint:disable-next-line:max-line-length
-const interactiveStateProps = (data: IInteractiveRunStateResponse | null): LaraInteractiveApi.IInteractiveStateProps => ({
+const interactiveStateProps = (data: IInteractiveRunStateResponse | null): IInteractiveStateProps => ({
   interactiveState: (data != null ? safeJSONParse(data.raw_data) : undefined),
   hasLinkedInteractive: (data != null ? data.has_linked_interactive : undefined),
   linkedState: (data != null ? safeJSONParse(data.linked_state) : undefined),
@@ -85,18 +101,19 @@ type SuccessCallback = () => void;
 // these types allow for the requestId to be set in the client but be optional here
 // TODO: AFTER TYPESCRIPT UPGRADE REPLACE WITH OPTIONAL TYPES (Omit not avaiable in current version)
 // type Optional<T, K extends keyof T> = Pick<Partial<T>, K> & Omit<T, K>;
-// type IGetAuthInfoRequestOptionalRequestId = Optional<LaraInteractiveApi.IGetAuthInfoRequest, "requestId">;
-// type IGetAuthInfoResponseOptionalRequestId = Optional<LaraInteractiveApi.IGetAuthInfoResponse, "requestId">;
-// type IGetFirebaseJwtRequestOptionalRequestId = Optional<LaraInteractiveApi.IGetFirebaseJwtRequest, "requestId">;
-// type IGetFirebaseJwtResponseOptionalRequestId = Optional<LaraInteractiveApi.IGetFirebaseJwtResponse, "requestId">;
-type IGetAuthInfoRequestOptionalRequestId = LaraInteractiveApi.IGetAuthInfoRequest;
-type IGetAuthInfoResponseOptionalRequestId = LaraInteractiveApi.IGetAuthInfoResponse;
-type IGetFirebaseJwtRequestOptionalRequestId = LaraInteractiveApi.IGetFirebaseJwtRequest;
-type IGetFirebaseJwtResponseOptionalRequestId = LaraInteractiveApi.IGetFirebaseJwtResponse;
+// type IGetAuthInfoRequestOptionalRequestId = Optional<IGetAuthInfoRequest, "requestId">;
+// type IGetAuthInfoResponseOptionalRequestId = Optional<IGetAuthInfoResponse, "requestId">;
+// type IGetFirebaseJwtRequestOptionalRequestId = Optional<IGetFirebaseJwtRequest, "requestId">;
+// type IGetFirebaseJwtResponseOptionalRequestId = Optional<IGetFirebaseJwtResponse, "requestId">;
+type IGetAuthInfoRequestOptionalRequestId = IGetAuthInfoRequest;
+type IGetAuthInfoResponseOptionalRequestId = IGetAuthInfoResponse;
+type IGetFirebaseJwtRequestOptionalRequestId = IGetFirebaseJwtRequest;
+type IGetFirebaseJwtResponseOptionalRequestId = IGetFirebaseJwtResponse;
 
 export class IFrameSaver {
 
   private static instances: IFrameSaver[] = [];
+  private static isAttachmentsManagerInitialized = false;
 
   private static defaultSuccess() {
     // tslint:disable-next-line:no-console
@@ -118,6 +135,9 @@ export class IFrameSaver {
   private interactiveId: number;
   private interactiveName: string;
   private getFirebaseJWTUrl: string;
+  private runKey: string | undefined;
+  private runRemoteEndpoint: string | undefined;
+  private metadata: object | undefined;
   private savedState: object | string | null;
   private autoSaveIntervalId: number | null;
   private alreadySetup: boolean;
@@ -140,6 +160,8 @@ export class IFrameSaver {
     this.interactiveId = $dataDiv.data("interactive-id");
     this.interactiveName = $dataDiv.data("interactive-name");
     this.getFirebaseJWTUrl = $dataDiv.data("get-firebase-jwt-url");
+    this.runKey = $dataDiv.data("run-key");
+    this.runRemoteEndpoint = $dataDiv.data("run-remote-endpoint");
     this.linkedInteractives = getLinkedInteractives($dataDiv);
 
     this.saveIndicator = SaveIndicator.instance();
@@ -158,6 +180,8 @@ export class IFrameSaver {
     this.iframePhone = IframePhoneManager.getPhone($iframe[0] as HTMLIFrameElement, () => this.phoneAnswered());
 
     this.plugins = [ModalApiPlugin(this.iframePhone)];
+
+    this.initializeAttachmentsManager();
   }
 
   public save(successCallback?: SuccessCallback | null) {
@@ -206,6 +230,53 @@ export class IFrameSaver {
     });
   }
 
+  public saveMetadata(metadata: object) {
+    if (!this.learnerStateSavingEnabled()) { return; }
+
+    if (JSON.stringify(metadata) === JSON.stringify(this.metadata)) {
+      return;
+    }
+
+    this.saveIndicator.showSaving();
+    $.ajax({
+      type: "PUT",
+      dataType: "json",
+      url: this.interactiveRunStateUrl,
+      data: { metadata: JSON.stringify(metadata) },
+      success: response => {
+        this.metadata = metadata;
+        this.saveIndicator.showSaved("Saved Interactive");
+      },
+      error: () => {
+        this.error("couldn't save interactive metadata");
+      }
+    });
+  }
+
+  private async initializeAttachmentsManager() {
+    if (!IFrameSaver.isAttachmentsManagerInitialized) {
+      // Try to initialize manager only once.
+      IFrameSaver.isAttachmentsManagerInitialized = true;
+      try {
+        // Lack of runRemoteEndpoint means that the run is anonymous.
+        const tokenServiceJWT = this.runRemoteEndpoint ? (await this.getFirebaseJwt("token-service")).token : undefined;
+        initializeAttachmentsManager({
+          tokenServiceEnv: getTokenServiceEnv(),
+          tokenServiceFirestoreJWT: tokenServiceJWT,
+          writeOptions: {
+            // LARA non-anonymous runs have both runRemoteEndpoint and runKey. In this case don't provide runKey
+            // to ensure that AttachmentsManager uses runRemoteEndpoint only.
+            runKey: this.runRemoteEndpoint ? undefined : this.runKey,
+            runRemoteEndpoint: this.runRemoteEndpoint
+          }
+        });
+      } catch (error) {
+        // tslint:disable-next-line:no-console
+        console.error("AttachmentsManager can't be initialized", error);
+      }
+    }
+  }
+
   private phoneAnswered() {
     // Workaround IframePhone problem - phone_answered callback can be triggered multiple times:
     // https://www.pivotaltracker.com/story/show/89602814
@@ -243,7 +314,7 @@ export class IFrameSaver {
       this.$iframe.trigger("sizeUpdate");
     });
 
-    this.addListener("hint", (hintRequest: LaraInteractiveApi.IHintRequest) => {
+    this.addListener("hint", (hintRequest: IHintRequest) => {
       const $container = this.$iframe.closest(".embeddable-container");
       const $helpIcon = $container.find(".help-icon");
       if (hintRequest.text) {
@@ -255,7 +326,7 @@ export class IFrameSaver {
       $container.find(".help-content .text").html(html);
     });
 
-    this.addListener("supportedFeatures", (info: LaraInteractiveApi.ISupportedFeaturesRequest) => {
+    this.addListener("supportedFeatures", (info: ISupportedFeaturesRequest) => {
       if (info.features && info.features.aspectRatio) {
         // If the author specifies the aspect-ratio-method as "DEFAULT"
         // then the Interactive can provide suggested aspect-ratio.
@@ -266,7 +337,7 @@ export class IFrameSaver {
       }
     });
 
-    this.addListener("navigation", (opts: LaraInteractiveApi.INavigationOptions) => {
+    this.addListener("navigation", (opts: INavigationOptions) => {
       if (opts == null) { opts = {}; }
       if (opts.hasOwnProperty("enableForwardNav")) {
         if (opts.enableForwardNav) {
@@ -282,7 +353,37 @@ export class IFrameSaver {
     });
 
     this.addListener("getFirebaseJWT", (request?: IGetFirebaseJwtRequestOptionalRequestId) => {
-      return this.getFirebaseJwt(request);
+      if (!request) {
+        // This doesn't seem likely, but the old code was checking for empty / non-existing request, so let's do it too.
+        // It's a bit of documentation too.
+        this.post("firebaseJWT", {response_type: "ERROR", message: "Missing request data with firebase_app parameter"});
+        return;
+      }
+      const requestId = request.requestId;
+      const firebaseAppName = request.firebase_app;
+
+      this.getFirebaseJwt(firebaseAppName)
+        .then(data => {
+          this.post("firebaseJWT", { requestId, token: data.token });
+        })
+        .catch(error => {
+          this.post("firebaseJWT", { requestId, response_type: "ERROR", message: error });
+        });
+    });
+
+    this.addListener("getAttachmentUrl", async (request: IAttachmentUrlRequest) => {
+      const answerMeta: IAnswerMetadataWithAttachmentsInfo = this.metadata || {};
+      const response = await handleGetAttachmentUrl({
+        request,
+        answerMeta,
+        writeOptions: {
+          interactiveId: this.interactiveId.toString(),
+          onAnswerMetaUpdate: newMeta => {
+            this.saveMetadata({...answerMeta, ...newMeta});
+          }
+        }
+      });
+      this.post("attachmentUrl", response);
     });
 
     if (this.learnerStateSavingEnabled()) {
@@ -362,6 +463,7 @@ export class IFrameSaver {
             this.$deleteButton.show();
           }
         }
+        this.metadata = safeJSONParse(response.metadata);
         this.initInteractive(null, response);
       },
       error: () => {
@@ -380,7 +482,7 @@ export class IFrameSaver {
     const  globalInteractiveState = (typeof globalIframeSaver !== "undefined" && globalIframeSaver !== null)
       ? globalIframeSaver.globalState
       : null;
-    const initInteractiveMsg: LaraInteractiveApi.IInitInteractive = {
+    const initInteractiveMsg: IInitInteractive = {
       version: 1,
       error: err,
       mode: "runtime",
@@ -451,31 +553,20 @@ export class IFrameSaver {
     }
   }
 
-  private getFirebaseJwt(request?: IGetFirebaseJwtRequestOptionalRequestId) {
-    const requestId = request ? request.requestId : undefined;
-    const opts: any = request || {};
-    if (opts.requestId) {
-      delete opts.requestId;
-    }
-
-    const createResponse = (baseResponse: IGetFirebaseJwtResponseOptionalRequestId) => {
-      if (requestId) {
-        baseResponse.requestId = requestId;
-      }
-      return baseResponse;
-    };
-
-    // TODO: after typescript upgrade remove `requestId: requestId!, `
-    return $.ajax({
-      type: "POST",
-      url: this.getFirebaseJWTUrl,
-      data: opts,
-      success: (data: {token: string}) => {
-        this.post("firebaseJWT", createResponse({requestId: requestId!, token: data.token}));
-      },
-      error: (jqxhr, status, error) => {
-        this.post("firebaseJWT", createResponse({requestId: requestId!, response_type: "ERROR", message: error}));
-      }});
+  private getFirebaseJwt(firebaseAppName: string): Promise<{token: string}> {
+    return new Promise<{token: string}>((resolve, reject) => {
+      $.ajax({
+        type: "POST",
+        url: this.getFirebaseJWTUrl,
+        data: { firebase_app: firebaseAppName },
+        success: (data: {token: string}) => {
+          resolve(data);
+        },
+        error: (jqxhr, status, error) => {
+          reject(error);
+        }}
+      );
+    });
   }
 
   private getInteractiveSnapshot({ requestId, interactiveItemId }: IGetInteractiveSnapshotRequest) {
@@ -508,11 +599,11 @@ export class IFrameSaver {
     });
   }
 
-  private post(message: LaraInteractiveApi.ServerMessage, content?: object | string | number | null) {
+  private post(message: ServerMessage, content?: object | string | number | null) {
     this.iframePhone.post(message, content);
   }
 
-  private addListener(message: LaraInteractiveApi.ClientMessage, listener: (content: any) => void) {
+  private addListener(message: ClientMessage, listener: (content: any) => void) {
     this.iframePhone.addListener(message, listener);
   }
 
