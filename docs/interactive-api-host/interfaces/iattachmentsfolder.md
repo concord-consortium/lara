@@ -11,6 +11,7 @@
 ### Properties
 
 * [id](iattachmentsfolder.md#id)
+* [ownerId](iattachmentsfolder.md#ownerid)
 * [readWriteToken](iattachmentsfolder.md#optional-readwritetoken)
 
 ## Properties
@@ -18,6 +19,12 @@
 ###  id
 
 • **id**: *string*
+
+___
+
+###  ownerId
+
+• **ownerId**: *string*
 
 ___
 

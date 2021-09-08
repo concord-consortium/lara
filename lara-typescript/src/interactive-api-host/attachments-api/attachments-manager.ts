@@ -23,8 +23,8 @@ const kDefaultWriteExpirationSec = 5 * 60;
 const kDefaultReadExpirationSec = 2 * 60 * 60;
 
 export class AttachmentsManager {
+  public learnerId?: string;
   private sessionId = uuid();
-  private learnerId?: string;
   private firebaseJwt?: string;
   private tokenServiceClient: TokenServiceClient;
   private resources: Record<string, S3Resource> = {};
@@ -52,6 +52,9 @@ export class AttachmentsManager {
   }
 
   public async createFolder(interactiveId: string): Promise<IAttachmentsFolder> {
+    if (!this.learnerId) {
+      return Promise.reject("Folder can't be created without valid learnerId");
+    }
     const folderResource = await this.tokenServiceClient.createResource({
       tool: kTokenServiceToolName,
       type: "s3Folder",
@@ -62,6 +65,7 @@ export class AttachmentsManager {
     this.resources[folderResource.id] = folderResource as S3Resource;
     return {
       id: folderResource.id,
+      ownerId: this.learnerId,
       readWriteToken: this.tokenServiceClient.getReadWriteToken(folderResource) || undefined
     };
   }
@@ -75,13 +79,11 @@ export class AttachmentsManager {
     const publicPath = this.tokenServiceClient.getPublicS3Path(folderResource, `${this.sessionId}/${name}`);
     const url = await this.getSignedUrl(folder, "putObject", { Key: publicPath, ContentType, expiresIn });
     // returns the writable url and the information required to read it
-    return [url, { publicPath }];
+    return [url, { folder, publicPath }];
   }
 
-  public getSignedReadUrl(
-    folder: IAttachmentsFolder, attachmentInfo: IReadableAttachmentInfo, options?: ISignedReadUrlOptions
-  ) {
-    const { publicPath } = attachmentInfo;
+  public getSignedReadUrl(attachmentInfo: IReadableAttachmentInfo, options?: ISignedReadUrlOptions) {
+    const { publicPath, folder } = attachmentInfo;
     const { expiresIn = kDefaultReadExpirationSec } = options || {};
     return this.getSignedUrl(folder, "getObject", { Key: publicPath, expiresIn });
   }

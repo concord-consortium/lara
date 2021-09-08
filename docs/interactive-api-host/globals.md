@@ -106,6 +106,7 @@
 
 ### Functions
 
+* [findFolder](globals.md#const-findfolder)
 * [getAttachmentsManager](globals.md#const-getattachmentsmanager)
 * [handleGetAttachmentUrl](globals.md#const-handlegetattachmenturl)
 * [initializeAttachmentsManager](globals.md#const-initializeattachmentsmanager)
@@ -270,6 +271,22 @@ ___
 • **timeoutValue**: *number* = 20000
 
 ## Functions
+
+### `Const` findFolder
+
+▸ **findFolder**(`answerMeta`: [IAnswerMetadataWithAttachmentsInfo](interfaces/ianswermetadatawithattachmentsinfo.md), `name`: string, `learnerId?`: undefined | string): *null | [IAttachmentsFolder](interfaces/iattachmentsfolder.md)*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`answerMeta` | [IAnswerMetadataWithAttachmentsInfo](interfaces/ianswermetadatawithattachmentsinfo.md) |
+`name` | string |
+`learnerId?` | undefined &#124; string |
+
+**Returns:** *null | [IAttachmentsFolder](interfaces/iattachmentsfolder.md)*
+
+___
 
 ### `Const` getAttachmentsManager
 
