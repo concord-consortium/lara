@@ -17,19 +17,16 @@ export interface IS3SignedUrlOptions extends ISignedWriteUrlOptions {
 
 export interface IAttachmentsFolder {
   id: string;
-}
-
-export interface IWritableAttachmentsFolder extends IAttachmentsFolder {
+  ownerId: string;
   readWriteToken?: string;
 }
 
 export interface IReadableAttachmentInfo {
-  folder: IAttachmentsFolder;
   publicPath: string;
+  folder: IAttachmentsFolder;
 }
 
 export interface IAnswerMetadataWithAttachmentsInfo {
-  attachmentsFolder?: IAttachmentsFolder;
   // tracks the most recently written details for each attachment
   attachments?: Record<string, IReadableAttachmentInfo>;
 }
