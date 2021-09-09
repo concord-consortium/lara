@@ -40,4 +40,4 @@ export const SectionItem: React.FC<ISectionItemProps> = ({
       {id} - {title}
     </div>
   );
-}
+};
