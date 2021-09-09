@@ -8,6 +8,8 @@ class LibraryInteractive < ActiveRecord::Base
                   :enable_learner_state, :full_window, :has_report_url, :image_url, :name, :native_height, :native_width,
                   :no_snapshots, :show_delete_data_button, :thumbnail_url, :export_hash, :customizable, :authorable, :data
 
+  has_many :managed_interactives
+
   default_value_for :native_width, ASPECT_RATIO_DEFAULT_WIDTH
   default_value_for :native_height, ASPECT_RATIO_DEFAULT_HEIGHT
 

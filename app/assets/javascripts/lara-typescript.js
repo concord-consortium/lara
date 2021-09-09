@@ -11217,6 +11217,74 @@ var weakMemoize = function weakMemoize(func) {
 
 /***/ }),
 
+/***/ "./node_modules/classnames/index.js":
+/*!******************************************!*\
+  !*** ./node_modules/classnames/index.js ***!
+  \******************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
+  Copyright (c) 2018 Jed Watson.
+  Licensed under the MIT License (MIT), see
+  http://jedwatson.github.io/classnames
+*/
+/* global define */
+
+(function () {
+	'use strict';
+
+	var hasOwn = {}.hasOwnProperty;
+
+	function classNames() {
+		var classes = [];
+
+		for (var i = 0; i < arguments.length; i++) {
+			var arg = arguments[i];
+			if (!arg) continue;
+
+			var argType = typeof arg;
+
+			if (argType === 'string' || argType === 'number') {
+				classes.push(arg);
+			} else if (Array.isArray(arg)) {
+				if (arg.length) {
+					var inner = classNames.apply(null, arg);
+					if (inner) {
+						classes.push(inner);
+					}
+				}
+			} else if (argType === 'object') {
+				if (arg.toString === Object.prototype.toString) {
+					for (var key in arg) {
+						if (hasOwn.call(arg, key) && arg[key]) {
+							classes.push(key);
+						}
+					}
+				} else {
+					classes.push(arg.toString());
+				}
+			}
+		}
+
+		return classes.join(' ');
+	}
+
+	if ( true && module.exports) {
+		classNames.default = classNames;
+		module.exports = classNames;
+	} else if (true) {
+		// register as 'classnames', consistent with npm package name
+		!(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = (function () {
+			return classNames;
+		}).apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	} else {}
+}());
+
+
+/***/ }),
+
 /***/ "./node_modules/clsx/dist/clsx.m.js":
 /*!******************************************!*\
   !*** ./node_modules/clsx/dist/clsx.m.js ***!
@@ -48771,7 +48839,7 @@ __webpack_require__(/*! ./authoring-page.css */ "./src/section-authoring/compone
  * Primary UI component for user interaction
  */
 var AuthoringPage = function (_a) {
-    var id = _a.id, title = _a.title, _b = _a.sections, sections = _b === void 0 ? [] : _b, addSection = _a.addSection, changeSection = _a.changeSection, setSections = _a.setSections;
+    var id = _a.id, title = _a.title, _b = _a.sections, sections = _b === void 0 ? [] : _b, addSection = _a.addSection, changeSection = _a.changeSection, setSections = _a.setSections, allSectionItems = _a.allSectionItems, addPageItem = _a.addPageItem;
     /*
      * Return a new array with array[a] and array[b] swapped.
      */
@@ -48807,7 +48875,7 @@ var AuthoringPage = function (_a) {
     return (React.createElement(react_beautiful_dnd_1.DragDropContext, { onDragEnd: onDragEnd },
         React.createElement(react_beautiful_dnd_1.Droppable, { droppableId: "droppable" }, function (droppableProvided, snapshot) { return (React.createElement("div", __assign({ ref: droppableProvided.innerRef, className: "edit-page-container" }, droppableProvided.droppableProps),
             sections.map(function (sProps, index) { return (React.createElement(react_beautiful_dnd_1.Draggable, { key: sProps.id, draggableId: sProps.id, index: index }, function (draggableProvided) { return (React.createElement("div", __assign({}, draggableProvided.draggableProps, { ref: draggableProvided.innerRef }),
-                React.createElement(authoring_section_1.AuthoringSection, __assign({}, sProps, draggableProvided, { key: sProps.id, updateFunction: changeSection, deleteFunction: handleDelete })))); })); }),
+                React.createElement(authoring_section_1.AuthoringSection, __assign({}, sProps, draggableProvided, { key: sProps.id, updateFunction: changeSection, deleteFunction: handleDelete, allSectionItems: allSectionItems, addPageItem: addPageItem })))); })); }),
             droppableProvided.placeholder,
             React.createElement("button", { className: "big-button", onClick: addSection }, "+ Add Section"))); })));
 };
@@ -48850,11 +48918,6 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-var __spreadArray = (this && this.__spreadArray) || function (to, from) {
-    for (var i = 0, il = from.length, j = to.length; i < il; i++, j++)
-        to[j] = from[i];
-    return to;
-};
 var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthoringSection = exports.Layouts = void 0;
@@ -48864,6 +48927,8 @@ var minus_square_1 = __webpack_require__(/*! ./icons/minus-square */ "./src/sect
 var cog_1 = __webpack_require__(/*! ./icons/cog */ "./src/section-authoring/components/icons/cog.tsx");
 var trash_1 = __webpack_require__(/*! ./icons/trash */ "./src/section-authoring/components/icons/trash.tsx");
 var section_item_1 = __webpack_require__(/*! ./section-item */ "./src/section-authoring/components/section-item.tsx");
+var section_item_picker_1 = __webpack_require__(/*! ./section-item-picker */ "./src/section-authoring/components/section-item-picker.tsx");
+var absorb_click_1 = __webpack_require__(/*! ../../shared/absorb-click */ "./src/shared/absorb-click.ts");
 // NP 2021-08-12 -- default imports aren"t working correctly when evaled on page
 __webpack_require__(/*! ./authoring-section.css */ "./src/section-authoring/components/authoring-section.css");
 var Layouts;
@@ -48894,16 +48959,13 @@ var classNameForItem = function (_layout, itemIndex) {
  * Primary UI component for user interaction
  */
 var AuthoringSection = function (_a) {
-    var id = _a.id, updateFunction = _a.updateFunction, deleteFunction = _a.deleteFunction, _b = _a.layout, initLayout = _b === void 0 ? defaultLayout : _b, _c = _a.items, initItems = _c === void 0 ? [] : _c, _d = _a.collapsed, initCollapsed = _d === void 0 ? false : _d, title = _a.title, dragHandleProps = _a.dragHandleProps;
+    var id = _a.id, updateFunction = _a.updateFunction, deleteFunction = _a.deleteFunction, _b = _a.layout, initLayout = _b === void 0 ? defaultLayout : _b, _c = _a.items, items = _c === void 0 ? [] : _c, _d = _a.collapsed, initCollapsed = _d === void 0 ? false : _d, title = _a.title, dragHandleProps = _a.dragHandleProps, allSectionItems = _a.allSectionItems, addPageItem = _a.addPageItem;
     var _e = React.useState(initLayout), layout = _e[0], setLayout = _e[1];
     var _f = React.useState(initCollapsed), collapsed = _f[0], setCollapsed = _f[1];
-    var _g = React.useState(__spreadArray([], initItems)), items = _g[0], setItems = _g[1]; // TODO: Initial Items as in layout
+    var _g = React.useState(false), showAddItem = _g[0], setShowAddItem = _g[1];
     React.useEffect(function () {
         setLayout(initLayout);
     }, [initLayout]);
-    // React.useEffect(() => {
-    //   setItems([...initItems]);
-    // }, [initItems]);
     var layoutChanged = function (change) {
         var newLayout = change.target.value;
         setLayout(newLayout);
@@ -48917,21 +48979,16 @@ var AuthoringSection = function (_a) {
     var handleDelete = function () {
         deleteFunction === null || deleteFunction === void 0 ? void 0 : deleteFunction(id);
     };
-    var sortedItems = function () {
-        return items.sort(function (a, b) { return a.position - b.position; });
+    var handleToggleShowAddItem = function () { return setShowAddItem(function (prev) { return !prev; }); };
+    var handleShowAddItem = absorb_click_1.absorbClickThen(handleToggleShowAddItem);
+    var handleAddItem = function (itemId) {
+        addPageItem === null || addPageItem === void 0 ? void 0 : addPageItem({
+            section_id: id,
+            embeddable: itemId
+        });
+        handleToggleShowAddItem();
     };
-    var addItem = function () {
-        var nextId = items.length;
-        var position = nextId + 1;
-        var newItem = {
-            id: "" + nextId,
-            position: position,
-            title: "item " + position
-        };
-        setItems(__spreadArray(__spreadArray([], items), [newItem]));
-    };
-    var displayItems = items.map(function (i) { return React.createElement(section_item_1.SectionItem, __assign({}, i, { key: i.id })); });
-    displayItems.push(React.createElement("button", { className: "small-button", onClick: addItem }, "+ Add Item"));
+    var sectionClassName = function (index) { return "section-container " + classNameForItem(layout, index); };
     return (React.createElement("div", { className: "edit-page-grid-container" },
         React.createElement("div", { className: "section-menu full-row" },
             React.createElement("div", { className: "menu-start" },
@@ -48952,10 +49009,13 @@ var AuthoringSection = function (_a) {
                 React.createElement("span", null,
                     React.createElement(minus_square_1.MinusSquare, { onClick: toggleCollapse })))),
         !collapsed &&
-            displayItems.map(function (element, index) {
-                var className = "section-container " + classNameForItem(layout, index);
-                return (React.createElement("div", { className: className, key: index }, element));
-            })));
+            items.map(function (item, index) { return (React.createElement("div", { className: sectionClassName(index), key: index },
+                React.createElement(section_item_1.SectionItem, __assign({}, item, { key: item.id })))); }),
+        !collapsed && (React.createElement("div", { className: sectionClassName(items.length), key: items.length },
+            React.createElement("button", { className: "small-button", onClick: handleShowAddItem }, "+ Add Item"))),
+        showAddItem
+            ? React.createElement(section_item_picker_1.SectionItemPicker, { quickAddItems: [], allItems: allSectionItems || [], onClose: handleToggleShowAddItem, onAdd: handleAddItem })
+            : undefined));
 };
 exports.AuthoringSection = AuthoringSection;
 
@@ -49089,6 +49149,8 @@ var QueryBoundPage = function (props) {
     var updatePageSectionsURL = prefix + "/set_page_sections/" + id + ".json";
     var createPageSectionUrl = prefix + "/create_page_section/" + id + ".json";
     var updateSectionUrl = prefix + "/update_page_section/" + id + ".json";
+    var createPageItemUrl = prefix + "/create_page_item/" + id + ".json";
+    var libraryInteractivesUrl = prefix + "/get_library_interactives_list.json";
     var updatePageQueryData = function (response, variables) {
         queryClient.setQueryData("authoringPage", response);
     };
@@ -49096,7 +49158,8 @@ var QueryBoundPage = function (props) {
         return fetch(updatePageSectionsURL, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(nextPage)
+            body: JSON.stringify(nextPage),
+            credentials: "include"
         }).then(function (res) {
             return res.json();
         });
@@ -49105,7 +49168,18 @@ var QueryBoundPage = function (props) {
         return fetch(createPageSectionUrl, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ id: id })
+            body: JSON.stringify({ id: id }),
+            credentials: "include"
+        }).then(function (res) {
+            return res.json();
+        });
+    };
+    var createPageItem = function (newPageItem) {
+        return fetch(createPageItemUrl, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ page_item: newPageItem }),
+            credentials: "include"
         }).then(function (res) {
             return res.json();
         });
@@ -49115,7 +49189,8 @@ var QueryBoundPage = function (props) {
         return fetch(updateSectionUrl, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(updateSectionData)
+            body: JSON.stringify(updateSectionData),
+            credentials: "include"
         }).then(function (res) {
             return res.json();
         });
@@ -49126,26 +49201,203 @@ var QueryBoundPage = function (props) {
     var createSectionMutation = react_query_1.useMutation(createSection, {
         onSuccess: updatePageQueryData
     });
+    var createPageItemMutation = react_query_1.useMutation(createPageItem, {
+        onSuccess: updatePageQueryData
+    });
     var changeSectionMutation = react_query_1.useMutation(_changeSection);
-    var _a = react_query_1.useQuery("authoringPage", function () {
-        return fetch(pageSectionsUrl)
-            .then(function (res) {
-            return res.json();
-        });
-    }), isLoading = _a.isLoading, error = _a.error, data = _a.data;
+    var authoringQuery = react_query_1.useQuery("authoringPage", function () {
+        return fetch(pageSectionsUrl, { credentials: "include" })
+            .then(function (res) { return res.json(); });
+    });
+    var libraryInteractiveQuery = react_query_1.useQuery("libraryInteractives", function () {
+        return fetch(libraryInteractivesUrl, { credentials: "include" })
+            .then(function (res) { return res.json(); })
+            .then(function (json) { return ({
+            allSectionItems: json.library_interactives.map(function (li) { return ({
+                id: li.id,
+                name: li.name,
+                useCount: li.use_count,
+                dateAdded: li.date_added
+            }); })
+        }); });
+    });
+    var isLoading = authoringQuery.isLoading || libraryInteractiveQuery.isLoading;
+    var error = authoringQuery.error || libraryInteractiveQuery.error;
     if (isLoading)
         return React.createElement("div", null, "Loading...");
     if (error)
         return React.createElement("div", null,
             "Something went wrong: $",
             error);
-    var _b = data, success = _b.success, sections = _b.sections;
+    var sections = authoringQuery.data.sections;
+    var allSectionItems = libraryInteractiveQuery.data.allSectionItems;
     var setSections = updatePageSectionsMutation.mutate;
     var addSection = createSectionMutation.mutate;
     var changeSection = changeSectionMutation.mutate;
-    return React.createElement(authoring_page_1.AuthoringPage, __assign({}, { id: id, sections: sections, setSections: setSections, addSection: addSection, changeSection: changeSection }));
+    var addPageItem = createPageItemMutation.mutate;
+    return React.createElement(authoring_page_1.AuthoringPage, __assign({}, { id: id, sections: sections, setSections: setSections, addSection: addSection, changeSection: changeSection, allSectionItems: allSectionItems, addPageItem: addPageItem }));
 };
 exports.QueryBoundPage = QueryBoundPage;
+
+
+/***/ }),
+
+/***/ "./src/section-authoring/components/section-item-picker.css":
+/*!******************************************************************!*\
+  !*** ./src/section-authoring/components/section-item-picker.css ***!
+  \******************************************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ }),
+
+/***/ "./src/section-authoring/components/section-item-picker.tsx":
+/*!******************************************************************!*\
+  !*** ./src/section-authoring/components/section-item-picker.tsx ***!
+  \******************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __spreadArray = (this && this.__spreadArray) || function (to, from) {
+    for (var i = 0, il = from.length, j = to.length; i < il; i++, j++)
+        to[j] = from[i];
+    return to;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.SectionItemPicker = void 0;
+var React = __webpack_require__(/*! react */ "react");
+var react_1 = __webpack_require__(/*! react */ "react");
+var classnames_1 = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
+var absorb_click_1 = __webpack_require__(/*! ../../shared/absorb-click */ "./src/shared/absorb-click.ts");
+__webpack_require__(/*! ./section-item-picker.css */ "./src/section-authoring/components/section-item-picker.css");
+var SectionItemButton = function (_a) {
+    var item = _a.item, disabled = _a.disabled, className = _a.className, onClick = _a.onClick;
+    var handleItemClick = absorb_click_1.absorbClickThen(function () { return onClick(item); });
+    return React.createElement("button", { disabled: disabled, className: className, onClick: handleItemClick }, item.name);
+};
+var SectionItemPicker = function (props) {
+    var allItems = props.allItems, quickAddItems = props.quickAddItems, onClose = props.onClose, onAdd = props.onAdd;
+    var _a = react_1.useState(false), itemSelected = _a[0], setItemSelected = _a[1];
+    var _b = react_1.useState(), currentSelectedItem = _b[0], setCurrentSelectedItem = _b[1];
+    var _c = react_1.useState(allItems), allItemsList = _c[0], setAllItemsList = _c[1];
+    var _d = react_1.useState(false), isSearching = _d[0], setIsSearching = _d[1];
+    react_1.useEffect(function () {
+        sortItems("alpha-asc");
+    }, [allItems]);
+    var sortItems = function (sortType) {
+        var allItemsSorted = __spreadArray([], allItems);
+        if (sortType === "popularity") {
+            allItemsSorted.sort(function (a, b) {
+                return b.useCount - a.useCount;
+            });
+        }
+        if (sortType === "date") {
+            allItemsSorted.sort(function (a, b) {
+                return b.dateAdded - a.dateAdded;
+            });
+        }
+        if (sortType === "alpha-asc") {
+            allItemsSorted.sort(function (a, b) {
+                return (a.name).localeCompare(b.name);
+            });
+        }
+        if (sortType === "alpha-desc") {
+            allItemsSorted.sort(function (a, b) {
+                return (a.name).localeCompare(b.name);
+            });
+            allItemsSorted.reverse();
+        }
+        setAllItemsList(allItemsSorted);
+    };
+    var setItemClasses = function (isSelectedItem) {
+        var classes = classnames_1.default("assessmentItemOption", {
+            selected: isSelectedItem,
+            disabled: !isSelectedItem && currentSelectedItem !== undefined
+        });
+        return classes;
+    };
+    var handleListSort = function (event) { return sortItems(event.target.value); };
+    var handleItemClick = function (item) {
+        setItemSelected(!itemSelected);
+        setCurrentSelectedItem(item);
+    };
+    var handleSearch = function (event) {
+        setIsSearching(true);
+        var searchString = event.target.value;
+        var matchingItems = [];
+        if (searchString !== "") {
+            allItems.forEach(function (item) {
+                var regex = new RegExp(searchString, "i");
+                if (item.name.match(regex)) {
+                    matchingItems.push(item);
+                }
+            });
+            setAllItemsList(matchingItems);
+        }
+        else {
+            setAllItemsList(allItems);
+        }
+        setTimeout(function () { setIsSearching(false); }, 1000);
+    };
+    var handleAddButtonClick = absorb_click_1.absorbClickThen(function () {
+        if (currentSelectedItem) {
+            onAdd(currentSelectedItem.id);
+        }
+    });
+    var handleCloseButtonClick = absorb_click_1.absorbClickThen(onClose);
+    var renderAllItemsList = function () {
+        if (isSearching) {
+            return (React.createElement("div", { id: "searchPlaceholder", className: "loading" },
+                React.createElement("em", null, "Searching...")));
+        }
+        if (allItemsList.length === 0) {
+            return (React.createElement("div", { id: "searchPlaceholder" },
+                React.createElement("em", null, "No assessment items found.")));
+        }
+        return (React.createElement("ul", null, allItemsList.map(function (item, index) {
+            var isSelectedItem = currentSelectedItem === item;
+            var itemClass = setItemClasses(isSelectedItem);
+            var itemDisabled = itemSelected && !isSelectedItem ? true : false;
+            return (React.createElement("li", { key: "ai-" + index },
+                React.createElement(SectionItemButton, { item: item, disabled: itemDisabled, className: itemClass, onClick: handleItemClick })));
+        })));
+    };
+    return (React.createElement("div", { id: "itemPicker", className: "react-modal" },
+        React.createElement("header", null,
+            React.createElement("h1", null, "Choose Assessment Item"),
+            React.createElement("button", { className: "modalClose", onClick: handleCloseButtonClick }, "close")),
+        React.createElement("section", null,
+            React.createElement("div", { id: "quickAddMenu" },
+                React.createElement("h2", null, "Quick-Add Items"),
+                React.createElement("ul", null, quickAddItems.map(function (item, index) {
+                    var isSelectedItem = currentSelectedItem === item;
+                    var itemClass = setItemClasses(isSelectedItem);
+                    var itemDisabled = itemSelected && !isSelectedItem ? true : false;
+                    return (React.createElement("li", { key: "qai-" + index },
+                        React.createElement(SectionItemButton, { item: item, disabled: itemDisabled, className: itemClass, onClick: handleItemClick })));
+                }))),
+            React.createElement("div", { id: "itemPickerOptions" },
+                React.createElement("div", { id: "itemPickerSearch" },
+                    React.createElement("input", { disabled: itemSelected, placeholder: "Enter item name", onChange: handleSearch })),
+                React.createElement("div", { id: "itemPickerSort" },
+                    React.createElement("label", { className: itemSelected ? "disabled" : "", htmlFor: "itemPickerSort" }, "Sort by:"),
+                    React.createElement("select", { disabled: itemSelected, onChange: handleListSort, defaultValue: "alpha-asc" },
+                        React.createElement("option", { key: "0-listSort", value: "popularity" }, "Most Popular"),
+                        React.createElement("option", { key: "1-listSort", value: "date" }, "Most Recent"),
+                        React.createElement("option", { key: "2-listSort", value: "alpha-asc" }, "Name (A-Z)"),
+                        React.createElement("option", { key: "3-listSort", value: "alpha-desc" }, "Name (Z-A)")))),
+            React.createElement("div", { id: "itemPickerList" }, renderAllItemsList()),
+            React.createElement("div", { className: "actionButton" },
+                React.createElement("button", { disabled: !itemSelected, className: itemSelected ? "enabled add" : "disabled add", onClick: handleAddButtonClick }, "Add Item")))));
+};
+exports.SectionItemPicker = SectionItemPicker;
 
 
 /***/ }),
@@ -49166,11 +49418,14 @@ var React = __webpack_require__(/*! react */ "react");
  * Primary UI component for user interaction
  */
 var SectionItem = function (_a) {
-    var id = _a.id, title = _a.title;
+    var id = _a.id, type = _a.type, title = _a.title;
+    var renderTitle = function () { return (React.createElement(React.Fragment, null, (title || "").length > 0 ? title : React.createElement("i", null, "Untitled"))); };
     return (React.createElement("div", { className: "section-item-container" },
         id,
         " - ",
-        title));
+        type,
+        " - ",
+        renderTitle()));
 };
 exports.SectionItem = SectionItem;
 
@@ -49215,6 +49470,36 @@ var renderAuthoringPage = function (root, props) {
     return ReactDOM.render(App, root);
 };
 exports.renderAuthoringPage = renderAuthoringPage;
+
+
+/***/ }),
+
+/***/ "./src/shared/absorb-click.ts":
+/*!************************************!*\
+  !*** ./src/shared/absorb-click.ts ***!
+  \************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.absorbClickThen = exports.absorbClick = void 0;
+var absorbClick = function () {
+    return function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+    };
+};
+exports.absorbClick = absorbClick;
+var absorbClickThen = function (next) {
+    return function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        next();
+    };
+};
+exports.absorbClickThen = absorbClickThen;
 
 
 /***/ }),

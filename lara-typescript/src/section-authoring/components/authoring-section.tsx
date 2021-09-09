@@ -4,6 +4,10 @@ import { MinusSquare } from "./icons/minus-square";
 import { Cog } from "./icons/cog";
 import { Trash } from "./icons/trash";
 import { SectionItem, ISectionItemProps} from "./section-item";
+import { ISectionItem, SectionItemPicker } from "./section-item-picker";
+import {absorbClickThen} from "../../shared/absorb-click";
+import { ICreatePageItem } from "./query-bound-page";
+
 // NP 2021-08-12 -- default imports aren"t working correctly when evaled on page
 import "./authoring-section.css";
 
@@ -93,6 +97,15 @@ export interface ISectionProps {
    */
   dragHandleProps?: any;
 
+  /*
+   * List of all section items available
+   */
+  allSectionItems?: ISectionItem[];
+
+  /**
+   * how to add a new page item
+   */
+   addPageItem?: (pageItem: ICreatePageItem) => void;
 }
 
 /**
@@ -103,23 +116,21 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
   updateFunction,
   deleteFunction,
   layout: initLayout = defaultLayout,
-  items: initItems = [] as ISectionItemProps[],
+  items = [],
   collapsed: initCollapsed = false,
   title,
-  dragHandleProps
+  dragHandleProps,
+  allSectionItems,
+  addPageItem
   }: ISectionProps) => {
 
   const [layout, setLayout] = React.useState(initLayout);
   const [collapsed, setCollapsed] = React.useState(initCollapsed);
-  const [items, setItems] = React.useState([...initItems]); // TODO: Initial Items as in layout
+  const [showAddItem, setShowAddItem] = React.useState(false);
 
   React.useEffect(() => {
     setLayout(initLayout);
   }, [initLayout]);
-
-  // React.useEffect(() => {
-  //   setItems([...initItems]);
-  // }, [initItems]);
 
   const layoutChanged = (change: React.ChangeEvent<HTMLSelectElement>) => {
     const newLayout = change.target.value as Layouts;
@@ -137,27 +148,18 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
     deleteFunction?.(id);
   };
 
-  const sortedItems = () => {
-    return items.sort((a, b) => a.position - b.position);
+  const handleToggleShowAddItem = () => setShowAddItem((prev) => !prev);
+  const handleShowAddItem = absorbClickThen(handleToggleShowAddItem);
+
+  const handleAddItem = (itemId: string) => {
+    addPageItem?.({
+      section_id: id,
+      embeddable: itemId
+    });
+    handleToggleShowAddItem();
   };
 
-  const addItem = () => {
-    const nextId = items.length;
-    const position = nextId + 1;
-    const newItem: ISectionItemProps = {
-      id: `${nextId}`,
-      position,
-      title: `item ${position}`
-    };
-    setItems([...items, newItem]);
-  };
-
-  const displayItems = items.map(i => <SectionItem {...i} key={i.id} /> );
-  displayItems.push(
-    <button className="small-button" onClick={addItem}>
-      + Add Item
-    </button>
-  );
+  const sectionClassName = (index: number) => `section-container ${classNameForItem(layout, index)}`;
 
   return (
     <div className="edit-page-grid-container">
@@ -190,15 +192,27 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
         </div>
       </div>
     { !collapsed &&
-      displayItems.map((element, index) => {
-        const className = `section-container ${classNameForItem(layout, index)}`;
-        return (
-          <div className={className} key={index}>
-            {element}
-          </div>
-        );
-      })
+      items.map((item, index) => (
+        <div className={sectionClassName(index)} key={index}>
+          <SectionItem {...item} key={item.id} />
+        </div>
+      ))
     }
+    { !collapsed && (
+      <div className={sectionClassName(items.length)} key={items.length}>
+        <button className="small-button" onClick={handleShowAddItem}>
+          + Add Item
+        </button>
+      </div>
+    )}
+    {showAddItem
+      ? <SectionItemPicker
+          quickAddItems={[]}
+          allItems={allSectionItems || []}
+          onClose={handleToggleShowAddItem}
+          onAdd={handleAddItem}
+        />
+      : undefined}
     </div>
   );
 };
