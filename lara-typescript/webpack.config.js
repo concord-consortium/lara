@@ -36,11 +36,30 @@ module.exports = (env, argv) => {
             {
               loader: 'tslint-loader'
             }
-          ]
+          ],
+          exclude: /node_modules/
         },
         {
           test: /\.tsx?$/,
-          loader: 'ts-loader'
+          loader: 'ts-loader',
+          exclude: /node_modules/
+        },
+        // PJ 9/9/2021: Why is Babel necessary if there's TS loader and tsconfig specifies ES5 target?
+        // TS doesn't transform regexp named capture groups added in ES2018. This breaks Rails assets compilation.
+        // Uglifier that is not able to parse the updated regexp format. Note that this loader is applied both to our
+        // own code and node_modules. The problematic regexp is in AWS S3 Client.
+        // See: https://github.com/microsoft/TypeScript/issues/36132
+        {
+          test: /\.(t|j)sx?$/,
+          enforce: 'post',
+          use: [
+            {
+              loader: 'babel-loader',
+              options: {
+                plugins: ['@babel/plugin-transform-named-capturing-groups-regex']
+              }
+            }
+          ]
         },
         {
           test: /\.s?css$/,
