@@ -7,8 +7,6 @@ import { SectionItem, ISectionItemProps} from "./section-item";
 // NP 2021-08-12 -- default imports aren"t working correctly when evaled on page
 import "./authoring-section.css";
 
-
-
 export enum Layouts {
   LAYOUT_FULL_WIDTH = "Full Width",
   LAYOUT_60_40 = "60-40",

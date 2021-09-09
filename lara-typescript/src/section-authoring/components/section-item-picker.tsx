@@ -1,20 +1,30 @@
-import React, { useState } from 'react';
-import classNames from 'classnames';
+import React, { useState } from "react";
+import classNames from "classnames";
 
-import "./section-item-picker.css"
+import "./section-item-picker.css";
 
 export interface ItemType {
-  name: string,
-  use_count: number,
-  date_added: number
+  name: string;
+  use_count: number;
+  date_added: number;
 }
 
 export interface IProps {
-  availableItemTypes: ItemType[],
-  quickAddItems: ItemType[],
-  allItems: ItemType[],
-  matchingItems: ItemType[]
+  availableItemTypes: ItemType[];
+  quickAddItems: ItemType[];
+  allItems: ItemType[];
+  matchingItems: ItemType[];
 }
+
+const SectionItemButton = ({name, disabled, className, onClick}: {
+  name: string;
+  disabled: boolean;
+  className: string;
+  onClick: (event: React.MouseEvent<HTMLButtonElement>, itemName: string) => void;
+}) => {
+  const handleItemClick = (e: React.MouseEvent<HTMLButtonElement>) => onClick(e, name);
+  return <button disabled={disabled} className={className} onClick={handleItemClick}>{name}</button>;
+};
 
 export const SectionItemPicker: React.FC<IProps> = (props) => {
   const { allItems, quickAddItems } = props;
@@ -30,7 +40,7 @@ export const SectionItemPicker: React.FC<IProps> = (props) => {
       disabled: !isSelectedItem && currentSelectedItem !== ""
     });
     return classes;
-  }
+  };
 
   const handleListSort = (event: any) => {
     const allItemsSorted = [...allItems];
@@ -38,32 +48,32 @@ export const SectionItemPicker: React.FC<IProps> = (props) => {
     if (sortType === "popularity") {
       allItemsSorted.sort((a, b) => {
         return b.use_count - a.use_count;
-      })
+      });
     }
     if (sortType === "date") {
       allItemsSorted.sort((a, b) => {
         return b.date_added - a.date_added;
-      })
+      });
     }
     if (sortType === "alpha-asc") {
       allItemsSorted.sort((a, b) => {
         return (a.name).localeCompare(b.name);
-      })
+      });
     }
     if (sortType === "alpha-desc") {
       allItemsSorted.sort((a, b) => {
         return (a.name).localeCompare(b.name);
-      })
+      });
       allItemsSorted.reverse();
     }
     setAllItemsList(allItemsSorted);
-  }
+  };
 
   const handleItemClick = (event: any, itemName: string) => {
     const selectedItem = currentSelectedItem !== itemName ? itemName : "";
     setItemSelected(!itemSelected);
     setCurrentSelectedItem(selectedItem);
-  }
+  };
 
   const handleSearch = (event: any) => {
     setIsSearching(true);
@@ -80,13 +90,13 @@ export const SectionItemPicker: React.FC<IProps> = (props) => {
     } else {
       setAllItemsList(allItems);
     }
- 
-    setTimeout(() => { setIsSearching(false) }, 1000);
-  }
 
-  const handleAddButtonClick = (event: any) => {
-    console.log(`Add button clicked. ${currentSelectedItem} selected.`);
-  }
+    setTimeout(() => { setIsSearching(false); }, 1000);
+  };
+
+  const handleAddButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    // console.log(`Add button clicked. ${currentSelectedItem} selected.`);
+  };
 
   const renderAllItemsList = () => {
     if (isSearching) {
@@ -106,14 +116,23 @@ export const SectionItemPicker: React.FC<IProps> = (props) => {
     return (
       <ul>
         {allItemsList.map((t, index) => {
-          const isSelectedItem = currentSelectedItem === t.name
+          const isSelectedItem = currentSelectedItem === t.name;
           const itemClass = setItemClasses(isSelectedItem);
           const itemDisabled = itemSelected && !isSelectedItem ? true : false;
-          return <li key={`ai-${index}`}><button disabled={itemDisabled} className={itemClass} onClick={(e) => handleItemClick(e, t.name)}>{t.name}</button></li>
+          return (
+            <li key={`ai-${index}`}>
+              <SectionItemButton
+                name={t.name}
+                disabled={itemDisabled}
+                className={itemClass}
+                onClick={handleItemClick}
+              />
+            </li>
+          );
         })}
       </ul>
     );
-  }
+  };
 
   return (
     <div id="itemPicker" className="modal">
@@ -126,10 +145,19 @@ export const SectionItemPicker: React.FC<IProps> = (props) => {
           <h2>Quick-Add Items</h2>
           <ul>
             {quickAddItems.map((t, index) => {
-              const isSelectedItem = currentSelectedItem === t.name
+              const isSelectedItem = currentSelectedItem === t.name;
               const itemClass = setItemClasses(isSelectedItem);
               const itemDisabled = itemSelected && !isSelectedItem ? true : false;
-              return <li key={`qai-${index}`}><button disabled={itemDisabled} className={itemClass} onClick={(e) => handleItemClick(e, t.name)}>{t.name}</button></li>
+              return (
+                <li key={`qai-${index}`}>
+                  <SectionItemButton
+                    name={t.name}
+                    disabled={itemDisabled}
+                    className={itemClass}
+                    onClick={handleItemClick}
+                  />
+                </li>
+              );
             })}
           </ul>
         </div>
@@ -151,9 +179,13 @@ export const SectionItemPicker: React.FC<IProps> = (props) => {
           {renderAllItemsList()}
         </div>
         <div className="actionButton">
-          <button disabled={!itemSelected} className={itemSelected ? "enabled add" : "disabled add"} onClick={handleAddButtonClick}>Add Item</button>
+          <button
+            disabled={!itemSelected}
+            className={itemSelected ? "enabled add" : "disabled add"}
+            onClick={handleAddButtonClick}>Add Item
+          </button>
         </div>
       </section>
     </div>
-  )
+  );
 };

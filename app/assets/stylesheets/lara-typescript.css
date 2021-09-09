@@ -469,7 +469,7 @@ button.small-button {
   --med-teal: #218389;
   --med-orange: orange;
   --lt-gray: hsl(0,0%,90%);
-  font-family: arial, helvetica, sas-serif; }
+  --font-family: lato, arial, helvetica, sans-serif; }
 
 .edit-page-container {
   display: flex;
@@ -480,7 +480,7 @@ button.big-button {
   color: white;
   padding: 12pt 48pt;
   font-size: 20pt;
-  font-family: Lato, arial, helvetica, sans-serif;
+  font-family: var(--font-family);
   text-transform: uppercase;
   align-self: center;
   justify-self: center;
