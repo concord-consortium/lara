@@ -25,7 +25,7 @@ module LightweightActivityHelper
 
   def runnable_summary_path(activity)
     report_link = ENV['REPORT_URL']
-    report_firebase_app = ENV['REPORT_SERVICE_URL'].match(/report-service-pro/) ? "report-service-pro" : "report-service-dev"
+    report_firebase_app = ENV['REPORT_SERVICE_URL'] && ENV['REPORT_SERVICE_URL'].match(/report-service-pro/) ? "report-service-pro" : "report-service-dev"
     source_key = ENV['REPORT_SERVICE_TOOL_ID']
     result = ""
 
