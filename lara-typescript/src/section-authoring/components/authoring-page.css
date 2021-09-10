@@ -1,8 +1,14 @@
 :root {
-  --med-teal: #218389;
+  --dark-teal: #218389;
+  --teal: #0592af;
+  --lt-teal: #93d5e4;
+  --ltr-teal: #cdebf2;
+  --ltst-teal: #e2f4f8;
   --med-orange: orange;
+  --dark-gray: #3f3f3f;
+  --med-gray: #979797;
   --lt-gray: hsl(0,0%,90%);
-   font-family: arial, helvetica, sas-serif;
+  --font-family: lato, arial, helvetica, sans-serif;
 }
 
 .edit-page-container {
@@ -11,17 +17,18 @@
 }
 
 button.big-button {
+  background: var(--teal);
+  border: solid 1px var(--med-gray);
+  border-radius: 4px;
   border: none;
   color: white;
-  padding: 12pt 48pt;
-  font-size: 20pt;
-  font-family: Lato, arial, helvetica, sans-serif;
-  text-transform: uppercase;
-  align-self: center;
-  justify-self: center;
-  background: var(--med-teal);
-  border-radius: 8px;
+  cursor: pointer;
+  display: block;
+  font-family: var(--font-family);
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1;
+  margin: 0 auto;
+  padding: 14px 19px;
+  text-align: center;
 }
-
-
-

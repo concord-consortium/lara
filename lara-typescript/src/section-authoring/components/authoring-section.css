@@ -1,26 +1,43 @@
 :root {
-  --med-teal: #218389;
+  --dark-teal: #218389;
+  --teal: #0592af;
+  --lt-teal: #93d5e4;
+  --ltr-teal: #cdebf2;
+  --ltst-teal: #e2f4f8;
   --med-orange: orange;
-  --gold: #fdc32d;
+  --dark-gray: #3f3f3f;
+  --med-gray: #979797;
   --lt-gray: hsl(0,0%,90%);
-   font-family: arial, helvetica, sas-serif;
+  --font-family: lato, arial, helvetica, sans-serif;
+}
+select {
+  border: solid 1.5px var(--med-gray);
+  border-radius: 4px;
+  padding: 5px 10px;
 }
 .edit-page-grid-container {
+  background: var(--ltr-teal);
   display: grid;
-  grid-template-columns: repeat(10, 1fr);
   gap: 10px;
   grid-auto-rows: minmax(20px, auto);
+  grid-template-columns: repeat(10, 1fr);
   margin: 10px;
 }
 button.big-button {
+  background: var(--ltst-teal);
+  border: solid 1px var(--med-gray);
+  border-radius: 4px;
   border: none;
-  color: white;
-  padding: 12pt 48pt;
-  font-size: 20pt;
-  font-family: Lato, arial, helvetica, sans-serif;
-  text-transform: uppercase;
-  background: var(--med-teal);
-  border-radius: 8px;
+  color: var(--dark-gray);
+  cursor: pointer;
+  display: block;
+  font-family: var(--font-family);
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1;
+  margin: 0 auto;
+  padding: 10px 15px;
+  text-align: center;
 }
 
 a {
@@ -32,26 +49,30 @@ input[type="submit"].big-button {
   color: white;
   padding: 12pt 48pt;
   font-size: 20pt;
-  font-family: Lato, arial, helvetica, sans-serif;
+  font-family: var(--font-family);
   text-transform: uppercase;
-  background: var(--med-teal);
+  background: var(--teal);
   border-radius: 8px;
 }
 
 button.small-button {
-  border: none;
-  color: var(--med-teal);
-  padding: 7pt 28pt;
-  font-size: 14pt;
-  font-family: arial, helvetica, sas-serif;
-  text-transform: uppercase;
-  background: none;
-  border-radius: 3px;
-  border: 2px solid;
+  background: var(--ltst-teal);
+  border: solid 1px var(--med-gray);
+  border-radius: 4px;
+  color: var(--dark-gray);
+  cursor: pointer;
+  display: block;
+  font-family: var(--font-family);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1;
+  margin: 0 auto;
+  padding: 10px 15px;
+  text-align: center;
 }
 
 .teal-label {
-  color: var(--med-teal);
+  color: var(--teal);
   text-transform: uppercase;
   font-weight: bold;
 }
@@ -70,7 +91,7 @@ button.small-button {
 .part-label {
   grid-column: 1/2;
   font-size: 18pt;
-  color: var(--med-teal);
+  color: var(--teal);
   justify-self: end;
 }
 
@@ -115,25 +136,40 @@ button.small-button {
 .section-menu { 
   display: flex;
   justify-content: space-between;
-  background-color: var(--med-teal);
-  padding: 8px;
+  background-color: var(--teal);
+  padding: 5px;
   color: white;
-  font-size: 14pt;
-  text-transform: uppercase;
+  font-family: var(--font-family);
+  font-size: 16px;
 }
 
 .section-menu > a { color: white; }
 
-.menu-start > span {
-    margin-right: 15px;
+.section-menu h3 {
+  display: inline;
+  margin: 0 10px;
+  white-space: nowrap;
+}
+.section-menu label {
+  text-transform: none;
+}
+.menu-start {
+  max-width: 25%;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
+.menu-end {
+  align-self: center;
+  margin-right: 5px;
+}
 .menu-end button {
   background: transparent;
   border: none;
   border-right: solid 1px white;
   color: white;
   cursor: pointer;
+  font-variant: small-caps;
   margin: 0;
   padding: 0 10px 0 0;
   text-transform: uppercase;
@@ -143,6 +179,7 @@ button.small-button {
   color: var(--gold);
 }
 .menu-end ul {
+  line-height: .5;
   list-style: none;
   margin: 0;
   padding: 0;
@@ -151,6 +188,9 @@ button.small-button {
   display: inline-block;
   margin: 0 10px 0 0;
   padding: 0;
+}
+.menu-end ul li:last-child {
+  margin-right: 0;
 }
 .menu-end ul li:last-child button {
   border-right: none;
@@ -162,17 +202,15 @@ button.small-button {
 }
 
 .section-container, .sectionItem {
-  min-height: 200px;
-  justify-self: stretch;
-  border: 1px solid var(--med-teal);
-  border-radius: 5px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   background-color: white;
+  border: 1px solid var(--med-gray);
+  border-radius: 3px;
+  margin-bottom: 10px;
+  min-height: 200px;
+  width: 100%;
 }
 .itemsContainer {
-  border: solid 1px var(--med-teal);
+  background: var(--ltst-teal);
   border-radius: 4px;
   padding: 10px;
 }

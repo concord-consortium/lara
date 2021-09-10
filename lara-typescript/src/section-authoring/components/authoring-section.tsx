@@ -1,8 +1,5 @@
-import * as React from "react";
+import React, { useState, useEffect } from "react";
 import { GripLines } from "./icons/grip-lines";
-import { MinusSquare } from "./icons/minus-square";
-import { Cog } from "./icons/cog";
-import { Trash } from "./icons/trash";
 import { SectionItem, ISectionItemProps} from "./section-item";
 import { DragDropContext, Droppable, Draggable, DropResult } from "react-beautiful-dnd";
 // NP 2021-08-12 -- default imports aren't working correctly when evaled on page
@@ -65,7 +62,7 @@ export interface ISectionProps {
   /**
    * Optional function to delete the section (elsewhere)
    */
-   deleteFunction?: (id: string) => void;
+  deleteFunction?: (id: string) => void;
 
   /**
    * Or display order on the page
@@ -83,11 +80,19 @@ export interface ISectionProps {
   collapsed?: boolean;
 
   /**
-   * Section Items in this section
+   * Items in this section
    */
-   items?: ISectionItemProps[];
-   columnOneItems?: ISectionItemProps[];
-   columnTwoItems?: ISectionItemProps[];
+  items?: ISectionItemProps[];
+
+  /**
+   * Optional function to delete the section (elsewhere)
+   */
+  updatePageItems?: (items: ISectionItemProps[], sectionId: string) => void;
+
+  /**
+   * Function to move an item
+   */
+  moveItemFunction?: (id: string) => void;
 
 }
 
@@ -100,35 +105,23 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
   deleteFunction,
   layout: initLayout = defaultLayout,
   items: initItems = [] as ISectionItemProps[],
-  columnOneItems: initColumnOneItems = [] as ISectionItemProps[],
-  columnTwoItems: initColumnTwoItems = [] as ISectionItemProps[],
+  updatePageItems,
+  moveItemFunction,
   collapsed: initCollapsed = false,
   title
   }: ISectionProps) => {
 
-  const getColumnItems = (columnIndex: number) => {
-    let columnItems: any[] = [];
-    columnItems = items.map(i => {
-      if (i.section_col === columnIndex) {
-        return <SectionItem {...i} key={i.id} />;
-      }
-    }).filter(Boolean);
-    return columnItems;
-  }
+  const [layout, setLayout] = useState(initLayout);
+  const [collapsed, setCollapsed] = useState(initCollapsed);
+  const [items, setItems] = useState([...initItems]); // TODO: Initial Items as in layout
 
-  const [layout, setLayout] = React.useState(initLayout);
-  const [collapsed, setCollapsed] = React.useState(initCollapsed);
-  const [items, setItems] = React.useState([...initItems]); // TODO: Initial Items as in layout
-  const [columnOneItems, setColumnOneItems] = React.useState(getColumnItems(0));
-  const [columnTwoItems, setColumnTwoItems] = React.useState(getColumnItems(1));
-
-  React.useEffect(() => {
+  useEffect(() => {
     setLayout(initLayout);
   }, [initLayout]);
 
-  // React.useEffect(() => {
-  //   setItems([...initItems]);
-  // }, [initItems]);
+  useEffect(() => {
+    updatePageItems?.(items, id);
+  }, [items]);
 
   const layoutChanged = (change: React.ChangeEvent<HTMLSelectElement>) => {
     const newLayout = change.target.value as Layouts;
@@ -158,71 +151,106 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
     return items.sort((a, b) => a.position - b.position);
   };
 
-  const addItemCol1 = () => {
-    const nextId = columnOneItems.length;
-    const position = nextId + 1;
-    const newItem: ISectionItemProps = {
-      id: `${nextId}`,
-      section_id: id,
-      section_col: 0,
-      position,
-      title: `item ${position}`
-    };
-    setColumnOneItems([...columnOneItems, newItem]);
-  };
+  const getColumnItems = (columnIndex: number) => {
+    let columnItems: any[] = [];
+    columnItems = items.map(i => {
+      if (i.section_col === columnIndex) {
+        return i;
+      }
+    }).filter(Boolean);
+    return columnItems;
+  }
 
-  const addItemCol2 = () => {
-    const nextId = columnTwoItems.length;
-    const position = nextId + 1;
+  const addItem = (section_col: number) => {
+    const nextId = `section-${id}-item-${items.length}`;
+    const position = items.length + 1;
     const newItem: ISectionItemProps = {
       id: `${nextId}`,
       section_id: id,
-      section_col: 1,
+      section_col,
       position,
-      title: `item ${position}`
+      title: `Item ${position} - ${Math.random().toString(36).substr(2, 9)}`
     };
-    setColumnTwoItems([...columnTwoItems, newItem]);
+    setItems([...items, newItem]);
   };
 
   const swapIndexes = (array: any[], a: number, b: number) => {
-    console.log('swap shop');
+    const aItem = array[a];
     const bItem = array[b];
-    array[b] = array[a];
+    const aPos = aItem.position;
+    const bPos = bItem.position;
+    aItem.position = bPos;
+    bItem.position = aPos;
+    array[b] = aItem;
     array[a] = bItem;
     return [...array];
   };
 
   const onDragEnd = (e: DropResult) => {
-    // if (e.destination && e.destination.index !== e.source.index) {
-    //   const nextItems = swapIndexes(items, e.source.index, e.destination.index);
-    //   if (setItems) {
-    //     setItems(nextItems);
-    //   }
-    // }
+    if (!e.destination) {
+      return;
+    }
+    let nextItems = [];
+    if (e.source.droppableId !== e.destination.droppableId) {
+      // items[e.source.index].section_col = items[e.source.index].section_col === 0 ? 1 : 0;
+      // disallow cross column reordering for now
+      return;
+    }
+    if (e.destination && e.destination.index !== e.source.index) {
+      nextItems = swapIndexes(items, e.source.index, e.destination.index);
+    }
+    if (setItems) {
+      setItems(nextItems);
+    }
   };
 
-  const sectionColumns = (columnOneItems: any[], columnTwoItems: any[]) => {
+  const handleMoveItem = (itemId: string) => {
+    if (moveItemFunction) {
+      moveItemFunction(itemId);
+    }
+  };
+
+  const handleCopyItem = (id: string) => {
+    const item = items.find(i => i.id === id);
+    if (item) {
+      addItem(item.section_col);
+    }
+  };
+
+  const handleDeleteItem = (itemId: string) => {
+    const nextItems: ISectionItemProps[] = [];
+    items.forEach(i => {
+      if (i.id !== itemId) {
+        nextItems.push(i);
+      }
+    });
+    setItems(nextItems);
+  };
+
+  const sectionColumns = () => {
+    const columnOneItems = getColumnItems(0);
+    const columnTwoItems = getColumnItems(1);
     return (
       <>
       <DragDropContext onDragEnd={onDragEnd}>
         <div className={`edit-page-grid-container col-1 ${classNameForItem(layout, 0)}`}>
           <Droppable droppableId="droppableCol1">
-            {(droppableProvided, snapshot) => (
+            {(droppableProvided) => (
               <div ref={droppableProvided.innerRef} className="edit-items-container full-row" {...droppableProvided.droppableProps}>
                 <div className="itemsContainer">
                   { !collapsed && columnOneItems && columnOneItems.length > 0 && columnOneItems.map((element, index) => {
                     return (
-                      <Draggable key={`col-1-item-${index}`} draggableId={`col-1-item-${index}`} index={index}>
+                      <Draggable key={`col-1-item-${index}`} draggableId={`col-1-item-${index}`} index={element.position - 1}>
                         {(draggableProvided) => (
                           <div className="sectionItem" key={`col-1-item-inner-${index}`} {...draggableProvided.draggableProps} {...draggableProvided.dragHandleProps} ref={draggableProvided.innerRef}>
-                            {element}
+                            <SectionItem {...element} key={element.id} moveFunction={handleMoveItem} copyFunction={handleCopyItem} deleteFunction={handleDeleteItem} />
                           </div>
                         )}
                       </Draggable>
                     );
                   })}
                   { droppableProvided.placeholder }
-                  <button className="small-button" onClick={addItemCol1}>
+                  <button className="small-button" onClick={() => addItem(0)}>
                     + Add Item
                   </button>
                 </div>
@@ -233,22 +261,22 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
         {layout !== "Full Width" &&
           <div className={`edit-page-grid-container col-2 ${classNameForItem(layout, 1)}`}>
             <Droppable droppableId="droppableCol2">
-              {(droppableProvided, snapshot) => (
+              {(droppableProvided) => (
                 <div ref={droppableProvided.innerRef} className="edit-items-container full-row" {...droppableProvided.droppableProps}>
                   <div className="itemsContainer">
                     { !collapsed && columnTwoItems && columnTwoItems.length > 0 && columnTwoItems.map((element, index) => {
                       return (
-                        <Draggable key={`col-2-item-${index}`} draggableId={`col-2-item-${index}`} index={index}>
+                        <Draggable key={`col-2-item-${index}`} draggableId={`col-2-item-${index}`} index={element.position - 1}>
                           {(draggableProvided) => (
                             <div className="sectionItem" key={`col-2-item-inner-${index}`} {...draggableProvided.draggableProps} {...draggableProvided.dragHandleProps} ref={draggableProvided.innerRef}>
-                              {element}
+                              <SectionItem {...element} key={element.id} moveFunction={handleMoveItem} copyFunction={handleCopyItem} deleteFunction={handleDeleteItem} />
                             </div>
                           )}
                         </Draggable>
                       );
                     })}
                     { droppableProvided.placeholder }
-                    <button className="small-button" onClick={addItemCol2}>
+                    <button className="small-button" onClick={() => addItem(1)}>
                       + Add Item
                     </button>
                   </div>
@@ -267,8 +295,8 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
       <header className="section-menu full-row">
         <div className="menu-start">
           <GripLines />
-          <span>{title}{id}</span>
-          <span>Layout</span>
+          <h3>{title}{id}</h3>
+          <label htmlFor="section_layout">Layout: </label>
           <select
             id="section_layout"
             name="section[layout]"
@@ -293,7 +321,7 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
           </ul>
         </div>
       </header>
-      {sectionColumns(columnOneItems, columnTwoItems)}
+      {sectionColumns()}
     </div>
   );
 };
