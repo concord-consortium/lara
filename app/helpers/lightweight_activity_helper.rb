@@ -23,16 +23,40 @@ module LightweightActivityHelper
     end
   end
 
-  # Try to find the most specific path for the passed in activity, and the current state
-  # of the sequence_run, sequence, and run
   def runnable_summary_path(activity)
-    if @sequence && @sequence_run
-      append_white_list_params sequence_summary_with_run_path(@sequence, activity, @sequence_run.run_for_activity(activity))
-    elsif @run && @run.activity == activity
-      append_white_list_params summary_with_run_path(activity, @run)
+    report_link = ENV['REPORT_URL']
+    report_firebase_app = ENV['REPORT_SERVICE_URL'].match(/report-service-pro/) ? "report-service-pro" : "report-service-dev"
+    source_key = ENV['REPORT_SERVICE_TOOL_ID']
+    result = ""
+
+    if !@run.user || !@run.class_info_url || !@run.platform_user_id || !@run.resource_link_id || !@run.platform_id
+      # Anonymous run or a logged in user that didn't come from Portal (e.g. teacher running a preview).
+      resource_url = @sequence ? sequence_url(@sequence) : activity_url(activity)
+
+      result = "#{report_link}?" +
+        "runKey=#{@run.key}&" +
+        "activity=#{resource_url}&" +
+        "resourceUrl=#{resource_url}&" +
+        "firebase-app=#{report_firebase_app}&" +
+        "sourceKey=#{source_key}"
     else
-      raise Exception.new("no run or sequence run available")
+      offering_url = "#{@run.class_info_url.split("/classes")[0]}/offerings/#{@run.resource_link_id}"
+
+      result = "#{report_link}?" +
+        "class=#{URI.encode_www_form_component(@run.class_info_url)}&" +
+        "firebase-app=#{report_firebase_app}&" +
+        "offering=#{URI.encode_www_form_component(offering_url)}&" +
+        "reportType=offering&" +
+        "studentId=#{@run.platform_user_id}&" +
+        "sourceKey=#{source_key}&" +
+        "auth-domain=#{@run.platform_id}"
     end
+
+    if @sequence
+      result += "&activityIndex=#{@sequence.activities.index(activity)}"
+    end
+
+    result
   end
 
   def runnable_single_page_activity_path(activity, opts={})
@@ -90,8 +114,8 @@ module LightweightActivityHelper
     end
 
     preview_options = {
-                       'Select an option...' => '', 
-                       'Activity Player' => activity_player_url, 
+                       'Select an option...' => '',
+                       'Activity Player' => activity_player_url,
                        'Activity Player Teacher Edition' => activity_player_te_url
                       }
 
