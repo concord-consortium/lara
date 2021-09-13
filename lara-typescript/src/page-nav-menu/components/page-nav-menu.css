@@ -1,0 +1,82 @@
+:root {
+  --dark-teal: #218389;
+  --teal: #0592af;
+  --lt-teal: #93d5e4;
+  --ltr-teal: #cdebf2;
+  --ltst-teal: #e2f4f8;
+  --lt-orange: #ffe6d0;
+  --med-orange: #ea6d2f;
+  --dark-gray: #3f3f3f;
+  --med-gray: #979797;
+  --lt-gray: hsl(0,0%,90%);
+  --font-family: lato, arial, helvetica, sans-serif;
+}
+.activity-nav {
+  align-items: center;
+  background-color: white;
+  color: var(--dark-gray);
+  display: flex;
+  font-size: 18px;
+  height: 64px;
+  justify-content: center;
+  width: 100%;
+}
+.nav-pages {
+  display: flex;
+  justify-content: center;
+  margin: 0 10px 0 10px;
+  padding: 0px;
+  width: 100%;
+}
+.nav-pages .page-button {
+  align-items: center;
+  background-color: white;
+  border: none;
+  border-radius: 4px;
+  color: var(--dark-gray);
+  cursor: pointer;
+  display: flex;
+  fill: #0592af;
+  font-size: 18px;
+  font-weight: bold;
+  height: 44px;
+  justify-content: center;
+  margin: 0 5px 0 5px;
+  width: 44px;
+}
+.nav-pages .page-button svg {
+  fill: var(--teal);
+}
+.nav-pages .page-button.completionPage svg {
+  fill: var(--med-orange);
+}
+.nav-pages .page-button:hover {
+  background: var(--ltr-teal);
+}
+.nav-pages .page-button.completionPage:hover {
+  background: var(--lt-orange);
+}
+.nav-pages .page-button:active,
+.nav-pages .page-button:active svg {
+  background: var(--teal);
+  color: white;
+  fill: white;
+}
+.nav-pages .page-button.disabled {
+  cursor: auto;
+  opacity: .35;
+  outline: none;
+}
+.nav-pages .page-button.current {
+  background-color: var(--teal);
+  color: white;
+  fill: white;
+  pointer-events: none;
+}
+.nav-pages .page-button.completionPage.current {
+  background-color: var(--med-orange);
+  color: white;
+}
+.nav-pages .page-button.current svg {
+  fill: white;
+}
