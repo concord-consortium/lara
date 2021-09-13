@@ -281,30 +281,6 @@ describe LightweightActivitiesController do
     end
   end
 
-  describe '#summary' do
-
-    it 'renders 404 when the activity does not exist' do
-      expect {
-        get :summary, :id => 9876548376394
-      }.to raise_error(ActiveRecord::RecordNotFound)
-    end
-
-    it 'assigns a project and theme' do
-      get :summary, :id => act.id, :run_key => ar_run.key
-      expect(assigns(:project)).not_to be_nil
-      expect(assigns(:theme)).to eq(theme)
-    end
-
-    it 'renders the summary page if the activity exists and is public' do
-      page.add_embeddable(FactoryGirl.create(:mc_embeddable))
-
-      get :summary, :id => act.id, :run_key => ar_run.key
-
-      expect(assigns(:answers)).not_to be_nil
-      expect(response.body).to match /Response Summary for/
-    end
-  end
-
   context 'when the current user is an author' do
     # Access control/authorization is tested in spec/models/user_spec.rb
     before(:each) do
@@ -578,9 +554,9 @@ describe LightweightActivitiesController do
 
     describe '#resubmit_answers' do
       context 'without a run key' do
-        it 'redirects to summary' do
+        it 'redirects to activities list' do
           get :resubmit_answers, { :id => act.id }
-          expect(response).to redirect_to summary_with_run_path(act.id, assigns(:run_key))
+          expect(response).to redirect_to activities_path
         end
       end
 

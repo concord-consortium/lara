@@ -122,16 +122,6 @@ class LightweightActivitiesController < ApplicationController
     setup_show
   end
 
-  def summary
-    authorize! :read, @activity
-    current_theme
-    current_project
-    if !params[:run_key]
-      raise ActiveRecord::RecordNotFound
-    end
-    @answers = @activity.answers(@run)
-  end
-
   # The remaining actions are all authoring actions.
 
   def new
@@ -296,8 +286,8 @@ class LightweightActivitiesController < ApplicationController
   def resubmit_answers
     authorize! :manage, :all
     if !params[:run_key]
-      # If we don't know the run, we can't do this.
-      redirect_to summary_with_run_path(@activity, @run_key) and return
+      flash[:notice] = "It's not possible to resubmit answers without run key."
+      redirect_to activities_path and return
     end
     answers = @activity.answers(@run)
     answers.each { |a| a.mark_dirty }
@@ -346,8 +336,6 @@ class LightweightActivitiesController < ApplicationController
       return 'print_blank'
     when 'single_page'
       return 'runtime'
-    when 'summary'
-      return 'summary'
     else
       return 'application'
     end
