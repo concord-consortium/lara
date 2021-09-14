@@ -14,9 +14,19 @@ services:
       DB_PASSWORD: xyzzy
       GOOGLE_ANALYTICS_ACCOUNT:
       LARA_VERSION: Local Docker
+      # Secret token to access report service
       REPORT_SERVICE_TOKEN:
+      # URL to send resource structure to when publishing
       REPORT_SERVICE_URL:
+      # URL of LARA itself. This self url will be used in the resource structure to provide links to
+      # allow the teacher to view the pages of the activity from the report.
+      # If REPORT_SERVICE_TOOL_ID if it isn't set then the host name of this URL will be used
+      # as the source key in the report service.
       REPORT_SERVICE_SELF_URL: "${LARA_PROTOCOL:-http}://${LARA_HOST:-app.lara.docker}"
+      # This will be used as the source key in the report service.
+      # The resource structure will be stored under this source key as well as the student
+      # answers. When running locally the USER name is added to the end to keep each
+      # developers data separate
       REPORT_SERVICE_TOOL_ID: "${LARA_HOST:-app.lara.docker}.${USER}"
       SECRET_TOKEN: b30c94c7-81b7-4f20-8df9-686b079a616a
       SHUTTERBUG_URI:
