@@ -271,11 +271,12 @@ describe LightweightActivitiesController do
       it "redirects to external portal with the provided run" do
         get :summary, { :id => act.id, :run_key => ar_run.key }
         expect(response).to redirect_to "https://portal-report.concord.org/branch/master/index.html" +
-          "?runKey=#{ar_run.key}" +
-          "&activity=http://test.host/activities/#{act.id}" +
-          "&resourceUrl=http://test.host/activities/#{act.id}" +
-          "&firebase-app=report-service-dev" +
-          "&sourceKey=authoring.test.concord.org"
+          "?firebase-app=report-service-dev" +
+          "&sourceKey=authoring.test.concord.org" +
+          "&runKey=#{ar_run.key}" +
+          "&activity=http%3A%2F%2Ftest.host%2Factivities%2F#{act.id}" +
+          "&resourceUrl=http%3A%2F%2Ftest.host%2Factivities%2F#{act.id}"
+
       end
     end
 
