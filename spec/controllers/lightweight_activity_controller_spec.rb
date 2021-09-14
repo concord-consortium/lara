@@ -260,6 +260,25 @@ describe LightweightActivitiesController do
     end
   end
 
+  describe "#summary" do
+      before(:each) do
+        allow(ENV).to receive(:[]).and_call_original
+        allow(ENV).to receive(:[]).with("REPORT_SERVICE_URL").and_return("https://us-central1-report-service-dev.cloudfunctions.net/api")
+        allow(ENV).to receive(:[]).with("REPORT_URL").and_return("https://portal-report.concord.org/branch/master/index.html")
+        allow(ENV).to receive(:[]).with("REPORT_SERVICE_TOOL_ID").and_return("authoring.test.concord.org")
+      end
+
+      it "redirects to external portal with the provided run" do
+        get :summary, { :id => act.id, :run_key => ar_run.key }
+        expect(response).to redirect_to "https://portal-report.concord.org/branch/master/index.html" +
+          "?runKey=#{ar_run.key}" +
+          "&activity=http://test.host/activities/#{act.id}" +
+          "&resourceUrl=http://test.host/activities/#{act.id}" +
+          "&firebase-app=report-service-dev" +
+          "&sourceKey=authoring.test.concord.org"
+      end
+    end
+
   describe '#single_page' do
 
     it_behaves_like "runnable resource not launchable by the portal", Run do
@@ -278,30 +297,6 @@ describe LightweightActivitiesController do
     it 'renders print_blank' do
       get :print_blank, :id => act.id
       expect(response).to render_template('lightweight_activities/print_blank')
-    end
-  end
-
-  describe '#summary' do
-
-    it 'renders 404 when the activity does not exist' do
-      expect {
-        get :summary, :id => 9876548376394
-      }.to raise_error(ActiveRecord::RecordNotFound)
-    end
-
-    it 'assigns a project and theme' do
-      get :summary, :id => act.id, :run_key => ar_run.key
-      expect(assigns(:project)).not_to be_nil
-      expect(assigns(:theme)).to eq(theme)
-    end
-
-    it 'renders the summary page if the activity exists and is public' do
-      page.add_embeddable(FactoryGirl.create(:mc_embeddable))
-
-      get :summary, :id => act.id, :run_key => ar_run.key
-
-      expect(assigns(:answers)).not_to be_nil
-      expect(response.body).to match /Response Summary for/
     end
   end
 
@@ -578,9 +573,9 @@ describe LightweightActivitiesController do
 
     describe '#resubmit_answers' do
       context 'without a run key' do
-        it 'redirects to summary' do
+        it 'redirects to activities list' do
           get :resubmit_answers, { :id => act.id }
-          expect(response).to redirect_to summary_with_run_path(act.id, assigns(:run_key))
+          expect(response).to redirect_to activities_path
         end
       end
 
