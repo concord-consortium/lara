@@ -27,11 +27,13 @@ module LightweightActivityHelper
 
   def runnable_summary_path(activity)
     report_link = ENV['REPORT_URL']
-    report_firebase_app = ENV['REPORT_SERVICE_URL'] && ENV['REPORT_SERVICE_URL'].match(/report-service-pro/) ? "report-service-pro" : "report-service-dev"
+    unless report_link
+      return nil
+    end
 
     uri = URI.parse(report_link)
     query = Rack::Utils.parse_query(uri.query)
-    query["firebase-app"] = report_firebase_app
+    query["firebase-app"] = ENV['REPORT_SERVICE_URL'] && ENV['REPORT_SERVICE_URL'].match(/report-service-pro/) ? "report-service-pro" : "report-service-dev"
     query["sourceKey"] = ReportService::Sender::source_key
 
     if !@run.user || !@run.class_info_url || !@run.platform_user_id || !@run.resource_link_id || !@run.platform_id
