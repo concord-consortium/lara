@@ -13,13 +13,13 @@ module ReportService
     def initialize(resource, opts={})
       version = Version
       created = Time.now.utc.to_s
-      @payload = resource.serialize_for_report_service(self_url)
+      @payload = resource.serialize_for_report_service(Sender::self_url)
       type = @payload[:type]
       id = @payload[:id]
       @payload[:created] = created
       @payload[:version] = version
-      @payload[:source_key] = source_key
-      @payload[:tool_id] = tool_id
+      @payload[:source_key] = Sender::source_key
+      @payload[:tool_id] = Sender::tool_id
       @payload[:id] = ReportService::make_key(type, id)
     end
 

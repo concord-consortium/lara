@@ -32,35 +32,35 @@ module ReportService
 
   module Sender
 
-    def self_url
+    def self.self_url
       raise ReportService::NotConfigured.new unless ReportService::configured?
       ENV['REPORT_SERVICE_SELF_URL']
     end
 
-    def report_service_url
+    def self.report_service_url
       raise ReportService::NotConfigured.new unless ReportService::configured?
       ENV['REPORT_SERVICE_URL']
     end
 
-    def report_service_token
+    def self.report_service_token
       raise ReportService::NotConfigured.new unless ReportService::configured?
       ENV['REPORT_SERVICE_TOKEN']
     end
 
-    def tool_id
+    def self.tool_id
       if ENV['REPORT_SERVICE_TOOL_ID'].present?
         ENV['REPORT_SERVICE_TOOL_ID']
       else
-        self_url
+        self.self_url
       end
     end
 
-    def source_key
+    def self.source_key
       ReportService::make_source_key(tool_id)
     end
 
     def api_endpoint
-      "#{report_service_url}/#{api_method}"
+      "#{Sender::report_service_url}/#{api_method}"
     end
 
     def send()
@@ -69,7 +69,7 @@ module ReportService
         :body => to_json,
         :headers => {
           'Content-Type' => 'application/json',
-          'Authorization' => "Bearer #{report_service_token}"
+          'Authorization' => "Bearer #{Sender::report_service_token}"
         }
       )
     end

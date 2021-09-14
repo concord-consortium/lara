@@ -1,5 +1,5 @@
 module LightweightActivityHelper
-  include ReportService::Sender
+  # include ReportService::Sender
 
   def toggle_all(label='all', id_prefix='details_')
     link_to_function("show/hide #{label}", "$('div[id^=#{id_prefix}]').toggle();")
@@ -32,7 +32,7 @@ module LightweightActivityHelper
     uri = URI.parse(report_link)
     query = Rack::Utils.parse_query(uri.query)
     query["firebase-app"] = report_firebase_app
-    query["sourceKey"] = source_key # from ReportService::Sender
+    query["sourceKey"] = ReportService::Sender::source_key
 
     if !@run.user || !@run.class_info_url || !@run.platform_user_id || !@run.resource_link_id || !@run.platform_id
       # Anonymous run or a logged in user that didn't come from Portal (e.g. teacher running a preview).
