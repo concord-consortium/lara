@@ -1,4 +1,6 @@
 module LightweightActivityHelper
+  include ReportService::Sender
+
   def toggle_all(label='all', id_prefix='details_')
     link_to_function("show/hide #{label}", "$('div[id^=#{id_prefix}]').toggle();")
   end
@@ -26,37 +28,35 @@ module LightweightActivityHelper
   def runnable_summary_path(activity)
     report_link = ENV['REPORT_URL']
     report_firebase_app = ENV['REPORT_SERVICE_URL'] && ENV['REPORT_SERVICE_URL'].match(/report-service-pro/) ? "report-service-pro" : "report-service-dev"
-    source_key = ENV['REPORT_SERVICE_TOOL_ID']
-    result = ""
+
+    uri = URI.parse(report_link)
+    query = Rack::Utils.parse_query(uri.query)
+    query["firebase-app"] = report_firebase_app
+    query["sourceKey"] = source_key # from ReportService::Sender
 
     if !@run.user || !@run.class_info_url || !@run.platform_user_id || !@run.resource_link_id || !@run.platform_id
       # Anonymous run or a logged in user that didn't come from Portal (e.g. teacher running a preview).
       resource_url = @sequence ? sequence_url(@sequence) : activity_url(activity)
 
-      result = "#{report_link}?" +
-        "runKey=#{@run.key}&" +
-        "activity=#{resource_url}&" +
-        "resourceUrl=#{resource_url}&" +
-        "firebase-app=#{report_firebase_app}&" +
-        "sourceKey=#{source_key}"
+      query["runKey"] = @run.key
+      query["activity"] = resource_url
+      query["resourceUrl"] = resource_url
     else
       offering_url = "#{@run.class_info_url.split("/classes")[0]}/offerings/#{@run.resource_link_id}"
 
-      result = "#{report_link}?" +
-        "class=#{URI.encode_www_form_component(@run.class_info_url)}&" +
-        "firebase-app=#{report_firebase_app}&" +
-        "offering=#{URI.encode_www_form_component(offering_url)}&" +
-        "reportType=offering&" +
-        "studentId=#{@run.platform_user_id}&" +
-        "sourceKey=#{source_key}&" +
-        "auth-domain=#{@run.platform_id}"
+      query["class"] = @run.class_info_url
+      query["offering"] = offering_url
+      query["reportType"] = "offering"
+      query["studentId"] = @run.platform_user_id
+      query["auth-domain"] = @run.platform_id
     end
 
     if @sequence
-      result += "&activityIndex=#{@sequence.activities.index(activity)}"
+      query["activityIndex"] = @sequence.activities.index(activity)
     end
 
-    result
+    uri.query = Rack::Utils.build_query(query)
+    uri.to_s
   end
 
   def runnable_single_page_activity_path(activity, opts={})

@@ -116,11 +116,11 @@ describe LightweightActivityHelper do
       it "returns Portal Report URL with runKey param" do
         expect(helper.runnable_summary_path(activity)).to eq(
           "https://portal-report.concord.org/branch/master/index.html?" +
-          "runKey=012345678901234567890123456789123456&" +
-          "activity=http://test.host/activities/23&" +
-          "resourceUrl=http://test.host/activities/23&" +
           "firebase-app=report-service-dev&" +
-          "sourceKey=authoring.test.concord.org"
+          "sourceKey=authoring.test.concord.org&" +
+          "runKey=012345678901234567890123456789123456&" +
+          "activity=http%3A%2F%2Ftest.host%2Factivities%2F23&" +
+          "resourceUrl=http%3A%2F%2Ftest.host%2Factivities%2F23"
         )
       end
     end
@@ -147,13 +147,13 @@ describe LightweightActivityHelper do
         puts helper.runnable_summary_path(activity)
         expect(helper.runnable_summary_path(activity)).to eq(
           "https://portal-report.concord.org/branch/master/index.html?" +
-          "class=https%3A%2F%2Ftest.portal.com%2Fapi%2Fv1%2Fclasses%2F123&" +
           "firebase-app=report-service-dev&" +
+          "sourceKey=authoring.test.concord.org&" +
+          "class=https%3A%2F%2Ftest.portal.com%2Fapi%2Fv1%2Fclasses%2F123&" +
           "offering=https%3A%2F%2Ftest.portal.com%2Fapi%2Fv1%2Fofferings%2F321&" +
           "reportType=offering&" +
           "studentId=ABC&" +
-          "sourceKey=authoring.test.concord.org&" +
-          "auth-domain=https://test.portal.com"
+          "auth-domain=https%3A%2F%2Ftest.portal.com"
         )
       end
     end
@@ -166,11 +166,11 @@ describe LightweightActivityHelper do
       it "sets firebase-app to report-service-pro" do
         expect(helper.runnable_summary_path(activity)).to eq(
           "https://portal-report.concord.org/branch/master/index.html?" +
-          "runKey=012345678901234567890123456789123456&" +
-          "activity=http://test.host/activities/23&" +
-          "resourceUrl=http://test.host/activities/23&" +
           "firebase-app=report-service-pro&" +
-          "sourceKey=authoring.test.concord.org"
+          "sourceKey=authoring.test.concord.org&" +
+          "runKey=012345678901234567890123456789123456&" +
+          "activity=http%3A%2F%2Ftest.host%2Factivities%2F23&" +
+          "resourceUrl=http%3A%2F%2Ftest.host%2Factivities%2F23"
         )
       end
     end
@@ -183,11 +183,11 @@ describe LightweightActivityHelper do
       it "adds activityIndex param" do
         expect(helper.runnable_summary_path(activity)).to eq(
           "https://portal-report.concord.org/branch/master/index.html?" +
-          "runKey=012345678901234567890123456789123456&" +
-          "activity=http://test.host/sequences/1&" +
-          "resourceUrl=http://test.host/sequences/1&" +
           "firebase-app=report-service-dev&" +
           "sourceKey=authoring.test.concord.org&" +
+          "runKey=012345678901234567890123456789123456&" +
+          "activity=http%3A%2F%2Ftest.host%2Fsequences%2F1&" +
+          "resourceUrl=http%3A%2F%2Ftest.host%2Fsequences%2F1&" +
           "activityIndex=0"
         )
       end
