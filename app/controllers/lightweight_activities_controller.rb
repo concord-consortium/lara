@@ -122,6 +122,10 @@ class LightweightActivitiesController < ApplicationController
     setup_show
   end
 
+  def summary
+    redirect_to runnable_summary_path(@activity)
+  end
+
   # The remaining actions are all authoring actions.
 
   def new
