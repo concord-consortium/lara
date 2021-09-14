@@ -30,7 +30,7 @@
     .button-center
       - if @page.last_visible? && @page.lightweight_activity.student_report_enabled
         .submit.report
-          %a{ :href => runnable_summary_path(@page.lightweight_activity), :class => 'gen-report', :target => 'new' }
+          %a{ :href => runnable_summary_path(@page.lightweight_activity), :class => 'gen-report', :target => '_blank' }
             %input{ :class => 'button', :type => 'submit', :value => t("GENERATE_A_REPORT") }
     .button-right
       - if @page.last_visible? && next_activity

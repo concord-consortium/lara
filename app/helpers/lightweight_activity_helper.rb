@@ -1,4 +1,6 @@
 module LightweightActivityHelper
+  # include ReportService::Sender
+
   def toggle_all(label='all', id_prefix='details_')
     link_to_function("show/hide #{label}", "$('div[id^=#{id_prefix}]').toggle();")
   end
@@ -23,16 +25,40 @@ module LightweightActivityHelper
     end
   end
 
-  # Try to find the most specific path for the passed in activity, and the current state
-  # of the sequence_run, sequence, and run
   def runnable_summary_path(activity)
-    if @sequence && @sequence_run
-      append_white_list_params sequence_summary_with_run_path(@sequence, activity, @sequence_run.run_for_activity(activity))
-    elsif @run && @run.activity == activity
-      append_white_list_params summary_with_run_path(activity, @run)
-    else
-      raise Exception.new("no run or sequence run available")
+    report_link = ENV['REPORT_URL']
+    unless report_link
+      return nil
     end
+
+    uri = URI.parse(report_link)
+    query = Rack::Utils.parse_query(uri.query)
+    query["firebase-app"] = ENV['REPORT_SERVICE_URL'] && ENV['REPORT_SERVICE_URL'].match(/report-service-pro/) ? "report-service-pro" : "report-service-dev"
+    query["sourceKey"] = ReportService::Sender::source_key
+
+    if !@run.user || !@run.class_info_url || !@run.platform_user_id || !@run.resource_link_id || !@run.platform_id
+      # Anonymous run or a logged in user that didn't come from Portal (e.g. teacher running a preview).
+      resource_url = @sequence ? sequence_url(@sequence) : activity_url(activity)
+
+      query["runKey"] = @run.key
+      query["activity"] = resource_url
+      query["resourceUrl"] = resource_url
+    else
+      offering_url = "#{@run.class_info_url.split("/classes")[0]}/offerings/#{@run.resource_link_id}"
+
+      query["class"] = @run.class_info_url
+      query["offering"] = offering_url
+      query["reportType"] = "offering"
+      query["studentId"] = @run.platform_user_id
+      query["auth-domain"] = @run.platform_id
+    end
+
+    if @sequence
+      query["activityIndex"] = @sequence.activities.index(activity)
+    end
+
+    uri.query = Rack::Utils.build_query(query)
+    uri.to_s
   end
 
   def runnable_single_page_activity_path(activity, opts={})
@@ -90,8 +116,8 @@ module LightweightActivityHelper
     end
 
     preview_options = {
-                       'Select an option...' => '', 
-                       'Activity Player' => activity_player_url, 
+                       'Select an option...' => '',
+                       'Activity Player' => activity_player_url,
                        'Activity Player Teacher Edition' => activity_player_te_url
                       }
 
