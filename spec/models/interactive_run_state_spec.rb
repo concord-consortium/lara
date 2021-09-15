@@ -422,26 +422,30 @@ describe InteractiveRunState do
     describe "when interactive doesn't have a report url" do
       let(:interactive) { FactoryGirl.create(:mw_interactive, enable_learner_state: true, has_report_url: false) }
       let(:run_data) { '{"someProp": 123}' }
-      let(:interactive_run_state_1) { InteractiveRunState.create(run: run, interactive: interactive, raw_data: run_data) }
+      let(:metadata) { '{"attachments": 321}' }
+      let(:interactive_run_state_1) { InteractiveRunState.create(run: run, interactive: interactive, raw_data: run_data, metadata: metadata) }
       let(:interactive_run_state_2) { InteractiveRunState.create(run: run, interactive: interactive) }
 
       it "should update raw_data" do
         expect(interactive_run_state_2.raw_data).to eql(nil)
         interactive_run_state_2.copy_answer!(interactive_run_state_1)
         expect(interactive_run_state_2.raw_data).to eql(run_data)
+        expect(interactive_run_state_2.metadata).to eql(metadata)
       end
     end
 
     describe "when interactive has a report url" do
       let(:interactive) { FactoryGirl.create(:mw_interactive, enable_learner_state: true, has_report_url: true) }
       let(:run_data) { '{"second": 2, "lara_options": {"reporting_url": "test.com"}}' }
-      let(:interactive_run_state_1) { InteractiveRunState.create(run: run, interactive: interactive, raw_data: run_data) }
+      let(:metadata) { '{"attachments": 321}' }
+      let(:interactive_run_state_1) { InteractiveRunState.create(run: run, interactive: interactive, raw_data: run_data, metadata: metadata) }
       let(:interactive_run_state_2) { InteractiveRunState.create(run: run, interactive: interactive) }
 
       it "should NOT update raw_data" do
         expect(interactive_run_state_2.raw_data).to eql(nil)
         interactive_run_state_2.copy_answer!(interactive_run_state_1)
         expect(interactive_run_state_2.raw_data).to eql(nil)
+        expect(interactive_run_state_2.metadata).to eql(nil)
       end
     end
 
@@ -450,13 +454,15 @@ describe InteractiveRunState do
       let(:interactive) { FactoryGirl.create(:mw_interactive, enable_learner_state: true, has_report_url: false) }
       # but report_url is here anyway:
       let(:run_data) { '{"second": 2, "lara_options": {"reporting_url": "test.com"}}' }
-      let(:interactive_run_state_1) { InteractiveRunState.create(run: run, interactive: interactive, raw_data: run_data) }
+      let(:metadata) { '{"attachments": 321}' }
+      let(:interactive_run_state_1) { InteractiveRunState.create(run: run, interactive: interactive, raw_data: run_data, metadata: metadata) }
       let(:interactive_run_state_2) { InteractiveRunState.create(run: run, interactive: interactive) }
 
       it "should NOT update raw_data" do
         expect(interactive_run_state_2.raw_data).to eql(nil)
         interactive_run_state_2.copy_answer!(interactive_run_state_1)
         expect(interactive_run_state_2.raw_data).to eql(nil)
+        expect(interactive_run_state_2.metadata).to eql(nil)
       end
     end
   end

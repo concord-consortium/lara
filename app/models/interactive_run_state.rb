@@ -71,7 +71,8 @@ class InteractiveRunState < ActiveRecord::Base
     return if interactive.has_report_url || another_int_run_state.reporting_url.present?
 
     self.update_attributes!(
-      raw_data: another_int_run_state.raw_data
+      raw_data: another_int_run_state.raw_data,
+      metadata: another_int_run_state.metadata
     )
   end
 
@@ -198,7 +199,7 @@ class InteractiveRunState < ActiveRecord::Base
     if interactive.has_report_url
       send_to_portal if reporting_url.present?
     else
-      send_to_portal if raw_data
+      send_to_portal if raw_data || metadata
     end
   end
 
