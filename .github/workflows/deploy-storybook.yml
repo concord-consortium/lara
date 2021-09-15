@@ -11,7 +11,7 @@ jobs:
       - uses: actions/setup-node@v2
       - name: Install Dependencies
         run: npm ci
-      - uses: concord-consortium/s3-deploy-action@add-flexibility
+      - uses: concord-consortium/s3-deploy-action@add-more-flexibility
         with:
           bucket: models-resources
           prefix: lara-storybook
