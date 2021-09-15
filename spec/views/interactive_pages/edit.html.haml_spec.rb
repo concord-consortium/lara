@@ -57,10 +57,9 @@ describe "interactive_pages/edit" do
     # rendered.should match /<a[^>]+href="\/activities"[^<]*>[\s]*All Activities[\s]*<\/a>/
   end
 
-  it 'has links for adding Embeddables to the page' do
+  it 'has wrapper for react element' do
     render
-    expect(rendered).to match /<form[^>]+action="\/activities\/#{activity.id}\/pages\/#{page.id}\/add_embeddable"[^<]*>/
-    expect(rendered).to match /<select[^>]+name="embeddable_type"[^>]*>/
+    expect(rendered).to match(/<div id='sections-container'>/)
   end
 
   it 'shows navigation links' do

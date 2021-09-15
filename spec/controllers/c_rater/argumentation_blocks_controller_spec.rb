@@ -30,6 +30,7 @@ describe CRater::ArgumentationBlocksController do
     end
     it 'should remove *only* argumentation block embeddables' do
       post :remove_embeddables, page_id: page.id
+      page.reload
       expect(page.embeddables.length).to eql(1)
       expect(page.embeddables).to include open_response
       expect(page.embeddables).not_to include arg_block_open_response

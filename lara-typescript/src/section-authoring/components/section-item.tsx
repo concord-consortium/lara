@@ -107,4 +107,4 @@ export const SectionItem: React.FC<ISectionItemProps> = ({
       </section>
     </div>
   );
-}
+};

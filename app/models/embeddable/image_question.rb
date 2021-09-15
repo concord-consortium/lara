@@ -6,7 +6,8 @@ class Embeddable::ImageQuestion < ActiveRecord::Base
     :is_prediction, :show_in_featured_question_report, :give_prediction_feedback, :prediction_feedback, :is_hidden
 
   has_many :page_items, :as => :embeddable, :dependent => :destroy
-  has_many :interactive_pages, :through => :page_items
+  has_many :sections, through: :page_items
+  has_many :interactive_pages, through: :sections
 
   has_many :answers,
     :class_name  => 'Embeddable::ImageQuestionAnswer',
@@ -100,11 +101,6 @@ class Embeddable::ImageQuestion < ActiveRecord::Base
 
   def reportable?
     true
-  end
-
-  def page_section
-    # In practice one question can't be added to multiple pages. Perhaps it should be refactored to has_one / belongs_to relation.
-    page_items.count > 0 && page_items.first.old_section
   end
 
   def configuration_error

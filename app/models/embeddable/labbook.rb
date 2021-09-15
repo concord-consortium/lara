@@ -16,7 +16,8 @@ module Embeddable
       :show_in_featured_question_report, :interactive, :hint, :is_full_width
 
     has_many :page_items, :as => :embeddable, :dependent => :destroy
-    has_many :interactive_pages, :through => :page_items
+    has_many :sections, through: :page_items
+    has_many :interactive_pages, through: :sections
 
     # "Answer" isn't the best word probably, but it fits the rest of names and convention.
     # LabbookAnswer is an instance related to particular activity run and user.
@@ -113,11 +114,6 @@ module Embeddable
 
     def is_snapshot?
       action_type == SNAPSHOT_ACTION
-    end
-
-    def page_section
-      # In practice one question can't be added to multiple pages. Perhaps it should be refactored to has_one / belongs_to relation.
-      page_items.count > 0 && page_items.first.old_section
     end
 
     def action_label

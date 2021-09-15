@@ -1,6 +1,6 @@
-class Api::V1::InteractivePagesController < ApplicationController
+class Api::V1::InteractivePagesController < API::APIController
   layout false
-  before_filter :set_interactive_page
+  before_filter :set_interactive_page, except: [:get_library_interactives_list]
 
   ## Queries:
   def get_sections
@@ -43,6 +43,46 @@ class Api::V1::InteractivePagesController < ApplicationController
     render_page_sections_json
   end
 
+  def create_page_item
+    authorize! :update, @interactive_page
+
+    page_item_params = params["page_item"]
+    return error("Missing page_item parameter") if page_item_params.nil?
+
+    # verify the parameters
+    section_id = page_item_params["section_id"]
+    return error("Missing page_item[section_id] parameter") if section_id.nil?
+    section = @interactive_page.sections.where(id: section_id).first
+    return error("Invalid page_item[section_id] parameter") if section.nil?
+    serializeable_id = page_item_params["embeddable"]
+    return error("Missing page_item[embeddable] parameter") if serializeable_id.nil?
+    position = page_item_params["position"]
+    position = position.to_i unless position.nil?
+
+    # currently we only support library interactives, this will change later
+    if serializeable_id.start_with?("LibraryInteractive")
+      library_interactive = LibraryInteractive.find_by_serializeable_id(serializeable_id)
+      return error("Invalid page_item[embeddable] parameter") if library_interactive.nil?
+      embeddable = ManagedInteractive.create(library_interactive_id: library_interactive.id)
+    else
+      return error("Only library interactive embeddables are currently supported")
+    end
+
+    @interactive_page.add_embeddable(embeddable, position, section.id)
+
+    # TODO: in follow on work change the returned json to include the page items
+    render_page_sections_json
+  end
+
+  def get_library_interactives_list
+    render :json => {
+      success: true,
+      library_interactives: LibraryInteractive.select([:id, :name]).order(:name).map do |li|
+        {id: li.serializeable_id, name: li.name }
+      end
+    }
+  end
+
   def get_interactive_list
     begin
       authorize! :read, @interactive_page
@@ -74,7 +114,7 @@ class Api::V1::InteractivePagesController < ApplicationController
             id: "interactive_#{pi.id}",
             pageId: @interactive_page.id,
             name: i.name,
-            section: pi.old_section != nil ? pi.old_section : "assessment_block",
+            section: pi.section != nil ? pi.section.title : Section::DEFAULT_SECTION_TITLE,
             url: i.url,
             thumbnailUrl: i.thumbnail_url,
             supportsSnapshots: !i.no_snapshots

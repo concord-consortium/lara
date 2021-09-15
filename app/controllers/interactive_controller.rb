@@ -71,7 +71,7 @@ class InteractiveController < ApplicationController
       if options.has_key?("linkedState")
         linked_state_page_item_id = options["linkedState"].nil? ? nil : extract_page_item_id(options["linkedState"])
         if linked_state_page_item_id
-          linked_state_page_item = @page.page_items.find_by_id(linked_state_page_item_id)
+          linked_state_page_item = @page.page_items.find { |i| i.id == linked_state_page_item_id.to_i }
           if !linked_state_page_item
             raise "Invalid linkedState parameter in request"
           end

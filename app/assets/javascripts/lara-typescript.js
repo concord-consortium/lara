@@ -48806,8 +48806,8 @@ var AuthoringPage = function (_a) {
     };
     return (React.createElement(react_beautiful_dnd_1.DragDropContext, { onDragEnd: onDragEnd },
         React.createElement(react_beautiful_dnd_1.Droppable, { droppableId: "droppable" }, function (droppableProvided, snapshot) { return (React.createElement("div", __assign({ ref: droppableProvided.innerRef, className: "edit-page-container" }, droppableProvided.droppableProps),
-            sections.map(function (sProps, index) { return (React.createElement(react_beautiful_dnd_1.Draggable, { key: sProps.id, draggableId: sProps.id, index: index }, function (draggableProvided) { return (React.createElement("div", __assign({}, draggableProvided.draggableProps, draggableProvided.dragHandleProps, { ref: draggableProvided.innerRef }),
-                React.createElement(authoring_section_1.AuthoringSection, __assign({}, sProps, { key: sProps.id, updateFunction: changeSection, deleteFunction: handleDelete })))); })); }),
+            sections.map(function (sProps, index) { return (React.createElement(react_beautiful_dnd_1.Draggable, { key: sProps.id, draggableId: sProps.id, index: index }, function (draggableProvided) { return (React.createElement("div", __assign({}, draggableProvided.draggableProps, { ref: draggableProvided.innerRef }),
+                React.createElement(authoring_section_1.AuthoringSection, __assign({}, sProps, draggableProvided, { key: sProps.id, updateFunction: changeSection, deleteFunction: handleDelete })))); })); }),
             droppableProvided.placeholder,
             React.createElement("button", { className: "big-button", onClick: addSection }, "+ Add Section"))); })));
 };
@@ -48839,6 +48839,22 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
+var __spreadArray = (this && this.__spreadArray) || function (to, from) {
+    for (var i = 0, il = from.length, j = to.length; i < il; i++, j++)
+        to[j] = from[i];
+    return to;
+};
 var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthoringSection = exports.Layouts = void 0;
@@ -48847,7 +48863,8 @@ var grip_lines_1 = __webpack_require__(/*! ./icons/grip-lines */ "./src/section-
 var minus_square_1 = __webpack_require__(/*! ./icons/minus-square */ "./src/section-authoring/components/icons/minus-square.tsx");
 var cog_1 = __webpack_require__(/*! ./icons/cog */ "./src/section-authoring/components/icons/cog.tsx");
 var trash_1 = __webpack_require__(/*! ./icons/trash */ "./src/section-authoring/components/icons/trash.tsx");
-// NP 2021-08-12 -- default imports aren't working correctly when evaled on page
+var section_item_1 = __webpack_require__(/*! ./section-item */ "./src/section-authoring/components/section-item.tsx");
+// NP 2021-08-12 -- default imports aren"t working correctly when evaled on page
 __webpack_require__(/*! ./authoring-section.css */ "./src/section-authoring/components/authoring-section.css");
 var Layouts;
 (function (Layouts) {
@@ -48877,12 +48894,16 @@ var classNameForItem = function (_layout, itemIndex) {
  * Primary UI component for user interaction
  */
 var AuthoringSection = function (_a) {
-    var id = _a.id, updateFunction = _a.updateFunction, deleteFunction = _a.deleteFunction, _b = _a.layout, initLayout = _b === void 0 ? defaultLayout : _b, _c = _a.collapsed, initCollapsed = _c === void 0 ? false : _c, title = _a.title;
-    var _d = React.useState(initLayout), layout = _d[0], setLayout = _d[1];
-    var _e = React.useState(initCollapsed), collapsed = _e[0], setCollapsed = _e[1];
+    var id = _a.id, updateFunction = _a.updateFunction, deleteFunction = _a.deleteFunction, _b = _a.layout, initLayout = _b === void 0 ? defaultLayout : _b, _c = _a.items, initItems = _c === void 0 ? [] : _c, _d = _a.collapsed, initCollapsed = _d === void 0 ? false : _d, title = _a.title, dragHandleProps = _a.dragHandleProps;
+    var _e = React.useState(initLayout), layout = _e[0], setLayout = _e[1];
+    var _f = React.useState(initCollapsed), collapsed = _f[0], setCollapsed = _f[1];
+    var _g = React.useState(__spreadArray([], initItems)), items = _g[0], setItems = _g[1]; // TODO: Initial Items as in layout
     React.useEffect(function () {
         setLayout(initLayout);
     }, [initLayout]);
+    // React.useEffect(() => {
+    //   setItems([...initItems]);
+    // }, [initItems]);
     var layoutChanged = function (change) {
         var newLayout = change.target.value;
         setLayout(newLayout);
@@ -48896,10 +48917,26 @@ var AuthoringSection = function (_a) {
     var handleDelete = function () {
         deleteFunction === null || deleteFunction === void 0 ? void 0 : deleteFunction(id);
     };
+    var sortedItems = function () {
+        return items.sort(function (a, b) { return a.position - b.position; });
+    };
+    var addItem = function () {
+        var nextId = items.length;
+        var position = nextId + 1;
+        var newItem = {
+            id: "" + nextId,
+            position: position,
+            title: "item " + position
+        };
+        setItems(__spreadArray(__spreadArray([], items), [newItem]));
+    };
+    var displayItems = items.map(function (i) { return React.createElement(section_item_1.SectionItem, __assign({}, i, { key: i.id })); });
+    displayItems.push(React.createElement("button", { className: "small-button", onClick: addItem }, "+ Add Item"));
     return (React.createElement("div", { className: "edit-page-grid-container" },
         React.createElement("div", { className: "section-menu full-row" },
             React.createElement("div", { className: "menu-start" },
-                React.createElement(grip_lines_1.GripLines, null),
+                React.createElement("span", __assign({}, dragHandleProps),
+                    React.createElement(grip_lines_1.GripLines, null)),
                 React.createElement("span", null,
                     title,
                     id),
@@ -48915,11 +48952,10 @@ var AuthoringSection = function (_a) {
                 React.createElement("span", null,
                     React.createElement(minus_square_1.MinusSquare, { onClick: toggleCollapse })))),
         !collapsed &&
-            React.createElement(React.Fragment, null,
-                React.createElement("div", { className: "section-container " + classNameForItem(layout, 0) },
-                    React.createElement("button", { className: "small-button" }, "+ Add Item")),
-                React.createElement("div", { className: "section-container " + classNameForItem(layout, 1) },
-                    React.createElement("button", { className: "small-button" }, "+ Add Item")))));
+            displayItems.map(function (element, index) {
+                var className = "section-container " + classNameForItem(layout, index);
+                return (React.createElement("div", { className: className, key: index }, element));
+            })));
 };
 exports.AuthoringSection = AuthoringSection;
 
@@ -49110,6 +49146,33 @@ var QueryBoundPage = function (props) {
     return React.createElement(authoring_page_1.AuthoringPage, __assign({}, { id: id, sections: sections, setSections: setSections, addSection: addSection, changeSection: changeSection }));
 };
 exports.QueryBoundPage = QueryBoundPage;
+
+
+/***/ }),
+
+/***/ "./src/section-authoring/components/section-item.tsx":
+/*!***********************************************************!*\
+  !*** ./src/section-authoring/components/section-item.tsx ***!
+  \***********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.SectionItem = void 0;
+var React = __webpack_require__(/*! react */ "react");
+/**
+ * Primary UI component for user interaction
+ */
+var SectionItem = function (_a) {
+    var id = _a.id, title = _a.title;
+    return (React.createElement("div", { className: "section-item-container" },
+        id,
+        " - ",
+        title));
+};
+exports.SectionItem = SectionItem;
 
 
 /***/ }),

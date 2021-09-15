@@ -6,7 +6,8 @@ module Embeddable
     # PageItem instances are join models, so if the embeddable is gone the join should go too.
     belongs_to :approved_script
     has_many :page_items, :as => :embeddable, :dependent => :destroy
-    has_many :interactive_pages, :through => :page_items
+    has_many :sections, through: :page_items
+    has_many :interactive_pages, through: :sections
     delegate :name,  to: :approved_script, allow_nil: true
     delegate :label, to: :approved_script, allow_nil: true
     delegate :url,   to: :approved_script, allow_nil: true
@@ -55,11 +56,6 @@ module Embeddable
 
     def is_hidden?
       is_hidden
-    end
-
-    def page_section
-      # In practice one question can't be added to multiple pages. Perhaps it should be refactored to has_one / belongs_to relation.
-      page_items.count > 0 && page_items.first.old_section
     end
 
     def export

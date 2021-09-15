@@ -99,11 +99,11 @@ describe Api::V1::InteractivePagesController do
         expect(response.body).to eql({
           success: true,
           interactives: [
-            {id: interactive3.interactive_item_id, pageId: page.id, name: interactive3.name, old_section: "assessment_block", url: interactive3.url, thumbnailUrl: nil, supportsSnapshots: true},
-            {id: interactive2.interactive_item_id, pageId: page.id, name: interactive2.name, old_section: InteractivePage::HEADER_BLOCK, url: interactive2.url, thumbnailUrl: nil, supportsSnapshots: false},
-            {id: interactive5.interactive_item_id, pageId: page.id, name: interactive5.name, old_section: InteractivePage::HEADER_BLOCK, url: "http://bar.com/test2", thumbnailUrl: "http://thumbnail.url", supportsSnapshots: false},
-            {id: interactive1.interactive_item_id, pageId: page.id, name: interactive1.name, old_section: InteractivePage::INTERACTIVE_BOX, url: interactive1.url, thumbnailUrl: nil, supportsSnapshots: true},
-            {id: interactive4.interactive_item_id, pageId: page.id, name: interactive4.name, old_section: InteractivePage::INTERACTIVE_BOX, url: "http://foo.com/test1", thumbnailUrl: nil, supportsSnapshots: true}
+            {id: interactive2.interactive_item_id, pageId: page.id, name: interactive2.name, section: Section::HEADER_BLOCK, url: interactive2.url, thumbnailUrl: nil, supportsSnapshots: false},
+            {id: interactive5.interactive_item_id, pageId: page.id, name: interactive5.name, section: Section::HEADER_BLOCK, url: "http://bar.com/test2", thumbnailUrl: "http://thumbnail.url", supportsSnapshots: false},
+            {id: interactive1.interactive_item_id, pageId: page.id, name: interactive1.name, section: Section::INTERACTIVE_BOX, url: interactive1.url, thumbnailUrl: nil, supportsSnapshots: true},
+            {id: interactive4.interactive_item_id, pageId: page.id, name: interactive4.name, section: Section::INTERACTIVE_BOX, url: "http://foo.com/test1", thumbnailUrl: nil, supportsSnapshots: true},
+            {id: interactive3.interactive_item_id, pageId: page.id, name: interactive3.name, section: Section::DEFAULT_SECTION_TITLE, url: interactive3.url, thumbnailUrl: nil, supportsSnapshots: true}
           ]
         }.to_json)
       end
@@ -115,9 +115,9 @@ describe Api::V1::InteractivePagesController do
         expect(response.body).to eql({
           success: true,
           interactives: [
-            {id: interactive3.interactive_item_id, pageId: page.id, name: interactive3.name, old_section: "assessment_block", url: interactive3.url, thumbnailUrl: nil, supportsSnapshots: true},
-            {id: interactive1.interactive_item_id, pageId: page.id, name: interactive1.name, old_section: InteractivePage::INTERACTIVE_BOX, url: interactive1.url, thumbnailUrl: nil, supportsSnapshots: true},
-            {id: interactive4.interactive_item_id, pageId: page.id, name: interactive4.name, old_section: InteractivePage::INTERACTIVE_BOX, url: "http://foo.com/test1", thumbnailUrl: nil, supportsSnapshots: true}
+            {id: interactive1.interactive_item_id, pageId: page.id, name: interactive1.name, section: Section::INTERACTIVE_BOX, url: interactive1.url, thumbnailUrl: nil, supportsSnapshots: true},
+            {id: interactive4.interactive_item_id, pageId: page.id, name: interactive4.name, section: Section::INTERACTIVE_BOX, url: "http://foo.com/test1", thumbnailUrl: nil, supportsSnapshots: true},
+            {id: interactive3.interactive_item_id, pageId: page.id, name: interactive3.name, section: Section::DEFAULT_SECTION_TITLE, url: interactive3.url, thumbnailUrl: nil, supportsSnapshots: true}
           ]
         }.to_json)
       end
@@ -129,11 +129,112 @@ describe Api::V1::InteractivePagesController do
         expect(response.body).to eql({
           success: true,
           interactives: [
-            {id: interactive2.interactive_item_id, pageId: page.id, name: interactive2.name, old_section: InteractivePage::HEADER_BLOCK, url: interactive2.url, thumbnailUrl: nil, supportsSnapshots: false},
-            {id: interactive5.interactive_item_id, pageId: page.id, name: interactive5.name, old_section: InteractivePage::HEADER_BLOCK, url: "http://bar.com/test2", thumbnailUrl: "http://thumbnail.url", supportsSnapshots: false}
+            {id: interactive2.interactive_item_id, pageId: page.id, name: interactive2.name, section: InteractivePage::HEADER_BLOCK, url: interactive2.url, thumbnailUrl: nil, supportsSnapshots: false},
+            {id: interactive5.interactive_item_id, pageId: page.id, name: interactive5.name, section: InteractivePage::HEADER_BLOCK, url: "http://bar.com/test2", thumbnailUrl: "http://thumbnail.url", supportsSnapshots: false}
           ]
         }.to_json)
       end
+    end
+  end
+
+  describe "#create_page_item" do
+    let(:section) { FactoryGirl.create(:section, :interactive_page => page, :layout => Section::LAYOUT_FULL_WIDTH) }
+
+    before :each do
+      sign_in author
+    end
+
+    describe "fails" do
+      it "without a page_item parameter" do
+        xhr :post, "create_page_item", {id: page.id}
+        expect(response.status).to eq(500)
+        expect(response.content_type).to eq("application/json")
+        expect(response.body).to include "Missing page_item parameter"
+      end
+
+      it "without a section_id parameter" do
+        xhr :post, "create_page_item", {id: page.id, page_item: {}}
+        expect(response.status).to eq(500)
+        expect(response.content_type).to eq("application/json")
+        expect(response.body).to include "Missing page_item[section_id] parameter"
+      end
+
+      it "with an invalid section_id parameter" do
+        xhr :post, "create_page_item", {id: page.id, page_item: {section_id: 0}}
+        expect(response.status).to eq(500)
+        expect(response.content_type).to eq("application/json")
+        expect(response.body).to include "Invalid page_item[section_id] parameter"
+      end
+
+      it "fails with a missing embeddable parameter" do
+        xhr :post, "create_page_item", {id: page.id, page_item: {
+          section_id: section.id,
+          position: 1,
+          section_position: 1,
+          column: 1
+        }}
+        expect(response.body).to include "Missing page_item[embeddable] parameter"
+        expect(response.status).to eq(500)
+        expect(response.content_type).to eq("application/json")
+        expect(response.body).to include "Missing page_item[embeddable] parameter"
+      end
+
+      it "fails with an invalid embeddable parameter" do
+        xhr :post, "create_page_item", {id: page.id, page_item: {
+          section_id: section.id,
+          embeddable: "MwInteractive_1",
+          position: 1,
+          section_position: 1,
+          column: 1
+        }}
+        expect(response.status).to eq(500)
+        expect(response.content_type).to eq("application/json")
+        expect(response.body).to include "Only library interactive embeddables are currently supported"
+      end
+
+      it "fails with an invalid library interactive parameter" do
+        xhr :post, "create_page_item", {id: page.id, page_item: {
+          section_id: section.id,
+          embeddable: "LibraryInteractive_0",
+          position: 1,
+          section_position: 1,
+          column: 1
+        }}
+        expect(response.status).to eq(500)
+        expect(response.content_type).to eq("application/json")
+        expect(response.body).to include "Invalid page_item[embeddable] parameter"
+      end
+    end
+
+    it "succeeds with valid parameters" do
+      xhr :post, "create_page_item", {id: page.id, page_item: {
+        section_id: section.id,
+        embeddable: library_interactive1.serializeable_id,
+        position: 1,
+        section_position: 1,
+        column: 1
+      }}
+      expect(response.status).to eq(200)
+      expect(response.content_type).to eq("application/json")
+    end
+  end
+
+  describe "#get_library_interactives_list" do
+    it "returns the list of library interactives" do
+      # make sure the mocks exist
+      library_interactive1
+      library_interactive2
+
+      xhr :get, "get_library_interactives_list"
+      expect(response.status).to eq(200)
+      expect(response.content_type).to eq("application/json")
+      expect(response.body).to eql({
+        success: true,
+        library_interactives: [
+          {id: library_interactive1.serializeable_id, name: library_interactive1.name},
+          {id: library_interactive2.serializeable_id, name: library_interactive2.name}
+        ]
+      }.to_json)
     end
   end
 end

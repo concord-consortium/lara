@@ -37,7 +37,8 @@ class ManagedInteractive < ActiveRecord::Base
   has_many :primary_linked_items, :through => :page_item
   has_many :secondary_linked_items, :through => :page_item
 
-  has_one :interactive_page, :through => :page_item
+  has_one :section, :through => :page_item
+  has_one :interactive_page, :through => :section
   has_many :interactive_run_states, :as => :interactive, :dependent => :destroy
 
   has_one :labbook, :as => :interactive, :class_name => 'Embeddable::Labbook'

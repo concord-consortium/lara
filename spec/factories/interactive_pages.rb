@@ -34,8 +34,9 @@ FactoryGirl.define do
     factory :interactive_page_with_or, aliases: [:page_with_or] do
       name "page with open response"
       after(:create) do |page, evaluator|
+        page.add_embeddable(FactoryGirl.create(:or_embeddable, is_hidden: false))
         # page.page_items  { [ FactoryGirl.create(:page_item, :interactive_page => page) ] }
-        FactoryGirl.create_list(:page_item, 1, :interactive_page => page)
+        # FactoryGirl.create_list(:page_item, 1, :interactive_page => page)
       end
     end
 
@@ -43,7 +44,8 @@ FactoryGirl.define do
       name "page with hidden open response"
       after(:create) do |page, evaluator|
         # page.page_items  { [ FactoryGirl.create(:page_item, :interactive_page => page) ] }
-        FactoryGirl.create_list(:hidden_page_item, 1, :interactive_page => page)
+        page.add_embeddable(FactoryGirl.create(:or_embeddable, is_hidden: true))
+        # FactoryGirl.create_list(:hidden_page_item, 1, :interactive_page => page)
       end
     end
 

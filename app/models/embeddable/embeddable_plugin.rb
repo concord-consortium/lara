@@ -13,7 +13,8 @@ module Embeddable
     has_one :plugin, as: :plugin_scope, autosave: true
 
     has_many :page_items, :as => :embeddable, :dependent => :destroy
-    has_many :interactive_pages, :through => :page_items
+    has_many :sections, through: :page_items
+    has_many :interactive_pages, through: :sections
 
     delegate :approved_script,  to: :plugin
     delegate :approved_script=,  to: :plugin
@@ -87,11 +88,6 @@ module Embeddable
 
     def export
       self.to_hash
-    end
-
-    def page_section
-      # In practice one question can't be added to multiple pages. Perhaps it should be refactored to has_one / belongs_to relation.
-      page_items.count > 0 && page_items.first.old_section
     end
 
     def wrapping_plugin?
