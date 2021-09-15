@@ -1,0 +1,22 @@
+name: Deploy Storybook
+
+on: push
+
+jobs:
+  deploy:
+    name: Build and Deploy
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+      - name: Install Dependencies
+        run: npm ci
+      - uses: concord-consortium/s3-deploy-action@add-flexibility
+        with:
+          bucket: models-resources
+          prefix: lara-storybook
+          awsAccessKeyId: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          awsSecretAccessKey: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          workingDirectory: lara-typescript
+          build: npm run build-storybook
+          folderToDeploy: storybook-static
