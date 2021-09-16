@@ -1,0 +1,206 @@
+
+import { QueryClient, QueryClientProvider, useMutation, useQuery, useQueryClient } from "react-query";
+
+
+
+import { useState } from "react";
+
+type SectionId = string;
+type PageId = string;
+type ItemId = string;
+
+type ColumnSpec = 1 | 2;
+type RelativePosition = "before" | "after";
+
+export interface ISectionItem {
+  id: ItemId;
+  title?: string;
+}
+
+export interface ISection {
+  id: SectionId;
+  items: ISectionItem[];
+  title?: string;
+}
+
+export interface IPage {
+  id: PageId;
+  sections: ISection[];
+  title?: string;
+}
+
+export type IPageList = IPage[];
+
+// Specify where a page goes
+export interface IPageDestination {
+  pageId: PageId;
+  position?: RelativePosition;
+}
+
+export interface IPageAuthoringAPI {
+  // pages:
+  getPages: () => IPageList;
+  createPage: () => IPageList;
+  copyPage: (id: PageId) => IPageList;
+  updatePage: (id: PageId, changes: Partial<IPage>) => IPageList;
+  movePage: (id: PageId, dest: IPageDestination) => IPageList;
+  deletePage: (id: PageId) => IPageList;
+  pages: IPageList;
+}
+
+let idCounter = 0;
+const genId = () => `${idCounter++}`;
+
+interface IHasStringId {
+  id: string;
+}
+
+const insertAt = <T extends IHasStringId>(thing: T, targetId: string, position: RelativePosition, collection: T[]) => {
+  let index = collection.findIndex(i => i.id === targetId);
+  if (position === "after") index++;
+  return [...collection.slice(0, index), thing, ...collection.slice(index)];
+};
+
+const removeFrom = <T extends IHasStringId>(targetId: string, collection: T[]) => {
+  return collection.filter(i => i.id !== targetId);
+};
+
+export const UsePageAuthoringApi = (): IPageAuthoringAPI => {
+  const [pages, setPages] = useState([] as IPageList);
+  const findPage = (id: PageId) => pages.find(p => p.id === id);
+  const createPage = () => {
+    const newPage: IPage = {
+      id: genId(),
+      title: `Page ${idCounter}`,
+      sections: []
+    };
+    const nextPages = pages.concat(newPage);
+    setPages(nextPages);
+    return pages;
+  };
+
+  const updatePage = (id: PageId, changes: Partial<IPage>) => {
+    const existingPage = findPage(id);
+    if (existingPage) {
+      const updatedPage: IPage = {...existingPage, ...changes};
+      const nextPageList = pages.map(p => p.id === id ? updatedPage : p);
+      setPages(nextPageList);
+      return nextPageList;
+    }
+    // No Change ...
+    return pages;
+  };
+
+  const movePage = (id: PageId, dest: IPageDestination) => {
+    const page = pages.find(i => i.id === id);
+    if (page) {
+      const withoutPage = removeFrom(id, pages);
+      const newPages = insertAt(page, dest.pageId, dest.position || "before", withoutPage);
+      setPages(newPages);
+      return newPages;
+    }
+    // No Change ...
+    return pages;
+  };
+
+  const copyPage = (id: PageId) => {
+    const page = pages.find(i => i.id === id);
+    if (page) {
+      const newPage = {...page, id: genId() };
+      const newPages = [...pages, newPage];
+      setPages(newPages);
+      return newPages;
+    }
+    // No Change ...
+    return pages;
+  };
+
+  const deletePage = (id: PageId) => {
+    const newPageList = removeFrom(id, pages);
+    setPages(newPageList);
+    return newPageList;
+  };
+
+  return {pages, createPage, copyPage, updatePage, movePage, deletePage };
+};
+
+
+interface APIPageResponse extends IPageProps {
+  success: boolean;
+}
+
+const APIBase = "/api/v1";
+
+interface IQueryBoundPage extends IPageProps {
+  host?: string;
+}
+
+export const QueryBoundPage = (props: IQueryBoundPage) => {
+  const queryClient = useQueryClient();
+  const host = props.host || "";
+  const prefix = `${host}/${APIBase}`;
+  const {id} = props;
+  const pageSectionsUrl = `${prefix}/get_page_sections/${id}.json`;
+  const updatePageSectionsURL = `${prefix}/set_page_sections/${id}.json`;
+  const createPageSectionUrl = `${prefix}/create_page_section/${id}.json`;
+  const updateSectionUrl = `${prefix}/update_page_section/${id}.json`;
+  const updatePageQueryData = (response: any, variables: any) => {
+    queryClient.setQueryData("authoringPage", response);
+  };
+
+  const updateSections = (nextPage: IPageProps) => {
+    return fetch(updatePageSectionsURL, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(nextPage)
+    }).then(res => {
+      return res.json();
+    });
+  };
+
+  const createSection = () => {
+    return fetch(createPageSectionUrl, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({id})
+    }).then(res => {
+      return res.json();
+    });
+  };
+
+  const _changeSection = (changes: {section: Partial<ISectionProps>}) => {
+    const updateSectionData = {id, section: {...changes.section}};
+    return fetch(updateSectionUrl, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(updateSectionData)
+    }).then(res => {
+      return res.json();
+    });
+  };
+
+  const updatePageSectionsMutation = useMutation(updateSections, {
+    onSuccess: updatePageQueryData
+  });
+
+  const createSectionMutation = useMutation(createSection, {
+    onSuccess: updatePageQueryData
+  });
+
+  const changeSectionMutation = useMutation(_changeSection);
+
+  const { isLoading, error, data} = useQuery("authoringPage", () =>
+    fetch(pageSectionsUrl)
+    .then(res => {
+      return res.json();
+    })
+  );
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Something went wrong: ${error}</div>;
+  const {success, sections } = data as APIPageResponse;
+  const setSections = updatePageSectionsMutation.mutate;
+  const addSection = createSectionMutation.mutate as () => void;
+  const changeSection = changeSectionMutation.mutate;
+  return <AuthoringPage {...{id, sections, setSections, addSection, changeSection}} />;
+};
