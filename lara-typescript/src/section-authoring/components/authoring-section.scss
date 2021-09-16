@@ -1,9 +1,5 @@
-:root {
-  --med-teal: #218389;
-  --med-orange: orange;
-  --lt-gray: hsl(0,0%,90%);
-   font-family: arial, helvetica, sas-serif;
-}
+@import "../../vars.scss";
+
 .edit-page-grid-container {
   display: grid;
   grid-template-columns: repeat(10, 1fr);
@@ -16,9 +12,9 @@ button.big-button {
   color: white;
   padding: 12pt 48pt;
   font-size: 20pt;
-  font-family: Lato, arial, helvetica, sans-serif;
+  font-family: var(--font-family-default);
   text-transform: uppercase;
-  background: var(--med-teal);
+  background: var(--teal);
   border-radius: 8px;
 }
 
@@ -31,18 +27,18 @@ input[type="submit"].big-button {
   color: white;
   padding: 12pt 48pt;
   font-size: 20pt;
-  font-family: Lato, arial, helvetica, sans-serif;
+  font-family: var(--font-family-default);
   text-transform: uppercase;
-  background: var(--med-teal);
+  background: var(--teal);
   border-radius: 8px;
 }
 
 button.small-button {
   border: none;
-  color: var(--med-teal);
+  color: var(--teal);
   padding: 7pt 28pt;
   font-size: 14pt;
-  font-family: arial, helvetica, sas-serif;
+  font-family: var(--font-family-default);
   text-transform: uppercase;
   background: none;
   border-radius: 3px;
@@ -50,7 +46,7 @@ button.small-button {
 }
 
 .teal-label {
-  color: var(--med-teal);
+  color: var(--teal);
   text-transform: uppercase;
   font-weight: bold;
 }
@@ -69,14 +65,14 @@ button.small-button {
 .part-label {
   grid-column: 1/2;
   font-size: 18pt;
-  color: var(--med-teal);
+  color: var(--teal);
   justify-self: end;
 }
 
 .activity-name {
   grid-column: 2/8;
   font-size: 18pt;
-  color: var(--med-orange);  
+  color: var(--orange);  
   justify-self: start;
 }
 
@@ -114,7 +110,7 @@ button.small-button {
 .section-menu { 
   display: flex;
   justify-content: space-between;
-  background-color: var(--med-teal);
+  background-color: var(--teal);
   padding: 8px;
   color: white;
   font-size: 14pt;
@@ -139,7 +135,7 @@ button.small-button {
 .section-container {
   min-height: 200px;
   justify-self: stretch;
-  border: 1px solid var(--med-teal);
+  border: 1px solid var(--teal);
   border-radius: 5px;
   display: flex;
   justify-content: center;
@@ -165,4 +161,3 @@ button.small-button {
 .section-full-width {
   grid-column: span 10;
 }
-

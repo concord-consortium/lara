@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import classNames from "classnames";
 
-import "./section-item-picker.css";
+import "./section-item-picker.scss";
 
 export interface ItemType {
   name: string;
