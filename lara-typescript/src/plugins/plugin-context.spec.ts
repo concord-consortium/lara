@@ -92,12 +92,14 @@ describe("Plugin runtime context helper", () => {
 
     it("provides class information when classInfoUrl is available", done => {
       const runtimeContext = generateRuntimePluginContext(pluginContext);
+      const jwtResp = { token: `jwtToken.${btoa(JSON.stringify({claimsJson: true}))}`};
       const classInfo: IClassInfo = {id: 123} as IClassInfo;
-      fetch.mockResponse(JSON.stringify(classInfo));
+      fetch.mockResponses([JSON.stringify(jwtResp)], [JSON.stringify(classInfo)]);
       const resp = runtimeContext.getClassInfo();
-      expect(fetch.mock.calls[0][0]).toEqual(pluginContext.classInfoUrl);
+      expect(fetch.mock.calls[0][0]).toEqual(pluginContext.portalJwtUrl);
       expect(resp).toBeInstanceOf(Promise);
       resp!.then(data => {
+        expect(fetch.mock.calls[1][0]).toEqual(pluginContext.classInfoUrl);
         expect(data).toEqual(classInfo);
         done();
       });
@@ -105,11 +107,13 @@ describe("Plugin runtime context helper", () => {
 
     it("returns error when LARA response is malformed", done => {
       const runtimeContext = generateRuntimePluginContext(pluginContext);
-      fetch.mockResponse("{malformedJSON:");
+      const jwtResp = { token: `jwtToken.${btoa(JSON.stringify({claimsJson: true}))}`};
+      fetch.mockResponses([JSON.stringify(jwtResp)], ["{malformedJSON:"]);
       const resp = runtimeContext.getClassInfo();
-      expect(fetch.mock.calls[0][0]).toEqual(pluginContext.classInfoUrl);
+      expect(fetch.mock.calls[0][0]).toEqual(pluginContext.portalJwtUrl);
       expect(resp).toBeInstanceOf(Promise);
       resp!.catch(err => {
+        expect(fetch.mock.calls[1][0]).toEqual(pluginContext.classInfoUrl);
         done();
       });
     });
