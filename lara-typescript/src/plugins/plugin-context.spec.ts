@@ -28,6 +28,7 @@ describe("Plugin runtime context helper", () => {
     userEmail: "user@email.com",
     classInfoUrl: "http://portal.class.info.url",
     firebaseJwtUrl: "http://firebase.jwt._FIREBASE_APP_.com",
+    portalJwtUrl: "http://portal.jwt._FIREBASE_APP_.com",
     wrappedEmbeddable: null,
     componentLabel: "test",
     resourceUrl: "http://lara.activity.com/123",
@@ -252,6 +253,7 @@ describe("Plugin authoring context helper", () => {
     componentLabel: "test",
     authorDataSaveUrl: "http://author-data.save.url",
     firebaseJwtUrl: "http://firebase.jwt.url",
+    portalJwtUrl: "http://fake.jwt",
     wrappedEmbeddable: null
   };
 

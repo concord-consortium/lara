@@ -63,6 +63,7 @@ describe("Plugins", () => {
       classInfoUrl: null,
       remoteEndpoint: null,
       firebaseJwtUrl: "http://fake.jwt",
+      portalJwtUrl: "http://fake.jwt",
       embeddablePluginId: null,
       wrappedEmbeddable: null,
       componentLabel: "test",
@@ -79,6 +80,7 @@ describe("Plugins", () => {
       componentLabel: "test",
       authorDataSaveUrl: "http://authoring.save",
       firebaseJwtUrl: "http://firebase.jwt",
+      portalJwtUrl: "http://fake.jwt",
       wrappedEmbeddable: null
     };
 

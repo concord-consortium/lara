@@ -19,17 +19,18 @@ describe Api::V1::JwtController do
     allow(HTTParty).to receive(:post).and_return post_results
   end
 
-  describe 'get_firebase_jwt' do
+  # get_portal_jwt and get_firebase_jwt behave pretty much the same, they only call different Portal API path
+  shared_examples 'a JWT request handler' do |jwt_request_action|
     describe 'with a run' do
       it "should fail with 404 if the run is not found" do
-        post :get_firebase_jwt, :run_id => run.id + 1
+        post jwt_request_action, :run_id => run.id + 1
         expect(response.status).to eq(404)
       end
 
       describe 'with no endpoint' do
         let(:endpoint_url)    { nil }
         it "should fail with 500" do
-          post :get_firebase_jwt, :run_id => run.id
+          post jwt_request_action, :run_id => run.id
           expect(response.status).to eq(500)
           json_response = JSON.parse(response.body)
           expect(json_response["response_type"]).to eq('ERROR')
@@ -42,7 +43,7 @@ describe Api::V1::JwtController do
           allow(controller).to receive(:current_user).and_return(nil)
         end
         it "should fail with 500" do
-          post :get_firebase_jwt, :run_id => run.id
+          post jwt_request_action, :run_id => run.id
           expect(response.status).to eq(500)
           json_response = JSON.parse(response.body)
           expect(json_response["response_type"]).to eq('ERROR')
@@ -56,7 +57,7 @@ describe Api::V1::JwtController do
           allow(controller).to receive(:current_user).and_return(different_user)
         end
         it "should fail with 500" do
-          post :get_firebase_jwt, :run_id => run.id
+          post jwt_request_action, :run_id => run.id
           expect(response.status).to eq(500)
           json_response = JSON.parse(response.body)
           expect(json_response["response_type"]).to eq('ERROR')
@@ -69,7 +70,7 @@ describe Api::V1::JwtController do
           allow(Concord::AuthPortal).to receive(:auth_token_for_url).and_raise("No portal!")
         end
         it "should fail with 500" do
-          post :get_firebase_jwt, :run_id => run.id
+          post jwt_request_action, :run_id => run.id
           expect(response.status).to eq(500)
           json_response = JSON.parse(response.body)
           expect(json_response["response_type"]).to eq('ERROR')
@@ -79,7 +80,7 @@ describe Api::V1::JwtController do
 
       describe 'with the current user owning the run' do
         it "should succeed" do
-          post :get_firebase_jwt, :run_id => run.id
+          post jwt_request_action, :run_id => run.id
           expect(response.status).to eq(200)
           json_response = JSON.parse(response.body)
           expect(json_response["token"]).to eq('fake-token')
@@ -93,7 +94,7 @@ describe Api::V1::JwtController do
         end
 
         it "should succeed" do
-          post :get_firebase_jwt, :run_id => run.id
+          post jwt_request_action, :run_id => run.id
           expect(response.status).to eq(200)
           json_response = JSON.parse(response.body)
           expect(json_response["token"]).to eq('fake-token')
@@ -105,7 +106,7 @@ describe Api::V1::JwtController do
       describe "without portal info" do
         let(:error) { 'Session has no auth_id and portal_user_id' }
         it "should fail with 500 if there is no portal info in the session" do
-          post :get_firebase_jwt
+          post jwt_request_action
           expect(response.status).to eq(500)
           json_response = JSON.parse(response.body)
           expect(json_response["response_type"]).to eq('ERROR')
@@ -113,7 +114,7 @@ describe Api::V1::JwtController do
         end
 
         it "should fail with 500 if there is only a auth_id in the session" do
-          post :get_firebase_jwt, {auth_id: 1}
+          post jwt_request_action, {auth_id: 1}
           expect(response.status).to eq(500)
           json_response = JSON.parse(response.body)
           expect(json_response["response_type"]).to eq('ERROR')
@@ -121,7 +122,7 @@ describe Api::V1::JwtController do
         end
 
         it "should fail with 500 if there is only a portal_user in the session" do
-          post :get_firebase_jwt, {portal_user: "bar"}
+          post jwt_request_action, {portal_user: "bar"}
           expect(response.status).to eq(500)
           json_response = JSON.parse(response.body)
           expect(json_response["response_type"]).to eq('ERROR')
@@ -131,7 +132,7 @@ describe Api::V1::JwtController do
 
       it "should fail with 500 if the auth id is unknown" do
         allow(Concord::AuthPortal).to receive(:portal_for_auth_id).and_return(nil)
-        post :get_firebase_jwt, {}, {auth_id: 1, portal_user_id: "bar"}
+        post jwt_request_action, {}, {auth_id: 1, portal_user_id: "bar"}
         expect(response.status).to eq(500)
         json_response = JSON.parse(response.body)
         expect(json_response["response_type"]).to eq('ERROR')
@@ -140,11 +141,19 @@ describe Api::V1::JwtController do
 
       it "should succeed with a known auth id and portal user id" do
         allow(Concord::AuthPortal).to receive(:portal_for_auth_id).and_return(OpenStruct.new({ url: "http://fake.portal.com" }))
-        post :get_firebase_jwt, {}, {auth_id: 1, portal_user_id: "bar"}
+        post jwt_request_action, {}, {auth_id: 1, portal_user_id: "bar"}
         expect(response.status).to eq(200)
         json_response = JSON.parse(response.body)
         expect(json_response["token"]).to eq('fake-token')
       end
     end
+  end
+
+  describe 'get_firebase_jwt' do
+    it_should_behave_like 'a JWT request handler', :get_firebase_jwt
+  end
+
+  describe 'get_portal_jwt' do
+    it_should_behave_like 'a JWT request handler', :get_portal_jwt
   end
 end
