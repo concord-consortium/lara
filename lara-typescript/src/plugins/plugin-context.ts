@@ -23,7 +23,9 @@ interface IPluginCommonOptions {
    * guiPreview option set to true within its manifest.
    */
   wrappedEmbeddable: IEmbeddableContextOptions | null;
-  /** URL to fetch a JWT. Includes generic `_FIREBASE_APP_` that should be replaced with app name. */
+  /** URL to fetch a Portal JWT. */
+  portalJwtUrl: string;
+  /** URL to fetch a firebase JWT. Includes generic `_FIREBASE_APP_` that should be replaced with app name. */
   firebaseJwtUrl: string;
 }
 
@@ -105,6 +107,36 @@ const ajaxPromise = (url: string, data: any): Promise<string> => {
   });
 };
 
+const getPromise = (url: string): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    $.ajax({
+      url,
+      type: "GET",
+      success(result) {
+        resolve(result);
+      },
+      error(jqXHR, errText, err) {
+        reject(err);
+      }
+    });
+  });
+};
+
+const postPromise = (url: string): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    $.ajax({
+      url,
+      type: "POST",
+      success(result) {
+        resolve(result);
+      },
+      error(jqXHR, errText, err) {
+        reject(err);
+      }
+    });
+  });
+};
+
 export const saveLearnerPluginState = (learnerStateSaveUrl: string, state: string): Promise<string> => {
   return ajaxPromise(learnerStateSaveUrl, { state });
 };
@@ -136,30 +168,48 @@ export const saveAuthoredPluginState = (authoringSaveStateUrl: string, authorDat
           });
 };
 
+const handleJWTResponse = (data: { response_type?: string, message?: string, token: string }) => {
+  if (data.response_type === "ERROR") {
+    throw {message: data.message};
+  }
+  try {
+    const token = data.token.split(".")[1];
+    const claimsJson = atob(token);
+    const claims = JSON.parse(claimsJson);
+    return {token: data.token, claims};
+  } catch (error) {
+    throw { message: "Unable to parse JWT Token", error };
+  }
+};
+
 const getFirebaseJwt = (firebaseJwtUrl: string, appName: string): Promise<IJwtResponse> => {
   const appSpecificUrl = firebaseJwtUrl.replace("_FIREBASE_APP_", appName);
   return fetch(appSpecificUrl, {method: "POST"})
     .then(response => response.json())
-    .then(data => {
-      if (data.response_type === "ERROR") {
-        throw {message: data.message};
-      }
-      try {
-        const token = data.token.split(".")[1];
-        const claimsJson = atob(token);
-        const claims = JSON.parse(claimsJson);
-        return {token: data.token, claims};
-      } catch (error) {
-        throw { message: "Unable to parse JWT Token", error };
-      }
-    });
+    .then(handleJWTResponse);
 };
 
-const getClassInfo = (classInfoUrl: string | null): Promise<IClassInfo> | null => {
-  if (!classInfoUrl) {
+const getPortalJwt = (portalJwtUrl: string) => {
+  return fetch(portalJwtUrl, {method: "POST"})
+    .then(response => response.json())
+    .then(handleJWTResponse);
+};
+
+const getClassInfo = (classInfoUrl: string | null, portalJwtUrl: string | null): Promise<IClassInfo> | null => {
+  if (!classInfoUrl || !portalJwtUrl) {
     return null;
   }
-  return fetch(classInfoUrl, {method: "get", credentials: "include"}).then(resp => resp.json());
+
+  // First, request Portal JWT and use it to request class info.
+  return getPortalJwt(portalJwtUrl).then(jwt =>
+    fetch(classInfoUrl, {
+      method: "get",
+      credentials: "include",
+      headers: {
+        Authorization: `Bearer/JWT ${jwt.token}`
+      }
+    }).then(resp => resp.json())
+  );
 };
 
 const log = (context: IPluginRuntimeContextOptions, logData: string | ILogData): void => {
@@ -200,7 +250,8 @@ export const generateRuntimePluginContext = (options: IPluginRuntimeContextOptio
     userEmail: options.userEmail,
     resourceUrl: options.resourceUrl,
     saveLearnerPluginState: (state: string) => saveLearnerPluginState(options.learnerStateSaveUrl, state),
-    getClassInfo: () => getClassInfo(options.classInfoUrl),
+    getClassInfo: () => getClassInfo(options.classInfoUrl, options.portalJwtUrl),
+    getPortalJwt: () => getPortalJwt(options.portalJwtUrl),
     getFirebaseJwt: (appName: string) => getFirebaseJwt(options.firebaseJwtUrl, appName),
     wrappedEmbeddable: options.wrappedEmbeddable ? generateEmbeddableRuntimeContext(options.wrappedEmbeddable) : null,
     log: (logData: string | ILogData) => log(options, logData),

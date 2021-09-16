@@ -6,6 +6,7 @@
     %script{src:plugin.url}
 
 - if @run.id
+  - portal_jwt_url = api_v1_get_portal_jwt_url(@run.id)
   - firebase_jwt_url = api_v1_get_firebase_jwt_url(@run.id, {firebase_app: '_FIREBASE_APP_'})
   - update_plugin_learner_state_url = api_v1_update_plugin_learner_state_url(plugin.id, @run.id)
   - update_plugin_learner_state_path = api_v1_update_plugin_learner_state_path(plugin.id, @run.id)
@@ -13,6 +14,7 @@
 - else
   -# when this partial is used with print_blank the run.id is nil
   - firebase_jwt_url = nil
+  - portal_jwt_url = nil
   - update_plugin_learner_state_url = nil
   - update_plugin_learner_state_path = nil
   - show_plugin_learner_state_path = nil
@@ -170,6 +172,7 @@
         userEmail: #{@run.user && @run.user.email ? "'#{escape_javascript(@run.user.email)}'" : 'null'},
         classInfoUrl: #{@run.class_info_url ? "'#{escape_javascript(@run.class_info_url)}'" : 'null'},
         firebaseJwtUrl: '#{escape_javascript(firebase_jwt_url)}',
+        portalJwtUrl: '#{escape_javascript(portal_jwt_url)}',
         wrappedEmbeddable: embeddableContext,
         resourceUrl: '#{escape_javascript(@sequence_run ? sequence_url(@sequence_run.sequence) : activity_url(@run.activity))}'
       }

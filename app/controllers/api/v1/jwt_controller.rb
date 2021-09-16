@@ -1,9 +1,19 @@
 class Api::V1::JwtController < ApplicationController
   layout false
 
-  skip_before_filter :verify_authenticity_token, :only => [:get_firebase_jwt]
+  skip_before_filter :verify_authenticity_token, :only => [:get_firebase_jwt, :get_portal_jwt]
 
   def get_firebase_jwt
+    handle_jwt_request "/api/v1/jwt/firebase"
+  end
+
+  def get_portal_jwt
+    handle_jwt_request "/api/v1/jwt/portal"
+  end
+
+  private
+
+  def handle_jwt_request(path)
     if params[:run_id]
       run = Run.find_by_id(params[:run_id])
       return error(404, "Run not found: #{params[:run_id]}") unless run
@@ -36,7 +46,7 @@ class Api::V1::JwtController < ApplicationController
       body[:user_id] = session[:portal_user_id]
     end
 
-    portal_url = "#{uri.scheme}://#{uri.host}:#{uri.port}/api/v1/jwt/firebase"
+    portal_url = "#{uri.scheme}://#{uri.host}:#{uri.port}#{path}"
     response = HTTParty.post(portal_url, {
       body: body,
       headers: {
@@ -45,8 +55,6 @@ class Api::V1::JwtController < ApplicationController
     })
     render :json => response.body, :status => response.code
   end
-
-  private
 
   def error(status, message)
     render :json => {:response_type => "ERROR", :error => message}, :status => status

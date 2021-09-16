@@ -44878,6 +44878,36 @@ var ajaxPromise = function (url, data) {
   });
 };
 
+var getPromise = function (url) {
+  return new Promise(function (resolve, reject) {
+    $.ajax({
+      url: url,
+      type: "GET",
+      success: function (result) {
+        resolve(result);
+      },
+      error: function (jqXHR, errText, err) {
+        reject(err);
+      }
+    });
+  });
+};
+
+var postPromise = function (url) {
+  return new Promise(function (resolve, reject) {
+    $.ajax({
+      url: url,
+      type: "POST",
+      success: function (result) {
+        resolve(result);
+      },
+      error: function (jqXHR, errText, err) {
+        reject(err);
+      }
+    });
+  });
+};
+
 var saveLearnerPluginState = function (learnerStateSaveUrl, state) {
   return ajaxPromise(learnerStateSaveUrl, {
     state: state
@@ -44912,46 +44942,62 @@ var saveAuthoredPluginState = function (authoringSaveStateUrl, authorData) {
 
 exports.saveAuthoredPluginState = saveAuthoredPluginState;
 
+var handleJWTResponse = function (data) {
+  if (data.response_type === "ERROR") {
+    throw {
+      message: data.message
+    };
+  }
+
+  try {
+    var token = data.token.split(".")[1];
+    var claimsJson = atob(token);
+    var claims = JSON.parse(claimsJson);
+    return {
+      token: data.token,
+      claims: claims
+    };
+  } catch (error) {
+    throw {
+      message: "Unable to parse JWT Token",
+      error: error
+    };
+  }
+};
+
 var getFirebaseJwt = function (firebaseJwtUrl, appName) {
   var appSpecificUrl = firebaseJwtUrl.replace("_FIREBASE_APP_", appName);
   return fetch(appSpecificUrl, {
     method: "POST"
   }).then(function (response) {
     return response.json();
-  }).then(function (data) {
-    if (data.response_type === "ERROR") {
-      throw {
-        message: data.message
-      };
-    }
-
-    try {
-      var token = data.token.split(".")[1];
-      var claimsJson = atob(token);
-      var claims = JSON.parse(claimsJson);
-      return {
-        token: data.token,
-        claims: claims
-      };
-    } catch (error) {
-      throw {
-        message: "Unable to parse JWT Token",
-        error: error
-      };
-    }
-  });
+  }).then(handleJWTResponse);
 };
 
-var getClassInfo = function (classInfoUrl) {
-  if (!classInfoUrl) {
-    return null;
-  }
+var getPortalJwt = function (portalJwtUrl) {
+  return fetch(portalJwtUrl, {
+    method: "POST"
+  }).then(function (response) {
+    return response.json();
+  }).then(handleJWTResponse);
+};
 
-  return fetch(classInfoUrl, {
-    method: "get",
-    credentials: "include"
-  }).then(function (resp) {
-    return resp.json();
+var getClassInfo = function (classInfoUrl, portalJwtUrl) {
+  if (!classInfoUrl || !portalJwtUrl) {
+    return null;
+  } // First, request Portal JWT and use it to request class info.
+
+
+  return getPortalJwt(portalJwtUrl).then(function (jwt) {
+    return fetch(classInfoUrl, {
+      method: "get",
+      credentials: "include",
+      headers: {
+        Authorization: "Bearer/JWT " + jwt.token
+      }
+    }).then(function (resp) {
+      return resp.json();
+    });
   });
 };
 
@@ -45003,7 +45049,10 @@ var generateRuntimePluginContext = function (options) {
       return (0, exports.saveLearnerPluginState)(options.learnerStateSaveUrl, state);
     },
     getClassInfo: function () {
-      return getClassInfo(options.classInfoUrl);
+      return getClassInfo(options.classInfoUrl, options.portalJwtUrl);
+    },
+    getPortalJwt: function () {
+      return getPortalJwt(options.portalJwtUrl);
     },
     getFirebaseJwt: function (appName) {
       return getFirebaseJwt(options.firebaseJwtUrl, appName);
