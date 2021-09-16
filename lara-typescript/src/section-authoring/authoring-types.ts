@@ -29,3 +29,10 @@ export type APIPagesGetF = () => Promise<IPageList>;
 export type APIPageGetF = (id: PageId) => Promise<IPage | null>;
 export type APIPageCreateF = () => Promise<IPage>;
 export type APIPageDeleteF = (id: PageId) => Promise<IPageList>;
+
+export interface IAPIPages {
+  getPages: APIPagesGetF;
+  getPage: APIPageGetF;
+  createPage: APIPageCreateF;
+  deletePage: APIPageDeleteF;
+};

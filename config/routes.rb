@@ -203,6 +203,8 @@ LightweightStandalone::Application.routes.draw do
 
       match 'create_page_item/:id' => 'interactive_pages#create_page_item', :as => 'create_page_item', :via => 'post'
       match 'get_library_interactives_list' => 'interactive_pages#get_library_interactives_list', :as => 'get_library_interactives_list', :via => 'get'
+      # TODO: Does this route belong here? Its for Authoring, so for now, YES.
+      match 'get_pages/:id' => 'interactive_pages#get_pages', :as => 'get_page_list', :via => 'get'
 
       match 'plugin_learner_states/:plugin_id/:run_id' =>
         'plugin_learner_states#load', as: 'show_plugin_learner_state', via: 'get'

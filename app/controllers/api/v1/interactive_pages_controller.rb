@@ -7,6 +7,14 @@ class Api::V1::InteractivePagesController < API::APIController
     render_page_sections_json
   end
 
+  def get_pages
+    activity = @interactive_page.lightweight_activity
+    pages = activity.pages.map do |page|
+      generate_page_json page
+    end
+    render :json => pages
+  end
+
   ## Mutations
   def set_sections
     param_sections = params['sections'] # array of [{:id,:layout}]
@@ -132,18 +140,22 @@ class Api::V1::InteractivePagesController < API::APIController
 
   private
 
-  def render_page_sections_json
-    sections = @interactive_page.sections.map do |s|
+  def generate_page_json(page)
+    sections = page.sections.map do |s|
       {
         id: s.id.to_s,
         layout: s.layout
       }
     end
-    render :json => {
-      :success => true,
-      sections: sections,
-      id: @interactive_page.id
+    return {
+      id: page.id,
+      title: page.name,
+      sections: sections
     }
+  end
+
+  def render_page_sections_json(page=@interactive)
+    render :json => generate_page_json(@interactive_page)
   end
 
   def set_interactive_page

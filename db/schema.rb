@@ -432,7 +432,6 @@ ActiveRecord::Schema.define(:version => 20210802185808) do
     t.boolean  "student_report_enabled",                 :default => true
     t.text     "last_report_service_hash"
     t.boolean  "show_submit_button",                     :default => true
-    t.boolean  "activity_player_only"
     t.string   "runtime",                                :default => "LARA"
     t.string   "background_image"
   end
@@ -700,7 +699,6 @@ ActiveRecord::Schema.define(:version => 20210802185808) do
     t.string   "publication_hash",         :limit => 40
     t.string   "imported_activity_url"
     t.text     "last_report_service_hash"
-    t.boolean  "activity_player_only"
     t.string   "runtime",                                :default => "LARA"
     t.string   "background_image"
   end
