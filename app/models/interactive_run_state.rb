@@ -288,14 +288,15 @@ class InteractiveRunState < ActiveRecord::Base
         page_name: page && page.name,
         activity_name: activity && activity.name,
         created_at: created_at,
-        updated_at: updated_at
+        updated_at: updated_at,
+        # User activity run (not to confuse with InteractiveStateRun which could be called just InteractiveState)
+        external_report_url: ReportService::report_url(run, interactive.activity, nil, interactive)
     }
     if include_linked_states
       hash[:has_linked_interactive] = has_linked_interactive
       hash[:linked_state] = linked_state
       hash[:all_linked_states] = all_linked_states(protocol, host)
     end
-
     hash
   end
 

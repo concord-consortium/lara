@@ -263,6 +263,7 @@ describe LightweightActivitiesController do
   describe "#summary" do
       before(:each) do
         allow(ENV).to receive(:[]).and_call_original
+        allow(ENV).to receive(:[]).with("REPORT_SERVICE_SELF_URL").and_return("http://test.host")
         allow(ENV).to receive(:[]).with("REPORT_SERVICE_URL").and_return("https://us-central1-report-service-dev.cloudfunctions.net/api")
         allow(ENV).to receive(:[]).with("REPORT_URL").and_return("https://portal-report.concord.org/branch/master/index.html")
         allow(ENV).to receive(:[]).with("REPORT_SERVICE_TOOL_ID").and_return("authoring.test.concord.org")

@@ -3,10 +3,14 @@ require 'spec_helper'
 def make(thing); end
 
 describe InteractiveRunState do
-  let(:activity)        { FactoryGirl.create(:activity)       }
+  let(:activity)        { FactoryGirl.create(:activity_with_page) }
   let(:interactive)     { FactoryGirl.create(:mw_interactive) }
-  let(:user)            { FactoryGirl.create(:user)           }
+  let(:user)            { FactoryGirl.create(:user) }
   let(:run)             { FactoryGirl.create(:run, {activity: activity, user: user})}
+
+  before(:each) do
+    activity.pages.first.add_embeddable(interactive)
+  end
 
   describe 'class methods' do
     describe "InteractiveRunState#generate_key" do
@@ -58,6 +62,13 @@ describe InteractiveRunState do
 
       it "should have a run_remote_endpoint" do
         expect(result_hash).to have_key "run_remote_endpoint"
+      end
+
+      describe "when interactive run state has a run" do
+        it "should have a external_report_url" do
+          expect(ReportService).to receive(:report_url).and_return("https://test.report/123")
+          expect(result_hash["external_report_url"]).to eq("https://test.report/123")
+        end
       end
 
       describe "when the interactive run state has no linked interactive" do
