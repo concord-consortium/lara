@@ -43,6 +43,25 @@ const getReportingUrl = (
   });
 };
 
+const setAnswerSharedWithClass = (shared: boolean, interactiveStateUrl: string | null) => {
+  if (!interactiveStateUrl) {
+    return Promise.reject("interactiveStateUrl not available");
+  }
+  return fetch(interactiveStateUrl, {
+    method: "put",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      metadata: {
+        // class = context
+        shared_with: shared ? "context" : null
+      }
+    })
+  });
+};
+
 export const generateEmbeddableRuntimeContext = (context: IEmbeddableContextOptions): IEmbeddableRuntimeContext => {
   return {
     container: context.container,
@@ -69,6 +88,7 @@ export const generateEmbeddableRuntimeContext = (context: IEmbeddableContextOpti
     interactiveAvailable: context.interactiveAvailable,
     sendCustomMessage: (message: ICustomMessage) => {
       context.sendCustomMessage?.(message);
-    }
+    },
+    setAnswerSharedWithClass: (shared: boolean) => setAnswerSharedWithClass(shared, context.interactiveStateUrl)
   };
 };

@@ -129,6 +129,13 @@ export interface IEmbeddableRuntimeContext {
    @param message The message to be sent
    ****************************************************************************/
   sendCustomMessage: (message: ICustomMessage) => void;
+  /****************************************************************************
+   Function that enables or disables sharing of the embeddable answer with the whole class.
+   Returns promise that resolves with fetch.Response.
+
+   @param shared true enables sharing with class, false disables it
+   ****************************************************************************/
+   setAnswerSharedWithClass: (shared: boolean) => Promise<Response>;
 }
 
 export interface IPluginAuthoringContext {

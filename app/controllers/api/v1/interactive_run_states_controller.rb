@@ -18,6 +18,7 @@ class Api::V1::InteractiveRunStatesController < ApplicationController
     begin
       authorize! :update, @interactive_run_state
       @interactive_run_state.touch # update timestamp even if no data is provided
+
       if params.has_key?('raw_data')
         # Handle 'null' value, so interactive can reset / clear its state if necessary.
         @interactive_run_state.raw_data = params['raw_data'] == 'null' ? nil : params['raw_data']
@@ -26,7 +27,11 @@ class Api::V1::InteractiveRunStatesController < ApplicationController
         @interactive_run_state.learner_url = params['learner_url']
       end
       if params.has_key?('metadata')
-        @interactive_run_state.metadata = params['metadata']
+        # Note that metadata is always merged, not overwritten, as multiple apps and clients can set its own metadata.
+        # They still can mess each other data, but it's all coming from LARA JS env (Plugin API or Interactive API Host).
+        metadata = InteractiveRunState::parse_metadata(@interactive_run_state.metadata)
+        metadata.merge!(InteractiveRunState::parse_metadata(params['metadata']))
+        @interactive_run_state.metadata = metadata.to_json
       end
       if @interactive_run_state.save
         render :json => @interactive_run_state.to_runtime_json(request.protocol, request.host_with_port)

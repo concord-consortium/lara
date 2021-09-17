@@ -18,6 +18,7 @@
 * [onInteractiveAvailable](iembeddableruntimecontext.md#oninteractiveavailable)
 * [onInteractiveSupportedFeatures](iembeddableruntimecontext.md#oninteractivesupportedfeatures)
 * [sendCustomMessage](iembeddableruntimecontext.md#sendcustommessage)
+* [setAnswerSharedWithClass](iembeddableruntimecontext.md#setanswersharedwithclass)
 
 ## Properties
 
@@ -156,3 +157,24 @@ Function that sends a custom message to the embeddable.
 Name | Type |
 ------ | ------ |
 `message` | ICustomMessage |
+
+___
+
+###  setAnswerSharedWithClass
+
+• **setAnswerSharedWithClass**: *function*
+
+Function that enables or disables sharing of the embeddable answer with the whole class.
+Returns promise that resolves with fetch.Response.
+
+**`param`** true enables sharing with class, false disables it
+
+#### Type declaration:
+
+▸ (`shared`: boolean): *Promise‹Response›*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`shared` | boolean |

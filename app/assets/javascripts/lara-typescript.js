@@ -44778,6 +44778,26 @@ var getReportingUrl = function (interactiveStateUrl, interactiveStatePromise) {
   });
 };
 
+var setAnswerSharedWithClass = function (shared, interactiveStateUrl) {
+  if (!interactiveStateUrl) {
+    return Promise.reject("interactiveStateUrl not available");
+  }
+
+  return fetch(interactiveStateUrl, {
+    method: "put",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      metadata: {
+        // class = context
+        shared_with: shared ? "context" : null
+      }
+    })
+  });
+};
+
 var generateEmbeddableRuntimeContext = function (context) {
   return {
     container: context.container,
@@ -44809,6 +44829,9 @@ var generateEmbeddableRuntimeContext = function (context) {
       var _a;
 
       (_a = context.sendCustomMessage) === null || _a === void 0 ? void 0 : _a.call(context, message);
+    },
+    setAnswerSharedWithClass: function (shared) {
+      return setAnswerSharedWithClass(shared, context.interactiveStateUrl);
     }
   };
 };
