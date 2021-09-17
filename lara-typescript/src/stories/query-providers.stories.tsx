@@ -13,7 +13,7 @@ export default {
 
 const LocalLaraAPI = getLaraPageAPI("https://app.lara.docker/", "701");
 
-// TODO Parameratize host and PageID
+// TODO Parameterize host and PageID
 export const FakeAPI = () => {
   return(
   <APIContext.Provider value={mockProvider}>
