@@ -27,6 +27,7 @@ SectionItemPickerStory.args = {
     {name: "Multiple Choice", use_count: 300, date_added: "1630440493"},
     {name: "Open Response", use_count: 400, date_added: "1630440492"},
     {name: "SageModeler", use_count: 3, date_added: "1630440499"},
+    {name: "Teacher Edition Window Shade", use_count: 4, date_added: "1630440490"},
     {name: "Text Box", use_count: 500, date_added: "1630440491"}
   ],
   availableItemTypes: []
