@@ -27,7 +27,7 @@ class Api::V1::InteractiveRunStatesController < ApplicationController
         @interactive_run_state.learner_url = params['learner_url']
       end
       if params.has_key?('metadata')
-        # Note that metadata is always merged, not overwritten, as multiple apps and clients can set its own metadata.
+        # Note that metadata is always merged, not overwritten, as multiple apps and clients can set their own metadata.
         # They still can mess each other data, but it's all coming from LARA JS env (Plugin API or Interactive API Host).
         metadata = InteractiveRunState::parse_metadata(@interactive_run_state.metadata)
         metadata.merge!(InteractiveRunState::parse_metadata(params['metadata']))
