@@ -52,7 +52,7 @@ class InteractiveRunState < ActiveRecord::Base
     })
   end
 
-  # It's important to parse metadata in a consistent way so mergig works as expected.
+  # It's important to parse metadata in a consistent way so merging works as expected.
   def self.parse_metadata(json)
     # symbolize_keys is important for consistency while merging metadata with a new metadata or report_service hash.
     if json.is_a? String
