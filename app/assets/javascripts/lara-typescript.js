@@ -44795,6 +44795,9 @@ var setAnswerSharedWithClass = function (shared, interactiveStateUrl) {
         shared_with: shared ? "context" : null
       }
     })
+  }) // This is necessary, so TS doesn't complain about incompatibility of Promise<Response> and Promise<void>.
+  .then(function () {
+    return undefined;
   });
 };
 

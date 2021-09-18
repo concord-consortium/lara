@@ -165,13 +165,13 @@ ___
 • **setAnswerSharedWithClass**: *function*
 
 Function that enables or disables sharing of the embeddable answer with the whole class.
-Returns promise that resolves with fetch.Response.
+Returns promise that resolves when sharing action is completed (since it involves network request).
 
 **`param`** true enables sharing with class, false disables it
 
 #### Type declaration:
 
-▸ (`shared`: boolean): *Promise‹Response›*
+▸ (`shared`: boolean): *Promise‹void›*
 
 **Parameters:**
 
