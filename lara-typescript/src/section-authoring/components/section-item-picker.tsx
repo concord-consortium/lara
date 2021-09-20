@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import classNames from "classnames";
+import { Modal } from "../../shared/components/modal/modal";
+import { Add } from "../../shared/components/icons/add-icon";
 
 import "./section-item-picker.scss";
 
@@ -28,11 +30,14 @@ const SectionItemButton = ({name, disabled, className, onClick}: {
 
 export const SectionItemPicker: React.FC<IProps> = (props) => {
   const { allItems, quickAddItems } = props;
+  const modalIsVisible = true;
   let { matchingItems } = props;
+
   const [itemSelected, setItemSelected] = useState(false);
   const [currentSelectedItem, setCurrentSelectedItem] = useState("");
   const [allItemsList, setAllItemsList] = useState(allItems);
   const [isSearching, setIsSearching] = useState(false);
+  const [modalVisibility, setModalVisibility] = useState(modalIsVisible);
 
   const setItemClasses = (isSelectedItem: boolean) => {
     const classes = classNames("assessmentItemOption", {
@@ -135,12 +140,8 @@ export const SectionItemPicker: React.FC<IProps> = (props) => {
   };
 
   return (
-    <div id="itemPicker" className="modal">
-      <header>
-        <h1>Choose Assessment Item</h1>
-        <button className="modalClose">close</button>
-      </header>
-      <section>
+    <Modal title="Choose Assessment Item" visibility={modalVisibility} width={600}>
+      <div className="sectionItemPicker">
         <div id="quickAddMenu">
           <h2>Quick-Add Items</h2>
           <ul>
@@ -182,10 +183,11 @@ export const SectionItemPicker: React.FC<IProps> = (props) => {
           <button
             disabled={!itemSelected}
             className={itemSelected ? "enabled add" : "disabled add"}
-            onClick={handleAddButtonClick}>Add Item
+            onClick={handleAddButtonClick}>
+              <Add height="16" width="16"/> Add Item
           </button>
         </div>
-      </section>
-    </div>
+      </div>
+    </Modal>
   );
 };

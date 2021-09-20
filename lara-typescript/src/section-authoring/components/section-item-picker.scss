@@ -4,107 +4,59 @@
   cursor: not-allowed !important;
   opacity: .6 !important;
 }
-.modal {
-  font-family: var(--font-family-default);
-  height: 450px;
-  left: 50%;
-  margin: -200px 0 0 -250px;
-  overflow: hidden;
-  position: absolute;
-  top: 50%;
-  width: 600px;
-}
-.modal header {
-  background: var(--teal);
-  color: white;
-  display: flex;
-  padding: 10px;
-}
-.modal header h1 {
-  flex-grow: 2;
-  font-size: 16px;
-  font-weight: 700;
-  line-height: 1;
-  margin: 0;
-  padding: 0;
-}
-.modalClose {
-  align-self: center;
-  background: transparent;
-  border: none;
-  color: white;
-  height: 16px;
-  line-height: 1;
-  overflow: hidden;
-  padding: 0;
-  position: relative;
-  text-indent: 100%;
-  white-space: nowrap;
-  width: 12px;
-}
-.modalClose:before {
-  content: "\2716";
-  cursor: pointer;
-  font-size: 16px;
-  left: 0;
-  position: absolute;
-  text-indent: 0;
-  top: 0;
-}
-.modal section {
-  background: white;
-  border: solid 1px var(--med-gray);
-  border-top: none;
-  padding: 10px;
-}
 
 #quickAddMenu {
   background: var(--ltst-teal);
   margin: 0 0 20px;
   padding: 10px;
+  
+  h2 {
+    font-size: 16px;
+    margin: 0 0 10px;
+    padding: 0;
+  }
+  ul {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    li {
+      display: inline-block;
+      line-height: 1;
+      margin: 0 2px;
+      padding: 0;
+
+      button {
+        background: var(--ltst-teal);
+        border: solid 1px var(--med-gray);
+        border-radius: 4px;
+        color: var(--dark-gray);
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 700;
+        line-height: 1;
+        margin: 0;
+        padding: 10px 15px;
+        text-align: center;
+
+        &:hover {
+          background: var(--lt-teal);
+        }
+        &.disabled:hover {
+          background: var(--ltst-teal);
+        }
+        &.selected, &:active {
+          background: var(--teal);
+          color: white;
+        }
+      }
+    }
+  }
 }
-#quickAddMenu h2 {
-  font-size: 16px;
-  margin: 0 0 10px;
-  padding: 0;
-}
-#quickAddMenu ul {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-#quickAddMenu li {
-  display: inline-block;
-  line-height: 1;
-  margin: 0 2px;
-  padding: 0;
-}
-#quickAddMenu li button {
-  background: var(--ltst-teal);
-  border: solid 1px var(--med-gray);
-  border-radius: 4px;
-  color: var(--dark-gray);
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: 700;
-  line-height: 1;
-  margin: 0;
-  padding: 10px 15px;
-  text-align: center; 
-}
-#quickAddMenu li button:hover {
-  background: var(--lt-teal);
-}
-#quickAddMenu li button.disabled:hover {
-  background: var(--ltst-teal);
-}
-#quickAddMenu li button.selected, #quickAddMenu li button:active {
-  background: var(--teal);
-  color: white;
-}
+
 #itemPickerOptions {
   display: flex;
   justify-content: space-between;
@@ -117,28 +69,32 @@ input, select {
 #itemPickerSearch {
   position: relative;
   width: 50%;
+
+  input {
+    padding-left: 26px;
+    width: calc(100% - 36px);
+  }
+
+  &:before {
+    content: "\260c";
+    display: block;
+    font-size: 22px;
+    font-weight: 700;
+    left: 6px;
+    line-height: 1;
+    position: absolute;
+    top: 2px;
+    transform: rotate(90deg);
+    z-index: 5;
+  }
 }
-#itemPickerSearch input {
-  padding-left: 26px;
-  width: calc(100% - 36px);
-}
-#itemPickerSearch:before {
-  content: "\260c";
-  display: block;
-  font-size: 22px;
-  font-weight: 700;
-  left: 6px;
-  line-height: 1;
-  position: absolute;
-  top: 2px;
-  transform: rotate(90deg);
-  z-index: 5;
-}
+
 #itemPickerSort {
   font-size: 14px;
-}
-#itemPickerSort label {
-  margin-right: 5px;
+
+  label {
+    margin-right: 5px;
+  }
 }
 #searchPlaceholder {
   height: 100px;
@@ -157,78 +113,86 @@ input, select {
   overflow: scroll;
   padding: 10px 0 0;
   position: relative;
-}
-#itemPickerList:after {
-  background: transparent;
-  background: linear-gradient(0deg, rgba(255, 255, 255, 1) 10%, rgba(255, 255, 255, 0) 100%);
-  bottom: 0;
-  content: ' ';
-  display: block;
-  height: 50px;
-  left: 0;
-  position: sticky;
-  width: 100%;
-  z-index: 5;
-}
-#itemPickerList ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-#itemPickerList li button {
-  background: transparent;
-  border: none;
-  color: var(--teal);
-  cursor: pointer;
-  font-size: 14px;
-  line-height: 1.6;
-  padding: 0 10px;
-  text-align: left;
-  width: 100%;
-}
-#itemPickerList li button.selected, #itemPickerList li button:hover {
-  background: var(--teal);
-  color: white;
-}
-#itemPickerList li button.disabled:hover {
-  background: transparent;
-  color: var(--teal);
+
+  &:after {
+    background: transparent;
+    background: linear-gradient(0deg, rgba(255, 255, 255, 1) 10%, rgba(255, 255, 255, 0) 100%);
+    bottom: 0;
+    content: ' ';
+    display: block;
+    height: 50px;
+    left: 0;
+    position: sticky;
+    width: 100%;
+    z-index: 5;
+  }
+
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    li button {
+      background: transparent;
+      border: none;
+      color: var(--teal);
+      cursor: pointer;
+      font-size: 14px;
+      line-height: 1.6;
+      padding: 0 10px;
+      text-align: left;
+      width: 100%;
+
+      &.selected, &:hover {
+        background: var(--teal);
+        color: white;
+      }
+      &.disabled:hover {
+        background: transparent;
+        color: var(--teal);
+      }
+    }
+  }
 }
 
 .actionButton {
   border-top: solid 1px var(--med-gray);
   padding-top: 10px;
   text-align: right;
-}
-.actionButton button {
-  background: var(--ltst-teal);
-  border: solid 1.5px var(--med-gray);
-  border-radius: 4px;
-  color: var(--dark-gray);
-  cursor: pointer;
-  font-size: 16px;
-  font-weight: 700;
-  padding: 5px 10px 5px 30px;
-  position: relative;
-}
-.actionButton button:hover {
-  background: var(--lt-teal);
-}
-.actionButton button:active {
-  background: var(--teal);
-  color: white;
-}
-.actionButton button.disabled {
-  opacity: .6;
-}
-.actionButton button.add:before {
-  color: var(--teal);
-  content: '\2295';
-  font-size: 20px;
-  left: 10px;
-  position: absolute;
-  top: 1px;
-}
-.actionButton button:active:before {
-  color: white;
+
+  button {
+    background: var(--ltst-teal);
+    border: solid 1.5px var(--med-gray);
+    border-radius: 4px;
+    color: var(--dark-gray);
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 700;
+    margin: 0 0 0 10px;
+    padding: 5px 10px;
+    position: relative;
+
+    &.disabled {
+      opacity: .6;
+    }
+
+    svg {
+      display: inline-block;
+      fill: var(--teal);
+      margin: 0;
+      padding: 0;
+      vertical-align: middle;
+    }
+    &:hover {
+      background: var(--lt-teal);
+    }
+    &:active {
+      background: var(--teal);
+      color: white;
+
+      svg {
+        fill: white;
+      }
+    }
+  }
 }

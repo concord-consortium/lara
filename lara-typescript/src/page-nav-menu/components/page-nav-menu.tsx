@@ -3,14 +3,14 @@ import classNames from "classnames";
 import { IPageProps } from "../../section-authoring/components/authoring-page";
 import { ISectionProps } from "../../section-authoring/components/authoring-section";
 import { PageCopyDialog } from "./page-copy-dialog";
-import { Previous } from "./icons/previous-icon";
-import { Home } from "./icons/home-icon";
-import { Next } from "./icons/next-icon";
-import { Completion } from "./icons/completion-icon";
-import { Add } from "./icons/add-icon";
-import { Copy } from "./icons/copy-icon";
+import { Previous } from "../../shared/components/icons/previous-icon";
+import { Home } from "../../shared/components/icons/home-icon";
+import { Next } from "../../shared/components/icons/next-icon";
+import { Completion } from "../../shared/components/icons/completion-icon";
+import { Add } from "../../shared/components/icons/add-icon";
+import { Copy } from "../../shared/components/icons/copy-icon";
 
-import "./page-nav-menu.css";
+import "./page-nav-menu.scss";
 
 export interface IPageNavMenuProps {
   pages: IPageProps[];
