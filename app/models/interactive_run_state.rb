@@ -52,6 +52,23 @@ class InteractiveRunState < ActiveRecord::Base
     })
   end
 
+  # It's important to parse metadata in a consistent way so merging works as expected.
+  def self.parse_metadata(json)
+    # symbolize_keys is important for consistency while merging metadata with a new metadata or report_service hash.
+    if json.is_a? String
+      begin
+        return JSON.parse(json).symbolize_keys
+      rescue JSON::ParserError
+        # Ignore invalid JSONs (or empty string / nil / etc.)
+        return {}
+      end
+    elsif json.is_a? Hash
+      return json.symbolize_keys
+    else
+      return {}
+    end
+  end
+
   def question
     interactive
   end
@@ -133,18 +150,10 @@ class InteractiveRunState < ActiveRecord::Base
     result = {}
 
     # Custom metadata provided by the host environment (LARA JS env). Different from the interactive state metadata
-    # defined above. This metadata is used to store attachment data. In the future can be used for other things.
-    if self.metadata
-      # Note that the custom metadata should extend record at the very beginning. This will ensure that it cannot
-      # overwrite one of the properties defined below.
-      begin
-        # symbolize_keys is important, as it ensures that all the important properties will be set below and can't
-        # be overwritten by metadata JSON.
-        result.merge!(JSON.parse(self.metadata).symbolize_keys)
-      rescue JSON::ParserError
-        # Ignore invalid JSONs
-      end
-    end
+    # This metadata is used to store attachment data and `shared_with` property (used by Report Service).
+    # Note that the custom metadata should extend record at the very beginning. This will ensure that it cannot
+    # overwrite one of the properties defined below.
+    result.merge!(InteractiveRunState::parse_metadata(self.metadata))
 
     result.merge!({
       # type can be overwritten by intStateMetadata[:answerType] prop (e.g. to "open_response_answer").

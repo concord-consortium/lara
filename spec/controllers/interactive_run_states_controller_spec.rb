@@ -3,14 +3,21 @@ require 'spec_helper'
 def make(thing); end
 
 def expect_response_has_valid_data(response)
-  expect(response.body).to match /"raw_data":"{\\"bar\\": 1}"/
-  expect(response.body).to match /"metadata":"{\\"attachments\\": 1}"/
+  parsed_response = JSON.parse(response.body)
+  raw_data = JSON.parse(parsed_response["raw_data"])
+  metadata = JSON.parse(parsed_response["metadata"])
+  expect(raw_data).to eq({"bar" => 1})
+  expect(metadata).to eq({"attachments" => 1})
 end
 
 def expect_response_has_valid_updated_data(response)
-  expect(response.body).to match /"raw_data":"{\\"bar\\": 2}"/
-  expect(response.body).to match /"metadata":"{\\"attachments\\": 2}"/
-  expect(response.body).to match /"learner_url":"http:\/\/example.com"/
+  parsed_response = JSON.parse(response.body)
+  raw_data = JSON.parse(parsed_response["raw_data"])
+  metadata = JSON.parse(parsed_response["metadata"])
+  expect(raw_data).to eq({"bar" => 2})
+  # Note that new metadata is merged in, it doesn't replace the old one.
+  expect(metadata).to eq({"attachments" => 1, "shared_with" => "context"})
+  expect(parsed_response["learner_url"]).to eq("http://example.com")
 end
 
 def expect_response_is_not_authorized(response, reason, method)
@@ -167,14 +174,14 @@ describe Api::V1::InteractiveRunStatesController do
         let(:run) { FactoryGirl.create(:run, {activity: activity, user: nil})}
 
         it 'can be updated' do
-          put :update, {key: 'foo', raw_data: '{"bar": 2}', metadata: '{"attachments": 2}', learner_url: 'http://example.com'}
+          put :update, {key: 'foo', raw_data: '{"bar": 2}', metadata: '{"shared_with": "context"}', learner_url: 'http://example.com'}
           expect_response_has_valid_updated_data(response)
         end
       end
 
       describe 'owned documents' do
         it 'cannot be updated' do
-          put :update, {key: 'foo', raw_data: '{"bar": 2}', metadata: '{"attachments": 2}', learner_url: 'http://example.com'}
+          put :update, {key: 'foo', raw_data: '{"bar": 2}', metadata: '{"shared_with": "context"}', learner_url: 'http://example.com'}
           expect_response_is_not_authorized(response, "logged in", "update")
         end
       end
@@ -189,14 +196,14 @@ describe Api::V1::InteractiveRunStatesController do
         let(:run) { FactoryGirl.create(:run, {activity: activity, user: nil})}
 
         it 'can be updated' do
-          put :update, {key: 'foo', raw_data: '{"bar": 2}', metadata: '{"attachments": 2}', learner_url: 'http://example.com'}
+          put :update, {key: 'foo', raw_data: '{"bar": 2}', metadata: '{"shared_with": "context"}', learner_url: 'http://example.com'}
           expect_response_has_valid_updated_data(response)
         end
       end
 
       describe 'owned documents that the user owns' do
         it 'can be updated' do
-          put :update, {key: 'foo', raw_data: '{"bar": 2}', metadata: '{"attachments": 2}', learner_url: 'http://example.com'}
+          put :update, {key: 'foo', raw_data: '{"bar": 2}', metadata: '{"shared_with": "context"}', learner_url: 'http://example.com'}
           expect_response_has_valid_updated_data(response)
         end
       end
@@ -206,7 +213,7 @@ describe Api::V1::InteractiveRunStatesController do
         let(:run)   { FactoryGirl.create(:run, {activity: activity, user: user2})}
 
         it 'cannot be updated' do
-          put :update, {key: 'foo', raw_data: '{"bar": 2}', metadata: '{"attachments": 2}', learner_url: 'http://example.com'}
+          put :update, {key: 'foo', raw_data: '{"bar": 2}', metadata: '{"shared_with": "context"}', learner_url: 'http://example.com'}
           expect_response_is_not_authorized(response, "the owner or an admin or a collaborator", "update")
         end
       end
@@ -224,7 +231,7 @@ describe Api::V1::InteractiveRunStatesController do
         let(:run2)  { FactoryGirl.create(:run, {activity: activity, user: user})}
 
         it 'can be updated' do
-          put :update, {key: 'foo', raw_data: '{"bar": 2}', metadata: '{"attachments": 2}', learner_url: 'http://example.com'}
+          put :update, {key: 'foo', raw_data: '{"bar": 2}', metadata: '{"shared_with": "context"}', learner_url: 'http://example.com'}
           expect_response_has_valid_updated_data(response)
         end
       end
@@ -241,14 +248,14 @@ describe Api::V1::InteractiveRunStatesController do
         let(:run) { FactoryGirl.create(:run, {activity: activity, user: nil})}
 
         it 'can be updated' do
-          put :update, {key: 'foo', raw_data: '{"bar": 2}', metadata: '{"attachments": 2}', learner_url: 'http://example.com'}
+          put :update, {key: 'foo', raw_data: '{"bar": 2}', metadata: '{"shared_with": "context"}', learner_url: 'http://example.com'}
           expect_response_has_valid_updated_data(response)
         end
       end
 
       describe 'owned documents that the user owns' do
         it 'can be updated' do
-          put :update, {key: 'foo', raw_data: '{"bar": 2}', metadata: '{"attachments": 2}', learner_url: 'http://example.com'}
+          put :update, {key: 'foo', raw_data: '{"bar": 2}', metadata: '{"shared_with": "context"}', learner_url: 'http://example.com'}
           expect_response_has_valid_updated_data(response)
         end
       end
@@ -258,7 +265,7 @@ describe Api::V1::InteractiveRunStatesController do
         let(:run)    { FactoryGirl.create(:run, {activity: activity, user: user2})}
 
         it 'can be updated' do
-          put :update, {key: 'foo', raw_data: '{"bar": 2}', metadata: '{"attachments": 2}', learner_url: 'http://example.com'}
+          put :update, {key: 'foo', raw_data: '{"bar": 2}', metadata: '{"shared_with": "context"}', learner_url: 'http://example.com'}
           expect_response_has_valid_updated_data(response)
         end
       end
