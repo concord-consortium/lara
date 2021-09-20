@@ -61,10 +61,13 @@ class Api::V1::InteractivePagesController < API::APIController
     position = position.to_i unless position.nil?
 
     # currently we only support library interactives, this will change later
-    if serializeable_id.start_with?("LibraryInteractive")
+    case serializeable_id
+    when /LibraryInteractive/
       library_interactive = LibraryInteractive.find_by_serializeable_id(serializeable_id)
       return error("Invalid page_item[embeddable] parameter") if library_interactive.nil?
-      embeddable = ManagedInteractive.create(library_interactive_id: library_interactive.id)
+      embeddable = ManagedInteractive.create!(library_interactive_id: library_interactive.id)
+    when /MwInteractive/
+      embeddable = MwInteractive.create!
     else
       return error("Only library interactive embeddables are currently supported")
     end

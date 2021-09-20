@@ -182,7 +182,7 @@ describe Api::V1::InteractivePagesController do
       it "fails with an invalid embeddable parameter" do
         xhr :post, "create_page_item", {id: page.id, page_item: {
           section_id: section.id,
-          embeddable: "MwInteractive_1",
+          embeddable: "Invalid_1",
           position: 1,
           section_position: 1,
           column: 1
@@ -206,10 +206,22 @@ describe Api::V1::InteractivePagesController do
       end
     end
 
-    it "succeeds with valid parameters" do
+    it "succeeds with valid LibraryInteractive parameters" do
       xhr :post, "create_page_item", {id: page.id, page_item: {
         section_id: section.id,
         embeddable: library_interactive1.serializeable_id,
+        position: 1,
+        section_position: 1,
+        column: 1
+      }}
+      expect(response.status).to eq(200)
+      expect(response.content_type).to eq("application/json")
+    end
+
+    it "succeeds with valid MWInteractive parameters" do
+      xhr :post, "create_page_item", {id: page.id, page_item: {
+        section_id: section.id,
+        embeddable: "MwInteractive",
         position: 1,
         section_position: 1,
         column: 1

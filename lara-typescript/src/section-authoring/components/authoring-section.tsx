@@ -207,7 +207,7 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
     )}
     {showAddItem
       ? <SectionItemPicker
-          quickAddItems={[]}
+          quickAddItems={allSectionItems?.filter(si => si.id === "MwInteractive") || []}
           allItems={allSectionItems || []}
           onClose={handleToggleShowAddItem}
           onAdd={handleAddItem}

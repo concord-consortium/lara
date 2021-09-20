@@ -107,14 +107,23 @@ export const QueryBoundPage = (props: IQueryBoundPage) => {
   const libraryInteractiveQuery = useQuery("libraryInteractives", () => {
     return fetch(libraryInteractivesUrl, { credentials: "include" })
       .then(res => res.json())
-      .then((json: ILibraryInteractiveResponse) => ({
-        allSectionItems: json.library_interactives.map(li => ({
-          id: li.id,
-          name: li.name,
-          useCount: li.use_count,
-          dateAdded: li.date_added
-        }))
-      }));
+      .then((json: ILibraryInteractiveResponse) => {
+        const result = {
+          allSectionItems: json.library_interactives.map(li => ({
+            id: li.id,
+            name: li.name,
+            useCount: li.use_count,
+            dateAdded: li.date_added
+          }))
+        };
+        result.allSectionItems.push({
+          id: "MwInteractive",
+          name: "Interactive IFrame",
+          useCount: 0,
+          dateAdded: 0
+        })
+        return result;
+      });
   });
 
   const isLoading = authoringQuery.isLoading || libraryInteractiveQuery.isLoading;

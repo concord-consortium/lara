@@ -49014,7 +49014,7 @@ var AuthoringSection = function (_a) {
         !collapsed && (React.createElement("div", { className: sectionClassName(items.length), key: items.length },
             React.createElement("button", { className: "small-button", onClick: handleShowAddItem }, "+ Add Item"))),
         showAddItem
-            ? React.createElement(section_item_picker_1.SectionItemPicker, { quickAddItems: [], allItems: allSectionItems || [], onClose: handleToggleShowAddItem, onAdd: handleAddItem })
+            ? React.createElement(section_item_picker_1.SectionItemPicker, { quickAddItems: (allSectionItems === null || allSectionItems === void 0 ? void 0 : allSectionItems.filter(function (si) { return si.id === "MwInteractive"; })) || [], allItems: allSectionItems || [], onClose: handleToggleShowAddItem, onAdd: handleAddItem })
             : undefined));
 };
 exports.AuthoringSection = AuthoringSection;
@@ -49212,14 +49212,23 @@ var QueryBoundPage = function (props) {
     var libraryInteractiveQuery = react_query_1.useQuery("libraryInteractives", function () {
         return fetch(libraryInteractivesUrl, { credentials: "include" })
             .then(function (res) { return res.json(); })
-            .then(function (json) { return ({
-            allSectionItems: json.library_interactives.map(function (li) { return ({
-                id: li.id,
-                name: li.name,
-                useCount: li.use_count,
-                dateAdded: li.date_added
-            }); })
-        }); });
+            .then(function (json) {
+            var result = {
+                allSectionItems: json.library_interactives.map(function (li) { return ({
+                    id: li.id,
+                    name: li.name,
+                    useCount: li.use_count,
+                    dateAdded: li.date_added
+                }); })
+            };
+            result.allSectionItems.push({
+                id: "MwInteractive",
+                name: "Interactive IFrame",
+                useCount: 0,
+                dateAdded: 0
+            });
+            return result;
+        });
     });
     var isLoading = authoringQuery.isLoading || libraryInteractiveQuery.isLoading;
     var error = authoringQuery.error || libraryInteractiveQuery.error;
@@ -49539,3 +49548,4 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_react_dom__;
 
 /******/ });
 });
+//# sourceMappingURL=lara-typescript.js.map
