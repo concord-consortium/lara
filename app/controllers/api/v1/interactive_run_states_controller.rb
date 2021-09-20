@@ -6,9 +6,9 @@ class Api::V1::InteractiveRunStatesController < ApplicationController
 
   def show
     begin
-      authorize! :show, @run
+      authorize! :show, @interactive_run_state
 
-      render :json => @run.to_runtime_json(request.protocol, request.host_with_port)
+      render :json => @interactive_run_state.to_runtime_json(request.protocol, request.host_with_port)
     rescue CanCan::AccessDenied
       authorization_error("get")
     end
@@ -16,20 +16,20 @@ class Api::V1::InteractiveRunStatesController < ApplicationController
 
   def update
     begin
-      authorize! :update, @run
-      @run.touch # update timestamp even if no data is provided
+      authorize! :update, @interactive_run_state
+      @interactive_run_state.touch # update timestamp even if no data is provided
       if params.has_key?('raw_data')
         # Handle 'null' value, so interactive can reset / clear its state if necessary.
-        @run.raw_data = params['raw_data'] == 'null' ? nil : params['raw_data']
+        @interactive_run_state.raw_data = params['raw_data'] == 'null' ? nil : params['raw_data']
       end
       if params.has_key?('learner_url')
-        @run.learner_url = params['learner_url']
+        @interactive_run_state.learner_url = params['learner_url']
       end
       if params.has_key?('metadata')
-        @run.metadata = params['metadata']
+        @interactive_run_state.metadata = params['metadata']
       end
-      if @run.save
-        render :json => @run.to_runtime_json(request.protocol, request.host_with_port)
+      if @interactive_run_state.save
+        render :json => @interactive_run_state.to_runtime_json(request.protocol, request.host_with_port)
       else
         render :json => { :success => false }
       end
@@ -41,7 +41,7 @@ class Api::V1::InteractiveRunStatesController < ApplicationController
   private
 
   def set_interactive_run
-    @run = InteractiveRunState.find_by_key!(params['key'])
+    @interactive_run_state = InteractiveRunState.find_by_key!(params['key'])
   end
 
   def authorization_error(action)

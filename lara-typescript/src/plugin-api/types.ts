@@ -188,4 +188,5 @@ export interface IInteractiveState {
   interactive_name: string;
   interactive_state_url: string;
   activity_name: string;
+  external_report_url: string;
 }

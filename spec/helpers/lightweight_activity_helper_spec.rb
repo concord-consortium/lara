@@ -107,89 +107,20 @@ describe LightweightActivityHelper do
   describe "#runnable_summary_path" do
     before(:each) do
       assign(:run, run)
-      allow(ENV).to receive(:[]).with("REPORT_SERVICE_URL").and_return("https://us-central1-report-service-dev.cloudfunctions.net/api")
-      allow(ENV).to receive(:[]).with("REPORT_URL").and_return("https://portal-report.concord.org/branch/master/index.html")
-      allow(ENV).to receive(:[]).with("REPORT_SERVICE_TOOL_ID").and_return("authoring.test.concord.org")
     end
 
-    describe "when the run is anonymous or doesn't include Portal info" do
-      it "returns Portal Report URL with runKey param" do
-        expect(helper.runnable_summary_path(activity)).to eq(
-          "https://portal-report.concord.org/branch/master/index.html?" +
-          "firebase-app=report-service-dev&" +
-          "sourceKey=authoring.test.concord.org&" +
-          "runKey=012345678901234567890123456789123456&" +
-          "activity=http%3A%2F%2Ftest.host%2Factivities%2F23&" +
-          "resourceUrl=http%3A%2F%2Ftest.host%2Factivities%2F23"
-        )
-      end
-    end
-
-    describe "when the run has Portal info" do
-      let(:run_with_portal_info) do
-        FactoryGirl.create(:run, {
-          key: "012345678901234567890123456789123456",
-          sequence_run: sequence_run,
-          activity: activity,
-          user: user,
-          class_info_url: "https://test.portal.com/api/v1/classes/123",
-          platform_id: "https://test.portal.com",
-          platform_user_id: "ABC",
-          resource_link_id: "321"
-        })
-      end
-
-      before(:each) do
-        assign(:run, run_with_portal_info)
-      end
-
-      it "returns Portal Report URL with runKey param" do
-        puts helper.runnable_summary_path(activity)
-        expect(helper.runnable_summary_path(activity)).to eq(
-          "https://portal-report.concord.org/branch/master/index.html?" +
-          "firebase-app=report-service-dev&" +
-          "sourceKey=authoring.test.concord.org&" +
-          "class=https%3A%2F%2Ftest.portal.com%2Fapi%2Fv1%2Fclasses%2F123&" +
-          "offering=https%3A%2F%2Ftest.portal.com%2Fapi%2Fv1%2Fofferings%2F321&" +
-          "reportType=offering&" +
-          "studentId=ABC&" +
-          "auth-domain=https%3A%2F%2Ftest.portal.com"
-        )
-      end
-    end
-
-    describe "when REPORT_SERVICE_URL points to production Report Service" do
-      before(:each) do
-        allow(ENV).to receive(:[]).with("REPORT_SERVICE_URL").and_return("https://us-central1-report-service-pro.cloudfunctions.net/api")
-      end
-
-      it "sets firebase-app to report-service-pro" do
-        expect(helper.runnable_summary_path(activity)).to eq(
-          "https://portal-report.concord.org/branch/master/index.html?" +
-          "firebase-app=report-service-pro&" +
-          "sourceKey=authoring.test.concord.org&" +
-          "runKey=012345678901234567890123456789123456&" +
-          "activity=http%3A%2F%2Ftest.host%2Factivities%2F23&" +
-          "resourceUrl=http%3A%2F%2Ftest.host%2Factivities%2F23"
-        )
+    describe "when user is running an activity" do
+      it "calls ReportService::report_url with the current run, activity, and no sequence" do
+        expect(ReportService).to receive(:report_url).with(run, activity, nil)
+        helper.runnable_summary_path(activity)
       end
     end
 
     describe "when user is running a sequence" do
-      before(:each) do
+      it "calls ReportService::report_url with the current run, activity, and sequence" do
         assign(:sequence, sequence)
-      end
-
-      it "adds activityIndex param" do
-        expect(helper.runnable_summary_path(activity)).to eq(
-          "https://portal-report.concord.org/branch/master/index.html?" +
-          "firebase-app=report-service-dev&" +
-          "sourceKey=authoring.test.concord.org&" +
-          "runKey=012345678901234567890123456789123456&" +
-          "activity=http%3A%2F%2Ftest.host%2Fsequences%2F1&" +
-          "resourceUrl=http%3A%2F%2Ftest.host%2Fsequences%2F1&" +
-          "activityIndex=0"
-        )
+        expect(ReportService).to receive(:report_url).with(run, activity, sequence)
+        helper.runnable_summary_path(activity)
       end
     end
   end

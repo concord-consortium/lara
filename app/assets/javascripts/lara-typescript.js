@@ -44760,7 +44760,13 @@ var getReportingUrl = function (interactiveStateUrl, interactiveStatePromise) {
       var rawJSON = JSON.parse(interactiveState.raw_data);
 
       if (rawJSON && rawJSON.lara_options && rawJSON.lara_options.reporting_url) {
+        // Interactive has its own reporting_url
         return rawJSON.lara_options.reporting_url;
+      } // Use a generic Portal Report URL
+
+
+      if (interactiveState.external_report_url) {
+        return interactiveState.external_report_url;
       }
 
       return null;
