@@ -1,21 +1,11 @@
-:root {
-  --dark-teal: #218389;
-  --teal: #0592af;
-  --lt-teal: #93d5e4;
-  --ltr-teal: #cdebf2;
-  --ltst-teal: #e2f4f8;
-  --med-orange: orange;
-  --dark-gray: #3f3f3f;
-  --med-gray: #979797;
-  --lt-gray: hsl(0,0%,90%);
-  --font-family: lato, arial, helvetica, sans-serif;
-}
+@import "../../vars.scss";
+
 .disabled, *[disabled] {
   cursor: not-allowed !important;
   opacity: .6 !important;
 }
 .modal {
-  font-family: var(--font-family);
+  font-family: var(--font-family-default);
   height: 450px;
   left: 50%;
   margin: -200px 0 0 -250px;

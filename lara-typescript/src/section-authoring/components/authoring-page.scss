@@ -1,0 +1,19 @@
+@import "../../vars.scss";
+
+.edit-page-container {
+  display: flex;
+  flex-direction: column;
+}
+
+button.big-button {
+  align-self: center;
+  background: var(--teal);
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-family: var(--font-family-default);
+  font-size: 20pt;
+  justify-self: center;
+  padding: 12pt 48pt;
+  text-transform: uppercase;
+}

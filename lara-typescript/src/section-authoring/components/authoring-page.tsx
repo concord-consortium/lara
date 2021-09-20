@@ -1,9 +1,9 @@
 import * as React from "react";
 import { AuthoringSection, ISectionProps } from "./authoring-section";
 import { DragDropContext, Droppable, Draggable, DropResult } from "react-beautiful-dnd";
-
-import "./authoring-page.css";
 import { isCompositeComponentWithType } from "react-dom/test-utils";
+
+import "./authoring-page.scss";
 
 export interface IPageProps {
 

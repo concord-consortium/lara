@@ -5,7 +5,7 @@ import { Cog } from "./icons/cog";
 import { Trash } from "./icons/trash";
 import { SectionItem, ISectionItemProps} from "./section-item";
 // NP 2021-08-12 -- default imports aren"t working correctly when evaled on page
-import "./authoring-section.css";
+import "./authoring-section.scss";
 
 export enum Layouts {
   LAYOUT_FULL_WIDTH = "Full Width",

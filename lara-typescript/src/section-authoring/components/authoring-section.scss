@@ -1,9 +1,5 @@
-:root {
-  --med-teal: #218389;
-  --med-orange: orange;
-  --lt-gray: hsl(0,0%,90%);
-   font-family: arial, helvetica, sas-serif;
-}
+@import "../../vars.scss";
+
 .edit-page-grid-container {
   display: grid;
   grid-template-columns: repeat(10, 1fr);
@@ -12,14 +8,14 @@
   margin: 10px;
 }
 button.big-button {
+  background: var(--teal);
   border: none;
-  color: white;
-  padding: 12pt 48pt;
-  font-size: 20pt;
-  font-family: Lato, arial, helvetica, sans-serif;
-  text-transform: uppercase;
-  background: var(--med-teal);
   border-radius: 8px;
+  color: white;
+  font-family: var(--font-family-default);
+  font-size: 20pt;
+  padding: 12pt 48pt;
+  text-transform: uppercase;
 }
 
 a {
@@ -27,63 +23,62 @@ a {
 }
 
 input[type="submit"].big-button {
+  background: var(--teal);
   border: none;
-  color: white;
-  padding: 12pt 48pt;
-  font-size: 20pt;
-  font-family: Lato, arial, helvetica, sans-serif;
-  text-transform: uppercase;
-  background: var(--med-teal);
   border-radius: 8px;
+  color: white;
+  font-family: var(--font-family-default);
+  font-size: 20pt;
+  padding: 12pt 48pt;
+  text-transform: uppercase;
 }
 
 button.small-button {
-  border: none;
-  color: var(--med-teal);
-  padding: 7pt 28pt;
-  font-size: 14pt;
-  font-family: arial, helvetica, sas-serif;
-  text-transform: uppercase;
   background: none;
-  border-radius: 3px;
   border: 2px solid;
+  border-radius: 3px;
+  color: var(--teal);
+  font-family: var(--font-family-default);
+  font-size: 14pt;
+  padding: 7pt 28pt;
+  text-transform: uppercase;
 }
 
 .teal-label {
-  color: var(--med-teal);
-  text-transform: uppercase;
+  color: var(--teal);
   font-weight: bold;
+  text-transform: uppercase;
 }
 
 .page-settings {
-  display: block;
-  padding: 10px;
-  font-size: 12pt;
   background-color: var(--lt-gray);
   display: flex;
   flex-direction: row;
   flex-wrap: no-wrap;
+  font-size: 12pt;
   justify-content: space-around;
+  padding: 10px;
+  display: flex;
 }
 
 .part-label {
-  grid-column: 1/2;
+  color: var(--teal);
   font-size: 18pt;
-  color: var(--med-teal);
+  grid-column: 1/2;
   justify-self: end;
 }
 
 .activity-name {
-  grid-column: 2/8;
+  color: var(--orange); 
   font-size: 18pt;
-  color: var(--med-orange);  
+  grid-column: 2/8; 
   justify-self: start;
 }
 
 .page-name {
-  grid-column: 2/8;
-  font-size: 18pt;
   color: black;  
+  font-size: 18pt;
+  grid-column: 2/8;
   justify-self: start;
 }
 
@@ -112,39 +107,39 @@ button.small-button {
 }
 
 .section-menu { 
-  display: flex;
-  justify-content: space-between;
-  background-color: var(--med-teal);
-  padding: 8px;
+  background-color: var(--teal);
   color: white;
+  display: flex;
   font-size: 14pt;
+  justify-content: space-between;
+  padding: 8px;
   text-transform: uppercase;
 }
 
 .section-menu > a { color: white; }
 
 .menu-start > span {
-    margin-right: 15px;
+  margin-right: 15px;
 }
 
 .menu-end > span {
-    margin-left: 15px;
+  margin-left: 15px;
 }
 
 .new-section {
-  grid-column: span 10;
   border: 1px solid var(--lt-gray);
+  grid-column: span 10;
 }
 
 .section-container {
-  min-height: 200px;
-  justify-self: stretch;
-  border: 1px solid var(--med-teal);
-  border-radius: 5px;
-  display: flex;
-  justify-content: center;
   align-items: center;
   background-color: white;
+  border: 1px solid var(--teal);
+  border-radius: 5px;
+  display: flex;
+  min-height: 200px;
+  justify-content: center;
+  justify-self: stretch;
 }
 
 .section-30 {
@@ -165,4 +160,3 @@ button.small-button {
 .section-full-width {
   grid-column: span 10;
 }
-
