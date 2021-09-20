@@ -4,7 +4,6 @@ const kDefaultHight = "1em";
 const kDefaultWidth = "1em";
 
 export interface ICloseProps {
-  fillColor?: string;
   height?: string;
   width?: string;
 }

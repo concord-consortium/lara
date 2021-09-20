@@ -4,7 +4,6 @@ const kDefaultHight = "1em";
 const kDefaultWidth = "1em";
 
 export interface ICompletionProps {
-  fillColor?: string;
   height?: string;
   width?: string;
 }

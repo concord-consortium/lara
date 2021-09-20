@@ -58,7 +58,7 @@ export const PageCopyDialog: React.FC<IPageCopyDialogProps> = ({
       <div className="modal pageCopyDialog">
         <header>
           <h1>Copy this page and move to...</h1>
-          <button className="modalClose" onClick={handleCloseDialog}><Close fillColor="white" height="14" width="14"/> close</button>
+          <button className="modalClose" onClick={handleCloseDialog}><Close height="14" width="14"/> close</button>
         </header>
         <section>
           <form>
