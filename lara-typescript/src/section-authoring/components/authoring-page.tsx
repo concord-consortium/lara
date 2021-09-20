@@ -20,12 +20,17 @@ export interface IPageProps {
   /**
    * Sections on this page:
    */
-   sections: ISectionProps[];
+  sections: ISectionProps[];
+
+  /**
+   * Is page a completion page?
+   */
+  is_completion: boolean;
 
   /**
    * how to add a new section
    */
-   addSection?: () => void;
+  addSection?: () => void;
 
   /**
    *
