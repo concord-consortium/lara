@@ -1,9 +1,10 @@
 import * as React from "react";
 import { AuthoringSection, ISectionProps } from "./authoring-section";
 import { DragDropContext, Droppable, Draggable, DropResult } from "react-beautiful-dnd";
+import { ISectionItem } from "./section-item-picker";
+import { ICreatePageItem } from "./query-bound-page";
 
 import "./authoring-page.css";
-import { isCompositeComponentWithType } from "react-dom/test-utils";
 
 export interface IPageProps {
 
@@ -42,6 +43,15 @@ export interface IPageProps {
    */
   setSections?: (pageData: IPageProps) => void;
 
+  /*
+   * List of all section items available
+   */
+  allSectionItems?: ISectionItem[];
+
+  /**
+   * how to add a new page item
+   */
+   addPageItem?: (pageItem: ICreatePageItem) => void;
 }
 
 /**
@@ -54,6 +64,8 @@ export const AuthoringPage: React.FC<IPageProps> = ({
   addSection,
   changeSection,
   setSections,
+  allSectionItems,
+  addPageItem
   }: IPageProps) => {
 
   /*
@@ -113,7 +125,10 @@ export const AuthoringPage: React.FC<IPageProps> = ({
                         {...draggableProvided}
                         key={sProps.id}
                         updateFunction={changeSection}
-                        deleteFunction={handleDelete} />
+                        deleteFunction={handleDelete}
+                        allSectionItems={allSectionItems}
+                        addPageItem={addPageItem}
+                         />
                     </div>
                   )
               }

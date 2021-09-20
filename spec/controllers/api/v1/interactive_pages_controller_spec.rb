@@ -182,7 +182,7 @@ describe Api::V1::InteractivePagesController do
       it "fails with an invalid embeddable parameter" do
         xhr :post, "create_page_item", {id: page.id, page_item: {
           section_id: section.id,
-          embeddable: "MwInteractive_1",
+          embeddable: "Invalid_1",
           position: 1,
           section_position: 1,
           column: 1
@@ -206,7 +206,7 @@ describe Api::V1::InteractivePagesController do
       end
     end
 
-    it "succeeds with valid parameters" do
+    it "succeeds with valid LibraryInteractive parameters" do
       xhr :post, "create_page_item", {id: page.id, page_item: {
         section_id: section.id,
         embeddable: library_interactive1.serializeable_id,
@@ -217,13 +217,30 @@ describe Api::V1::InteractivePagesController do
       expect(response.status).to eq(200)
       expect(response.content_type).to eq("application/json")
     end
+
+    it "succeeds with valid MWInteractive parameters" do
+      xhr :post, "create_page_item", {id: page.id, page_item: {
+        section_id: section.id,
+        embeddable: "MwInteractive",
+        position: 1,
+        section_position: 1,
+        column: 1
+      }}
+      expect(response.status).to eq(200)
+      expect(response.content_type).to eq("application/json")
+    end
   end
 
   describe "#get_library_interactives_list" do
+    let (:managed_interactive1) { FactoryGirl.create(:managed_interactive,
+      :library_interactive_id => library_interactive1.id
+     )}
+
     it "returns the list of library interactives" do
       # make sure the mocks exist
       library_interactive1
       library_interactive2
+      managed_interactive1
 
       xhr :get, "get_library_interactives_list"
       expect(response.status).to eq(200)
@@ -231,8 +248,8 @@ describe Api::V1::InteractivePagesController do
       expect(response.body).to eql({
         success: true,
         library_interactives: [
-          {id: library_interactive1.serializeable_id, name: library_interactive1.name},
-          {id: library_interactive2.serializeable_id, name: library_interactive2.name}
+          {id: library_interactive1.serializeable_id, name: library_interactive1.name, use_count: 1, date_added: library_interactive1.created_at.to_i},
+          {id: library_interactive2.serializeable_id, name: library_interactive2.name, use_count: 0, date_added: library_interactive2.created_at.to_i}
         ]
       }.to_json)
     end

@@ -8,6 +8,11 @@ export interface ISectionItemProps {
   id: string;
 
   /**
+   * Record Type
+   */
+   type: string;
+
+  /**
    * Optional function to change the item
    */
   updateFunction?: (changes: {sectionItem: Partial<ISectionItemProps>}) => void;
@@ -33,11 +38,19 @@ export interface ISectionItemProps {
  */
 export const SectionItem: React.FC<ISectionItemProps> = ({
   id,
+  type,
   title
   }: ISectionItemProps) => {
+
+  const renderTitle = () => (
+    <>
+      {(title || "").length > 0 ? title : <i>Untitled</i>}
+    </>
+  );
+
   return(
     <div className="section-item-container">
-      {id} - {title}
+      {id} - {type} - {renderTitle()}
     </div>
   );
 };
