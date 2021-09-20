@@ -3,9 +3,10 @@ import { AuthoringSection, ISectionProps } from "./authoring-section";
 import { ISectionItemProps } from "./section-item";
 import { SectionItemMoveDialog } from "./section-item-move-dialog";
 import { DragDropContext, Droppable, Draggable, DropResult } from "react-beautiful-dnd";
+import { ISectionItem } from "./section-item-picker";
+import { ICreatePageItem } from "./query-bound-page";
 
 import "./authoring-page.css";
-import { isCompositeComponentWithType } from "react-dom/test-utils";
 
 export interface IPageProps {
 
@@ -25,6 +26,11 @@ export interface IPageProps {
   sections: ISectionProps[];
 
   /**
+   * Is page a completion page?
+   */
+  is_completion: boolean;
+
+  /**
    * how to add a new section
    */
   addSection?: () => void;
@@ -38,6 +44,7 @@ export interface IPageProps {
    * Call back to invoke when sections have been rearranged or deleted
    */
   setSections?: (pageData: IPageProps) => void;
+
 
   /**
    * Items on this page:
@@ -54,6 +61,15 @@ export interface IPageProps {
    */
   itemToMove?: ISectionItemProps;
 
+  /*
+   * List of all section items available
+   */
+  allSectionItems?: ISectionItem[];
+
+  /**
+   * how to add a new page item
+   */
+   addPageItem?: (pageItem: ICreatePageItem) => void;
 }
 
 /**
@@ -69,6 +85,8 @@ export const AuthoringPage: React.FC<IPageProps> = ({
   items: initItems = [] as ISectionItemProps[],
   setPageItems,
   itemToMove: initItemToMove = undefined
+  allSectionItems,
+  addPageItem
   }: IPageProps) => {
 
   const [itemToMove, setItemToMove] = useState(initItemToMove);
@@ -197,6 +215,8 @@ export const AuthoringPage: React.FC<IPageProps> = ({
                             key={sProps.id}
                             updateFunction={changeSection}
                             deleteFunction={handleDelete}
+                            allSectionItems={allSectionItems}
+                            addPageItem={addPageItem}
                             moveItemFunction={handleMoveItemInit}
                             updatePageItems={updateSectionItems} />
                         </div>

@@ -11,6 +11,11 @@ export interface ISectionItemProps {
   id: string;
 
   /**
+   * Record Type
+   */
+   type: string;
+
+  /**
    * Optional function to change the item
    */
   updateFunction?: (changes: {sectionItem: Partial<ISectionItemProps>}) => void;
@@ -62,6 +67,7 @@ export const SectionItem: React.FC<ISectionItemProps> = ({
   position,
   section_col,
   section_id,
+  type,
   title
   }: ISectionItemProps) => {
 

@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { GripLines } from "./icons/grip-lines";
 import { SectionItem, ISectionItemProps} from "./section-item";
+import { ISectionItem, SectionItemPicker } from "./section-item-picker";
+import {absorbClickThen} from "../../shared/absorb-click";
+import { ICreatePageItem } from "./query-bound-page";
+
+// NP 2021-08-12 -- default imports aren"t working correctly when evaled on page
 import { DragDropContext, Droppable, Draggable, DropResult } from "react-beautiful-dnd";
 // NP 2021-08-12 -- default imports aren't working correctly when evaled on page
 import "./authoring-section.css";
@@ -94,6 +99,15 @@ export interface ISectionProps {
    */
   moveItemFunction?: (id: string) => void;
 
+  /*
+   * List of all section items available
+   */
+  allSectionItems?: ISectionItem[];
+
+  /**
+   * how to add a new page item
+   */
+   addPageItem?: (pageItem: ICreatePageItem) => void;
 }
 
 /**
@@ -104,24 +118,21 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
   updateFunction,
   deleteFunction,
   layout: initLayout = defaultLayout,
-  items: initItems = [] as ISectionItemProps[],
-  updatePageItems,
-  moveItemFunction,
+  items = [],
   collapsed: initCollapsed = false,
-  title
+  title,
+  dragHandleProps,
+  allSectionItems,
+  addPageItem
   }: ISectionProps) => {
 
-  const [layout, setLayout] = useState(initLayout);
-  const [collapsed, setCollapsed] = useState(initCollapsed);
-  const [items, setItems] = useState([...initItems]); // TODO: Initial Items as in layout
+  const [layout, setLayout] = React.useState(initLayout);
+  const [collapsed, setCollapsed] = React.useState(initCollapsed);
+  const [showAddItem, setShowAddItem] = React.useState(false);
 
   useEffect(() => {
     setLayout(initLayout);
   }, [initLayout]);
-
-  useEffect(() => {
-    updatePageItems?.(items, id);
-  }, [items]);
 
   const layoutChanged = (change: React.ChangeEvent<HTMLSelectElement>) => {
     const newLayout = change.target.value as Layouts;
@@ -290,6 +301,19 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
     );
   }
  
+  const handleToggleShowAddItem = () => setShowAddItem((prev) => !prev);
+  const handleShowAddItem = absorbClickThen(handleToggleShowAddItem);
+
+  const handleAddItem = (itemId: string) => {
+    addPageItem?.({
+      section_id: id,
+      embeddable: itemId
+    });
+    handleToggleShowAddItem();
+  };
+
+  const sectionClassName = (index: number) => `section-container ${classNameForItem(layout, index)}`;
+
   return (
     <div className="edit-page-grid-container">
       <header className="section-menu full-row">

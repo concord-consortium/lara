@@ -14,7 +14,7 @@
   cursor: not-allowed !important;
   opacity: .6 !important;
 }
-.modal {
+.react-modal {
   font-family: var(--font-family);
   height: 450px;
   left: 50%;
@@ -24,13 +24,13 @@
   top: 50%;
   width: 600px;
 }
-.modal header {
+.react-modal header {
   background: var(--teal);
   color: white;
   display: flex;
   padding: 10px;
 }
-.modal header h1 {
+.react-modal header h1 {
   flex-grow: 2;
   font-size: 16px;
   font-weight: 700;
@@ -61,7 +61,7 @@
   text-indent: 0;
   top: 0;
 }
-.modal section {
+.react-modal section {
   background: white;
   border: solid 1px var(--med-gray);
   border-top: none;
@@ -103,7 +103,7 @@
   line-height: 1;
   margin: 0;
   padding: 10px 15px;
-  text-align: center; 
+  text-align: center;
 }
 #quickAddMenu li button:hover {
   background: var(--lt-teal);
