@@ -35,7 +35,7 @@ export const PageNavMenu: React.FC<IPageNavMenuProps> = ({
   const pageButtons = () => {
     const buttons = pages.map((p, index) => {
       const pageNumber = index + 1;
-      const buttonContent = p.is_completion ? <Completion height="24" width="24" /> : pageNumber;
+      const buttonContent = p.isCompletion ? <Completion height="24" width="24" /> : pageNumber;
       const buttonClasses = classNames("page-button", {
         current: index === currentPageIndex,
         completionPage: p.isCompletion
@@ -100,7 +100,7 @@ export const PageNavMenu: React.FC<IPageNavMenuProps> = ({
 
   const prevPage = currentPageIndex && currentPageIndex > 0 ? currentPageIndex - 1 : null;
   const nextPage = currentPageIndex !== null && currentPageIndex < pages.length - 1 ? currentPageIndex + 1 : 0;
-  const currentPageIsCopyable = currentPageIndex !== null && !pages[currentPageIndex].is_completion;
+  const currentPageIsCopyable = currentPageIndex !== null && !pages[currentPageIndex].isCompletion;
   const prevPageClassName = `page-button ${currentPageIndex === null ? "disabled " : ""}`;
   const prevClickHandler = () => handleNavButtonClick(prevPage);
   const nextPageClassName = `page-button ${currentPageIndex === pages.length - 1 ? "disabled" : ""}`;

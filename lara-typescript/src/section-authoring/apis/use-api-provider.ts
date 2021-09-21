@@ -2,7 +2,7 @@ import * as React from "react";
 import { useContext } from "react";
 import {useMutation, useQuery, useQueryClient} from "react-query";
 import { IPage } from "../authoring-types";
-import { API as DEFAULT_API } from "./mock-page-api";
+import { API as DEFAULT_API } from "./mock-api";
 
 const PAGES_CACHE_KEY = "pages";
 

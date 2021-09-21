@@ -1,6 +1,10 @@
 class Api::V1::InteractivePagesController < API::APIController
   layout false
-  before_filter :set_interactive_page, except: [:get_library_interactives_list]
+  before_filter :set_interactive_page, except: [
+    :get_library_interactives_list,
+    :get_pages,
+    :create_page
+  ]
   skip_before_filter :verify_authenticity_token
 
   ## Queries:
@@ -9,11 +13,35 @@ class Api::V1::InteractivePagesController < API::APIController
   end
 
   def get_pages
-    activity = @interactive_page.lightweight_activity
+    activity = LightweightActivity.find(params[:activity_id])
+    return error("Can't find activity #{params[:activity_id]}") unless activity
     pages = activity.pages.map do |page|
       generate_page_json page
     end
     render :json => pages
+  end
+
+  def get_page
+    # TODO: This is identical to get_sections. Why use different names?
+    # Because it expresses the intent. Its possible we will want to return
+    # different things later on.
+    render_page_sections_json
+  end
+
+  def create_page
+    activity = LightweightActivity.find(params[:activity_id])
+    return error("Can't find activity #{params[:activity_id]}") unless activity
+    activity.pages.create()
+    pages = activity.reload.pages.map do |page|
+      generate_page_json page
+    end
+    render :json => pages
+  end
+
+  def delete_page
+    activity = @interactive_page.lightweight_activity
+    @interactive_page.destroy
+    render :json => ({success: true})
   end
 
   ## Mutations

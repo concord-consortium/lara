@@ -1,8 +1,7 @@
 import * as React from "react";
-import { QueryClient, QueryClientProvider, useMutation, useQuery, useQueryClient } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import { AuthoringPage, IPageProps } from "./authoring-page";
 import { ISectionProps } from "./authoring-section";
-import { ISectionItem } from "./section-item-picker";
 
 const APIBase = "/api/v1";
 
