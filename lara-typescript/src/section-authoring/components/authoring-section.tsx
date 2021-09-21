@@ -227,7 +227,6 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
 
   const handleMoveItem = (itemId: string) => {
     if (moveItemFunction) {
-      console.log("invoke moveItemFunction");
       moveItemFunction(itemId);
     }
   };
