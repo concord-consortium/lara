@@ -1,6 +1,6 @@
 
 import {
-  IPageList, IPage, PageId,
+  IPage, PageId,
   APIPageGetF, APIPagesGetF, IAPIPages
 } from "../authoring-types";
 
@@ -10,7 +10,6 @@ let counter = 0;
 export const getLaraPageAPI = (host: string = "", pageId: string): IAPIPages => {
   const prefix = `${host}/${APIBase}`;
   const getPagesUrl = `${prefix}/get_pages/${pageId}.json`;
-  // TODO other URLS for other actions ...
 
   const getPages: APIPagesGetF = () => {
     console.log("Getting page list");
@@ -22,6 +21,7 @@ export const getLaraPageAPI = (host: string = "", pageId: string): IAPIPages => 
     });
   };
 
+  // TODO:
   const getPage: APIPageGetF = (id: PageId) => {
     console.log("Faking get single page");
     const newPage: IPage = {
@@ -32,6 +32,7 @@ export const getLaraPageAPI = (host: string = "", pageId: string): IAPIPages => 
     return Promise.resolve(newPage);
   };
 
+  // TODO:
   const createPage = () => {
     console.log("Faking create");
     const newPage: IPage = {
@@ -42,8 +43,9 @@ export const getLaraPageAPI = (host: string = "", pageId: string): IAPIPages => 
     return Promise.resolve(newPage);
   };
 
+  // TODO:
   const deletePage = (id: PageId) => {
-    console.log("Faking delete")
+    console.log("Faking delete");
     return Promise.resolve([]);
   };
   return {getPages, getPage, createPage, deletePage};

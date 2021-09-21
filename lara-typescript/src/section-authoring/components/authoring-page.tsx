@@ -28,7 +28,7 @@ export interface IPageProps {
   /**
    * Is page a completion page?
    */
-  is_completion: boolean;
+  isCompletion: boolean;
 
   /**
    * Callback to invoke when section has been added

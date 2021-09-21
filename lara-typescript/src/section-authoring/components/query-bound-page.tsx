@@ -36,6 +36,7 @@ export const QueryBoundPage = (props: IQueryBoundPage) => {
   const updateSectionUrl = `${prefix}/update_page_section/${id}.json`;
   const createPageItemUrl = `${prefix}/create_page_item/${id}.json`;
   const libraryInteractivesUrl = `${prefix}/get_library_interactives_list.json`;
+
   const updatePageQueryData = (response: any, variables: any) => {
     queryClient.setQueryData("authoringPage", response);
   };
@@ -138,5 +139,12 @@ export const QueryBoundPage = (props: IQueryBoundPage) => {
   const addSection = createSectionMutation.mutate as () => void;
   const changeSection = changeSectionMutation.mutate;
   const addPageItem = createPageItemMutation.mutate;
-  return <AuthoringPage {...{ id, sections, setSections, addSection, changeSection, allSectionItems, addPageItem }} />;
+  const isCompletion = false;
+
+  return <AuthoringPage {...
+    {
+      id, sections, setSections, addSection, changeSection,
+      allSectionItems, addPageItem, isCompletion
+    }
+  }/>;
 };

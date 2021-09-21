@@ -1,14 +1,8 @@
-import React from "react";
+import * as React from "react";
 import { useContext } from "react";
 import {useMutation, useQuery, useQueryClient} from "react-query";
 import { IPage } from "../authoring-types";
 import { API as DEFAULT_API } from "./mock-page-api";
-
-export interface IPageAPIProvider {
-  getPages: any;
-  createPage: any;
-  deletePage: any;
-}
 
 const PAGES_CACHE_KEY = "pages";
 
@@ -17,7 +11,7 @@ const PAGES_CACHE_KEY = "pages";
 //
 export const APIContext = React.createContext(DEFAULT_API);
 
-export const UsePageAPI = () => {
+export const usePageAPI = () => {
   const provider = useContext(APIContext);
   const client = useQueryClient(); // Get the context from our container.
   const addMutationOpts = {

@@ -1,22 +1,23 @@
 
-import React from "react";
+import * as React from "react";
 import {QueryClient, QueryClientProvider } from "react-query";
 import { IPage } from "./authoring-types";
-import { UsePageAPI } from "./apis/use-page-api-provider";
+import { usePageAPI } from "./apis/use-page-api-provider";
 
 const queryClient = new QueryClient();
 
 // This is a simple DEMO Pages Component to exercise the query providers.
 const Pages = () => {
-  const { queryAll, addMutation, deleteMutation } = UsePageAPI();
+  const { queryAll, addMutation, deleteMutation } = usePageAPI();
   const addPage = () => addMutation.mutate();
 
   const PageDiv = (params: {page: IPage}) => {
     const {page} = params;
+    const deleteAction = () => deleteMutation.mutate(page.id);
     return(
       <li key={page.id}>
         {page.id} {page.title}
-        <span onClick={ () => deleteMutation.mutate(page.id) }> ✖ </span>
+        <span onClick={deleteAction}> ✖ </span>
       </li>
     );
   };
