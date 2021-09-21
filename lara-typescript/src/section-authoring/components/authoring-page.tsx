@@ -43,7 +43,7 @@ export interface IPageProps {
   /*
    * Call back to invoke when sections have been rearranged or deleted
    */
-  setSections?: (pageData: IPageProps) => void;
+  setSections?: (pageData: {id: string, sections: ISectionProps[]}) => void;
 
 
   /**
@@ -84,7 +84,7 @@ export const AuthoringPage: React.FC<IPageProps> = ({
   setSections,
   items: initItems = [] as ISectionItemProps[],
   setPageItems,
-  itemToMove: initItemToMove = undefined
+  itemToMove: initItemToMove,
   allSectionItems,
   addPageItem
   }: IPageProps) => {
@@ -92,9 +92,9 @@ export const AuthoringPage: React.FC<IPageProps> = ({
   const [itemToMove, setItemToMove] = useState(initItemToMove);
   const [items, setItems] = useState([...initItems]);
 
-  const updateSectionItems = (items: ISectionItemProps[], sectionId: string) => {
+  const updateSectionItems = (newItems: ISectionItemProps[], sectionId: string) => {
     const sectionIndex = sections.findIndex(i => i.id === sectionId);
-    sections[sectionIndex].items = items;
+    sections[sectionIndex].items = newItems;
     const updatedItems = [] as ISectionItemProps[];
     sections.forEach((s) => {
       if (s.items) {
@@ -124,7 +124,7 @@ export const AuthoringPage: React.FC<IPageProps> = ({
           nextSections.push(s);
         }
       });
-      const update: IPageProps = { id, sections: nextSections };
+      const update = { id, sections: nextSections };
       setSections(update);
     }
   };
@@ -181,9 +181,8 @@ export const AuthoringPage: React.FC<IPageProps> = ({
     sections.forEach((s, index) => {
       sections[index].items = items.filter(i => i.section_id === s.id);
     });
-    const update: IPageProps = { id, sections: sections };
     if (setSections) {
-      setSections(update);
+      setSections({ id, sections });
     }
   };
 
@@ -211,7 +210,7 @@ export const AuthoringPage: React.FC<IPageProps> = ({
                         {...draggableProvided.draggableProps}
                         ref={draggableProvided.innerRef}>
                           <AuthoringSection {...sProps}
-                            {...draggableProvided}
+                            draggableProvided={draggableProvided}
                             key={sProps.id}
                             updateFunction={changeSection}
                             deleteFunction={handleDelete}
@@ -234,9 +233,8 @@ export const AuthoringPage: React.FC<IPageProps> = ({
         </Droppable>
       </DragDropContext>
       {itemToMove && 
-        <SectionItemMoveDialog 
+        <SectionItemMoveDialog
           item={itemToMove}
-          items={items}
           sections={sections}
           moveItemFunction={handleMoveItem}
           closeDialogFunction={handleCloseMoveItemDialog}

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import * as React from "react";
 import { GripLines } from "./icons/grip-lines";
 import { SectionItem, ISectionItemProps} from "./section-item";
 import { ISectionItem, SectionItemPicker } from "./section-item-picker";
@@ -6,7 +6,7 @@ import {absorbClickThen} from "../../shared/absorb-click";
 import { ICreatePageItem } from "./query-bound-page";
 
 // NP 2021-08-12 -- default imports aren"t working correctly when evaled on page
-import { DragDropContext, Droppable, Draggable, DropResult } from "react-beautiful-dnd";
+import { DragDropContext, Droppable, Draggable, DropResult, DraggableProvided } from "react-beautiful-dnd";
 // NP 2021-08-12 -- default imports aren't working correctly when evaled on page
 import "./authoring-section.css";
 
@@ -108,6 +108,11 @@ export interface ISectionProps {
    * how to add a new page item
    */
    addPageItem?: (pageItem: ICreatePageItem) => void;
+
+   /**
+    * DraggingContext
+    */
+   draggableProvided?: DraggableProvided;
 }
 
 /**
@@ -118,21 +123,27 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
   updateFunction,
   deleteFunction,
   layout: initLayout = defaultLayout,
-  items = [],
+  items: initItems = [],
   collapsed: initCollapsed = false,
   title,
-  dragHandleProps,
+  moveItemFunction,
   allSectionItems,
+  draggableProvided,
   addPageItem
   }: ISectionProps) => {
 
+  const [items, setItems] = React.useState([...initItems]); // TODO: Initial Items as in layout
   const [layout, setLayout] = React.useState(initLayout);
   const [collapsed, setCollapsed] = React.useState(initCollapsed);
   const [showAddItem, setShowAddItem] = React.useState(false);
 
-  useEffect(() => {
+  React.useEffect(() => {
     setLayout(initLayout);
   }, [initLayout]);
+
+  // React.useEffect(() => {
+  //   setItems([...initItems]);
+  // }, [initItems]);
 
   const layoutChanged = (change: React.ChangeEvent<HTMLSelectElement>) => {
     const newLayout = change.target.value as Layouts;
@@ -180,6 +191,7 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
       section_id: id,
       section_col,
       position,
+      type: "unknown",
       title: `Item ${position} - ${Math.random().toString(36).substr(2, 9)}`
     };
     setItems([...items, newItem]);
@@ -216,6 +228,7 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
   };
 
   const handleMoveItem = (itemId: string) => {
+    console.log("hanleMoveItem called");
     if (moveItemFunction) {
       moveItemFunction(itemId);
     }
@@ -299,8 +312,8 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
       </DragDropContext>
       </>
     );
-  }
- 
+  };
+
   const handleToggleShowAddItem = () => setShowAddItem((prev) => !prev);
   const handleShowAddItem = absorbClickThen(handleToggleShowAddItem);
 
@@ -318,7 +331,9 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
     <div className="edit-page-grid-container">
       <header className="section-menu full-row">
         <div className="menu-start">
-          <GripLines />
+          <span {...draggableProvided?.dragHandleProps}>
+            <GripLines  />
+          </span>
           <h3>{title}{id}</h3>
           <label htmlFor="section_layout">Layout: </label>
           <select
