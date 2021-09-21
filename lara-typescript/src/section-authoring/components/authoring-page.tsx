@@ -31,12 +31,12 @@ export interface IPageProps {
   is_completion: boolean;
 
   /**
-   * Func to add a new section:
+   * Callback to invoke when section has been added
    */
   addSection?: () => void;
 
   /**
-   * Func to update a section.
+   * Callback to invoke when section has changed
    */
   changeSection?: (changes: {section: Partial<ISectionProps>, sectionID: string}) => void;
 
