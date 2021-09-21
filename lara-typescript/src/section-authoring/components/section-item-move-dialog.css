@@ -1,0 +1,163 @@
+:root {
+  --dark-teal: #218389;
+  --teal: #0592af;
+  --lt-teal: #93d5e4;
+  --ltr-teal: #cdebf2;
+  --ltst-teal: #e2f4f8;
+  --med-orange: orange;
+  --dark-gray: #3f3f3f;
+  --med-gray: #979797;
+  --lt-gray: hsl(0,0%,90%);
+  --font-family: lato, arial, helvetica, sans-serif;
+}
+select {
+  border: solid 1.5px var(--med-gray);
+  border-radius: 4px;
+  padding: 5px 10px;
+}
+
+.modalOverlay {
+  background: var(--dark-gray);
+  height: 100%;
+  left: 0;
+  opacity: .7;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  z-index: 5;
+}
+.modal {
+  font-family: var(--font-family);
+  height: 450px;
+  left: 50%;
+  margin: -200px 0 0 -300px;
+  overflow: hidden;
+  position: absolute;
+  top: 50%;
+  width: 600px;
+  z-index: 10;
+}
+.modal header {
+  background: var(--teal);
+  color: white;
+  display: flex;
+  padding: 10px;
+}
+.modal header h1 {
+  flex-grow: 2;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1;
+  margin: 0;
+  padding: 0;
+}
+.modalClose {
+  align-self: center;
+  background: transparent;
+  border: none;
+  color: white;
+  height: 16px;
+  line-height: 1;
+  overflow: hidden;
+  padding: 0;
+  position: relative;
+  text-indent: 100%;
+  white-space: nowrap;
+  width: 12px;
+}
+.modalClose:before {
+  content: "\2716";
+  cursor: pointer;
+  font-size: 16px;
+  left: 0;
+  position: absolute;
+  text-indent: 0;
+  top: 0;
+}
+.modal section {
+  background: white;
+  border: solid 1px var(--med-gray);
+  border-top: none;
+  padding: 10px;
+}
+.sectionItemMoveDialog dl {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 2fr;
+  grid-gap: 10px;
+  grid-auto-flow: dense;
+  margin: 0 0 20px;
+  padding: 0;
+}
+.sectionItemMoveDialog dt {
+  margin: 0;
+  padding: 0;
+}
+.sectionItemMoveDialog dd {
+  margin: 0;
+  padding: 0;
+}
+.sectionItemMoveDialog dt.col1, .sectionItemMoveDialog dd.col1 {
+  grid-column: 1;
+}
+.sectionItemMoveDialog dt.col2, .sectionItemMoveDialog dd.col2 {
+  grid-column: 2;
+}
+.sectionItemMoveDialog dt.col3, .sectionItemMoveDialog dd.col3 {
+  grid-column: 3;
+}
+.sectionItemMoveDialog dt.col4, .sectionItemMoveDialog dd.col4 {
+  grid-column: 4;
+}
+.sectionItemMoveDialog dt.col5, .sectionItemMoveDialog dd.col5 {
+  grid-column: 5;
+}
+.sectionItemMoveDialog dd select {
+  overflow: hidden;
+  width: 100%;
+}
+.actionButtons {
+  border-top: solid 1px var(--med-gray);
+  padding-top: 10px;
+  text-align: right;
+}
+.actionButtons button {
+  background: var(--ltst-teal);
+  border: solid 1.5px var(--med-gray);
+  border-radius: 4px;
+  color: var(--dark-gray);
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 700;
+  margin: 0 0 0 10px;
+  padding: 5px 10px 5px 30px;
+  position: relative;
+}
+.actionButtons button:hover {
+  background: var(--lt-teal);
+}
+.actionButtons button:active {
+  background: var(--teal);
+  color: white;
+}
+.actionButtons button.disabled {
+  opacity: .6;
+}
+.actionButtons button.cancel:before {
+  color: var(--teal);
+  content: '\2716';
+  font-size: 20px;
+  left: 10px;
+  position: absolute;
+  top: 1px;
+}
+.actionButtons button.move:before {
+  color: var(--teal);
+  content: '\2295';
+  font-size: 20px;
+  left: 10px;
+  position: absolute;
+  top: 1px;
+}
+.actionButtons button:active:before {
+  color: white;
+}

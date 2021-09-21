@@ -1,6 +1,7 @@
 class Api::V1::InteractivePagesController < API::APIController
   layout false
   before_filter :set_interactive_page, except: [:get_library_interactives_list]
+  skip_before_filter :verify_authenticity_token
 
   ## Queries:
   def get_sections
@@ -17,7 +18,7 @@ class Api::V1::InteractivePagesController < API::APIController
 
   ## Mutations
   def set_sections
-    param_sections = params['sections'] # array of [{:id,:layout}]
+    param_sections = params['sections'] || [] # array of [{:id,:layout}]
     old_sections = @interactive_page.sections
     # Put them in the correct order:
     index = 1
@@ -68,26 +69,34 @@ class Api::V1::InteractivePagesController < API::APIController
     position = position.to_i unless position.nil?
 
     # currently we only support library interactives, this will change later
-    if serializeable_id.start_with?("LibraryInteractive")
+    case serializeable_id
+    when /LibraryInteractive/
       library_interactive = LibraryInteractive.find_by_serializeable_id(serializeable_id)
       return error("Invalid page_item[embeddable] parameter") if library_interactive.nil?
-      embeddable = ManagedInteractive.create(library_interactive_id: library_interactive.id)
+      embeddable = ManagedInteractive.create!(library_interactive_id: library_interactive.id)
+    when /MwInteractive/
+      embeddable = MwInteractive.create!
     else
       return error("Only library interactive embeddables are currently supported")
     end
 
     @interactive_page.add_embeddable(embeddable, position, section.id)
+    @interactive_page.reload
 
-    # TODO: in follow on work change the returned json to include the page items
     render_page_sections_json
   end
 
   def get_library_interactives_list
+    library_interactives = LibraryInteractive
+      .select("library_interactives.id, library_interactives.name, count(managed_interactives.id) as use_count, UNIX_TIMESTAMP(library_interactives.created_at) as date_added")
+      .joins("LEFT JOIN managed_interactives ON managed_interactives.linked_interactive_id = library_interactives.id")
+      .group('library_interactives.id').map do |li|
+        {id: li.serializeable_id, name: li.name, use_count: li.use_count, date_added: li.date_added }
+      end
+
     render :json => {
       success: true,
-      library_interactives: LibraryInteractive.select([:id, :name]).order(:name).map do |li|
-        {id: li.serializeable_id, name: li.name }
-      end
+      library_interactives: library_interactives
     }
   end
 
@@ -144,7 +153,14 @@ class Api::V1::InteractivePagesController < API::APIController
     sections = page.sections.map do |s|
       {
         id: s.id.to_s,
-        layout: s.layout
+        layout: s.layout,
+        items: s.page_items.map do |pi|
+          {
+            id: pi.id.to_s,
+            type: pi.embeddable_type,
+            data: pi.embeddable.respond_to?(:to_interactive) ? pi.embeddable.to_interactive : pi.embeddable.to_hash
+          }
+        end
       }
     end
     return {

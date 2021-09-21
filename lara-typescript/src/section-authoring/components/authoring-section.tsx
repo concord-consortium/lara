@@ -1,10 +1,13 @@
 import * as React from "react";
 import { GripLines } from "./icons/grip-lines";
-import { MinusSquare } from "./icons/minus-square";
-import { Cog } from "./icons/cog";
-import { Trash } from "./icons/trash";
 import { SectionItem, ISectionItemProps} from "./section-item";
+import { ISectionItem, SectionItemPicker } from "./section-item-picker";
+import {absorbClickThen} from "../../shared/absorb-click";
+import { ICreatePageItem } from "./query-bound-page";
+
 // NP 2021-08-12 -- default imports aren"t working correctly when evaled on page
+import { DragDropContext, Droppable, Draggable, DropResult, DraggableProvided } from "react-beautiful-dnd";
+// NP 2021-08-12 -- default imports aren't working correctly when evaled on page
 import "./authoring-section.css";
 
 export enum Layouts {
@@ -64,7 +67,7 @@ export interface ISectionProps {
   /**
    * Optional function to delete the section (elsewhere)
    */
-   deleteFunction?: (id: string) => void;
+  deleteFunction?: (id: string) => void;
 
   /**
    * Or display order on the page
@@ -82,17 +85,34 @@ export interface ISectionProps {
   collapsed?: boolean;
 
   /**
-   * Section Items in this section
+   * Items in this section
    */
   items?: ISectionItemProps[];
 
   /**
-   * Drag handle.
-   * DragHandleProps is a private type documented at
-   * https://github.com/atlassian/react-beautiful-dnd/blob/master/docs/api/draggable.md
+   * Optional function to delete the section (elsewhere)
    */
-  dragHandleProps?: any;
+  updatePageItems?: (items: ISectionItemProps[], sectionId: string) => void;
 
+  /**
+   * Function to move an item
+   */
+  moveItemFunction?: (id: string) => void;
+
+  /*
+   * List of all section items available
+   */
+  allSectionItems?: ISectionItem[];
+
+  /**
+   * how to add a new page item
+   */
+   addPageItem?: (pageItem: ICreatePageItem) => void;
+
+   /**
+    * DraggingContext
+    */
+   draggableProvided?: DraggableProvided;
 }
 
 /**
@@ -103,15 +123,19 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
   updateFunction,
   deleteFunction,
   layout: initLayout = defaultLayout,
-  items: initItems = [] as ISectionItemProps[],
+  items: initItems = [],
   collapsed: initCollapsed = false,
   title,
-  dragHandleProps
+  moveItemFunction,
+  allSectionItems,
+  draggableProvided,
+  addPageItem
   }: ISectionProps) => {
 
+  const [items, setItems] = React.useState([...initItems]); // TODO: Initial Items as in layout
   const [layout, setLayout] = React.useState(initLayout);
   const [collapsed, setCollapsed] = React.useState(initCollapsed);
-  const [items, setItems] = React.useState([...initItems]); // TODO: Initial Items as in layout
+  const [showAddItem, setShowAddItem] = React.useState(false);
 
   React.useEffect(() => {
     setLayout(initLayout);
@@ -137,37 +161,181 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
     deleteFunction?.(id);
   };
 
+  const handleMove = () => {
+    console.log("move");
+  };
+
+  const handleCopy = () => {
+    console.log("copy");
+  };
+
   const sortedItems = () => {
     return items.sort((a, b) => a.position - b.position);
   };
 
-  const addItem = () => {
-    const nextId = items.length;
-    const position = nextId + 1;
+  const getColumnItems = (columnIndex: number) => {
+    let columnItems: any[] = [];
+    columnItems = items.map(i => {
+      if (i.section_col === columnIndex) {
+        return i;
+      }
+    }).filter(Boolean);
+    return columnItems;
+  }
+
+  const addItem = (section_col: number) => {
+    const nextId = `section-${id}-item-${items.length}`;
+    const position = items.length + 1;
     const newItem: ISectionItemProps = {
       id: `${nextId}`,
+      section_id: id,
+      section_col,
       position,
-      title: `item ${position}`
+      type: "unknown",
+      title: `Item ${position} - ${Math.random().toString(36).substr(2, 9)}`
     };
     setItems([...items, newItem]);
   };
 
-  const displayItems = items.map(i => <SectionItem {...i} key={i.id} /> );
-  displayItems.push(
-    <button className="small-button" onClick={addItem}>
-      + Add Item
-    </button>
-  );
+  const swapIndexes = (array: any[], a: number, b: number) => {
+    const aItem = array[a];
+    const bItem = array[b];
+    const aPos = aItem.position;
+    const bPos = bItem.position;
+    aItem.position = bPos;
+    bItem.position = aPos;
+    array[b] = aItem;
+    array[a] = bItem;
+    return [...array];
+  };
+
+  const onDragEnd = (e: DropResult) => {
+    if (!e.destination) {
+      return;
+    }
+    let nextItems = [];
+    if (e.source.droppableId !== e.destination.droppableId) {
+      // items[e.source.index].section_col = items[e.source.index].section_col === 0 ? 1 : 0;
+      // disallow cross column reordering for now
+      return;
+    }
+    if (e.destination && e.destination.index !== e.source.index) {
+      nextItems = swapIndexes(items, e.source.index, e.destination.index);
+    }
+    if (setItems) {
+      setItems(nextItems);
+    }
+  };
+
+  const handleMoveItem = (itemId: string) => {
+    console.log("hanleMoveItem called");
+    if (moveItemFunction) {
+      moveItemFunction(itemId);
+    }
+  };
+
+  const handleCopyItem = (id: string) => {
+    const item = items.find(i => i.id === id);
+    if (item) {
+      addItem(item.section_col);
+    }
+  };
+
+  const handleDeleteItem = (itemId: string) => {
+    const nextItems: ISectionItemProps[] = [];
+    items.forEach(i => {
+      if (i.id !== itemId) {
+        nextItems.push(i);
+      }
+    });
+    setItems(nextItems);
+  };
+
+  const sectionColumns = () => {
+    const columnOneItems = getColumnItems(0);
+    const columnTwoItems = getColumnItems(1);
+    return (
+      <>
+      <DragDropContext onDragEnd={onDragEnd}>
+        <div className={`edit-page-grid-container col-1 ${classNameForItem(layout, 0)}`}>
+          <Droppable droppableId="droppableCol1">
+            {(droppableProvided) => (
+              <div ref={droppableProvided.innerRef} className="edit-items-container full-row" {...droppableProvided.droppableProps}>
+                <div className="itemsContainer">
+                  { !collapsed && columnOneItems && columnOneItems.length > 0 && columnOneItems.map((element, index) => {
+                    return (
+                      <Draggable key={`col-1-item-${index}`} draggableId={`col-1-item-${index}`} index={element.position - 1}>
+                        {(draggableProvided) => (
+                          <div className="sectionItem" key={`col-1-item-inner-${index}`} {...draggableProvided.draggableProps} {...draggableProvided.dragHandleProps} ref={draggableProvided.innerRef}>
+                            <SectionItem {...element} key={element.id} moveFunction={handleMoveItem} copyFunction={handleCopyItem} deleteFunction={handleDeleteItem} />
+                          </div>
+                        )}
+                      </Draggable>
+                    );
+                  })}
+                  { droppableProvided.placeholder }
+                  <button className="small-button" onClick={() => addItem(0)}>
+                    + Add Item
+                  </button>
+                </div>
+              </div>
+          )}
+          </Droppable>
+        </div>
+        {layout !== "Full Width" &&
+          <div className={`edit-page-grid-container col-2 ${classNameForItem(layout, 1)}`}>
+            <Droppable droppableId="droppableCol2">
+              {(droppableProvided) => (
+                <div ref={droppableProvided.innerRef} className="edit-items-container full-row" {...droppableProvided.droppableProps}>
+                  <div className="itemsContainer">
+                    { !collapsed && columnTwoItems && columnTwoItems.length > 0 && columnTwoItems.map((element, index) => {
+                      return (
+                        <Draggable key={`col-2-item-${index}`} draggableId={`col-2-item-${index}`} index={element.position - 1}>
+                          {(draggableProvided) => (
+                            <div className="sectionItem" key={`col-2-item-inner-${index}`} {...draggableProvided.draggableProps} {...draggableProvided.dragHandleProps} ref={draggableProvided.innerRef}>
+                              <SectionItem {...element} key={element.id} moveFunction={handleMoveItem} copyFunction={handleCopyItem} deleteFunction={handleDeleteItem} />
+                            </div>
+                          )}
+                        </Draggable>
+                      );
+                    })}
+                    { droppableProvided.placeholder }
+                    <button className="small-button" onClick={() => addItem(1)}>
+                      + Add Item
+                    </button>
+                  </div>
+                </div>
+              )}
+            </Droppable>
+          </div>
+        }
+      </DragDropContext>
+      </>
+    );
+  };
+
+  const handleToggleShowAddItem = () => setShowAddItem((prev) => !prev);
+  const handleShowAddItem = absorbClickThen(handleToggleShowAddItem);
+
+  const handleAddItem = (itemId: string) => {
+    addPageItem?.({
+      section_id: id,
+      embeddable: itemId
+    });
+    handleToggleShowAddItem();
+  };
+
+  const sectionClassName = (index: number) => `section-container ${classNameForItem(layout, index)}`;
 
   return (
     <div className="edit-page-grid-container">
-      <div className="section-menu full-row">
+      <header className="section-menu full-row">
         <div className="menu-start">
-          <span  {...dragHandleProps}>
-            <GripLines/>
+          <span {...draggableProvided?.dragHandleProps}>
+            <GripLines  />
           </span>
-          <span>{title}{id}</span>
-          <span>Layout</span>
+          <h3>{title}{id}</h3>
+          <label htmlFor="section_layout">Layout: </label>
           <select
             id="section_layout"
             name="section[layout]"
@@ -184,21 +352,15 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
           </select>
         </div>
         <div className="menu-end">
-          <span><Cog /></span>
-          <span><Trash onClick={handleDelete}/></span>
-          <span><MinusSquare onClick={toggleCollapse}/></span>
+          <ul>
+            <li><button onClick={toggleCollapse}>Collapse</button></li>
+            <li><button onClick={handleMove}>Move</button></li>
+            <li><button onClick={handleCopy}>Copy</button></li>
+            <li><button onClick={handleDelete}>Delete</button></li>
+          </ul>
         </div>
-      </div>
-    { !collapsed &&
-      displayItems.map((element, index) => {
-        const className = `section-container ${classNameForItem(layout, index)}`;
-        return (
-          <div className={className} key={index}>
-            {element}
-          </div>
-        );
-      })
-    }
+      </header>
+      {sectionColumns()}
     </div>
   );
 };

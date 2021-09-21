@@ -29,6 +29,5 @@ SectionItemPickerStory.args = {
     {name: "SageModeler", use_count: 3, date_added: "1630440499"},
     {name: "Teacher Edition Window Shade", use_count: 4, date_added: "1630440490"},
     {name: "Text Box", use_count: 500, date_added: "1630440491"}
-  ],
-  availableItemTypes: []
+  ]
 };
