@@ -11,7 +11,7 @@ export interface ISectionItemMoveDialogProps {
   selectedColumn?: number;
   selectedPosition?: string;
   selectedOtherItemId?: string | undefined;
-  moveItemFunction: (itemId: string, selectedPageId: string, selectedSectionId: string, selectedColumn: number, selectedPosition: string, selectedOtherItemId: string) => void,
+  moveItemFunction: (itemId: string, selectedPageId: string, selectedSectionId: string, selectedColumn: number, selectedPosition: string, selectedOtherItemId: string) => void;
   closeDialogFunction: () => void;
 }
 
@@ -33,48 +33,51 @@ export const SectionItemMoveDialog: React.FC<ISectionItemMoveDialogProps> = ({
 
   const handlePageChange = (change: React.ChangeEvent<HTMLSelectElement>) => {
     selectedPageId = change.target.value;
-  }
+  };
 
   const handleSectionChange = (change: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedSectionId(change.target.value);
-  }
+  };
 
   const handleColumnChange = (change: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedColumn(parseInt(change.target.value));
-  }
+  };
 
   const handlePositionChange = (change: React.ChangeEvent<HTMLSelectElement>) => {
     selectedPosition = change.target.value;
-  }
+  };
 
   const handleOtherItemChange = (change: React.ChangeEvent<HTMLSelectElement>) => {
     const [sectionId, otherItemId] = change.target.value.split("--");
     setSelectedSectionId(sectionId);
     setSelectedOtherItemId(otherItemId);
-  }
+  };
 
   const handleCloseDialog = () => {
     closeDialogFunction();
-  }
+  };
 
   const handleMoveItem = () => {
     moveItemFunction(item.id, selectedPageId, selectedSectionId, selectedColumn, selectedPosition, selectedOtherItemId);
     closeDialogFunction();
-  }
+  };
 
   const columnOptions = () => {
     let columnCount = 1;
-    let columnOptions: any = [{value: columnCount}];
+    const options: any = [{value: columnCount}];
     if (selectedSectionId) {
       const section = sections.find(s => s.id === selectedSectionId);
       if (section?.layout !== "Full Width") {
         ++columnCount;
-        columnOptions.push({value: columnCount});
+        options.push({value: columnCount});
       }
     }
-    const columnOptionsObj = columnOptions.map((column: any, index: number) => { return <option value={index}>{column.value}</option> });
-    return columnOptionsObj;
-  }
+    return options.map((column: any, index: number) => (
+      <option key={index} value={index}>
+        {column.value}
+      </option>
+    ));
+  };
 
   const itemOptions = () => {
     let itemsList: ISectionItemProps[] = [];
@@ -88,16 +91,16 @@ export const SectionItemMoveDialog: React.FC<ISectionItemMoveDialogProps> = ({
       return;
     }
 
-    const itemsListOptions = itemsList?.map((i) => {
-      return <option value={`${i.section_id}--${i.id}`}>Section {`${i.section_id}, ${i.title}`}</option>
-    });
-
-    return itemsListOptions;
-  }
+    return itemsList?.map((i) => (
+      <option key={i.id} value={`${i.section_id}--${i.id}`}>
+        Section {`${i.section_id}, ${i.title}`}
+      </option>
+    ));
+  };
 
   return (
     <>
-      <div className="modalOverlay"></div>
+      <div className="modalOverlay"/>
       <div className="modal sectionItemMoveDialog">
         <header>
           <h1>Move this item to...</h1>
@@ -115,9 +118,13 @@ export const SectionItemMoveDialog: React.FC<ISectionItemMoveDialogProps> = ({
               <dt className="col2">Section</dt>
               <dd className="col2">
                 <select name="section" onChange={handleSectionChange}>
-                  {sections.map((s) => {
-                     return <option value={s.id}>{s.id}</option>
-                   })}
+                  {
+                    sections.map(s => (
+                      <option key={s.id} value={s.id}>
+                        {s.id}
+                      </option>
+                    ))
+                  }
                 </select>
               </dd>
               <dt className="col3">Column</dt>
@@ -131,14 +138,14 @@ export const SectionItemMoveDialog: React.FC<ISectionItemMoveDialogProps> = ({
               <select name="position" onChange={handlePositionChange}>
                   <option value="after">After</option>
                   <option value="before">Before</option>
-                </select>            
+                </select>
               </dd>
               <dt className="col5">Item</dt>
               <dd className="col5">
                 <select name="otherItem" onChange={handleOtherItemChange}>
                   <option value="">Select one...</option>
                   {itemOptions()}
-                </select>            
+                </select>
               </dd>
             </dl>
             <div className="actionButtons">
@@ -150,4 +157,4 @@ export const SectionItemMoveDialog: React.FC<ISectionItemMoveDialogProps> = ({
       </div>
     </>
   );
-}
+};

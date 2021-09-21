@@ -8,10 +8,10 @@ import "./page-copy-dialog.css";
 export interface IPageCopyDialogProps {
   pageId: string;
   pages: IPageProps[];
-  currentPageIndex: number;
+  currentPageIndex: number | null;
   selectedPosition?: string;
   selectedOtherPageId?: string;
-  copyPageFunction: (pageId: string, selectedPosition: string, selectedOtherPageId: string) => void,
+  copyPageFunction: (pageId: string, selectedPosition: string, selectedOtherPageId: string) => void;
   closeDialogFunction: () => void;
 }
 
@@ -29,32 +29,33 @@ export const PageCopyDialog: React.FC<IPageCopyDialogProps> = ({
 
   const handlePositionChange = (change: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedPosition(change.target.value);
-  }
+  };
 
   const handleOtherPageChange = (change: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedOtherPageId(change.target.value);
-  }
+  };
 
   const handleCloseDialog = () => {
     closeDialogFunction();
-  }
+  };
 
   const handleCopyPage = () => {
-    const copiedPageId = pages[currentPageIndex].id;
-    copyPageFunction(copiedPageId, selectedPosition, selectedOtherPageId);
-    closeDialogFunction();
-  }
+    if(currentPageIndex) {
+      const copiedPageId = pages[currentPageIndex].id;
+      copyPageFunction(copiedPageId, selectedPosition, selectedOtherPageId);
+      closeDialogFunction();
+    }
+  };
 
   const pageOptions = () => {
-    const pageListOptions = pages.map((p, index) => {
-      return <option key={`page-${index}`} value={p.id}>{index + 1}</option>
+    return pages.map((p, index) => {
+      return <option key={`page-${index}`} value={p.id}>{index + 1}</option>;
     });
-    return pageListOptions;
-  }
+  };
 
   return (
     <>
-      <div className="modalOverlay"></div>
+      <div className="modalOverlay"/>
       <div className="modal pageCopyDialog">
         <header>
           <h1>Copy this page and move to...</h1>
@@ -68,13 +69,13 @@ export const PageCopyDialog: React.FC<IPageCopyDialogProps> = ({
               <select name="position" onChange={handlePositionChange}>
                   <option key="position-option-1" value="after">After</option>
                   <option key="position-option-2" value="before">Before</option>
-                </select>            
+                </select>
               </dd>
               <dt className="col2">Page</dt>
               <dd className="col2">
                 <select name="otherItem" onChange={handleOtherPageChange}>
                   {pageOptions()}
-                </select>            
+                </select>
               </dd>
             </dl>
             <div className="actionButtons">
@@ -86,4 +87,4 @@ export const PageCopyDialog: React.FC<IPageCopyDialogProps> = ({
       </div>
     </>
   );
-}
+};
