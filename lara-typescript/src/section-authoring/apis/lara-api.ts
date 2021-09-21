@@ -1,8 +1,7 @@
-
-import * as React from "react";
 import {
-  IPage, PageId,
-  APIPageGetF, APIPagesGetF, IAPIPages
+  IPage, PageId, ISection,
+  APIPageGetF, APIPagesGetF, IAPIPages,
+  ICreatePageItem, ILibraryInteractiveResponse
 } from "../authoring-types";
 
 const APIBase = "/api/v1";
@@ -63,6 +62,26 @@ export const getLaraPageAPI = (host: string = "", activityId: string): IAPIPages
     return sendToLara({url: deletePageUrl(id), method: "POST"});
   };
 
+  const updateSections = (nextPage: IPage) => {
+    return sendToLara({url: updatePageSectionsURL(nextPage.id), method: "PUT", body: nextPage});
+  };
 
-  return {getPages, getPage, createPage, deletePage};
+  const createSection = (id: PageId) => {
+    return sendToLara({url: createPageSectionUrl(id), method: "POST"});
+    // This shouldn't be required :  body: JSON.stringify({ id })
+  };
+
+  const createPageItem = (pageId: PageId, newPageItem: ICreatePageItem) => {
+    return sendToLara({url: createPageItemUrl(pageId), method: "POST", body: newPageItem});
+  };
+
+  const updateSection = (pageId: PageId, changes: { section: Partial<ISection> }) => {
+    const data = { id: pageId, section: { ...changes.section } };
+    return sendToLara({url: updateSectionUrl(pageId), method: "POST", body: data});
+  };
+
+  return {
+    getPages, getPage, createPage, deletePage,
+    updateSections, createSection, createPageItem, updateSection
+  };
 };

@@ -2,26 +2,11 @@ import * as React from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { AuthoringPage, IPageProps } from "./authoring-page";
 import { ISectionProps } from "./authoring-section";
+import { ICreatePageItem, ILibraryInteractiveResponse, IPage} from "../authoring-types";
 
 const APIBase = "/api/v1";
-
-interface ILibraryInteractiveResponse {
-  library_interactives: Array<{
-    id: string;
-    name: string;
-    use_count: number;
-    date_added: number;
-  }>;
-}
-
 interface IQueryBoundPage extends IPageProps {
   host?: string;
-}
-
-export interface ICreatePageItem {
-  section_id: string;
-  embeddable: string;
-  position?: number;
 }
 
 export const QueryBoundPage = (props: IQueryBoundPage) => {
@@ -40,7 +25,7 @@ export const QueryBoundPage = (props: IQueryBoundPage) => {
     queryClient.setQueryData("authoringPage", response);
   };
 
-  const updateSections = (nextPage: IPageProps) => {
+  const updateSections = (nextPage: IPage) => {
     return fetch(updatePageSectionsURL, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
