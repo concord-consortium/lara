@@ -34,20 +34,20 @@ export const PageNavMenu: React.FC<IPageNavMenuProps> = ({
 
   const pageButtons = () => {
     const pageButtons = pages.map((p, index) => {
-      const pageNumber = index + 1
+      const pageNumber = index + 1;
       const buttonContent = p.is_completion ? <Completion height="24" width="24" /> : pageNumber;
       const buttonClasses = classNames("page-button", {
         current: index === currentPageIndex,
         completionPage: p.is_completion
       });
-      return <button key={`page-${index}-button`} className={buttonClasses} data-cy="nav-pages-button" aria-label={`Page ${index}`} onClick={() => handleNavButtonClick(index)}>{buttonContent}</button>
+      return <button key={`page-${index}-button`} className={buttonClasses} data-cy="nav-pages-button" aria-label={`Page ${index}`} onClick={() => handleNavButtonClick(index)}>{buttonContent}</button>;
     });
     return pageButtons;
-  }
+  };
 
   const handleNavButtonClick = (pageNum: number | null) => {
     setCurrentPageIndex(pageNum);
-  }
+  };
 
   const handleAddPageButtonClick = () => {
     const newPageNum = (pages.length + 1).toString();
@@ -56,11 +56,11 @@ export const PageNavMenu: React.FC<IPageNavMenuProps> = ({
     const sections: ISectionProps[] = [];
     const pageIndex = pages.length;
     addPage(id, title, sections, pageIndex);
-  }
+  };
 
   const handleCopyPageButtonClick = () => {
     toggleCopyPageDialog();
-  }
+  };
 
   const addPage = (id: string, title: string, sections: ISectionProps[], pageIndex: number) => {
     const newPage = {
@@ -68,15 +68,15 @@ export const PageNavMenu: React.FC<IPageNavMenuProps> = ({
       title,
       sections,
       is_completion: false
-    }
+    };
     pages.splice(pageIndex, 0, newPage);
     setPages([...pages]);
     setCurrentPageIndex(pageIndex);
-  }
+  };
 
   const toggleCopyPageDialog = () => {
     setCopyingPage(!copyingPage);
-  }
+  };
 
   const copyPage = (pageId: string, position: string, otherPageId: string) => {
     const copiedPage = pages.find(i => i.id === pageId);
@@ -88,7 +88,7 @@ export const PageNavMenu: React.FC<IPageNavMenuProps> = ({
     const sections: ISectionProps[] = [];
     addPage(id, title, sections, newPageIndex);
     toggleCopyPageDialog();
-  }
+  };
 
   const prevPage = currentPageIndex && currentPageIndex > 0 ? currentPageIndex - 1 : null;
   const nextPage = currentPageIndex !== null && currentPageIndex < pages.length - 1 ? currentPageIndex + 1 : 0;
@@ -98,7 +98,7 @@ export const PageNavMenu: React.FC<IPageNavMenuProps> = ({
     <>
       <nav className="activity-nav" data-cy="activity-nav">
         <div className="nav-pages" data-cy="nav-pages">
-          <button className={`page-button ${currentPageIndex === null ? "disabled ": ""}`} aria-label="Previous Page" onClick={() => handleNavButtonClick(prevPage)}>
+          <button className={`page-button ${currentPageIndex === null ? "disabled " : ""}`} aria-label="Previous Page" onClick={() => handleNavButtonClick(prevPage)}>
             <Previous height="24" width="24" />
           </button>
           <button className={`page-button ${currentPageIndex === null ? "current" : ""}`} aria-label="Home" onClick={() => handleNavButtonClick(null)}>

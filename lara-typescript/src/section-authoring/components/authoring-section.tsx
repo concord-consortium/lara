@@ -4,10 +4,8 @@ import { SectionItem, ISectionItemProps} from "./section-item";
 import { ISectionItem, SectionItemPicker } from "./section-item-picker";
 import {absorbClickThen} from "../../shared/absorb-click";
 import { ICreatePageItem } from "./query-bound-page";
-
-// NP 2021-08-12 -- default imports aren"t working correctly when evaled on page
 import { DragDropContext, Droppable, Draggable, DropResult, DraggableProvided } from "react-beautiful-dnd";
-// NP 2021-08-12 -- default imports aren't working correctly when evaled on page
+
 import "./authoring-section.css";
 
 export enum Layouts {
@@ -181,7 +179,7 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
       }
     }).filter(Boolean);
     return columnItems;
-  }
+  };
 
   const addItem = (section_col: number) => {
     const nextId = `section-${id}-item-${items.length}`;
@@ -228,8 +226,8 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
   };
 
   const handleMoveItem = (itemId: string) => {
-    console.log("hanleMoveItem called");
     if (moveItemFunction) {
+      console.log("invoke moveItemFunction");
       moveItemFunction(itemId);
     }
   };
