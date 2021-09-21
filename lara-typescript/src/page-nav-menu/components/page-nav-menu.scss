@@ -27,56 +27,76 @@
   margin: 0 10px 0 10px;
   padding: 0px;
   width: 100%;
-}
-.nav-pages .page-button {
-  align-items: center;
-  background-color: white;
-  border: none;
-  border-radius: 4px;
-  color: var(--dark-gray);
-  cursor: pointer;
-  display: flex;
-  fill: #0592af;
-  font-size: 18px;
-  font-weight: bold;
-  height: 44px;
-  justify-content: center;
-  margin: 0 5px 0 5px;
-  width: 44px;
-}
-.nav-pages .page-button svg {
-  fill: var(--teal);
-}
-.nav-pages .page-button.completionPage svg {
-  fill: var(--orange);
-}
-.nav-pages .page-button:hover {
-  background: var(--ltr-teal);
-}
-.nav-pages .page-button.completionPage:hover {
-  background: var(--lt-orange);
-}
-.nav-pages .page-button:active,
-.nav-pages .page-button:active svg {
-  background: var(--teal);
-  color: white;
-  fill: white;
-}
-.nav-pages .page-button.disabled {
-  cursor: auto;
-  opacity: .35;
-  outline: none;
-}
-.nav-pages .page-button.current {
-  background-color: var(--teal);
-  color: white;
-  fill: white;
-  pointer-events: none;
-}
-.nav-pages .page-button.completionPage.current {
-  background-color: var(--orange);
-  color: white;
-}
-.nav-pages .page-button.current svg {
-  fill: white;
+
+  .page-button {
+    align-items: center;
+    background-color: white;
+    border: none;
+    border-radius: 4px;
+    color: var(--dark-gray);
+    cursor: pointer;
+    display: flex;
+    fill: #0592af;
+    font-size: 18px;
+    font-weight: bold;
+    height: 44px;
+    justify-content: center;
+    margin: 0 5px 0 5px;
+    width: 44px;
+
+
+    &:hover {
+      background: var(--ltr-teal);
+    }
+    &:active {
+      background: var(--teal);
+      color: white;
+      svg {
+        fill: white;
+      }
+    }
+
+    &.current {
+      background-color: var(--teal);
+      color: white;
+      fill: white;
+      pointer-events: none;
+
+      svg {
+        fill: white;
+      }
+    }
+    &.disabled {
+      background: white;
+      cursor: auto;
+      opacity: .35;
+      outline: none;
+
+      svg {
+        background: white;
+        fill: var(--teal);
+      }
+    }
+
+    &.completionPage {
+      &:hover {
+        background: var(--lt-orange);
+      }
+      &.current, &:active {
+        background-color: var(--orange);
+        color: white;
+        svg {
+          fill: white;
+        }
+      }
+
+      svg {
+        fill: var(--orange);
+      }
+    }
+
+    svg {
+      fill: var(--teal);
+    }
+  }
 }

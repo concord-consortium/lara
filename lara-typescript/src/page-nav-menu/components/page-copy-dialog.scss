@@ -82,6 +82,10 @@ select {
 
     &.disabled {
       opacity: .6;
+
+      &:hover {
+        background: var(--ltst-teal);
+      }
     }
 
     svg {
