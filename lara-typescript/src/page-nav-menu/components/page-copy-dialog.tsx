@@ -8,7 +8,7 @@ import "./page-copy-dialog.css";
 export interface IPageCopyDialogProps {
   pageId: string;
   pages: IPageProps[];
-  currentPageIndex: number;
+  currentPageIndex: number | null;
   selectedPosition?: string;
   selectedOtherPageId?: string;
   copyPageFunction: (pageId: string, selectedPosition: string, selectedOtherPageId: string) => void;
@@ -40,16 +40,17 @@ export const PageCopyDialog: React.FC<IPageCopyDialogProps> = ({
   };
 
   const handleCopyPage = () => {
-    const copiedPageId = pages[currentPageIndex].id;
-    copyPageFunction(copiedPageId, selectedPosition, selectedOtherPageId);
-    closeDialogFunction();
+    if(currentPageIndex) {
+      const copiedPageId = pages[currentPageIndex].id;
+      copyPageFunction(copiedPageId, selectedPosition, selectedOtherPageId);
+      closeDialogFunction();
+    }
   };
 
   const pageOptions = () => {
-    const pageListOptions = pages.map((p, index) => {
+    return pages.map((p, index) => {
       return <option key={`page-${index}`} value={p.id}>{index + 1}</option>;
     });
-    return pageListOptions;
   };
 
   return (
