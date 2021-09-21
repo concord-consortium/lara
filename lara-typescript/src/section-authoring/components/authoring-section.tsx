@@ -1,8 +1,8 @@
 import * as React from "react";
-import { GripLines } from "./icons/grip-lines";
-import { MinusSquare } from "./icons/minus-square";
-import { Cog } from "./icons/cog";
-import { Trash } from "./icons/trash";
+import { GripLines } from "../../shared/components/icons/grip-lines";
+import { MinusSquare } from "../../shared/components/icons/minus-square";
+import { Cog } from "../../shared/components/icons/cog";
+import { Trash } from "../../shared/components/icons/trash";
 import { SectionItem, ISectionItemProps} from "./section-item";
 // NP 2021-08-12 -- default imports aren"t working correctly when evaled on page
 import "./authoring-section.scss";
