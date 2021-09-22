@@ -33,7 +33,7 @@ export const Modal: React.FC<IModalProps> = ({
   const modalStyle = width ? { width: width + "px" } : undefined;
   const [isVisible, setIsVisible] = useState(initVisibility);
   const [modalContainer] = useState(() => {
-    return document.createElement('div');
+    return document.createElement("div");
   });
 
   useEffect(() => {
@@ -42,7 +42,7 @@ export const Modal: React.FC<IModalProps> = ({
 
   const closeModal = () => {
     setIsVisible(false);
-  }
+  };
 
   if (!isVisible) {
     return null;
@@ -50,7 +50,7 @@ export const Modal: React.FC<IModalProps> = ({
 
   return (
     <>
-      <div className="modalOverlay"></div>
+      <div className="modalOverlay"/>
       <div id="modal" className="modal" style={modalStyle}>
         <header>
           <h1>{title}</h1>
@@ -75,9 +75,16 @@ export const ModalButtons: React.FC<IModalButtonsProps> = ({
       return;
     }
     return buttons.map((b, index) => {
-      return <button key={`${b.text}-button-${index}`} className={b.classes} disabled={b.disabled} onClick={b.clickHandler}>{b.svg} <span className="lineAdjust">{b.text}</span></button>
+      return <button
+               key={`${b.text}-button-${index}`}
+               className={b.classes}
+               disabled={b.disabled}
+               onClick={b.clickHandler}
+             >
+               {b.svg} <span className="lineAdjust">{b.text}</span>
+             </button>;
     });
-  }
+  };
 
   return (
     <div className="actionButtons">

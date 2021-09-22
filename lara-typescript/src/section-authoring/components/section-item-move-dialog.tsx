@@ -51,7 +51,7 @@ export const SectionItemMoveDialog: React.FC<ISectionItemMoveDialogProps> = ({
   };
 
   const handleColumnChange = (change: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedColumn(parseInt(change.target.value));
+    setSelectedColumn(parseInt(change.target.value, 10));
   };
 
   const handlePositionChange = (change: React.ChangeEvent<HTMLSelectElement>) => {
@@ -129,7 +129,7 @@ export const SectionItemMoveDialog: React.FC<ISectionItemMoveDialogProps> = ({
             <dd className="col2">
               <select name="section" onChange={handleSectionChange}>
                 {sections.map((s) => {
-                    return <option key={`section-option-${s.id}`} value={s.id}>{s.id}</option>
+                    return <option key={`section-option-${s.id}`} value={s.id}>{s.id}</option>;
                   })}
               </select>
             </dd>

@@ -58,7 +58,7 @@ export const PageNavMenu: React.FC<IPageNavMenuProps> = ({
     if (allowNavigation) {
       setCurrentPageIndex(pageNum);
     }
-  }
+  };
 
   const handleAddPageButtonClick = () => {
     const newPageNum = (pages.length + 1).toString();
@@ -104,7 +104,7 @@ export const PageNavMenu: React.FC<IPageNavMenuProps> = ({
   const prevPage = currentPageIndex && currentPageIndex > 0 ? currentPageIndex - 1 : null;
   const nextPage = currentPageIndex === null
                      ? 0
-                     : currentPageIndex < pages.length - 1 
+                     : currentPageIndex < pages.length - 1
                        ? currentPageIndex + 1 : pages.length - 1;
   const currentPageIsCopyable = currentPageIndex !== null && !pages[currentPageIndex].is_completion;
   const prevPageClassName = `page-button ${currentPageIndex === null ? "disabled " : ""}`;

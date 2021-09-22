@@ -152,7 +152,7 @@ export const SectionItemPicker: React.FC<IProps> = (props) => {
     );
   };
 
-  const buttonClasses = itemSelected ? "enabled add" : "disabled add"
+  const buttonClasses = itemSelected ? "enabled add" : "disabled add";
   const modalButtons = [
     {classes: buttonClasses, clickHandler: handleAddButtonClick, disabled: !itemSelected, svg: <Add height="16" width="16"/>, text: "Add Item"}
   ];

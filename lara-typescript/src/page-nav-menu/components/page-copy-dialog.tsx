@@ -41,7 +41,7 @@ export const PageCopyDialog: React.FC<IPageCopyDialogProps> = ({
   };
 
   const handleCopyPage = () => {
-    if(currentPageIndex) {
+    if (currentPageIndex) {
       const copiedPageId = pages[currentPageIndex].id;
       copyPageFunction(copiedPageId, selectedPosition, selectedOtherPageId);
       closeDialogFunction();
@@ -68,13 +68,13 @@ export const PageCopyDialog: React.FC<IPageCopyDialogProps> = ({
           <select name="position" onChange={handlePositionChange}>
               <option key="position-option-1" value="after">After</option>
               <option key="position-option-2" value="before">Before</option>
-            </select>            
+            </select>
           </dd>
           <dt className="col2">Page</dt>
           <dd className="col2">
             <select name="otherItem" onChange={handleOtherPageChange}>
               {pageOptions()}
-            </select>            
+            </select>
           </dd>
         </dl>
         <ModalButtons buttons={modalButtons} />

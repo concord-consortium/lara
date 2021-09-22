@@ -21,8 +21,8 @@ export interface ISectionItemProps {
   updateFunction?: (changes: {sectionItem: Partial<ISectionItemProps>}) => void;
 
   /**
-  * Optional function to move the item
-  */
+   * Optional function to move the item
+   */
   moveFunction?: (id: string) => void;
 
   /**
@@ -40,7 +40,7 @@ export interface ISectionItemProps {
    */
   section_id: string;
 
-   /**
+  /**
    * Section column item belongs in
    */
   section_col: number;
@@ -72,11 +72,11 @@ export const SectionItem: React.FC<ISectionItemProps> = ({
   }: ISectionItemProps) => {
 
   const toggleCollapse = () => {
-
+    return;
   };
 
   const handleEdit = () => {
-
+    return;
   };
 
   const handleMove = () => {

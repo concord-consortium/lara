@@ -23,7 +23,7 @@ export const Next = (props: INextProps) => {
       role="img"
       viewBox="0 0 24 24"
       xmlns="http://www.w3.org/2000/svg">
-      <path d="M8.33 20.13l1.77 1.77L20 12l-9.9-9.9-1.77 1.77L16.46 12z"></path>
+      <path d="M8.33 20.13l1.77 1.77L20 12l-9.9-9.9-1.77 1.77L16.46 12z"/>
     </svg>
   );
 };

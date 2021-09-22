@@ -2,7 +2,7 @@ import * as React from "react";
 import { GripLines } from "../../shared/components/icons/grip-lines";
 import { SectionItem, ISectionItemProps} from "./section-item";
 import { ISectionItem, SectionItemPicker } from "./section-item-picker";
-import {absorbClickThen} from "../../shared/absorb-click";
+import { absorbClickThen } from "../../shared/absorb-click";
 import { ICreatePageItem } from "./query-bound-page";
 import { DragDropContext, Droppable, Draggable, DropResult, DraggableProvided } from "react-beautiful-dnd";
 import { Add } from "../../shared/components/icons/add-icon";
@@ -183,13 +183,13 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
     return columnItems;
   };
 
-  const addItem = (section_col: number) => {
+  const addItem = (sectionCol: number) => {
     const nextId = `section-${id}-item-${items.length}`;
     const position = items.length + 1;
     const newItem: ISectionItemProps = {
       id: `${nextId}`,
       section_id: id,
-      section_col,
+      section_col: sectionCol,
       position,
       type: "unknown",
       title: `Item ${position} - ${Math.random().toString(36).substr(2, 9)}`
@@ -233,8 +233,8 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
     }
   };
 
-  const handleCopyItem = (id: string) => {
-    const item = items.find(i => i.id === id);
+  const handleCopyItem = (itemId: string) => {
+    const item = items.find(i => i.id === itemId);
     if (item) {
       addItem(item.section_col);
     }
@@ -251,64 +251,112 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
   };
 
   const sectionColumns = () => {
-    const columnOneItems = getColumnItems(0);
-    const columnTwoItems = getColumnItems(1);
+    const colOneItems = getColumnItems(0);
+    const colTwoItems = getColumnItems(1);
+    const colOneAddItemHandler = () => addItem(0);
+    const colTwoAddItemHandler = () => addItem(1);
     return (
       <>
-      <DragDropContext onDragEnd={onDragEnd}>
-        <div className={`edit-page-grid-container col-1 ${classNameForItem(layout, 0)}`}>
-          <Droppable droppableId="droppableCol1">
-            {(droppableProvided) => (
-              <div ref={droppableProvided.innerRef} className="edit-items-container full-row" {...droppableProvided.droppableProps}>
-                <div className="itemsContainer">
-                  { !collapsed && columnOneItems && columnOneItems.length > 0 && columnOneItems.map((element, index) => {
-                    return (
-                      <Draggable key={`col-1-item-${index}`} draggableId={`col-1-item-${index}`} index={element.position - 1}>
-                        {(draggableProvided) => (
-                          <div className="sectionItem" key={`col-1-item-inner-${index}`} {...draggableProvided.draggableProps} {...draggableProvided.dragHandleProps} ref={draggableProvided.innerRef}>
-                            <SectionItem {...element} key={element.id} moveFunction={handleMoveItem} copyFunction={handleCopyItem} deleteFunction={handleDeleteItem} />
-                          </div>
-                        )}
-                      </Draggable>
-                    );
-                  })}
-                  { droppableProvided.placeholder }
-                  <button className="small-button" onClick={() => addItem(0)}>
-                    <Add height="16" width="16" /> <span className="lineAdjust">Add Item</span>
-                  </button>
-                </div>
-              </div>
-          )}
-          </Droppable>
-        </div>
-        {layout !== "Full Width" &&
-          <div className={`edit-page-grid-container col-2 ${classNameForItem(layout, 1)}`}>
-            <Droppable droppableId="droppableCol2">
+        <DragDropContext onDragEnd={onDragEnd}>
+          <div className={`edit-page-grid-container col-1 ${classNameForItem(layout, 0)}`}>
+            <Droppable droppableId="droppableCol1">
               {(droppableProvided) => (
-                <div ref={droppableProvided.innerRef} className="edit-items-container full-row" {...droppableProvided.droppableProps}>
+                <div
+                  ref={droppableProvided.innerRef}
+                  className="edit-items-container full-row"
+                  {...droppableProvided.droppableProps}
+                >
                   <div className="itemsContainer">
-                    { !collapsed && columnTwoItems && columnTwoItems.length > 0 && columnTwoItems.map((element, index) => {
+                    { !collapsed
+                      && colOneItems
+                      && colOneItems.length > 0
+                      && colOneItems.map((element, index) => {
                       return (
-                        <Draggable key={`col-2-item-${index}`} draggableId={`col-2-item-${index}`} index={element.position - 1}>
-                          {(draggableProvided) => (
-                            <div className="sectionItem" key={`col-2-item-inner-${index}`} {...draggableProvided.draggableProps} {...draggableProvided.dragHandleProps} ref={draggableProvided.innerRef}>
-                              <SectionItem {...element} key={element.id} moveFunction={handleMoveItem} copyFunction={handleCopyItem} deleteFunction={handleDeleteItem} />
+                        <Draggable
+                          key={`col-1-item-${index}`}
+                          draggableId={`col-1-item-${index}`}
+                          index={element.position - 1}
+                        >
+                          {(draggableProvidedColOne) => (
+                            <div
+                              className="sectionItem"
+                              key={`col-1-item-inner-${index}`}
+                              {...draggableProvidedColOne.draggableProps}
+                              {...draggableProvidedColOne.dragHandleProps}
+                              ref={draggableProvidedColOne.innerRef}
+                            >
+                              <SectionItem
+                                {...element}
+                                key={element.id}
+                                moveFunction={handleMoveItem}
+                                copyFunction={handleCopyItem}
+                                deleteFunction={handleDeleteItem}
+                              />
                             </div>
                           )}
                         </Draggable>
                       );
                     })}
                     { droppableProvided.placeholder }
-                    <button className="small-button" onClick={() => addItem(1)}>
-                    <Add height="16" width="16" /> <span className="lineAdjust">Add Item</span>
+                    <button className="small-button" onClick={colOneAddItemHandler}>
+                      <Add height="16" width="16" /> <span className="lineAdjust">Add Item</span>
                     </button>
                   </div>
                 </div>
-              )}
+            )}
             </Droppable>
           </div>
-        }
-      </DragDropContext>
+          {layout !== "Full Width" &&
+            <div className={`edit-page-grid-container col-2 ${classNameForItem(layout, 1)}`}>
+              <Droppable droppableId="droppableCol2">
+                {(droppableProvided) => (
+                  <div
+                    ref={droppableProvided.innerRef}
+                    className="edit-items-container full-row"
+                    {...droppableProvided.droppableProps}
+                  >
+                    <div className="itemsContainer">
+                      { !collapsed
+                        && colTwoItems
+                        && colTwoItems.length > 0
+                        && colTwoItems.map((element, index) => {
+                        return (
+                          <Draggable
+                            key={`col-2-item-${index}`}
+                            draggableId={`col-2-item-${index}`}
+                            index={element.position - 1}
+                          >
+                            {(draggableProvidedColTwo) => (
+                              <div
+                                className="sectionItem"
+                                key={`col-2-item-inner-${index}`}
+                                {...draggableProvidedColTwo.draggableProps}
+                                {...draggableProvidedColTwo.dragHandleProps}
+                                ref={draggableProvidedColTwo.innerRef}
+                              >
+                                <SectionItem
+                                  {...element}
+                                  key={element.id}
+                                  moveFunction={handleMoveItem}
+                                  copyFunction={handleCopyItem}
+                                  deleteFunction={handleDeleteItem}
+                                />
+                              </div>
+                            )}
+                          </Draggable>
+                        );
+                      })}
+                      { droppableProvided.placeholder }
+                      <button className="small-button" onClick={colTwoAddItemHandler}>
+                      <Add height="16" width="16" /> <span className="lineAdjust">Add Item</span>
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </Droppable>
+            </div>
+          }
+        </DragDropContext>
       </>
     );
   };

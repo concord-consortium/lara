@@ -154,21 +154,21 @@ export const AuthoringPage: React.FC<IPageProps> = ({
     selectedPosition: string,
     selectedOtherItemId: string
     ) => {
-    const itemToMoveIndex = items.findIndex(i => i.id === itemId);
-    const itemToMove = items[itemToMoveIndex];
+    const itemIndex = items.findIndex(i => i.id === itemId);
+    const item = items[itemIndex];
     const otherItemIndex = items.findIndex(i => (i.id === selectedOtherItemId && i.section_id === selectedSectionId));
     const otherItem = items[otherItemIndex];
-    itemToMove.section_id = selectedSectionId;
-    itemToMove.section_col = selectedColumn;
-    itemToMove.position = otherItem ? otherItem.position : 1;
+    item.section_id = selectedSectionId;
+    item.section_col = selectedColumn;
+    item.position = otherItem ? otherItem.position : 1;
     const newIndex = otherItemIndex
                        ? selectedPosition === "after"
                          ? otherItemIndex + 1
                          : otherItemIndex - 1
                        : 0;
     const updatedItems = items;
-    updatedItems.splice(itemToMoveIndex, 1);
-    updatedItems.splice(newIndex, 0, itemToMove);
+    updatedItems.splice(itemIndex, 1);
+    updatedItems.splice(newIndex, 0, item);
     let sectionItemsCount = 0;
     updatedItems.forEach((i, index) => {
       if (otherItem && i.section_id === otherItem.section_id) {
