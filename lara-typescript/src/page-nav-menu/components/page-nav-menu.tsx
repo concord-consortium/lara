@@ -3,14 +3,14 @@ import classNames from "classnames";
 import { IPageProps } from "../../section-authoring/components/authoring-page";
 import { ISectionProps } from "../../section-authoring/components/authoring-section";
 import { PageCopyDialog } from "./page-copy-dialog";
-import { Previous } from "./icons/previous-icon";
-import { Home } from "./icons/home-icon";
-import { Next } from "./icons/next-icon";
-import { Completion } from "./icons/completion-icon";
-import { Add } from "./icons/add-icon";
-import { Copy } from "./icons/copy-icon";
+import { Previous } from "../../shared/components/icons/previous-icon";
+import { Home } from "../../shared/components/icons/home-icon";
+import { Next } from "../../shared/components/icons/next-icon";
+import { Completion } from "../../shared/components/icons/completion-icon";
+import { Add } from "../../shared/components/icons/add-icon";
+import { Copy } from "../../shared/components/icons/copy-icon";
 
-import "./page-nav-menu.css";
+import "./page-nav-menu.scss";
 
 export interface IPageNavMenuProps {
   pages: IPageProps[];
@@ -54,7 +54,10 @@ export const PageNavMenu: React.FC<IPageNavMenuProps> = ({
   };
 
   const handleNavButtonClick = (pageNum: number | null) => {
-    setCurrentPageIndex(pageNum);
+    const allowNavigation = pageNum !== pages.length;
+    if (allowNavigation) {
+      setCurrentPageIndex(pageNum);
+    }
   };
 
   const handleAddPageButtonClick = () => {
@@ -99,8 +102,11 @@ export const PageNavMenu: React.FC<IPageNavMenuProps> = ({
   };
 
   const prevPage = currentPageIndex && currentPageIndex > 0 ? currentPageIndex - 1 : null;
-  const nextPage = currentPageIndex !== null && currentPageIndex < pages.length - 1 ? currentPageIndex + 1 : 0;
-  const currentPageIsCopyable = currentPageIndex !== null && !pages[currentPageIndex].isCompletion;
+  const nextPage = currentPageIndex === null
+                     ? 0
+                     : currentPageIndex < pages.length - 1
+                       ? currentPageIndex + 1 : pages.length - 1;
+  const currentPageIsCopyable = currentPageIndex !== null && !pages[currentPageIndex].is_completion;
   const prevPageClassName = `page-button ${currentPageIndex === null ? "disabled " : ""}`;
   const prevClickHandler = () => handleNavButtonClick(prevPage);
   const nextPageClassName = `page-button ${currentPageIndex === pages.length - 1 ? "disabled" : ""}`;

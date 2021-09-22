@@ -1,0 +1,69 @@
+@import "../../vars.scss";
+
+.section-item-container {
+  font-size: 12px;
+}
+.section-item-menu { 
+  background-color: var(--teal);
+  color: white;
+  display: flex;
+  font-family: var(--font-family);
+  font-size: 12px;
+  font-weight: normal;
+  justify-content: space-between;
+  padding: 8px;
+  text-transform: uppercase;
+
+  h4 {
+    display: inline-block;
+    margin: 0 10px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 70%;
+  }
+}
+.menu-start {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 25%;
+}
+.menu-end {
+    button {
+    background: transparent;
+    border: none;
+    border-right: solid 1px white;
+    color: white;
+    cursor: pointer;
+    font-size: 11.5px;
+    margin: 0;
+    padding: 0 10px 0 0;
+    text-transform: uppercase;
+    transition: .2s;
+
+    &:hover {
+      color: var(--gold);
+    }
+  }
+
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    li {
+      display: inline-block;
+      margin: 0 10px 0 0;
+      padding: 0;
+
+      &:last-child {
+        margin-right: 0;
+
+        button {
+          border-right: none;
+          padding-right: 0;
+        }
+      }
+    }
+  }
+}

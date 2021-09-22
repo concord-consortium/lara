@@ -1,9 +1,11 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
 import classNames from "classnames";
-import {absorbClickThen} from "../../shared/absorb-click";
+import { Modal, ModalButtons } from "../../shared/components/modal/modal";
+import { Add } from "../../shared/components/icons/add-icon";
+import { absorbClickThen } from "../../shared/absorb-click";
 
-import "./section-item-picker.css";
+import "./section-item-picker.scss";
 
 export interface ISectionItem {
   id: string;
@@ -31,10 +33,12 @@ const SectionItemButton = ({item, disabled, className, onClick}: {
 
 export const SectionItemPicker: React.FC<IProps> = (props) => {
   const { allItems, quickAddItems, onClose, onAdd } = props;
+  const modalIsVisible = true;
   const [itemSelected, setItemSelected] = useState(false);
   const [currentSelectedItem, setCurrentSelectedItem] = useState<ISectionItem|undefined>();
   const [allItemsList, setAllItemsList] = useState(allItems);
   const [isSearching, setIsSearching] = useState(false);
+  const [modalVisibility, setModalVisibility] = useState(modalIsVisible);
 
   useEffect(() => {
     sortItems("alpha-asc");
@@ -78,7 +82,11 @@ export const SectionItemPicker: React.FC<IProps> = (props) => {
 
   const handleItemClick = (item: ISectionItem) => {
     setItemSelected(!itemSelected);
-    setCurrentSelectedItem(item);
+    if (currentSelectedItem !== item) {
+      setCurrentSelectedItem(item);
+    } else {
+      setCurrentSelectedItem(undefined);
+    }
   };
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -144,13 +152,14 @@ export const SectionItemPicker: React.FC<IProps> = (props) => {
     );
   };
 
+  const buttonClasses = itemSelected ? "enabled add" : "disabled add";
+  const modalButtons = [
+    {classes: buttonClasses, clickHandler: handleAddButtonClick, disabled: !itemSelected, svg: <Add height="16" width="16"/>, text: "Add Item"}
+  ];
+
   return (
-    <div id="itemPicker" className="react-modal">
-      <header>
-        <h1>Choose Assessment Item</h1>
-        <button className="modalClose" onClick={handleCloseButtonClick}>close</button>
-      </header>
-      <section>
+    <Modal title="Choose Assessment Item" visibility={modalVisibility} width={600}>
+      <div className="sectionItemPicker">
         <div id="quickAddMenu">
           <h2>Quick-Add Items</h2>
           <ul>
@@ -188,14 +197,8 @@ export const SectionItemPicker: React.FC<IProps> = (props) => {
         <div id="itemPickerList">
           {renderAllItemsList()}
         </div>
-        <div className="actionButton">
-          <button
-            disabled={!itemSelected}
-            className={itemSelected ? "enabled add" : "disabled add"}
-            onClick={handleAddButtonClick}>Add Item
-          </button>
-        </div>
-      </section>
-    </div>
+        <ModalButtons buttons={modalButtons} />
+      </div>
+    </Modal>
   );
 };

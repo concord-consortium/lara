@@ -1,0 +1,46 @@
+:root {
+  --dark-teal: #218389;
+  --teal: #0592af;
+  --lt-teal: #93d5e4;
+  --ltr-teal: #cdebf2;
+  --ltst-teal: #e2f4f8;
+  --orange: #ea6d2f;
+  --dark-gray: #3f3f3f;
+  --med-gray: #979797;
+  --lt-gray: hsl(0,0%,90%);
+  --font-family: lato, arial, helvetica, sans-serif;
+}
+select {
+  border: solid 1.5px var(--med-gray);
+  border-radius: 4px;
+  padding: 5px 10px;
+}
+
+.pageCopyDialog dl {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 2fr;
+  grid-gap: 10px;
+  grid-auto-flow: dense;
+  margin: 0 0 20px;
+  padding: 0;
+
+  dt {
+    margin: 0;
+    padding: 0;
+  }
+  dd {
+    margin: 0;
+    padding: 0;
+
+    select {
+      overflow: hidden;
+      width: 100%;
+    }
+  }
+  dt.col1, dd.col1 {
+    grid-column: 1;
+  }
+  dt.col2, dd.col2 {
+    grid-column: 2;
+  }
+}
