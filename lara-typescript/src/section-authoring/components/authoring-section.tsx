@@ -162,10 +162,12 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
   };
 
   const handleMove = () => {
+    // tslint:disable-next-line:no-console
     console.log("move");
   };
 
   const handleCopy = () => {
+    // tslint:disable-next-line:no-console
     console.log("copy");
   };
 

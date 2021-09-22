@@ -24,7 +24,6 @@ export interface ILibraryInteractiveResponse {
   }>;
 }
 
-
 export interface ISection {
   id: SectionId;
   items: ISectionItem[];
