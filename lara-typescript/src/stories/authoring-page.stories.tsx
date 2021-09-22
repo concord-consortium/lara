@@ -8,7 +8,10 @@ import { QueryBoundPage } from "../section-authoring/components/query-bound-page
 
 const pageId = "1";
 const initialState = {
-  sections: [ { id: "1", layout: Layouts.LAYOUT_30_70 } ]
+  sections: [
+    { id: "1", layout: Layouts.LAYOUT_30_70 },
+    { id: "2", layout: Layouts.LAYOUT_30_70 }
+  ]
 };
 
 interface IContext {

@@ -1,6 +1,7 @@
 import * as React from "react";
 import { useState } from "react";
 import { AuthoringSection, ISectionProps } from "./authoring-section";
+import { SectionMoveDialog } from "./section-move-dialog";
 import { ICreatePageItem } from "../api-types";
 import { ISectionItemProps } from "./section-item";
 import { SectionItemMoveDialog } from "./section-item-move-dialog";
@@ -48,6 +49,11 @@ export interface IPageProps {
   setSections?: (pageData: {id: string, sections: ISectionProps[]}) => void;
 
   /**
+   * Move a section
+   */
+  sectionToMove?: ISectionProps;
+
+  /**
    * Items on this page:
    */
   items?: ISectionItemProps[];
@@ -82,6 +88,7 @@ export const AuthoringPage: React.FC<IPageProps> = ({
   addSection,
   changeSection,
   setSections,
+  sectionToMove: initSectionToMove,
   items: initItems = [] as ISectionItemProps[],
   itemToMove: initItemToMove,
   allSectionItems,
@@ -89,6 +96,7 @@ export const AuthoringPage: React.FC<IPageProps> = ({
   isCompletion = false
   }: IPageProps) => {
 
+  const [sectionToMove, setSectionToMove] = useState(initSectionToMove);
   const [itemToMove, setItemToMove] = useState(initItemToMove);
   const [items, setItems] = useState([...initItems]);
 
@@ -114,6 +122,42 @@ export const AuthoringPage: React.FC<IPageProps> = ({
     array[b] = array[a];
     array[a] = bItem;
     return [...array];
+  };
+
+  const handleMoveSectionInit = (sectionId: string) => {
+    const section = sections.find(s => s.id === sectionId);
+    if (section) {
+      setSectionToMove(section);
+    }
+  };
+
+  const handleMoveSection = (
+    sectionId: string,
+    selectedPageId: string,
+    selectedPosition: string,
+    selectedOtherSectionId: string
+    ) => {
+    const sectionIndex = sections.findIndex(s => s.id === sectionId);
+    const section = sections[sectionIndex];
+    const otherSectionIndex = sections.findIndex(s => s.id === selectedOtherSectionId);
+    const otherSection = sections[otherSectionIndex];
+    const newIndex = otherSectionIndex
+                       ? selectedPosition === "after"
+                         ? otherSectionIndex + 1
+                         : otherSectionIndex - 1
+                       : 0;
+    const updatedSections = sections;
+    updatedSections.splice(sectionIndex, 1);
+    updatedSections.splice(newIndex, 0, section);
+    let sectionsCount = 0;
+    updatedSections.forEach((s, index) => {
+      if (otherSection) {
+        updatedSections[index].position = ++sectionsCount;
+      }
+    });
+    if (setSections && updatedSections) {
+      setSections({id, sections: updatedSections});
+    }
   };
 
   const handleDelete = (sectionId: string) => {
@@ -186,7 +230,8 @@ export const AuthoringPage: React.FC<IPageProps> = ({
     }
   };
 
-  const handleCloseMoveItemDialog = () => {
+  const handleCloseDialog = () => {
+    setSectionToMove(undefined);
     setItemToMove(undefined);
   };
 
@@ -213,6 +258,7 @@ export const AuthoringPage: React.FC<IPageProps> = ({
                             draggableProvided={draggableProvided}
                             key={sProps.id}
                             updateFunction={changeSection}
+                            moveFunction={handleMoveSectionInit}
                             deleteFunction={handleDelete}
                             allSectionItems={allSectionItems}
                             addPageItem={addPageItem}
@@ -232,12 +278,20 @@ export const AuthoringPage: React.FC<IPageProps> = ({
           )}
         </Droppable>
       </DragDropContext>
+      {sectionToMove &&
+        <SectionMoveDialog
+          sectionId={sectionToMove.id}
+          sections={sections}
+          moveFunction={handleMoveSection}
+          closeDialogFunction={handleCloseDialog}
+        />
+      }
       {itemToMove &&
         <SectionItemMoveDialog
           item={itemToMove}
           sections={sections}
-          moveItemFunction={handleMoveItem}
-          closeDialogFunction={handleCloseMoveItemDialog}
+          moveFunction={handleMoveItem}
+          closeDialogFunction={handleCloseDialog}
         />
       }
     </>
