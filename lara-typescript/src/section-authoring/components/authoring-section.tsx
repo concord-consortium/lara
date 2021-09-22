@@ -181,7 +181,7 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
       }
     }).filter(Boolean);
     return columnItems;
-  }
+  };
 
   const addItem = (section_col: number) => {
     const nextId = `section-${id}-item-${items.length}`;

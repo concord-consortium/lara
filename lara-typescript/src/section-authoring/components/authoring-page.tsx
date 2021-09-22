@@ -32,20 +32,19 @@ export interface IPageProps {
   is_completion: boolean;
 
   /**
-   * how to add a new section
+   * Callback to invoke when section has been added
    */
   addSection?: () => void;
 
   /**
-   *
+   * Callback to invoke when section has changed
    */
   changeSection?: (changes: {section: Partial<ISectionProps>, sectionID: string}) => void;
 
   /*
-   * Call back to invoke when sections have been rearranged or deleted
+   * Callback to invoke when sections have been rearranged or deleted
    */
   setSections?: (pageData: {id: string, sections: ISectionProps[]}) => void;
-
 
   /**
    * Items on this page:
@@ -53,7 +52,7 @@ export interface IPageProps {
   items?: ISectionItemProps[];
 
   /*
-   * Call back to invoke when items have been rearranged or deleted
+   * Callback to invoke when items have been rearranged or deleted
    */
   setPageItems?: (items: ISectionItemProps[]) => void;
 
@@ -78,13 +77,11 @@ export interface IPageProps {
  */
 export const AuthoringPage: React.FC<IPageProps> = ({
   id,
-  title,
   sections = [],
   addSection,
   changeSection,
   setSections,
   items: initItems = [] as ISectionItemProps[],
-  setPageItems,
   itemToMove: initItemToMove,
   allSectionItems,
   addPageItem
@@ -105,7 +102,7 @@ export const AuthoringPage: React.FC<IPageProps> = ({
       }
     });
     setItems(updatedItems);
-  }
+  };
 
   /*
    * Return a new array with array[a] and array[b] swapped.
@@ -189,7 +186,7 @@ export const AuthoringPage: React.FC<IPageProps> = ({
 
   const handleCloseMoveItemDialog = () => {
     setItemToMove(undefined);
-  }
+  };
 
   return (
     <>
@@ -233,7 +230,7 @@ export const AuthoringPage: React.FC<IPageProps> = ({
           )}
         </Droppable>
       </DragDropContext>
-      {itemToMove && 
+      {itemToMove &&
         <SectionItemMoveDialog
           item={itemToMove}
           sections={sections}

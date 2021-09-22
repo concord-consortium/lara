@@ -12,7 +12,7 @@ export interface IPageCopyDialogProps {
   currentPageIndex: number | null;
   selectedPosition?: string;
   selectedOtherPageId?: string;
-  copyPageFunction: (pageId: string, selectedPosition: string, selectedOtherPageId: string) => void,
+  copyPageFunction: (pageId: string, selectedPosition: string, selectedOtherPageId: string) => void;
   closeDialogFunction: () => void;
 }
 
@@ -30,30 +30,29 @@ export const PageCopyDialog: React.FC<IPageCopyDialogProps> = ({
 
   const handlePositionChange = (change: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedPosition(change.target.value);
-  }
+  };
 
   const handleOtherPageChange = (change: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedOtherPageId(change.target.value);
-  }
+  };
 
   const handleCloseDialog = () => {
     closeDialogFunction();
-  }
+  };
 
   const handleCopyPage = () => {
-    const copiedPageId = typeof currentPageIndex === "number" ? pages[currentPageIndex].id : undefined;
-    if (copiedPageId) {
+    if(currentPageIndex) {
+      const copiedPageId = pages[currentPageIndex].id;
       copyPageFunction(copiedPageId, selectedPosition, selectedOtherPageId);
+      closeDialogFunction();
     }
-    closeDialogFunction();
-  }
+  };
 
   const pageOptions = () => {
-    const pageListOptions = pages.map((p, index) => {
-      return <option key={`page-${index}`} value={p.id}>{index + 1}</option>
+    return pages.map((p, index) => {
+      return <option key={`page-${index}`} value={p.id}>{index + 1}</option>;
     });
-    return pageListOptions;
-  }
+  };
 
   const modalButtons = [
     {classes: "cancel", clickHandler: handleCloseDialog, disabled: false, svg: <Close height="12" width="12"/>, text: "Cancel"},
@@ -82,4 +81,4 @@ export const PageCopyDialog: React.FC<IPageCopyDialogProps> = ({
       </div>
     </Modal>
   );
-}
+};
