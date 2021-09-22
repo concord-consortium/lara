@@ -69,8 +69,8 @@ namespace :reporting do
     send_all_resources(Sequence, ReportService::ResourceSender)
   end
 
-  desc "publish runs to report service"
-  task :publish_runs => :environment do
+  desc "publish student runs to report service"
+  task :publish_student_runs => :environment do
     # limit this to portal runs by default:
     where_query = 'remote_endpoint is not null'
     # Or specify remote endpoint substring to match:
@@ -79,6 +79,22 @@ namespace :reporting do
       where_query = "remote_endpoint like '%#{env_value}%'"
     end
     runs = Run.where(where_query)
+    opts = { send_all_answers: true }
+    send_all_resources(runs, ReportService::RunSender, opts)
+  end
+
+  desc "publish anonymous runs to report service"
+  task :publish_anonymous_runs => :environment do
+    runs = Run.where('remote_endpoint is null')
+    # allow caller do specify the limit and offset of the query
+    limit_env_value = ENV["REPORT_PUSH_RUN_LIMIT"]
+    if limit_env_value && limit_env_value.size > 0
+      runs = runs.limit(limit_env_value.to_i)
+    end
+    offset_env_value = ENV["REPORT_PUSH_RUN_OFFSET"]
+    if offset_env_value && offset_env_value.size > 0
+      runs = runs.offset(offset_env_value.to_i)
+    end
     opts = { send_all_answers: true }
     send_all_resources(runs, ReportService::RunSender, opts)
   end
