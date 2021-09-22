@@ -1,0 +1,126 @@
+@import "../../../vars.scss";
+
+.modalOverlay {
+  background: var(--dark-gray);
+  height: 100%;
+  left: 0;
+  opacity: .7;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  z-index: 2;
+}
+
+.modal {
+  font-family: var(--font-family-default);
+  height: auto;
+  left: 50%;
+  margin: -200px 0 0 -250px;
+  min-height: 450px;
+  overflow: hidden;
+  position: absolute;
+  top: 50%;
+  width: 600px;
+  z-index: 3;
+
+  header {
+    background: var(--teal);
+    color: white;
+    display: flex;
+    padding: 10px;
+
+    h1 {
+      flex-grow: 2;
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 1;
+      margin: 0;
+      padding: 0;
+    }
+    .modalClose {
+      align-self: center;
+      background: transparent;
+      border: none;
+      color: white;
+      height: 16px;
+      line-height: 1;
+      overflow: hidden;
+      padding: 0;
+      position: relative;
+      text-indent: 100%;
+      white-space: nowrap;
+      width: 12px;
+    
+      &:before {
+        content: "\2716";
+        cursor: pointer;
+        font-size: 16px;
+        left: 0;
+        position: absolute;
+        text-indent: 0;
+        top: 0;
+      }
+    }
+  }
+
+  section {
+    background: white;
+    border: solid 1px var(--med-gray);
+    border-top: none;
+    padding: 10px;
+  }
+}
+
+.actionButtons {
+  border-top: solid 1px var(--med-gray);
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 10px;
+  text-align: right;
+
+  button {
+    background: var(--ltst-teal);
+    border: solid 1.5px var(--med-gray);
+    border-radius: 4px;
+    color: var(--dark-gray);
+    cursor: pointer;
+    display: flex;
+    font-size: 16px;
+    font-weight: 700;
+    margin: 0 0 0 10px;
+    padding: 5px 10px;
+    position: relative;
+
+    &.disabled {
+      opacity: .6;
+
+      &:hover {
+        background: var(--ltst-teal);
+      }
+    }
+
+    span.lineAdjust {
+      height: 17px;
+      line-height: 17px;
+    }
+    svg {
+      align-self: center;
+      display: inline-block;
+      fill: var(--teal);
+      margin: 0 3px 0 0;
+      padding: 0;
+      vertical-align: top;
+    }
+    &:hover {
+      background: var(--lt-teal);
+    }
+    &:active {
+      background: var(--teal);
+      color: white;
+
+      svg {
+        fill: white;
+      }
+    }
+  }
+}

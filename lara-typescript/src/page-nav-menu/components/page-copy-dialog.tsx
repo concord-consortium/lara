@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { IPageProps } from "../../section-authoring/components/authoring-page";
-import { Add } from "./icons/add-icon";
-import { Close } from "./icons/close-icon";
+import { Modal, ModalButtons } from "../../shared/components/modal/modal";
+import { Add } from "../../shared/components/icons/add-icon";
+import { Close } from "../../shared/components/icons/close-icon";
 
-import "./page-copy-dialog.css";
+import "./page-copy-dialog.scss";
 
 export interface IPageCopyDialogProps {
   pageId: string;
@@ -40,7 +41,7 @@ export const PageCopyDialog: React.FC<IPageCopyDialogProps> = ({
   };
 
   const handleCopyPage = () => {
-    if(currentPageIndex) {
+    if (currentPageIndex) {
       const copiedPageId = pages[currentPageIndex].id;
       copyPageFunction(copiedPageId, selectedPosition, selectedOtherPageId);
       closeDialogFunction();
@@ -53,38 +54,31 @@ export const PageCopyDialog: React.FC<IPageCopyDialogProps> = ({
     });
   };
 
+  const modalButtons = [
+    {classes: "cancel", clickHandler: handleCloseDialog, disabled: false, svg: <Close height="12" width="12"/>, text: "Cancel"},
+    {classes: "copy", clickHandler: handleCopyPage, disabled: false, svg: <Add height="16" width="16"/>, text: "Copy"}
+  ];
+
   return (
-    <>
-      <div className="modalOverlay"/>
-      <div className="modal pageCopyDialog">
-        <header>
-          <h1>Copy this page and move to...</h1>
-          <button className="modalClose" onClick={handleCloseDialog}><Close height="14" width="14"/> close</button>
-        </header>
-        <section>
-          <form>
-            <dl>
-              <dt className="col1">Position</dt>
-              <dd className="col1">
-              <select name="position" onChange={handlePositionChange}>
-                  <option key="position-option-1" value="after">After</option>
-                  <option key="position-option-2" value="before">Before</option>
-                </select>
-              </dd>
-              <dt className="col2">Page</dt>
-              <dd className="col2">
-                <select name="otherItem" onChange={handleOtherPageChange}>
-                  {pageOptions()}
-                </select>
-              </dd>
-            </dl>
-            <div className="actionButtons">
-              <button className="cancel" onClick={handleCloseDialog}><Close height="12" width="12"/> Cancel</button>
-              <button className="move" onClick={handleCopyPage}><Add height="16" width="16"/> Copy</button>
-            </div>
-          </form>
-        </section>
+    <Modal title="Copy this page and move to..." visibility={true}>
+      <div className="pageCopyDialog">
+        <dl>
+          <dt className="col1">Position</dt>
+          <dd className="col1">
+          <select name="position" onChange={handlePositionChange}>
+              <option key="position-option-1" value="after">After</option>
+              <option key="position-option-2" value="before">Before</option>
+            </select>
+          </dd>
+          <dt className="col2">Page</dt>
+          <dd className="col2">
+            <select name="otherItem" onChange={handleOtherPageChange}>
+              {pageOptions()}
+            </select>
+          </dd>
+        </dl>
+        <ModalButtons buttons={modalButtons} />
       </div>
-    </>
+    </Modal>
   );
 };

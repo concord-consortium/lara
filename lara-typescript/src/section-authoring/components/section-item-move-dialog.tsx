@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 import { ISectionProps } from "./authoring-section";
 import { ISectionItemProps } from "./section-item";
-import "./section-item-move-dialog.css";
+import { Modal, ModalButtons } from "../../shared/components/modal/modal";
+import { Close } from "../../shared/components/icons/close-icon";
+import { Move } from "../../shared/components/icons/move-icon";
+
+import "./section-item-move-dialog.scss";
 
 export interface ISectionItemMoveDialogProps {
   item: ISectionItemProps;
@@ -11,7 +15,14 @@ export interface ISectionItemMoveDialogProps {
   selectedColumn?: number;
   selectedPosition?: string;
   selectedOtherItemId?: string | undefined;
-  moveItemFunction: (itemId: string, selectedPageId: string, selectedSectionId: string, selectedColumn: number, selectedPosition: string, selectedOtherItemId: string) => void;
+  moveItemFunction: (
+    itemId: string,
+    selectedPageId: string,
+    selectedSectionId: string,
+    selectedColumn: number,
+    selectedPosition: string,
+    selectedOtherItemId: string
+  ) => void;
   closeDialogFunction: () => void;
 }
 
@@ -26,10 +37,10 @@ export const SectionItemMoveDialog: React.FC<ISectionItemMoveDialogProps> = ({
   moveItemFunction,
   closeDialogFunction
   }: ISectionItemMoveDialogProps) => {
-
   const [selectedSectionId, setSelectedSectionId] = useState(initSelectedSectionId);
   const [selectedColumn, setSelectedColumn] = useState(initSelectedColumn);
   const [selectedOtherItemId, setSelectedOtherItemId] = useState(initSelectedOtherItemId);
+  const [modalVisibility, setModalVisibility] = useState(true);
 
   const handlePageChange = (change: React.ChangeEvent<HTMLSelectElement>) => {
     selectedPageId = change.target.value;
@@ -40,7 +51,7 @@ export const SectionItemMoveDialog: React.FC<ISectionItemMoveDialogProps> = ({
   };
 
   const handleColumnChange = (change: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedColumn(parseInt(change.target.value));
+    setSelectedColumn(parseInt(change.target.value, 10));
   };
 
   const handlePositionChange = (change: React.ChangeEvent<HTMLSelectElement>) => {
@@ -98,63 +109,54 @@ export const SectionItemMoveDialog: React.FC<ISectionItemMoveDialogProps> = ({
     ));
   };
 
+  const modalButtons = [
+    {classes: "cancel", clickHandler: handleCloseDialog, disabled: false, svg: <Close height="12" width="12"/>, text: "Cancel"},
+    {classes: "move", clickHandler: handleMoveItem, disabled: false, svg: <Move height="16" width="16"/>, text: "Move"}
+  ];
+
   return (
-    <>
-      <div className="modalOverlay"/>
-      <div className="modal sectionItemMoveDialog">
-        <header>
-          <h1>Move this item to...</h1>
-          <button className="modalClose" onClick={handleCloseDialog}>close</button>
-        </header>
-        <section>
-          <form>
-            <dl>
-              <dt className="col1">Page</dt>
-              <dd className="col1">
-                <select name="page" onChange={handlePageChange}>
-                  <option value="1">1</option>
-                </select>
-              </dd>
-              <dt className="col2">Section</dt>
-              <dd className="col2">
-                <select name="section" onChange={handleSectionChange}>
-                  {
-                    sections.map(s => (
-                      <option key={s.id} value={s.id}>
-                        {s.id}
-                      </option>
-                    ))
-                  }
-                </select>
-              </dd>
-              <dt className="col3">Column</dt>
-              <dd className="col3">
-                <select name="column" onChange={handleColumnChange}>
-                  {columnOptions()}
-                </select>
-              </dd>
-              <dt className="col4">Position</dt>
-              <dd className="col4">
-              <select name="position" onChange={handlePositionChange}>
-                  <option value="after">After</option>
-                  <option value="before">Before</option>
-                </select>
-              </dd>
-              <dt className="col5">Item</dt>
-              <dd className="col5">
-                <select name="otherItem" onChange={handleOtherItemChange}>
-                  <option value="">Select one...</option>
-                  {itemOptions()}
-                </select>
-              </dd>
-            </dl>
-            <div className="actionButtons">
-              <button className="cancel" onClick={handleCloseDialog}>Cancel</button>
-              <button className="move" onClick={handleMoveItem}>Move</button>
-            </div>
-          </form>
-        </section>
-      </div>
-    </>
+    <Modal title="Move this item to..." visibility={modalVisibility} width={600}>
+      <section className="sectionItemMoveDialog">
+        <form>
+          <dl>
+            <dt className="col1">Page</dt>
+            <dd className="col1">
+              <select name="page" onChange={handlePageChange}>
+                <option value="1">1</option>
+              </select>
+            </dd>
+            <dt className="col2">Section</dt>
+            <dd className="col2">
+              <select name="section" onChange={handleSectionChange}>
+                {sections.map((s) => {
+                    return <option key={`section-option-${s.id}`} value={s.id}>{s.id}</option>;
+                  })}
+              </select>
+            </dd>
+            <dt className="col3">Column</dt>
+            <dd className="col3">
+              <select name="column" onChange={handleColumnChange}>
+                {columnOptions()}
+              </select>
+            </dd>
+            <dt className="col4">Position</dt>
+            <dd className="col4">
+            <select name="position" onChange={handlePositionChange}>
+                <option value="after">After</option>
+                <option value="before">Before</option>
+              </select>
+            </dd>
+            <dt className="col5">Item</dt>
+            <dd className="col5">
+              <select name="otherItem" onChange={handleOtherItemChange}>
+                <option value="">Select one...</option>
+                {itemOptions()}
+              </select>
+            </dd>
+          </dl>
+          <ModalButtons buttons={modalButtons} />
+        </form>
+      </section>
+    </Modal>
   );
 };
