@@ -85,7 +85,6 @@ namespace :reporting do
 
   desc "publish anonymous runs to report service"
   task :publish_anonymous_runs => :environment do
-    ActiveRecord::Base.logger = Logger.new(STDOUT)
     runs = Run.where('remote_endpoint is null')
     opts = { send_all_answers: true }
     send_all_resources(runs, ReportService::RunSender, opts)
