@@ -33,7 +33,7 @@ shared_examples "an answer" do
     describe "with a run" do
       it "should call run.send_to_portal(self, nil)" do
         allow(answer).to receive_messages(:run => run)
-        expect(run).to receive(:queue_for_portal).with(answer)
+        expect(run).to receive(:queue_for_portal)
         answer.send_to_portal
         expect(answer).to be_dirty
       end
@@ -41,7 +41,7 @@ shared_examples "an answer" do
 
     describe "with out a run" do
       it "wont call run.send_to_portal(self)" do
-        expect(run).not_to receive(:queue_for_portal).with(answer)
+        expect(run).not_to receive(:queue_for_portal)
         answer.send_to_portal
       end
     end
