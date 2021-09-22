@@ -70,3 +70,57 @@
     padding: 10px;
   }
 }
+
+.actionButtons {
+  border-top: solid 1px var(--med-gray);
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 10px;
+  text-align: right;
+
+  button {
+    background: var(--ltst-teal);
+    border: solid 1.5px var(--med-gray);
+    border-radius: 4px;
+    color: var(--dark-gray);
+    cursor: pointer;
+    display: flex;
+    font-size: 16px;
+    font-weight: 700;
+    margin: 0 0 0 10px;
+    padding: 5px 10px;
+    position: relative;
+
+    &.disabled {
+      opacity: .6;
+
+      &:hover {
+        background: var(--ltst-teal);
+      }
+    }
+
+    span.lineAdjust {
+      height: 17px;
+      line-height: 17px;
+    }
+    svg {
+      align-self: center;
+      display: inline-block;
+      fill: var(--teal);
+      margin: 0 3px 0 0;
+      padding: 0;
+      vertical-align: top;
+    }
+    &:hover {
+      background: var(--lt-teal);
+    }
+    &:active {
+      background: var(--teal);
+      color: white;
+
+      svg {
+        fill: white;
+      }
+    }
+  }
+}

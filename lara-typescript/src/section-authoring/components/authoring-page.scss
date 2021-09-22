@@ -6,14 +6,44 @@
 }
 
 button.big-button {
-  align-self: center;
-  background: var(--teal);
-  border: none;
-  border-radius: 8px;
-  color: white;
-  font-family: var(--font-family-default);
-  font-size: 20pt;
-  justify-self: center;
-  padding: 12pt 48pt;
-  text-transform: uppercase;
+  background: var(--ltst-teal);
+  border: solid 1px var(--med-gray);
+  border-radius: 4px;
+  color: var(--dark-gray);
+  cursor: pointer;
+  display: block;
+  font-family: var(--font-family);
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1;
+  margin: 0 auto;
+  padding: 14px 19px;
+  text-align: center;
+
+  &:hover {
+    background: var(--ltr-teal);
+    color: var(--dark-gray);
+
+    svg {
+      fill: var(--dark-gray);
+    }
+  }
+  &:active {
+    background: var(--teal);
+    color: white;
+
+    svg {
+      fill: white;
+    }
+  }
+
+  span.lineAdjust {
+    height: 16px;
+    line-height: 17px;
+  }
+  svg {
+    align-self: center;
+    fill: var(--dark-gray);
+    margin: 0 3px 0 0;
+  }
 }

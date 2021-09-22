@@ -4,6 +4,18 @@ import { Close } from "../icons/close-icon";
 
 import "./modal.scss";
 
+export interface IModalButton {
+  classes: string;
+  clickHandler: (e: React.MouseEvent<HTMLElement> | MouseEvent) => void;
+  disabled: boolean;
+  svg: any;
+  text: string;
+}
+
+export interface IModalButtonsProps {
+  buttons: IModalButton[];
+}
+
 export interface IModalProps {
   children: JSX.Element;
   title?: string;
@@ -51,5 +63,25 @@ export const Modal: React.FC<IModalProps> = ({
         </section>
       </div>
     </>
+  );
+};
+
+export const ModalButtons: React.FC<IModalButtonsProps> = ({
+  buttons
+  }: IModalButtonsProps) => {
+
+  const renderButtons = () => {
+    if (!buttons || buttons.length < 1) {
+      return;
+    }
+    return buttons.map((b, index) => {
+      return <button key={`${b.text}-button-${index}`} className={b.classes} disabled={b.disabled} onClick={b.clickHandler}>{b.svg} <span className="lineAdjust">{b.text}</span></button>
+    });
+  }
+
+  return (
+    <div className="actionButtons">
+      {renderButtons()}
+    </div>
   );
 };

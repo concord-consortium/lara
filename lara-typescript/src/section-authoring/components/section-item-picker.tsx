@@ -1,63 +1,59 @@
-import React, { useState } from "react";
+import * as React from "react";
+import { useState, useEffect } from "react";
 import classNames from "classnames";
-import { Modal } from "../../shared/components/modal/modal";
+import { Modal, ModalButtons } from "../../shared/components/modal/modal";
 import { Add } from "../../shared/components/icons/add-icon";
+import { absorbClickThen } from "../../shared/absorb-click";
 
 import "./section-item-picker.scss";
 
-export interface ItemType {
+export interface ISectionItem {
+  id: string;
   name: string;
-  use_count: number;
-  date_added: number;
+  useCount: number;
+  dateAdded: number;
 }
 
 export interface IProps {
-  availableItemTypes: ItemType[];
-  quickAddItems: ItemType[];
-  allItems: ItemType[];
-  matchingItems: ItemType[];
+  quickAddItems: ISectionItem[];
+  allItems: ISectionItem[];
+  onClose: () => void;
+  onAdd: (id: string) => void;
 }
 
-const SectionItemButton = ({name, disabled, className, onClick}: {
-  name: string;
+const SectionItemButton = ({item, disabled, className, onClick}: {
+  item: ISectionItem;
   disabled: boolean;
   className: string;
-  onClick: (event: React.MouseEvent<HTMLButtonElement>, itemName: string) => void;
+  onClick: (item: ISectionItem) => void;
 }) => {
-  const handleItemClick = (e: React.MouseEvent<HTMLButtonElement>) => onClick(e, name);
-  return <button disabled={disabled} className={className} onClick={handleItemClick}>{name}</button>;
+  const handleItemClick = absorbClickThen(() => onClick(item));
+  return <button disabled={disabled} className={className} onClick={handleItemClick}>{item.name}</button>;
 };
 
 export const SectionItemPicker: React.FC<IProps> = (props) => {
-  const { allItems, quickAddItems } = props;
+  const { allItems, quickAddItems, onClose, onAdd } = props;
   const modalIsVisible = true;
-  let { matchingItems } = props;
-
   const [itemSelected, setItemSelected] = useState(false);
-  const [currentSelectedItem, setCurrentSelectedItem] = useState("");
+  const [currentSelectedItem, setCurrentSelectedItem] = useState<ISectionItem|undefined>();
   const [allItemsList, setAllItemsList] = useState(allItems);
   const [isSearching, setIsSearching] = useState(false);
   const [modalVisibility, setModalVisibility] = useState(modalIsVisible);
 
-  const setItemClasses = (isSelectedItem: boolean) => {
-    const classes = classNames("assessmentItemOption", {
-      selected: isSelectedItem,
-      disabled: !isSelectedItem && currentSelectedItem !== ""
-    });
-    return classes;
-  };
+  useEffect(() => {
+    sortItems("alpha-asc");
+  }, [allItems]);
 
-  const handleListSort = (event: any) => {
+  const sortItems = (sortType: string) => {
     const allItemsSorted = [...allItems];
-    const sortType = event.target.value;
     if (sortType === "popularity") {
       allItemsSorted.sort((a, b) => {
-        return b.use_count - a.use_count;
+        return b.useCount - a.useCount;
       });
     }
     if (sortType === "date") {
       allItemsSorted.sort((a, b) => {
-        return b.date_added - a.date_added;
+        return b.dateAdded - a.dateAdded;
       });
     }
     if (sortType === "alpha-asc") {
@@ -74,16 +70,29 @@ export const SectionItemPicker: React.FC<IProps> = (props) => {
     setAllItemsList(allItemsSorted);
   };
 
-  const handleItemClick = (event: any, itemName: string) => {
-    const selectedItem = currentSelectedItem !== itemName ? itemName : "";
-    setItemSelected(!itemSelected);
-    setCurrentSelectedItem(selectedItem);
+  const setItemClasses = (isSelectedItem: boolean) => {
+    const classes = classNames("assessmentItemOption", {
+      selected: isSelectedItem,
+      disabled: !isSelectedItem && currentSelectedItem !== undefined
+    });
+    return classes;
   };
 
-  const handleSearch = (event: any) => {
+  const handleListSort = (event: React.ChangeEvent<HTMLSelectElement>) => sortItems(event.target.value);
+
+  const handleItemClick = (item: ISectionItem) => {
+    setItemSelected(!itemSelected);
+    if (currentSelectedItem !== item) {
+      setCurrentSelectedItem(item);
+    } else {
+      setCurrentSelectedItem(undefined);
+    }
+  };
+
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setIsSearching(true);
     const searchString = event.target.value;
-    matchingItems = [];
+    const matchingItems: ISectionItem[] = [];
     if (searchString !== "") {
       allItems.forEach((item) => {
         const regex = new RegExp(searchString, "i");
@@ -99,9 +108,13 @@ export const SectionItemPicker: React.FC<IProps> = (props) => {
     setTimeout(() => { setIsSearching(false); }, 1000);
   };
 
-  const handleAddButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    // console.log(`Add button clicked. ${currentSelectedItem} selected.`);
-  };
+  const handleAddButtonClick = absorbClickThen(() => {
+    if (currentSelectedItem) {
+      onAdd(currentSelectedItem.id);
+    }
+  });
+
+  const handleCloseButtonClick = absorbClickThen(onClose);
 
   const renderAllItemsList = () => {
     if (isSearching) {
@@ -120,14 +133,14 @@ export const SectionItemPicker: React.FC<IProps> = (props) => {
     }
     return (
       <ul>
-        {allItemsList.map((t, index) => {
-          const isSelectedItem = currentSelectedItem === t.name;
+        {allItemsList.map((item, index) => {
+          const isSelectedItem = currentSelectedItem === item;
           const itemClass = setItemClasses(isSelectedItem);
           const itemDisabled = itemSelected && !isSelectedItem ? true : false;
           return (
             <li key={`ai-${index}`}>
               <SectionItemButton
-                name={t.name}
+                item={item}
                 disabled={itemDisabled}
                 className={itemClass}
                 onClick={handleItemClick}
@@ -139,20 +152,25 @@ export const SectionItemPicker: React.FC<IProps> = (props) => {
     );
   };
 
+  const buttonClasses = itemSelected ? "enabled add" : "disabled add"
+  const modalButtons = [
+    {classes: buttonClasses, clickHandler: handleAddButtonClick, disabled: !itemSelected, svg: <Add height="16" width="16"/>, text: "Add Item"}
+  ];
+
   return (
     <Modal title="Choose Assessment Item" visibility={modalVisibility} width={600}>
       <div className="sectionItemPicker">
         <div id="quickAddMenu">
           <h2>Quick-Add Items</h2>
           <ul>
-            {quickAddItems.map((t, index) => {
-              const isSelectedItem = currentSelectedItem === t.name;
+            {quickAddItems.map((item, index) => {
+              const isSelectedItem = currentSelectedItem === item;
               const itemClass = setItemClasses(isSelectedItem);
               const itemDisabled = itemSelected && !isSelectedItem ? true : false;
               return (
                 <li key={`qai-${index}`}>
                   <SectionItemButton
-                    name={t.name}
+                    item={item}
                     disabled={itemDisabled}
                     className={itemClass}
                     onClick={handleItemClick}
@@ -179,14 +197,7 @@ export const SectionItemPicker: React.FC<IProps> = (props) => {
         <div id="itemPickerList">
           {renderAllItemsList()}
         </div>
-        <div className="actionButton">
-          <button
-            disabled={!itemSelected}
-            className={itemSelected ? "enabled add" : "disabled add"}
-            onClick={handleAddButtonClick}>
-              <Add height="16" width="16"/> Add Item
-          </button>
-        </div>
+        <ModalButtons buttons={modalButtons} />
       </div>
     </Modal>
   );

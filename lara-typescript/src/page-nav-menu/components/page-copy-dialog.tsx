@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { IPageProps } from "../../section-authoring/components/authoring-page";
+import { Modal, ModalButtons } from "../../shared/components/modal/modal";
 import { Add } from "../../shared/components/icons/add-icon";
 import { Close } from "../../shared/components/icons/close-icon";
-import { Modal } from "../../shared/components/modal/modal";
 
 import "./page-copy-dialog.scss";
 
@@ -55,6 +55,11 @@ export const PageCopyDialog: React.FC<IPageCopyDialogProps> = ({
     return pageListOptions;
   }
 
+  const modalButtons = [
+    {classes: "cancel", clickHandler: handleCloseDialog, disabled: false, svg: <Close height="12" width="12"/>, text: "Cancel"},
+    {classes: "copy", clickHandler: handleCopyPage, disabled: false, svg: <Add height="16" width="16"/>, text: "Copy"}
+  ];
+
   return (
     <Modal title="Copy this page and move to..." visibility={true}>
       <div className="pageCopyDialog">
@@ -73,10 +78,7 @@ export const PageCopyDialog: React.FC<IPageCopyDialogProps> = ({
             </select>            
           </dd>
         </dl>
-        <div className="actionButtons">
-          <button className="cancel" onClick={handleCloseDialog}><Close height="12" width="12"/> Cancel</button>
-          <button className="move" onClick={handleCopyPage}><Add height="16" width="16"/> Copy</button>
-        </div>
+        <ModalButtons buttons={modalButtons} />
       </div>
     </Modal>
   );
