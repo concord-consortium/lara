@@ -45,7 +45,7 @@ class Section < ActiveRecord::Base
       layouts[layout_index]
     else
       puts "error: no classes for layout #{self.layout}"
-      'unkown'
+      'unknown'
     end
   end
 

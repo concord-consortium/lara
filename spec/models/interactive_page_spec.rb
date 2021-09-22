@@ -583,6 +583,41 @@ describe InteractivePage do
         expect(copy.is_completion).to be_truthy
       end
     end
+  end
+
+  describe "#add_embeddable" do
+    let(:page)        { FactoryGirl.create(:page) }
+    let(:embeddables) { FactoryGirl.create_list(:or_embeddable, 5)}
+
+    describe "without specifying a section" do
+      it "should put everything in the default (assessment block) section" do
+        embeddables.each { |e| page.add_embeddable(e) }
+        expect(page.visible_embeddables.length).to eq(5)
+        page.visible_embeddables.each do |e|
+          expect(e.page_section).to eq(Section::DEFAULT_SECTION_TITLE)
+        end
+      end
+    end
+
+    describe "specifying the section to add to by id" do
+      it "should put everything in the same section" do
+        s = page.sections.create({title: "some random section"})
+        embeddables.each { |e| page.add_embeddable(e, 0, s.id) }
+        page.visible_embeddables.each do |e|
+          expect(e.page_section).to eq(s.title)
+        end
+      end
+    end
+
+    describe "specifying the section to add to by name" do
+      it "should put everything in the same section" do
+        s = page.sections.create({title: "some random section"})
+        embeddables.each { |e| page.add_embeddable(e, 0, s.title) }
+        page.visible_embeddables.each do |e|
+          expect(e.page_section).to eq(s.title)
+        end
+      end
+    end
 
   end
 end
