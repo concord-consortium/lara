@@ -121,7 +121,7 @@ export const QueryBoundPage = (props: IQueryBoundPage) => {
           name: "Interactive IFrame",
           useCount: 0,
           dateAdded: 0
-        })
+        });
         return result;
       });
   });

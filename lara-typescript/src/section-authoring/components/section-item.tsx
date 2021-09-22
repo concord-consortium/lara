@@ -73,23 +73,23 @@ export const SectionItem: React.FC<ISectionItemProps> = ({
 
   const toggleCollapse = () => {
 
-  }
+  };
 
   const handleEdit = () => {
 
-  }
+  };
 
   const handleMove = () => {
     moveFunction?.(id);
-  }
+  };
 
   const handleCopy = () => {
     copyFunction?.(id);
-  }
+  };
 
   const handleDelete = () => {
     deleteFunction?.(id);
-  }
+  };
 
   return(
     <div className="section-item-container">
@@ -108,9 +108,7 @@ export const SectionItem: React.FC<ISectionItemProps> = ({
           </ul>
         </div>
       </header>
-      <section>
-
-      </section>
+      <section/>
     </div>
   );
 };
