@@ -21,7 +21,7 @@ module ReportService
       record[:tool_id] = Sender::tool_id
       record[:tool_user_id] = run.user_id.to_s
       record[:platform_id] = run.platform_id
-      record[:platform_user_id] = run.platform_user_id
+      record[:platform_user_id] = run.platform_user_id || run.key  # fallback to run.key for anonymous users
       record[:resource_link_id] = run.resource_link_id
       record[:context_id] = run.context_id
       record[:resource_url] = get_resource_url(run)
