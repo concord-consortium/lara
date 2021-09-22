@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import * as React from "react";
+import { useState, useEffect } from "react";
 import classNames from "classnames";
 import { IPageProps } from "../../section-authoring/components/authoring-page";
 import { ISectionProps } from "../../section-authoring/components/authoring-section";
@@ -106,7 +107,7 @@ export const PageNavMenu: React.FC<IPageNavMenuProps> = ({
                      ? 0
                      : currentPageIndex < pages.length - 1
                        ? currentPageIndex + 1 : pages.length - 1;
-  const currentPageIsCopyable = currentPageIndex !== null && !pages[currentPageIndex].is_completion;
+  const currentPageIsCopyable = currentPageIndex !== null && !pages[currentPageIndex].isCompletion;
   const prevPageClassName = `page-button ${currentPageIndex === null ? "disabled " : ""}`;
   const prevClickHandler = () => handleNavButtonClick(prevPage);
   const nextPageClassName = `page-button ${currentPageIndex === pages.length - 1 ? "disabled" : ""}`;

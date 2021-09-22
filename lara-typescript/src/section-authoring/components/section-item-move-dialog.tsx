@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import * as React from "react";
+import { useState } from "react";
 import { ISectionProps } from "./authoring-section";
 import { ISectionItemProps } from "./section-item";
 import { Modal, ModalButtons } from "../../shared/components/modal/modal";

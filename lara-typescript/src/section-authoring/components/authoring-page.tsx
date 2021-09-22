@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import * as React from "react";
+import { useState } from "react";
 import { AuthoringSection, ISectionProps } from "./authoring-section";
+import { ICreatePageItem } from "../authoring-types";
 import { ISectionItemProps } from "./section-item";
 import { SectionItemMoveDialog } from "./section-item-move-dialog";
 import { DragDropContext, Droppable, Draggable, DropResult } from "react-beautiful-dnd";
 import { ISectionItem } from "./section-item-picker";
-import { ICreatePageItem } from "./query-bound-page";
 import { Add } from "../../shared/components/icons/add-icon";
 
 import "./authoring-page.scss";
@@ -29,7 +30,7 @@ export interface IPageProps {
   /**
    * Is page a completion page?
    */
-  is_completion: boolean;
+  isCompletion?: boolean;
 
   /**
    * Callback to invoke when section has been added
@@ -84,7 +85,8 @@ export const AuthoringPage: React.FC<IPageProps> = ({
   items: initItems = [] as ISectionItemProps[],
   itemToMove: initItemToMove,
   allSectionItems,
-  addPageItem
+  addPageItem,
+  isCompletion = false
   }: IPageProps) => {
 
   const [itemToMove, setItemToMove] = useState(initItemToMove);

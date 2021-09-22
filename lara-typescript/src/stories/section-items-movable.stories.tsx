@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import { withReactContext } from "storybook-react-context";
 
 import {Layouts, ISectionProps } from "../section-authoring/components/authoring-section";
