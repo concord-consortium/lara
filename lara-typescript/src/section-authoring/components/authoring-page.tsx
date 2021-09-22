@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useState } from "react";
 import { AuthoringSection, ISectionProps } from "./authoring-section";
-import { ICreatePageItem } from "../authoring-types";
+import { ICreatePageItem } from "../api-types";
 import { ISectionItemProps } from "./section-item";
 import { SectionItemMoveDialog } from "./section-item-move-dialog";
 import { DragDropContext, Droppable, Draggable, DropResult } from "react-beautiful-dnd";
