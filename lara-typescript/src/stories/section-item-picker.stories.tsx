@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 
 import { IProps, SectionItemPicker } from "../section-authoring/components/section-item-picker";

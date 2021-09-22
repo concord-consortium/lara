@@ -11217,74 +11217,6 @@ var weakMemoize = function weakMemoize(func) {
 
 /***/ }),
 
-/***/ "./node_modules/classnames/index.js":
-/*!******************************************!*\
-  !*** ./node_modules/classnames/index.js ***!
-  \******************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
-  Copyright (c) 2018 Jed Watson.
-  Licensed under the MIT License (MIT), see
-  http://jedwatson.github.io/classnames
-*/
-/* global define */
-
-(function () {
-	'use strict';
-
-	var hasOwn = {}.hasOwnProperty;
-
-	function classNames() {
-		var classes = [];
-
-		for (var i = 0; i < arguments.length; i++) {
-			var arg = arguments[i];
-			if (!arg) continue;
-
-			var argType = typeof arg;
-
-			if (argType === 'string' || argType === 'number') {
-				classes.push(arg);
-			} else if (Array.isArray(arg)) {
-				if (arg.length) {
-					var inner = classNames.apply(null, arg);
-					if (inner) {
-						classes.push(inner);
-					}
-				}
-			} else if (argType === 'object') {
-				if (arg.toString === Object.prototype.toString) {
-					for (var key in arg) {
-						if (hasOwn.call(arg, key) && arg[key]) {
-							classes.push(key);
-						}
-					}
-				} else {
-					classes.push(arg.toString());
-				}
-			}
-		}
-
-		return classes.join(' ');
-	}
-
-	if ( true && module.exports) {
-		classNames.default = classNames;
-		module.exports = classNames;
-	} else if (true) {
-		// register as 'classnames', consistent with npm package name
-		!(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = (function () {
-			return classNames;
-		}).apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
-				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-	} else {}
-}());
-
-
-/***/ }),
-
 /***/ "./node_modules/clsx/dist/clsx.m.js":
 /*!******************************************!*\
   !*** ./node_modules/clsx/dist/clsx.m.js ***!
@@ -48790,10 +48722,10 @@ exports.registerPlugin = registerPlugin;
 
 /***/ }),
 
-/***/ "./src/section-authoring/components/authoring-page.css":
-/*!*************************************************************!*\
-  !*** ./src/section-authoring/components/authoring-page.css ***!
-  \*************************************************************/
+/***/ "./src/section-authoring/components/authoring-page.scss":
+/*!**************************************************************!*\
+  !*** ./src/section-authoring/components/authoring-page.scss ***!
+  \**************************************************************/
 /*! no exports provided */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -48832,14 +48764,32 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthoringPage = void 0;
 var React = __webpack_require__(/*! react */ "react");
+var react_1 = __webpack_require__(/*! react */ "react");
 var authoring_section_1 = __webpack_require__(/*! ./authoring-section */ "./src/section-authoring/components/authoring-section.tsx");
+var section_item_move_dialog_1 = __webpack_require__(/*! ./section-item-move-dialog */ "./src/section-authoring/components/section-item-move-dialog.tsx");
 var react_beautiful_dnd_1 = __webpack_require__(/*! react-beautiful-dnd */ "./node_modules/react-beautiful-dnd/dist/react-beautiful-dnd.esm.js");
-__webpack_require__(/*! ./authoring-page.css */ "./src/section-authoring/components/authoring-page.css");
+var add_icon_1 = __webpack_require__(/*! ../../shared/components/icons/add-icon */ "./src/shared/components/icons/add-icon.tsx");
+__webpack_require__(/*! ./authoring-page.scss */ "./src/section-authoring/components/authoring-page.scss");
 /**
  * Primary UI component for user interaction
  */
 var AuthoringPage = function (_a) {
-    var id = _a.id, title = _a.title, _b = _a.sections, sections = _b === void 0 ? [] : _b, addSection = _a.addSection, changeSection = _a.changeSection, setSections = _a.setSections, allSectionItems = _a.allSectionItems, addPageItem = _a.addPageItem;
+    var id = _a.id, _b = _a.sections, sections = _b === void 0 ? [] : _b, addSection = _a.addSection, changeSection = _a.changeSection, setSections = _a.setSections, _c = _a.items, initItems = _c === void 0 ? [] : _c, initItemToMove = _a.itemToMove, allSectionItems = _a.allSectionItems, addPageItem = _a.addPageItem, _d = _a.isCompletion, isCompletion = _d === void 0 ? false : _d;
+    var _e = react_1.useState(initItemToMove), itemToMove = _e[0], setItemToMove = _e[1];
+    var _f = react_1.useState(__spreadArray([], initItems)), items = _f[0], setItems = _f[1];
+    var updateSectionItems = function (newItems, sectionId) {
+        var sectionIndex = sections.findIndex(function (i) { return i.id === sectionId; });
+        sections[sectionIndex].items = newItems;
+        var updatedItems = [];
+        sections.forEach(function (s) {
+            if (s.items) {
+                s.items.forEach(function (i) {
+                    updatedItems.push(i);
+                });
+            }
+        });
+        setItems(updatedItems);
+    };
     /*
      * Return a new array with array[a] and array[b] swapped.
      */
@@ -48872,22 +48822,68 @@ var AuthoringPage = function (_a) {
             }
         }
     };
-    return (React.createElement(react_beautiful_dnd_1.DragDropContext, { onDragEnd: onDragEnd },
-        React.createElement(react_beautiful_dnd_1.Droppable, { droppableId: "droppable" }, function (droppableProvided, snapshot) { return (React.createElement("div", __assign({ ref: droppableProvided.innerRef, className: "edit-page-container" }, droppableProvided.droppableProps),
-            sections.map(function (sProps, index) { return (React.createElement(react_beautiful_dnd_1.Draggable, { key: sProps.id, draggableId: sProps.id, index: index }, function (draggableProvided) { return (React.createElement("div", __assign({}, draggableProvided.draggableProps, { ref: draggableProvided.innerRef }),
-                React.createElement(authoring_section_1.AuthoringSection, __assign({}, sProps, draggableProvided, { key: sProps.id, updateFunction: changeSection, deleteFunction: handleDelete, allSectionItems: allSectionItems, addPageItem: addPageItem })))); })); }),
-            droppableProvided.placeholder,
-            React.createElement("button", { className: "big-button", onClick: addSection }, "+ Add Section"))); })));
+    var handleMoveItemInit = function (itemId) {
+        var item = items.find(function (i) { return i.id === itemId; });
+        if (item) {
+            setItemToMove(item);
+        }
+    };
+    var handleMoveItem = function (itemId, selectedPageId, selectedSectionId, selectedColumn, selectedPosition, selectedOtherItemId) {
+        var itemIndex = items.findIndex(function (i) { return i.id === itemId; });
+        var item = items[itemIndex];
+        var otherItemIndex = items.findIndex(function (i) { return (i.id === selectedOtherItemId && i.section_id === selectedSectionId); });
+        var otherItem = items[otherItemIndex];
+        item.section_id = selectedSectionId;
+        item.section_col = selectedColumn;
+        item.position = otherItem ? otherItem.position : 1;
+        var newIndex = otherItemIndex
+            ? selectedPosition === "after"
+                ? otherItemIndex + 1
+                : otherItemIndex - 1
+            : 0;
+        var updatedItems = items;
+        updatedItems.splice(itemIndex, 1);
+        updatedItems.splice(newIndex, 0, item);
+        var sectionItemsCount = 0;
+        updatedItems.forEach(function (i, index) {
+            if (otherItem && i.section_id === otherItem.section_id) {
+                updatedItems[index].position = ++sectionItemsCount;
+            }
+        });
+        setItems(updatedItems);
+        sections.forEach(function (s, index) {
+            sections[index].items = items.filter(function (i) { return i.section_id === s.id; });
+        });
+        if (setSections) {
+            setSections({ id: id, sections: sections });
+        }
+    };
+    var handleCloseMoveItemDialog = function () {
+        setItemToMove(undefined);
+    };
+    return (React.createElement(React.Fragment, null,
+        React.createElement(react_beautiful_dnd_1.DragDropContext, { onDragEnd: onDragEnd },
+            React.createElement(react_beautiful_dnd_1.Droppable, { droppableId: "droppable" }, function (droppableProvided, snapshot) { return (React.createElement("div", __assign({ ref: droppableProvided.innerRef, className: "edit-page-container" }, droppableProvided.droppableProps),
+                sections.map(function (sProps, index) { return (React.createElement(react_beautiful_dnd_1.Draggable, { key: sProps.id, draggableId: sProps.id, index: index }, function (draggableProvided) { return (React.createElement("div", __assign({}, draggableProvided.draggableProps, { ref: draggableProvided.innerRef }),
+                    React.createElement(authoring_section_1.AuthoringSection, __assign({}, sProps, { draggableProvided: draggableProvided, key: sProps.id, updateFunction: changeSection, deleteFunction: handleDelete, allSectionItems: allSectionItems, addPageItem: addPageItem, moveItemFunction: handleMoveItemInit, updatePageItems: updateSectionItems })))); })); }),
+                droppableProvided.placeholder,
+                React.createElement("button", { className: "big-button", onClick: addSection },
+                    React.createElement(add_icon_1.Add, { height: "16", width: "16" }),
+                    " ",
+                    React.createElement("span", { className: "lineAdjust" }, "Add Section")),
+                "\"")); })),
+        itemToMove &&
+            React.createElement(section_item_move_dialog_1.SectionItemMoveDialog, { item: itemToMove, sections: sections, moveItemFunction: handleMoveItem, closeDialogFunction: handleCloseMoveItemDialog })));
 };
 exports.AuthoringPage = AuthoringPage;
 
 
 /***/ }),
 
-/***/ "./src/section-authoring/components/authoring-section.css":
-/*!****************************************************************!*\
-  !*** ./src/section-authoring/components/authoring-section.css ***!
-  \****************************************************************/
+/***/ "./src/section-authoring/components/authoring-section.scss":
+/*!*****************************************************************!*\
+  !*** ./src/section-authoring/components/authoring-section.scss ***!
+  \*****************************************************************/
 /*! no exports provided */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -48918,19 +48914,21 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
+var __spreadArray = (this && this.__spreadArray) || function (to, from) {
+    for (var i = 0, il = from.length, j = to.length; i < il; i++, j++)
+        to[j] = from[i];
+    return to;
+};
 var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthoringSection = exports.Layouts = void 0;
 var React = __webpack_require__(/*! react */ "react");
-var grip_lines_1 = __webpack_require__(/*! ./icons/grip-lines */ "./src/section-authoring/components/icons/grip-lines.tsx");
-var minus_square_1 = __webpack_require__(/*! ./icons/minus-square */ "./src/section-authoring/components/icons/minus-square.tsx");
-var cog_1 = __webpack_require__(/*! ./icons/cog */ "./src/section-authoring/components/icons/cog.tsx");
-var trash_1 = __webpack_require__(/*! ./icons/trash */ "./src/section-authoring/components/icons/trash.tsx");
+var grip_lines_1 = __webpack_require__(/*! ../../shared/components/icons/grip-lines */ "./src/shared/components/icons/grip-lines.tsx");
 var section_item_1 = __webpack_require__(/*! ./section-item */ "./src/section-authoring/components/section-item.tsx");
-var section_item_picker_1 = __webpack_require__(/*! ./section-item-picker */ "./src/section-authoring/components/section-item-picker.tsx");
 var absorb_click_1 = __webpack_require__(/*! ../../shared/absorb-click */ "./src/shared/absorb-click.ts");
-// NP 2021-08-12 -- default imports aren"t working correctly when evaled on page
-__webpack_require__(/*! ./authoring-section.css */ "./src/section-authoring/components/authoring-section.css");
+var react_beautiful_dnd_1 = __webpack_require__(/*! react-beautiful-dnd */ "./node_modules/react-beautiful-dnd/dist/react-beautiful-dnd.esm.js");
+var add_icon_1 = __webpack_require__(/*! ../../shared/components/icons/add-icon */ "./src/shared/components/icons/add-icon.tsx");
+__webpack_require__(/*! ./authoring-section.scss */ "./src/section-authoring/components/authoring-section.scss");
 var Layouts;
 (function (Layouts) {
     Layouts["LAYOUT_FULL_WIDTH"] = "Full Width";
@@ -48959,13 +48957,17 @@ var classNameForItem = function (_layout, itemIndex) {
  * Primary UI component for user interaction
  */
 var AuthoringSection = function (_a) {
-    var id = _a.id, updateFunction = _a.updateFunction, deleteFunction = _a.deleteFunction, _b = _a.layout, initLayout = _b === void 0 ? defaultLayout : _b, _c = _a.items, items = _c === void 0 ? [] : _c, _d = _a.collapsed, initCollapsed = _d === void 0 ? false : _d, title = _a.title, dragHandleProps = _a.dragHandleProps, allSectionItems = _a.allSectionItems, addPageItem = _a.addPageItem;
-    var _e = React.useState(initLayout), layout = _e[0], setLayout = _e[1];
-    var _f = React.useState(initCollapsed), collapsed = _f[0], setCollapsed = _f[1];
-    var _g = React.useState(false), showAddItem = _g[0], setShowAddItem = _g[1];
+    var id = _a.id, updateFunction = _a.updateFunction, deleteFunction = _a.deleteFunction, _b = _a.layout, initLayout = _b === void 0 ? defaultLayout : _b, _c = _a.items, initItems = _c === void 0 ? [] : _c, _d = _a.collapsed, initCollapsed = _d === void 0 ? false : _d, title = _a.title, updatePageItems = _a.updatePageItems, moveItemFunction = _a.moveItemFunction, allSectionItems = _a.allSectionItems, draggableProvided = _a.draggableProvided, addPageItem = _a.addPageItem;
+    var _e = React.useState(__spreadArray([], initItems)), items = _e[0], setItems = _e[1]; // TODO: Initial Items as in layout
+    var _f = React.useState(initLayout), layout = _f[0], setLayout = _f[1];
+    var _g = React.useState(initCollapsed), collapsed = _g[0], setCollapsed = _g[1];
+    var _h = React.useState(false), showAddItem = _h[0], setShowAddItem = _h[1];
     React.useEffect(function () {
         setLayout(initLayout);
     }, [initLayout]);
+    React.useEffect(function () {
+        updatePageItems === null || updatePageItems === void 0 ? void 0 : updatePageItems(items, id);
+    }, [items]);
     var layoutChanged = function (change) {
         var newLayout = change.target.value;
         setLayout(newLayout);
@@ -48979,6 +48981,126 @@ var AuthoringSection = function (_a) {
     var handleDelete = function () {
         deleteFunction === null || deleteFunction === void 0 ? void 0 : deleteFunction(id);
     };
+    var handleMove = function () {
+        // tslint:disable-next-line:no-console
+        console.log("move");
+    };
+    var handleCopy = function () {
+        // tslint:disable-next-line:no-console
+        console.log("copy");
+    };
+    var sortedItems = function () {
+        return items.sort(function (a, b) { return a.position - b.position; });
+    };
+    var getColumnItems = function (columnIndex) {
+        var columnItems = [];
+        columnItems = items.map(function (i) {
+            if (i.section_col === columnIndex) {
+                return i;
+            }
+        }).filter(Boolean);
+        return columnItems;
+    };
+    var addItem = function (sectionCol) {
+        var nextId = "section-" + id + "-item-" + items.length;
+        var position = items.length + 1;
+        var newItem = {
+            id: "" + nextId,
+            section_id: id,
+            section_col: sectionCol,
+            position: position,
+            type: "unknown",
+            title: "Item " + position + " - " + Math.random().toString(36).substr(2, 9)
+        };
+        setItems(__spreadArray(__spreadArray([], items), [newItem]));
+    };
+    var swapIndexes = function (array, a, b) {
+        var aItem = array[a];
+        var bItem = array[b];
+        var aPos = aItem.position;
+        var bPos = bItem.position;
+        aItem.position = bPos;
+        bItem.position = aPos;
+        array[b] = aItem;
+        array[a] = bItem;
+        return __spreadArray([], array);
+    };
+    var onDragEnd = function (e) {
+        if (!e.destination) {
+            return;
+        }
+        var nextItems = [];
+        if (e.source.droppableId !== e.destination.droppableId) {
+            // items[e.source.index].section_col = items[e.source.index].section_col === 0 ? 1 : 0;
+            // disallow cross column reordering for now
+            return;
+        }
+        if (e.destination && e.destination.index !== e.source.index) {
+            nextItems = swapIndexes(items, e.source.index, e.destination.index);
+        }
+        if (setItems) {
+            setItems(nextItems);
+        }
+    };
+    var handleMoveItem = function (itemId) {
+        if (moveItemFunction) {
+            moveItemFunction(itemId);
+        }
+    };
+    var handleCopyItem = function (itemId) {
+        var item = items.find(function (i) { return i.id === itemId; });
+        if (item) {
+            addItem(item.section_col);
+        }
+    };
+    var handleDeleteItem = function (itemId) {
+        var nextItems = [];
+        items.forEach(function (i) {
+            if (i.id !== itemId) {
+                nextItems.push(i);
+            }
+        });
+        setItems(nextItems);
+    };
+    var sectionColumns = function () {
+        var colOneItems = getColumnItems(0);
+        var colTwoItems = getColumnItems(1);
+        var colOneAddItemHandler = function () { return addItem(0); };
+        var colTwoAddItemHandler = function () { return addItem(1); };
+        return (React.createElement(React.Fragment, null,
+            React.createElement(react_beautiful_dnd_1.DragDropContext, { onDragEnd: onDragEnd },
+                React.createElement("div", { className: "edit-page-grid-container col-1 " + classNameForItem(layout, 0) },
+                    React.createElement(react_beautiful_dnd_1.Droppable, { droppableId: "droppableCol1" }, function (droppableProvided) { return (React.createElement("div", __assign({ ref: droppableProvided.innerRef, className: "edit-items-container full-row" }, droppableProvided.droppableProps),
+                        React.createElement("div", { className: "itemsContainer" },
+                            !collapsed
+                                && colOneItems
+                                && colOneItems.length > 0
+                                && colOneItems.map(function (element, index) {
+                                    return (React.createElement(react_beautiful_dnd_1.Draggable, { key: "col-1-item-" + index, draggableId: "col-1-item-" + index, index: element.position - 1 }, function (draggableProvidedColOne) { return (React.createElement("div", __assign({ className: "sectionItem", key: "col-1-item-inner-" + index }, draggableProvidedColOne.draggableProps, draggableProvidedColOne.dragHandleProps, { ref: draggableProvidedColOne.innerRef }),
+                                        React.createElement(section_item_1.SectionItem, __assign({}, element, { key: element.id, moveFunction: handleMoveItem, copyFunction: handleCopyItem, deleteFunction: handleDeleteItem })))); }));
+                                }),
+                            droppableProvided.placeholder,
+                            React.createElement("button", { className: "small-button", onClick: colOneAddItemHandler },
+                                React.createElement(add_icon_1.Add, { height: "16", width: "16" }),
+                                " ",
+                                React.createElement("span", { className: "lineAdjust" }, "Add Item"))))); })),
+                layout !== "Full Width" &&
+                    React.createElement("div", { className: "edit-page-grid-container col-2 " + classNameForItem(layout, 1) },
+                        React.createElement(react_beautiful_dnd_1.Droppable, { droppableId: "droppableCol2" }, function (droppableProvided) { return (React.createElement("div", __assign({ ref: droppableProvided.innerRef, className: "edit-items-container full-row" }, droppableProvided.droppableProps),
+                            React.createElement("div", { className: "itemsContainer" },
+                                !collapsed
+                                    && colTwoItems
+                                    && colTwoItems.length > 0
+                                    && colTwoItems.map(function (element, index) {
+                                        return (React.createElement(react_beautiful_dnd_1.Draggable, { key: "col-2-item-" + index, draggableId: "col-2-item-" + index, index: element.position - 1 }, function (draggableProvidedColTwo) { return (React.createElement("div", __assign({ className: "sectionItem", key: "col-2-item-inner-" + index }, draggableProvidedColTwo.draggableProps, draggableProvidedColTwo.dragHandleProps, { ref: draggableProvidedColTwo.innerRef }),
+                                            React.createElement(section_item_1.SectionItem, __assign({}, element, { key: element.id, moveFunction: handleMoveItem, copyFunction: handleCopyItem, deleteFunction: handleDeleteItem })))); }));
+                                    }),
+                                droppableProvided.placeholder,
+                                React.createElement("button", { className: "small-button", onClick: colTwoAddItemHandler },
+                                    React.createElement(add_icon_1.Add, { height: "16", width: "16" }),
+                                    " ",
+                                    React.createElement("span", { className: "lineAdjust" }, "Add Item"))))); })))));
+    };
     var handleToggleShowAddItem = function () { return setShowAddItem(function (prev) { return !prev; }); };
     var handleShowAddItem = absorb_click_1.absorbClickThen(handleToggleShowAddItem);
     var handleAddItem = function (itemId) {
@@ -48990,126 +49112,30 @@ var AuthoringSection = function (_a) {
     };
     var sectionClassName = function (index) { return "section-container " + classNameForItem(layout, index); };
     return (React.createElement("div", { className: "edit-page-grid-container" },
-        React.createElement("div", { className: "section-menu full-row" },
+        React.createElement("header", { className: "section-menu full-row" },
             React.createElement("div", { className: "menu-start" },
-                React.createElement("span", __assign({}, dragHandleProps),
+                React.createElement("span", __assign({}, draggableProvided === null || draggableProvided === void 0 ? void 0 : draggableProvided.dragHandleProps),
                     React.createElement(grip_lines_1.GripLines, null)),
-                React.createElement("span", null,
+                React.createElement("h3", null,
                     title,
                     id),
-                React.createElement("span", null, "Layout"),
+                React.createElement("label", { htmlFor: "section_layout" }, "Layout: "),
                 React.createElement("select", { id: "section_layout", name: "section[layout]", onChange: layoutChanged, defaultValue: layout, title: "Section layout" }, Object.values(Layouts).map(function (l) {
                     return (React.createElement("option", { key: l, value: l }, l));
                 }))),
             React.createElement("div", { className: "menu-end" },
-                React.createElement("span", null,
-                    React.createElement(cog_1.Cog, null)),
-                React.createElement("span", null,
-                    React.createElement(trash_1.Trash, { onClick: handleDelete })),
-                React.createElement("span", null,
-                    React.createElement(minus_square_1.MinusSquare, { onClick: toggleCollapse })))),
-        !collapsed &&
-            items.map(function (item, index) { return (React.createElement("div", { className: sectionClassName(index), key: index },
-                React.createElement(section_item_1.SectionItem, __assign({}, item, { key: item.id })))); }),
-        !collapsed && (React.createElement("div", { className: sectionClassName(items.length), key: items.length },
-            React.createElement("button", { className: "small-button", onClick: handleShowAddItem }, "+ Add Item"))),
-        showAddItem
-            ? React.createElement(section_item_picker_1.SectionItemPicker, { quickAddItems: (allSectionItems === null || allSectionItems === void 0 ? void 0 : allSectionItems.filter(function (si) { return si.id === "MwInteractive"; })) || [], allItems: allSectionItems || [], onClose: handleToggleShowAddItem, onAdd: handleAddItem })
-            : undefined));
+                React.createElement("ul", null,
+                    React.createElement("li", null,
+                        React.createElement("button", { onClick: toggleCollapse }, "Collapse")),
+                    React.createElement("li", null,
+                        React.createElement("button", { onClick: handleMove }, "Move")),
+                    React.createElement("li", null,
+                        React.createElement("button", { onClick: handleCopy }, "Copy")),
+                    React.createElement("li", null,
+                        React.createElement("button", { onClick: handleDelete }, "Delete"))))),
+        sectionColumns()));
 };
 exports.AuthoringSection = AuthoringSection;
-
-
-/***/ }),
-
-/***/ "./src/section-authoring/components/icons/cog.tsx":
-/*!********************************************************!*\
-  !*** ./src/section-authoring/components/icons/cog.tsx ***!
-  \********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.Cog = void 0;
-var React = __webpack_require__(/*! react */ "react");
-var kDefaultHight = "1em";
-var Cog = function (props) {
-    var height = props.height ? props.height : kDefaultHight;
-    return (React.createElement("svg", { "aria-hidden": "true", focusable: "false", role: "img", height: height, xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 512 512" },
-        React.createElement("path", { fill: "currentColor", d: "M487.4 315.7l-42.6-24.6c4.3-23.2 4.3-47 0-70.2l42.6-24.6c4.9-2.8 7.1-8.6 5.5-14-11.1-35.6-30-67.8-54.7-94.6-3.8-4.1-10-5.1-14.8-2.3L380.8 110c-17.9-15.4-38.5-27.3-60.8-35.1V25.8c0-5.6-3.9-10.5-9.4-11.7-36.7-8.2-74.3-7.8-109.2 0-5.5 1.2-9.4 6.1-9.4 11.7V75c-22.2 7.9-42.8 19.8-60.8 35.1L88.7 85.5c-4.9-2.8-11-1.9-14.8 2.3-24.7 26.7-43.6 58.9-54.7 94.6-1.7 5.4.6 11.2 5.5 14L67.3 221c-4.3 23.2-4.3 47 0 70.2l-42.6 24.6c-4.9 2.8-7.1 8.6-5.5 14 11.1 35.6 30 67.8 54.7 94.6 3.8 4.1 10 5.1 14.8 2.3l42.6-24.6c17.9 15.4 38.5 27.3 60.8 35.1v49.2c0 5.6 3.9 10.5 9.4 11.7 36.7 8.2 74.3 7.8 109.2 0 5.5-1.2 9.4-6.1 9.4-11.7v-49.2c22.2-7.9 42.8-19.8 60.8-35.1l42.6 24.6c4.9 2.8 11 1.9 14.8-2.3 24.7-26.7 43.6-58.9 54.7-94.6 1.5-5.5-.7-11.3-5.6-14.1zM256 336c-44.1 0-80-35.9-80-80s35.9-80 80-80 80 35.9 80 80-35.9 80-80 80z" })));
-};
-exports.Cog = Cog;
-
-
-/***/ }),
-
-/***/ "./src/section-authoring/components/icons/grip-lines.tsx":
-/*!***************************************************************!*\
-  !*** ./src/section-authoring/components/icons/grip-lines.tsx ***!
-  \***************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.GripLines = void 0;
-var React = __webpack_require__(/*! react */ "react");
-var kDefaultHight = "1em";
-var GripLines = function (props) {
-    var height = props.height ? props.height : kDefaultHight;
-    return (React.createElement("svg", { "aria-hidden": "true", focusable: "false", role: "img", height: height, xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 512 512" },
-        React.createElement("path", { fill: "currentColor", d: "M496 288H16c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h480c8.8 0 16-7.2 16-16v-32c0-8.8-7.2-16-16-16zm0-128H16c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h480c8.8 0 16-7.2 16-16v-32c0-8.8-7.2-16-16-16z" })));
-};
-exports.GripLines = GripLines;
-
-
-/***/ }),
-
-/***/ "./src/section-authoring/components/icons/minus-square.tsx":
-/*!*****************************************************************!*\
-  !*** ./src/section-authoring/components/icons/minus-square.tsx ***!
-  \*****************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.MinusSquare = void 0;
-var React = __webpack_require__(/*! react */ "react");
-var kDefaultHight = "1em";
-var MinusSquare = function (props) {
-    var height = props.height ? props.height : kDefaultHight;
-    return (React.createElement("svg", { onClick: props.onClick, "aria-hidden": "true", focusable: "false", role: "img", height: height, xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 512 512" },
-        React.createElement("path", { fill: "currentColor", d: "M108 284c-6.6 0-12-5.4-12-12v-32c0-6.6 5.4-12 12-12h232c6.6 0 12 5.4 12 12v32c0 6.6-5.4 12-12 12H108zM448 80v352c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V80c0-26.5 21.5-48 48-48h352c26.5 0 48 21.5 48 48zm-48 346V86c0-3.3-2.7-6-6-6H54c-3.3 0-6 2.7-6 6v340c0 3.3 2.7 6 6 6h340c3.3 0 6-2.7 6-6z" })));
-};
-exports.MinusSquare = MinusSquare;
-
-
-/***/ }),
-
-/***/ "./src/section-authoring/components/icons/trash.tsx":
-/*!**********************************************************!*\
-  !*** ./src/section-authoring/components/icons/trash.tsx ***!
-  \**********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.Trash = void 0;
-var React = __webpack_require__(/*! react */ "react");
-var kDefaultHight = "1em";
-var Trash = function (props) {
-    var height = props.height ? props.height : kDefaultHight;
-    return (React.createElement("svg", { onClick: props.onClick, "aria-hidden": "true", focusable: "false", role: "img", height: height, xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 512 512" },
-        React.createElement("path", { fill: "currentColor", d: "M268 416h24a12 12 0 0 0 12-12V188a12 12 0 0 0-12-12h-24a12 12 0 0 0-12 12v216a12 12 0 0 0 12 12zM432 80h-82.41l-34-56.7A48 48 0 0 0 274.41 0H173.59a48 48 0 0 0-41.16 23.3L98.41 80H16A16 16 0 0 0 0 96v16a16 16 0 0 0 16 16h16v336a48 48 0 0 0 48 48h288a48 48 0 0 0 48-48V128h16a16 16 0 0 0 16-16V96a16 16 0 0 0-16-16zM171.84 50.91A6 6 0 0 1 177 48h94a6 6 0 0 1 5.15 2.91L293.61 80H154.39zM368 464H80V128h288zm-212-48h24a12 12 0 0 0 12-12V188a12 12 0 0 0-12-12h-24a12 12 0 0 0-12 12v216a12 12 0 0 0 12 12z" })));
-};
-exports.Trash = Trash;
 
 
 /***/ }),
@@ -49251,10 +49277,10 @@ exports.QueryBoundPage = QueryBoundPage;
 
 /***/ }),
 
-/***/ "./src/section-authoring/components/section-item-picker.css":
-/*!******************************************************************!*\
-  !*** ./src/section-authoring/components/section-item-picker.css ***!
-  \******************************************************************/
+/***/ "./src/section-authoring/components/section-item-move-dialog.scss":
+/*!************************************************************************!*\
+  !*** ./src/section-authoring/components/section-item-move-dialog.scss ***!
+  \************************************************************************/
 /*! no exports provided */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -49265,148 +49291,126 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./src/section-authoring/components/section-item-picker.tsx":
-/*!******************************************************************!*\
-  !*** ./src/section-authoring/components/section-item-picker.tsx ***!
-  \******************************************************************/
+/***/ "./src/section-authoring/components/section-item-move-dialog.tsx":
+/*!***********************************************************************!*\
+  !*** ./src/section-authoring/components/section-item-move-dialog.tsx ***!
+  \***********************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var __spreadArray = (this && this.__spreadArray) || function (to, from) {
-    for (var i = 0, il = from.length, j = to.length; i < il; i++, j++)
-        to[j] = from[i];
-    return to;
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.SectionItemPicker = void 0;
+exports.SectionItemMoveDialog = void 0;
 var React = __webpack_require__(/*! react */ "react");
 var react_1 = __webpack_require__(/*! react */ "react");
-var classnames_1 = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
-var absorb_click_1 = __webpack_require__(/*! ../../shared/absorb-click */ "./src/shared/absorb-click.ts");
-__webpack_require__(/*! ./section-item-picker.css */ "./src/section-authoring/components/section-item-picker.css");
-var SectionItemButton = function (_a) {
-    var item = _a.item, disabled = _a.disabled, className = _a.className, onClick = _a.onClick;
-    var handleItemClick = absorb_click_1.absorbClickThen(function () { return onClick(item); });
-    return React.createElement("button", { disabled: disabled, className: className, onClick: handleItemClick }, item.name);
+var modal_1 = __webpack_require__(/*! ../../shared/components/modal/modal */ "./src/shared/components/modal/modal.tsx");
+var close_icon_1 = __webpack_require__(/*! ../../shared/components/icons/close-icon */ "./src/shared/components/icons/close-icon.tsx");
+var move_icon_1 = __webpack_require__(/*! ../../shared/components/icons/move-icon */ "./src/shared/components/icons/move-icon.tsx");
+__webpack_require__(/*! ./section-item-move-dialog.scss */ "./src/section-authoring/components/section-item-move-dialog.scss");
+var SectionItemMoveDialog = function (_a) {
+    var item = _a.item, sections = _a.sections, _b = _a.selectedPageId, selectedPageId = _b === void 0 ? "0" : _b, _c = _a.selectedSectionId, initSelectedSectionId = _c === void 0 ? "1" : _c, _d = _a.selectedColumn, initSelectedColumn = _d === void 0 ? 0 : _d, _e = _a.selectedPosition, selectedPosition = _e === void 0 ? "after" : _e, _f = _a.selectedOtherItemId, initSelectedOtherItemId = _f === void 0 ? "0" : _f, moveItemFunction = _a.moveItemFunction, closeDialogFunction = _a.closeDialogFunction;
+    var _g = react_1.useState(initSelectedSectionId), selectedSectionId = _g[0], setSelectedSectionId = _g[1];
+    var _h = react_1.useState(initSelectedColumn), selectedColumn = _h[0], setSelectedColumn = _h[1];
+    var _j = react_1.useState(initSelectedOtherItemId), selectedOtherItemId = _j[0], setSelectedOtherItemId = _j[1];
+    var _k = react_1.useState(true), modalVisibility = _k[0], setModalVisibility = _k[1];
+    var handlePageChange = function (change) {
+        selectedPageId = change.target.value;
+    };
+    var handleSectionChange = function (change) {
+        setSelectedSectionId(change.target.value);
+    };
+    var handleColumnChange = function (change) {
+        setSelectedColumn(parseInt(change.target.value, 10));
+    };
+    var handlePositionChange = function (change) {
+        selectedPosition = change.target.value;
+    };
+    var handleOtherItemChange = function (change) {
+        var _a = change.target.value.split("--"), sectionId = _a[0], otherItemId = _a[1];
+        setSelectedSectionId(sectionId);
+        setSelectedOtherItemId(otherItemId);
+    };
+    var handleCloseDialog = function () {
+        closeDialogFunction();
+    };
+    var handleMoveItem = function () {
+        moveItemFunction(item.id, selectedPageId, selectedSectionId, selectedColumn, selectedPosition, selectedOtherItemId);
+        closeDialogFunction();
+    };
+    var columnOptions = function () {
+        var columnCount = 1;
+        var options = [{ value: columnCount }];
+        if (selectedSectionId) {
+            var section = sections.find(function (s) { return s.id === selectedSectionId; });
+            if ((section === null || section === void 0 ? void 0 : section.layout) !== "Full Width") {
+                ++columnCount;
+                options.push({ value: columnCount });
+            }
+        }
+        return options.map(function (column, index) { return (React.createElement("option", { key: index, value: index }, column.value)); });
+    };
+    var itemOptions = function () {
+        var itemsList = [];
+        if (selectedSectionId) {
+            var selectedSection = sections.find(function (s) { return s.id === selectedSectionId; });
+            if (selectedSection === null || selectedSection === void 0 ? void 0 : selectedSection.items) {
+                itemsList = selectedSection.items.filter(function (i) { return i.id !== item.id && i.section_col === selectedColumn; });
+            }
+        }
+        if (itemsList.length < 1) {
+            return;
+        }
+        return itemsList === null || itemsList === void 0 ? void 0 : itemsList.map(function (i) { return (React.createElement("option", { key: i.id, value: i.section_id + "--" + i.id },
+            "Section ", i.section_id + ", " + i.title)); });
+    };
+    var modalButtons = [
+        { classes: "cancel", clickHandler: handleCloseDialog, disabled: false, svg: React.createElement(close_icon_1.Close, { height: "12", width: "12" }), text: "Cancel" },
+        { classes: "move", clickHandler: handleMoveItem, disabled: false, svg: React.createElement(move_icon_1.Move, { height: "16", width: "16" }), text: "Move" }
+    ];
+    return (React.createElement(modal_1.Modal, { title: "Move this item to...", visibility: modalVisibility, width: 600 },
+        React.createElement("section", { className: "sectionItemMoveDialog" },
+            React.createElement("form", null,
+                React.createElement("dl", null,
+                    React.createElement("dt", { className: "col1" }, "Page"),
+                    React.createElement("dd", { className: "col1" },
+                        React.createElement("select", { name: "page", onChange: handlePageChange },
+                            React.createElement("option", { value: "1" }, "1"))),
+                    React.createElement("dt", { className: "col2" }, "Section"),
+                    React.createElement("dd", { className: "col2" },
+                        React.createElement("select", { name: "section", onChange: handleSectionChange }, sections.map(function (s) {
+                            return React.createElement("option", { key: "section-option-" + s.id, value: s.id }, s.id);
+                        }))),
+                    React.createElement("dt", { className: "col3" }, "Column"),
+                    React.createElement("dd", { className: "col3" },
+                        React.createElement("select", { name: "column", onChange: handleColumnChange }, columnOptions())),
+                    React.createElement("dt", { className: "col4" }, "Position"),
+                    React.createElement("dd", { className: "col4" },
+                        React.createElement("select", { name: "position", onChange: handlePositionChange },
+                            React.createElement("option", { value: "after" }, "After"),
+                            React.createElement("option", { value: "before" }, "Before"))),
+                    React.createElement("dt", { className: "col5" }, "Item"),
+                    React.createElement("dd", { className: "col5" },
+                        React.createElement("select", { name: "otherItem", onChange: handleOtherItemChange },
+                            React.createElement("option", { value: "" }, "Select one..."),
+                            itemOptions()))),
+                React.createElement(modal_1.ModalButtons, { buttons: modalButtons })))));
 };
-var SectionItemPicker = function (props) {
-    var allItems = props.allItems, quickAddItems = props.quickAddItems, onClose = props.onClose, onAdd = props.onAdd;
-    var _a = react_1.useState(false), itemSelected = _a[0], setItemSelected = _a[1];
-    var _b = react_1.useState(), currentSelectedItem = _b[0], setCurrentSelectedItem = _b[1];
-    var _c = react_1.useState(allItems), allItemsList = _c[0], setAllItemsList = _c[1];
-    var _d = react_1.useState(false), isSearching = _d[0], setIsSearching = _d[1];
-    react_1.useEffect(function () {
-        sortItems("alpha-asc");
-    }, [allItems]);
-    var sortItems = function (sortType) {
-        var allItemsSorted = __spreadArray([], allItems);
-        if (sortType === "popularity") {
-            allItemsSorted.sort(function (a, b) {
-                return b.useCount - a.useCount;
-            });
-        }
-        if (sortType === "date") {
-            allItemsSorted.sort(function (a, b) {
-                return b.dateAdded - a.dateAdded;
-            });
-        }
-        if (sortType === "alpha-asc") {
-            allItemsSorted.sort(function (a, b) {
-                return (a.name).localeCompare(b.name);
-            });
-        }
-        if (sortType === "alpha-desc") {
-            allItemsSorted.sort(function (a, b) {
-                return (a.name).localeCompare(b.name);
-            });
-            allItemsSorted.reverse();
-        }
-        setAllItemsList(allItemsSorted);
-    };
-    var setItemClasses = function (isSelectedItem) {
-        var classes = classnames_1.default("assessmentItemOption", {
-            selected: isSelectedItem,
-            disabled: !isSelectedItem && currentSelectedItem !== undefined
-        });
-        return classes;
-    };
-    var handleListSort = function (event) { return sortItems(event.target.value); };
-    var handleItemClick = function (item) {
-        setItemSelected(!itemSelected);
-        setCurrentSelectedItem(item);
-    };
-    var handleSearch = function (event) {
-        setIsSearching(true);
-        var searchString = event.target.value;
-        var matchingItems = [];
-        if (searchString !== "") {
-            allItems.forEach(function (item) {
-                var regex = new RegExp(searchString, "i");
-                if (item.name.match(regex)) {
-                    matchingItems.push(item);
-                }
-            });
-            setAllItemsList(matchingItems);
-        }
-        else {
-            setAllItemsList(allItems);
-        }
-        setTimeout(function () { setIsSearching(false); }, 1000);
-    };
-    var handleAddButtonClick = absorb_click_1.absorbClickThen(function () {
-        if (currentSelectedItem) {
-            onAdd(currentSelectedItem.id);
-        }
-    });
-    var handleCloseButtonClick = absorb_click_1.absorbClickThen(onClose);
-    var renderAllItemsList = function () {
-        if (isSearching) {
-            return (React.createElement("div", { id: "searchPlaceholder", className: "loading" },
-                React.createElement("em", null, "Searching...")));
-        }
-        if (allItemsList.length === 0) {
-            return (React.createElement("div", { id: "searchPlaceholder" },
-                React.createElement("em", null, "No assessment items found.")));
-        }
-        return (React.createElement("ul", null, allItemsList.map(function (item, index) {
-            var isSelectedItem = currentSelectedItem === item;
-            var itemClass = setItemClasses(isSelectedItem);
-            var itemDisabled = itemSelected && !isSelectedItem ? true : false;
-            return (React.createElement("li", { key: "ai-" + index },
-                React.createElement(SectionItemButton, { item: item, disabled: itemDisabled, className: itemClass, onClick: handleItemClick })));
-        })));
-    };
-    return (React.createElement("div", { id: "itemPicker", className: "react-modal" },
-        React.createElement("header", null,
-            React.createElement("h1", null, "Choose Assessment Item"),
-            React.createElement("button", { className: "modalClose", onClick: handleCloseButtonClick }, "close")),
-        React.createElement("section", null,
-            React.createElement("div", { id: "quickAddMenu" },
-                React.createElement("h2", null, "Quick-Add Items"),
-                React.createElement("ul", null, quickAddItems.map(function (item, index) {
-                    var isSelectedItem = currentSelectedItem === item;
-                    var itemClass = setItemClasses(isSelectedItem);
-                    var itemDisabled = itemSelected && !isSelectedItem ? true : false;
-                    return (React.createElement("li", { key: "qai-" + index },
-                        React.createElement(SectionItemButton, { item: item, disabled: itemDisabled, className: itemClass, onClick: handleItemClick })));
-                }))),
-            React.createElement("div", { id: "itemPickerOptions" },
-                React.createElement("div", { id: "itemPickerSearch" },
-                    React.createElement("input", { disabled: itemSelected, placeholder: "Enter item name", onChange: handleSearch })),
-                React.createElement("div", { id: "itemPickerSort" },
-                    React.createElement("label", { className: itemSelected ? "disabled" : "", htmlFor: "itemPickerSort" }, "Sort by:"),
-                    React.createElement("select", { disabled: itemSelected, onChange: handleListSort, defaultValue: "alpha-asc" },
-                        React.createElement("option", { key: "0-listSort", value: "popularity" }, "Most Popular"),
-                        React.createElement("option", { key: "1-listSort", value: "date" }, "Most Recent"),
-                        React.createElement("option", { key: "2-listSort", value: "alpha-asc" }, "Name (A-Z)"),
-                        React.createElement("option", { key: "3-listSort", value: "alpha-desc" }, "Name (Z-A)")))),
-            React.createElement("div", { id: "itemPickerList" }, renderAllItemsList()),
-            React.createElement("div", { className: "actionButton" },
-                React.createElement("button", { disabled: !itemSelected, className: itemSelected ? "enabled add" : "disabled add", onClick: handleAddButtonClick }, "Add Item")))));
-};
-exports.SectionItemPicker = SectionItemPicker;
+exports.SectionItemMoveDialog = SectionItemMoveDialog;
+
+
+/***/ }),
+
+/***/ "./src/section-authoring/components/section-item.scss":
+/*!************************************************************!*\
+  !*** ./src/section-authoring/components/section-item.scss ***!
+  \************************************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
 
 
 /***/ }),
@@ -49423,18 +49427,49 @@ exports.SectionItemPicker = SectionItemPicker;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SectionItem = void 0;
 var React = __webpack_require__(/*! react */ "react");
+var grip_lines_1 = __webpack_require__(/*! ../../shared/components/icons/grip-lines */ "./src/shared/components/icons/grip-lines.tsx");
+__webpack_require__(/*! ./section-item.scss */ "./src/section-authoring/components/section-item.scss");
 /**
  * Primary UI component for user interaction
  */
 var SectionItem = function (_a) {
-    var id = _a.id, type = _a.type, title = _a.title;
-    var renderTitle = function () { return (React.createElement(React.Fragment, null, (title || "").length > 0 ? title : React.createElement("i", null, "Untitled"))); };
+    var id = _a.id, moveFunction = _a.moveFunction, copyFunction = _a.copyFunction, deleteFunction = _a.deleteFunction, position = _a.position, section_col = _a.section_col, section_id = _a.section_id, type = _a.type, title = _a.title;
+    var toggleCollapse = function () {
+        return;
+    };
+    var handleEdit = function () {
+        return;
+    };
+    var handleMove = function () {
+        moveFunction === null || moveFunction === void 0 ? void 0 : moveFunction(id);
+    };
+    var handleCopy = function () {
+        copyFunction === null || copyFunction === void 0 ? void 0 : copyFunction(id);
+    };
+    var handleDelete = function () {
+        deleteFunction === null || deleteFunction === void 0 ? void 0 : deleteFunction(id);
+    };
     return (React.createElement("div", { className: "section-item-container" },
-        id,
-        " - ",
-        type,
-        " - ",
-        renderTitle()));
+        React.createElement("header", { className: "section-item-menu" },
+            React.createElement("div", { className: "menu-start" },
+                React.createElement(grip_lines_1.GripLines, null),
+                React.createElement("h4", null,
+                    id,
+                    " - ",
+                    title)),
+            React.createElement("div", { className: "menu-end" },
+                React.createElement("ul", null,
+                    React.createElement("li", null,
+                        React.createElement("button", { onClick: toggleCollapse }, "Collapse")),
+                    React.createElement("li", null,
+                        React.createElement("button", { onClick: handleEdit }, "Edit")),
+                    React.createElement("li", null,
+                        React.createElement("button", { onClick: handleMove }, "Move")),
+                    React.createElement("li", null,
+                        React.createElement("button", { onClick: handleCopy }, "Copy")),
+                    React.createElement("li", null,
+                        React.createElement("button", { onClick: handleDelete }, "Delete"))))),
+        React.createElement("section", null)));
 };
 exports.SectionItem = SectionItem;
 
@@ -49513,6 +49548,183 @@ exports.absorbClickThen = absorbClickThen;
 
 /***/ }),
 
+/***/ "./src/shared/components/icons/add-icon.tsx":
+/*!**************************************************!*\
+  !*** ./src/shared/components/icons/add-icon.tsx ***!
+  \**************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Add = void 0;
+var React = __webpack_require__(/*! react */ "react");
+var kDefaultHight = "1em";
+var kDefaultWidth = "1em";
+var Add = function (props) {
+    var height = props.height ? props.height : kDefaultHight;
+    var width = props.width ? props.width : kDefaultWidth;
+    return (React.createElement("svg", { "aria-hidden": true, className: "icon", fill: "white", focusable: "false", height: height, width: width, role: "img", viewBox: "0 0 330 330", xmlns: "http://www.w3.org/2000/svg" },
+        React.createElement("g", null,
+            React.createElement("path", { d: "M281.672,48.328C250.508,17.163,209.073,0,164.999,0C120.927,0,79.492,17.163,48.328,48.328 c-64.333,64.334-64.333,169.011,0,233.345C79.492,312.837,120.927,330,165,330c44.073,0,85.508-17.163,116.672-48.328 C346.005,217.339,346.005,112.661,281.672,48.328z M260.46,260.46C234.961,285.957,201.06,300,165,300 c-36.06,0-69.961-14.043-95.46-39.54c-52.636-52.637-52.636-138.282,0-190.919C95.039,44.042,128.94,30,164.999,30 c36.06,0,69.961,14.042,95.46,39.54C313.095,122.177,313.095,207.823,260.46,260.46z" }),
+            React.createElement("path", { d: "M254.999,150H180V75c0-8.284-6.716-15-15-15s-15,6.716-15,15v75H75c-8.284,0-15,6.716-15,15s6.716,15,15,15h75v75 c0,8.284,6.716,15,15,15s15-6.716,15-15v-75h74.999c8.284,0,15-6.716,15-15S263.284,150,254.999,150z" }))));
+};
+exports.Add = Add;
+
+
+/***/ }),
+
+/***/ "./src/shared/components/icons/close-icon.tsx":
+/*!****************************************************!*\
+  !*** ./src/shared/components/icons/close-icon.tsx ***!
+  \****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Close = void 0;
+var React = __webpack_require__(/*! react */ "react");
+var kDefaultHight = "1em";
+var kDefaultWidth = "1em";
+var Close = function (props) {
+    var height = props.height ? props.height : kDefaultHight;
+    var width = props.width ? props.width : kDefaultWidth;
+    return (React.createElement("svg", { "aria-hidden": true, className: "icon", fill: "white", focusable: "false", height: height, width: width, role: "img", viewBox: "0 0 8.38 8.39", xmlns: "http://www.w3.org/2000/svg" },
+        React.createElement("polygon", { points: "8.38 2.02 6.36 0 4.18 2.17 2.02 0.01 0 2.04 2.16 4.2 0 6.35 2.02 8.38 4.18 6.22 6.36 8.39 8.38 6.37 6.21 4.2 8.38 2.02" })));
+};
+exports.Close = Close;
+
+
+/***/ }),
+
+/***/ "./src/shared/components/icons/grip-lines.tsx":
+/*!****************************************************!*\
+  !*** ./src/shared/components/icons/grip-lines.tsx ***!
+  \****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.GripLines = void 0;
+var React = __webpack_require__(/*! react */ "react");
+var kDefaultHight = "1em";
+var GripLines = function (props) {
+    var height = props.height ? props.height : kDefaultHight;
+    return (React.createElement("svg", { "aria-hidden": "true", focusable: "false", role: "img", height: height, xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 512 512" },
+        React.createElement("path", { fill: "currentColor", d: "M496 288H16c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h480c8.8 0 16-7.2 16-16v-32c0-8.8-7.2-16-16-16zm0-128H16c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h480c8.8 0 16-7.2 16-16v-32c0-8.8-7.2-16-16-16z" })));
+};
+exports.GripLines = GripLines;
+
+
+/***/ }),
+
+/***/ "./src/shared/components/icons/move-icon.tsx":
+/*!***************************************************!*\
+  !*** ./src/shared/components/icons/move-icon.tsx ***!
+  \***************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Move = void 0;
+var React = __webpack_require__(/*! react */ "react");
+var kDefaultHight = "1em";
+var kDefaultWidth = "1em";
+var Move = function (props) {
+    var height = props.height ? props.height : kDefaultHight;
+    var width = props.width ? props.width : kDefaultWidth;
+    return (React.createElement("svg", { "aria-hidden": true, className: "icon", fill: "white", focusable: "false", height: height, width: width, role: "img", viewBox: "0 0 369 369", xmlns: "http://www.w3.org/2000/svg" },
+        React.createElement("path", { d: "M184.972,0C82.821,0,0,82.818,0,184.978c0,102.147,82.821,184.971,184.972,184.971 c102.16,0,184.978-82.824,184.978-184.971C369.949,82.812,287.138,0,184.972,0z M318.975,176.112l9.428,9.413l-9.428,9.422 c0,0-0.012,0.006-0.012,0.012l-31.093,31.099c-2.606,2.606-6.028,3.915-9.428,3.915c-3.423,0-6.821-1.309-9.428-3.915 c-5.206-5.206-5.206-13.643,0-18.843l8.347-8.347h-78.494v38.743c0,1.886-0.408,3.687-1.117,5.302v34.449l10.568-10.568 c5.213-5.212,13.655-5.212,18.855,0c5.212,5.2,5.212,13.644,0,18.85l-33.314,33.32l-0.024,0.012l-9.409,9.422l-9.416-9.422 l-0.018-0.012l-31.099-31.104c-5.209-5.212-5.209-13.649,0-18.85c5.212-5.206,13.643-5.206,18.852,0l8.344,8.353v-78.5h-38.74 c-1.885,0-3.681-0.402-5.305-1.117H92.597l10.571,10.574c5.212,5.213,5.212,13.643,0,18.844c-2.609,2.611-6.02,3.914-9.427,3.914 s-6.818-1.303-9.422-3.914l-33.32-33.314c-0.012-0.013-0.018-0.013-0.018-0.013l-9.413-9.421l9.413-9.416 c0,0,0.006-0.006,0.018-0.018l31.102-31.102c5.209-5.209,13.646-5.209,18.846,0c5.215,5.215,5.215,13.646,0,18.853l-8.344,8.347 h78.498v-38.746c0-1.889,0.405-3.684,1.114-5.299V92.579l-10.578,10.568c-2.6,2.609-6.014,3.912-9.427,3.912 c-3.411,0-6.819-1.303-9.419-3.912c-5.209-5.209-5.209-13.643,0-18.846l33.321-33.321c0,0,0.012-0.006,0.018-0.018l9.415-9.416 l9.419,9.416c0.006,0.012,0.012,0.018,0.012,0.018l31.105,31.102c5.206,5.206,5.206,13.643,0,18.846 c-5.213,5.215-13.644,5.215-18.85,0l-8.341-8.344v78.498h38.743c1.886,0,3.688,0.405,5.309,1.111h34.449l-10.574-10.569 c-5.212-5.209-5.212-13.651,0-18.854c5.212-5.206,13.643-5.206,18.849,0l33.314,33.323 C318.963,176.106,318.975,176.112,318.975,176.112z" })));
+};
+exports.Move = Move;
+
+
+/***/ }),
+
+/***/ "./src/shared/components/modal/modal.scss":
+/*!************************************************!*\
+  !*** ./src/shared/components/modal/modal.scss ***!
+  \************************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ }),
+
+/***/ "./src/shared/components/modal/modal.tsx":
+/*!***********************************************!*\
+  !*** ./src/shared/components/modal/modal.tsx ***!
+  \***********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.ModalButtons = exports.Modal = void 0;
+var React = __webpack_require__(/*! react */ "react");
+var react_1 = __webpack_require__(/*! react */ "react");
+var react_dom_1 = __webpack_require__(/*! react-dom */ "react-dom");
+var close_icon_1 = __webpack_require__(/*! ../icons/close-icon */ "./src/shared/components/icons/close-icon.tsx");
+__webpack_require__(/*! ./modal.scss */ "./src/shared/components/modal/modal.scss");
+var Modal = function (_a) {
+    var children = _a.children, title = _a.title, _b = _a.visibility, initVisibility = _b === void 0 ? true : _b, width = _a.width;
+    var modalStyle = width ? { width: width + "px" } : undefined;
+    var _c = react_1.useState(initVisibility), isVisible = _c[0], setIsVisible = _c[1];
+    var modalContainer = react_1.useState(function () {
+        return document.createElement("div");
+    })[0];
+    react_1.useEffect(function () {
+        var _a;
+        (_a = document.getElementById("modal-content")) === null || _a === void 0 ? void 0 : _a.appendChild(modalContainer);
+    }, []);
+    var closeModal = function () {
+        setIsVisible(false);
+    };
+    if (!isVisible) {
+        return null;
+    }
+    return (React.createElement(React.Fragment, null,
+        React.createElement("div", { className: "modalOverlay" }),
+        React.createElement("div", { id: "modal", className: "modal", style: modalStyle },
+            React.createElement("header", null,
+                React.createElement("h1", null, title),
+                React.createElement("button", { "aria-label": "close", className: "modalClose", onClick: closeModal },
+                    React.createElement(close_icon_1.Close, { height: "14", width: "14" }))),
+            React.createElement("section", { id: "modal-content" }, react_dom_1.createPortal(children, modalContainer)))));
+};
+exports.Modal = Modal;
+var ModalButtons = function (_a) {
+    var buttons = _a.buttons;
+    var renderButtons = function () {
+        if (!buttons || buttons.length < 1) {
+            return;
+        }
+        return buttons.map(function (b, index) {
+            return React.createElement("button", { key: b.text + "-button-" + index, className: b.classes, disabled: b.disabled, onClick: b.clickHandler },
+                b.svg,
+                " ",
+                React.createElement("span", { className: "lineAdjust" }, b.text));
+        });
+    };
+    return (React.createElement("div", { className: "actionButtons" }, renderButtons()));
+};
+exports.ModalButtons = ModalButtons;
+
+
+/***/ }),
+
 /***/ "jquery":
 /*!*************************!*\
   !*** external "jQuery" ***!
@@ -49548,4 +49760,3 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_react_dom__;
 
 /******/ });
 });
-//# sourceMappingURL=lara-typescript.js.map
