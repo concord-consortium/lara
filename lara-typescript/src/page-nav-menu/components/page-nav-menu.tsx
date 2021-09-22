@@ -36,10 +36,10 @@ export const PageNavMenu: React.FC<IPageNavMenuProps> = ({
   const pageButtons = () => {
     const buttons = pages.map((p, index) => {
       const pageNumber = index + 1;
-      const buttonContent = p.is_completion ? <Completion height="24" width="24" /> : pageNumber;
+      const buttonContent = p.isCompletion ? <Completion height="24" width="24" /> : pageNumber;
       const buttonClasses = classNames("page-button", {
         current: index === currentPageIndex,
-        completionPage: p.is_completion
+        completionPage: p.isCompletion
       });
       const clickHandler = () => handleNavButtonClick(index);
       return <button
