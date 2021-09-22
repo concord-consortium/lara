@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 
 import { AuthoringSection, Layouts, ISectionProps } from "../section-authoring/components/authoring-section";

@@ -3,7 +3,7 @@ import { GripLines } from "../../shared/components/icons/grip-lines";
 import { SectionItem, ISectionItemProps} from "./section-item";
 import { ISectionItem, SectionItemPicker } from "./section-item-picker";
 import { absorbClickThen } from "../../shared/absorb-click";
-import { ICreatePageItem } from "./query-bound-page";
+import { ICreatePageItem } from "../api-types";
 import { DragDropContext, Droppable, Draggable, DropResult, DraggableProvided } from "react-beautiful-dnd";
 import { Add } from "../../shared/components/icons/add-icon";
 
@@ -162,10 +162,12 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
   };
 
   const handleMove = () => {
+    // tslint:disable-next-line:no-console
     console.log("move");
   };
 
   const handleCopy = () => {
+    // tslint:disable-next-line:no-console
     console.log("copy");
   };
 
