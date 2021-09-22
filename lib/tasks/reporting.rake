@@ -85,16 +85,8 @@ namespace :reporting do
 
   desc "publish anonymous runs to report service"
   task :publish_anonymous_runs => :environment do
+    ActiveRecord::Base.logger = Logger.new(STDOUT)
     runs = Run.where('remote_endpoint is null')
-    # allow caller do specify the limit and offset of the query
-    limit_env_value = ENV["REPORT_PUSH_RUN_LIMIT"]
-    if limit_env_value && limit_env_value.size > 0
-      runs = runs.limit(limit_env_value.to_i)
-    end
-    offset_env_value = ENV["REPORT_PUSH_RUN_OFFSET"]
-    if offset_env_value && offset_env_value.size > 0
-      runs = runs.offset(offset_env_value.to_i)
-    end
     opts = { send_all_answers: true }
     send_all_resources(runs, ReportService::RunSender, opts)
   end
