@@ -596,6 +596,7 @@ describe InteractivePage do
         page.visible_embeddables.each do |e|
           expect(e.page_section).to eq(Section::DEFAULT_SECTION_TITLE)
         end
+        expect(page.sections.length).to eq(1)
       end
     end
 
@@ -606,6 +607,7 @@ describe InteractivePage do
         page.visible_embeddables.each do |e|
           expect(e.page_section).to eq(s.title)
         end
+        expect(page.sections.length).to eq(1)
       end
     end
 
@@ -616,8 +618,23 @@ describe InteractivePage do
         page.visible_embeddables.each do |e|
           expect(e.page_section).to eq(s.title)
         end
+        expect(page.sections.length).to eq(1)
       end
     end
 
+    describe "specifying five unique sections" do
+      it "should put everything in its own section" do
+        embeddables.each_with_index do |e, i|
+          s = page.sections.create({title: "section #{i}"})
+          page.add_embeddable(e, 0, s.title)
+        end
+        expect(page.sections.length).to eq(5)
+        expect(page.sections.map(&:title)).to include("section 0")
+        expect(page.sections.map(&:title)).to include("section 1")
+        expect(page.sections.map(&:title)).to include("section 2")
+        expect(page.sections.map(&:title)).to include("section 3")
+        expect(page.sections.map(&:title)).to include("section 4")
+      end
+    end
   end
 end
