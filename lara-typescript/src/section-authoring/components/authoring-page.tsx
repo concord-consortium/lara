@@ -173,6 +173,35 @@ export const AuthoringPage: React.FC<IPageProps> = ({
     }
   };
 
+  const handleCopy = (sectionId: string) => {
+    if (setSections) {
+      const nextSections: ISectionProps[] = [];
+      const copiedSectionIndex = sections.findIndex(i => i.id === sectionId);
+      const copiedSection = sections[copiedSectionIndex];
+      const newSection = Object.assign({}, copiedSection);
+      const newSectionIndex = copiedSectionIndex + 1;
+      // ID value should probably be determined some other way once this is integrated into LARA
+      newSection.id = (sections.length + 1).toString();
+      newSection.position = copiedSection.position ? copiedSection.position++ : undefined;
+      const newSectionItems = newSection.items || [];
+      newSectionItems.forEach(i => {
+        // ID value should probably be determined some other way once this is integrated into LARA
+        i.id = i.id + "-copy";
+        i.section_id = newSection.id;
+      });
+
+      sections.forEach(s => {
+        if (s.position && copiedSection.position && s.position > copiedSection.position) {
+          s.position = s.position++;
+        }
+        nextSections.push(s);
+      });
+      nextSections.splice(newSectionIndex, 0, newSection);
+      const update = { id, sections: nextSections };
+      setSections(update);
+    }
+  };
+
   /*
    * When a new section is dragged somewhere else:
    */
@@ -246,8 +275,8 @@ export const AuthoringPage: React.FC<IPageProps> = ({
               {
                 sections.map( (sProps, index) => (
                   <Draggable
-                    key={sProps.id}
-                    draggableId={sProps.id}
+                    key={`section-${sProps.id}-${index}-draggable`}
+                    draggableId={`section-${sProps.id}-${index}`}
                     index={index}>
                   {
                     (draggableProvided) => (
@@ -256,10 +285,11 @@ export const AuthoringPage: React.FC<IPageProps> = ({
                         ref={draggableProvided.innerRef}>
                           <AuthoringSection {...sProps}
                             draggableProvided={draggableProvided}
-                            key={sProps.id}
+                            key={`section-${sProps.id}-${index}`}
                             updateFunction={changeSection}
                             moveFunction={handleMoveSectionInit}
                             deleteFunction={handleDelete}
+                            copyFunction={handleCopy}
                             allSectionItems={allSectionItems}
                             addPageItem={addPageItem}
                             moveItemFunction={handleMoveItemInit}
