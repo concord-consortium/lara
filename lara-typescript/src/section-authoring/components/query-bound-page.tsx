@@ -27,7 +27,7 @@ export interface ICreatePageItem {
 
 export const QueryBoundPage = (props: IQueryBoundPage) => {
   const queryClient = useQueryClient();
-  const host = props.host || "";
+  const host = props.host || window.location.origin;
   const prefix = `${host}/${APIBase}`;
   const { id } = props;
   const pageSectionsUrl = `${prefix}/get_page_sections/${id}.json`;

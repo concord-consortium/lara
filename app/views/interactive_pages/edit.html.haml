@@ -101,7 +101,7 @@
     });
 
     $(document).ready(function() {
-      var params = {id: "#{@page.id}", host: "https://app.lara.docker"};
+      var params = {id: "#{@page.id}"};
       var element;
       var container = $("#sections-container")[0];
       LARA.SectionAuthoring.renderAuthoringPage(container, params);

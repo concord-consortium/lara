@@ -48766,6 +48766,7 @@ exports.AuthoringPage = void 0;
 var React = __webpack_require__(/*! react */ "react");
 var react_1 = __webpack_require__(/*! react */ "react");
 var authoring_section_1 = __webpack_require__(/*! ./authoring-section */ "./src/section-authoring/components/authoring-section.tsx");
+var section_move_dialog_1 = __webpack_require__(/*! ./section-move-dialog */ "./src/section-authoring/components/section-move-dialog.tsx");
 var section_item_move_dialog_1 = __webpack_require__(/*! ./section-item-move-dialog */ "./src/section-authoring/components/section-item-move-dialog.tsx");
 var react_beautiful_dnd_1 = __webpack_require__(/*! react-beautiful-dnd */ "./node_modules/react-beautiful-dnd/dist/react-beautiful-dnd.esm.js");
 var add_icon_1 = __webpack_require__(/*! ../../shared/components/icons/add-icon */ "./src/shared/components/icons/add-icon.tsx");
@@ -48774,9 +48775,10 @@ __webpack_require__(/*! ./authoring-page.scss */ "./src/section-authoring/compon
  * Primary UI component for user interaction
  */
 var AuthoringPage = function (_a) {
-    var id = _a.id, _b = _a.sections, sections = _b === void 0 ? [] : _b, addSection = _a.addSection, changeSection = _a.changeSection, setSections = _a.setSections, _c = _a.items, initItems = _c === void 0 ? [] : _c, initItemToMove = _a.itemToMove, allSectionItems = _a.allSectionItems, addPageItem = _a.addPageItem, _d = _a.isCompletion, isCompletion = _d === void 0 ? false : _d;
-    var _e = react_1.useState(initItemToMove), itemToMove = _e[0], setItemToMove = _e[1];
-    var _f = react_1.useState(__spreadArray([], initItems)), items = _f[0], setItems = _f[1];
+    var id = _a.id, _b = _a.sections, sections = _b === void 0 ? [] : _b, addSection = _a.addSection, changeSection = _a.changeSection, setSections = _a.setSections, initSectionToMove = _a.sectionToMove, _c = _a.items, initItems = _c === void 0 ? [] : _c, initItemToMove = _a.itemToMove, allSectionItems = _a.allSectionItems, addPageItem = _a.addPageItem, _d = _a.isCompletion, isCompletion = _d === void 0 ? false : _d;
+    var _e = react_1.useState(initSectionToMove), sectionToMove = _e[0], setSectionToMove = _e[1];
+    var _f = react_1.useState(initItemToMove), itemToMove = _f[0], setItemToMove = _f[1];
+    var _g = react_1.useState(__spreadArray([], initItems)), items = _g[0], setItems = _g[1];
     var updateSectionItems = function (newItems, sectionId) {
         var sectionIndex = sections.findIndex(function (i) { return i.id === sectionId; });
         sections[sectionIndex].items = newItems;
@@ -48798,6 +48800,35 @@ var AuthoringPage = function (_a) {
         array[b] = array[a];
         array[a] = bItem;
         return __spreadArray([], array);
+    };
+    var handleMoveSectionInit = function (sectionId) {
+        var section = sections.find(function (s) { return s.id === sectionId; });
+        if (section) {
+            setSectionToMove(section);
+        }
+    };
+    var handleMoveSection = function (sectionId, selectedPageId, selectedPosition, selectedOtherSectionId) {
+        var sectionIndex = sections.findIndex(function (s) { return s.id === sectionId; });
+        var section = sections[sectionIndex];
+        var otherSectionIndex = sections.findIndex(function (s) { return s.id === selectedOtherSectionId; });
+        var otherSection = sections[otherSectionIndex];
+        var newIndex = otherSectionIndex
+            ? selectedPosition === "after"
+                ? otherSectionIndex + 1
+                : otherSectionIndex - 1
+            : 0;
+        var updatedSections = sections;
+        updatedSections.splice(sectionIndex, 1);
+        updatedSections.splice(newIndex, 0, section);
+        var sectionsCount = 0;
+        updatedSections.forEach(function (s, index) {
+            if (otherSection) {
+                updatedSections[index].position = ++sectionsCount;
+            }
+        });
+        if (setSections && updatedSections) {
+            setSections({ id: id, sections: updatedSections });
+        }
     };
     var handleDelete = function (sectionId) {
         if (setSections) {
@@ -48858,22 +48889,25 @@ var AuthoringPage = function (_a) {
             setSections({ id: id, sections: sections });
         }
     };
-    var handleCloseMoveItemDialog = function () {
+    var handleCloseDialog = function () {
+        setSectionToMove(undefined);
         setItemToMove(undefined);
     };
     return (React.createElement(React.Fragment, null,
         React.createElement(react_beautiful_dnd_1.DragDropContext, { onDragEnd: onDragEnd },
             React.createElement(react_beautiful_dnd_1.Droppable, { droppableId: "droppable" }, function (droppableProvided, snapshot) { return (React.createElement("div", __assign({ ref: droppableProvided.innerRef, className: "edit-page-container" }, droppableProvided.droppableProps),
                 sections.map(function (sProps, index) { return (React.createElement(react_beautiful_dnd_1.Draggable, { key: sProps.id, draggableId: sProps.id, index: index }, function (draggableProvided) { return (React.createElement("div", __assign({}, draggableProvided.draggableProps, { ref: draggableProvided.innerRef }),
-                    React.createElement(authoring_section_1.AuthoringSection, __assign({}, sProps, { draggableProvided: draggableProvided, key: sProps.id, updateFunction: changeSection, deleteFunction: handleDelete, allSectionItems: allSectionItems, addPageItem: addPageItem, moveItemFunction: handleMoveItemInit, updatePageItems: updateSectionItems })))); })); }),
+                    React.createElement(authoring_section_1.AuthoringSection, __assign({}, sProps, { draggableProvided: draggableProvided, key: sProps.id, updateFunction: changeSection, moveFunction: handleMoveSectionInit, deleteFunction: handleDelete, allSectionItems: allSectionItems, addPageItem: addPageItem, moveItemFunction: handleMoveItemInit, updatePageItems: updateSectionItems })))); })); }),
                 droppableProvided.placeholder,
                 React.createElement("button", { className: "big-button", onClick: addSection },
                     React.createElement(add_icon_1.Add, { height: "16", width: "16" }),
                     " ",
                     React.createElement("span", { className: "lineAdjust" }, "Add Section")),
                 "\"")); })),
+        sectionToMove &&
+            React.createElement(section_move_dialog_1.SectionMoveDialog, { sectionId: sectionToMove.id, sections: sections, moveFunction: handleMoveSection, closeDialogFunction: handleCloseDialog }),
         itemToMove &&
-            React.createElement(section_item_move_dialog_1.SectionItemMoveDialog, { item: itemToMove, sections: sections, moveItemFunction: handleMoveItem, closeDialogFunction: handleCloseMoveItemDialog })));
+            React.createElement(section_item_move_dialog_1.SectionItemMoveDialog, { item: itemToMove, sections: sections, moveFunction: handleMoveItem, closeDialogFunction: handleCloseDialog })));
 };
 exports.AuthoringPage = AuthoringPage;
 
@@ -48923,6 +48957,7 @@ var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthoringSection = exports.Layouts = void 0;
 var React = __webpack_require__(/*! react */ "react");
+var react_1 = __webpack_require__(/*! react */ "react");
 var grip_lines_1 = __webpack_require__(/*! ../../shared/components/icons/grip-lines */ "./src/shared/components/icons/grip-lines.tsx");
 var section_item_1 = __webpack_require__(/*! ./section-item */ "./src/section-authoring/components/section-item.tsx");
 var absorb_click_1 = __webpack_require__(/*! ../../shared/absorb-click */ "./src/shared/absorb-click.ts");
@@ -48957,11 +48992,11 @@ var classNameForItem = function (_layout, itemIndex) {
  * Primary UI component for user interaction
  */
 var AuthoringSection = function (_a) {
-    var id = _a.id, updateFunction = _a.updateFunction, deleteFunction = _a.deleteFunction, _b = _a.layout, initLayout = _b === void 0 ? defaultLayout : _b, _c = _a.items, initItems = _c === void 0 ? [] : _c, _d = _a.collapsed, initCollapsed = _d === void 0 ? false : _d, title = _a.title, updatePageItems = _a.updatePageItems, moveItemFunction = _a.moveItemFunction, allSectionItems = _a.allSectionItems, draggableProvided = _a.draggableProvided, addPageItem = _a.addPageItem;
-    var _e = React.useState(__spreadArray([], initItems)), items = _e[0], setItems = _e[1]; // TODO: Initial Items as in layout
-    var _f = React.useState(initLayout), layout = _f[0], setLayout = _f[1];
-    var _g = React.useState(initCollapsed), collapsed = _g[0], setCollapsed = _g[1];
-    var _h = React.useState(false), showAddItem = _h[0], setShowAddItem = _h[1];
+    var id = _a.id, updateFunction = _a.updateFunction, deleteFunction = _a.deleteFunction, moveFunction = _a.moveFunction, _b = _a.layout, initLayout = _b === void 0 ? defaultLayout : _b, _c = _a.items, initItems = _c === void 0 ? [] : _c, _d = _a.collapsed, initCollapsed = _d === void 0 ? false : _d, title = _a.title, updatePageItems = _a.updatePageItems, moveItemFunction = _a.moveItemFunction, allSectionItems = _a.allSectionItems, draggableProvided = _a.draggableProvided, addPageItem = _a.addPageItem;
+    var _e = react_1.useState(__spreadArray([], initItems)), items = _e[0], setItems = _e[1]; // TODO: Initial Items as in layout
+    var _f = react_1.useState(initLayout), layout = _f[0], setLayout = _f[1];
+    var _g = react_1.useState(initCollapsed), collapsed = _g[0], setCollapsed = _g[1];
+    var _h = react_1.useState(false), showAddItem = _h[0], setShowAddItem = _h[1];
     React.useEffect(function () {
         setLayout(initLayout);
     }, [initLayout]);
@@ -48982,8 +49017,9 @@ var AuthoringSection = function (_a) {
         deleteFunction === null || deleteFunction === void 0 ? void 0 : deleteFunction(id);
     };
     var handleMove = function () {
-        // tslint:disable-next-line:no-console
-        console.log("move");
+        if (moveFunction) {
+            moveFunction(id);
+        }
     };
     var handleCopy = function () {
         // tslint:disable-next-line:no-console
@@ -49168,7 +49204,7 @@ var authoring_page_1 = __webpack_require__(/*! ./authoring-page */ "./src/sectio
 var APIBase = "/api/v1";
 var QueryBoundPage = function (props) {
     var queryClient = react_query_1.useQueryClient();
-    var host = props.host || "";
+    var host = props.host || window.location.origin;
     var prefix = host + "/" + APIBase;
     var id = props.id;
     var pageSectionsUrl = prefix + "/get_page_sections/" + id + ".json";
@@ -49309,7 +49345,7 @@ var close_icon_1 = __webpack_require__(/*! ../../shared/components/icons/close-i
 var move_icon_1 = __webpack_require__(/*! ../../shared/components/icons/move-icon */ "./src/shared/components/icons/move-icon.tsx");
 __webpack_require__(/*! ./section-item-move-dialog.scss */ "./src/section-authoring/components/section-item-move-dialog.scss");
 var SectionItemMoveDialog = function (_a) {
-    var item = _a.item, sections = _a.sections, _b = _a.selectedPageId, selectedPageId = _b === void 0 ? "0" : _b, _c = _a.selectedSectionId, initSelectedSectionId = _c === void 0 ? "1" : _c, _d = _a.selectedColumn, initSelectedColumn = _d === void 0 ? 0 : _d, _e = _a.selectedPosition, selectedPosition = _e === void 0 ? "after" : _e, _f = _a.selectedOtherItemId, initSelectedOtherItemId = _f === void 0 ? "0" : _f, moveItemFunction = _a.moveItemFunction, closeDialogFunction = _a.closeDialogFunction;
+    var item = _a.item, sections = _a.sections, _b = _a.selectedPageId, selectedPageId = _b === void 0 ? "0" : _b, _c = _a.selectedSectionId, initSelectedSectionId = _c === void 0 ? "1" : _c, _d = _a.selectedColumn, initSelectedColumn = _d === void 0 ? 0 : _d, _e = _a.selectedPosition, selectedPosition = _e === void 0 ? "after" : _e, _f = _a.selectedOtherItemId, initSelectedOtherItemId = _f === void 0 ? "0" : _f, moveFunction = _a.moveFunction, closeDialogFunction = _a.closeDialogFunction;
     var _g = react_1.useState(initSelectedSectionId), selectedSectionId = _g[0], setSelectedSectionId = _g[1];
     var _h = react_1.useState(initSelectedColumn), selectedColumn = _h[0], setSelectedColumn = _h[1];
     var _j = react_1.useState(initSelectedOtherItemId), selectedOtherItemId = _j[0], setSelectedOtherItemId = _j[1];
@@ -49335,7 +49371,9 @@ var SectionItemMoveDialog = function (_a) {
         closeDialogFunction();
     };
     var handleMoveItem = function () {
-        moveItemFunction(item.id, selectedPageId, selectedSectionId, selectedColumn, selectedPosition, selectedOtherItemId);
+        if (moveFunction) {
+            moveFunction(item.id, selectedPageId, selectedSectionId, selectedColumn, selectedPosition, selectedOtherItemId);
+        }
         closeDialogFunction();
     };
     var columnOptions = function () {
@@ -49369,32 +49407,31 @@ var SectionItemMoveDialog = function (_a) {
         { classes: "move", clickHandler: handleMoveItem, disabled: false, svg: React.createElement(move_icon_1.Move, { height: "16", width: "16" }), text: "Move" }
     ];
     return (React.createElement(modal_1.Modal, { title: "Move this item to...", visibility: modalVisibility, width: 600 },
-        React.createElement("section", { className: "sectionItemMoveDialog" },
-            React.createElement("form", null,
-                React.createElement("dl", null,
-                    React.createElement("dt", { className: "col1" }, "Page"),
-                    React.createElement("dd", { className: "col1" },
-                        React.createElement("select", { name: "page", onChange: handlePageChange },
-                            React.createElement("option", { value: "1" }, "1"))),
-                    React.createElement("dt", { className: "col2" }, "Section"),
-                    React.createElement("dd", { className: "col2" },
-                        React.createElement("select", { name: "section", onChange: handleSectionChange }, sections.map(function (s) {
-                            return React.createElement("option", { key: "section-option-" + s.id, value: s.id }, s.id);
-                        }))),
-                    React.createElement("dt", { className: "col3" }, "Column"),
-                    React.createElement("dd", { className: "col3" },
-                        React.createElement("select", { name: "column", onChange: handleColumnChange }, columnOptions())),
-                    React.createElement("dt", { className: "col4" }, "Position"),
-                    React.createElement("dd", { className: "col4" },
-                        React.createElement("select", { name: "position", onChange: handlePositionChange },
-                            React.createElement("option", { value: "after" }, "After"),
-                            React.createElement("option", { value: "before" }, "Before"))),
-                    React.createElement("dt", { className: "col5" }, "Item"),
-                    React.createElement("dd", { className: "col5" },
-                        React.createElement("select", { name: "otherItem", onChange: handleOtherItemChange },
-                            React.createElement("option", { value: "" }, "Select one..."),
-                            itemOptions()))),
-                React.createElement(modal_1.ModalButtons, { buttons: modalButtons })))));
+        React.createElement("div", { className: "sectionItemMoveDialog" },
+            React.createElement("dl", null,
+                React.createElement("dt", { className: "col1" }, "Page"),
+                React.createElement("dd", { className: "col1" },
+                    React.createElement("select", { name: "page", onChange: handlePageChange },
+                        React.createElement("option", { value: "1" }, "1"))),
+                React.createElement("dt", { className: "col2" }, "Section"),
+                React.createElement("dd", { className: "col2" },
+                    React.createElement("select", { name: "section", onChange: handleSectionChange }, sections.map(function (s) {
+                        return React.createElement("option", { key: "section-option-" + s.id, value: s.id }, s.id);
+                    }))),
+                React.createElement("dt", { className: "col3" }, "Column"),
+                React.createElement("dd", { className: "col3" },
+                    React.createElement("select", { name: "column", onChange: handleColumnChange }, columnOptions())),
+                React.createElement("dt", { className: "col4" }, "Position"),
+                React.createElement("dd", { className: "col4" },
+                    React.createElement("select", { name: "position", onChange: handlePositionChange },
+                        React.createElement("option", { value: "after" }, "After"),
+                        React.createElement("option", { value: "before" }, "Before"))),
+                React.createElement("dt", { className: "col5" }, "Item"),
+                React.createElement("dd", { className: "col5" },
+                    React.createElement("select", { name: "otherItem", onChange: handleOtherItemChange },
+                        React.createElement("option", { value: "" }, "Select one..."),
+                        itemOptions()))),
+            React.createElement(modal_1.ModalButtons, { buttons: modalButtons }))));
 };
 exports.SectionItemMoveDialog = SectionItemMoveDialog;
 
@@ -49472,6 +49509,100 @@ var SectionItem = function (_a) {
         React.createElement("section", null)));
 };
 exports.SectionItem = SectionItem;
+
+
+/***/ }),
+
+/***/ "./src/section-authoring/components/section-move-dialog.scss":
+/*!*******************************************************************!*\
+  !*** ./src/section-authoring/components/section-move-dialog.scss ***!
+  \*******************************************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ }),
+
+/***/ "./src/section-authoring/components/section-move-dialog.tsx":
+/*!******************************************************************!*\
+  !*** ./src/section-authoring/components/section-move-dialog.tsx ***!
+  \******************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.SectionMoveDialog = void 0;
+var React = __webpack_require__(/*! react */ "react");
+var react_1 = __webpack_require__(/*! react */ "react");
+var modal_1 = __webpack_require__(/*! ../../shared/components/modal/modal */ "./src/shared/components/modal/modal.tsx");
+var close_icon_1 = __webpack_require__(/*! ../../shared/components/icons/close-icon */ "./src/shared/components/icons/close-icon.tsx");
+var move_icon_1 = __webpack_require__(/*! ../../shared/components/icons/move-icon */ "./src/shared/components/icons/move-icon.tsx");
+__webpack_require__(/*! ./section-move-dialog.scss */ "./src/section-authoring/components/section-move-dialog.scss");
+var SectionMoveDialog = function (_a) {
+    var sectionId = _a.sectionId, sections = _a.sections, _b = _a.selectedPageId, selectedPageId = _b === void 0 ? "0" : _b, _c = _a.selectedPosition, selectedPosition = _c === void 0 ? "after" : _c, _d = _a.selectedOtherSectionId, initSelectedOtherSectionId = _d === void 0 ? "0" : _d, moveFunction = _a.moveFunction, closeDialogFunction = _a.closeDialogFunction;
+    var _e = react_1.useState(initSelectedOtherSectionId), selectedOtherSectionId = _e[0], setSelectedOtherSectionId = _e[1];
+    var _f = react_1.useState(true), modalVisibility = _f[0], setModalVisibility = _f[1];
+    var handlePageChange = function (change) {
+        selectedPageId = change.target.value;
+    };
+    var handlePositionChange = function (change) {
+        selectedPosition = change.target.value;
+    };
+    var handleOtherSectionChange = function (change) {
+        var otherSectionId = change.target.value;
+        setSelectedOtherSectionId(otherSectionId);
+    };
+    var handleCloseDialog = function () {
+        closeDialogFunction();
+    };
+    var handleMoveSection = function () {
+        moveFunction(sectionId, selectedPageId, selectedPosition, selectedOtherSectionId);
+        closeDialogFunction();
+    };
+    var sectionOptions = function () {
+        var sectionsList = [];
+        if (selectedPageId) {
+            var selectedSection = sections.find(function (s) { return s.id === sectionId; });
+            if (selectedSection === null || selectedSection === void 0 ? void 0 : selectedSection.items) {
+                sectionsList = sections.filter(function (s) { return s.id !== sectionId; });
+            }
+        }
+        if (sectionsList.length < 1) {
+            return;
+        }
+        return sectionsList === null || sectionsList === void 0 ? void 0 : sectionsList.map(function (s) { return (React.createElement("option", { key: s.id, value: "" + s.id },
+            "Section ", s.id + " " + (s.title ? s.title : ""))); });
+    };
+    var modalButtons = [
+        { classes: "cancel", clickHandler: handleCloseDialog, disabled: false, svg: React.createElement(close_icon_1.Close, { height: "12", width: "12" }), text: "Cancel" },
+        { classes: "move", clickHandler: handleMoveSection, disabled: false, svg: React.createElement(move_icon_1.Move, { height: "16", width: "16" }), text: "Move" }
+    ];
+    return (React.createElement(modal_1.Modal, { title: "Move this section to...", visibility: modalVisibility, width: 600 },
+        React.createElement("div", { className: "sectionMoveDialog" },
+            React.createElement("dl", null,
+                React.createElement("dt", { className: "col1" }, "Page"),
+                React.createElement("dd", { className: "col1" },
+                    React.createElement("select", { name: "page", onChange: handlePageChange },
+                        React.createElement("option", { value: "1" }, "1"))),
+                React.createElement("dt", { className: "col2" }, "Position"),
+                React.createElement("dd", { className: "col2" },
+                    React.createElement("select", { name: "position", onChange: handlePositionChange },
+                        React.createElement("option", { value: "after" }, "After"),
+                        React.createElement("option", { value: "before" }, "Before"))),
+                React.createElement("dt", { className: "col3" }, "Section"),
+                React.createElement("dd", { className: "col3" },
+                    React.createElement("select", { name: "otherItem", onChange: handleOtherSectionChange },
+                        React.createElement("option", { value: "" }, "Select one..."),
+                        sectionOptions()))),
+            React.createElement(modal_1.ModalButtons, { buttons: modalButtons }))));
+};
+exports.SectionMoveDialog = SectionMoveDialog;
 
 
 /***/ }),
