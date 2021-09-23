@@ -1,12 +1,12 @@
 import {
   IPage, PageId, ISection,
-  APIPageGetF, APIPagesGetF, IAPIPages,
+  APIPageGetF, APIPagesGetF, IAuthoringApi,
   ICreatePageItem, ILibraryInteractiveResponse
-} from "../authoring-types";
+} from "../api-types";
 
 const APIBase = "/api/v1";
 
-export const getLaraPageAPI = (host: string = "", activityId: string): IAPIPages => {
+export const getLaraPageAPI = (host: string = "", activityId: string): IAuthoringApi => {
 
   const prefix = `${host}/${APIBase}`;
   // endpoints:

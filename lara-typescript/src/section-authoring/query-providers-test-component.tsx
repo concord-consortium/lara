@@ -1,7 +1,7 @@
 
 import * as React from "react";
 import {QueryClient, QueryClientProvider } from "react-query";
-import { IPage } from "./authoring-types";
+import { IPage } from "./api-types";
 import { usePageAPI } from "./apis/use-api-provider";
 
 const queryClient = new QueryClient();

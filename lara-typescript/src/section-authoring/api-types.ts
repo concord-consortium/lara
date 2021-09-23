@@ -48,7 +48,7 @@ export type APISectionCreateF = (pageId: PageId) => Promise<IPage>;
 export type APIPageItemCreateF = (pageId: PageId, newPageItem: ICreatePageItem) => Promise<IPage>;
 export type APISectionUpdateF = (pageId: PageId, changes: { section: Partial<ISection> }) => Promise<IPage>;
 
-export interface IAPIPages {
+export interface IAuthoringApi {
   getPages: APIPagesGetF;
   getPage: APIPageGetF;
   createPage: APIPageCreateF;

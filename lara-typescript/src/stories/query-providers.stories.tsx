@@ -10,7 +10,6 @@ export default {
   component: App,
 } as ComponentMeta<typeof App>;
 
-
 // TODO Parameterize host and PageID
 export const FakeAPI = () => {
   return(
