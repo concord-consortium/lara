@@ -1,0 +1,40 @@
+@import "../../vars.scss";
+
+select {
+  border: solid 1.5px var(--med-gray);
+  border-radius: 4px;
+  padding: 5px 10px;
+}
+.sectionMoveDialog {
+  dl {
+    display: grid;
+    grid-template-columns: 1fr 1fr 2fr;
+    grid-gap: 10px;
+    grid-auto-flow: dense;
+    margin: 0 0 20px;
+    padding: 0;
+  }
+  dt {
+    margin: 0;
+    padding: 0;
+  }
+  dd {
+    margin: 0;
+    padding: 0;
+
+    select {
+      overflow: hidden;
+      width: 100%;
+    }
+  }
+} 
+
+.sectionMoveDialog dt.col1, .sectionMoveDialog dd.col1 {
+  grid-column: 1;
+}
+.sectionMoveDialog dt.col2, .sectionMoveDialog dd.col2 {
+  grid-column: 2;
+}
+.sectionMoveDialog dt.col3, .sectionMoveDialog dd.col3 {
+  grid-column: 3;
+}
