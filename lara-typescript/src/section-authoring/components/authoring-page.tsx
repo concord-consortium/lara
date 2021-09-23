@@ -2,36 +2,14 @@ import * as React from "react";
 import { useState } from "react";
 import { AuthoringSection, ISectionProps } from "./authoring-section";
 import { SectionMoveDialog } from "./section-move-dialog";
-import { ICreatePageItem } from "../api-types";
-import { ISectionItemProps } from "./section-item";
+import { ICreatePageItem, IPage, ISection, ISectionItem} from "../api/api-types";
 import { SectionItemMoveDialog } from "./section-item-move-dialog";
 import { DragDropContext, Droppable, Draggable, DropResult } from "react-beautiful-dnd";
-import { ISectionItem } from "./section-item-picker";
 import { Add } from "../../shared/components/icons/add-icon";
 
 import "./authoring-page.scss";
 
-export interface IPageProps {
-
-  /**
-   * Record ID
-   */
-  id: string;
-
-  /**
-   * Optional title for the page
-   */
-  title?: string;
-
-  /**
-   * Sections on this page:
-   */
-  sections: ISectionProps[];
-
-  /**
-   * Is page a completion page?
-   */
-  isCompletion?: boolean;
+export interface IPageProps extends IPage {
 
   /**
    * Callback to invoke when section has been added
@@ -41,37 +19,32 @@ export interface IPageProps {
   /**
    * Callback to invoke when section has changed
    */
-  changeSection?: (changes: {section: Partial<ISectionProps>, sectionID: string}) => void;
+  changeSection?: (changes: {section: Partial<ISection>, sectionID: string}) => void;
 
   /*
    * Callback to invoke when sections have been rearranged or deleted
    */
-  setSections?: (pageData: {id: string, sections: ISectionProps[]}) => void;
+  setSections?: (pageData: {id: string, sections: ISection[]}) => void;
 
   /**
    * Move a section
    */
-  sectionToMove?: ISectionProps;
-
-  /**
-   * Items on this page:
-   */
-  items?: ISectionItemProps[];
+  sectionToMove?: ISection;
 
   /*
    * Callback to invoke when items have been rearranged or deleted
    */
-  setPageItems?: (items: ISectionItemProps[]) => void;
+  setPageItems?: (items: ISectionItem[]) => void;
 
   /**
    * Move an item
    */
-  itemToMove?: ISectionItemProps;
+  itemToMove?: ISectionItem;
 
   /*
    * List of all section items available
    */
-  allSectionItems?: ISectionItem[];
+  allEmbeddables?: ISectionItem[];
 
   /**
    * how to add a new page item
@@ -89,9 +62,9 @@ export const AuthoringPage: React.FC<IPageProps> = ({
   changeSection,
   setSections,
   sectionToMove: initSectionToMove,
-  items: initItems = [] as ISectionItemProps[],
+  items: initItems = [] as ISectionItem[],
   itemToMove: initItemToMove,
-  allSectionItems,
+  allEmbeddables: allEmbeddables,
   addPageItem,
   isCompletion = false
   }: IPageProps) => {
@@ -100,10 +73,10 @@ export const AuthoringPage: React.FC<IPageProps> = ({
   const [itemToMove, setItemToMove] = useState(initItemToMove);
   const [items, setItems] = useState([...initItems]);
 
-  const updateSectionItems = (newItems: ISectionItemProps[], sectionId: string) => {
+  const updateSectionItems = (newItems: ISectionItem[], sectionId: string) => {
     const sectionIndex = sections.findIndex(i => i.id === sectionId);
     sections[sectionIndex].items = newItems;
-    const updatedItems = [] as ISectionItemProps[];
+    const updatedItems = [] as ISectionItem[];
     sections.forEach((s) => {
       if (s.items) {
         s.items.forEach((i) => {
@@ -162,7 +135,7 @@ export const AuthoringPage: React.FC<IPageProps> = ({
 
   const handleDelete = (sectionId: string) => {
     if (setSections) {
-      const nextSections: ISectionProps[] = [];
+      const nextSections: ISection[] = [];
       sections.forEach(s => {
         if (s.id !== sectionId) {
           nextSections.push(s);
@@ -175,7 +148,7 @@ export const AuthoringPage: React.FC<IPageProps> = ({
 
   const handleCopy = (sectionId: string) => {
     if (setSections) {
-      const nextSections: ISectionProps[] = [];
+      const nextSections: ISection[] = [];
       const copiedSectionIndex = sections.findIndex(i => i.id === sectionId);
       const copiedSection = sections[copiedSectionIndex];
       const newSection = Object.assign({}, copiedSection);
@@ -187,7 +160,7 @@ export const AuthoringPage: React.FC<IPageProps> = ({
       newSectionItems.forEach(i => {
         // ID value should probably be determined some other way once this is integrated into LARA
         i.id = i.id + "-copy";
-        i.section_id = newSection.id;
+        i.id = newSection.id;
       });
 
       sections.forEach(s => {
@@ -231,9 +204,9 @@ export const AuthoringPage: React.FC<IPageProps> = ({
     ) => {
     const itemIndex = items.findIndex(i => i.id === itemId);
     const item = items[itemIndex];
-    const otherItemIndex = items.findIndex(i => (i.id === selectedOtherItemId && i.section_id === selectedSectionId));
+    const otherItemIndex = items.findIndex(i => (i.id === selectedOtherItemId && i.id === selectedSectionId));
     const otherItem = items[otherItemIndex];
-    item.section_id = selectedSectionId;
+    item.id = selectedSectionId;
     item.section_col = selectedColumn;
     item.position = otherItem ? otherItem.position : 1;
     const newIndex = otherItemIndex
@@ -246,13 +219,13 @@ export const AuthoringPage: React.FC<IPageProps> = ({
     updatedItems.splice(newIndex, 0, item);
     let sectionItemsCount = 0;
     updatedItems.forEach((i, index) => {
-      if (otherItem && i.section_id === otherItem.section_id) {
+      if (otherItem && i.id === otherItem.id) {
         updatedItems[index].position = ++sectionItemsCount;
       }
     });
     setItems(updatedItems);
     sections.forEach((s, index) => {
-      sections[index].items = items.filter(i => i.section_id === s.id);
+      sections[index].items = items.filter(i => i.id === s.id);
     });
     if (setSections) {
       setSections({ id, sections });
@@ -290,7 +263,7 @@ export const AuthoringPage: React.FC<IPageProps> = ({
                             moveFunction={handleMoveSectionInit}
                             deleteFunction={handleDelete}
                             copyFunction={handleCopy}
-                            allSectionItems={allSectionItems}
+                            allEmbeddables={allEmbeddables}
                             addPageItem={addPageItem}
                             moveItemFunction={handleMoveItemInit}
                             updatePageItems={updateSectionItems} />

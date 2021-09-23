@@ -1,19 +1,19 @@
 
 import * as React from "react";
 import {QueryClient, QueryClientProvider } from "react-query";
-import { IPage } from "./api-types";
-import { usePageAPI } from "./apis/use-api-provider";
+import { IPage } from "./api/api-types";
+import { usePageAPI } from "./api/use-api-provider";
 
 const queryClient = new QueryClient();
 
 // This is a simple DEMO Pages Component to exercise the query providers.
 const Pages = () => {
-  const { queryAll, addMutation, deleteMutation } = usePageAPI();
-  const addPage = () => addMutation.mutate();
+  const { getPages, addPageMutation, deletePageMutation } = usePageAPI();
+  const addPage = () => addPageMutation.mutate();
 
   const PageDiv = (params: {page: IPage}) => {
     const {page} = params;
-    const deleteAction = () => deleteMutation.mutate(page.id);
+    const deleteAction = () => deletePageMutation.mutate(page.id);
     return(
       <li key={page.id}>
         {page.id} {page.title}
@@ -25,7 +25,7 @@ const Pages = () => {
   return(
     <div>
       <ul>
-        {queryAll.data?.map(p => <PageDiv key={p.id} page={p}/>)}
+        {getPages.data?.map(p => <PageDiv key={p.id} page={p}/>)}
       </ul>
       <button onClick={addPage}>Add</button>
     </div>

@@ -1,16 +1,16 @@
 import * as React from "react";
 import { withReactContext } from "storybook-react-context";
 import { QueryClient, QueryClientProvider} from "react-query";
-
-import {Layouts, ISectionProps } from "../section-authoring/components/authoring-section";
-import {IPageProps, AuthoringPage} from "../section-authoring/components/authoring-page";
+import { ISectionProps } from "../section-authoring/components/authoring-section";
+import { IPageProps, AuthoringPage} from "../section-authoring/components/authoring-page";
+import { SectionLayouts  } from "../section-authoring/api/api-types";
 import { QueryBoundPage } from "../section-authoring/components/query-bound-page";
 
 const pageId = "1";
 const initialState = {
   sections: [
-    { id: "1", layout: Layouts.LAYOUT_30_70, position: 1 },
-    { id: "2", layout: Layouts.LAYOUT_30_70, position: 2 },
+    { id: "1", layout: SectionLayouts.LAYOUT_30_70, position: 1 },
+    { id: "2", layout: SectionLayouts.LAYOUT_30_70, position: 2 },
   ]
 };
 
@@ -27,7 +27,7 @@ export const AuthoringPageStory = (_: any, { context: [state, dispatch] }: ICont
       sections: [...state.sections,
         {
           id: `${++sectionIdCounter}`,
-          layout: Layouts.LAYOUT_30_70,
+          layout: SectionLayouts.LAYOUT_30_70,
           position: ++sectionPositionCounter,
           interactive_page_id: pageId
         }
@@ -77,16 +77,4 @@ export const LaraConnectedPageStory = () => {
 };
 LaraConnectedPageStory.title = "Connected to LARA ... ";
 
-// const Template: ComponentStory<typeof AuthoringPage> = (args: IPageProps) => <AuthoringPage {...args} />;
 
-// export const withTwoSections = Template.bind({});
-// const sections = [
-//   {
-//     id: 1,
-//     layout: Layouts.LAYOUT_30_70
-//   },
-//   {
-//     id: 2,
-//     layout: Layouts.LAYOUT_70_30
-//   }
-// ];

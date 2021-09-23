@@ -1,7 +1,6 @@
 import * as React from "react";
 import { useState } from "react";
-import { ISectionProps } from "./authoring-section";
-import { ISectionItemProps } from "./section-item";
+import { ISectionItem, ISection } from "../api/api-types";
 import { Modal, ModalButtons } from "../../shared/components/modal/modal";
 import { Close } from "../../shared/components/icons/close-icon";
 import { Move } from "../../shared/components/icons/move-icon";
@@ -9,8 +8,8 @@ import { Move } from "../../shared/components/icons/move-icon";
 import "./section-item-move-dialog.scss";
 
 export interface ISectionItemMoveDialogProps {
-  item: ISectionItemProps;
-  sections: ISectionProps[];
+  item: ISectionItem;
+  sections: ISection[];
   selectedPageId?: string;
   selectedSectionId?: string;
   selectedColumn?: number;
@@ -94,7 +93,7 @@ export const SectionItemMoveDialog: React.FC<ISectionItemMoveDialogProps> = ({
   };
 
   const itemOptions = () => {
-    let itemsList: ISectionItemProps[] = [];
+    let itemsList: ISectionItem[] = [];
     if (selectedSectionId) {
       const selectedSection = sections.find(s => s.id === selectedSectionId);
       if (selectedSection?.items) {

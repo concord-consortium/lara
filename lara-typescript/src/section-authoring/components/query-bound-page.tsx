@@ -2,7 +2,7 @@ import * as React from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { AuthoringPage, IPageProps } from "./authoring-page";
 import { ISectionProps } from "./authoring-section";
-import { ICreatePageItem, ILibraryInteractiveResponse, IPage} from "../authoring-types";
+import { ICreatePageItem, ILibraryInteractiveResponse, IPage} from "../api/api-types";
 
 const APIBase = "/api/v1";
 interface IQueryBoundPage extends IPageProps {
@@ -128,7 +128,7 @@ export const QueryBoundPage = (props: IQueryBoundPage) => {
   return <AuthoringPage {...
     {
       id, sections, setSections, addSection, changeSection,
-      allSectionItems, addPageItem, isCompletion
+      allEmbeddables: allSectionItems, addPageItem, isCompletion
     }
   }/>;
 };

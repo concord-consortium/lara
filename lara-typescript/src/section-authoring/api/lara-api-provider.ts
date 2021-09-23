@@ -2,7 +2,7 @@ import {
   IPage, PageId, ISection,
   APIPageGetF, APIPagesGetF, IAuthoringApi,
   ICreatePageItem, ILibraryInteractiveResponse
-} from "../api-types";
+} from "./api-types";
 
 const APIBase = "/api/v1";
 
@@ -62,17 +62,13 @@ export const getLaraPageAPI = (host: string = "", activityId: string): IAuthorin
     return sendToLara({url: deletePageUrl(id), method: "POST"});
   };
 
-  const updateSections = (nextPage: IPage) => {
-    return sendToLara({url: updatePageSectionsURL(nextPage.id), method: "PUT", body: nextPage});
-  };
-
   const createSection = (id: PageId) => {
     return sendToLara({url: createPageSectionUrl(id), method: "POST"});
     // This shouldn't be required :  body: JSON.stringify({ id })
   };
 
-  const createPageItem = (pageId: PageId, newPageItem: ICreatePageItem) => {
-    return sendToLara({url: createPageItemUrl(pageId), method: "POST", body: newPageItem});
+  const updateSections = (nextPage: IPage) => {
+    return sendToLara({url: updatePageSectionsURL(nextPage.id), method: "PUT", body: nextPage});
   };
 
   const updateSection = (pageId: PageId, changes: { section: Partial<ISection> }) => {
@@ -80,8 +76,12 @@ export const getLaraPageAPI = (host: string = "", activityId: string): IAuthorin
     return sendToLara({url: updateSectionUrl(pageId), method: "POST", body: data});
   };
 
+  const createPageItem = (pageId: PageId, newPageItem: ICreatePageItem) => {
+    return sendToLara({url: createPageItemUrl(pageId), method: "POST", body: newPageItem});
+  };
+
   return {
     getPages, getPage, createPage, deletePage,
-    updateSections, createSection, createPageItem, updateSection
+    createSection, updateSections, createPageItem, updateSection
   };
 };
