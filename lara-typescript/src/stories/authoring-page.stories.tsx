@@ -8,7 +8,10 @@ import { QueryBoundPage } from "../section-authoring/components/query-bound-page
 
 const pageId = "1";
 const initialState = {
-  sections: [ { id: "1", layout: Layouts.LAYOUT_30_70 } ]
+  sections: [
+    { id: "1", layout: Layouts.LAYOUT_30_70, position: 1 },
+    { id: "2", layout: Layouts.LAYOUT_30_70, position: 2 },
+  ]
 };
 
 interface IContext {
@@ -16,6 +19,7 @@ interface IContext {
 }
 
 let sectionIdCounter = 3;
+let sectionPositionCounter = 3;
 
 export const AuthoringPageStory = (_: any, { context: [state, dispatch] }: IContext) => {
   const addSection = () => {
@@ -24,6 +28,7 @@ export const AuthoringPageStory = (_: any, { context: [state, dispatch] }: ICont
         {
           id: `${++sectionIdCounter}`,
           layout: Layouts.LAYOUT_30_70,
+          position: ++sectionPositionCounter,
           interactive_page_id: pageId
         }
       ]

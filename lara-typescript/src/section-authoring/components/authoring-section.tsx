@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useState } from "react";
 import { GripLines } from "../../shared/components/icons/grip-lines";
 import { SectionItem, ISectionItemProps} from "./section-item";
 import { ISectionItem, SectionItemPicker } from "./section-item-picker";
@@ -69,6 +70,16 @@ export interface ISectionProps {
   deleteFunction?: (id: string) => void;
 
   /**
+   * Optional function to move the section
+   */
+  moveFunction?: (id: string) => void;
+
+  /**
+   * Optional function to copy the section
+   */
+  copyFunction?: (id: string) => void;
+
+  /**
    * Or display order on the page
    */
   position?: number;
@@ -106,12 +117,12 @@ export interface ISectionProps {
   /**
    * how to add a new page item
    */
-   addPageItem?: (pageItem: ICreatePageItem) => void;
+  addPageItem?: (pageItem: ICreatePageItem) => void;
 
-   /**
-    * DraggingContext
-    */
-   draggableProvided?: DraggableProvided;
+  /**
+   * DraggingContext
+   */
+  draggableProvided?: DraggableProvided;
 }
 
 /**
@@ -121,6 +132,8 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
   id,
   updateFunction,
   deleteFunction,
+  moveFunction,
+  copyFunction,
   layout: initLayout = defaultLayout,
   items: initItems = [],
   collapsed: initCollapsed = false,
@@ -132,10 +145,10 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
   addPageItem
   }: ISectionProps) => {
 
-  const [items, setItems] = React.useState([...initItems]); // TODO: Initial Items as in layout
-  const [layout, setLayout] = React.useState(initLayout);
-  const [collapsed, setCollapsed] = React.useState(initCollapsed);
-  const [showAddItem, setShowAddItem] = React.useState(false);
+  const [items, setItems] = useState([...initItems]); // TODO: Initial Items as in layout
+  const [layout, setLayout] = useState(initLayout);
+  const [collapsed, setCollapsed] = useState(initCollapsed);
+  const [showAddItem, setShowAddItem] = useState(false);
 
   React.useEffect(() => {
     setLayout(initLayout);
@@ -162,13 +175,13 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
   };
 
   const handleMove = () => {
-    // tslint:disable-next-line:no-console
-    console.log("move");
+    if (moveFunction) {
+      moveFunction(id);
+    }
   };
 
   const handleCopy = () => {
-    // tslint:disable-next-line:no-console
-    console.log("copy");
+    copyFunction?.(id);
   };
 
   const sortedItems = () => {

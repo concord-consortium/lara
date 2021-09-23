@@ -1,6 +1,7 @@
 import * as React from "react";
 import { useState } from "react";
 import { AuthoringSection, ISectionProps } from "./authoring-section";
+import { SectionMoveDialog } from "./section-move-dialog";
 import { ICreatePageItem } from "../api-types";
 import { ISectionItemProps } from "./section-item";
 import { SectionItemMoveDialog } from "./section-item-move-dialog";
@@ -48,6 +49,11 @@ export interface IPageProps {
   setSections?: (pageData: {id: string, sections: ISectionProps[]}) => void;
 
   /**
+   * Move a section
+   */
+  sectionToMove?: ISectionProps;
+
+  /**
    * Items on this page:
    */
   items?: ISectionItemProps[];
@@ -82,6 +88,7 @@ export const AuthoringPage: React.FC<IPageProps> = ({
   addSection,
   changeSection,
   setSections,
+  sectionToMove: initSectionToMove,
   items: initItems = [] as ISectionItemProps[],
   itemToMove: initItemToMove,
   allSectionItems,
@@ -89,6 +96,7 @@ export const AuthoringPage: React.FC<IPageProps> = ({
   isCompletion = false
   }: IPageProps) => {
 
+  const [sectionToMove, setSectionToMove] = useState(initSectionToMove);
   const [itemToMove, setItemToMove] = useState(initItemToMove);
   const [items, setItems] = useState([...initItems]);
 
@@ -116,6 +124,42 @@ export const AuthoringPage: React.FC<IPageProps> = ({
     return [...array];
   };
 
+  const handleMoveSectionInit = (sectionId: string) => {
+    const section = sections.find(s => s.id === sectionId);
+    if (section) {
+      setSectionToMove(section);
+    }
+  };
+
+  const handleMoveSection = (
+    sectionId: string,
+    selectedPageId: string,
+    selectedPosition: string,
+    selectedOtherSectionId: string
+    ) => {
+    const sectionIndex = sections.findIndex(s => s.id === sectionId);
+    const section = sections[sectionIndex];
+    const otherSectionIndex = sections.findIndex(s => s.id === selectedOtherSectionId);
+    const otherSection = sections[otherSectionIndex];
+    const newIndex = otherSectionIndex
+                       ? selectedPosition === "after"
+                         ? otherSectionIndex + 1
+                         : otherSectionIndex - 1
+                       : 0;
+    const updatedSections = sections;
+    updatedSections.splice(sectionIndex, 1);
+    updatedSections.splice(newIndex, 0, section);
+    let sectionsCount = 0;
+    updatedSections.forEach((s, index) => {
+      if (otherSection) {
+        updatedSections[index].position = ++sectionsCount;
+      }
+    });
+    if (setSections && updatedSections) {
+      setSections({id, sections: updatedSections});
+    }
+  };
+
   const handleDelete = (sectionId: string) => {
     if (setSections) {
       const nextSections: ISectionProps[] = [];
@@ -124,6 +168,35 @@ export const AuthoringPage: React.FC<IPageProps> = ({
           nextSections.push(s);
         }
       });
+      const update = { id, sections: nextSections };
+      setSections(update);
+    }
+  };
+
+  const handleCopy = (sectionId: string) => {
+    if (setSections) {
+      const nextSections: ISectionProps[] = [];
+      const copiedSectionIndex = sections.findIndex(i => i.id === sectionId);
+      const copiedSection = sections[copiedSectionIndex];
+      const newSection = Object.assign({}, copiedSection);
+      const newSectionIndex = copiedSectionIndex + 1;
+      // ID value should probably be determined some other way once this is integrated into LARA
+      newSection.id = (sections.length + 1).toString();
+      newSection.position = copiedSection.position ? copiedSection.position++ : undefined;
+      const newSectionItems = newSection.items || [];
+      newSectionItems.forEach(i => {
+        // ID value should probably be determined some other way once this is integrated into LARA
+        i.id = i.id + "-copy";
+        i.section_id = newSection.id;
+      });
+
+      sections.forEach(s => {
+        if (s.position && copiedSection.position && s.position > copiedSection.position) {
+          s.position = s.position++;
+        }
+        nextSections.push(s);
+      });
+      nextSections.splice(newSectionIndex, 0, newSection);
       const update = { id, sections: nextSections };
       setSections(update);
     }
@@ -186,7 +259,8 @@ export const AuthoringPage: React.FC<IPageProps> = ({
     }
   };
 
-  const handleCloseMoveItemDialog = () => {
+  const handleCloseDialog = () => {
+    setSectionToMove(undefined);
     setItemToMove(undefined);
   };
 
@@ -201,8 +275,8 @@ export const AuthoringPage: React.FC<IPageProps> = ({
               {
                 sections.map( (sProps, index) => (
                   <Draggable
-                    key={sProps.id}
-                    draggableId={sProps.id}
+                    key={`section-${sProps.id}-${index}-draggable`}
+                    draggableId={`section-${sProps.id}-${index}`}
                     index={index}>
                   {
                     (draggableProvided) => (
@@ -211,9 +285,11 @@ export const AuthoringPage: React.FC<IPageProps> = ({
                         ref={draggableProvided.innerRef}>
                           <AuthoringSection {...sProps}
                             draggableProvided={draggableProvided}
-                            key={sProps.id}
+                            key={`section-${sProps.id}-${index}`}
                             updateFunction={changeSection}
+                            moveFunction={handleMoveSectionInit}
                             deleteFunction={handleDelete}
+                            copyFunction={handleCopy}
                             allSectionItems={allSectionItems}
                             addPageItem={addPageItem}
                             moveItemFunction={handleMoveItemInit}
@@ -232,12 +308,20 @@ export const AuthoringPage: React.FC<IPageProps> = ({
           )}
         </Droppable>
       </DragDropContext>
+      {sectionToMove &&
+        <SectionMoveDialog
+          sectionId={sectionToMove.id}
+          sections={sections}
+          moveFunction={handleMoveSection}
+          closeDialogFunction={handleCloseDialog}
+        />
+      }
       {itemToMove &&
         <SectionItemMoveDialog
           item={itemToMove}
           sections={sections}
-          moveItemFunction={handleMoveItem}
-          closeDialogFunction={handleCloseMoveItemDialog}
+          moveFunction={handleMoveItem}
+          closeDialogFunction={handleCloseDialog}
         />
       }
     </>
