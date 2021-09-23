@@ -75,6 +75,11 @@ export interface ISectionProps {
   moveFunction?: (id: string) => void;
 
   /**
+   * Optional function to copy the section
+   */
+  copyFunction?: (id: string) => void;
+
+  /**
    * Or display order on the page
    */
   position?: number;
@@ -112,12 +117,12 @@ export interface ISectionProps {
   /**
    * how to add a new page item
    */
-   addPageItem?: (pageItem: ICreatePageItem) => void;
+  addPageItem?: (pageItem: ICreatePageItem) => void;
 
-   /**
-    * DraggingContext
-    */
-   draggableProvided?: DraggableProvided;
+  /**
+   * DraggingContext
+   */
+  draggableProvided?: DraggableProvided;
 }
 
 /**
@@ -128,6 +133,7 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
   updateFunction,
   deleteFunction,
   moveFunction,
+  copyFunction,
   layout: initLayout = defaultLayout,
   items: initItems = [],
   collapsed: initCollapsed = false,
@@ -175,8 +181,7 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
   };
 
   const handleCopy = () => {
-    // tslint:disable-next-line:no-console
-    console.log("copy");
+    copyFunction?.(id);
   };
 
   const sortedItems = () => {
