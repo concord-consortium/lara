@@ -1,15 +1,5 @@
-:root {
-  --dark-teal: #218389;
-  --teal: #0592af;
-  --lt-teal: #93d5e4;
-  --ltr-teal: #cdebf2;
-  --ltst-teal: #e2f4f8;
-  --orange: #ea6d2f;
-  --dark-gray: #3f3f3f;
-  --med-gray: #979797;
-  --lt-gray: hsl(0,0%,90%);
-  --font-family: lato, arial, helvetica, sans-serif;
-}
+@import "../../vars.scss";
+
 select {
   border: solid 1.5px var(--med-gray);
   border-radius: 4px;

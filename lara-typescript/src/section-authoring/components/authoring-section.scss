@@ -4,14 +4,14 @@ a {
   color: inherit;
 }
 
-button.big-button {
+button.bigButton {
   background: var(--ltr-teal);
   border: solid 1px var(--med-gray);
   border-radius: 4px;
   color: var(--dark-gray);
   cursor: pointer;
   display: block;
-  font-family: var(--font-family);
+  font-family: var(--font-family-default);
   font-size: 18px;
   font-weight: 700;
   line-height: 1;
@@ -39,14 +39,14 @@ button.big-button {
   }
 }
 
-button.small-button {
+button.smallButton {
   background: var(--ltst-teal);
   border: solid 1px var(--med-gray);
   border-radius: 4px;
   color: var(--dark-gray);
   cursor: pointer;
   display: flex;
-  font-family: var(--font-family);
+  font-family: var(--font-family-default);
   font-size: 14px;
   font-weight: 700;
   line-height: 1;
@@ -78,7 +78,7 @@ button.small-button {
 }
 
 
-input[type="submit"].big-button {
+input[type="submit"].bigButton {
   background: var(--teal);
   border: none;
   border-radius: 8px;

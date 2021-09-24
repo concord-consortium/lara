@@ -1,16 +1,5 @@
-:root {
-  --dark-teal: #218389;
-  --teal: #0592af;
-  --lt-teal: #93d5e4;
-  --ltr-teal: #cdebf2;
-  --ltst-teal: #e2f4f8;
-  --lt-orange: #ffe6d0;
-  --orange: #ea6d2f;
-  --dark-gray: #3f3f3f;
-  --med-gray: #979797;
-  --lt-gray: hsl(0,0%,90%);
-  --font-family: lato, arial, helvetica, sans-serif;
-}
+@import "../../vars.scss";
+
 .activity-nav {
   align-items: center;
   background-color: white;
