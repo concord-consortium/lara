@@ -1,13 +1,16 @@
 import * as React from "react";
 
 const kDefaultHight = "1em";
+const kDefaultWidth = "1em";
 
 export interface ICogProps {
   height?: string;
+  width?: string;
 }
 
 export const Cog = (props: ICogProps) => {
   const height = props.height ? props.height : kDefaultHight;
+  const width = props.width ? props.width : kDefaultWidth;
 
   return(
     <svg
@@ -15,6 +18,7 @@ export const Cog = (props: ICogProps) => {
       focusable="false"
       role="img"
       height={height}
+      width={width}
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 512 512">
         <path

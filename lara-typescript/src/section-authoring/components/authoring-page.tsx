@@ -1,5 +1,6 @@
 import * as React from "react";
 import { useState } from "react";
+import { PageSettingsDialog } from "../../page-settings/components/page-settings-dialog";
 import { AuthoringSection, ISectionProps } from "./authoring-section";
 import { SectionMoveDialog } from "./section-move-dialog";
 import { ICreatePageItem } from "../api-types";
@@ -8,6 +9,7 @@ import { SectionItemMoveDialog } from "./section-item-move-dialog";
 import { DragDropContext, Droppable, Draggable, DropResult } from "react-beautiful-dnd";
 import { ISectionItem } from "./section-item-picker";
 import { Add } from "../../shared/components/icons/add-icon";
+import { Cog } from "../../shared/components/icons/cog-icon";
 
 import "./authoring-page.scss";
 
@@ -17,6 +19,11 @@ export interface IPageProps {
    * Record ID
    */
   id: string;
+
+  /**
+   * Is this a newly created page?
+   */
+  isNew?: boolean;
 
   /**
    * Optional title for the page
@@ -32,6 +39,26 @@ export interface IPageProps {
    * Is page a completion page?
    */
   isCompletion?: boolean;
+
+  /**
+   * Is page hidden from students?
+   */
+  isHidden?: boolean;
+
+  /**
+   * Does page have an argumentation block?
+   */
+  hasArgBlock?: boolean;
+
+  /**
+   * Does page have a student sidebar?
+   */
+  hasStudentSidebar?: boolean;
+
+  /**
+   * Does page have a Teacher Edition sidebar?
+   */
+  hasTESidebar?: boolean;
 
   /**
    * Callback to invoke when section has been added
@@ -76,7 +103,7 @@ export interface IPageProps {
   /**
    * how to add a new page item
    */
-   addPageItem?: (pageItem: ICreatePageItem) => void;
+  addPageItem?: (pageItem: ICreatePageItem) => void;
 }
 
 /**
@@ -84,6 +111,8 @@ export interface IPageProps {
  */
 export const AuthoringPage: React.FC<IPageProps> = ({
   id,
+  isNew = false,
+  title,
   sections = [],
   addSection,
   changeSection,
@@ -93,12 +122,39 @@ export const AuthoringPage: React.FC<IPageProps> = ({
   itemToMove: initItemToMove,
   allSectionItems,
   addPageItem,
-  isCompletion = false
+  isCompletion = false,
+  isHidden = false,
+  hasArgBlock = false,
+  hasStudentSidebar = false,
+  hasTESidebar = false
   }: IPageProps) => {
-
+  const [pageTitle, setPageTitle] = useState(title);
+  const [isCompletionPage, setIsCompletionPage] = useState(isCompletion);
+  const [isHiddenPage, setIsHiddenPage] = useState(isHidden);
+  const [pageHasArgBlock, setPageHasArgBlock] = useState(hasArgBlock);
+  const [pageHasStudentSidebar, setPageHasStudentSidebar] = useState(hasStudentSidebar);
+  const [pageHasTESidebar, setPageHasTESidebar] = useState(hasTESidebar);
   const [sectionToMove, setSectionToMove] = useState(initSectionToMove);
   const [itemToMove, setItemToMove] = useState(initItemToMove);
   const [items, setItems] = useState([...initItems]);
+  const [showSettings, setShowSettings] = useState(isNew);
+
+  const updateSettings = (
+    updatedTitle: string | undefined,
+    updatedIsCompletion: boolean,
+    updatedIsHidden: boolean,
+    updatedHasArgBlock: boolean,
+    updatedHasStudentSidebar: boolean,
+    updatedHasTESidebar: boolean
+  ) => {
+    setPageTitle(updatedTitle);
+    setIsCompletionPage(updatedIsCompletion);
+    setIsHiddenPage(updatedIsHidden);
+    setPageHasArgBlock(updatedHasArgBlock);
+    setPageHasStudentSidebar(updatedHasStudentSidebar);
+    setPageHasTESidebar(updatedHasTESidebar);
+    setShowSettings(false);
+  };
 
   const updateSectionItems = (newItems: ISectionItemProps[], sectionId: string) => {
     const sectionIndex = sections.findIndex(i => i.id === sectionId);
@@ -260,17 +316,25 @@ export const AuthoringPage: React.FC<IPageProps> = ({
   };
 
   const handleCloseDialog = () => {
+    setShowSettings(false);
     setSectionToMove(undefined);
     setItemToMove(undefined);
   };
 
+  const pageSettingsClickHandler = () => { setShowSettings(true); };
+  const displayTitle = pageTitle && pageTitle !== "" ? pageTitle : <em>(title not set)</em>;
+
   return (
     <>
+      <header className="editPageHeader">
+        <h2>Page: {displayTitle}</h2>
+        <button onClick={pageSettingsClickHandler}><Cog height="16" width="16" /> Page Settings</button>
+      </header>
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId="droppable">
           {(droppableProvided, snapshot) => (
             <div ref={droppableProvided.innerRef}
-              className="edit-page-container"
+              className="editPageContainer"
               {...droppableProvided.droppableProps}>
               {
                 sections.map( (sProps, index) => (
@@ -301,13 +365,25 @@ export const AuthoringPage: React.FC<IPageProps> = ({
                 ))
               }
               { droppableProvided.placeholder }
-              <button className="big-button" onClick={addSection}>
+              <button className="bigButton" onClick={addSection}>
                 <Add height="16" width="16" /> <span className="lineAdjust">Add Section</span>
               </button>"
             </div>
           )}
         </Droppable>
       </DragDropContext>
+      {showSettings &&
+        <PageSettingsDialog
+          title={pageTitle}
+          isCompletion={isCompletionPage}
+          isHidden={isHiddenPage}
+          hasArgBlock={pageHasArgBlock}
+          hasStudentSidebar={pageHasStudentSidebar}
+          hasTESidebar={pageHasTESidebar}
+          updateSettingsFunction={updateSettings}
+          closeDialogFunction={handleCloseDialog}
+        />
+      }
       {sectionToMove &&
         <SectionMoveDialog
           sectionId={sectionToMove.id}

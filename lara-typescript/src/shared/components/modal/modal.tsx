@@ -19,6 +19,7 @@ export interface IModalButtonsProps {
 
 export interface IModalProps {
   children: JSX.Element;
+  closeFunction?: () => void;
   title?: string;
   visibility: boolean;
   width?: number;
@@ -26,6 +27,7 @@ export interface IModalProps {
 
 export const Modal: React.FC<IModalProps> = ({
   children,
+  closeFunction,
   title,
   visibility: initVisibility = true,
   width
@@ -45,6 +47,8 @@ export const Modal: React.FC<IModalProps> = ({
     setIsVisible(false);
   };
 
+  const closeButtonClickHandler = closeFunction ? closeFunction : closeModal;
+
   if (!isVisible) {
     return null;
   }
@@ -55,7 +59,7 @@ export const Modal: React.FC<IModalProps> = ({
       <div id="modal" className="modal" style={modalStyle}>
         <header>
           <h1>{title}</h1>
-          <button aria-label="close" className="modalClose" onClick={closeModal}>
+          <button aria-label="close" className="modalClose" onClick={closeButtonClickHandler}>
             <Close height="14" width="14" />
           </button>
         </header>

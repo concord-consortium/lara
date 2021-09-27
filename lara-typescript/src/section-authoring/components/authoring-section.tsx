@@ -313,7 +313,7 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
                       );
                     })}
                     { droppableProvided.placeholder }
-                    <button className="small-button" onClick={colOneAddItemHandler}>
+                    <button className="smallButton" onClick={colOneAddItemHandler}>
                       <Add height="16" width="16" /> <span className="lineAdjust">Add Item</span>
                     </button>
                   </div>
@@ -362,7 +362,7 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
                         );
                       })}
                       { droppableProvided.placeholder }
-                      <button className="small-button" onClick={colTwoAddItemHandler}>
+                      <button className="smallButton" onClick={colTwoAddItemHandler}>
                       <Add height="16" width="16" /> <span className="lineAdjust">Add Item</span>
                       </button>
                     </div>
