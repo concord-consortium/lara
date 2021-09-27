@@ -463,7 +463,7 @@ ActiveRecord::Schema.define(:version => 20210903171847) do
     t.datetime "updated_at",   :null => false
   end
 
-  add_index "linked_page_items", ["primary_id", "secondary_id", "label"], :name => "index_linked_page_items_unique", :unique => true
+  add_index "linked_page_items", ["primary_id", "label"], :name => "index_linked_page_items_unique", :unique => true
   add_index "linked_page_items", ["primary_id"], :name => "index_linked_page_items_primary"
   add_index "linked_page_items", ["secondary_id"], :name => "index_linked_page_items_secondary"
 
