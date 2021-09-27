@@ -3,7 +3,7 @@ import { useState } from "react";
 import { IAuthoringInitInteractive, IAuthoringClientMessage, useAuthoredState } from "../../../interactive-api-client";
 import { GetInteractiveListComponent } from "./authoring-apis/get-interactive-list";
 import { SetLinkedInteractivesComponent } from "./authoring-apis/set-linked-interactives";
-import { IAuthoredState } from "./types";
+import { IAuthoredState } from "../types";
 
 interface Props {
   initMessage: IAuthoringInitInteractive<IAuthoredState>;

@@ -19,6 +19,7 @@
     "build:docs:interactive-api-client": "typedoc --readme src/interactive-api-client/README.md --out ../docs/interactive-api-client src/interactive-api-client/index.ts",
     "build:docs:interactive-api-host": "typedoc --readme src/interactive-api-host/README.md --out ../docs/interactive-api-host src/interactive-api-host/index.ts",
     "build:dev:lara-typescript": "webpack && npm run build:copy-to-rails",
+    "build:watch": "webpack --watch",
     "build:copy-to-rails": "node scripts/copy-to-rails.js",
     "clean": "rimraf dist docs ../docs/lara-plugin-api ../docs/interactive-api-client",
     "lara-api:link": "npm run build:webpack && cd dist/interactive-api-client && npm link && cd ../..",
@@ -35,7 +36,7 @@
     "test:watch": "jest --watch",
     "test:coverage:watch": "jest --coverage --watchAll",
     "test:full": "npm-run-all test test:cypress",
-    "example-interactive": "npx live-server --port=8888 ./dist/example-interactive/"
+    "example-interactives": "npx live-server --port=8888 ./dist/example-interactives/"
   },
   "repository": {
     "type": "git",

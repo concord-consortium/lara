@@ -6,7 +6,7 @@ import { useInitMessage, setSupportedFeatures, setHeight } from "../../../intera
 import { AuthoringComponent } from "./authoring";
 import { ReportComponent } from "./report";
 import { RuntimeComponent } from "./runtime";
-import { IAuthoredState } from "./types";
+import { IAuthoredState } from "../types";
 
 interface Props {
 }
