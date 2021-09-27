@@ -7,7 +7,8 @@ import { API as mockProvider } from "../section-authoring/api/mock-api-provider"
 import { APIContext } from "../section-authoring/api/use-api-provider";
 import { IPageProps, AuthoringPage} from "../section-authoring/components/authoring-page";
 import { usePageAPI } from "../section-authoring/api/use-api-provider";
-import { QueryClient } from "react-query";
+import { QueryClient, QueryClientProvider } from "react-query";
+import { ISection } from "../section-authoring/api/api-types";
 
 export default {
   title: "Query Providers Test",
@@ -35,35 +36,38 @@ export const LocalHostAPI = () => {
 export const AuthoringPageWithAPIProvider = () => {
   const LocalLaraAPI = getLaraPageAPI("https://app.lara.docker/", "55");
   const queryClient = new QueryClient();
-  const Wrapper = () => {
+  const Content = () => {
     const api = usePageAPI();
-    const addSection = () => api.addSectionMutation.mutate();
     const pages = api.getPages.data;
     if (pages) {
-      const page = pages[0];
+      const p = pages[0];
+      const addSection = () => api.addSectionMutation.mutate(p.id);
+      const setSections = (pageData: {id: string, sections: ISection[]}) => api.updateSections.mutate(p);
+      const changeSection = (changes: {
+        section: Partial<ISection>,
+        sectionID: string}) => api.updateSection.mutate({pageId: p.id, changes});
       return (
         <AuthoringPage
-        sections= { page?.sections}
-        addSection={ addSection }
-        setSections={setSections}
-        id={pageId}
-        changeSection={changeSection}
+          sections={p?.sections}
+          addSection={addSection }
+          setSections={setSections}
+          id={p.id}
+          changeSection={changeSection}
         />
-      )
+      );
     }
     else {
       return (
         <div>loading ...</div>
-      )
+      );
     }
-  }
+  };
 
-  const page = getPages;.data?.[0];
   return (
     <APIContext.Provider value={mockProvider}>
-      <Wrapper />
+      <QueryClientProvider client={queryClient}>
+        <Content />
+      </QueryClientProvider>
     </APIContext.Provider>
   );
 };
-
-AuthoringPageWithAPIProvider.title = "★ AuthoringPage with API hooks ...";

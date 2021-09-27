@@ -1,14 +1,15 @@
 
 import {
-  IPageList, IPage, PageId,
-  APIPageGetF, APIPagesGetF, IAuthoringApi, ISection, ICreatePageItem, ISectionItem
+  IPage, PageId,
+  APIPageGetF, APIPagesGetF,
+  IAuthoringAPIProvider, ISection, ICreatePageItem, ISectionItem
 } from "./api-types";
 
 let pageCounter = 0;
 let sectionCounter = 0;
 let itemCounter = 0;
 
-let pages: IPageList = [
+let pages: IPage[] = [
   {
     id: `${++pageCounter}`,
     title: `Page ${pageCounter}`,
@@ -83,7 +84,8 @@ const updateSections = (nextPage: IPage) => {
   return Promise.resolve(nextPage);
 };
 
-const updateSection = (pageId: PageId, changes: { section: Partial<ISection> }) => {
+const updateSection = (args: {pageId: PageId, changes: { section: Partial<ISection> }}) => {
+  const {pageId, changes} = args;
   const page = pages.find(p => p.id === pageId);
   if (page) {
     const section  = page.sections.find(s => s.id === changes.section.id);
@@ -111,7 +113,7 @@ const createPageItem = (pageId: PageId, newPageItem: ICreatePageItem) => {
   return Promise.reject(`cant find page ${pageId}`);
 };
 
-export const API: IAuthoringApi = {
+export const API: IAuthoringAPIProvider = {
   getPages, getPage, createPage, deletePage,
   createSection, updateSections, createPageItem, updateSection
 };

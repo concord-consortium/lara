@@ -1,12 +1,12 @@
 import {
   IPage, PageId, ISection,
-  APIPageGetF, APIPagesGetF, IAuthoringApi,
-  ICreatePageItem, ILibraryInteractiveResponse
+  APIPageGetF, APIPagesGetF, IAuthoringAPIProvider,
+  ICreatePageItem
 } from "./api-types";
 
 const APIBase = "/api/v1";
 
-export const getLaraPageAPI = (host: string = "", activityId: string): IAuthoringApi => {
+export const getLaraPageAPI = (host: string = "", activityId: string): IAuthoringAPIProvider => {
 
   const prefix = `${host}/${APIBase}`;
   // endpoints:
@@ -71,7 +71,8 @@ export const getLaraPageAPI = (host: string = "", activityId: string): IAuthorin
     return sendToLara({url: updatePageSectionsURL(nextPage.id), method: "PUT", body: nextPage});
   };
 
-  const updateSection = (pageId: PageId, changes: { section: Partial<ISection> }) => {
+  const updateSection = (args: {pageId: PageId, changes: { section: Partial<ISection> }}) => {
+    const {pageId, changes} = args;
     const data = { id: pageId, section: { ...changes.section } };
     return sendToLara({url: updateSectionUrl(pageId), method: "POST", body: data});
   };

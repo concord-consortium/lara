@@ -1,4 +1,3 @@
-
 export type SectionId = string;
 export type PageId = string;
 export type ItemId = string;
@@ -107,25 +106,31 @@ export interface IPage {
   items?: ISectionItem[];
 }
 
-export type IPageList = IPage[];
 
 // API Call Signatures
-export type APIPagesGetF = () => Promise<IPageList>;
+export type APIPagesGetF = () => Promise<IPage[]>;
 export type APIPageGetF = (id: PageId) => Promise<IPage | null>;
 export type APIPageCreateF = () => Promise<IPage>;
-export type APIPageDeleteF = (id: PageId) => Promise<IPageList>;
-export type APISectionsUpdateF = (nextPage: IPage) => Promise<IPage>;
-export type APISectionCreateF = (pageId: PageId) => Promise<IPage>;
-export type APIPageItemCreateF = (pageId: PageId, newPageItem: ICreatePageItem) => Promise<IPage>;
-export type APISectionUpdateF = (pageId: PageId, changes: { section: Partial<ISection> }) => Promise<IPage>;
+export type APIPageDeleteF = (id: PageId) => Promise<IPage[]>;
 
-export interface IAuthoringApi {
+export type APISectionCreateF = (pageId: PageId) => Promise<IPage>;
+export type APISectionsUpdateF = (nextPage: IPage) => Promise<IPage>;
+export type APISectionUpdateF = (args: {pageId: PageId, changes: { section: Partial<ISection>}}) => Promise<IPage>;
+
+export type APIPageItemCreateF = (pageId: PageId, newPageItem: ICreatePageItem) => Promise<IPage>;
+
+/**
+ * The implementation providing the API has to conform to this provider API
+ */
+export interface IAuthoringAPIProvider {
   getPages: APIPagesGetF;
   getPage: APIPageGetF;
   createPage: APIPageCreateF;
   deletePage: APIPageDeleteF;
-  updateSections: APISectionsUpdateF;
+
   createSection: APISectionCreateF;
-  createPageItem: APIPageItemCreateF;
+  updateSections: APISectionsUpdateF;
   updateSection: APISectionUpdateF;
+
+  createPageItem: APIPageItemCreateF;
 }
