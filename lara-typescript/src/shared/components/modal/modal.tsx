@@ -55,8 +55,8 @@ export const Modal: React.FC<IModalProps> = ({
 
   return (
     <>
-      <div className="modalOverlay"/>
-      <div id="modal" className="modal" style={modalStyle}>
+      <div className="modalOverlay" onClick={closeButtonClickHandler}/>
+      <div id="modal" className="modalContainer" style={modalStyle}>
         <header>
           <h1>{title}</h1>
           <button aria-label="close" className="modalClose" onClick={closeButtonClickHandler}>
