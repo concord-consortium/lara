@@ -47888,6 +47888,100 @@ exports.MWInteractiveAuthoring = MWInteractiveAuthoring;
 
 /***/ }),
 
+/***/ "./src/page-settings/components/page-settings-dialog.scss":
+/*!****************************************************************!*\
+  !*** ./src/page-settings/components/page-settings-dialog.scss ***!
+  \****************************************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ }),
+
+/***/ "./src/page-settings/components/page-settings-dialog.tsx":
+/*!***************************************************************!*\
+  !*** ./src/page-settings/components/page-settings-dialog.tsx ***!
+  \***************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.PageSettingsDialog = void 0;
+var React = __webpack_require__(/*! react */ "react");
+var modal_1 = __webpack_require__(/*! ../../shared/components/modal/modal */ "./src/shared/components/modal/modal.tsx");
+var save_icon_1 = __webpack_require__(/*! ../../shared/components/icons/save-icon */ "./src/shared/components/icons/save-icon.tsx");
+var close_icon_1 = __webpack_require__(/*! ../../shared/components/icons/close-icon */ "./src/shared/components/icons/close-icon.tsx");
+__webpack_require__(/*! ./page-settings-dialog.scss */ "./src/page-settings/components/page-settings-dialog.scss");
+var PageSettingsDialog = function (_a) {
+    var title = _a.title, _b = _a.isHidden, isHidden = _b === void 0 ? false : _b, _c = _a.isCompletion, isCompletion = _c === void 0 ? false : _c, _d = _a.hasArgBlock, hasArgBlock = _d === void 0 ? false : _d, _e = _a.hasStudentSidebar, hasStudentSidebar = _e === void 0 ? false : _e, _f = _a.hasTESidebar, hasTESidebar = _f === void 0 ? false : _f, updateSettingsFunction = _a.updateSettingsFunction, closeDialogFunction = _a.closeDialogFunction;
+    var handleTitleChange = function (event) {
+        title = event.target.value;
+    };
+    var handleIsCompletionChange = function () {
+        isCompletion = !isCompletion;
+    };
+    var handleIsHiddenChange = function () {
+        isHidden = !isHidden;
+    };
+    var handleHasArgBlockChange = function () {
+        hasArgBlock = !hasArgBlock;
+    };
+    var handleHasStudentSidebarChange = function () {
+        hasStudentSidebar = !hasStudentSidebar;
+    };
+    var handleHasTESidebarChange = function () {
+        hasTESidebar = !hasTESidebar;
+    };
+    var handleUpdateSettings = function () {
+        updateSettingsFunction(title, isCompletion, isHidden, hasArgBlock, hasStudentSidebar, hasTESidebar);
+    };
+    var handleCloseDialog = function () {
+        closeDialogFunction();
+    };
+    var modalButtons = [
+        { classes: "cancel", clickHandler: handleCloseDialog, disabled: false, svg: React.createElement(close_icon_1.Close, { height: "12", width: "12" }), text: "Cancel" },
+        { classes: "copy", clickHandler: handleUpdateSettings, disabled: false, svg: React.createElement(save_icon_1.Save, { height: "16", width: "16" }), text: "Save & Close" }
+    ];
+    return (React.createElement(modal_1.Modal, { closeFunction: handleCloseDialog, title: "Page Settings", visibility: true },
+        React.createElement("div", { className: "pageSettingsDialog" },
+            React.createElement("dl", null,
+                React.createElement("dt", { className: "input1" },
+                    React.createElement("label", { htmlFor: "pageTitle" }, "Page Title")),
+                React.createElement("dd", { className: "input1" },
+                    React.createElement("input", { type: "text", id: "pageTitle", name: "pageTitle", defaultValue: title, onChange: handleTitleChange, placeholder: "Enter a title" })),
+                React.createElement("dt", { className: "input2" },
+                    React.createElement("label", { htmlFor: "isHidden" }, "Page is hidden from students")),
+                React.createElement("dd", { className: "input2" },
+                    React.createElement("input", { type: "checkbox", id: "isHidden", name: "isHidden", defaultChecked: isHidden, onChange: handleIsHiddenChange })),
+                React.createElement("dt", { className: "input3" },
+                    React.createElement("label", { htmlFor: "isCompletion" }, "Page is a completion/summary page")),
+                React.createElement("dd", { className: "input3" },
+                    React.createElement("input", { type: "checkbox", id: "isCompletion", name: "isCompletion", defaultChecked: isCompletion, onChange: handleIsCompletionChange })),
+                React.createElement("dt", { className: "input4" },
+                    React.createElement("label", { htmlFor: "hasArgBlock" }, "Page has an argumentation block")),
+                React.createElement("dd", { className: "input4" },
+                    React.createElement("input", { type: "checkbox", id: "hasArgBlock", name: "hasArgBlock", defaultChecked: hasArgBlock, onChange: handleHasArgBlockChange })),
+                React.createElement("dt", { className: "input5" },
+                    React.createElement("label", { htmlFor: "hasStudentSidebar" }, "Page has a student sidebar menu")),
+                React.createElement("dd", { className: "input5" },
+                    React.createElement("input", { type: "checkbox", id: "hasStudentSidebar", name: "hasStudentSidebar", defaultChecked: hasStudentSidebar, onChange: handleHasStudentSidebarChange })),
+                React.createElement("dt", { className: "input6" },
+                    React.createElement("label", { htmlFor: "hasTESidebar" }, "Page has a Teacher Edition sidebar menu")),
+                React.createElement("dd", { className: "input6" },
+                    React.createElement("input", { type: "checkbox", id: "hasTESidebar", name: "hasTESidebar", defaultChecked: hasTESidebar, onChange: handleHasTESidebarChange }))),
+            React.createElement(modal_1.ModalButtons, { buttons: modalButtons }))));
+};
+exports.PageSettingsDialog = PageSettingsDialog;
+
+
+/***/ }),
+
 /***/ "./src/plugin-api/decorate-content.ts":
 /*!********************************************!*\
   !*** ./src/plugin-api/decorate-content.ts ***!
@@ -48765,20 +48859,38 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthoringPage = void 0;
 var React = __webpack_require__(/*! react */ "react");
 var react_1 = __webpack_require__(/*! react */ "react");
+var page_settings_dialog_1 = __webpack_require__(/*! ../../page-settings/components/page-settings-dialog */ "./src/page-settings/components/page-settings-dialog.tsx");
 var authoring_section_1 = __webpack_require__(/*! ./authoring-section */ "./src/section-authoring/components/authoring-section.tsx");
 var section_move_dialog_1 = __webpack_require__(/*! ./section-move-dialog */ "./src/section-authoring/components/section-move-dialog.tsx");
 var section_item_move_dialog_1 = __webpack_require__(/*! ./section-item-move-dialog */ "./src/section-authoring/components/section-item-move-dialog.tsx");
 var react_beautiful_dnd_1 = __webpack_require__(/*! react-beautiful-dnd */ "./node_modules/react-beautiful-dnd/dist/react-beautiful-dnd.esm.js");
 var add_icon_1 = __webpack_require__(/*! ../../shared/components/icons/add-icon */ "./src/shared/components/icons/add-icon.tsx");
+var cog_icon_1 = __webpack_require__(/*! ../../shared/components/icons/cog-icon */ "./src/shared/components/icons/cog-icon.tsx");
 __webpack_require__(/*! ./authoring-page.scss */ "./src/section-authoring/components/authoring-page.scss");
 /**
  * Primary UI component for user interaction
  */
 var AuthoringPage = function (_a) {
-    var id = _a.id, _b = _a.sections, sections = _b === void 0 ? [] : _b, addSection = _a.addSection, changeSection = _a.changeSection, setSections = _a.setSections, initSectionToMove = _a.sectionToMove, _c = _a.items, initItems = _c === void 0 ? [] : _c, initItemToMove = _a.itemToMove, allSectionItems = _a.allSectionItems, addPageItem = _a.addPageItem, _d = _a.isCompletion, isCompletion = _d === void 0 ? false : _d;
-    var _e = react_1.useState(initSectionToMove), sectionToMove = _e[0], setSectionToMove = _e[1];
-    var _f = react_1.useState(initItemToMove), itemToMove = _f[0], setItemToMove = _f[1];
-    var _g = react_1.useState(__spreadArray([], initItems)), items = _g[0], setItems = _g[1];
+    var id = _a.id, _b = _a.isNew, isNew = _b === void 0 ? false : _b, title = _a.title, _c = _a.sections, sections = _c === void 0 ? [] : _c, addSection = _a.addSection, changeSection = _a.changeSection, setSections = _a.setSections, initSectionToMove = _a.sectionToMove, _d = _a.items, initItems = _d === void 0 ? [] : _d, initItemToMove = _a.itemToMove, allSectionItems = _a.allSectionItems, addPageItem = _a.addPageItem, _e = _a.isCompletion, isCompletion = _e === void 0 ? false : _e, _f = _a.isHidden, isHidden = _f === void 0 ? false : _f, _g = _a.hasArgBlock, hasArgBlock = _g === void 0 ? false : _g, _h = _a.hasStudentSidebar, hasStudentSidebar = _h === void 0 ? false : _h, _j = _a.hasTESidebar, hasTESidebar = _j === void 0 ? false : _j;
+    var _k = react_1.useState(title), pageTitle = _k[0], setPageTitle = _k[1];
+    var _l = react_1.useState(isCompletion), isCompletionPage = _l[0], setIsCompletionPage = _l[1];
+    var _m = react_1.useState(isHidden), isHiddenPage = _m[0], setIsHiddenPage = _m[1];
+    var _o = react_1.useState(hasArgBlock), pageHasArgBlock = _o[0], setPageHasArgBlock = _o[1];
+    var _p = react_1.useState(hasStudentSidebar), pageHasStudentSidebar = _p[0], setPageHasStudentSidebar = _p[1];
+    var _q = react_1.useState(hasTESidebar), pageHasTESidebar = _q[0], setPageHasTESidebar = _q[1];
+    var _r = react_1.useState(initSectionToMove), sectionToMove = _r[0], setSectionToMove = _r[1];
+    var _s = react_1.useState(initItemToMove), itemToMove = _s[0], setItemToMove = _s[1];
+    var _t = react_1.useState(__spreadArray([], initItems)), items = _t[0], setItems = _t[1];
+    var _u = react_1.useState(isNew), showSettings = _u[0], setShowSettings = _u[1];
+    var updateSettings = function (updatedTitle, updatedIsCompletion, updatedIsHidden, updatedHasArgBlock, updatedHasStudentSidebar, updatedHasTESidebar) {
+        setPageTitle(updatedTitle);
+        setIsCompletionPage(updatedIsCompletion);
+        setIsHiddenPage(updatedIsHidden);
+        setPageHasArgBlock(updatedHasArgBlock);
+        setPageHasStudentSidebar(updatedHasStudentSidebar);
+        setPageHasTESidebar(updatedHasTESidebar);
+        setShowSettings(false);
+    };
     var updateSectionItems = function (newItems, sectionId) {
         var sectionIndex = sections.findIndex(function (i) { return i.id === sectionId; });
         sections[sectionIndex].items = newItems;
@@ -48842,6 +48954,33 @@ var AuthoringPage = function (_a) {
             setSections(update);
         }
     };
+    var handleCopy = function (sectionId) {
+        if (setSections) {
+            var nextSections_2 = [];
+            var copiedSectionIndex = sections.findIndex(function (i) { return i.id === sectionId; });
+            var copiedSection_1 = sections[copiedSectionIndex];
+            var newSection_1 = Object.assign({}, copiedSection_1);
+            var newSectionIndex = copiedSectionIndex + 1;
+            // ID value should probably be determined some other way once this is integrated into LARA
+            newSection_1.id = (sections.length + 1).toString();
+            newSection_1.position = copiedSection_1.position ? copiedSection_1.position++ : undefined;
+            var newSectionItems = newSection_1.items || [];
+            newSectionItems.forEach(function (i) {
+                // ID value should probably be determined some other way once this is integrated into LARA
+                i.id = i.id + "-copy";
+                i.section_id = newSection_1.id;
+            });
+            sections.forEach(function (s) {
+                if (s.position && copiedSection_1.position && s.position > copiedSection_1.position) {
+                    s.position = s.position++;
+                }
+                nextSections_2.push(s);
+            });
+            nextSections_2.splice(newSectionIndex, 0, newSection_1);
+            var update = { id: id, sections: nextSections_2 };
+            setSections(update);
+        }
+    };
     /*
      * When a new section is dragged somewhere else:
      */
@@ -48890,20 +49029,31 @@ var AuthoringPage = function (_a) {
         }
     };
     var handleCloseDialog = function () {
+        setShowSettings(false);
         setSectionToMove(undefined);
         setItemToMove(undefined);
     };
+    var pageSettingsClickHandler = function () { setShowSettings(true); };
+    var displayTitle = pageTitle && pageTitle !== "" ? pageTitle : React.createElement("em", null, "(title not set)");
     return (React.createElement(React.Fragment, null,
+        React.createElement("header", { className: "editPageHeader" },
+            React.createElement("h2", null,
+                "Page: ",
+                displayTitle),
+            React.createElement("button", { onClick: pageSettingsClickHandler },
+                React.createElement(cog_icon_1.Cog, { height: "16", width: "16" }),
+                " Page Settings")),
         React.createElement(react_beautiful_dnd_1.DragDropContext, { onDragEnd: onDragEnd },
-            React.createElement(react_beautiful_dnd_1.Droppable, { droppableId: "droppable" }, function (droppableProvided, snapshot) { return (React.createElement("div", __assign({ ref: droppableProvided.innerRef, className: "edit-page-container" }, droppableProvided.droppableProps),
-                sections.map(function (sProps, index) { return (React.createElement(react_beautiful_dnd_1.Draggable, { key: sProps.id, draggableId: sProps.id, index: index }, function (draggableProvided) { return (React.createElement("div", __assign({}, draggableProvided.draggableProps, { ref: draggableProvided.innerRef }),
-                    React.createElement(authoring_section_1.AuthoringSection, __assign({}, sProps, { draggableProvided: draggableProvided, key: sProps.id, updateFunction: changeSection, moveFunction: handleMoveSectionInit, deleteFunction: handleDelete, allSectionItems: allSectionItems, addPageItem: addPageItem, moveItemFunction: handleMoveItemInit, updatePageItems: updateSectionItems })))); })); }),
+            React.createElement(react_beautiful_dnd_1.Droppable, { droppableId: "droppable" }, function (droppableProvided, snapshot) { return (React.createElement("div", __assign({ ref: droppableProvided.innerRef, className: "editPageContainer" }, droppableProvided.droppableProps),
+                sections.map(function (sProps, index) { return (React.createElement(react_beautiful_dnd_1.Draggable, { key: "section-" + sProps.id + "-" + index + "-draggable", draggableId: "section-" + sProps.id + "-" + index, index: index }, function (draggableProvided) { return (React.createElement("div", __assign({}, draggableProvided.draggableProps, { ref: draggableProvided.innerRef }),
+                    React.createElement(authoring_section_1.AuthoringSection, __assign({}, sProps, { draggableProvided: draggableProvided, key: "section-" + sProps.id + "-" + index, updateFunction: changeSection, moveFunction: handleMoveSectionInit, deleteFunction: handleDelete, copyFunction: handleCopy, allSectionItems: allSectionItems, addPageItem: addPageItem, moveItemFunction: handleMoveItemInit, updatePageItems: updateSectionItems })))); })); }),
                 droppableProvided.placeholder,
-                React.createElement("button", { className: "big-button", onClick: addSection },
+                React.createElement("button", { className: "bigButton", onClick: addSection },
                     React.createElement(add_icon_1.Add, { height: "16", width: "16" }),
                     " ",
-                    React.createElement("span", { className: "lineAdjust" }, "Add Section")),
-                "\"")); })),
+                    React.createElement("span", { className: "lineAdjust" }, "Add Section")))); })),
+        showSettings &&
+            React.createElement(page_settings_dialog_1.PageSettingsDialog, { title: pageTitle, isCompletion: isCompletionPage, isHidden: isHiddenPage, hasArgBlock: pageHasArgBlock, hasStudentSidebar: pageHasStudentSidebar, hasTESidebar: pageHasTESidebar, updateSettingsFunction: updateSettings, closeDialogFunction: handleCloseDialog }),
         sectionToMove &&
             React.createElement(section_move_dialog_1.SectionMoveDialog, { sectionId: sectionToMove.id, sections: sections, moveFunction: handleMoveSection, closeDialogFunction: handleCloseDialog }),
         itemToMove &&
@@ -48992,7 +49142,7 @@ var classNameForItem = function (_layout, itemIndex) {
  * Primary UI component for user interaction
  */
 var AuthoringSection = function (_a) {
-    var id = _a.id, updateFunction = _a.updateFunction, deleteFunction = _a.deleteFunction, moveFunction = _a.moveFunction, _b = _a.layout, initLayout = _b === void 0 ? defaultLayout : _b, _c = _a.items, initItems = _c === void 0 ? [] : _c, _d = _a.collapsed, initCollapsed = _d === void 0 ? false : _d, title = _a.title, updatePageItems = _a.updatePageItems, moveItemFunction = _a.moveItemFunction, allSectionItems = _a.allSectionItems, draggableProvided = _a.draggableProvided, addPageItem = _a.addPageItem;
+    var id = _a.id, updateFunction = _a.updateFunction, deleteFunction = _a.deleteFunction, moveFunction = _a.moveFunction, copyFunction = _a.copyFunction, _b = _a.layout, initLayout = _b === void 0 ? defaultLayout : _b, _c = _a.items, initItems = _c === void 0 ? [] : _c, _d = _a.collapsed, initCollapsed = _d === void 0 ? false : _d, title = _a.title, updatePageItems = _a.updatePageItems, moveItemFunction = _a.moveItemFunction, allSectionItems = _a.allSectionItems, draggableProvided = _a.draggableProvided, addPageItem = _a.addPageItem;
     var _e = react_1.useState(__spreadArray([], initItems)), items = _e[0], setItems = _e[1]; // TODO: Initial Items as in layout
     var _f = react_1.useState(initLayout), layout = _f[0], setLayout = _f[1];
     var _g = react_1.useState(initCollapsed), collapsed = _g[0], setCollapsed = _g[1];
@@ -49022,8 +49172,7 @@ var AuthoringSection = function (_a) {
         }
     };
     var handleCopy = function () {
-        // tslint:disable-next-line:no-console
-        console.log("copy");
+        copyFunction === null || copyFunction === void 0 ? void 0 : copyFunction(id);
     };
     var sortedItems = function () {
         return items.sort(function (a, b) { return a.position - b.position; });
@@ -49116,7 +49265,7 @@ var AuthoringSection = function (_a) {
                                         React.createElement(section_item_1.SectionItem, __assign({}, element, { key: element.id, moveFunction: handleMoveItem, copyFunction: handleCopyItem, deleteFunction: handleDeleteItem })))); }));
                                 }),
                             droppableProvided.placeholder,
-                            React.createElement("button", { className: "small-button", onClick: colOneAddItemHandler },
+                            React.createElement("button", { className: "smallButton", onClick: colOneAddItemHandler },
                                 React.createElement(add_icon_1.Add, { height: "16", width: "16" }),
                                 " ",
                                 React.createElement("span", { className: "lineAdjust" }, "Add Item"))))); })),
@@ -49132,7 +49281,7 @@ var AuthoringSection = function (_a) {
                                             React.createElement(section_item_1.SectionItem, __assign({}, element, { key: element.id, moveFunction: handleMoveItem, copyFunction: handleCopyItem, deleteFunction: handleDeleteItem })))); }));
                                     }),
                                 droppableProvided.placeholder,
-                                React.createElement("button", { className: "small-button", onClick: colTwoAddItemHandler },
+                                React.createElement("button", { className: "smallButton", onClick: colTwoAddItemHandler },
                                     React.createElement(add_icon_1.Add, { height: "16", width: "16" }),
                                     " ",
                                     React.createElement("span", { className: "lineAdjust" }, "Add Item"))))); })))));
@@ -49731,6 +49880,31 @@ exports.Close = Close;
 
 /***/ }),
 
+/***/ "./src/shared/components/icons/cog-icon.tsx":
+/*!**************************************************!*\
+  !*** ./src/shared/components/icons/cog-icon.tsx ***!
+  \**************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Cog = void 0;
+var React = __webpack_require__(/*! react */ "react");
+var kDefaultHight = "1em";
+var kDefaultWidth = "1em";
+var Cog = function (props) {
+    var height = props.height ? props.height : kDefaultHight;
+    var width = props.width ? props.width : kDefaultWidth;
+    return (React.createElement("svg", { "aria-hidden": "true", focusable: "false", role: "img", height: height, width: width, xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 512 512" },
+        React.createElement("path", { fill: "currentColor", d: "M487.4 315.7l-42.6-24.6c4.3-23.2 4.3-47 0-70.2l42.6-24.6c4.9-2.8 7.1-8.6 5.5-14-11.1-35.6-30-67.8-54.7-94.6-3.8-4.1-10-5.1-14.8-2.3L380.8 110c-17.9-15.4-38.5-27.3-60.8-35.1V25.8c0-5.6-3.9-10.5-9.4-11.7-36.7-8.2-74.3-7.8-109.2 0-5.5 1.2-9.4 6.1-9.4 11.7V75c-22.2 7.9-42.8 19.8-60.8 35.1L88.7 85.5c-4.9-2.8-11-1.9-14.8 2.3-24.7 26.7-43.6 58.9-54.7 94.6-1.7 5.4.6 11.2 5.5 14L67.3 221c-4.3 23.2-4.3 47 0 70.2l-42.6 24.6c-4.9 2.8-7.1 8.6-5.5 14 11.1 35.6 30 67.8 54.7 94.6 3.8 4.1 10 5.1 14.8 2.3l42.6-24.6c17.9 15.4 38.5 27.3 60.8 35.1v49.2c0 5.6 3.9 10.5 9.4 11.7 36.7 8.2 74.3 7.8 109.2 0 5.5-1.2 9.4-6.1 9.4-11.7v-49.2c22.2-7.9 42.8-19.8 60.8-35.1l42.6 24.6c4.9 2.8 11 1.9 14.8-2.3 24.7-26.7 43.6-58.9 54.7-94.6 1.5-5.5-.7-11.3-5.6-14.1zM256 336c-44.1 0-80-35.9-80-80s35.9-80 80-80 80 35.9 80 80-35.9 80-80 80z" })));
+};
+exports.Cog = Cog;
+
+
+/***/ }),
+
 /***/ "./src/shared/components/icons/grip-lines.tsx":
 /*!****************************************************!*\
   !*** ./src/shared/components/icons/grip-lines.tsx ***!
@@ -49779,6 +49953,32 @@ exports.Move = Move;
 
 /***/ }),
 
+/***/ "./src/shared/components/icons/save-icon.tsx":
+/*!***************************************************!*\
+  !*** ./src/shared/components/icons/save-icon.tsx ***!
+  \***************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Save = void 0;
+var React = __webpack_require__(/*! react */ "react");
+var kDefaultHight = "1em";
+var kDefaultWidth = "1em";
+var Save = function (props) {
+    var height = props.height ? props.height : kDefaultHight;
+    var width = props.width ? props.width : kDefaultWidth;
+    return (React.createElement("svg", { "aria-hidden": true, className: "icon", fill: "white", focusable: "false", height: height, width: width, role: "img", viewBox: "0 0 20 20", xmlns: "http://www.w3.org/2000/svg" },
+        React.createElement("g", null,
+            React.createElement("path", { d: "M15.173 2H4c-1.101 0-2 .9-2 2v12c0 1.1.899 2 2 2h12c1.101 0 2-.9 2-2V5.127L15.173 2zM14 8c0 .549-.45 1-1 1H7c-.55 0-1-.451-1-1V3h8v5zm-1-4h-2v4h2V4z" }))));
+};
+exports.Save = Save;
+
+
+/***/ }),
+
 /***/ "./src/shared/components/modal/modal.scss":
 /*!************************************************!*\
   !*** ./src/shared/components/modal/modal.scss ***!
@@ -49810,7 +50010,7 @@ var react_dom_1 = __webpack_require__(/*! react-dom */ "react-dom");
 var close_icon_1 = __webpack_require__(/*! ../icons/close-icon */ "./src/shared/components/icons/close-icon.tsx");
 __webpack_require__(/*! ./modal.scss */ "./src/shared/components/modal/modal.scss");
 var Modal = function (_a) {
-    var children = _a.children, title = _a.title, _b = _a.visibility, initVisibility = _b === void 0 ? true : _b, width = _a.width;
+    var children = _a.children, closeFunction = _a.closeFunction, title = _a.title, _b = _a.visibility, initVisibility = _b === void 0 ? true : _b, width = _a.width;
     var modalStyle = width ? { width: width + "px" } : undefined;
     var _c = react_1.useState(initVisibility), isVisible = _c[0], setIsVisible = _c[1];
     var modalContainer = react_1.useState(function () {
@@ -49823,15 +50023,16 @@ var Modal = function (_a) {
     var closeModal = function () {
         setIsVisible(false);
     };
+    var closeButtonClickHandler = closeFunction ? closeFunction : closeModal;
     if (!isVisible) {
         return null;
     }
     return (React.createElement(React.Fragment, null,
-        React.createElement("div", { className: "modalOverlay" }),
-        React.createElement("div", { id: "modal", className: "modal", style: modalStyle },
+        React.createElement("div", { className: "modalOverlay", onClick: closeButtonClickHandler }),
+        React.createElement("div", { id: "modal", className: "modalContainer", style: modalStyle },
             React.createElement("header", null,
                 React.createElement("h1", null, title),
-                React.createElement("button", { "aria-label": "close", className: "modalClose", onClick: closeModal },
+                React.createElement("button", { "aria-label": "close", className: "modalClose", onClick: closeButtonClickHandler },
                     React.createElement(close_icon_1.Close, { height: "14", width: "14" }))),
             React.createElement("section", { id: "modal-content" }, react_dom_1.createPortal(children, modalContainer)))));
 };

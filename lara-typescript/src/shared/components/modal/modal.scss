@@ -5,21 +5,27 @@
   height: 100%;
   left: 0;
   opacity: .7;
-  position: absolute;
+  position: fixed;
   top: 0;
   width: 100%;
   z-index: 2;
 }
 
-.modal {
+.modalContainer {
+  background: transparent;
+  border: none;
+  bottom: auto;
+  display: block;
   font-family: var(--font-family-default);
   height: auto;
   left: 50%;
-  margin: -200px 0 0 -250px;
+  margin: 0;
   min-height: 450px;
   overflow: hidden;
+  padding: 0;
   position: absolute;
-  top: 50%;
+  top: 20px;
+  transform: translate(-50%, 0);
   width: 600px;
   z-index: 3;
 
@@ -30,7 +36,10 @@
     padding: 10px;
 
     h1 {
+      clear: none;
+      color: white;
       flex-grow: 2;
+      font-family: var(--font-family-default);
       font-size: 16px;
       font-weight: 700;
       line-height: 1;
@@ -44,6 +53,7 @@
       color: white;
       height: 16px;
       line-height: 1;
+      margin: 0;
       overflow: hidden;
       padding: 0;
       position: relative;
