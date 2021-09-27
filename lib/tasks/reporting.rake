@@ -86,13 +86,9 @@ namespace :reporting do
   desc "publish anonymous runs to report service"
   task :publish_anonymous_runs => :environment do
     runs = Run.where('remote_endpoint is null')
-    env_value = ENV["REPORT_PUSH_RUN_MIN_ID"]
+    env_value = ENV["REPORT_PUSH_RUN_ACTIVITY_ID"]
     if env_value && env_value.present?
-      runs = runs.where("id >= #{env_value.to_i}")
-    end
-    env_value = ENV["REPORT_PUSH_RUN_MAX_ID"]
-    if env_value && env_value.present?
-      runs = runs.where("id <= #{env_value.to_i}")
+      runs = runs.where(activity_id: env_value)
     end
     opts = { send_all_answers: true }
     send_all_resources(runs, ReportService::RunSender, opts)
