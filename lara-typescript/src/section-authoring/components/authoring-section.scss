@@ -201,8 +201,10 @@ select {
     background: transparent;
     border: none;
     border-right: solid 1px white;
+    border-radius: 0;
     color: white;
     cursor: pointer;
+    font-family: var(--font-family);
     font-variant: small-caps;
     margin: 0;
     padding: 0 10px 0 0;

@@ -33,8 +33,10 @@
     background: transparent;
     border: none;
     border-right: solid 1px white;
+    border-radius: 0;
     color: white;
     cursor: pointer;
+    font-family: var(--font-family);
     font-size: 11.5px;
     margin: 0;
     padding: 0 10px 0 0;
