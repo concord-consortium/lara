@@ -1,7 +1,7 @@
 # spec/lib/tasks/reporting_rake_spec.rb
 require 'spec_helper'
 
-describe "reporting:publish_runs" do
+describe "reporting:publish_student_runs" do
   include_context "rake"
   let(:run) do
     Run.create( {
@@ -23,8 +23,31 @@ describe "reporting:publish_runs" do
     expect(ReportService::RunSender).to receive(:new).with(run, expected_options)
     subject.invoke
   end
-
 end
+
+describe "reporting:publish_anonymous_runs" do
+  include_context "rake"
+  let(:run) do
+    Run.create({
+      user_id: 1,
+      activity_id: 1
+    })
+  end
+
+  before(:each) do
+    allow(ENV).to receive(:[]).with("REPORT_SERVICE_SELF_URL").and_return("app.lara.docker")
+    allow(ENV).to receive(:[]).with("REPORT_SERVICE_URL").and_return("http://foo.com")
+    allow(ENV).to receive(:[]).with("REPORT_SERVICE_TOKEN").and_return("report_service_token")
+    allow(ENV).to receive(:[]).with("REPORT_PUSH_RUN_ACTIVITY_ID").and_return(run.activity_id)
+  end
+
+  it "sends a run to the report service, specifying `send_all_answers`" do
+    expected_options = {:send_all_answers=>true}
+    expect(ReportService::RunSender).to receive(:new).with(run, expected_options)
+    subject.invoke
+  end
+end
+
 
 describe  "reporting:import_clazz_info" do
   include_context "rake"

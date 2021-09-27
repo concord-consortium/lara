@@ -1,6 +1,6 @@
 namespace :reporting do
 
-  def get_repport_options
+  def get_report_options
     cli = HighLine.new
 
     # eg: 'super-secret-key'
@@ -14,7 +14,7 @@ namespace :reporting do
   end
 
   def send_resource(resource, sender_class, opts={})
-    get_repport_options()
+    get_report_options()
     self_host = ENV["REPORT_SERVICE_SELF_URL"]
     service_url = ENV["REPORT_SERVICE_URL"]
     service_token = ENV["REPORT_SERVICE_TOKEN"]
@@ -34,7 +34,7 @@ namespace :reporting do
     index = 0
     error_count = 0
     success_count = 0
-    sart_time = Time.now
+    start_time = Time.now
     count = resource_class.count
     puts "==> Sending #{count} #{resource_class.name}s: ..."
     puts ""
@@ -52,7 +52,7 @@ namespace :reporting do
         end
         puts "\n✖ #{error_count}  |  ✔ #{success_count}"
       end
-    elapsed = Time.now - sart_time
+    elapsed = Time.now - start_time
     puts ""
     puts "        ERROR ✖: #{error_count}/#{index}"
     puts "           OK ✔: #{success_count}/#{index}"
@@ -69,16 +69,27 @@ namespace :reporting do
     send_all_resources(Sequence, ReportService::ResourceSender)
   end
 
-  desc "publish runs to report service"
-  task :publish_runs => :environment do
+  desc "publish student runs to report service"
+  task :publish_student_runs => :environment do
     # limit this to portal runs by default:
     where_query = 'remote_endpoint is not null'
     # Or specify remote endpoint substring to match:
     env_value = ENV["REPORT_PUSH_RUN_SELECT_REMOTE"]
-    if env_value && env_value.size > 0
+    if env_value && env_value.present?
       where_query = "remote_endpoint like '%#{env_value}%'"
     end
     runs = Run.where(where_query)
+    opts = { send_all_answers: true }
+    send_all_resources(runs, ReportService::RunSender, opts)
+  end
+
+  desc "publish anonymous runs to report service"
+  task :publish_anonymous_runs => :environment do
+    runs = Run.where('remote_endpoint is null')
+    env_value = ENV["REPORT_PUSH_RUN_ACTIVITY_ID"]
+    if env_value && env_value.present?
+      runs = runs.where(activity_id: env_value)
+    end
     opts = { send_all_answers: true }
     send_all_resources(runs, ReportService::RunSender, opts)
   end
