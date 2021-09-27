@@ -19,47 +19,7 @@
 
 = render :partial => "publications/publication_failures", :locals =>{ :publication => @activity}
 
-
-= form_for @page do |f|
-  .edit-page-grid-container
-    .part-label= "Activity"
-    .activity-name= @activity.name
-    .page-numbers.page-nav
-      - if @page.higher_item
-        %a{:class => 'previous', :href => edit_activity_page_path(@activity, @page.higher_item)}
-          ! &nbsp;
-      - else
-        %a{:class => 'previous disabled'}
-          ! &nbsp;
-      - page_counter = 1
-      - @activity.pages.each do |p|
-        = link_to page_counter, edit_activity_page_path(@activity, p), :class => (p === @page) ? 'active' : ''
-        - page_counter = page_counter + 1
-      = link_to '+', new_activity_page_path(@activity), {:title => "Add another page to #{@activity.name}"}
-      - if @page.lower_item
-        %a{:class => 'next', :href => edit_activity_page_path(@activity, @page.lower_item)}
-          ! &nbsp;
-      - else
-        %a{:class => 'next disabled'}
-          ! &nbsp;
-
-    .part-label= "Page"
-    .page-name= editable_field @page, :name, { :placeholder => 'page title' }
-    #preview-menu
-      %label{for: "preview-options-select"}
-        %strong
-          Preview in:
-      = select_tag :preview_options_select, options_for_select(activity_preview_options(@activity, @page)), {id: 'preview-options-select'}
-    .page-settings.full-row
-      %span.teal-label= "Page Settings"
-      %label
-        -# There is no typical :onchange => 'this.form.submit();' handler, as we also need confirmation dialog.
-        -# It's handled separately in the JavaScript block at the end of this partial.
-        = f.check_box :is_hidden, :id => 'hide-page-checkbox'
-        Page is hidden from students
-      %label
-        = f.check_box :is_completion, :onchange => 'this.form.submit();'
-        Page is Completion page
+.activity-name= @activity.name
 
 #sections-container
 
