@@ -204,7 +204,6 @@ LightweightStandalone::Application.routes.draw do
       match 'create_page_item/:id' => 'interactive_pages#create_page_item', :as => 'create_page_item', :via => 'post'
       match 'get_library_interactives_list' => 'interactive_pages#get_library_interactives_list', :as => 'get_library_interactives_list', :via => 'get'
 
-      # TODO: Maybe these routes go on an activity controller instead...
       match 'get_pages/:activity_id' => 'interactive_pages#get_pages', :as => 'get_page_list', :via => 'get'
       match 'get_page/:id' => 'interactive_pages#get_page', :as => 'get_page', :via => 'get'
       match 'delete_page/:id' => 'interactive_pages#delete_page', as: 'delete_page', :via => 'post'

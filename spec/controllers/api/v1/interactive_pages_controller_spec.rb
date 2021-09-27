@@ -254,4 +254,89 @@ describe Api::V1::InteractivePagesController do
       }.to_json)
     end
   end
+
+  describe "#get_pages" do
+    let(:page_count) { 5 }
+    let(:pages)      { FactoryGirl.create_list(:page, page_count, lightweight_activity: act)}
+
+    describe "succeeds" do
+      it "with an activity_id and pages" do
+        pages
+        act.reload
+        xhr :get, "get_pages", {activity_id: act.id}
+        expect(response.status).to eq(200)
+        expect(response.content_type).to eq("application/json")
+        pages = JSON.parse(response.body)
+        expect(pages.length).to eql(page_count)
+      end
+    end
+
+    describe "fails" do
+      it "with invalid activity id" do
+        xhr :get, "get_pages", {activity_id: 234232}
+        expect(response.status).to eq(404)
+      end
+    end
+  end
+
+  describe "#create_page" do
+    describe "succeeds" do
+      before :each do
+        sign_in author
+      end
+
+      it "when the activity author is creating the page" do
+        before_count = act.pages.length
+        after_count = act.pages.length + 1
+
+        xhr :post, "create_page", {activity_id: act.id}
+        expect(response.status).to eq(200)
+        expect(response.content_type).to eq("application/json")
+        pages = JSON.parse(response.body)
+        expect(pages.length).to eql(after_count)
+      end
+    end
+
+    describe "fails" do
+      it "when the current user is not the activity author" do
+        xhr :post, "create_page", {activity_id: act.id}
+        expect(response.status).to eq(403)
+      end
+    end
+  end
+
+  describe "#delete_page" do
+    let(:page_count) { 5 }
+    let(:pages)      { FactoryGirl.create_list(:page, page_count, lightweight_activity: act)}
+
+    describe "succeeds" do
+      before :each do
+        sign_in author
+      end
+
+      it "when the activity author is deleting" do
+        pages # instantiate
+        act.reload
+        before_count = act.pages.length
+        after_count = act.pages.length - 1
+
+        xhr :post, "delete_page", {activity_id: act.id}
+        expect(response.status).to eq(200)
+        expect(response.content_type).to eq("application/json")
+        pages = JSON.parse(response.body)
+        expect(pages.length).to eql(after_count)
+      end
+    end
+
+    describe "fails" do
+      it "when the current user is not the activity author" do
+        pages # instantiate
+        act.reload
+
+        xhr :post, "delete_page", {activity_id: act.id}
+        expect(response.status).to eq(403)
+      end
+    end
+  end
+
 end

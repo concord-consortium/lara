@@ -12,6 +12,13 @@ class Api::V1::InteractivePagesController < API::APIController
     render_page_sections_json
   end
 
+  # This is identical to get_sections. Why use different names?
+  # Because it expresses the intent. Its possible we will want to return
+  # different responses for each in the future.
+  def get_page
+    render_page_sections_json
+  end
+
   def get_pages
     activity = LightweightActivity.find(params[:activity_id])
     return error("Can't find activity #{params[:activity_id]}") unless activity
@@ -21,15 +28,10 @@ class Api::V1::InteractivePagesController < API::APIController
     render :json => pages
   end
 
-  def get_page
-    # TODO: This is identical to get_sections. Why use different names?
-    # Because it expresses the intent. Its possible we will want to return
-    # different things later on.
-    render_page_sections_json
-  end
-
+  ## Mutations
   def create_page
     activity = LightweightActivity.find(params[:activity_id])
+    authorize! :update, activity
     return error("Can't find activity #{params[:activity_id]}") unless activity
     activity.pages.create()
     pages = activity.reload.pages.map do |page|
@@ -40,11 +42,11 @@ class Api::V1::InteractivePagesController < API::APIController
 
   def delete_page
     activity = @interactive_page.lightweight_activity
+    authorize! :update, activity
     @interactive_page.destroy
     render :json => ({success: true})
   end
 
-  ## Mutations
   def set_sections
     param_sections = params['sections'] || [] # array of [{:id,:layout}]
     old_sections = @interactive_page.sections
