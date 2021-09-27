@@ -14,24 +14,14 @@ feature 'Activity page can be hidden', :js => true do
     let(:activity_page_url)      { activity_page_path(activity, activity_page) }
 
     scenario 'page can be marked as hidden' do
-      visit activity_page_url
-      expect(page.status_code).to eq(200)
-
-      visit edit_activity_page_url
-      expect(page).to have_unchecked_field 'hide-page-checkbox'
-      check 'hide-page-checkbox'
+      activity_page.update_attributes!(is_hidden: true)
 
       visit activity_page_url
-      # this requires action_dispatch.show_exceptions = true otheriwse a 500 is returned
       expect(page.status_code).to eq(404)
     end
 
     scenario 'page can be marked as visible' do
-      activity_page.update_attributes!(is_hidden: true)
-
-      visit edit_activity_page_url
-      expect(page).to have_checked_field 'hide-page-checkbox'
-      uncheck 'hide-page-checkbox'
+      activity_page.update_attributes!(is_hidden: false)
 
       visit activity_page_url
       expect(page.status_code).to eq(200)
