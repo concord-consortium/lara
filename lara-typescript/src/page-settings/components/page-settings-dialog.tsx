@@ -59,7 +59,6 @@ export const PageSettingsDialog: React.FC<IPageSettingsDialogProps> = ({
   };
 
   const handleUpdateSettings = () => {
-    console.log(title);
     updateSettingsFunction(
       title,
       isCompletion,
@@ -103,7 +102,7 @@ export const PageSettingsDialog: React.FC<IPageSettingsDialogProps> = ({
             <input
               type="checkbox"
               id="isHidden"
-              name="is_hidden"
+              name="isHidden"
               defaultChecked={isHidden}
               onChange={handleIsHiddenChange}
             />
@@ -115,7 +114,7 @@ export const PageSettingsDialog: React.FC<IPageSettingsDialogProps> = ({
             <input
               type="checkbox"
               id="isCompletion"
-              name="is_completion"
+              name="isCompletion"
               defaultChecked={isCompletion}
               onChange={handleIsCompletionChange}
             />
