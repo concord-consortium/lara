@@ -172,9 +172,6 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
     return `edit-page-grid-container sectionContainer ${layoutClass}`;
   };
 
-  console.log("allEmbeddables = ");
-  console.log(allEmbeddables);
-
   return (
     <div className={sectionClassNames()}>
       <header className="sectionMenu full-row">

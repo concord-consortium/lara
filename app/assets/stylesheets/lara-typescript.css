@@ -437,7 +437,7 @@
   min-height: 450px;
   overflow: hidden;
   padding: 0;
-  position: absolute;
+  position: fixed;
   top: 20px;
   transform: translate(-50%, 0);
   width: 600px;
@@ -652,7 +652,7 @@ input, select {
     margin: 0;
     padding: 0; }
     #itemPickerList ul li button {
-      background: transparent;
+      background: transparent !important;
       border: none;
       border-radius: 0;
       color: var(--teal);
@@ -664,10 +664,10 @@ input, select {
       text-align: left;
       width: 100%; }
       #itemPickerList ul li button.selected, #itemPickerList ul li button:hover {
-        background: var(--teal);
+        background: var(--teal) !important;
         color: white; }
       #itemPickerList ul li button.disabled:hover {
-        background: transparent;
+        background: transparent !important;
         color: var(--teal); }
 
 :root {
