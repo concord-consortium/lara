@@ -131,7 +131,7 @@ input, select {
     padding: 0;
 
     li button {
-      background: transparent;
+      background: transparent !important;
       border: none;
       border-radius: 0;
       color: var(--teal);
@@ -144,12 +144,12 @@ input, select {
       width: 100%;
 
       &.selected, &:hover {
-        background: var(--teal);
+        background: var(--teal) !important;
         color: white;
       }
 
       &.disabled:hover {
-        background: transparent;
+        background: transparent !important;
         color: var(--teal);
       }
     }

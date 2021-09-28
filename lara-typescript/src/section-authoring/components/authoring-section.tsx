@@ -261,11 +261,9 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
                     })}
                     { droppableProvided.placeholder }
                     { !collapsed && (
-                      <div className={sectionClassName(items.length)} key={items.length}>
-                        <button className="smallButton" onClick={handleShowAddItem}>
-                          <Add height="16" width="16" /> <span className="lineAdjust">Add Item</span>
-                        </button>
-                      </div>
+                      <button className="smallButton" onClick={handleShowAddItem}>
+                        <Add height="16" width="16" /> <span className="lineAdjust">Add Item</span>
+                      </button>
                     )}
                   </div>
                 </div>
@@ -314,12 +312,10 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
                       })}
                       { droppableProvided.placeholder }
                       { !collapsed && (
-                      <div className={sectionClassName(items.length)} key={items.length}>
                         <button className="smallButton" onClick={handleShowAddItem}>
                           <Add height="16" width="16" /> <span className="lineAdjust">Add Item</span>
                         </button>
-                      </div>
-                    )}
+                      )}
                     </div>
                   </div>
                 )}
@@ -344,8 +340,6 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
     });
     handleToggleShowAddItem();
   };
-
-  const sectionClassName = (index: number) => `section-container ${classNameForItem(layout, index)}`;
 
   return (
     <div className="edit-page-grid-container">

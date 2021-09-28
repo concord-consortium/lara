@@ -49346,11 +49346,10 @@ var AuthoringSection = function (_a) {
                                         React.createElement(section_item_1.SectionItem, __assign({}, element, { key: element.id, moveFunction: handleMoveItem, copyFunction: handleCopyItem, deleteFunction: handleDeleteItem })))); }));
                                 }),
                             droppableProvided.placeholder,
-                            !collapsed && (React.createElement("div", { className: sectionClassName(items.length), key: items.length },
-                                React.createElement("button", { className: "smallButton", onClick: handleShowAddItem },
-                                    React.createElement(add_icon_1.Add, { height: "16", width: "16" }),
-                                    " ",
-                                    React.createElement("span", { className: "lineAdjust" }, "Add Item"))))))); })),
+                            !collapsed && (React.createElement("button", { className: "smallButton", onClick: handleShowAddItem },
+                                React.createElement(add_icon_1.Add, { height: "16", width: "16" }),
+                                " ",
+                                React.createElement("span", { className: "lineAdjust" }, "Add Item")))))); })),
                 layout !== "Full Width" &&
                     React.createElement("div", { className: "edit-page-grid-container col-2 " + classNameForItem(layout, 1) },
                         React.createElement(react_beautiful_dnd_1.Droppable, { droppableId: "droppableCol2" }, function (droppableProvided) { return (React.createElement("div", __assign({ ref: droppableProvided.innerRef, className: "edit-items-container full-row" }, droppableProvided.droppableProps),
@@ -49363,11 +49362,10 @@ var AuthoringSection = function (_a) {
                                             React.createElement(section_item_1.SectionItem, __assign({}, element, { key: element.id, moveFunction: handleMoveItem, copyFunction: handleCopyItem, deleteFunction: handleDeleteItem })))); }));
                                     }),
                                 droppableProvided.placeholder,
-                                !collapsed && (React.createElement("div", { className: sectionClassName(items.length), key: items.length },
-                                    React.createElement("button", { className: "smallButton", onClick: handleShowAddItem },
-                                        React.createElement(add_icon_1.Add, { height: "16", width: "16" }),
-                                        " ",
-                                        React.createElement("span", { className: "lineAdjust" }, "Add Item"))))))); })))));
+                                !collapsed && (React.createElement("button", { className: "smallButton", onClick: handleShowAddItem },
+                                    React.createElement(add_icon_1.Add, { height: "16", width: "16" }),
+                                    " ",
+                                    React.createElement("span", { className: "lineAdjust" }, "Add Item")))))); })))));
     };
     var handleToggleShowAddItem = function () { return setShowAddItem(function (prev) { return !prev; }); };
     var handleShowAddItem = absorb_click_1.absorbClickThen(handleToggleShowAddItem);
@@ -49381,7 +49379,6 @@ var AuthoringSection = function (_a) {
         });
         handleToggleShowAddItem();
     };
-    var sectionClassName = function (index) { return "section-container " + classNameForItem(layout, index); };
     return (React.createElement("div", { className: "edit-page-grid-container" },
         React.createElement("header", { className: "section-menu full-row" },
             React.createElement("div", { className: "menu-start" },
