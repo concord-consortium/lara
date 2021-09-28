@@ -2,67 +2,43 @@ import * as React from "react";
 import { useState } from "react";
 import { GripLines } from "../../shared/components/icons/grip-lines";
 import { SectionItem, ISectionItemProps} from "./section-item";
-import { ISectionItem, SectionItemPicker } from "./section-item-picker";
+import { SectionItemPicker } from "./section-item-picker";
 import { absorbClickThen } from "../../shared/absorb-click";
-import { ICreatePageItem } from "../api-types";
+import { ICreatePageItem, ISection, ISectionItem, SectionLayouts } from "../api/api-types";
 import { DragDropContext, Droppable, Draggable, DropResult, DraggableProvided } from "react-beautiful-dnd";
 import { Add } from "../../shared/components/icons/add-icon";
 
 import "./authoring-section.scss";
 
-export enum Layouts {
-  LAYOUT_FULL_WIDTH = "Full Width",
-  LAYOUT_60_40 = "60-40",
-  LAYOUT_40_60 = "40-60",
-  LAYOUT_70_30 = "70-30",
-  LAYOUT_30_70 = "30-70",
-  LAYOUT_RESPONSIVE = "Responsive",
-}
-
-const defaultLayout = Layouts.LAYOUT_FULL_WIDTH;
+const defaultLayout = SectionLayouts.LAYOUT_FULL_WIDTH;
 const layoutClassNames = {
-  [Layouts.LAYOUT_FULL_WIDTH]: ["section-full-width"],
-  [Layouts.LAYOUT_60_40]: ["section-60", "section-40"] ,
-  [Layouts.LAYOUT_40_60]: ["section-40", "section-60"],
-  [Layouts.LAYOUT_70_30]: ["section-70", "section-30"],
-  [Layouts.LAYOUT_30_70]: ["section-30", "section-70"],
-  [Layouts.LAYOUT_RESPONSIVE]: ["section-responsive"]
+  [SectionLayouts.LAYOUT_FULL_WIDTH]: ["section-full-width"],
+  [SectionLayouts.LAYOUT_60_40]: ["section-60", "section-40"] ,
+  [SectionLayouts.LAYOUT_40_60]: ["section-40", "section-60"],
+  [SectionLayouts.LAYOUT_70_30]: ["section-70", "section-30"],
+  [SectionLayouts.LAYOUT_30_70]: ["section-30", "section-70"],
+  [SectionLayouts.LAYOUT_RESPONSIVE]: ["section-responsive"]
 };
 
-const classNameForItem = (_layout: Layouts, itemIndex: number) => {
+const classNameForItem = (_layout: SectionLayouts, itemIndex: number) => {
   const layout = _layout || defaultLayout;
   const layouts = layoutClassNames[layout];
   const classNameIndex = itemIndex % layouts.length;
   return layoutClassNames[layout][classNameIndex];
 };
 
-export interface ISectionProps {
+export interface ISectionProps extends ISection {
 
   /**
-   * Can the smaller side collapse?
+   * DraggingContext
    */
-  can_collapse_small?: boolean;
-
-  /**
-   * Record ID
-   */
-  id: string;
-
-  /**
-   * Associated Page for this section
-   */
-  interactive_page_id: string;
-
-  /**
-   * How are the items positioned in the section
-   */
-  layout?: Layouts;
+   draggableProvided?: DraggableProvided;
 
   /**
    * Optional function to update the section (elsewhere)
    * Todo: maybe we change the return type to be a Promise<SectionProps|error>
    */
-  updateFunction?: (changes: {section: Partial<ISectionProps>}) => void;
+  updateFunction?: (changes: {section: Partial<ISection>}) => void;
 
   /**
    * Optional function to delete the section (elsewhere)
@@ -80,29 +56,9 @@ export interface ISectionProps {
   copyFunction?: (id: string) => void;
 
   /**
-   * Or display order on the page
-   */
-  position?: number;
-
-  /**
-   * Name of the section will be displayed in the header
-   */
-  title?: string;
-
-  /**
-   * Should the section be collapsed?
-   */
-  collapsed?: boolean;
-
-  /**
-   * Items in this section
-   */
-  items?: ISectionItemProps[];
-
-  /**
    * Optional function to delete the section (elsewhere)
    */
-  updatePageItems?: (items: ISectionItemProps[], sectionId: string) => void;
+  updatePageItems?: (items: ISectionItem[], sectionId: string) => void;
 
   /**
    * Function to move an item
@@ -112,17 +68,13 @@ export interface ISectionProps {
   /*
    * List of all section items available
    */
-  allSectionItems?: ISectionItem[];
+  allEmbeddables?: ISectionItem[];
 
   /**
    * how to add a new page item
    */
   addPageItem?: (pageItem: ICreatePageItem) => void;
 
-  /**
-   * DraggingContext
-   */
-  draggableProvided?: DraggableProvided;
 }
 
 /**
@@ -140,7 +92,7 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
   title,
   updatePageItems,
   moveItemFunction,
-  allSectionItems,
+  allEmbeddables,
   draggableProvided,
   addPageItem
   }: ISectionProps) => {
@@ -159,7 +111,7 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
   }, [items]);
 
   const layoutChanged = (change: React.ChangeEvent<HTMLSelectElement>) => {
-    const newLayout = change.target.value as Layouts;
+    const newLayout = change.target.value as SectionLayouts;
     setLayout(newLayout);
     updateFunction?.({section: {layout: newLayout, id}});
   };
@@ -185,7 +137,7 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
   };
 
   const sortedItems = () => {
-    return items.sort((a, b) => a.position - b.position);
+    return items.sort((a, b) => (a?.position || 0) - (b?.position || 0));
   };
 
   const getColumnItems = (columnIndex: number) => {
@@ -201,12 +153,12 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
   const addItem = (sectionCol: number) => {
     const nextId = `section-${id}-item-${items.length}`;
     const position = items.length + 1;
-    const newItem: ISectionItemProps = {
+    const newItem: ISectionItem = {
       id: `${nextId}`,
       section_id: id,
       section_col: sectionCol,
       position,
-      type: "unknown",
+      embeddable: "unknown",
       title: `Item ${position} - ${Math.random().toString(36).substr(2, 9)}`
     };
     setItems([...items, newItem]);
@@ -251,12 +203,12 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
   const handleCopyItem = (itemId: string) => {
     const item = items.find(i => i.id === itemId);
     if (item) {
-      addItem(item.section_col);
+      addItem(item.section_col || 0);
     }
   };
 
   const handleDeleteItem = (itemId: string) => {
-    const nextItems: ISectionItemProps[] = [];
+    const nextItems: ISectionItem[] = [];
     items.forEach(i => {
       if (i.id !== itemId) {
         nextItems.push(i);
@@ -405,7 +357,7 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
             defaultValue={layout}
             title="Section layout">
             {
-              Object.values(Layouts).map( (l) => {
+              Object.values(SectionLayouts).map( (l) => {
                 return (
                   <option key={l} value={l}>{l}</option>
                 );

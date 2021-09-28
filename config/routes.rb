@@ -204,6 +204,12 @@ LightweightStandalone::Application.routes.draw do
       match 'create_page_item/:id' => 'interactive_pages#create_page_item', :as => 'create_page_item', :via => 'post'
       match 'get_library_interactives_list' => 'interactive_pages#get_library_interactives_list', :as => 'get_library_interactives_list', :via => 'get'
 
+      match 'get_pages/:activity_id' => 'interactive_pages#get_pages', :as => 'get_page_list', :via => 'get'
+      match 'get_page/:id' => 'interactive_pages#get_page', :as => 'get_page', :via => 'get'
+      match 'delete_page/:id' => 'interactive_pages#delete_page', as: 'delete_page', :via => 'post'
+      match 'create_page/:activity_id' => 'interactive_pages#create_page', :as => 'create_page', :via => 'post'
+
+
       match 'plugin_learner_states/:plugin_id/:run_id' =>
         'plugin_learner_states#load', as: 'show_plugin_learner_state', via: 'get'
       match 'plugin_plugin_learner_state/:plugin_id/:run_id' =>

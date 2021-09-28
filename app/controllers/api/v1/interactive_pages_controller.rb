@@ -1,6 +1,10 @@
 class Api::V1::InteractivePagesController < API::APIController
   layout false
-  before_filter :set_interactive_page, except: [:get_library_interactives_list]
+  before_filter :set_interactive_page, except: [
+    :get_library_interactives_list,
+    :get_pages,
+    :create_page
+  ]
   skip_before_filter :verify_authenticity_token
 
   ## Queries:
@@ -8,7 +12,41 @@ class Api::V1::InteractivePagesController < API::APIController
     render_page_sections_json
   end
 
+  # This is identical to get_sections. Why use different names?
+  # Because it expresses the intent. Its possible we will want to return
+  # different responses for each in the future.
+  def get_page
+    render_page_sections_json
+  end
+
+  def get_pages
+    activity = LightweightActivity.find(params[:activity_id])
+    return error("Can't find activity #{params[:activity_id]}") unless activity
+    pages = activity.pages.map do |page|
+      generate_page_json page
+    end
+    render :json => pages
+  end
+
   ## Mutations
+  def create_page
+    activity = LightweightActivity.find(params[:activity_id])
+    authorize! :update, activity
+    return error("Can't find activity #{params[:activity_id]}") unless activity
+    activity.pages.create()
+    pages = activity.reload.pages.map do |page|
+      generate_page_json page
+    end
+    render :json => pages
+  end
+
+  def delete_page
+    activity = @interactive_page.lightweight_activity
+    authorize! :update, activity
+    @interactive_page.destroy
+    render :json => ({success: true})
+  end
+
   def set_sections
     param_sections = params['sections'] || [] # array of [{:id,:layout}]
     old_sections = @interactive_page.sections
@@ -141,8 +179,8 @@ class Api::V1::InteractivePagesController < API::APIController
 
   private
 
-  def render_page_sections_json
-    sections = @interactive_page.sections.map do |s|
+  def generate_page_json(page)
+    sections = page.sections.map do |s|
       {
         id: s.id.to_s,
         layout: s.layout,
@@ -155,11 +193,15 @@ class Api::V1::InteractivePagesController < API::APIController
         end
       }
     end
-    render :json => {
-      :success => true,
-      sections: sections,
-      id: @interactive_page.id
+    return {
+      id: page.id,
+      title: page.name,
+      sections: sections
     }
+  end
+
+  def render_page_sections_json(page=@interactive)
+    render :json => generate_page_json(@interactive_page)
   end
 
   def set_interactive_page

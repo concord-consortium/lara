@@ -1,28 +1,12 @@
 import * as React from "react";
-import { QueryClient, QueryClientProvider, useMutation, useQuery, useQueryClient } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import { AuthoringPage, IPageProps } from "./authoring-page";
 import { ISectionProps } from "./authoring-section";
-import { ISectionItem } from "./section-item-picker";
+import { ICreatePageItem, ILibraryInteractiveResponse, IPage} from "../api/api-types";
 
 const APIBase = "/api/v1";
-
-interface ILibraryInteractiveResponse {
-  library_interactives: Array<{
-    id: string;
-    name: string;
-    use_count: number;
-    date_added: number;
-  }>;
-}
-
 interface IQueryBoundPage extends IPageProps {
   host?: string;
-}
-
-export interface ICreatePageItem {
-  section_id: string;
-  embeddable: string;
-  position?: number;
 }
 
 export const QueryBoundPage = (props: IQueryBoundPage) => {
@@ -36,11 +20,12 @@ export const QueryBoundPage = (props: IQueryBoundPage) => {
   const updateSectionUrl = `${prefix}/update_page_section/${id}.json`;
   const createPageItemUrl = `${prefix}/create_page_item/${id}.json`;
   const libraryInteractivesUrl = `${prefix}/get_library_interactives_list.json`;
+
   const updatePageQueryData = (response: any, variables: any) => {
     queryClient.setQueryData("authoringPage", response);
   };
 
-  const updateSections = (nextPage: IPageProps) => {
+  const updateSections = (nextPage: IPage) => {
     return fetch(updatePageSectionsURL, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
@@ -138,5 +123,12 @@ export const QueryBoundPage = (props: IQueryBoundPage) => {
   const addSection = createSectionMutation.mutate as () => void;
   const changeSection = changeSectionMutation.mutate;
   const addPageItem = createPageItemMutation.mutate;
-  return <AuthoringPage {...{ id, sections, setSections, addSection, changeSection, allSectionItems, addPageItem }} />;
+  const isCompletion = false;
+
+  return <AuthoringPage {...
+    {
+      id, sections, setSections, addSection, changeSection,
+      allEmbeddables: allSectionItems, addPageItem, isCompletion
+    }
+  }/>;
 };

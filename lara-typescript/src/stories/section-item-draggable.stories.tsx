@@ -1,7 +1,7 @@
 import * as React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-
-import { AuthoringSection, Layouts, ISectionProps } from "../section-authoring/components/authoring-section";
+import { AuthoringSection, ISectionProps } from "../section-authoring/components/authoring-section";
+import { SectionLayouts } from "../section-authoring/api/api-types";
 
 export default {
   title: "Section Items Are Draggable",
@@ -17,12 +17,12 @@ export const FullWidth = Template.bind({});
 FullWidth.args = {
   id: "1",
   interactive_page_id: "2",
-  layout: Layouts.LAYOUT_FULL_WIDTH
+  layout: SectionLayouts.LAYOUT_FULL_WIDTH
 };
 
 export const _40_60 = Template.bind({});
 _40_60.args = {
   id: "1",
   interactive_page_id: "2",
-  layout: Layouts.LAYOUT_40_60
+  layout: SectionLayouts.LAYOUT_40_60
 };
