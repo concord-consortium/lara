@@ -1,6 +1,7 @@
 import * as React from "react";
 import { withReactContext } from "storybook-react-context";
-import {Layouts, ISectionProps } from "../section-authoring/components/authoring-section";
+import { ISectionProps } from "../section-authoring/components/authoring-section";
+import { SectionLayouts  } from "../section-authoring/api/api-types";
 import {IPageProps, AuthoringPage} from "../section-authoring/components/authoring-page";
 
 interface IContext {
@@ -18,7 +19,7 @@ export const AuthoringPageSettingsStory = (_: any, { context: [state, dispatch] 
       sections: [...state.sections,
         {
           id: `${++sectionIdCounter}`,
-          layout: Layouts.LAYOUT_30_70,
+          layout: SectionLayouts.LAYOUT_30_70,
           position: ++sectionPositionCounter,
           interactive_page_id: pageId
         }

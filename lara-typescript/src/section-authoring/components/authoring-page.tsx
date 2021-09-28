@@ -3,7 +3,7 @@ import { useState } from "react";
 import { PageSettingsDialog } from "../../page-settings/components/page-settings-dialog";
 import { AuthoringSection, ISectionProps } from "./authoring-section";
 import { SectionMoveDialog } from "./section-move-dialog";
-import { ICreatePageItem, IPage, ISection, ISectionItem} from "../api/api-types";
+import { ICreatePageItem, IPage, ISection, ISectionItem, ISectionItemType } from "../api/api-types";
 import { SectionItemMoveDialog } from "./section-item-move-dialog";
 import { DragDropContext, Droppable, Draggable, DropResult } from "react-beautiful-dnd";
 import { Add } from "../../shared/components/icons/add-icon";
@@ -66,7 +66,7 @@ export interface IPageProps extends IPage {
   /*
    * List of all section items available
    */
-  allEmbeddables?: ISectionItem[];
+  allEmbeddables?: ISectionItemType[];
 
   /**
    * how to add a new page item

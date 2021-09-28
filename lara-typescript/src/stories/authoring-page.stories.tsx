@@ -71,10 +71,8 @@ export const LaraConnectedPageStory = () => {
   const queryClient = new QueryClient();
   return(
     <QueryClientProvider client={queryClient}>
-      <QueryBoundPage host="https://app.lara.docker" id="698" sections={[]}/>
+      <QueryBoundPage host="https://app.lara.docker" id="3522" sections={[]}/>
     </QueryClientProvider>
   );
 };
 LaraConnectedPageStory.title = "Connected to LARA ... ";
-
-

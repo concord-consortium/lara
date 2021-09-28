@@ -4,7 +4,7 @@ import { GripLines } from "../../shared/components/icons/grip-lines";
 import { SectionItem, ISectionItemProps} from "./section-item";
 import { SectionItemPicker } from "./section-item-picker";
 import { absorbClickThen } from "../../shared/absorb-click";
-import { ICreatePageItem, ISection, ISectionItem, SectionLayouts } from "../api/api-types";
+import { ICreatePageItem, ISection, ISectionItem, ISectionItemType, SectionLayouts } from "../api/api-types";
 import { DragDropContext, Droppable, Draggable, DropResult, DraggableProvided } from "react-beautiful-dnd";
 import { Add } from "../../shared/components/icons/add-icon";
 
@@ -68,7 +68,7 @@ export interface ISectionProps extends ISection {
   /*
    * List of all section items available
    */
-  allEmbeddables?: ISectionItem[];
+  allEmbeddables?: ISectionItemType[];
 
   /**
    * how to add a new page item
@@ -87,7 +87,7 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
   moveFunction,
   copyFunction,
   layout: initLayout = defaultLayout,
-  items: initItems = [],
+  items = [],
   collapsed: initCollapsed = false,
   title,
   updatePageItems,
@@ -97,7 +97,6 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
   addPageItem
   }: ISectionProps) => {
 
-  const [items, setItems] = useState([...initItems]); // TODO: Initial Items as in layout
   const [layout, setLayout] = useState(initLayout);
   const [collapsed, setCollapsed] = useState(initCollapsed);
   const [showAddItem, setShowAddItem] = useState(false);
@@ -105,10 +104,6 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
   React.useEffect(() => {
     setLayout(initLayout);
   }, [initLayout]);
-
-  React.useEffect(() => {
-    updatePageItems?.(items, id);
-  }, [items]);
 
   const layoutChanged = (change: React.ChangeEvent<HTMLSelectElement>) => {
     const newLayout = change.target.value as SectionLayouts;
@@ -143,7 +138,7 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
   const getColumnItems = (columnIndex: number) => {
     let columnItems: any[] = [];
     columnItems = items.map(i => {
-      if (i.section_col === columnIndex) {
+      if ((i.section_col || 0) === columnIndex) {
         return i;
       }
     }).filter(Boolean);
@@ -161,7 +156,7 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
       embeddable: "unknown",
       title: `Item ${position} - ${Math.random().toString(36).substr(2, 9)}`
     };
-    setItems([...items, newItem]);
+    // setItems([...items, newItem]);
   };
 
   const swapIndexes = (array: any[], a: number, b: number) => {
@@ -189,9 +184,9 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
     if (e.destination && e.destination.index !== e.source.index) {
       nextItems = swapIndexes(items, e.source.index, e.destination.index);
     }
-    if (setItems) {
-      setItems(nextItems);
-    }
+    // if (setItems) {
+    //   setItems(nextItems);
+    // }
   };
 
   const handleMoveItem = (itemId: string) => {
@@ -202,9 +197,9 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
 
   const handleCopyItem = (itemId: string) => {
     const item = items.find(i => i.id === itemId);
-    if (item) {
-      addItem(item.section_col || 0);
-    }
+    // if (item) {
+    //   addItem(item.section_col);
+    // }
   };
 
   const handleDeleteItem = (itemId: string) => {
@@ -214,14 +209,14 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
         nextItems.push(i);
       }
     });
-    setItems(nextItems);
+    // setItems(nextItems);
   };
 
   const sectionColumns = () => {
     const colOneItems = getColumnItems(0);
     const colTwoItems = getColumnItems(1);
-    const colOneAddItemHandler = () => addItem(0);
-    const colTwoAddItemHandler = () => addItem(1);
+    // const colOneAddItemHandler = () => addItem(0);
+    // const colTwoAddItemHandler = () => addItem(1);
     return (
       <>
         <DragDropContext onDragEnd={onDragEnd}>
@@ -265,9 +260,13 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
                       );
                     })}
                     { droppableProvided.placeholder }
-                    <button className="smallButton" onClick={colOneAddItemHandler}>
-                      <Add height="16" width="16" /> <span className="lineAdjust">Add Item</span>
-                    </button>
+                    { !collapsed && (
+                      <div className={sectionClassName(items.length)} key={items.length}>
+                        <button className="smallButton" onClick={handleShowAddItem}>
+                          <Add height="16" width="16" /> <span className="lineAdjust">Add Item</span>
+                        </button>
+                      </div>
+                    )}
                   </div>
                 </div>
             )}
@@ -314,9 +313,13 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
                         );
                       })}
                       { droppableProvided.placeholder }
-                      <button className="smallButton" onClick={colTwoAddItemHandler}>
-                      <Add height="16" width="16" /> <span className="lineAdjust">Add Item</span>
-                      </button>
+                      { !collapsed && (
+                      <div className={sectionClassName(items.length)} key={items.length}>
+                        <button className="smallButton" onClick={handleShowAddItem}>
+                          <Add height="16" width="16" /> <span className="lineAdjust">Add Item</span>
+                        </button>
+                      </div>
+                    )}
                     </div>
                   </div>
                 )}
@@ -332,8 +335,11 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
   const handleShowAddItem = absorbClickThen(handleToggleShowAddItem);
 
   const handleAddItem = (itemId: string) => {
+    const position = items.length + 1;
     addPageItem?.({
       section_id: id,
+      section_col: 0,
+      position,
       embeddable: itemId
     });
     handleToggleShowAddItem();
@@ -375,6 +381,14 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
         </div>
       </header>
       {sectionColumns()}
+      {showAddItem
+        ? <SectionItemPicker
+            quickAddItems={allEmbeddables?.filter(ae => ae.isQuickAddItem) || []}
+            allItems={allEmbeddables || []}
+            onClose={handleToggleShowAddItem}
+            onAdd={handleAddItem}
+          />
+        : undefined}
     </div>
   );
 };

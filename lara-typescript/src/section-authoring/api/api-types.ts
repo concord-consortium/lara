@@ -21,8 +21,17 @@ export interface ISectionItem {
   position?: number;
 }
 
+export interface ISectionItemType {
+  id: string;
+  name: string;
+  useCount: number;
+  dateAdded: number;
+  isQuickAddItem?: boolean;
+}
+
 export interface ICreatePageItem {
   section_id: string;
+  section_col: number;
   embeddable: string;
   position?: number;
 }
@@ -85,6 +94,11 @@ export interface IPage {
   id: string;
 
   /**
+   * Indicates if this is a newly created page
+   */
+  isNew?: boolean;
+
+  /**
    * Optional title for the page
    */
   title?: string;
@@ -105,7 +119,6 @@ export interface IPage {
    */
   items?: ISectionItem[];
 }
-
 
 // API Call Signatures
 export type APIPagesGetF = () => Promise<IPage[]>;

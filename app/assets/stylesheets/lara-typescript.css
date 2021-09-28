@@ -415,6 +415,277 @@
   --lt-gray: hsl(0, 0%, 90%);
   --ltr-gray: hsl(0, 0%, 95%); }
 
+.modalOverlay {
+  background: var(--dark-gray);
+  height: 100%;
+  left: 0;
+  opacity: .7;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 2; }
+
+.modalContainer {
+  background: transparent;
+  border: none;
+  bottom: auto;
+  display: block;
+  font-family: var(--font-family-default);
+  height: auto;
+  left: 50%;
+  margin: 0;
+  min-height: 450px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  top: 20px;
+  transform: translate(-50%, 0);
+  width: 600px;
+  z-index: 3; }
+  .modalContainer header {
+    background: var(--teal);
+    color: white;
+    display: flex;
+    padding: 10px; }
+    .modalContainer header h1 {
+      clear: none;
+      color: white;
+      flex-grow: 2;
+      font-family: var(--font-family-default);
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 1;
+      margin: 0;
+      padding: 0; }
+    .modalContainer header .modalClose {
+      align-self: center;
+      background: transparent;
+      border: none;
+      color: white;
+      height: 16px;
+      line-height: 1;
+      margin: 0;
+      overflow: hidden;
+      padding: 0;
+      position: relative;
+      text-indent: 100%;
+      white-space: nowrap;
+      width: 12px; }
+      .modalContainer header .modalClose:before {
+        content: "\2716";
+        cursor: pointer;
+        font-size: 16px;
+        left: 0;
+        position: absolute;
+        text-indent: 0;
+        top: 0; }
+  .modalContainer section {
+    background: white;
+    border: solid 1px var(--med-gray);
+    border-top: none;
+    padding: 10px; }
+
+.actionButtons {
+  border-top: solid 1px var(--med-gray);
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 10px;
+  text-align: right; }
+  .actionButtons button {
+    background: var(--ltst-teal);
+    border: solid 1.5px var(--med-gray);
+    border-radius: 4px;
+    color: var(--dark-gray);
+    cursor: pointer;
+    display: flex;
+    font-size: 16px;
+    font-weight: 700;
+    margin: 0 0 0 10px;
+    padding: 5px 10px;
+    position: relative; }
+    .actionButtons button.disabled {
+      opacity: .6; }
+      .actionButtons button.disabled:hover {
+        background: var(--ltst-teal); }
+    .actionButtons button span.lineAdjust {
+      height: 17px;
+      line-height: 17px; }
+    .actionButtons button svg {
+      align-self: center;
+      display: inline-block;
+      fill: var(--teal);
+      margin: 0 3px 0 0;
+      padding: 0;
+      vertical-align: top; }
+    .actionButtons button:hover {
+      background: var(--lt-teal); }
+    .actionButtons button:active {
+      background: var(--teal);
+      color: white; }
+      .actionButtons button:active svg {
+        fill: white; }
+
+:root {
+  --font-family-default: lato, helvetica, verdana, sans-serif;
+  --font-color-default: #313131;
+  --dark-teal: #016082;
+  --teal: #0592af;
+  --lt-teal: #93d5e4;
+  --ltr-teal: #cdebf2;
+  --ltst-teal: #e2f4f8;
+  --gold: #ffc320;
+  --lt-orange: #ffe6d0;
+  --orange: #ea6d2f;
+  --dark-gray: #3f3f3f;
+  --med-gray: #979797;
+  --lt-gray: hsl(0, 0%, 90%);
+  --ltr-gray: hsl(0, 0%, 95%); }
+
+.disabled, *[disabled] {
+  cursor: not-allowed !important;
+  opacity: .6 !important; }
+
+#quickAddMenu {
+  background: var(--ltst-teal);
+  margin: 0 0 20px;
+  padding: 10px; }
+  #quickAddMenu h2 {
+    font-size: 16px;
+    margin: 0 0 10px;
+    padding: 0; }
+  #quickAddMenu ul {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    list-style: none;
+    margin: 0;
+    padding: 0; }
+    #quickAddMenu ul li {
+      display: inline-block;
+      line-height: 1;
+      margin: 0 2px;
+      padding: 0; }
+      #quickAddMenu ul li button {
+        background: var(--ltst-teal);
+        border: solid 1px var(--med-gray);
+        border-radius: 4px;
+        color: var(--dark-gray);
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 700;
+        line-height: 1;
+        margin: 0;
+        padding: 10px 15px;
+        text-align: center; }
+        #quickAddMenu ul li button:hover {
+          background: var(--lt-teal); }
+        #quickAddMenu ul li button.disabled:hover {
+          background: var(--ltst-teal); }
+        #quickAddMenu ul li button.selected, #quickAddMenu ul li button:active {
+          background: var(--teal);
+          color: white; }
+
+#itemPickerOptions {
+  display: flex;
+  justify-content: space-between; }
+
+input, select {
+  border: solid 1.5px var(--med-gray);
+  border-radius: 4px;
+  padding: 5px 10px; }
+
+#itemPickerSearch {
+  position: relative;
+  width: 50%; }
+  #itemPickerSearch:before {
+    content: "\260c";
+    display: block;
+    font-size: 22px;
+    font-weight: 700;
+    left: 6px;
+    line-height: 1;
+    position: absolute;
+    top: 2px;
+    transform: rotate(90deg);
+    z-index: 5; }
+  #itemPickerSearch input {
+    padding-left: 26px;
+    width: calc(100% - 36px); }
+
+#itemPickerSort {
+  font-size: 14px; }
+  #itemPickerSort label {
+    margin-right: 5px; }
+
+#searchPlaceholder {
+  height: 100px; }
+
+.loading {
+  animation: loading .5s linear 0s infinite; }
+
+@keyframes loading {
+  0%, 100% {
+    opacity: .6; }
+  50% {
+    opacity: 1; } }
+
+#itemPickerList {
+  border-top: solid 1.5px var(--med-gray);
+  height: 150px;
+  margin: 20px 0 0;
+  overflow: scroll;
+  padding: 10px 0 0;
+  position: relative; }
+  #itemPickerList:after {
+    background: transparent;
+    background: linear-gradient(0deg, white 10%, rgba(255, 255, 255, 0) 100%);
+    bottom: 0;
+    content: ' ';
+    display: block;
+    height: 50px;
+    left: 0;
+    position: sticky;
+    width: 100%;
+    z-index: 5; }
+  #itemPickerList ul {
+    list-style: none;
+    margin: 0;
+    padding: 0; }
+    #itemPickerList ul li button {
+      background: transparent;
+      border: none;
+      border-radius: 0;
+      color: var(--teal);
+      cursor: pointer;
+      font-size: 14px;
+      line-height: 1.6;
+      margin: 0;
+      padding: 0 10px;
+      text-align: left;
+      width: 100%; }
+      #itemPickerList ul li button.selected, #itemPickerList ul li button:hover {
+        background: var(--teal);
+        color: white; }
+      #itemPickerList ul li button.disabled:hover {
+        background: transparent;
+        color: var(--teal); }
+
+:root {
+  --font-family-default: lato, helvetica, verdana, sans-serif;
+  --font-color-default: #313131;
+  --dark-teal: #016082;
+  --teal: #0592af;
+  --lt-teal: #93d5e4;
+  --ltr-teal: #cdebf2;
+  --ltst-teal: #e2f4f8;
+  --gold: #ffc320;
+  --lt-orange: #ffe6d0;
+  --orange: #ea6d2f;
+  --dark-gray: #3f3f3f;
+  --med-gray: #979797;
+  --lt-gray: hsl(0, 0%, 90%);
+  --ltr-gray: hsl(0, 0%, 95%); }
+
 a {
   color: inherit; }
 
@@ -650,132 +921,6 @@ select {
 
 .section-full-width {
   grid-column: span 10; }
-
-:root {
-  --font-family-default: lato, helvetica, verdana, sans-serif;
-  --font-color-default: #313131;
-  --dark-teal: #016082;
-  --teal: #0592af;
-  --lt-teal: #93d5e4;
-  --ltr-teal: #cdebf2;
-  --ltst-teal: #e2f4f8;
-  --gold: #ffc320;
-  --lt-orange: #ffe6d0;
-  --orange: #ea6d2f;
-  --dark-gray: #3f3f3f;
-  --med-gray: #979797;
-  --lt-gray: hsl(0, 0%, 90%);
-  --ltr-gray: hsl(0, 0%, 95%); }
-
-.modalOverlay {
-  background: var(--dark-gray);
-  height: 100%;
-  left: 0;
-  opacity: .7;
-  position: fixed;
-  top: 0;
-  width: 100%;
-  z-index: 2; }
-
-.modalContainer {
-  background: transparent;
-  border: none;
-  bottom: auto;
-  display: block;
-  font-family: var(--font-family-default);
-  height: auto;
-  left: 50%;
-  margin: 0;
-  min-height: 450px;
-  overflow: hidden;
-  padding: 0;
-  position: absolute;
-  top: 20px;
-  transform: translate(-50%, 0);
-  width: 600px;
-  z-index: 3; }
-  .modalContainer header {
-    background: var(--teal);
-    color: white;
-    display: flex;
-    padding: 10px; }
-    .modalContainer header h1 {
-      clear: none;
-      color: white;
-      flex-grow: 2;
-      font-family: var(--font-family-default);
-      font-size: 16px;
-      font-weight: 700;
-      line-height: 1;
-      margin: 0;
-      padding: 0; }
-    .modalContainer header .modalClose {
-      align-self: center;
-      background: transparent;
-      border: none;
-      color: white;
-      height: 16px;
-      line-height: 1;
-      margin: 0;
-      overflow: hidden;
-      padding: 0;
-      position: relative;
-      text-indent: 100%;
-      white-space: nowrap;
-      width: 12px; }
-      .modalContainer header .modalClose:before {
-        content: "\2716";
-        cursor: pointer;
-        font-size: 16px;
-        left: 0;
-        position: absolute;
-        text-indent: 0;
-        top: 0; }
-  .modalContainer section {
-    background: white;
-    border: solid 1px var(--med-gray);
-    border-top: none;
-    padding: 10px; }
-
-.actionButtons {
-  border-top: solid 1px var(--med-gray);
-  display: flex;
-  justify-content: flex-end;
-  padding-top: 10px;
-  text-align: right; }
-  .actionButtons button {
-    background: var(--ltst-teal);
-    border: solid 1.5px var(--med-gray);
-    border-radius: 4px;
-    color: var(--dark-gray);
-    cursor: pointer;
-    display: flex;
-    font-size: 16px;
-    font-weight: 700;
-    margin: 0 0 0 10px;
-    padding: 5px 10px;
-    position: relative; }
-    .actionButtons button.disabled {
-      opacity: .6; }
-      .actionButtons button.disabled:hover {
-        background: var(--ltst-teal); }
-    .actionButtons button span.lineAdjust {
-      height: 17px;
-      line-height: 17px; }
-    .actionButtons button svg {
-      align-self: center;
-      display: inline-block;
-      fill: var(--teal);
-      margin: 0 3px 0 0;
-      padding: 0;
-      vertical-align: top; }
-    .actionButtons button:hover {
-      background: var(--lt-teal); }
-    .actionButtons button:active {
-      background: var(--teal);
-      color: white; }
-      .actionButtons button:active svg {
-        fill: white; }
 
 :root {
   --font-family-default: lato, helvetica, verdana, sans-serif;
