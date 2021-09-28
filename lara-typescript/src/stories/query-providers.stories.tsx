@@ -2,7 +2,7 @@ import React from "react";
 import { ComponentMeta } from "@storybook/react";
 
 import { App } from "../section-authoring/query-providers-test-component";
-import { getLaraPageAPI } from "../section-authoring/api/lara-api-provider";
+import { getLaraAuthoringAPI } from "../section-authoring/api/lara-api-provider";
 import { API as mockProvider } from "../section-authoring/api/mock-api-provider";
 import { APIContext } from "../section-authoring/api/use-api-provider";
 import { IPageProps, AuthoringPage} from "../section-authoring/components/authoring-page";
@@ -24,7 +24,7 @@ export const FakeAPI = () => {
 };
 
 export const LocalHostAPI = () => {
-  const LocalLaraAPI = getLaraPageAPI("55", "https://app.lara.docker");
+  const LocalLaraAPI = getLaraAuthoringAPI("55", "https://app.lara.docker");
   return(
     <APIContext.Provider value={LocalLaraAPI}>
       <App/>
@@ -33,7 +33,7 @@ export const LocalHostAPI = () => {
 };
 
 export const AuthoringPageWithAPIProvider = () => {
-  const LocalLaraAPI = getLaraPageAPI("55", "https://app.lara.docker");
+  const LocalLaraAPI = getLaraAuthoringAPI("55", "https://app.lara.docker");
   const queryClient = new QueryClient();
   const Content = () => {
     const api = usePageAPI();
