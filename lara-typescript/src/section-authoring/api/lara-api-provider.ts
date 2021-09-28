@@ -1,14 +1,17 @@
 import {
-  IPage, PageId, ISection,
-  APIPageGetF, APIPagesGetF, IAuthoringAPIProvider,
-  ICreatePageItem
+  IAuthoringAPIProvider,
+  IPage, PageId, ISection, ICreatePageItem,
+  APIPageGetF, APIPagesGetF,
+  APIPageCreateF, APIPageDeleteF,
+  APISectionCreateF, APISectionsUpdateF, APISectionUpdateF,
+  APIPageItemCreateF
 } from "./api-types";
 
 const APIBase = "/api/v1";
 
-export const getLaraPageAPI = (host: string = "", activityId: string): IAuthoringAPIProvider => {
+export const getLaraPageAPI = (activityId: string, host: string = window.location.origin, ): IAuthoringAPIProvider => {
 
-  const prefix = `${host}/${APIBase}`;
+  const prefix = `${host}${APIBase}`;
   // endpoints:
 
   const getPagesUrl = `${prefix}/get_pages/${activityId}.json`;
@@ -54,30 +57,30 @@ export const getLaraPageAPI = (host: string = "", activityId: string): IAuthorin
     return sendToLara({url: getPageUrl(id)});
   };
 
-  const createPage = () => {
+  const createPage: APIPageCreateF = () => {
     return sendToLara({url: createPageUrl, method: "POST"});
   };
 
-  const deletePage = (id: PageId) => {
+  const deletePage: APIPageDeleteF = (id: PageId) => {
     return sendToLara({url: deletePageUrl(id), method: "POST"});
   };
 
-  const createSection = (id: PageId) => {
+  const createSection: APISectionCreateF = (id: PageId) => {
     return sendToLara({url: createPageSectionUrl(id), method: "POST"});
     // This shouldn't be required :  body: JSON.stringify({ id })
   };
 
-  const updateSections = (nextPage: IPage) => {
+  const updateSections: APISectionsUpdateF = (nextPage: IPage) => {
     return sendToLara({url: updatePageSectionsURL(nextPage.id), method: "PUT", body: nextPage});
   };
 
-  const updateSection = (args: {pageId: PageId, changes: { section: Partial<ISection> }}) => {
+  const updateSection: APISectionUpdateF = (args: {pageId: PageId, changes: { section: Partial<ISection> }}) => {
     const {pageId, changes} = args;
     const data = { id: pageId, section: { ...changes.section } };
     return sendToLara({url: updateSectionUrl(pageId), method: "POST", body: data});
   };
 
-  const createPageItem = (pageId: PageId, newPageItem: ICreatePageItem) => {
+  const createPageItem: APIPageItemCreateF = (pageId: PageId, newPageItem: ICreatePageItem) => {
     return sendToLara({url: createPageItemUrl(pageId), method: "POST", body: newPageItem});
   };
 

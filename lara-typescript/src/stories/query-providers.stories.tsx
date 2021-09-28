@@ -15,7 +15,6 @@ export default {
   component: App,
 } as ComponentMeta<typeof App>;
 
-// TODO Parameterize host and PageID
 export const FakeAPI = () => {
   return(
   <APIContext.Provider value={mockProvider}>
@@ -25,7 +24,7 @@ export const FakeAPI = () => {
 };
 
 export const LocalHostAPI = () => {
-  const LocalLaraAPI = getLaraPageAPI("https://app.lara.docker/", "55");
+  const LocalLaraAPI = getLaraPageAPI("55", "https://app.lara.docker");
   return(
     <APIContext.Provider value={LocalLaraAPI}>
       <App/>
@@ -34,7 +33,7 @@ export const LocalHostAPI = () => {
 };
 
 export const AuthoringPageWithAPIProvider = () => {
-  const LocalLaraAPI = getLaraPageAPI("https://app.lara.docker/", "55");
+  const LocalLaraAPI = getLaraPageAPI("55", "https://app.lara.docker");
   const queryClient = new QueryClient();
   const Content = () => {
     const api = usePageAPI();
@@ -64,7 +63,7 @@ export const AuthoringPageWithAPIProvider = () => {
   };
 
   return (
-    <APIContext.Provider value={mockProvider}>
+    <APIContext.Provider value={LocalLaraAPI}>
       <QueryClientProvider client={queryClient}>
         <Content />
       </QueryClientProvider>
