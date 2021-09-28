@@ -315,26 +315,32 @@ describe Api::V1::InteractivePagesController do
       end
 
       it "when the activity author is deleting" do
-        pages # instantiate
+        page  = pages.first
         act.reload
         before_count = act.pages.length
         after_count = act.pages.length - 1
 
-        xhr :post, "delete_page", {activity_id: act.id}
+        xhr :post, "delete_page", {id: page.id}
         expect(response.status).to eq(200)
         expect(response.content_type).to eq("application/json")
-        pages = JSON.parse(response.body)
-        expect(pages.length).to eql(after_count)
+        expect(JSON.parse(response.body)).to eq({"success"=> true})
+        expect(act.reload.pages.length).to eql(after_count)
       end
     end
 
     describe "fails" do
+      before :each do
+        sign_out author
+      end
       it "when the current user is not the activity author" do
-        pages # instantiate
+        page  = pages.first
         act.reload
+        before_count = act.pages.length
+        after_count = before_count
 
-        xhr :post, "delete_page", {activity_id: act.id}
+        xhr :post, "delete_page", {id: page.id}
         expect(response.status).to eq(403)
+        expect(act.pages.length).to eq(after_count)
       end
     end
   end
