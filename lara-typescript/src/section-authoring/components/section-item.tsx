@@ -71,6 +71,12 @@ export const SectionItem: React.FC<ISectionItemProps> = ({
   title
   }: ISectionItemProps) => {
 
+  const renderTitle = () => (
+    <>
+      {(title || "").length > 0 ? title : <i>Untitled</i>}
+    </>
+  );
+
   const toggleCollapse = () => {
     return;
   };
@@ -96,7 +102,7 @@ export const SectionItem: React.FC<ISectionItemProps> = ({
       <header className="sectionItemMenu">
         <div className="menuStart">
           <GripLines />
-          <h4>{id} - {title}</h4>
+          <h4>{id} - {title} - {renderTitle()}</h4>
         </div>
         <div className="menuEnd">
           <ul>

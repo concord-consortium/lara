@@ -19,7 +19,7 @@ export interface IModalButtonsProps {
 
 export interface IModalProps {
   children: JSX.Element;
-  closeFunction?: () => void;
+  closeFunction?: (e: React.MouseEvent<HTMLElement> | MouseEvent) => void;
   title?: string;
   visibility: boolean;
   width?: number;

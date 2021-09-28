@@ -5,7 +5,7 @@ import { SectionColumn } from "./section-column";
 import { SectionItem, ISectionItemProps} from "./section-item";
 import { SectionItemPicker } from "./section-item-picker";
 import { absorbClickThen } from "../../shared/absorb-click";
-import { ICreatePageItem, ISection, ISectionItem, SectionLayouts } from "../api/api-types";
+import { ICreatePageItem, ISection, ISectionItem, ISectionItemType, SectionLayouts } from "../api/api-types";
 import { DragDropContext, Droppable, Draggable, DropResult, DraggableProvided } from "react-beautiful-dnd";
 import { Add } from "../../shared/components/icons/add-icon";
 
@@ -69,7 +69,7 @@ export interface ISectionProps extends ISection {
   /*
    * List of all section items available
    */
-  allEmbeddables?: ISectionItem[];
+  allEmbeddables?: ISectionItemType[];
 
   /**
    * how to add a new page item
@@ -98,7 +98,6 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
   addPageItem
   }: ISectionProps) => {
 
-  // const [items, setItems] = useState([...initItems]); // TODO: Initial Items as in layout
   const [layout, setLayout] = useState(initLayout);
   const [collapsed, setCollapsed] = useState(initCollapsed);
   const [showAddItem, setShowAddItem] = useState(false);
@@ -106,10 +105,6 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
   React.useEffect(() => {
     setLayout(initLayout);
   }, [initLayout]);
-
-  // React.useEffect(() => {
-  //   updatePageItems?.(items, id);
-  // }, [items]);
 
   const layoutChanged = (change: React.ChangeEvent<HTMLSelectElement>) => {
     const newLayout = change.target.value as SectionLayouts;
@@ -144,7 +139,7 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
   const getColumnItems = (columnIndex: number) => {
     let columnItems: any[] = [];
     columnItems = items.map(i => {
-      if (i.section_col === columnIndex) {
+      if ((i.section_col || 0) === columnIndex) {
         return i;
       }
     }).filter(Boolean);
