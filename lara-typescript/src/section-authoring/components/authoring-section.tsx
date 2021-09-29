@@ -4,7 +4,7 @@ import { GripLines } from "../../shared/components/icons/grip-lines";
 import { SectionItem, ISectionItemProps} from "./section-item";
 import { SectionItemPicker } from "./section-item-picker";
 import { absorbClickThen } from "../../shared/absorb-click";
-import { ICreatePageItem, ISection, ISectionItem, ISectionItemType, SectionLayouts } from "../api/api-types";
+import { ICreatePageItem, ISection, ISectionItem, ISectionItemType, SectionColumns, SectionLayouts } from "../api/api-types";
 import { DragDropContext, Droppable, Draggable, DropResult, DraggableProvided } from "react-beautiful-dnd";
 import { Add } from "../../shared/components/icons/add-icon";
 
@@ -100,6 +100,7 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
   const [layout, setLayout] = useState(initLayout);
   const [collapsed, setCollapsed] = useState(initCollapsed);
   const [showAddItem, setShowAddItem] = useState(false);
+  const [addToColumn, setAddToColumn] = useState(SectionColumns.PRIMARY);
 
   React.useEffect(() => {
     setLayout(initLayout);
@@ -138,11 +139,37 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
   const getColumnItems = (columnIndex: number) => {
     let columnItems: any[] = [];
     columnItems = items.map(i => {
-      if ((i.section_col || 0) === columnIndex) {
+      if ((i.column || SectionColumns.PRIMARY) === columnValueForIndex(columnIndex)) {
         return i;
       }
     }).filter(Boolean);
     return columnItems;
+  };
+
+  const columnValueForIndex = (columnNumber: number): SectionColumns => {
+    // if our layout is full-width we are SectionColumns.primary
+    // if our layout is responsive, 30_70 or 40_60 and index is 0 → SectionColumns.secondary
+    // if our layout is responsive, 30_70 or 40_60 and index is >0 → SectionColumns.primary
+    // if our layout is 70_30 or 60_40 and index is 0 -> SectionColumns.primary
+    // if our layout is 70_30 or 60_40 and index is >0 -> SectionColumns.secondary
+    if (layout === SectionLayouts.LAYOUT_FULL_WIDTH) {
+      return SectionColumns.PRIMARY;
+    }
+    if (layout === SectionLayouts.LAYOUT_30_70 ||
+        layout === SectionLayouts.LAYOUT_40_60 ||
+        layout === SectionLayouts.LAYOUT_RESPONSIVE) {
+          if (columnNumber === 0) {
+            return SectionColumns.SECONDARY;
+          } else {
+            return SectionColumns.PRIMARY;
+          }
+        }
+    else { // Layout is bigger section first
+      if (columnNumber === 0) {
+        return SectionColumns.PRIMARY;
+      }
+    }
+    return SectionColumns.SECONDARY;
   };
 
   const addItem = (sectionCol: number) => {
@@ -151,7 +178,7 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
     const newItem: ISectionItem = {
       id: `${nextId}`,
       section_id: id,
-      section_col: sectionCol,
+      column: columnValueForIndex(sectionCol),
       position,
       embeddable: "unknown",
       title: `Item ${position} - ${Math.random().toString(36).substr(2, 9)}`
@@ -215,8 +242,10 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
   const sectionColumns = () => {
     const colOneItems = getColumnItems(0);
     const colTwoItems = getColumnItems(1);
-    // const colOneAddItemHandler = () => addItem(0);
-    // const colTwoAddItemHandler = () => addItem(1);
+
+    const columnOneAddItemHandler = () => handleToggleShowAddItem(SectionColumns.PRIMARY);
+    const columnTwoAddItemHandler = () => handleToggleShowAddItem(SectionColumns.SECONDARY);
+
     return (
       <>
         <DragDropContext onDragEnd={onDragEnd}>
@@ -261,7 +290,7 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
                     })}
                     { droppableProvided.placeholder }
                     { !collapsed && (
-                      <button className="smallButton" onClick={handleShowAddItem}>
+                      <button className="smallButton" onClick={columnOneAddItemHandler}>
                         <Add height="16" width="16" /> <span className="lineAdjust">Add Item</span>
                       </button>
                     )}
@@ -312,7 +341,8 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
                       })}
                       { droppableProvided.placeholder }
                       { !collapsed && (
-                        <button className="smallButton" onClick={handleShowAddItem}>
+                        <button className="smallButton" onClick={columnTwoAddItemHandler}>
+
                           <Add height="16" width="16" /> <span className="lineAdjust">Add Item</span>
                         </button>
                       )}
@@ -327,18 +357,25 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
     );
   };
 
-  const handleToggleShowAddItem = () => setShowAddItem((prev) => !prev);
-  const handleShowAddItem = absorbClickThen(handleToggleShowAddItem);
+  const handleToggleShowAddItem = (column: SectionColumns) => {
+    setAddToColumn(column);
+    setShowAddItem((prev) => !prev);
+  };
+  // const handleShowAddItem = absorbClickThen(handleToggleShowAddItem);
 
-  const handleAddItem = (itemId: string) => {
+  const closeShowAddItem = () => {
+    setShowAddItem(false);
+  };
+
+  const handleAddItem = (embeddableId: string) => {
     const position = items.length + 1;
     addPageItem?.({
       section_id: id,
-      section_col: 0,
+      column: addToColumn,
       position,
-      embeddable: itemId
+      embeddable: embeddableId
     });
-    handleToggleShowAddItem();
+    setShowAddItem(false);
   };
 
   return (
@@ -379,7 +416,7 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
         ? <SectionItemPicker
             quickAddItems={allEmbeddables?.filter(ae => ae.isQuickAddItem) || []}
             allItems={allEmbeddables || []}
-            onClose={handleToggleShowAddItem}
+            onClose={closeShowAddItem}
             onAdd={handleAddItem}
           />
         : undefined}

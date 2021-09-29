@@ -3,7 +3,7 @@ import { useState } from "react";
 import { PageSettingsDialog } from "../../page-settings/components/page-settings-dialog";
 import { AuthoringSection, ISectionProps } from "./authoring-section";
 import { SectionMoveDialog } from "./section-move-dialog";
-import { ICreatePageItem, IPage, ISection, ISectionItem, ISectionItemType } from "../api/api-types";
+import { ICreatePageItem, IPage, ISection, ISectionItem, ISectionItemType, SectionColumns } from "../api/api-types";
 import { SectionItemMoveDialog } from "./section-item-move-dialog";
 import { DragDropContext, Droppable, Draggable, DropResult } from "react-beautiful-dnd";
 import { Add } from "../../shared/components/icons/add-icon";
@@ -86,7 +86,6 @@ export const AuthoringPage: React.FC<IPageProps> = ({
   changeSection,
   setSections,
   sectionToMove: initSectionToMove,
-  items: initItems = [] as ISectionItem[],
   itemToMove: initItemToMove,
   allEmbeddables: allEmbeddables,
   addPageItem,
@@ -104,7 +103,6 @@ export const AuthoringPage: React.FC<IPageProps> = ({
   const [pageHasTESidebar, setPageHasTESidebar] = useState(hasTESidebar);
   const [sectionToMove, setSectionToMove] = useState(initSectionToMove);
   const [itemToMove, setItemToMove] = useState(initItemToMove);
-  const [items, setItems] = useState([...initItems]);
   const [showSettings, setShowSettings] = useState(isNew);
 
   const updateSettings = (
@@ -124,6 +122,12 @@ export const AuthoringPage: React.FC<IPageProps> = ({
     setShowSettings(false);
   };
 
+  const getItems = () => {
+    const sectionItems: ISectionItem[][] = sections.map(s => s.items || []) || [];
+    // To flatten the nested array of ISectionItems
+    return [].concat.apply([], sectionItems) as ISectionItem[];
+  };
+
   const updateSectionItems = (newItems: ISectionItem[], sectionId: string) => {
     const sectionIndex = sections.findIndex(i => i.id === sectionId);
     sections[sectionIndex].items = newItems;
@@ -135,7 +139,9 @@ export const AuthoringPage: React.FC<IPageProps> = ({
         });
       }
     });
-    setItems(updatedItems);
+    // TODO update Sections that have changed ...
+    setSections?.({id, sections});
+    // setItems(updatedItems);
   };
 
   /*
@@ -239,7 +245,7 @@ export const AuthoringPage: React.FC<IPageProps> = ({
   };
 
   const handleMoveItemInit = (itemId: string) => {
-    const item = items.find(i => i.id === itemId);
+    const item = getItems().find(i => i.id === itemId);
     if (item) {
       setItemToMove(item);
     }
@@ -249,16 +255,17 @@ export const AuthoringPage: React.FC<IPageProps> = ({
     itemId: string,
     selectedPageId: string,
     selectedSectionId: string,
-    selectedColumn: number,
+    selectedColumn: SectionColumns,
     selectedPosition: string,
     selectedOtherItemId: string
     ) => {
+    const items = getItems();
     const itemIndex = items.findIndex(i => i.id === itemId);
     const item = items[itemIndex];
     const otherItemIndex = items.findIndex(i => (i.id === selectedOtherItemId && i.id === selectedSectionId));
     const otherItem = items[otherItemIndex];
     item.id = selectedSectionId;
-    item.section_col = selectedColumn;
+    item.column = selectedColumn;
     item.position = otherItem ? otherItem.position : 1;
     const newIndex = otherItemIndex
                        ? selectedPosition === "after"
@@ -274,7 +281,7 @@ export const AuthoringPage: React.FC<IPageProps> = ({
         updatedItems[index].position = ++sectionItemsCount;
       }
     });
-    setItems(updatedItems);
+    // setItems(updatedItems);
     sections.forEach((s, index) => {
       sections[index].items = items.filter(i => i.id === s.id);
     });

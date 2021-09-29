@@ -97,6 +97,7 @@ class Api::V1::InteractivePagesController < API::APIController
     return error("Missing page_item[embeddable] parameter") if serializeable_id.nil?
     position = page_item_params["position"]
     position = position.to_i unless position.nil?
+    column = page_item_params["column"] || PageItem::COLUMN_PRIMARY
 
     # currently we only support library interactives, this will change later
     case serializeable_id
@@ -110,7 +111,7 @@ class Api::V1::InteractivePagesController < API::APIController
       return error("Only library interactive embeddables are currently supported")
     end
 
-    @interactive_page.add_embeddable(embeddable, position, section.id)
+    @interactive_page.add_embeddable(embeddable, position, section.id, column)
     @interactive_page.reload
 
     render_page_sections_json
@@ -187,6 +188,8 @@ class Api::V1::InteractivePagesController < API::APIController
         items: s.page_items.map do |pi|
           {
             id: pi.id.to_s,
+            column: pi.column,
+            position: pi.position,
             type: pi.embeddable_type,
             data: pi.embeddable.respond_to?(:to_interactive) ? pi.embeddable.to_interactive : pi.embeddable.to_hash
           }
