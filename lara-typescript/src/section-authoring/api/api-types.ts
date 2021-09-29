@@ -150,4 +150,6 @@ export interface IAuthoringAPIProvider {
   updateSection: APISectionUpdateF;
 
   createPageItem: APIPageItemCreateF;
+
+  getAllEmbeddables: () => Promise<{allEmbeddables: ISectionItemType[]}>;
 }

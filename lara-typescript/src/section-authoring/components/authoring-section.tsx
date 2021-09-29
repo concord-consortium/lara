@@ -66,11 +66,6 @@ export interface ISectionProps extends ISection {
    */
   moveItemFunction?: (id: string) => void;
 
-  /*
-   * List of all section items available
-   */
-  allEmbeddables?: ISectionItemType[];
-
   /**
    * how to add a new page item
    */
@@ -93,7 +88,6 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
   title,
   updatePageItems,
   moveItemFunction,
-  allEmbeddables,
   draggableProvided,
   addPageItem
   }: ISectionProps) => {

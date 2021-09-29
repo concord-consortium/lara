@@ -1,11 +1,11 @@
 import * as React from "react";
 import { useContext } from "react";
 import {useMutation, useQuery, useQueryClient} from "react-query";
-import { IAuthoringAPIProvider, IPage, ISection } from "./api-types";
+import { IAuthoringAPIProvider, IPage, ISection, ISectionItemType } from "./api-types";
 import { API as DEFAULT_API } from "./mock-api-provider";
 
 const PAGES_CACHE_KEY = "pages";
-
+const SECTION_ITEM_TYPES_KEY = "SectionItemTypes";
 // Use this in a parent component to setup API context:
 // <APIProviderContext.Provider value={someAPIProvider} />
 //
@@ -28,7 +28,14 @@ export const usePageAPI = () => {
     (provider.updateSection, mutationsOpts);
 
   const updateSections = useMutation<IPage, Error, IPage>(provider.updateSections, mutationsOpts);
+
+  const getAllEmbeddables = useQuery
+    <{allEmbeddables: ISectionItemType[]}, Error>
+    (SECTION_ITEM_TYPES_KEY, provider.getAllEmbeddables);
+
   return {
     getPages, addPageMutation, deletePageMutation,
-    addSectionMutation, updateSection, updateSections};
+    addSectionMutation, updateSection, updateSections,
+    getAllEmbeddables
+  };
 };

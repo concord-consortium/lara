@@ -4,7 +4,8 @@ import {
   APIPageGetF, APIPagesGetF,
   APIPageCreateF, APIPageDeleteF,
   APISectionCreateF, APISectionsUpdateF, APISectionUpdateF,
-  APIPageItemCreateF
+  APIPageItemCreateF,
+  ILibraryInteractiveResponse
 } from "./api-types";
 
 const APIBase = "/api/v1";
@@ -23,7 +24,7 @@ export const getLaraAuthoringAPI = (activityId: string, host: string = window.lo
   const createPageSectionUrl = (pageId: PageId) => `${prefix}/create_page_section/${pageId}.json`;
   const updateSectionUrl = (pageId: PageId) => `${prefix}/update_page_section/${pageId}.json`;
   const createPageItemUrl = (pageId: PageId) => `${prefix}/create_page_item/${pageId}.json`;
-  const libraryInteractivesUrl = (pageId: PageId) => `${prefix}/get_library_interactives_list.json`;
+  const libraryInteractivesUrl = `${prefix}/get_library_interactives_list.json`;
 
   interface ISendToLaraParams {
     url: string;
@@ -67,7 +68,6 @@ export const getLaraAuthoringAPI = (activityId: string, host: string = window.lo
 
   const createSection: APISectionCreateF = (id: PageId) => {
     return sendToLara({url: createPageSectionUrl(id), method: "POST"});
-    // This shouldn't be required :  body: JSON.stringify({ id })
   };
 
   const updateSections: APISectionsUpdateF = (nextPage: IPage) => {
@@ -84,8 +84,31 @@ export const getLaraAuthoringAPI = (activityId: string, host: string = window.lo
     return sendToLara({url: createPageItemUrl(pageId), method: "POST", body: newPageItem});
   };
 
+  const getAllEmbeddables = () => {
+    console.log("GetAllEmbeddables called");
+    return sendToLara({url: libraryInteractivesUrl})
+      .then( (json: ILibraryInteractiveResponse) => {
+        const result = {
+          allEmbeddables: json.library_interactives.map(li => ({
+            id: li.id,
+            name: li.name,
+            useCount: li.use_count,
+            dateAdded: li.date_added
+          }))
+        };
+        result.allEmbeddables.push({
+          id: "MwInteractive",
+          name: "Interactive IFrame",
+          useCount: 0,
+          dateAdded: 0
+        });
+        return result;
+      });
+  };
+
   return {
     getPages, getPage, createPage, deletePage,
-    createSection, updateSections, createPageItem, updateSection
+    createSection, updateSections, createPageItem, updateSection,
+    getAllEmbeddables
   };
 };
