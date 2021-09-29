@@ -15,6 +15,8 @@
     color: white;
     cursor: pointer;
     display: flex;
+    font-family: var(--font-family-default);
+    font-size: 12px;
     margin: 0;
     padding: 5px 10px;
 
@@ -70,7 +72,7 @@ button.bigButton {
   font-size: 18px;
   font-weight: 700;
   line-height: 1;
-  margin: 10px auto 0;
+  margin: 10px auto;
   padding: 14px 19px;
   text-align: center;
 
