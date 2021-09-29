@@ -65,11 +65,6 @@ export interface ISectionProps extends ISection {
    */
   moveItemFunction?: (id: string) => void;
 
-  /*
-   * List of all section items available
-   */
-  allEmbeddables?: ISectionItemType[];
-
   /**
    * how to add a new page item
    */
@@ -92,7 +87,6 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
   title,
   updatePageItems,
   moveItemFunction,
-  allEmbeddables,
   draggableProvided,
   addPageItem
   }: ISectionProps) => {
@@ -414,8 +408,6 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
       {sectionColumns()}
       {showAddItem
         ? <SectionItemPicker
-            quickAddItems={allEmbeddables?.filter(ae => ae.isQuickAddItem) || []}
-            allItems={allEmbeddables || []}
             onClose={closeShowAddItem}
             onAdd={handleAddItem}
           />

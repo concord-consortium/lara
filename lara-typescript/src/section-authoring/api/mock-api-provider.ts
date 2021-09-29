@@ -2,7 +2,7 @@
 import {
   IPage, PageId,
   APIPageGetF, APIPagesGetF,
-  IAuthoringAPIProvider, ISection, ICreatePageItem, ISectionItem, SectionColumns
+  IAuthoringAPIProvider, ISection, ICreatePageItem, ISectionItem, SectionColumns, ISectionItemType
 } from "./api-types";
 
 let pageCounter = 0;
@@ -113,7 +113,24 @@ const createPageItem = (pageId: PageId, newPageItem: ICreatePageItem) => {
   return Promise.reject(`cant find page ${pageId}`);
 };
 
+const getAllEmbeddables = () => {
+  const allEmbeddables: ISectionItemType[] = [
+    {id: "1", name: "Carousel", useCount: 1, dateAdded: 1630440496},
+    {id: "2", name: "CODAP", useCount: 5, dateAdded: 1630440497},
+    {id: "3", name: "Drag & Drop", useCount: 5, dateAdded: 1630440498},
+    {id: "4", name: "Fill in the Blank", useCount: 8, dateAdded: 1630440495},
+    {id: "5", name: "iFrame Interactive", useCount: 200, dateAdded: 1630440494, isQuickAddItem: true},
+    {id: "6", name: "Multiple Choice", useCount: 300, dateAdded: 1630440493},
+    {id: "7", name: "Open Response", useCount: 400, dateAdded: 1630440492, isQuickAddItem: true},
+    {id: "8", name: "SageModeler", useCount: 3, dateAdded: 1630440499},
+    {id: "9", name: "Teacher Edition Window Shade", useCount: 4, dateAdded: 1630440490},
+    {id: "10", name: "Text Box", useCount: 500, dateAdded: 1630440491, isQuickAddItem: true}
+  ];
+  return Promise.resolve({allEmbeddables});
+};
+
 export const API: IAuthoringAPIProvider = {
   getPages, getPage, createPage, deletePage,
-  createSection, updateSections, createPageItem, updateSection
+  createSection, updateSections, createPageItem, updateSection,
+  getAllEmbeddables
 };

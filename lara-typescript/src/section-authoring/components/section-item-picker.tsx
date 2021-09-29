@@ -7,10 +7,9 @@ import { absorbClickThen } from "../../shared/absorb-click";
 import { ISectionItemType } from "../api/api-types";
 
 import "./section-item-picker.scss";
+import { usePageAPI } from "../api/use-api-provider";
 
 export interface IProps {
-  quickAddItems: ISectionItemType[];
-  allItems: ISectionItemType[];
   onClose: () => void;
   onAdd: (id: string) => void;
 }
@@ -26,11 +25,14 @@ const SectionItemButton = ({item, disabled, className, onClick}: {
 };
 
 export const SectionItemPicker: React.FC<IProps> = (props) => {
-  const { allItems, quickAddItems, onClose, onAdd } = props;
+  const api = usePageAPI();
+  const allItems = api.getAllEmbeddables.data;
+  const quickAddItems = api.getAllEmbeddables.data?.allEmbeddables.filter(e => e.isQuickAddItem);
+  const { onClose, onAdd } = props;
   const modalIsVisible = true;
   const [itemSelected, setItemSelected] = useState(false);
   const [currentSelectedItem, setCurrentSelectedItem] = useState<ISectionItemType|undefined>();
-  const [allItemsList, setAllItemsList] = useState(allItems);
+  const [allItemsList, setAllItemsList] = useState(allItems?.allEmbeddables || []);
   const [isSearching, setIsSearching] = useState(false);
   const [modalVisibility, setModalVisibility] = useState(modalIsVisible);
 
@@ -39,7 +41,9 @@ export const SectionItemPicker: React.FC<IProps> = (props) => {
   }, [allItems]);
 
   const sortItems = (sortType: string) => {
-    const allItemsSorted = [...allItems];
+    if (!allItems?.allEmbeddables) { return []; }
+
+    const allItemsSorted = [...allItems?.allEmbeddables];
     if (sortType === "popularity") {
       allItemsSorted.sort((a, b) => {
         return b.useCount - a.useCount;
@@ -88,7 +92,7 @@ export const SectionItemPicker: React.FC<IProps> = (props) => {
     const searchString = event.target.value;
     const matchingItems: ISectionItemType[] = [];
     if (searchString !== "") {
-      allItems.forEach((item) => {
+      allItemsList.forEach((item) => {
         const regex = new RegExp(searchString, "i");
         if (item.name.match(regex)) {
           matchingItems.push(item);
@@ -96,7 +100,7 @@ export const SectionItemPicker: React.FC<IProps> = (props) => {
       });
       setAllItemsList(matchingItems);
     } else {
-      setAllItemsList(allItems);
+      setAllItemsList(allItems?.allEmbeddables || []);
     }
 
     setTimeout(() => { setIsSearching(false); }, 1000);
@@ -161,7 +165,7 @@ export const SectionItemPicker: React.FC<IProps> = (props) => {
         <div id="quickAddMenu">
           <h2>Quick-Add Items</h2>
           <ul>
-            {quickAddItems.map((item, index) => {
+            {quickAddItems?.map((item, index) => {
               const isSelectedItem = currentSelectedItem === item;
               const itemClass = setItemClasses(isSelectedItem);
               const itemDisabled = itemSelected && !isSelectedItem ? true : false;

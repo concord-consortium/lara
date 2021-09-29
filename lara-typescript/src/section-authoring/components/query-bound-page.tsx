@@ -94,14 +94,14 @@ export const QueryBoundPage = (props: IQueryBoundPage) => {
       .then(res => res.json())
       .then((json: ILibraryInteractiveResponse) => {
         const result = {
-          allSectionItems: json.library_interactives.map(li => ({
+          allEmbeddables: json.library_interactives.map(li => ({
             id: li.id,
             name: li.name,
             useCount: li.use_count,
             dateAdded: li.date_added
           }))
         };
-        result.allSectionItems.push({
+        result.allEmbeddables.push({
           id: "MwInteractive",
           name: "Interactive IFrame",
           useCount: 0,
@@ -117,7 +117,7 @@ export const QueryBoundPage = (props: IQueryBoundPage) => {
   if (error) return <div>Something went wrong: ${error}</div>;
 
   const { sections } = authoringQuery.data;
-  const { allSectionItems } = libraryInteractiveQuery.data!;
+  const { allEmbeddables } = libraryInteractiveQuery.data!;
 
   const setSections = updatePageSectionsMutation.mutate;
   const addSection = createSectionMutation.mutate as () => void;
@@ -128,7 +128,7 @@ export const QueryBoundPage = (props: IQueryBoundPage) => {
   return <AuthoringPage {...
     {
       id, sections, setSections, addSection, changeSection,
-      allEmbeddables: allSectionItems, addPageItem, isCompletion
+      allEmbeddables, addPageItem, isCompletion
     }
   }/>;
 };
