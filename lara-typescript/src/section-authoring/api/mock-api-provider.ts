@@ -2,7 +2,7 @@
 import {
   IPage, PageId,
   APIPageGetF, APIPagesGetF,
-  IAuthoringAPIProvider, ISection, ICreatePageItem, ISectionItem
+  IAuthoringAPIProvider, ISection, ICreatePageItem, ISectionItem, SectionColumns
 } from "./api-types";
 
 let pageCounter = 0;
@@ -30,7 +30,7 @@ const makeNewPageItem = (attributes: Partial<ISectionItem>): ISectionItem => {
     id: `${++itemCounter}`,
     embeddable: attributes.embeddable,
     title: `embeddable-${itemCounter}`,
-    section_col: 0,
+    column: attributes.column || SectionColumns.PRIMARY,
     position: 0
   };
   return newItem;

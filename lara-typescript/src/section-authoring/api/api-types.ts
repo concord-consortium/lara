@@ -12,11 +12,15 @@ export enum SectionLayouts {
   LAYOUT_RESPONSIVE = "Responsive",
 }
 
+export enum SectionColumns {
+  PRIMARY =  "primary",
+  SECONDARY =  "secondary"
+}
 export interface ISectionItem {
   id: ItemId;
   title?: string;
   embeddable?: string;
-  section_col?: number;
+  column?: SectionColumns;
   section_id?: string;
   position?: number;
 }
@@ -31,7 +35,7 @@ export interface ISectionItemType {
 
 export interface ICreatePageItem {
   section_id: string;
-  section_col: number;
+  column: SectionColumns;
   embeddable: string;
   position?: number;
 }

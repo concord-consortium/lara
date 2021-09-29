@@ -5,7 +5,7 @@ import { SectionColumn } from "./section-column";
 import { SectionItem, ISectionItemProps} from "./section-item";
 import { SectionItemPicker } from "./section-item-picker";
 import { absorbClickThen } from "../../shared/absorb-click";
-import { ICreatePageItem, ISection, ISectionItem, ISectionItemType, SectionLayouts } from "../api/api-types";
+import { ICreatePageItem, ISection, ISectionItem, ISectionItemType, SectionColumns, SectionLayouts } from "../api/api-types";
 import { DragDropContext, Droppable, Draggable, DropResult, DraggableProvided } from "react-beautiful-dnd";
 import { Add } from "../../shared/components/icons/add-icon";
 
@@ -101,6 +101,7 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
   const [layout, setLayout] = useState(initLayout);
   const [collapsed, setCollapsed] = useState(initCollapsed);
   const [showAddItem, setShowAddItem] = useState(false);
+  const [addToColumn, setAddToColumn] = useState(SectionColumns.PRIMARY);
 
   React.useEffect(() => {
     setLayout(initLayout);
@@ -139,11 +140,37 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
   const getColumnItems = (columnIndex: number) => {
     let columnItems: any[] = [];
     columnItems = items.map(i => {
-      if ((i.section_col || 0) === columnIndex) {
+      if ((i.column || SectionColumns.PRIMARY) === columnValueForIndex(columnIndex)) {
         return i;
       }
     }).filter(Boolean);
     return columnItems;
+  };
+
+  const columnValueForIndex = (columnNumber: number): SectionColumns => {
+    // if our layout is full-width we are SectionColumns.primary
+    // if our layout is responsive, 30_70 or 40_60 and index is 0 → SectionColumns.secondary
+    // if our layout is responsive, 30_70 or 40_60 and index is >0 → SectionColumns.primary
+    // if our layout is 70_30 or 60_40 and index is 0 -> SectionColumns.primary
+    // if our layout is 70_30 or 60_40 and index is >0 -> SectionColumns.secondary
+    if (layout === SectionLayouts.LAYOUT_FULL_WIDTH) {
+      return SectionColumns.PRIMARY;
+    }
+    if (layout === SectionLayouts.LAYOUT_30_70 ||
+        layout === SectionLayouts.LAYOUT_40_60 ||
+        layout === SectionLayouts.LAYOUT_RESPONSIVE) {
+          if (columnNumber === 0) {
+            return SectionColumns.SECONDARY;
+          } else {
+            return SectionColumns.PRIMARY;
+          }
+        }
+    else { // Layout is bigger section first
+      if (columnNumber === 0) {
+        return SectionColumns.PRIMARY;
+      }
+    }
+    return SectionColumns.SECONDARY;
   };
 
   const addItem = (sectionCol: number) => {
@@ -152,7 +179,7 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
     const newItem: ICreatePageItem = {
       // id: `${nextId}`,
       section_id: id,
-      // section_col: sectionCol,
+      column: columnValueForIndex(sectionCol),
       position,
       embeddable: "unknown",
       // title: `Item ${position} - ${Math.random().toString(36).substr(2, 9)}`

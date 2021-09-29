@@ -171,7 +171,7 @@ describe Api::V1::InteractivePagesController do
           section_id: section.id,
           position: 1,
           section_position: 1,
-          column: 1
+          column: PageItem::COLUMN_PRIMARY
         }}
         expect(response.body).to include "Missing page_item[embeddable] parameter"
         expect(response.status).to eq(500)
@@ -185,7 +185,7 @@ describe Api::V1::InteractivePagesController do
           embeddable: "Invalid_1",
           position: 1,
           section_position: 1,
-          column: 1
+          column: PageItem::COLUMN_PRIMARY
         }}
         expect(response.status).to eq(500)
         expect(response.content_type).to eq("application/json")
@@ -198,7 +198,7 @@ describe Api::V1::InteractivePagesController do
           embeddable: "LibraryInteractive_0",
           position: 1,
           section_position: 1,
-          column: 1
+          column: PageItem::COLUMN_PRIMARY
         }}
         expect(response.status).to eq(500)
         expect(response.content_type).to eq("application/json")
@@ -212,7 +212,7 @@ describe Api::V1::InteractivePagesController do
         embeddable: library_interactive1.serializeable_id,
         position: 1,
         section_position: 1,
-        column: 1
+        column: PageItem::COLUMN_PRIMARY
       }}
       expect(response.status).to eq(200)
       expect(response.content_type).to eq("application/json")
@@ -224,7 +224,7 @@ describe Api::V1::InteractivePagesController do
         embeddable: "MwInteractive",
         position: 1,
         section_position: 1,
-        column: 1
+        column: PageItem::COLUMN_PRIMARY
       }}
       expect(response.status).to eq(200)
       expect(response.content_type).to eq("application/json")
