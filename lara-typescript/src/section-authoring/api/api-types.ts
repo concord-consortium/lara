@@ -134,7 +134,7 @@ export type APISectionCreateF = (pageId: PageId) => Promise<IPage>;
 export type APISectionsUpdateF = (nextPage: IPage) => Promise<IPage>;
 export type APISectionUpdateF = (args: {pageId: PageId, changes: { section: Partial<ISection>}}) => Promise<IPage>;
 
-export type APIPageItemCreateF = (pageId: PageId, newPageItem: ICreatePageItem) => Promise<IPage>;
+export type APIPageItemCreateF = (args: {pageId: PageId, newPageItem: ICreatePageItem}) => Promise<IPage>;
 
 /**
  * The implementation providing the API has to conform to this provider API

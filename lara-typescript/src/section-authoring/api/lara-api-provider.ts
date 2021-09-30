@@ -80,8 +80,8 @@ export const getLaraAuthoringAPI = (activityId: string, host: string = window.lo
     return sendToLara({url: updateSectionUrl(pageId), method: "POST", body: data});
   };
 
-  const createPageItem: APIPageItemCreateF = (pageId: PageId, newPageItem: ICreatePageItem) => {
-    return sendToLara({url: createPageItemUrl(pageId), method: "POST", body: newPageItem});
+  const createPageItem: APIPageItemCreateF = (args: {pageId: PageId, newPageItem: ICreatePageItem}) => {
+    return sendToLara({url: createPageItemUrl(args.pageId), method: "POST", body: args.newPageItem});
   };
 
   const getAllEmbeddables = () => {

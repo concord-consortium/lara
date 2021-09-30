@@ -1,14 +1,10 @@
 import React from "react";
 import { ComponentMeta } from "@storybook/react";
-
 import { App } from "../section-authoring/query-providers-test-component";
-import { getLaraAuthoringAPI } from "../section-authoring/api/lara-api-provider";
-import { API as mockProvider } from "../section-authoring/api/mock-api-provider";
-import { APIContext } from "../section-authoring/api/use-api-provider";
-import { IPageProps, AuthoringPage} from "../section-authoring/components/authoring-page";
+import { AuthoringPage} from "../section-authoring/components/authoring-page";
 import { usePageAPI } from "../section-authoring/api/use-api-provider";
-import { QueryClient, QueryClientProvider } from "react-query";
 import { ISection } from "../section-authoring/api/api-types";
+import { APIContainer } from "../section-authoring/api/api-container";
 
 export default {
   title: "Query Providers Test",
@@ -17,24 +13,21 @@ export default {
 
 export const FakeAPI = () => {
   return(
-  <APIContext.Provider value={mockProvider}>
-    <App/>
-  </APIContext.Provider>
+    <APIContainer>
+      <App/>
+    </APIContainer>
   );
 };
 
 export const LocalHostAPI = () => {
-  const LocalLaraAPI = getLaraAuthoringAPI("55", "https://app.lara.docker");
   return(
-    <APIContext.Provider value={LocalLaraAPI}>
+    <APIContainer activityId="55" host="https://app.lara.docker">
       <App/>
-    </APIContext.Provider>
+    </APIContainer>
   );
 };
 
 export const AuthoringPageWithAPIProvider = () => {
-  const LocalLaraAPI = getLaraAuthoringAPI("55", "https://app.lara.docker");
-  const queryClient = new QueryClient();
   const Content = () => {
     const api = usePageAPI();
     const pages = api.getPages.data;
@@ -63,10 +56,8 @@ export const AuthoringPageWithAPIProvider = () => {
   };
 
   return (
-    <APIContext.Provider value={LocalLaraAPI}>
-      <QueryClientProvider client={queryClient}>
+    <APIContainer activityId="55" host="https://app.lara.docker">
         <Content />
-      </QueryClientProvider>
-    </APIContext.Provider>
+    </APIContainer>
   );
 };

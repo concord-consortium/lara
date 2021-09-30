@@ -98,7 +98,8 @@ const updateSection = (args: {pageId: PageId, changes: { section: Partial<ISecti
   return Promise.reject(`cant find page ${pageId}`);
 };
 
-const createPageItem = (pageId: PageId, newPageItem: ICreatePageItem) => {
+const createPageItem = (args: {pageId: PageId, newPageItem: ICreatePageItem}) => {
+  const {newPageItem, pageId} = args;
   const sectionId = newPageItem.section_id;
   const {embeddable, position} = newPageItem;
   const page = pages.find(p => p.id === pageId);
