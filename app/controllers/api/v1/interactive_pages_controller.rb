@@ -75,7 +75,12 @@ class Api::V1::InteractivePagesController < API::APIController
   end
 
   def update_section
+    authorize! :update, @interactive_page
     section_params = params['section']
+
+    return error("Missing section parameter") if section_params.nil?
+    return error("Missing section[:id] parameter") if section_params['id'].nil?
+
     section_id = section_params.delete('id')
     new_page_items = section_params.delete('items')
     section = Section.find(section_id)
