@@ -122,10 +122,13 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
     deleteFunction?.(id);
   };
 
+  const setItems = (nextItems: ISection[]) => {
+    updateFunction?.({section: {id, items: nextItems}});
+  };
+
   const handleMove = () => {
-    if (moveFunction) {
-      moveFunction(id);
-    }
+    moveFunction?.(id);
+
   };
 
   const handleCopy = () => {
@@ -211,9 +214,7 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
     if (e.destination && e.destination.index !== e.source.index) {
       nextItems = swapIndexes(items, e.source.index, e.destination.index);
     }
-    // if (setItems) {
-    //   setItems(nextItems);
-    // }
+    setItems(nextItems);
   };
 
   const handleMoveItem = (itemId: string) => {
@@ -236,7 +237,7 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
         nextItems.push(i);
       }
     });
-    // setItems(nextItems);
+    setItems(nextItems);
   };
 
   const sectionColumns = () => {
