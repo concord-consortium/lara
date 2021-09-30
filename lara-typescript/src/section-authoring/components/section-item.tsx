@@ -92,13 +92,13 @@ export const SectionItem: React.FC<ISectionItemProps> = ({
   };
 
   return(
-    <div className="section-item-container">
-      <header className="section-item-menu">
-        <div className="menu-start">
+    <div className="sectionItemContainer">
+      <header className="sectionItemMenu">
+        <div className="menuStart">
           <GripLines />
           <h4>{id} - {title}</h4>
         </div>
-        <div className="menu-end">
+        <div className="menuEnd">
           <ul>
             <li><button onClick={toggleCollapse}>Collapse</button></li>
             <li><button onClick={handleEdit}>Edit</button></li>

@@ -17,7 +17,7 @@ const layoutClassNames = {
   [SectionLayouts.LAYOUT_40_60]: ["section-40", "section-60"],
   [SectionLayouts.LAYOUT_70_30]: ["section-70", "section-30"],
   [SectionLayouts.LAYOUT_30_70]: ["section-30", "section-70"],
-  [SectionLayouts.LAYOUT_RESPONSIVE]: ["section-responsive"]
+  [SectionLayouts.LAYOUT_RESPONSIVE]: ["section-responsive-static", "section-responsive-fluid"]
 };
 
 const classNameForItem = (_layout: SectionLayouts, itemIndex: number) => {
@@ -339,13 +339,16 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
     handleToggleShowAddItem();
   };
 
-  const sectionClassName = (index: number) => `section-container ${classNameForItem(layout, index)}`;
+  const sectionClassNames = () => {
+    const layoutClass = "section-" + layout.toLowerCase().replace(/ /g, "-");
+    return `edit-page-grid-container sectionContainer ${layoutClass}`;
+  };
 
   return (
-    <div className="edit-page-grid-container">
-      <header className="section-menu full-row">
-        <div className="menu-start">
-          <span {...draggableProvided?.dragHandleProps}>
+    <div className={sectionClassNames()}>
+      <header className="sectionMenu full-row">
+        <div className="menuStart">
+          <span className="sectionDragHandle" {...draggableProvided?.dragHandleProps}>
             <GripLines  />
           </span>
           <h3>{title}{id}</h3>
@@ -365,7 +368,7 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
             }
           </select>
         </div>
-        <div className="menu-end">
+        <div className="menuEnd">
           <ul>
             <li><button onClick={toggleCollapse}>Collapse</button></li>
             <li><button onClick={handleMove}>Move</button></li>
