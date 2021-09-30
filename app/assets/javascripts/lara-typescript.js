@@ -48894,7 +48894,7 @@ exports.registerPlugin = registerPlugin;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.SectionLayouts = void 0;
+exports.SectionColumns = exports.SectionLayouts = void 0;
 var SectionLayouts;
 (function (SectionLayouts) {
     SectionLayouts["LAYOUT_FULL_WIDTH"] = "Full Width";
@@ -48904,6 +48904,11 @@ var SectionLayouts;
     SectionLayouts["LAYOUT_30_70"] = "30-70";
     SectionLayouts["LAYOUT_RESPONSIVE"] = "Responsive";
 })(SectionLayouts = exports.SectionLayouts || (exports.SectionLayouts = {}));
+var SectionColumns;
+(function (SectionColumns) {
+    SectionColumns["PRIMARY"] = "primary";
+    SectionColumns["SECONDARY"] = "secondary";
+})(SectionColumns = exports.SectionColumns || (exports.SectionColumns = {}));
 
 
 /***/ }),
@@ -48963,17 +48968,16 @@ __webpack_require__(/*! ./authoring-page.scss */ "./src/section-authoring/compon
  * Primary UI component for user interaction
  */
 var AuthoringPage = function (_a) {
-    var id = _a.id, _b = _a.isNew, isNew = _b === void 0 ? false : _b, title = _a.title, _c = _a.sections, sections = _c === void 0 ? [] : _c, addSection = _a.addSection, changeSection = _a.changeSection, setSections = _a.setSections, initSectionToMove = _a.sectionToMove, _d = _a.items, initItems = _d === void 0 ? [] : _d, initItemToMove = _a.itemToMove, allEmbeddables = _a.allEmbeddables, addPageItem = _a.addPageItem, _e = _a.isCompletion, isCompletion = _e === void 0 ? false : _e, _f = _a.isHidden, isHidden = _f === void 0 ? false : _f, _g = _a.hasArgBlock, hasArgBlock = _g === void 0 ? false : _g, _h = _a.hasStudentSidebar, hasStudentSidebar = _h === void 0 ? false : _h, _j = _a.hasTESidebar, hasTESidebar = _j === void 0 ? false : _j;
-    var _k = react_1.useState(title), pageTitle = _k[0], setPageTitle = _k[1];
-    var _l = react_1.useState(isCompletion), isCompletionPage = _l[0], setIsCompletionPage = _l[1];
-    var _m = react_1.useState(isHidden), isHiddenPage = _m[0], setIsHiddenPage = _m[1];
-    var _o = react_1.useState(hasArgBlock), pageHasArgBlock = _o[0], setPageHasArgBlock = _o[1];
-    var _p = react_1.useState(hasStudentSidebar), pageHasStudentSidebar = _p[0], setPageHasStudentSidebar = _p[1];
-    var _q = react_1.useState(hasTESidebar), pageHasTESidebar = _q[0], setPageHasTESidebar = _q[1];
-    var _r = react_1.useState(initSectionToMove), sectionToMove = _r[0], setSectionToMove = _r[1];
-    var _s = react_1.useState(initItemToMove), itemToMove = _s[0], setItemToMove = _s[1];
-    var _t = react_1.useState(__spreadArray([], initItems)), items = _t[0], setItems = _t[1];
-    var _u = react_1.useState(isNew), showSettings = _u[0], setShowSettings = _u[1];
+    var id = _a.id, _b = _a.isNew, isNew = _b === void 0 ? false : _b, title = _a.title, _c = _a.sections, sections = _c === void 0 ? [] : _c, addSection = _a.addSection, changeSection = _a.changeSection, setSections = _a.setSections, initSectionToMove = _a.sectionToMove, initItemToMove = _a.itemToMove, allEmbeddables = _a.allEmbeddables, addPageItem = _a.addPageItem, _d = _a.isCompletion, isCompletion = _d === void 0 ? false : _d, _e = _a.isHidden, isHidden = _e === void 0 ? false : _e, _f = _a.hasArgBlock, hasArgBlock = _f === void 0 ? false : _f, _g = _a.hasStudentSidebar, hasStudentSidebar = _g === void 0 ? false : _g, _h = _a.hasTESidebar, hasTESidebar = _h === void 0 ? false : _h;
+    var _j = react_1.useState(title), pageTitle = _j[0], setPageTitle = _j[1];
+    var _k = react_1.useState(isCompletion), isCompletionPage = _k[0], setIsCompletionPage = _k[1];
+    var _l = react_1.useState(isHidden), isHiddenPage = _l[0], setIsHiddenPage = _l[1];
+    var _m = react_1.useState(hasArgBlock), pageHasArgBlock = _m[0], setPageHasArgBlock = _m[1];
+    var _o = react_1.useState(hasStudentSidebar), pageHasStudentSidebar = _o[0], setPageHasStudentSidebar = _o[1];
+    var _p = react_1.useState(hasTESidebar), pageHasTESidebar = _p[0], setPageHasTESidebar = _p[1];
+    var _q = react_1.useState(initSectionToMove), sectionToMove = _q[0], setSectionToMove = _q[1];
+    var _r = react_1.useState(initItemToMove), itemToMove = _r[0], setItemToMove = _r[1];
+    var _s = react_1.useState(isNew), showSettings = _s[0], setShowSettings = _s[1];
     var updateSettings = function (updatedTitle, updatedIsCompletion, updatedIsHidden, updatedHasArgBlock, updatedHasStudentSidebar, updatedHasTESidebar) {
         setPageTitle(updatedTitle);
         setIsCompletionPage(updatedIsCompletion);
@@ -48982,6 +48986,11 @@ var AuthoringPage = function (_a) {
         setPageHasStudentSidebar(updatedHasStudentSidebar);
         setPageHasTESidebar(updatedHasTESidebar);
         setShowSettings(false);
+    };
+    var getItems = function () {
+        var sectionItems = sections.map(function (s) { return s.items || []; }) || [];
+        // To flatten the nested array of ISectionItems
+        return [].concat.apply([], sectionItems);
     };
     var updateSectionItems = function (newItems, sectionId) {
         var sectionIndex = sections.findIndex(function (i) { return i.id === sectionId; });
@@ -48994,7 +49003,9 @@ var AuthoringPage = function (_a) {
                 });
             }
         });
-        setItems(updatedItems);
+        // TODO update Sections that have changed ...
+        setSections === null || setSections === void 0 ? void 0 : setSections({ id: id, sections: sections });
+        // setItems(updatedItems);
     };
     /*
      * Return a new array with array[a] and array[b] swapped.
@@ -49085,18 +49096,19 @@ var AuthoringPage = function (_a) {
         }
     };
     var handleMoveItemInit = function (itemId) {
-        var item = items.find(function (i) { return i.id === itemId; });
+        var item = getItems().find(function (i) { return i.id === itemId; });
         if (item) {
             setItemToMove(item);
         }
     };
     var handleMoveItem = function (itemId, selectedPageId, selectedSectionId, selectedColumn, selectedPosition, selectedOtherItemId) {
+        var items = getItems();
         var itemIndex = items.findIndex(function (i) { return i.id === itemId; });
         var item = items[itemIndex];
         var otherItemIndex = items.findIndex(function (i) { return (i.id === selectedOtherItemId && i.id === selectedSectionId); });
         var otherItem = items[otherItemIndex];
         item.id = selectedSectionId;
-        item.section_col = selectedColumn;
+        item.column = selectedColumn;
         item.position = otherItem ? otherItem.position : 1;
         var newIndex = otherItemIndex
             ? selectedPosition === "after"
@@ -49112,7 +49124,7 @@ var AuthoringPage = function (_a) {
                 updatedItems[index].position = ++sectionItemsCount;
             }
         });
-        setItems(updatedItems);
+        // setItems(updatedItems);
         sections.forEach(function (s, index) {
             sections[index].items = items.filter(function (i) { return i.id === s.id; });
         });
@@ -49203,7 +49215,6 @@ var react_1 = __webpack_require__(/*! react */ "react");
 var grip_lines_1 = __webpack_require__(/*! ../../shared/components/icons/grip-lines */ "./src/shared/components/icons/grip-lines.tsx");
 var section_item_1 = __webpack_require__(/*! ./section-item */ "./src/section-authoring/components/section-item.tsx");
 var section_item_picker_1 = __webpack_require__(/*! ./section-item-picker */ "./src/section-authoring/components/section-item-picker.tsx");
-var absorb_click_1 = __webpack_require__(/*! ../../shared/absorb-click */ "./src/shared/absorb-click.ts");
 var api_types_1 = __webpack_require__(/*! ../api/api-types */ "./src/section-authoring/api/api-types.ts");
 var react_beautiful_dnd_1 = __webpack_require__(/*! react-beautiful-dnd */ "./node_modules/react-beautiful-dnd/dist/react-beautiful-dnd.esm.js");
 var add_icon_1 = __webpack_require__(/*! ../../shared/components/icons/add-icon */ "./src/shared/components/icons/add-icon.tsx");
@@ -49231,6 +49242,7 @@ var AuthoringSection = function (_a) {
     var _e = react_1.useState(initLayout), layout = _e[0], setLayout = _e[1];
     var _f = react_1.useState(initCollapsed), collapsed = _f[0], setCollapsed = _f[1];
     var _g = react_1.useState(false), showAddItem = _g[0], setShowAddItem = _g[1];
+    var _h = react_1.useState(api_types_1.SectionColumns.PRIMARY), addToColumn = _h[0], setAddToColumn = _h[1];
     React.useEffect(function () {
         setLayout(initLayout);
     }, [initLayout]);
@@ -49247,10 +49259,11 @@ var AuthoringSection = function (_a) {
     var handleDelete = function () {
         deleteFunction === null || deleteFunction === void 0 ? void 0 : deleteFunction(id);
     };
+    var setItems = function (nextItems) {
+        updateFunction === null || updateFunction === void 0 ? void 0 : updateFunction({ section: { id: id, items: nextItems } });
+    };
     var handleMove = function () {
-        if (moveFunction) {
-            moveFunction(id);
-        }
+        moveFunction === null || moveFunction === void 0 ? void 0 : moveFunction(id);
     };
     var handleCopy = function () {
         copyFunction === null || copyFunction === void 0 ? void 0 : copyFunction(id);
@@ -49261,11 +49274,37 @@ var AuthoringSection = function (_a) {
     var getColumnItems = function (columnIndex) {
         var columnItems = [];
         columnItems = items.map(function (i) {
-            if ((i.section_col || 0) === columnIndex) {
+            if ((i.column || api_types_1.SectionColumns.PRIMARY) === columnValueForIndex(columnIndex)) {
                 return i;
             }
         }).filter(Boolean);
         return columnItems;
+    };
+    var columnValueForIndex = function (columnNumber) {
+        // if our layout is full-width we are SectionColumns.primary
+        // if our layout is responsive, 30_70 or 40_60 and index is 0 → SectionColumns.secondary
+        // if our layout is responsive, 30_70 or 40_60 and index is >0 → SectionColumns.primary
+        // if our layout is 70_30 or 60_40 and index is 0 -> SectionColumns.primary
+        // if our layout is 70_30 or 60_40 and index is >0 -> SectionColumns.secondary
+        if (layout === api_types_1.SectionLayouts.LAYOUT_FULL_WIDTH) {
+            return api_types_1.SectionColumns.PRIMARY;
+        }
+        if (layout === api_types_1.SectionLayouts.LAYOUT_30_70 ||
+            layout === api_types_1.SectionLayouts.LAYOUT_40_60 ||
+            layout === api_types_1.SectionLayouts.LAYOUT_RESPONSIVE) {
+            if (columnNumber === 0) {
+                return api_types_1.SectionColumns.SECONDARY;
+            }
+            else {
+                return api_types_1.SectionColumns.PRIMARY;
+            }
+        }
+        else { // Layout is bigger section first
+            if (columnNumber === 0) {
+                return api_types_1.SectionColumns.PRIMARY;
+            }
+        }
+        return api_types_1.SectionColumns.SECONDARY;
     };
     var addItem = function (sectionCol) {
         var nextId = "section-" + id + "-item-" + items.length;
@@ -49273,7 +49312,7 @@ var AuthoringSection = function (_a) {
         var newItem = {
             id: "" + nextId,
             section_id: id,
-            section_col: sectionCol,
+            column: columnValueForIndex(sectionCol),
             position: position,
             embeddable: "unknown",
             title: "Item " + position + " - " + Math.random().toString(36).substr(2, 9)
@@ -49304,9 +49343,7 @@ var AuthoringSection = function (_a) {
         if (e.destination && e.destination.index !== e.source.index) {
             nextItems = swapIndexes(items, e.source.index, e.destination.index);
         }
-        // if (setItems) {
-        //   setItems(nextItems);
-        // }
+        setItems(nextItems);
     };
     var handleMoveItem = function (itemId) {
         if (moveItemFunction) {
@@ -49326,13 +49363,13 @@ var AuthoringSection = function (_a) {
                 nextItems.push(i);
             }
         });
-        // setItems(nextItems);
+        setItems(nextItems);
     };
     var sectionColumns = function () {
         var colOneItems = getColumnItems(0);
         var colTwoItems = getColumnItems(1);
-        // const colOneAddItemHandler = () => addItem(0);
-        // const colTwoAddItemHandler = () => addItem(1);
+        var columnOneAddItemHandler = function () { return handleToggleShowAddItem(api_types_1.SectionColumns.PRIMARY); };
+        var columnTwoAddItemHandler = function () { return handleToggleShowAddItem(api_types_1.SectionColumns.SECONDARY); };
         return (React.createElement(React.Fragment, null,
             React.createElement(react_beautiful_dnd_1.DragDropContext, { onDragEnd: onDragEnd },
                 React.createElement("div", { className: "edit-page-grid-container col-1 " + classNameForItem(layout, 0) },
@@ -49346,7 +49383,7 @@ var AuthoringSection = function (_a) {
                                         React.createElement(section_item_1.SectionItem, __assign({}, element, { key: element.id, moveFunction: handleMoveItem, copyFunction: handleCopyItem, deleteFunction: handleDeleteItem })))); }));
                                 }),
                             droppableProvided.placeholder,
-                            !collapsed && (React.createElement("button", { className: "smallButton", onClick: handleShowAddItem },
+                            !collapsed && (React.createElement("button", { className: "smallButton", onClick: columnOneAddItemHandler },
                                 React.createElement(add_icon_1.Add, { height: "16", width: "16" }),
                                 " ",
                                 React.createElement("span", { className: "lineAdjust" }, "Add Item")))))); })),
@@ -49362,22 +49399,28 @@ var AuthoringSection = function (_a) {
                                             React.createElement(section_item_1.SectionItem, __assign({}, element, { key: element.id, moveFunction: handleMoveItem, copyFunction: handleCopyItem, deleteFunction: handleDeleteItem })))); }));
                                     }),
                                 droppableProvided.placeholder,
-                                !collapsed && (React.createElement("button", { className: "smallButton", onClick: handleShowAddItem },
+                                !collapsed && (React.createElement("button", { className: "smallButton", onClick: columnTwoAddItemHandler },
                                     React.createElement(add_icon_1.Add, { height: "16", width: "16" }),
                                     " ",
                                     React.createElement("span", { className: "lineAdjust" }, "Add Item")))))); })))));
     };
-    var handleToggleShowAddItem = function () { return setShowAddItem(function (prev) { return !prev; }); };
-    var handleShowAddItem = absorb_click_1.absorbClickThen(handleToggleShowAddItem);
-    var handleAddItem = function (itemId) {
+    var handleToggleShowAddItem = function (column) {
+        setAddToColumn(column);
+        setShowAddItem(function (prev) { return !prev; });
+    };
+    // const handleShowAddItem = absorbClickThen(handleToggleShowAddItem);
+    var closeShowAddItem = function () {
+        setShowAddItem(false);
+    };
+    var handleAddItem = function (embeddableId) {
         var position = items.length + 1;
         addPageItem === null || addPageItem === void 0 ? void 0 : addPageItem({
             section_id: id,
-            section_col: 0,
+            column: addToColumn,
             position: position,
-            embeddable: itemId
+            embeddable: embeddableId
         });
-        handleToggleShowAddItem();
+        setShowAddItem(false);
     };
     return (React.createElement("div", { className: "edit-page-grid-container" },
         React.createElement("header", { className: "section-menu full-row" },
@@ -49403,7 +49446,7 @@ var AuthoringSection = function (_a) {
                         React.createElement("button", { onClick: handleDelete }, "Delete"))))),
         sectionColumns(),
         showAddItem
-            ? React.createElement(section_item_picker_1.SectionItemPicker, { quickAddItems: (allEmbeddables === null || allEmbeddables === void 0 ? void 0 : allEmbeddables.filter(function (ae) { return ae.isQuickAddItem; })) || [], allItems: allEmbeddables || [], onClose: handleToggleShowAddItem, onAdd: handleAddItem })
+            ? React.createElement(section_item_picker_1.SectionItemPicker, { quickAddItems: (allEmbeddables === null || allEmbeddables === void 0 ? void 0 : allEmbeddables.filter(function (ae) { return ae.isQuickAddItem; })) || [], allItems: allEmbeddables || [], onClose: closeShowAddItem, onAdd: handleAddItem })
             : undefined));
 };
 exports.AuthoringSection = AuthoringSection;
@@ -49585,12 +49628,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.SectionItemMoveDialog = void 0;
 var React = __webpack_require__(/*! react */ "react");
 var react_1 = __webpack_require__(/*! react */ "react");
+var api_types_1 = __webpack_require__(/*! ../api/api-types */ "./src/section-authoring/api/api-types.ts");
 var modal_1 = __webpack_require__(/*! ../../shared/components/modal/modal */ "./src/shared/components/modal/modal.tsx");
 var close_icon_1 = __webpack_require__(/*! ../../shared/components/icons/close-icon */ "./src/shared/components/icons/close-icon.tsx");
 var move_icon_1 = __webpack_require__(/*! ../../shared/components/icons/move-icon */ "./src/shared/components/icons/move-icon.tsx");
 __webpack_require__(/*! ./section-item-move-dialog.scss */ "./src/section-authoring/components/section-item-move-dialog.scss");
 var SectionItemMoveDialog = function (_a) {
-    var item = _a.item, sections = _a.sections, _b = _a.selectedPageId, selectedPageId = _b === void 0 ? "0" : _b, _c = _a.selectedSectionId, initSelectedSectionId = _c === void 0 ? "1" : _c, _d = _a.selectedColumn, initSelectedColumn = _d === void 0 ? 0 : _d, _e = _a.selectedPosition, selectedPosition = _e === void 0 ? "after" : _e, _f = _a.selectedOtherItemId, initSelectedOtherItemId = _f === void 0 ? "0" : _f, moveFunction = _a.moveFunction, closeDialogFunction = _a.closeDialogFunction;
+    var item = _a.item, sections = _a.sections, _b = _a.selectedPageId, selectedPageId = _b === void 0 ? "0" : _b, _c = _a.selectedSectionId, initSelectedSectionId = _c === void 0 ? "1" : _c, _d = _a.selectedColumn, initSelectedColumn = _d === void 0 ? api_types_1.SectionColumns.PRIMARY : _d, _e = _a.selectedPosition, selectedPosition = _e === void 0 ? "after" : _e, _f = _a.selectedOtherItemId, initSelectedOtherItemId = _f === void 0 ? "0" : _f, moveFunction = _a.moveFunction, closeDialogFunction = _a.closeDialogFunction;
     var _g = react_1.useState(initSelectedSectionId), selectedSectionId = _g[0], setSelectedSectionId = _g[1];
     var _h = react_1.useState(initSelectedColumn), selectedColumn = _h[0], setSelectedColumn = _h[1];
     var _j = react_1.useState(initSelectedOtherItemId), selectedOtherItemId = _j[0], setSelectedOtherItemId = _j[1];
@@ -49602,7 +49646,7 @@ var SectionItemMoveDialog = function (_a) {
         setSelectedSectionId(change.target.value);
     };
     var handleColumnChange = function (change) {
-        setSelectedColumn(parseInt(change.target.value, 10));
+        setSelectedColumn(change.target.value);
     };
     var handlePositionChange = function (change) {
         selectedPosition = change.target.value;
@@ -49622,23 +49666,21 @@ var SectionItemMoveDialog = function (_a) {
         closeDialogFunction();
     };
     var columnOptions = function () {
-        var columnCount = 1;
-        var options = [{ value: columnCount }];
+        var options = [{ value: api_types_1.SectionColumns.PRIMARY }];
         if (selectedSectionId) {
             var section = sections.find(function (s) { return s.id === selectedSectionId; });
             if ((section === null || section === void 0 ? void 0 : section.layout) !== "Full Width") {
-                ++columnCount;
-                options.push({ value: columnCount });
+                options.push({ value: api_types_1.SectionColumns.SECONDARY });
             }
         }
-        return options.map(function (column, index) { return (React.createElement("option", { key: index, value: index }, column.value)); });
+        return options.map(function (column, index) { return (React.createElement("option", { key: index, value: column.value }, column.value)); });
     };
     var itemOptions = function () {
         var itemsList = [];
         if (selectedSectionId) {
             var selectedSection = sections.find(function (s) { return s.id === selectedSectionId; });
             if (selectedSection === null || selectedSection === void 0 ? void 0 : selectedSection.items) {
-                itemsList = selectedSection.items.filter(function (i) { return i.id !== item.id && i.section_col === selectedColumn; });
+                itemsList = selectedSection.items.filter(function (i) { return i.id !== item.id && i.column === selectedColumn; });
             }
         }
         if (itemsList.length < 1) {
@@ -49660,9 +49702,11 @@ var SectionItemMoveDialog = function (_a) {
                         React.createElement("option", { value: "1" }, "1"))),
                 React.createElement("dt", { className: "col2" }, "Section"),
                 React.createElement("dd", { className: "col2" },
-                    React.createElement("select", { name: "section", onChange: handleSectionChange }, sections.map(function (s) {
-                        return React.createElement("option", { key: "section-option-" + s.id, value: s.id }, s.id);
-                    }))),
+                    React.createElement("select", { name: "section", onChange: handleSectionChange },
+                        React.createElement("option", { key: "--", value: "" }, " -- "),
+                        sections.map(function (s) {
+                            return React.createElement("option", { key: "section-option-" + s.id, value: s.id }, s.id);
+                        }))),
                 React.createElement("dt", { className: "col3" }, "Column"),
                 React.createElement("dd", { className: "col3" },
                     React.createElement("select", { name: "column", onChange: handleColumnChange }, columnOptions())),
@@ -50360,3 +50404,4 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_react_dom__;
 
 /******/ });
 });
+//# sourceMappingURL=lara-typescript.js.map
