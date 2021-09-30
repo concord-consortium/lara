@@ -117,10 +117,13 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
     deleteFunction?.(id);
   };
 
+  const setItems = (nextItems: ISection[]) => {
+    updateFunction?.({section: {id, items: nextItems}});
+  };
+
   const handleMove = () => {
-    if (moveFunction) {
-      moveFunction(id);
-    }
+    moveFunction?.(id);
+
   };
 
   const handleCopy = () => {
