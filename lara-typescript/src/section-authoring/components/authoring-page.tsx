@@ -125,6 +125,8 @@ export const AuthoringPage: React.FC<IPageProps> = ({
   };
 
   const updateSectionItems = (newItems: ISectionItem[], sectionId: string) => {
+    console.log("root updateSectionItems triggered");
+    console.log(newItems);
     const sectionIndex = sections.findIndex(i => i.id === sectionId);
     sections[sectionIndex].items = newItems;
     const updatedItems = [] as ISectionItem[];
@@ -323,6 +325,7 @@ export const AuthoringPage: React.FC<IPageProps> = ({
                             deleteFunction={handleDelete}
                             copyFunction={handleCopy}
                             allEmbeddables={allEmbeddables}
+                            items={items}
                             addPageItem={addPageItem}
                             moveItemFunction={handleMoveItemInit}
                             updatePageItems={updateSectionItems} />

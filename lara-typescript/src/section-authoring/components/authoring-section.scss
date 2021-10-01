@@ -281,17 +281,9 @@ select {
   grid-column: span 10;
 }
 
-.sectionContainer, .sectionItem {
+.sectionContainer {
   background-color: var(--ltr-teal);
   border: 1px solid var(--teal);
   border-radius: 3px;
   margin-bottom: 10px;
-}
-.sectionItem {
-  min-height: 200px;
-}
-.itemsContainer {
-  background: var(--ltst-teal);
-  border-radius: 4px;
-  padding: 10px;
 }
