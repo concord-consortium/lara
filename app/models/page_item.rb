@@ -1,5 +1,5 @@
 class PageItem < ActiveRecord::Base
-  attr_accessible :section, :position, :section, :embeddable, :column
+  attr_accessible :section, :position, :embeddable, :column
   acts_as_list :scope => :section
 
   belongs_to :section

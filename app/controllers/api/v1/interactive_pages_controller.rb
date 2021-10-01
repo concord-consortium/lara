@@ -75,10 +75,28 @@ class Api::V1::InteractivePagesController < API::APIController
   end
 
   def update_section
+    authorize! :update, @interactive_page
     section_params = params['section']
+
+    return error("Missing section parameter") if section_params.nil?
+    return error("Missing section[:id] parameter") if section_params['id'].nil?
+
     section_id = section_params.delete('id')
+    new_page_items = section_params.delete('items')
     section = Section.find(section_id)
+
     section.update_attributes(section_params)
+    # Usually we will just be reordering the page_items within the section:
+    if section && new_page_items
+      new_page_items.each do |pi|
+        page_item_id = pi.delete('id')
+        page_item = PageItem.find(page_item_id)
+        if page_item
+          new_attr = { column: pi['column'], position: pi['position'] }
+          page_item.update_attributes(new_attr)
+        end
+      end
+    end
     render_page_sections_json
   end
 

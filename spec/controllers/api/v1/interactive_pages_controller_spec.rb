@@ -345,4 +345,77 @@ describe Api::V1::InteractivePagesController do
     end
   end
 
+  describe "#update_section" do
+    let(:section) { FactoryGirl.create(:section, :interactive_page => page, :layout => Section::LAYOUT_FULL_WIDTH) }
+    let(:items)   do
+      [
+        FactoryGirl.create(:page_item, { section: section, position: 1, column: PageItem::COLUMN_PRIMARY }),
+        FactoryGirl.create(:page_item, { section: section, position: 2, column: PageItem::COLUMN_PRIMARY }),
+        FactoryGirl.create(:page_item, { section: section, position: 3, column: PageItem::COLUMN_PRIMARY })
+      ]
+    end
+
+    before :each do
+      sign_in author
+    end
+
+    describe 'reordering items' do
+      it 'before we run the update the items position should be in order' do
+        section.page_items.each_with_index do |pi, index|
+          expect(pi.position).to eql(index)
+        end
+      end
+
+      describe 'success' do
+        it 'after the reordering, the items positions are reversed' do
+          new_items = items.map do |i|
+            {
+              id: i.id,
+              position: 4 - i.position,
+              column: i.column
+            }
+          end
+          old_id_order = section.page_items.map(& :id)
+          update_request = { id: page.id, section: { id: section.id, items: new_items } }
+          xhr :post, 'update_section', update_request
+          expect(response.status).to eq(200)
+          section.reload
+          new_id_order = section.page_items.map(& :id)
+          expect(new_id_order).to eql(old_id_order.reverse)
+        end
+      end
+
+      describe 'failures' do
+        it 'fails without a page param' do
+          update_request = { section: { id: section.id, items: [] } }
+          xhr :post, 'update_section', update_request
+          expect(response.status).to eq(200)
+          expect(JSON.parse(response.body)).to include({'success' => false})
+        end
+
+        it 'fails when we dont specify a section' do
+          update_request = { id: page.id }
+          xhr :post, 'update_section', update_request
+          expect(response.status).to eq(500)
+          expect(response.body).to match(/Missing section/)
+        end
+
+        describe 'when we arent the author' do
+          before(:each) do
+            sign_out author
+          end
+          it "fails with not authorized" do
+            update_request = { id: page.id, section: { id: section.id, items: [] } }
+            xhr :post, 'update_section', update_request
+            expect(response.status).to eq(403)
+            expect(response.body).to match(/not authorized/i)
+          end
+        end
+
+      end
+    end
+
+  end
+
+
 end
