@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useContext } from "react";
 import {useMutation, useQuery, useQueryClient} from "react-query";
-import { IAuthoringAPIProvider, ICreatePageItem, IPage, ISection, ISectionItemType } from "./api-types";
+import { IAuthoringAPIProvider, ICreatePageItem, IPage, ISection, ISectionItem, ISectionItemType } from "./api-types";
 import { API as DEFAULT_API } from "./mock-api-provider";
 
 const PAGES_CACHE_KEY = "pages";
@@ -12,6 +12,7 @@ const SECTION_ITEM_TYPES_KEY = "SectionItemTypes";
 export const APIContext  = React.createContext<IAuthoringAPIProvider>(DEFAULT_API);
 
 export const usePageAPI = () => {
+
   const provider: IAuthoringAPIProvider = useContext(APIContext);
   const client = useQueryClient(); // Get the context from our container.
   const mutationsOpts = {
@@ -36,10 +37,29 @@ export const usePageAPI = () => {
     <{allEmbeddables: ISectionItemType[]}, Error>
     (SECTION_ITEM_TYPES_KEY, provider.getAllEmbeddables);
 
+
+  // const moveItem(oldSectionID, newSectionID) {
+  //   updateSectionItems(fromSectionID, {items: [previous value minus moved item]} )
+  //   updateSectionItems(roSectionID,   {items: [previous value plus moved item] } )
+  // }
+
+  // After we move or delete a section item, we call updateSectionItems
+  const updateSectionItems = (args: {sectionId: string, newItems: ISectionItem[]}) => {
+    const { sectionId, newItems } = args;
+    // TODO: Get the correct page
+    if (getPages.data) {
+      const page = getPages.data[0];
+      const section = page.sections.find(i => i.id === sectionId);
+      if (section === undefined) return;
+      section.items = newItems;
+      updateSection.mutate({pageId: page.id, changes: {section}});
+    }
+  };
+
   return {
     getPages, addPageMutation, deletePageMutation,
     addSectionMutation, updateSection, updateSections,
     createPageItem,
-    getAllEmbeddables
+    getAllEmbeddables, updateSectionItems
   };
 };

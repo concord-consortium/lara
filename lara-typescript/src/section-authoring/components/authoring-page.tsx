@@ -129,22 +129,6 @@ export const AuthoringPage: React.FC<IPageProps> = ({
     return [].concat.apply([], sectionItems) as ISectionItem[];
   };
 
-  const updateSectionItems = (newItems: ISectionItem[], sectionId: string) => {
-    const sectionIndex = sections.findIndex(i => i.id === sectionId);
-    sections[sectionIndex].items = newItems;
-    const updatedItems = [] as ISectionItem[];
-    sections.forEach((s) => {
-      if (s.items) {
-        s.items.forEach((i) => {
-          updatedItems.push(i);
-        });
-      }
-    });
-    // TODO update Sections that have changed ...
-    setSections?.({id, sections});
-    // setItems(updatedItems);
-  };
-
   /*
    * Return a new array with array[a] and array[b] swapped.
    */
@@ -332,7 +316,7 @@ export const AuthoringPage: React.FC<IPageProps> = ({
                             copyFunction={handleCopy}
                             addPageItem={addPageItem}
                             moveItemFunction={handleMoveItemInit}
-                            updatePageItems={updateSectionItems} />
+                          />
                         </div>
                       )
                   }

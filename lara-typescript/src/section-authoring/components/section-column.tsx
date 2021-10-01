@@ -8,6 +8,7 @@ import { Add } from "../../shared/components/icons/add-icon";
 
 import "./section-column.scss";
 import { SectionItemPicker } from "./section-item-picker";
+import { usePageAPI } from "../api/use-api-provider";
 
 export interface ISectionColumnProps {
 
@@ -66,9 +67,11 @@ export const SectionColumn: React.FC<ISectionColumnProps> = ({
   draggableProvided,
   items,
   moveFunction,
-  sectionId,
-  updatePageItems
+  sectionId
   }: ISectionColumnProps) => {
+
+  const api = usePageAPI();
+  const updateSectionItems = api.updateSectionItems;
 
   const [showAddItem, setShowAddItem] = useState(false);
 
@@ -88,7 +91,7 @@ export const SectionColumn: React.FC<ISectionColumnProps> = ({
     if (!e.destination) {
       return;
     }
-    let nextItems = [];
+    let nextItems: ISection[]  = [];
     if (e.source.droppableId !== e.destination.droppableId) {
       // items[e.source.index].section_col = items[e.source.index].section_col === 0 ? 1 : 0;
       // disallow cross column reordering for now
@@ -97,7 +100,7 @@ export const SectionColumn: React.FC<ISectionColumnProps> = ({
     if (e.destination && e.destination.index !== e.source.index) {
       nextItems = swapIndexes(items, e.source.index, e.destination.index);
     }
-    updatePageItems?.(nextItems, sectionId);
+    updateSectionItems({sectionId, newItems: nextItems});
   };
 
   const handleMoveItem = (itemId: string) => {
@@ -118,7 +121,7 @@ export const SectionColumn: React.FC<ISectionColumnProps> = ({
         nextItems.push(i);
       }
     });
-    updatePageItems?.(nextItems, sectionId);
+    updateSectionItems({sectionId, newItems: nextItems});
   };
 
   const handleToggleShowAddItem = () => setShowAddItem((prev) => !prev);
