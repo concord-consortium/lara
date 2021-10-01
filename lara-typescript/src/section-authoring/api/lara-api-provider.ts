@@ -81,11 +81,11 @@ export const getLaraAuthoringAPI = (activityId: string, host: string = window.lo
   };
 
   const createPageItem: APIPageItemCreateF = (args: {pageId: PageId, newPageItem: ICreatePageItem}) => {
-    return sendToLara({url: createPageItemUrl(args.pageId), method: "POST", body: args.newPageItem});
+    const body = { page_item: args.newPageItem };
+    return sendToLara({url: createPageItemUrl(args.pageId), method: "POST", body});
   };
 
   const getAllEmbeddables = () => {
-    console.log("GetAllEmbeddables called");
     return sendToLara({url: libraryInteractivesUrl})
       .then( (json: ILibraryInteractiveResponse) => {
         const result = {

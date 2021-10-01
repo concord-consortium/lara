@@ -10,6 +10,7 @@ import { Add } from "../../shared/components/icons/add-icon";
 import { Cog } from "../../shared/components/icons/cog-icon";
 
 import "./authoring-page.scss";
+import { usePageAPI } from "../api/use-api-provider";
 
 export interface IPageProps extends IPage {
 
@@ -378,4 +379,40 @@ export const AuthoringPage: React.FC<IPageProps> = ({
       }
     </>
   );
+};
+
+export const AuthoringPageUsingAPI = () => {
+  const api = usePageAPI();
+  const pages = api.getPages.data;
+  if (pages) {
+    // TODO: we will want to rebind this when we support navigation
+    const currentPage = pages[0];
+    const addSection = () => api.addSectionMutation.mutate(currentPage.id);
+    const setSections = (pageData: {id: string, sections: ISection[]}) => {
+      api.updateSections.mutate(pageData);
+    };
+    const changeSection = (changes: {
+      section: Partial<ISection>,
+      sectionID: string}) => api.updateSection.mutate({pageId: currentPage.id, changes});
+
+    const addPageItem = (pageItem: ICreatePageItem) =>
+      api.createPageItem.mutate({pageId: currentPage.id, newPageItem: pageItem});
+
+    return (
+      <AuthoringPage
+        sections={currentPage?.sections}
+        addSection={addSection }
+        setSections={setSections}
+        id={currentPage.id}
+        changeSection={changeSection}
+        addPageItem={addPageItem}
+        // setPageItems={setPageItems}
+      />
+    );
+  }
+  else {
+    return (
+      <div>loading ...</div>
+    );
+  }
 };

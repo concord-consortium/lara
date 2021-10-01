@@ -52,6 +52,7 @@ class Api::V1::InteractivePagesController < API::APIController
     old_sections = @interactive_page.sections
     # Put them in the correct order:
     index = 1
+    new_section_ids = param_sections.map { |s| s['id'] }
     new_sections = param_sections.map do |s|
       section = Section.find(s['id'])
       position = index
@@ -62,8 +63,14 @@ class Api::V1::InteractivePagesController < API::APIController
       index = index + 1
       section
     end
-    # TBD: Remove 'unused' sections?
-    # sections.to_remove = old_sections.filter { |s| s.id != }
+
+    # Remove deleted sections:
+    old_sections.each do |section|
+      unless (new_section_ids.include?(section.id.to_s))
+        section.delete
+      end
+    end
+
     @interactive_page.sections = new_sections
     @interactive_page.save!
     render_page_sections_json
