@@ -35,7 +35,6 @@ export interface ISectionItemProps {
    */
   deleteFunction?: (id: string) => void;
 
-
   /**
    * Display order within the section
    */

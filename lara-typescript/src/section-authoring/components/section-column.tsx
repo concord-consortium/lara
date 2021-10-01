@@ -69,17 +69,9 @@ export const SectionColumn: React.FC<ISectionColumnProps> = ({
   updatePageItems
   }: ISectionColumnProps) => {
 
-  // const [updatedItems, setUpdatedItems] = useState([...items]);
   const [showAddItem, setShowAddItem] = useState(false);
 
-  // React.useEffect(() => {
-  //   updatePageItems?.(updatedItems, sectionId);
-  // }, [updatedItems]);
-
   const swapIndexes = (array: any[], a: number, b: number) => {
-    console.log(array);
-    console.log(a);
-    console.log(b);
     const aItem = array[a];
     const bItem = array[b];
     const aPos = aItem.position;
@@ -104,8 +96,6 @@ export const SectionColumn: React.FC<ISectionColumnProps> = ({
     if (e.destination && e.destination.index !== e.source.index) {
       nextItems = swapIndexes(items, e.source.index, e.destination.index);
     }
-    console.log("These should be 1 and 0 after swap.");
-    console.log(nextItems);
     updatePageItems?.(nextItems, sectionId);
   };
 

@@ -10,7 +10,8 @@ import {
 
 const APIBase = "/api/v1";
 
-export const getLaraAuthoringAPI = (activityId: string, host: string = window.location.origin, ): IAuthoringAPIProvider => {
+export const getLaraAuthoringAPI =
+  (activityId: string, host: string = window.location.origin): IAuthoringAPIProvider => {
 
   const prefix = `${host}${APIBase}`;
   // endpoints:
