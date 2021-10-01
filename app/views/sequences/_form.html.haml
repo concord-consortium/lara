@@ -33,6 +33,10 @@
       = f.label :theme_id, "Theme"
       = f.select :theme_id, options_from_collection_for_select(Theme.all, 'id', 'name', @sequence.theme_id), { :include_blank => "None (inherit from project, or site default)" }
     .field{:class => ("disabled" if @sequence.runtime != 'Activity Player')}
+      = f.label :fixed_width_layout, 'Fixed Width Layout'
+      = f.select :fixed_width_layout, options_for_select(LightweightActivity::FIXED_WIDTH_LAYOUT_OPTIONS, @sequence.fixed_width_layout)
+      .hint (NOTE: This value is only used by Activity Player.)
+    .field{:class => ("disabled" if @sequence.runtime != 'Activity Player')}
       = f.label :background_image, 'Background Image URL'
       = f.text_field :background_image
       .hint (Specify the full URL of a background image file. NOTE: This value is only used by Activity Player. For LARA runtime, a background image can be specified in the theme.)
