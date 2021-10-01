@@ -7,6 +7,7 @@ import { DragDropContext, Droppable, Draggable, DropResult, DraggableProvided } 
 import { Add } from "../../shared/components/icons/add-icon";
 
 import "./section-column.scss";
+import { SectionItemPicker } from "./section-item-picker";
 
 export interface ISectionColumnProps {
 
@@ -131,7 +132,7 @@ export const SectionColumn: React.FC<ISectionColumnProps> = ({
     });
     handleToggleShowAddItem();
   };
-  const addItemHandler = () => addItem(column);
+  const showItemPicker = () => setShowAddItem(true);
 
   return (
     <>
@@ -175,7 +176,7 @@ export const SectionColumn: React.FC<ISectionColumnProps> = ({
                     );
                   })}
                   { droppableProvided.placeholder }
-                  <button className="smallButton" onClick={addItemHandler}>
+                  <button className="smallButton" onClick={showItemPicker}>
                     <Add height="16" width="16" /> <span className="lineAdjust">Add Item</span>
                   </button>
                 </div>
@@ -184,6 +185,12 @@ export const SectionColumn: React.FC<ISectionColumnProps> = ({
           </Droppable>
         </div>
       </DragDropContext>
+      { showAddItem &&
+        <SectionItemPicker
+          onClose={handleToggleShowAddItem}
+          onAdd={handleAddItem}
+        />
+      }
     </>
   );
 };

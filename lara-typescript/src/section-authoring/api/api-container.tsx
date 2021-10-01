@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { APIContext } from "./use-api-provider";
 import { IAuthoringAPIProvider } from "./api-types";

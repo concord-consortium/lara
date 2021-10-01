@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import { ComponentMeta } from "@storybook/react";
 import { PagesDemo } from "../section-authoring/query-providers-test-component";
 import { AuthoringPageUsingAPI} from "../section-authoring/components/authoring-page";

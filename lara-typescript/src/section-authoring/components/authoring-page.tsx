@@ -385,10 +385,13 @@ export const AuthoringPageUsingAPI = () => {
   if (pages) {
     // TODO: we will want to rebind this when we support navigation
     const currentPage = pages[0];
+
     const addSection = () => api.addSectionMutation.mutate(currentPage.id);
+
     const setSections = (pageData: {id: string, sections: ISection[]}) => {
       api.updateSections.mutate(pageData);
     };
+
     const changeSection = (changes: {
       section: Partial<ISection>,
       sectionID: string}) => api.updateSection.mutate({pageId: currentPage.id, changes});
