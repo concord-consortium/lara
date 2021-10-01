@@ -101,7 +101,6 @@ const updateSection = (args: {pageId: PageId, changes: { section: Partial<ISecti
 const createPageItem = (args: {pageId: PageId, newPageItem: ICreatePageItem}) => {
   const {newPageItem, pageId} = args;
   const sectionId = newPageItem.section_id;
-  const {embeddable, position} = newPageItem;
   const page = pages.find(p => p.id === pageId);
   if (page) {
     const section = page.sections.find(s => s.id === sectionId);

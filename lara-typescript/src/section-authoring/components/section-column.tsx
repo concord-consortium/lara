@@ -2,7 +2,7 @@ import * as React from "react";
 import { useState } from "react";
 import { SectionItem, ISectionItemProps} from "./section-item";
 import { absorbClickThen } from "../../shared/absorb-click";
-import { ICreatePageItem, ISectionItem } from "../api/api-types";
+import { ICreatePageItem, ISection, ISectionItem, SectionColumns } from "../api/api-types";
 import { DragDropContext, Droppable, Draggable, DropResult, DraggableProvided } from "react-beautiful-dnd";
 import { Add } from "../../shared/components/icons/add-icon";
 
@@ -10,7 +10,7 @@ import "./section-column.scss";
 
 export interface ISectionColumnProps {
 
-  addItem: (sectionCol: number) => void;
+  addItem: (column: SectionColumns) => void;
 
   addPageItem?: (pageItem: ICreatePageItem) => void;
 
@@ -20,9 +20,14 @@ export interface ISectionColumnProps {
   className: string;
 
   /**
-   * The index of the column, 1 or 2
+   * primary or secondary (large/small)
    */
-  columnIndex: number;
+  column: SectionColumns;
+
+  /**
+   * The 1-based index of the column
+   */
+  columnNumber: number;
 
   /**
    * DraggingContext
@@ -32,7 +37,7 @@ export interface ISectionColumnProps {
   /*
    * List of all items in the column
    */
-  items: ISectionItemProps[];
+  items: ISection[];
 
   /**
    * Function to move an item
@@ -55,7 +60,8 @@ export const SectionColumn: React.FC<ISectionColumnProps> = ({
   addItem,
   addPageItem,
   className,
-  columnIndex,
+  column,
+  columnNumber,
   draggableProvided,
   items,
   moveFunction,
@@ -110,7 +116,7 @@ export const SectionColumn: React.FC<ISectionColumnProps> = ({
   const handleCopyItem = (itemId: string) => {
     const item = items.find(i => i.id === itemId);
     if (item) {
-      addItem(item.section_col || 0);
+      addItem(column);
     }
   };
 
@@ -130,22 +136,17 @@ export const SectionColumn: React.FC<ISectionColumnProps> = ({
   const handleAddItem = (itemId: string) => {
     addPageItem?.({
       section_id: sectionId,
-      embeddable: itemId
+      embeddable: itemId,
+      column
     });
     handleToggleShowAddItem();
   };
-
-  const addItemHandler = () => addItem(columnIndex);
-
-  if (sectionId === "1" && columnIndex === 2) {
-    console.log("SectionColumn items");
-    console.log(items);
-  }
+  const addItemHandler = () => addItem(column);
 
   return (
     <>
       <DragDropContext onDragEnd={onDragEnd}>
-        <div className={`edit-page-grid-container col-${columnIndex} ${className}`}>
+        <div className={`edit-page-grid-container col-${columnNumber} ${className}`}>
           <Droppable droppableId="droppableCol1">
             {(droppableProvided) => (
               <div
@@ -159,14 +160,14 @@ export const SectionColumn: React.FC<ISectionColumnProps> = ({
                     && items.map((item, index) => {
                     return (
                       <Draggable
-                        key={`col-${columnIndex}-item-${index}`}
-                        draggableId={`col-${columnIndex}-item-${index}`}
-                        index={item.position - 1}
+                        key={`col-${columnNumber}-item-${index}`}
+                        draggableId={`col-${columnNumber}-item-${index}`}
+                        index={(item.position || 0) - 1}
                       >
                         {(draggableProvidedColOne) => (
                           <div
                             className="sectionItem"
-                            key={`col-${columnIndex}-item-inner-${index}`}
+                            key={`col-${columnNumber}-item-inner-${index}`}
                             {...draggableProvidedColOne.draggableProps}
                             {...draggableProvidedColOne.dragHandleProps}
                             ref={draggableProvidedColOne.innerRef}

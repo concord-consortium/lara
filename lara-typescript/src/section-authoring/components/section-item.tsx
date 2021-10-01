@@ -13,7 +13,7 @@ export interface ISectionItemProps {
   /**
    * Record Type
    */
-   type: string;
+   type?: string;
 
   /**
    * Optional function to change the item
@@ -35,20 +35,11 @@ export interface ISectionItemProps {
    */
   deleteFunction?: (id: string) => void;
 
-  /**
-   * Section the item belongs in
-   */
-  section_id: string;
-
-  /**
-   * Section column item belongs in
-   */
-  section_col: number;
 
   /**
    * Display order within the section
    */
-  position: number;
+  position?: number;
 
   /**
    * Name of the section will be displayed in the header
@@ -64,9 +55,6 @@ export const SectionItem: React.FC<ISectionItemProps> = ({
   moveFunction,
   copyFunction,
   deleteFunction,
-  position,
-  section_col,
-  section_id,
   type,
   title
   }: ISectionItemProps) => {

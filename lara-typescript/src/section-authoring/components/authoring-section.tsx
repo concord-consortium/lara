@@ -134,14 +134,9 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
   //   return items.sort((a, b) => (a?.position || 0) - (b?.position || 0));
   // };
 
-  const getColumnItems = (columnIndex: number) => {
-    let columnItems: any[] = [];
-    columnItems = items.map(i => {
-      if ((i.column || SectionColumns.PRIMARY) === columnValueForIndex(columnIndex)) {
-        return i;
-      }
-    }).filter(Boolean);
-    return columnItems;
+  const getColumnItems = (column: SectionColumns) => {
+    if (layout === SectionLayouts.LAYOUT_FULL_WIDTH) return items;
+    return items.filter(i => i.column === column);
   };
 
   const columnValueForIndex = (columnNumber: number): SectionColumns => {
@@ -170,13 +165,13 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
     return SectionColumns.SECONDARY;
   };
 
-  const addItem = (sectionCol: number) => {
+  const addItem = (column: SectionColumns) => {
     const nextId = `section-${id}-item-${items.length}`;
     const position = items.length + 1;
     const newItem: ICreatePageItem = {
       // id: `${nextId}`,
       section_id: id,
-      column: columnValueForIndex(sectionCol),
+      column,
       position,
       embeddable: "unknown",
       // title: `Item ${position} - ${Math.random().toString(36).substr(2, 9)}`
@@ -233,8 +228,9 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
         addItem={addItem}
         addPageItem={addPageItem}
         className={classNameForItem(layout, 0)}
-        columnIndex={1}
-        items={getColumnItems(1)}
+        column={columnValueForIndex(0)}
+        columnNumber={1}
+        items={getColumnItems(columnValueForIndex(0))}
         moveFunction={handleMoveItem}
         sectionId={id}
         updatePageItems={updatePageItems}
@@ -245,8 +241,9 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
           addItem={addItem}
           addPageItem={addPageItem}
           className={classNameForItem(layout, 1)}
-          columnIndex={2}
-          items={getColumnItems(2)}
+          column={columnValueForIndex(1)}
+          columnNumber={2}
+          items={getColumnItems(columnValueForIndex(1))}
           moveFunction={handleMoveItem}
           sectionId={id}
           updatePageItems={updatePageItems}
