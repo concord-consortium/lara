@@ -3,12 +3,10 @@ import { APIContainer } from "../section-authoring/api/api-container";
 import { ComponentMeta, ComponentStory } from "@storybook/react";
 import { AuthoringPage, AuthoringPageUsingAPI } from "../section-authoring/components/authoring-page";
 
-
 export default {
   title: "Authoring Page Stories",
   component: APIContainer,
 } as ComponentMeta<typeof APIContainer>;
-
 
 interface IAPIProps {
   activityId: string;
@@ -33,7 +31,6 @@ export const WithLaraProvider = Template.bind({
     host: "https://app.lara.docker/"
   }
 });
-
 
 export const AuthoringPageWithAPIProvider = () => {
   return (

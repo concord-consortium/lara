@@ -10,7 +10,7 @@ export default {
   argTypes: {
     layout: {
       options: SectionLayouts,
-      control: { type: 'radio' }
+      control: { type: "radio" }
     }
   },
 } as ComponentMeta<typeof AuthoringSection>;
