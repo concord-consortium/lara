@@ -32,13 +32,14 @@ export const SectionItemMoveDialog: React.FC<ISectionItemMoveDialogProps> = ({
   selectedPageId = "0",
   selectedSectionId: initSelectedSectionId = "1",
   selectedColumn: initSelectedColumn = SectionColumns.PRIMARY,
-  selectedPosition = "after",
+  selectedPosition: initSelectedPosition = "after",
   selectedOtherItemId: initSelectedOtherItemId = "0",
   moveFunction,
   closeDialogFunction
   }: ISectionItemMoveDialogProps) => {
   const [selectedSectionId, setSelectedSectionId] = useState(initSelectedSectionId);
   const [selectedColumn, setSelectedColumn] = useState(initSelectedColumn);
+  const [selectedPosition, setSelectedPosition] = useState(initSelectedPosition);
   const [selectedOtherItemId, setSelectedOtherItemId] = useState(initSelectedOtherItemId);
   const [modalVisibility, setModalVisibility] = useState(true);
 
@@ -55,13 +56,11 @@ export const SectionItemMoveDialog: React.FC<ISectionItemMoveDialogProps> = ({
   };
 
   const handlePositionChange = (change: React.ChangeEvent<HTMLSelectElement>) => {
-    selectedPosition = change.target.value;
+    setSelectedPosition(change.target.value);
   };
 
   const handleOtherItemChange = (change: React.ChangeEvent<HTMLSelectElement>) => {
-    const [sectionId, otherItemId] = change.target.value.split("--");
-    setSelectedSectionId(sectionId);
-    setSelectedOtherItemId(otherItemId);
+    setSelectedOtherItemId(change.target.value);
   };
 
   const handleCloseDialog = () => {
@@ -103,8 +102,8 @@ export const SectionItemMoveDialog: React.FC<ISectionItemMoveDialogProps> = ({
     }
 
     return itemsList?.map((i) => (
-      <option key={i.id} value={`${i.section_id}--${i.id}`}>
-        Section {`${i.section_id}, ${i.title}`}
+      <option key={i.id} value={`${i.id}`}>
+        {i.title}
       </option>
     ));
   };
@@ -127,7 +126,6 @@ export const SectionItemMoveDialog: React.FC<ISectionItemMoveDialogProps> = ({
           <dt className="col2">Section</dt>
           <dd className="col2">
             <select name="section" onChange={handleSectionChange}>
-            <option key="--" value=""> -- </option>
               {sections.map((s) => {
                   return <option key={`section-option-${s.id}`} value={s.id}>{s.id}</option>;
                 })}

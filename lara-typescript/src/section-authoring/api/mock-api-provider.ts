@@ -31,7 +31,7 @@ const makeNewPageItem = (attributes: Partial<ISectionItem>): ISectionItem => {
     embeddable: attributes.embeddable,
     title: `embeddable-${itemCounter}`,
     column: attributes.column || SectionColumns.PRIMARY,
-    position: 0
+    position: attributes.position || 1
   };
   return newItem;
 };

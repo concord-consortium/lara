@@ -64,7 +64,6 @@ export const SectionColumn: React.FC<ISectionColumnProps> = ({
   className,
   column,
   columnNumber,
-  draggableProvided,
   items,
   moveFunction,
   sectionId
@@ -91,7 +90,7 @@ export const SectionColumn: React.FC<ISectionColumnProps> = ({
     if (!e.destination) {
       return;
     }
-    let nextItems: ISection[]  = [];
+    let nextItems: ISectionItemProps[] = [];
     if (e.source.droppableId !== e.destination.droppableId) {
       // items[e.source.index].section_col = items[e.source.index].section_col === 0 ? 1 : 0;
       // disallow cross column reordering for now
@@ -99,8 +98,8 @@ export const SectionColumn: React.FC<ISectionColumnProps> = ({
     }
     if (e.destination && e.destination.index !== e.source.index) {
       nextItems = swapIndexes(items, e.source.index, e.destination.index);
+      updateSectionItems({sectionId, newItems: nextItems, column });
     }
-    updateSectionItems({sectionId, newItems: nextItems});
   };
 
   const handleMoveItem = (itemId: string) => {
@@ -121,17 +120,19 @@ export const SectionColumn: React.FC<ISectionColumnProps> = ({
         nextItems.push(i);
       }
     });
-    updateSectionItems({sectionId, newItems: nextItems});
+    updateSectionItems({sectionId, newItems: nextItems, column});
   };
 
   const handleToggleShowAddItem = () => setShowAddItem((prev) => !prev);
   const handleShowAddItem = absorbClickThen(handleToggleShowAddItem);
 
   const handleAddItem = (itemId: string) => {
+    const position = items.length + 1;
     addPageItem?.({
       section_id: sectionId,
       embeddable: itemId,
-      column
+      column,
+      position
     });
     handleToggleShowAddItem();
   };
@@ -141,7 +142,7 @@ export const SectionColumn: React.FC<ISectionColumnProps> = ({
     <>
       <DragDropContext onDragEnd={onDragEnd}>
         <div className={`edit-page-grid-container col-${columnNumber} ${className}`}>
-          <Droppable droppableId="droppableCol1">
+          <Droppable droppableId={`droppableCol${columnNumber}`}>
             {(droppableProvided) => (
               <div
                 ref={droppableProvided.innerRef}
@@ -156,7 +157,7 @@ export const SectionColumn: React.FC<ISectionColumnProps> = ({
                       <Draggable
                         key={`col-${columnNumber}-item-${index}`}
                         draggableId={`col-${columnNumber}-item-${index}`}
-                        index={(item.position || 0) - 1}
+                        index={index}
                       >
                         {(draggableProvidedColOne) => (
                           <div

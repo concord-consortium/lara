@@ -2,12 +2,8 @@ import * as React from "react";
 import { useState } from "react";
 import { GripLines } from "../../shared/components/icons/grip-lines";
 import { SectionColumn } from "./section-column";
-import { SectionItem, ISectionItemProps} from "./section-item";
-import { SectionItemPicker } from "./section-item-picker";
-import { absorbClickThen } from "../../shared/absorb-click";
-import { ICreatePageItem, ISection, ISectionItem, ISectionItemType, SectionColumns, SectionLayouts } from "../api/api-types";
-import { DragDropContext, Droppable, Draggable, DropResult, DraggableProvided } from "react-beautiful-dnd";
-import { Add } from "../../shared/components/icons/add-icon";
+import { ICreatePageItem, ISection, ISectionItem, SectionColumns, SectionLayouts } from "../api/api-types";
+import { DraggableProvided } from "react-beautiful-dnd";
 
 import "./authoring-section.scss";
 
@@ -94,8 +90,6 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
 
   const [layout, setLayout] = useState(initLayout);
   const [collapsed, setCollapsed] = useState(initCollapsed);
-  const [showAddItem, setShowAddItem] = useState(false);
-  const [addToColumn, setAddToColumn] = useState(SectionColumns.PRIMARY);
 
   React.useEffect(() => {
     setLayout(initLayout);
@@ -117,9 +111,9 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
     deleteFunction?.(id);
   };
 
-  const setItems = (nextItems: ISection[]) => {
-    updateFunction?.({section: {id, items: nextItems}});
-  };
+  // const setItems = (nextItems: ISection[]) => {
+  //   updateFunction?.({section: {id, items: nextItems}});
+  // };
 
   const handleMove = () => {
     moveFunction?.(id);

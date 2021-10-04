@@ -55,6 +55,7 @@ export const SectionItem: React.FC<ISectionItemProps> = ({
   copyFunction,
   deleteFunction,
   type,
+  position,
   title
   }: ISectionItemProps) => {
 
