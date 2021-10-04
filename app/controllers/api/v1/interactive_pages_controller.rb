@@ -89,10 +89,13 @@ class Api::V1::InteractivePagesController < API::APIController
     return error("Missing section[:id] parameter") if section_params['id'].nil?
 
     section_id = section_params.delete('id')
-    new_page_items = section_params.delete('items')
     section = Section.find(section_id)
+    old_page_items = section.page_items
+    new_page_items = section_params.delete('items')
+    new_page_item_ids = new_page_items.map { |i| i['id'] }
 
     section.update_attributes(section_params)
+
     # Usually we will just be reordering the page_items within the section:
     if section && new_page_items
       new_page_items.each do |pi|
@@ -104,6 +107,14 @@ class Api::V1::InteractivePagesController < API::APIController
         end
       end
     end
+
+    # Sometimes we need to delete items too:
+    old_page_items.each do | item |
+      unless (new_page_item_ids.include?(item.id.to_s))
+        item.delete
+      end
+    end
+
     render_page_sections_json
   end
 
