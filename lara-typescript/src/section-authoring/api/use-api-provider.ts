@@ -1,7 +1,8 @@
 import * as React from "react";
 import { useContext } from "react";
+import { useState } from "react";
 import {useMutation, useQuery, useQueryClient} from "react-query";
-import { IAuthoringAPIProvider, ICreatePageItem, IPage, ISection, ISectionItem, ISectionItemType } from "./api-types";
+import { IAuthoringAPIProvider, ICreatePageItem, IPage, ISection, ISectionItem, ISectionItemType, SectionColumns } from "./api-types";
 import { API as DEFAULT_API } from "./mock-api-provider";
 
 const PAGES_CACHE_KEY = "pages";
@@ -12,7 +13,7 @@ const SECTION_ITEM_TYPES_KEY = "SectionItemTypes";
 export const APIContext  = React.createContext<IAuthoringAPIProvider>(DEFAULT_API);
 
 export const usePageAPI = () => {
-
+  const [currentPageIndex, setCurrentPageIndex] = useState(0);
   const provider: IAuthoringAPIProvider = useContext(APIContext);
   const client = useQueryClient(); // Get the context from our container.
   const mutationsOpts = {
@@ -37,21 +38,25 @@ export const usePageAPI = () => {
     <{allEmbeddables: ISectionItemType[]}, Error>
     (SECTION_ITEM_TYPES_KEY, provider.getAllEmbeddables);
 
-
   // const moveItem(oldSectionID, newSectionID) {
   //   updateSectionItems(fromSectionID, {items: [previous value minus moved item]} )
   //   updateSectionItems(roSectionID,   {items: [previous value plus moved item] } )
   // }
 
   // After we move or delete a section item, we call updateSectionItems
-  const updateSectionItems = (args: {sectionId: string, newItems: ISectionItem[]}) => {
-    const { sectionId, newItems } = args;
+  const updateSectionItems = (args: {sectionId: string, newItems: ISectionItem[], column?: SectionColumns}) => {
+    const { sectionId, newItems, column } = args;
     // TODO: Get the correct page
     if (getPages.data) {
-      const page = getPages.data[0];
+      const page = getPages.data[currentPageIndex];
       const section = page.sections.find(i => i.id === sectionId);
       if (section === undefined) return;
-      section.items = newItems;
+      if (column && section.items) {
+        const unalteredItems = section.items.filter(i => i.column !== column);
+        section.items = unalteredItems.concat(newItems);
+      } else {
+        section.items = newItems;
+      }
       updateSection.mutate({pageId: page.id, changes: {section}});
     }
   };
