@@ -71,7 +71,7 @@ FactoryGirl.define do
     publication_status 'public'
     related { generate(:related) }
     description { generate(:description) }
-    fixed_width_layout 'not_enabled'
+    fixed_width_layout '1100px'
     runtime "Activity Player"
   end
 end
