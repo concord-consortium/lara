@@ -1,5 +1,6 @@
 import * as React from "react";
 import { GripLines } from "../../shared/components/icons/grip-lines";
+import { AuthoringSection } from "./authoring-section";
 
 import "./section-item.scss";
 
@@ -85,6 +86,11 @@ export const SectionItem: React.FC<ISectionItemProps> = ({
     deleteFunction?.(id);
   };
 
+  const renderEmbeddable = () => {
+    if(type == "text-block" ) {
+      return <TextBlock {...data } />
+    }
+  }
   return(
     <div className="sectionItemContainer">
       <header className="sectionItemMenu">
@@ -92,6 +98,7 @@ export const SectionItem: React.FC<ISectionItemProps> = ({
           <GripLines />
           <h4>{id} - {title} - {renderTitle()}</h4>
         </div>
+        { renderEmbeddable() }
         <div className="menuEnd">
           <ul>
             <li><button onClick={toggleCollapse}>Collapse</button></li>
