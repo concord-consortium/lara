@@ -36,11 +36,30 @@ module.exports = (env, argv) => {
             {
               loader: 'tslint-loader'
             }
-          ]
+          ],
+          exclude: /node_modules/
         },
         {
           test: /\.tsx?$/,
-          loader: 'ts-loader'
+          loader: 'ts-loader',
+          exclude: /node_modules/
+        },
+        // PJ 9/9/2021: Why is Babel necessary if there's TS loader and tsconfig specifies ES5 target?
+        // TS doesn't transform regexp named capture groups added in ES2018. This breaks Rails assets compilation.
+        // Uglifier that is not able to parse the updated regexp format. Note that this loader is applied both to our
+        // own code and node_modules. The problematic regexp is in AWS S3 Client.
+        // See: https://github.com/microsoft/TypeScript/issues/36132
+        {
+          test: /\.(t|j)sx?$/,
+          enforce: 'post',
+          use: [
+            {
+              loader: 'babel-loader',
+              options: {
+                plugins: ['@babel/plugin-transform-named-capturing-groups-regex']
+              }
+            }
+          ]
         },
         {
           test: /\.s?css$/,
@@ -140,6 +159,56 @@ module.exports = (env, argv) => {
     externals: {
       'react': 'commonjs2 react'   // allows interactives to use their own react instead of bundling it in this library
     }
+  },
+
+  // Outputs built by this configuration:
+  // - interactive-api-host: for use by interactive developers
+  //   this needs separate config as the externals are handled differently and
+  //   different files are copied.
+  {
+    context: __dirname, // to automatically find tsconfig.json
+    devtool: 'source-map',
+    entry: {
+      'interactive-api-host': './src/interactive-api-host/index.ts',
+    },
+    mode: 'development',
+    output: {
+      filename: '[name]/index.js',
+      libraryTarget: 'umd'
+    },
+    performance: { hints: false },
+    module: {
+      rules: [
+        {
+          test: /\.tsx?$/,
+          enforce: 'pre',
+          use: [
+            {
+              loader: 'tslint-loader'
+            }
+          ]
+        },
+        {
+          test: /\.tsx?$/,
+          loader: 'ts-loader'
+        }
+      ]
+    },
+    resolve: {
+      extensions: [ '.ts', '.tsx', '.js' ]
+    },
+    stats: {
+      // suppress "export not found" warnings about re-exported types
+      warningsFilter: /export .* was not found in/
+    },
+    plugins: [
+      new CopyPlugin({
+        patterns: [
+          { from: 'src/interactive-api-host/package.json', to: 'interactive-api-host' },
+          { from: 'src/interactive-api-host/README.md', to: 'interactive-api-host' }
+        ]
+      })
+    ]
   },
 
   // Outputs built by this configuration:

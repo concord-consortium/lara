@@ -11,6 +11,7 @@
 ### Properties
 
 * [activity_name](iinteractivestate.md#activity_name)
+* [external_report_url](iinteractivestate.md#external_report_url)
 * [id](iinteractivestate.md#id)
 * [interactive_name](iinteractivestate.md#interactive_name)
 * [interactive_state_url](iinteractivestate.md#interactive_state_url)
@@ -22,6 +23,12 @@
 ###  activity_name
 
 • **activity_name**: *string*
+
+___
+
+###  external_report_url
+
+• **external_report_url**: *string*
 
 ___
 

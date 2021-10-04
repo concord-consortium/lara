@@ -1,9 +1,0 @@
-.answer
-  - if !answer.answer_texts.empty?
-    - if answer.multi_answer
-      - answer.answer_texts.each do |answer|
-        .answer_item= answer
-    - else
-      .answer_item= answer.answer_texts.last
-  - else
-    %p! &nbsp;

@@ -44842,14 +44842,14 @@ var authoring_1 = __webpack_require__(/*! ./authoring */ "./src/example-interact
 var report_1 = __webpack_require__(/*! ./report */ "./src/example-interactive/src/components/report.tsx");
 var runtime_1 = __webpack_require__(/*! ./runtime */ "./src/example-interactive/src/components/runtime.tsx");
 var AppComponent = function (props) {
-    var initMessage = interactive_api_client_1.useInitMessage();
+    var initMessage = (0, interactive_api_client_1.useInitMessage)();
     // TODO: this should really be moved into a client hook file so it can be reused
     useEffect(function () {
         if (initMessage) {
             var body_1 = document.getElementsByTagName("BODY")[0];
             var updateHeight_1 = function () {
                 if (body_1 && body_1.clientHeight) {
-                    interactive_api_client_1.setHeight(body_1.clientHeight);
+                    (0, interactive_api_client_1.setHeight)(body_1.clientHeight);
                 }
             };
             var observer_1 = new resize_observer_polyfill_1.default(function () { return updateHeight_1(); });
@@ -44861,7 +44861,7 @@ var AppComponent = function (props) {
     }, [initMessage]);
     useEffect(function () {
         if (initMessage) {
-            interactive_api_client_1.setSupportedFeatures({
+            (0, interactive_api_client_1.setSupportedFeatures)({
                 authoredState: true,
                 interactiveState: true
             });
@@ -44937,8 +44937,8 @@ var react_1 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 var client = __webpack_require__(/*! ../../../../interactive-api-client */ "./src/interactive-api-client/index.ts");
 var GetInteractiveListComponent = function (_a) {
     var setError = _a.setError, setOutput = _a.setOutput;
-    var scopeRef = react_1.useRef(null);
-    var supportsSnapshotsRef = react_1.useRef(null);
+    var scopeRef = (0, react_1.useRef)(null);
+    var supportsSnapshotsRef = (0, react_1.useRef)(null);
     var handleCall = function () { return __awaiter(void 0, void 0, void 0, function () {
         var scope, supportsSnapshotsValue, supportsSnapshots, _a, err_1;
         var _b, _c;
@@ -45038,8 +45038,8 @@ var react_1 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 var client = __webpack_require__(/*! ../../../../interactive-api-client */ "./src/interactive-api-client/index.ts");
 var SetLinkedInteractivesComponent = function (_a) {
     var setError = _a.setError, setOutput = _a.setOutput;
-    var linkedInteractivesRef = react_1.useRef(null);
-    var linkedStateRef = react_1.useRef(null);
+    var linkedInteractivesRef = (0, react_1.useRef)(null);
+    var linkedStateRef = (0, react_1.useRef)(null);
     var handleCall = function () { return __awaiter(void 0, void 0, void 0, function () {
         var linkedInteractives, linkedInteractivesValue, linkedState, linkedStateValue;
         var _a, _b;
@@ -45105,10 +45105,10 @@ var get_interactive_list_1 = __webpack_require__(/*! ./authoring-apis/get-intera
 var set_linked_interactives_1 = __webpack_require__(/*! ./authoring-apis/set-linked-interactives */ "./src/example-interactive/src/components/authoring-apis/set-linked-interactives.tsx");
 var AuthoringComponent = function (_a) {
     var initMessage = _a.initMessage;
-    var _b = react_1.useState("getInteractiveList"), selectedAuthoringApi = _b[0], setSelectedAuthoringApi = _b[1];
-    var _c = react_1.useState(), authoringApiError = _c[0], setAuthoringApiError = _c[1];
-    var _d = react_1.useState(), authoringApiOutput = _d[0], setAuthoringApiOutput = _d[1];
-    var _e = interactive_api_client_1.useAuthoredState(), authoredState = _e.authoredState, setAuthoredState = _e.setAuthoredState;
+    var _b = (0, react_1.useState)("getInteractiveList"), selectedAuthoringApi = _b[0], setSelectedAuthoringApi = _b[1];
+    var _c = (0, react_1.useState)(), authoringApiError = _c[0], setAuthoringApiError = _c[1];
+    var _d = (0, react_1.useState)(), authoringApiOutput = _d[0], setAuthoringApiOutput = _d[1];
+    var _e = (0, interactive_api_client_1.useAuthoredState)(), authoredState = _e.authoredState, setAuthoredState = _e.setAuthoredState;
     var handleClearAuthoringApiError = function () { return setAuthoringApiError(undefined); };
     var handleClearAuthoringApiOutput = function () { return setAuthoringApiOutput(undefined); };
     var handleAuthoringApiChange = function (e) {
@@ -45191,10 +45191,14 @@ exports.ReportComponent = ReportComponent;
 
 "use strict";
 
-var __spreadArray = (this && this.__spreadArray) || function (to, from) {
-    for (var i = 0, il = from.length, j = to.length; i < il; i++, j++)
-        to[j] = from[i];
-    return to;
+var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
+    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
+        if (ar || !(i in from)) {
+            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+            ar[i] = from[i];
+        }
+    }
+    return to.concat(ar || Array.prototype.slice.call(from));
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.RuntimeComponent = void 0;
@@ -45209,10 +45213,10 @@ var RuntimeComponent = function (_a) {
     var _c = useState("interactive_123"), snapshotSourceId = _c[0], setSnapshotSourceId = _c[1];
     var _d = useState(), snapshotUrl = _d[0], setSnapshotUrl = _d[1];
     var authoredState = initMessage.authoredState;
-    var _e = use_glossary_decoration_1.useGlossaryDecoration(), decorateOptions = _e[0], decorateClassName = _e[1];
+    var _e = (0, use_glossary_decoration_1.useGlossaryDecoration)(), decorateOptions = _e[0], decorateClassName = _e[1];
     useEffect(function () {
         if (authoredState === null || authoredState === void 0 ? void 0 : authoredState.firebaseApp) {
-            interactive_api_client_1.getFirebaseJwt(authoredState.firebaseApp)
+            (0, interactive_api_client_1.getFirebaseJwt)(authoredState.firebaseApp)
                 .then(function (response) {
                 setRawFirebaseJWT(response.token);
             })
@@ -45222,15 +45226,15 @@ var RuntimeComponent = function (_a) {
         }
     }, [authoredState]);
     var _f = useState([]), customMessages = _f[0], setCustomMessages = _f[1];
-    interactive_api_client_1.useCustomMessages(function (msg) {
-        setCustomMessages(function (messages) { return __spreadArray(__spreadArray([], messages), [msg]); });
+    (0, interactive_api_client_1.useCustomMessages)(function (msg) {
+        setCustomMessages(function (messages) { return __spreadArray(__spreadArray([], messages, true), [msg], false); });
     }, { "*": true });
     var handleSnapshotTargetChange = function (event) {
         setSnapshotSourceId(event.target.value);
     };
     var handleTakeSnapshot = function () {
         setSnapshotUrl("");
-        interactive_api_client_1.getInteractiveSnapshot({ interactiveItemId: snapshotSourceId }).then(function (response) {
+        (0, interactive_api_client_1.getInteractiveSnapshot)({ interactiveItemId: snapshotSourceId }).then(function (response) {
             if (response.success) {
                 setSnapshotUrl(response.snapshotUrl);
             }
@@ -45309,7 +45313,7 @@ exports.renderHTML = void 0;
 var DOMPurify = __webpack_require__(/*! dompurify */ "./node_modules/dompurify/dist/purify.js");
 var html_react_parser_1 = __webpack_require__(/*! html-react-parser */ "./node_modules/html-react-parser/index.mjs");
 function renderHTML(html) {
-    return html_react_parser_1.default(DOMPurify.sanitize(html || ""));
+    return (0, html_react_parser_1.default)(DOMPurify.sanitize(html || ""));
 }
 exports.renderHTML = renderHTML;
 
@@ -45333,19 +45337,19 @@ var text_decorator_1 = __webpack_require__(/*! @concord-consortium/text-decorato
 var react_1 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 var kClassName = "text-decorate";
 var useGlossaryDecoration = function () {
-    var _a = react_1.useState({ words: [], replace: "" }), options = _a[0], setOptions = _a[1];
-    var _b = react_1.useState(), listeners = _b[0], setListeners = _b[1];
-    interactive_api_client_1.useDecorateContent(function (msg) {
+    var _a = (0, react_1.useState)({ words: [], replace: "" }), options = _a[0], setOptions = _a[1];
+    var _b = (0, react_1.useState)(), listeners = _b[0], setListeners = _b[1];
+    (0, interactive_api_client_1.useDecorateContent)(function (msg) {
         var msgOptions = {
             words: msg.words,
-            replace: render_html_1.renderHTML(msg.replace),
+            replace: (0, render_html_1.renderHTML)(msg.replace),
         };
         setOptions(msgOptions);
         setListeners(msg.eventListeners);
     });
-    react_1.useEffect(function () {
-        listeners && text_decorator_1.addEventListeners(kClassName, listeners);
-        return function () { return listeners && text_decorator_1.removeEventListeners(kClassName, listeners); };
+    (0, react_1.useEffect)(function () {
+        listeners && (0, text_decorator_1.addEventListeners)(kClassName, listeners);
+        return function () { return listeners && (0, text_decorator_1.removeEventListeners)(kClassName, listeners); };
     });
     return [options, kClassName];
 };
@@ -45429,7 +45433,7 @@ var THROW_NOT_IMPLEMENTED_YET = function (method) {
     throw new Error(method + " is not yet implemented in the client!");
 };
 var getInitInteractiveMessage = function () {
-    var client = client_1.getClient();
+    var client = (0, client_1.getClient)();
     return new Promise(function (resolve) {
         if (client.managedState.initMessage) {
             resolve(client.managedState.initMessage);
@@ -45441,11 +45445,11 @@ var getInitInteractiveMessage = function () {
 };
 exports.getInitInteractiveMessage = getInitInteractiveMessage;
 var getMode = function () {
-    return exports.getInitInteractiveMessage().then(function (initInteractiveMessage) { return initInteractiveMessage === null || initInteractiveMessage === void 0 ? void 0 : initInteractiveMessage.mode; });
+    return (0, exports.getInitInteractiveMessage)().then(function (initInteractiveMessage) { return initInteractiveMessage === null || initInteractiveMessage === void 0 ? void 0 : initInteractiveMessage.mode; });
 };
 exports.getMode = getMode;
 var getInteractiveState = function () {
-    return client_1.getClient().managedState.interactiveState;
+    return (0, client_1.getClient)().managedState.interactiveState;
 };
 exports.getInteractiveState = getInteractiveState;
 var setInteractiveStateTimeoutId;
@@ -45469,7 +45473,7 @@ exports.setInteractiveStateTimeout = 2000; // ms
  * ```
  */
 var setInteractiveState = function (newInteractiveState) {
-    var client = client_1.getClient();
+    var client = (0, client_1.getClient)();
     client.managedState.interactiveState = newInteractiveState;
     window.clearTimeout(setInteractiveStateTimeoutId);
     delayedInteractiveStateUpdate = function () {
@@ -45495,7 +45499,7 @@ var flushStateUpdates = function () {
 };
 exports.flushStateUpdates = flushStateUpdates;
 var getAuthoredState = function () {
-    return client_1.getClient().managedState.authoredState;
+    return (0, client_1.getClient)().managedState.authoredState;
 };
 exports.getAuthoredState = getAuthoredState;
 /**
@@ -45516,13 +45520,13 @@ exports.getAuthoredState = getAuthoredState;
  * ```
  */
 var setAuthoredState = function (newAuthoredState) {
-    var client = client_1.getClient();
+    var client = (0, client_1.getClient)();
     client.managedState.authoredState = newAuthoredState;
     client.post("authoredState", newAuthoredState);
 };
 exports.setAuthoredState = setAuthoredState;
 var getGlobalInteractiveState = function () {
-    return client_1.getClient().managedState.globalInteractiveState;
+    return (0, client_1.getClient)().managedState.globalInteractiveState;
 };
 exports.getGlobalInteractiveState = getGlobalInteractiveState;
 /**
@@ -45543,25 +45547,25 @@ exports.getGlobalInteractiveState = getGlobalInteractiveState;
  * ```
  */
 var setGlobalInteractiveState = function (newGlobalState) {
-    var client = client_1.getClient();
+    var client = (0, client_1.getClient)();
     client.managedState.globalInteractiveState = newGlobalState;
     client.post("interactiveStateGlobal", newGlobalState);
 };
 exports.setGlobalInteractiveState = setGlobalInteractiveState;
 var addCustomMessageListener = function (callback, handles) {
-    client_1.getClient().addCustomMessageListener(callback, handles);
+    (0, client_1.getClient)().addCustomMessageListener(callback, handles);
 };
 exports.addCustomMessageListener = addCustomMessageListener;
 var removeCustomMessageListener = function () {
-    client_1.getClient().removeCustomMessageListener();
+    (0, client_1.getClient)().removeCustomMessageListener();
 };
 exports.removeCustomMessageListener = removeCustomMessageListener;
 var addDecorateContentListener = function (callback) {
-    client_1.getClient().addDecorateContentListener(callback);
+    (0, client_1.getClient)().addDecorateContentListener(callback);
 };
 exports.addDecorateContentListener = addDecorateContentListener;
 var removeDecorateContentListener = function () {
-    client_1.getClient().removeDecorateContentListener();
+    (0, client_1.getClient)().removeDecorateContentListener();
 };
 exports.removeDecorateContentListener = removeDecorateContentListener;
 var setSupportedFeatures = function (features) {
@@ -45569,15 +45573,15 @@ var setSupportedFeatures = function (features) {
         apiVersion: 1,
         features: features
     };
-    client_1.getClient().setSupportedFeatures(request);
+    (0, client_1.getClient)().setSupportedFeatures(request);
 };
 exports.setSupportedFeatures = setSupportedFeatures;
 var setHeight = function (height) {
-    client_1.getClient().post("height", height);
+    (0, client_1.getClient)().post("height", height);
 };
 exports.setHeight = setHeight;
 var postDecoratedContentEvent = function (msg) {
-    client_1.getClient().post("decoratedContentEvent", msg);
+    (0, client_1.getClient)().post("decoratedContentEvent", msg);
 };
 exports.postDecoratedContentEvent = postDecoratedContentEvent;
 /*
@@ -45585,11 +45589,11 @@ exports.postDecoratedContentEvent = postDecoratedContentEvent;
  */
 var setHint = function (hint) {
     var request = { text: hint };
-    client_1.getClient().post("hint", request);
+    (0, client_1.getClient)().post("hint", request);
 };
 exports.setHint = setHint;
 var setNavigation = function (options) {
-    client_1.getClient().post("navigation", options);
+    (0, client_1.getClient)().post("navigation", options);
 };
 exports.setNavigation = setNavigation;
 var getAuthInfo = function () {
@@ -45597,7 +45601,7 @@ var getAuthInfo = function () {
         var listener = function (authInfo) {
             resolve(authInfo);
         };
-        var client = client_1.getClient();
+        var client = (0, client_1.getClient)();
         var requestId = client.getNextRequestId();
         var request = {
             requestId: requestId
@@ -45609,7 +45613,7 @@ var getAuthInfo = function () {
 exports.getAuthInfo = getAuthInfo;
 var getFirebaseJwt = function (firebaseApp) {
     return new Promise(function (resolve, reject) {
-        exports.getInitInteractiveMessage().then(function (initMsg) {
+        (0, exports.getInitInteractiveMessage)().then(function (initMsg) {
             var _a, _b;
             if (((_b = (_a = initMsg === null || initMsg === void 0 ? void 0 : initMsg.hostFeatures) === null || _a === void 0 ? void 0 : _a.getFirebaseJwt) === null || _b === void 0 ? void 0 : _b.version) === "1.0.0") {
                 var listener = function (response) {
@@ -45629,7 +45633,7 @@ var getFirebaseJwt = function (firebaseApp) {
                         reject("Empty token");
                     }
                 };
-                var client = client_1.getClient();
+                var client = (0, client_1.getClient)();
                 var requestId = client.getNextRequestId();
                 var request = {
                     requestId: requestId,
@@ -45646,42 +45650,42 @@ var getFirebaseJwt = function (firebaseApp) {
 };
 exports.getFirebaseJwt = getFirebaseJwt;
 var log = function (action, data) {
-    client_1.getClient().post("log", { action: action, data: data });
+    (0, client_1.getClient)().post("log", { action: action, data: data });
 };
 exports.log = log;
 // tslint:disable-next-line:max-line-length
 var addInteractiveStateListener = function (listener) {
-    client_1.getClient().managedState.on("interactiveStateUpdated", listener);
+    (0, client_1.getClient)().managedState.on("interactiveStateUpdated", listener);
 };
 exports.addInteractiveStateListener = addInteractiveStateListener;
 // tslint:disable-next-line:max-line-length
 var removeInteractiveStateListener = function (listener) {
-    client_1.getClient().managedState.off("interactiveStateUpdated", listener);
+    (0, client_1.getClient)().managedState.off("interactiveStateUpdated", listener);
 };
 exports.removeInteractiveStateListener = removeInteractiveStateListener;
 var addAuthoredStateListener = function (listener) {
-    client_1.getClient().managedState.on("authoredStateUpdated", listener);
+    (0, client_1.getClient)().managedState.on("authoredStateUpdated", listener);
 };
 exports.addAuthoredStateListener = addAuthoredStateListener;
 var removeAuthoredStateListener = function (listener) {
-    client_1.getClient().managedState.off("authoredStateUpdated", listener);
+    (0, client_1.getClient)().managedState.off("authoredStateUpdated", listener);
 };
 exports.removeAuthoredStateListener = removeAuthoredStateListener;
 // tslint:disable-next-line:max-line-length
 var addGlobalInteractiveStateListener = function (listener) {
-    client_1.getClient().managedState.on("globalInteractiveStateUpdated", listener);
+    (0, client_1.getClient)().managedState.on("globalInteractiveStateUpdated", listener);
 };
 exports.addGlobalInteractiveStateListener = addGlobalInteractiveStateListener;
 // tslint:disable-next-line:max-line-length
 var removeGlobalInteractiveStateListener = function (listener) {
-    client_1.getClient().managedState.off("globalInteractiveStateUpdated", listener);
+    (0, client_1.getClient)().managedState.off("globalInteractiveStateUpdated", listener);
 };
 exports.removeGlobalInteractiveStateListener = removeGlobalInteractiveStateListener;
 // Mapping between external listener and internal listener, so it's possible to remove linkedInteractiveState listeners.
 var _linkedInteractiveStateListeners = new Map();
 var addLinkedInteractiveStateListener = function (listener, options) {
-    var client = client_1.getClient();
-    var listenerId = uuid_1.v4();
+    var client = (0, client_1.getClient)();
+    var listenerId = (0, uuid_1.v4)();
     var internalListener = function (response) {
         if (response.listenerId === listenerId) {
             listener(response.interactiveState);
@@ -45699,7 +45703,7 @@ var addLinkedInteractiveStateListener = function (listener, options) {
 };
 exports.addLinkedInteractiveStateListener = addLinkedInteractiveStateListener;
 var removeLinkedInteractiveStateListener = function (listener) {
-    var client = client_1.getClient();
+    var client = (0, client_1.getClient)();
     if (_linkedInteractiveStateListeners.has(listener)) {
         var _a = _linkedInteractiveStateListeners.get(listener), internalListener = _a.internalListener, listenerId = _a.listenerId;
         // Remove local message handler. Theoretically it's not necessary if host implementation is correct
@@ -45720,23 +45724,23 @@ exports.removeLinkedInteractiveStateListener = removeLinkedInteractiveStateListe
 var showModal = function (options) {
     // Opening modal usually means reloading interactive. It's necessary to make sure that the state is up to date
     // before it happens.
-    exports.flushStateUpdates();
-    client_1.getClient().post("showModal", options);
+    (0, exports.flushStateUpdates)();
+    (0, client_1.getClient)().post("showModal", options);
 };
 exports.showModal = showModal;
 var closeModal = function (options) {
     // Opening modal usually means reloading interactive. It's necessary to make sure that the state is up to date
     // before it happens.
-    exports.flushStateUpdates();
-    client_1.getClient().post("closeModal", options);
+    (0, exports.flushStateUpdates)();
+    (0, client_1.getClient)().post("closeModal", options);
 };
 exports.closeModal = closeModal;
 var getInteractiveList = function (options) {
     return new Promise(function (resolve, reject) {
-        return exports.getMode()
+        return (0, exports.getMode)()
             .then(function (mode) {
             if (mode === "authoring") {
-                var client = client_1.getClient();
+                var client = (0, client_1.getClient)();
                 var requestId = client.getNextRequestId();
                 var request = __assign({ requestId: requestId }, options);
                 client.addListener("interactiveList", resolve, requestId);
@@ -45750,7 +45754,7 @@ var getInteractiveList = function (options) {
 };
 exports.getInteractiveList = getInteractiveList;
 var setLinkedInteractives = function (options) {
-    client_1.getClient().post("setLinkedInteractives", options);
+    (0, client_1.getClient)().post("setLinkedInteractives", options);
 };
 exports.setLinkedInteractives = setLinkedInteractives;
 var getInteractiveSnapshot = function (options) {
@@ -45758,7 +45762,7 @@ var getInteractiveSnapshot = function (options) {
         var listener = function (snapshotResponse) {
             resolve(snapshotResponse);
         };
-        var client = client_1.getClient();
+        var client = (0, client_1.getClient)();
         var requestId = client.getNextRequestId();
         var request = __assign({ requestId: requestId }, options);
         client.addListener("interactiveSnapshot", listener, requestId);
@@ -45775,7 +45779,7 @@ var getLibraryInteractiveList = function (options) {
 exports.getLibraryInteractiveList = getLibraryInteractiveList;
 var writeAttachment = function (params) {
     return new Promise(function (resolve, reject) {
-        var client = client_1.getClient();
+        var client = (0, client_1.getClient)();
         var content = params.content, _a = params.options, options = _a === void 0 ? {} : _a, others = __rest(params, ["content", "options"]);
         var _b = params.contentType, contentType = _b === void 0 ? "text/plain" : _b;
         var request = __assign(__assign({}, others), { operation: "write", requestId: client.getNextRequestId() });
@@ -45817,7 +45821,7 @@ exports.writeAttachment = writeAttachment;
 var readAttachment = function (name) {
     return new Promise(function (resolve, reject) {
         // set up response listener
-        var client = client_1.getClient();
+        var client = (0, client_1.getClient)();
         var request = { name: name, operation: "read", requestId: client.getNextRequestId() };
         client.addListener("attachmentUrl", function (response) { return __awaiter(void 0, void 0, void 0, function () {
             var _a, e_2;
@@ -45856,7 +45860,7 @@ exports.readAttachment = readAttachment;
 var getAttachmentUrl = function (name, contentType, expiresIn) {
     return new Promise(function (resolve, reject) {
         // set up response listener
-        var client = client_1.getClient();
+        var client = (0, client_1.getClient)();
         var requestId = client.getNextRequestId();
         var request = { name: name, operation: "read", contentType: contentType, expiresIn: expiresIn, requestId: requestId };
         client.addListener("attachmentUrl", function (response) { return __awaiter(void 0, void 0, void 0, function () {
@@ -45955,7 +45959,7 @@ var Client = /** @class */ (function () {
             }
             _this.post("supportedFeatures", newRequest);
         };
-        if (!in_frame_1.inIframe()) {
+        if (!(0, in_frame_1.inIframe)()) {
             // tslint:disable-next-line:no-console
             console.warn("Interactive API is meant to be used in iframe");
         }
@@ -46054,7 +46058,7 @@ var Client = /** @class */ (function () {
                                 return;
                             }
                             var clickedWord = (wordElement.textContent || "").toLowerCase();
-                            interactive_api_client_1.postDecoratedContentEvent({ type: listener.type,
+                            (0, interactive_api_client_1.postDecoratedContentEvent)({ type: listener.type,
                                 text: clickedWord,
                                 bounds: wordElement.getBoundingClientRect() });
                         }
@@ -46158,8 +46162,8 @@ var handleUpdate = function (newStateOrUpdateFunc, prevState) {
     }
 };
 var useInteractiveState = function () {
-    var _a = react_1.useState(null), interactiveState = _a[0], setInteractiveState = _a[1];
-    react_1.useEffect(function () {
+    var _a = (0, react_1.useState)(null), interactiveState = _a[0], setInteractiveState = _a[1];
+    (0, react_1.useEffect)(function () {
         setInteractiveState(client.getInteractiveState());
         // Setup client event listeners. They will ensure that another instance of this hook (or anything else
         // using client directly) makes changes to interactive state, this hook will receive these changes.
@@ -46181,8 +46185,8 @@ var useInteractiveState = function () {
 };
 exports.useInteractiveState = useInteractiveState;
 var useAuthoredState = function () {
-    var _a = react_1.useState(null), authoredState = _a[0], setAuthoredState = _a[1];
-    react_1.useEffect(function () {
+    var _a = (0, react_1.useState)(null), authoredState = _a[0], setAuthoredState = _a[1];
+    (0, react_1.useEffect)(function () {
         // Note that we need to update authoredState exactly in this moment, right before setting up event listeners.
         // It can't be done above using initial useState value. There's a little delay between initial render and calling
         // useEffect. If client's authoredState gets updated before the listener is added, this hook will have outdated
@@ -46211,8 +46215,8 @@ var useAuthoredState = function () {
 };
 exports.useAuthoredState = useAuthoredState;
 var useGlobalInteractiveState = function () {
-    var _a = react_1.useState(null), globalInteractiveState = _a[0], setGlobalInteractiveState = _a[1];
-    react_1.useEffect(function () {
+    var _a = (0, react_1.useState)(null), globalInteractiveState = _a[0], setGlobalInteractiveState = _a[1];
+    (0, react_1.useEffect)(function () {
         setGlobalInteractiveState(client.getGlobalInteractiveState());
         // Setup client event listeners. They will ensure that another instance of this hook (or anything else
         // using client directly) makes changes to global interactive state, this hook will receive these changes.
@@ -46236,8 +46240,8 @@ var useGlobalInteractiveState = function () {
 exports.useGlobalInteractiveState = useGlobalInteractiveState;
 // tslint:disable-next-line:max-line-length
 var useInitMessage = function () {
-    var _a = react_1.useState(null), initMessage = _a[0], setInitMessage = _a[1];
-    react_1.useEffect(function () {
+    var _a = (0, react_1.useState)(null), initMessage = _a[0], setInitMessage = _a[1];
+    (0, react_1.useEffect)(function () {
         // useEffect callback can't be async.
         (function () { return __awaiter(void 0, void 0, void 0, function () {
             var initMsg;
@@ -46256,14 +46260,14 @@ var useInitMessage = function () {
 };
 exports.useInitMessage = useInitMessage;
 var useCustomMessages = function (callback, handles) {
-    react_1.useEffect(function () {
+    (0, react_1.useEffect)(function () {
         client.addCustomMessageListener(callback, handles);
         return function () { return client.removeCustomMessageListener(); };
     }, []);
 };
 exports.useCustomMessages = useCustomMessages;
 var useDecorateContent = function (callback) {
-    react_1.useEffect(function () {
+    (0, react_1.useEffect)(function () {
         client.addDecorateContentListener(callback);
         return function () { return client.removeDecorateContentListener(); };
     }, []);
@@ -46453,6 +46457,31 @@ Object.defineProperty(exports, "__esModule", { value: true });
 /***/ "./src/interactive-api-client/types.ts":
 /*!*********************************************!*\
   !*** ./src/interactive-api-client/types.ts ***!
+  \*********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __exportStar = (this && this.__exportStar) || function(m, exports) {
+    for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+__exportStar(__webpack_require__(/*! ../interactive-api-shared/types */ "./src/interactive-api-shared/types.ts"), exports);
+
+
+/***/ }),
+
+/***/ "./src/interactive-api-shared/types.ts":
+/*!*********************************************!*\
+  !*** ./src/interactive-api-shared/types.ts ***!
   \*********************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {

@@ -186,7 +186,6 @@ describe InteractivePagesController do
       get :show, :id => page1.id, :run_key => ar.key
 
       expect(response.body).to match /<div class='related-mod'>/
-      expect(response.body).to match /href='\/activities\/#{act.id}\/summary\/#{ar.key}'/
     end
 
     it 'does not show related content on pages other than the last page' do

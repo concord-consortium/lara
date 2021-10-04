@@ -20,7 +20,6 @@
           %th % Done
           %th Collab
           %th Activity
-          %th Report
       %tbody
         - runlist.each_with_index do |run,index|
           %tr
@@ -38,7 +37,6 @@
             %td=sprintf("%04.1f%", run.percent_complete)
             %td=run.collaboration_run_id || "none"
             %td #{run.activity.position(run.sequence) if run.sequence} #{run.activity.name}
-            %td=link_to "report", summary_with_run_path(run.activity,run.key), {:target => "_blank"}
 
 :javascript
   $( document ).ready(function() {

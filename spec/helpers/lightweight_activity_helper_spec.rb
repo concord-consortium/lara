@@ -6,14 +6,14 @@ describe LightweightActivityHelper do
   let(:sequence)     { FactoryGirl.create(:sequence, id: 1, title: "Test Sequence", lightweight_activities: [activity])}
   let(:user)         { FactoryGirl.create(:user) }
   let(:sequence_run) { FactoryGirl.create(:sequence_run, sequence_id: sequence.id, user_id: user.id) }
-  let(:run)          { FactoryGirl.create(:run, {key: "012345678901234567890123456789123456", sequence_run: sequence_run, activity: activity, user: user})}
+  let(:run)          { FactoryGirl.create(:run, {key: "012345678901234567890123456789123456", sequence_run: sequence_run, activity: activity})}
   let(:sequence_path_with_run){ "/sequences/1/activities/23/012345678901234567890123456789123456" }
   let(:sequence_path){ "/sequences/1/activities/23" }
   let(:path_no_run)  { "/activities/23" }
 
-  subject { helper.runnable_activity_path(activity) }
-
   describe "#runnable_activity_path" do
+    subject { helper.runnable_activity_path(activity) }
+
     describe "with a sequence and sequence run" do
       it "should use the sequence with run path" do
         assign(:run, run)
@@ -75,19 +75,19 @@ describe LightweightActivityHelper do
   end
 
   describe "#itsi_preview_url" do
-  context "with an activity player runtime preview" do
-    it "returns an activity player url" do
-      url = "https://activity-player.concord.org/branch/master" +
-        "?activity=http%3A%2F%2Ftest.host%2Fapi%2Fv1%2Factivities%2F#{activity_player_activity.id}.json&preview"
-      expect(helper.itsi_preview_url(activity_player_activity)).to eq(url)
+    context "with an activity player runtime preview" do
+      it "returns an activity player url" do
+        url = "https://activity-player.concord.org/branch/master" +
+          "?activity=http%3A%2F%2Ftest.host%2Fapi%2Fv1%2Factivities%2F#{activity_player_activity.id}.json&preview"
+        expect(helper.itsi_preview_url(activity_player_activity)).to eq(url)
+      end
+    end
+    context "with a LARA runtime preview" do
+      it "returns a LARA url" do
+        expect(helper.itsi_preview_url(activity)).to eq("/activities/#{activity.id}/preview")
+      end
     end
   end
-  context "with a LARA runtime preview" do
-    it "returns a LARA url" do
-      expect(helper.itsi_preview_url(activity)).to eq("/activities/#{activity.id}/preview")
-    end
-  end
-end
 
   describe "#runtime_url" do
     context "with an activity player runtime" do
@@ -100,6 +100,27 @@ end
     context "with a LARA runtime" do
       it "returns a LARA url" do
         expect(helper.runtime_url(activity)).to eq("/activities/#{activity.id}")
+      end
+    end
+  end
+
+  describe "#runnable_summary_path" do
+    before(:each) do
+      assign(:run, run)
+    end
+
+    describe "when user is running an activity" do
+      it "calls ReportService::report_url with the current run, activity, and no sequence" do
+        expect(ReportService).to receive(:report_url).with(run, activity, nil)
+        helper.runnable_summary_path(activity)
+      end
+    end
+
+    describe "when user is running a sequence" do
+      it "calls ReportService::report_url with the current run, activity, and sequence" do
+        assign(:sequence, sequence)
+        expect(ReportService).to receive(:report_url).with(run, activity, sequence)
+        helper.runnable_summary_path(activity)
       end
     end
   end

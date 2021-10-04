@@ -150,4 +150,30 @@ describe("Embeddable runtime context helper", () => {
       runtimeContext.sendCustomMessage({ type: "foo", content: { bar: true } });
     });
   });
+
+  describe("#setAnswerSharedWithClass", () => {
+    it("calls interactiveStateUrl endpoint using PUT method and providing shared_with param", () => {
+      const runtimeContext = generateEmbeddableRuntimeContext(embeddableContext);
+      fetch.mockResponse(JSON.stringify({ update: "OK" }));
+      const resp = runtimeContext.setAnswerSharedWithClass(true);
+      expect(fetch.mock.calls[0][0]).toEqual(embeddableContext.interactiveStateUrl);
+      expect(fetch.mock.calls[0][1]).toEqual({
+        body: "{\"metadata\":{\"shared_with\":\"context\"}}",
+        credentials: "include",
+        headers: {"Content-Type": "application/json"},
+        method: "put"
+      });
+      expect(resp).toBeInstanceOf(Promise);
+
+      fetch.mockResponse(JSON.stringify({ update: "OK" }));
+      runtimeContext.setAnswerSharedWithClass(false);
+      expect(fetch.mock.calls[1][0]).toEqual(embeddableContext.interactiveStateUrl);
+      expect(fetch.mock.calls[1][1]).toEqual({
+        body: "{\"metadata\":{\"shared_with\":null}}",
+        credentials: "include",
+        headers: {"Content-Type": "application/json"},
+        method: "put"
+      });
+    });
+  });
 });

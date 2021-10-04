@@ -214,6 +214,16 @@ describe LightweightActivity do
         expect(export[:plugins][0][:id]).to eq(plugins[0].id)
         expect(export[:plugins][1][:id]).to eq(plugins[1].id)
       end
+      it 'does not include the fixed width layout option' do
+        expect(export).not_to include(:fixed_width_layout)
+      end
+
+      describe "for activity player activities" do
+        let(:export) { activity_player_activity.export }
+        it 'does include the fixed width layout option' do
+          expect(export).to include(:fixed_width_layout)
+        end
+      end
     end
   end
 

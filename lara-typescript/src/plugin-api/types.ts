@@ -129,6 +129,13 @@ export interface IEmbeddableRuntimeContext {
    @param message The message to be sent
    ****************************************************************************/
   sendCustomMessage: (message: ICustomMessage) => void;
+  /****************************************************************************
+   Function that enables or disables sharing of the embeddable answer with the whole class.
+   Returns promise that resolves when sharing action is completed (since it involves network request).
+
+   @param shared true enables sharing with class, false disables it
+   ****************************************************************************/
+   setAnswerSharedWithClass: (shared: boolean) => Promise<void>;
 }
 
 export interface IPluginAuthoringContext {
@@ -188,4 +195,5 @@ export interface IInteractiveState {
   interactive_name: string;
   interactive_state_url: string;
   activity_name: string;
+  external_report_url: string;
 }

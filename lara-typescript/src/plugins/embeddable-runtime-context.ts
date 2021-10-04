@@ -26,7 +26,12 @@ const getReportingUrl = (
     try {
       const rawJSON = JSON.parse(interactiveState.raw_data);
       if (rawJSON && rawJSON.lara_options && rawJSON.lara_options.reporting_url) {
+        // Interactive has its own reporting_url
         return rawJSON.lara_options.reporting_url;
+      }
+      // Use a generic Portal Report URL
+      if (interactiveState.external_report_url) {
+        return interactiveState.external_report_url;
       }
       return null;
     }
@@ -36,6 +41,27 @@ const getReportingUrl = (
       return null;
     }
   });
+};
+
+const setAnswerSharedWithClass = (shared: boolean, interactiveStateUrl: string | null) => {
+  if (!interactiveStateUrl) {
+    return Promise.reject("interactiveStateUrl not available");
+  }
+  return fetch(interactiveStateUrl, {
+    method: "put",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      metadata: {
+        // class = context
+        shared_with: shared ? "context" : null
+      }
+    })
+  })
+  // This is necessary, so TS doesn't complain about incompatibility of Promise<Response> and Promise<void>.
+  .then(() => undefined);
 };
 
 export const generateEmbeddableRuntimeContext = (context: IEmbeddableContextOptions): IEmbeddableRuntimeContext => {
@@ -64,6 +90,7 @@ export const generateEmbeddableRuntimeContext = (context: IEmbeddableContextOpti
     interactiveAvailable: context.interactiveAvailable,
     sendCustomMessage: (message: ICustomMessage) => {
       context.sendCustomMessage?.(message);
-    }
+    },
+    setAnswerSharedWithClass: (shared: boolean) => setAnswerSharedWithClass(shared, context.interactiveStateUrl)
   };
 };

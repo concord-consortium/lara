@@ -1,4 +1,6 @@
 module LightweightActivityHelper
+  # include ReportService::Sender
+
   def toggle_all(label='all', id_prefix='details_')
     link_to_function("show/hide #{label}", "$('div[id^=#{id_prefix}]').toggle();")
   end
@@ -23,16 +25,8 @@ module LightweightActivityHelper
     end
   end
 
-  # Try to find the most specific path for the passed in activity, and the current state
-  # of the sequence_run, sequence, and run
   def runnable_summary_path(activity)
-    if @sequence && @sequence_run
-      append_white_list_params sequence_summary_with_run_path(@sequence, activity, @sequence_run.run_for_activity(activity))
-    elsif @run && @run.activity == activity
-      append_white_list_params summary_with_run_path(activity, @run)
-    else
-      raise Exception.new("no run or sequence run available")
-    end
+    ReportService::report_url(@run, activity, @sequence)
   end
 
   def runnable_single_page_activity_path(activity, opts={})
@@ -90,8 +84,8 @@ module LightweightActivityHelper
     end
 
     preview_options = {
-                       'Select an option...' => '', 
-                       'Activity Player' => activity_player_url, 
+                       'Select an option...' => '',
+                       'Activity Player' => activity_player_url,
                        'Activity Player Teacher Edition' => activity_player_te_url
                       }
 

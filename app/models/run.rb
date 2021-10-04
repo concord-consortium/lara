@@ -256,9 +256,11 @@ class Run < ActiveRecord::Base
     is_success
   end
 
-  def queue_for_portal(answer)
-    return false if remote_endpoint.nil? || remote_endpoint.blank?
-    return false if answers.nil?
+  def queue_for_portal
+    # Don't check remote_endpoint so we can allow anonymous runs to be enqueued and sent to the report service.
+    # The submit_dirty_answers will enqueue a job that will eventually call #send_to_portal which will drop
+    # it on the floor silently but will then continue and send the answer to the report service.
+    return false if answers.empty?
     if dirty?
       # no-op: only queue one time
     else

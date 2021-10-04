@@ -1,6 +1,7 @@
 class LightweightActivity < ActiveRecord::Base
   include Publishable # defines methods to publish to portals
   include PublicationStatus # defines publication status scopes and helpers
+  include FixedWidthLayout # defines fixed width options
 
   LAYOUT_MULTI_PAGE = 0
   LAYOUT_SINGLE_PAGE = 1
@@ -153,6 +154,9 @@ class LightweightActivity < ActiveRecord::Base
     end
     activity_json[:type] = "LightweightActivity"
     activity_json[:export_site] = "Lightweight Activities Runtime and Authoring"
+    if self.runtime == "Activity Player"
+      activity_json[:fixed_width_layout] = self.fixed_width_layout
+    end
     return activity_json
   end
 

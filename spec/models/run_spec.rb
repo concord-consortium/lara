@@ -207,6 +207,14 @@ describe Run do
   end
 
   describe '#dirty_answers' do
+    # disable immediate delayed job processing so the dirty flag doesn't get cleared
+    before(:each) do
+      Delayed::Worker.delay_jobs = true
+    end
+    after(:each) do
+      Delayed::Worker.delay_jobs = false
+    end
+
     describe 'when there are no answers' do
       it 'returns an empty array' do
         expect(run.dirty_answers).to eq([])
@@ -224,6 +232,19 @@ describe Run do
 
       it 'returns an empty array' do
         expect(run.dirty_answers).to eq([])
+      end
+    end
+
+    describe 'when there are answers, and all are dirty' do
+      before(:each) do
+        # Add answers
+        run.open_response_answers << or_answer
+        run.multiple_choice_answers << mc_answer
+      end
+
+      it 'returns an array of all the dirty answers' do
+        expect(run.dirty_answers).to eq([or_answer, mc_answer])
+        expect(run.dirty_answers.length).to be(2)
       end
     end
 
@@ -454,6 +475,32 @@ describe Run do
       end
     end
 
+    describe "#queue_for_portal" do
+      describe "when there are no answers" do
+        it "returns false and does not enqueue a job" do
+          expect(run.queue_for_portal).to be false
+        end
+      end
+
+      describe "when there are answers" do
+        let(:remote_endpoint) { nil }
+
+        it "returns the enqueued job when there is no remote_endpoint" do
+          run.open_response_answers << or_answer
+          expect(run.queue_for_portal).to be_instance_of(Delayed::Backend::ActiveRecord::Job)
+        end
+
+        describe "and there is a remote_enpoint" do
+          let(:remote_endpoint) { valid_remote_endpoint }
+
+          it "returns the enqueued job" do
+            stub_http_request(:post, remote_endpoint).to_return(:body   => "OK", :status => 200)
+            run.open_response_answers << or_answer
+            expect(run.queue_for_portal).to be_instance_of(Delayed::Backend::ActiveRecord::Job)
+          end
+        end
+      end
+    end
 
     describe '#submit_dirty_answers' do
       let(:answers) {[]}

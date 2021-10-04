@@ -192,6 +192,7 @@ LightweightStandalone::Application.routes.draw do
       match "user_check" => 'user_check#index', defaults: { format: 'json' }
 
       match 'get_firebase_jwt(/:run_id)' => 'jwt#get_firebase_jwt', :as => 'get_firebase_jwt', :via => 'post'
+      match 'get_portal_jwt(/:run_id)' => 'jwt#get_portal_jwt', :as => 'get_portal_jwt', :via => 'post'
       match 'get_interactive_list/:id' => 'interactive_pages#get_interactive_list', :as => 'get_interactive_list', :via => 'get'
 
       # React authoring related routes. ()

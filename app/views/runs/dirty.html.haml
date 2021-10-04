@@ -19,7 +19,7 @@
         %li.item.run
           %div.runs_menu
             %div.left
-              = link_to "#{time_ago_in_words(run.updated_at)} ago", summary_with_run_path(run.activity_id, run.key)
+              "#{time_ago_in_words(run.updated_at)} ago", run.key
             %div.right
               %ul.menu
                 %li.button= link_to "Resubmit", fix_broken_portal_runs_path(run.id), 'class' => "fixit"

@@ -11,7 +11,7 @@ import dts from "rollup-plugin-dts";
 // Why rollup when we already have webpack?
 // There are few tools to generate bundled .d.ts, but all of them had some problems:
 // - Webpack plugins didn't seem production ready or had issues with TS lazy imports.
-// - API Extractor and dts-bundle-generator also don't support TS lazy imports 
+// - API Extractor and dts-bundle-generator also don't support TS lazy imports
 //   (https://github.com/microsoft/rushstack/issues/2140).
 // rollup-plugin-dts seemed like the only tool that handled correctly both plugin-api and interactive-api-client.
 const config = [
@@ -23,6 +23,11 @@ const config = [
   {
     input: "./dist/interactive-api-client/index.d.ts",
     output: [{ file: "./dist/interactive-api-client/index-bundle.d.ts", format: "es" }],
+    plugins: [dts()],
+  },
+  {
+    input: "./dist/interactive-api-host/index.d.ts",
+    output: [{ file: "./dist/interactive-api-host/index-bundle.d.ts", format: "es" }],
     plugins: [dts()],
   },
 ];

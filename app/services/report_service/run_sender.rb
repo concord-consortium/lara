@@ -8,20 +8,20 @@ module ReportService
 
     def get_resource_url(run)
       if run.sequence_id
-        "#{self_url}#{Rails.application.routes.url_helpers.sequence_path(run.sequence_id)}"
+        "#{Sender::self_url}#{Rails.application.routes.url_helpers.sequence_path(run.sequence_id)}"
       else
-        "#{self_url}#{Rails.application.routes.url_helpers.activity_path(run.activity_id)}"
+        "#{Sender::self_url}#{Rails.application.routes.url_helpers.activity_path(run.activity_id)}"
       end
     end
 
     def add_meta_data(run, record)
       record[:version] = RunSender::Version
       record[:created] = Time.now.utc.to_s
-      record[:source_key] = source_key
-      record[:tool_id] = tool_id
+      record[:source_key] = Sender::source_key
+      record[:tool_id] = Sender::tool_id
       record[:tool_user_id] = run.user_id.to_s
       record[:platform_id] = run.platform_id
-      record[:platform_user_id] = run.platform_user_id
+      record[:platform_user_id] = run.platform_user_id || run.key  # fallback to run.key for anonymous users
       record[:resource_link_id] = run.resource_link_id
       record[:context_id] = run.context_id
       record[:resource_url] = get_resource_url(run)
@@ -64,7 +64,7 @@ module ReportService
     # +opts+:: _send_all_answers_ by default only send changed answers.
     def initialize(run, opts={ send_all_answers: false} )
       @send_all_answers = opts[:send_all_answers]
-      url = "#{self_url}#{Rails.application.routes.url_helpers.run_path(run)}"
+      url = "#{Sender::self_url}#{Rails.application.routes.url_helpers.run_path(run)}"
       @payload = {
         id: run.key,
         url: url,

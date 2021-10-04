@@ -3,10 +3,14 @@ require 'spec_helper'
 def make(thing); end
 
 describe InteractiveRunState do
-  let(:activity)        { FactoryGirl.create(:activity)       }
+  let(:activity)        { FactoryGirl.create(:activity_with_page) }
   let(:interactive)     { FactoryGirl.create(:mw_interactive) }
-  let(:user)            { FactoryGirl.create(:user)           }
+  let(:user)            { FactoryGirl.create(:user) }
   let(:run)             { FactoryGirl.create(:run, {activity: activity, user: user})}
+
+  before(:each) do
+    activity.pages.first.add_embeddable(interactive)
+  end
 
   describe 'class methods' do
     describe "InteractiveRunState#generate_key" do
@@ -58,6 +62,13 @@ describe InteractiveRunState do
 
       it "should have a run_remote_endpoint" do
         expect(result_hash).to have_key "run_remote_endpoint"
+      end
+
+      describe "when interactive run state has a run" do
+        it "should have a external_report_url" do
+          expect(ReportService).to receive(:report_url).and_return("https://test.report/123")
+          expect(result_hash["external_report_url"]).to eq("https://test.report/123")
+        end
       end
 
       describe "when the interactive run state has no linked interactive" do
@@ -307,6 +318,30 @@ describe InteractiveRunState do
         end
       end
 
+      describe "when interactive has a generic metadata" do
+        let(:interactive) { FactoryGirl.create(:mw_interactive, enable_learner_state: true) }
+        let(:metadata) { '{"metadataProp1": 1, "metadataProp2": {"a": "b"}, "question_type": "INVALID_QUESTION_TYPE"}' }
+        let(:interactive_run_state) { InteractiveRunState.create(run: run, interactive: interactive, metadata: metadata) }
+
+        it "should provide required set of properties" do
+          expect(subject).to include({
+            type: "interactive_state",
+            id: interactive_run_state.answer_id,
+            question_type: "iframe_interactive",
+            question_id: interactive.embeddable_id,
+            metadataProp1: 1,
+            metadataProp2: { "a" => "b" }
+          })
+          # note that metadata is NOT able to overwrite predefined properties
+          expect(subject).not_to include({
+            question_type: "INVALID_QUESTION_TYPE",
+          })
+          expect(subject).not_to include({
+            "question_type" => "INVALID_QUESTION_TYPE",
+          })
+        end
+      end
+
       describe "when interactive run state pretends to be open response answer" do
         let(:interactive) { FactoryGirl.create(:mw_interactive, enable_learner_state: true) }
         let(:run_data) { JSON({answerType: "open_response_answer", answerText: "Test answer", submitted: true}) }
@@ -398,26 +433,30 @@ describe InteractiveRunState do
     describe "when interactive doesn't have a report url" do
       let(:interactive) { FactoryGirl.create(:mw_interactive, enable_learner_state: true, has_report_url: false) }
       let(:run_data) { '{"someProp": 123}' }
-      let(:interactive_run_state_1) { InteractiveRunState.create(run: run, interactive: interactive, raw_data: run_data) }
+      let(:metadata) { '{"attachments": 321}' }
+      let(:interactive_run_state_1) { InteractiveRunState.create(run: run, interactive: interactive, raw_data: run_data, metadata: metadata) }
       let(:interactive_run_state_2) { InteractiveRunState.create(run: run, interactive: interactive) }
 
       it "should update raw_data" do
         expect(interactive_run_state_2.raw_data).to eql(nil)
         interactive_run_state_2.copy_answer!(interactive_run_state_1)
         expect(interactive_run_state_2.raw_data).to eql(run_data)
+        expect(interactive_run_state_2.metadata).to eql(metadata)
       end
     end
 
     describe "when interactive has a report url" do
       let(:interactive) { FactoryGirl.create(:mw_interactive, enable_learner_state: true, has_report_url: true) }
       let(:run_data) { '{"second": 2, "lara_options": {"reporting_url": "test.com"}}' }
-      let(:interactive_run_state_1) { InteractiveRunState.create(run: run, interactive: interactive, raw_data: run_data) }
+      let(:metadata) { '{"attachments": 321}' }
+      let(:interactive_run_state_1) { InteractiveRunState.create(run: run, interactive: interactive, raw_data: run_data, metadata: metadata) }
       let(:interactive_run_state_2) { InteractiveRunState.create(run: run, interactive: interactive) }
 
       it "should NOT update raw_data" do
         expect(interactive_run_state_2.raw_data).to eql(nil)
         interactive_run_state_2.copy_answer!(interactive_run_state_1)
         expect(interactive_run_state_2.raw_data).to eql(nil)
+        expect(interactive_run_state_2.metadata).to eql(nil)
       end
     end
 
@@ -426,13 +465,15 @@ describe InteractiveRunState do
       let(:interactive) { FactoryGirl.create(:mw_interactive, enable_learner_state: true, has_report_url: false) }
       # but report_url is here anyway:
       let(:run_data) { '{"second": 2, "lara_options": {"reporting_url": "test.com"}}' }
-      let(:interactive_run_state_1) { InteractiveRunState.create(run: run, interactive: interactive, raw_data: run_data) }
+      let(:metadata) { '{"attachments": 321}' }
+      let(:interactive_run_state_1) { InteractiveRunState.create(run: run, interactive: interactive, raw_data: run_data, metadata: metadata) }
       let(:interactive_run_state_2) { InteractiveRunState.create(run: run, interactive: interactive) }
 
       it "should NOT update raw_data" do
         expect(interactive_run_state_2.raw_data).to eql(nil)
         interactive_run_state_2.copy_answer!(interactive_run_state_1)
         expect(interactive_run_state_2.raw_data).to eql(nil)
+        expect(interactive_run_state_2.metadata).to eql(nil)
       end
     end
   end
