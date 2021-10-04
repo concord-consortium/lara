@@ -268,6 +268,26 @@ describe Sequence do
       sequence_json = JSON.parse(sequence.export)
       expect(sequence_json['activities'].length).to eq(sequence.activities.count)
     end
+
+    it 'does not include the fixed width layout option' do
+      sequence_json = JSON.parse(sequence.export)
+      expect(sequence_json).not_to include('fixed_width_layout')
+    end
+
+    describe 'for activity player sequences' do
+      let (:activity_player_sequence) {
+        activity_player_sequence = FactoryGirl.create(:activity_player_sequence, sequence_opts)
+        activity_player_sequence.thumbnail_url = thumbnail_url
+        activity_player_sequence.user = user
+        activity_player_sequence.save
+        activity_player_sequence
+      }
+
+      it 'does include the fixed width layout option' do
+        sequence_json = JSON.parse(activity_player_sequence.export)
+        expect(sequence_json).to include('fixed_width_layout')
+      end
+    end
   end
 
   describe '#import' do

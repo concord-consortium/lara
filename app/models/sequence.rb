@@ -6,6 +6,7 @@ class Sequence < ActiveRecord::Base
 
   include Publishable # defines methods to publish to portals
   include PublicationStatus # defines publication status scopes and helpers
+  include FixedWidthLayout # defines fixed width options
   has_many :lightweight_activities_sequences, :order => :position, :dependent => :destroy
   has_many :lightweight_activities, :through => :lightweight_activities_sequences, :order => :position
   belongs_to :user
@@ -111,6 +112,9 @@ class Sequence < ActiveRecord::Base
     end
     sequence_json[:type] = "Sequence"
     sequence_json[:export_site] = "Lightweight Activities Runtime and Authoring"
+    if self.runtime == "Activity Player"
+      sequence_json[:fixed_width_layout] = self.fixed_width_layout
+    end
     return sequence_json.to_json
   end
 

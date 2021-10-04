@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20210903171847) do
+ActiveRecord::Schema.define(:version => 20211001193627) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "kind"
@@ -435,6 +435,7 @@ ActiveRecord::Schema.define(:version => 20210903171847) do
     t.boolean  "show_submit_button",                     :default => true
     t.string   "runtime",                                :default => "LARA"
     t.string   "background_image"
+    t.string   "fixed_width_layout",                     :default => "1100px"
   end
 
   add_index "lightweight_activities", ["changed_by_id"], :name => "index_lightweight_activities_on_changed_by_id"
@@ -688,6 +689,7 @@ ActiveRecord::Schema.define(:version => 20210903171847) do
     t.text     "last_report_service_hash"
     t.string   "runtime",                                :default => "LARA"
     t.string   "background_image"
+    t.string   "fixed_width_layout",                     :default => "1100px"
   end
 
   add_index "sequences", ["project_id"], :name => "index_sequences_on_project_id"
