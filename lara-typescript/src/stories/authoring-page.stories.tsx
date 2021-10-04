@@ -76,5 +76,3 @@ export const LaraConnectedPageStory = () => {
   );
 };
 LaraConnectedPageStory.title = "Connected to LARA ... ";
-
-

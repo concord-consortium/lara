@@ -1,12 +1,9 @@
 import * as React from "react";
 import { useState } from "react";
 import { GripLines } from "../../shared/components/icons/grip-lines";
-import { SectionItem, ISectionItemProps} from "./section-item";
-import { SectionItemPicker } from "./section-item-picker";
-import { absorbClickThen } from "../../shared/absorb-click";
-import { ICreatePageItem, ISection, ISectionItem, SectionLayouts } from "../api/api-types";
-import { DragDropContext, Droppable, Draggable, DropResult, DraggableProvided } from "react-beautiful-dnd";
-import { Add } from "../../shared/components/icons/add-icon";
+import { SectionColumn } from "./section-column";
+import { ICreatePageItem, ISection, ISectionItem, SectionColumns, SectionLayouts } from "../api/api-types";
+import { DraggableProvided } from "react-beautiful-dnd";
 
 import "./authoring-section.scss";
 
@@ -32,7 +29,7 @@ export interface ISectionProps extends ISection {
   /**
    * DraggingContext
    */
-   draggableProvided?: DraggableProvided;
+  draggableProvided?: DraggableProvided;
 
   /**
    * Optional function to update the section (elsewhere)
@@ -65,11 +62,6 @@ export interface ISectionProps extends ISection {
    */
   moveItemFunction?: (id: string) => void;
 
-  /*
-   * List of all section items available
-   */
-  allEmbeddables?: ISectionItem[];
-
   /**
    * how to add a new page item
    */
@@ -87,28 +79,21 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
   moveFunction,
   copyFunction,
   layout: initLayout = defaultLayout,
-  items: initItems = [],
+  items = [],
   collapsed: initCollapsed = false,
   title,
   updatePageItems,
   moveItemFunction,
-  allEmbeddables,
   draggableProvided,
   addPageItem
   }: ISectionProps) => {
 
-  const [items, setItems] = useState([...initItems]); // TODO: Initial Items as in layout
   const [layout, setLayout] = useState(initLayout);
   const [collapsed, setCollapsed] = useState(initCollapsed);
-  const [showAddItem, setShowAddItem] = useState(false);
 
   React.useEffect(() => {
     setLayout(initLayout);
   }, [initLayout]);
-
-  React.useEffect(() => {
-    updatePageItems?.(items, id);
-  }, [items]);
 
   const layoutChanged = (change: React.ChangeEvent<HTMLSelectElement>) => {
     const newLayout = change.target.value as SectionLayouts;
@@ -126,217 +111,73 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
     deleteFunction?.(id);
   };
 
+  // const setItems = (nextItems: ISection[]) => {
+  //   updateFunction?.({section: {id, items: nextItems}});
+  // };
+
   const handleMove = () => {
-    if (moveFunction) {
-      moveFunction(id);
-    }
+    moveFunction?.(id);
+
   };
 
   const handleCopy = () => {
     copyFunction?.(id);
   };
 
-  const sortedItems = () => {
-    return items.sort((a, b) => (a?.position || 0) - (b?.position || 0));
+  // const sortedItems = () => {
+  //   return items.sort((a, b) => (a?.position || 0) - (b?.position || 0));
+  // };
+
+  const getColumnItems = (column: SectionColumns) => {
+    if (layout === SectionLayouts.LAYOUT_FULL_WIDTH) return items;
+    return items.filter(i => i.column === column);
   };
 
-  const getColumnItems = (columnIndex: number) => {
-    let columnItems: any[] = [];
-    columnItems = items.map(i => {
-      if (i.section_col === columnIndex) {
-        return i;
+  const columnValueForIndex = (columnNumber: number): SectionColumns => {
+    // if our layout is full-width we are SectionColumns.primary
+    // if our layout is responsive, 30_70 or 40_60 and index is 0 → SectionColumns.secondary
+    // if our layout is responsive, 30_70 or 40_60 and index is >0 → SectionColumns.primary
+    // if our layout is 70_30 or 60_40 and index is 0 -> SectionColumns.primary
+    // if our layout is 70_30 or 60_40 and index is >0 -> SectionColumns.secondary
+    if (layout === SectionLayouts.LAYOUT_FULL_WIDTH) {
+      return SectionColumns.PRIMARY;
+    }
+    if (layout === SectionLayouts.LAYOUT_30_70 ||
+        layout === SectionLayouts.LAYOUT_40_60 ||
+        layout === SectionLayouts.LAYOUT_RESPONSIVE) {
+          if (columnNumber === 0) {
+            return SectionColumns.SECONDARY;
+          } else {
+            return SectionColumns.PRIMARY;
+          }
+        }
+    else { // Layout is bigger section first
+      if (columnNumber === 0) {
+        return SectionColumns.PRIMARY;
       }
-    }).filter(Boolean);
-    return columnItems;
+    }
+    return SectionColumns.SECONDARY;
   };
 
-  const addItem = (sectionCol: number) => {
+  const addItem = (column: SectionColumns) => {
     const nextId = `section-${id}-item-${items.length}`;
     const position = items.length + 1;
-    const newItem: ISectionItem = {
-      id: `${nextId}`,
+    const newItem: ICreatePageItem = {
+      // id: `${nextId}`,
       section_id: id,
-      section_col: sectionCol,
+      column,
       position,
       embeddable: "unknown",
-      title: `Item ${position} - ${Math.random().toString(36).substr(2, 9)}`
+      // title: `Item ${position} - ${Math.random().toString(36).substr(2, 9)}`
     };
-    setItems([...items, newItem]);
-  };
-
-  const swapIndexes = (array: any[], a: number, b: number) => {
-    const aItem = array[a];
-    const bItem = array[b];
-    const aPos = aItem.position;
-    const bPos = bItem.position;
-    aItem.position = bPos;
-    bItem.position = aPos;
-    array[b] = aItem;
-    array[a] = bItem;
-    return [...array];
-  };
-
-  const onDragEnd = (e: DropResult) => {
-    if (!e.destination) {
-      return;
-    }
-    let nextItems = [];
-    if (e.source.droppableId !== e.destination.droppableId) {
-      // items[e.source.index].section_col = items[e.source.index].section_col === 0 ? 1 : 0;
-      // disallow cross column reordering for now
-      return;
-    }
-    if (e.destination && e.destination.index !== e.source.index) {
-      nextItems = swapIndexes(items, e.source.index, e.destination.index);
-    }
-    if (setItems) {
-      setItems(nextItems);
-    }
+    // setItems([...items, newItem]);
+    addPageItem?.(newItem);
   };
 
   const handleMoveItem = (itemId: string) => {
     if (moveItemFunction) {
       moveItemFunction(itemId);
     }
-  };
-
-  const handleCopyItem = (itemId: string) => {
-    const item = items.find(i => i.id === itemId);
-    if (item) {
-      addItem(item.section_col || 0);
-    }
-  };
-
-  const handleDeleteItem = (itemId: string) => {
-    const nextItems: ISectionItem[] = [];
-    items.forEach(i => {
-      if (i.id !== itemId) {
-        nextItems.push(i);
-      }
-    });
-    setItems(nextItems);
-  };
-
-  const sectionColumns = () => {
-    const colOneItems = getColumnItems(0);
-    const colTwoItems = getColumnItems(1);
-    const colOneAddItemHandler = () => addItem(0);
-    const colTwoAddItemHandler = () => addItem(1);
-    return (
-      <>
-        <DragDropContext onDragEnd={onDragEnd}>
-          <div className={`edit-page-grid-container col-1 ${classNameForItem(layout, 0)}`}>
-            <Droppable droppableId="droppableCol1">
-              {(droppableProvided) => (
-                <div
-                  ref={droppableProvided.innerRef}
-                  className="edit-items-container full-row"
-                  {...droppableProvided.droppableProps}
-                >
-                  <div className="itemsContainer">
-                    { !collapsed
-                      && colOneItems
-                      && colOneItems.length > 0
-                      && colOneItems.map((element, index) => {
-                      return (
-                        <Draggable
-                          key={`col-1-item-${index}`}
-                          draggableId={`col-1-item-${index}`}
-                          index={element.position - 1}
-                        >
-                          {(draggableProvidedColOne) => (
-                            <div
-                              className="sectionItem"
-                              key={`col-1-item-inner-${index}`}
-                              {...draggableProvidedColOne.draggableProps}
-                              {...draggableProvidedColOne.dragHandleProps}
-                              ref={draggableProvidedColOne.innerRef}
-                            >
-                              <SectionItem
-                                {...element}
-                                key={element.id}
-                                moveFunction={handleMoveItem}
-                                copyFunction={handleCopyItem}
-                                deleteFunction={handleDeleteItem}
-                              />
-                            </div>
-                          )}
-                        </Draggable>
-                      );
-                    })}
-                    { droppableProvided.placeholder }
-                    <button className="smallButton" onClick={colOneAddItemHandler}>
-                      <Add height="16" width="16" /> <span className="lineAdjust">Add Item</span>
-                    </button>
-                  </div>
-                </div>
-            )}
-            </Droppable>
-          </div>
-          {layout !== "Full Width" &&
-            <div className={`edit-page-grid-container col-2 ${classNameForItem(layout, 1)}`}>
-              <Droppable droppableId="droppableCol2">
-                {(droppableProvided) => (
-                  <div
-                    ref={droppableProvided.innerRef}
-                    className="edit-items-container full-row"
-                    {...droppableProvided.droppableProps}
-                  >
-                    <div className="itemsContainer">
-                      { !collapsed
-                        && colTwoItems
-                        && colTwoItems.length > 0
-                        && colTwoItems.map((element, index) => {
-                        return (
-                          <Draggable
-                            key={`col-2-item-${index}`}
-                            draggableId={`col-2-item-${index}`}
-                            index={element.position - 1}
-                          >
-                            {(draggableProvidedColTwo) => (
-                              <div
-                                className="sectionItem"
-                                key={`col-2-item-inner-${index}`}
-                                {...draggableProvidedColTwo.draggableProps}
-                                {...draggableProvidedColTwo.dragHandleProps}
-                                ref={draggableProvidedColTwo.innerRef}
-                              >
-                                <SectionItem
-                                  {...element}
-                                  key={element.id}
-                                  moveFunction={handleMoveItem}
-                                  copyFunction={handleCopyItem}
-                                  deleteFunction={handleDeleteItem}
-                                />
-                              </div>
-                            )}
-                          </Draggable>
-                        );
-                      })}
-                      { droppableProvided.placeholder }
-                      <button className="smallButton" onClick={colTwoAddItemHandler}>
-                      <Add height="16" width="16" /> <span className="lineAdjust">Add Item</span>
-                      </button>
-                    </div>
-                  </div>
-                )}
-              </Droppable>
-            </div>
-          }
-        </DragDropContext>
-      </>
-    );
-  };
-
-  const handleToggleShowAddItem = () => setShowAddItem((prev) => !prev);
-  const handleShowAddItem = absorbClickThen(handleToggleShowAddItem);
-
-  const handleAddItem = (itemId: string) => {
-    addPageItem?.({
-      section_id: id,
-      embeddable: itemId
-    });
-    handleToggleShowAddItem();
   };
 
   const sectionClassNames = () => {
@@ -377,7 +218,31 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
           </ul>
         </div>
       </header>
-      {sectionColumns()}
+      {<SectionColumn
+        addItem={addItem}
+        addPageItem={addPageItem}
+        className={classNameForItem(layout, 0)}
+        column={columnValueForIndex(0)}
+        columnNumber={1}
+        items={getColumnItems(columnValueForIndex(0))}
+        moveFunction={handleMoveItem}
+        sectionId={id}
+        updatePageItems={updatePageItems}
+        />
+      }
+      {layout !== "Full Width" &&
+        <SectionColumn
+          addItem={addItem}
+          addPageItem={addPageItem}
+          className={classNameForItem(layout, 1)}
+          column={columnValueForIndex(1)}
+          columnNumber={2}
+          items={getColumnItems(columnValueForIndex(1))}
+          moveFunction={handleMoveItem}
+          sectionId={id}
+          updatePageItems={updatePageItems}
+        />
+      }
     </div>
   );
 };

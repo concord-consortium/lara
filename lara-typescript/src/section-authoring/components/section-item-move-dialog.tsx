@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useState } from "react";
-import { ISectionItem, ISection } from "../api/api-types";
+import { ISectionItem, ISection, SectionColumns } from "../api/api-types";
 import { Modal, ModalButtons } from "../../shared/components/modal/modal";
 import { Close } from "../../shared/components/icons/close-icon";
 import { Move } from "../../shared/components/icons/move-icon";
@@ -12,14 +12,14 @@ export interface ISectionItemMoveDialogProps {
   sections: ISection[];
   selectedPageId?: string;
   selectedSectionId?: string;
-  selectedColumn?: number;
+  selectedColumn?: SectionColumns;
   selectedPosition?: string;
   selectedOtherItemId?: string | undefined;
   moveFunction?: (
     itemId: string,
     selectedPageId: string,
     selectedSectionId: string,
-    selectedColumn: number,
+    selectedColumn: SectionColumns,
     selectedPosition: string,
     selectedOtherItemId: string
   ) => void;
@@ -31,14 +31,15 @@ export const SectionItemMoveDialog: React.FC<ISectionItemMoveDialogProps> = ({
   sections,
   selectedPageId = "0",
   selectedSectionId: initSelectedSectionId = "1",
-  selectedColumn: initSelectedColumn = 0,
-  selectedPosition = "after",
+  selectedColumn: initSelectedColumn = SectionColumns.PRIMARY,
+  selectedPosition: initSelectedPosition = "after",
   selectedOtherItemId: initSelectedOtherItemId = "0",
   moveFunction,
   closeDialogFunction
   }: ISectionItemMoveDialogProps) => {
   const [selectedSectionId, setSelectedSectionId] = useState(initSelectedSectionId);
   const [selectedColumn, setSelectedColumn] = useState(initSelectedColumn);
+  const [selectedPosition, setSelectedPosition] = useState(initSelectedPosition);
   const [selectedOtherItemId, setSelectedOtherItemId] = useState(initSelectedOtherItemId);
   const [modalVisibility, setModalVisibility] = useState(true);
 
@@ -51,17 +52,15 @@ export const SectionItemMoveDialog: React.FC<ISectionItemMoveDialogProps> = ({
   };
 
   const handleColumnChange = (change: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedColumn(parseInt(change.target.value, 10));
+    setSelectedColumn(change.target.value as SectionColumns);
   };
 
   const handlePositionChange = (change: React.ChangeEvent<HTMLSelectElement>) => {
-    selectedPosition = change.target.value;
+    setSelectedPosition(change.target.value);
   };
 
   const handleOtherItemChange = (change: React.ChangeEvent<HTMLSelectElement>) => {
-    const [sectionId, otherItemId] = change.target.value.split("--");
-    setSelectedSectionId(sectionId);
-    setSelectedOtherItemId(otherItemId);
+    setSelectedOtherItemId(change.target.value);
   };
 
   const handleCloseDialog = () => {
@@ -76,17 +75,15 @@ export const SectionItemMoveDialog: React.FC<ISectionItemMoveDialogProps> = ({
   };
 
   const columnOptions = () => {
-    let columnCount = 1;
-    const options: any = [{value: columnCount}];
+    const options: any = [{value: SectionColumns.PRIMARY}];
     if (selectedSectionId) {
       const section = sections.find(s => s.id === selectedSectionId);
       if (section?.layout !== "Full Width") {
-        ++columnCount;
-        options.push({value: columnCount});
+        options.push({value: SectionColumns.SECONDARY});
       }
     }
     return options.map((column: any, index: number) => (
-      <option key={index} value={index}>
+      <option key={index} value={column.value}>
         {column.value}
       </option>
     ));
@@ -97,7 +94,7 @@ export const SectionItemMoveDialog: React.FC<ISectionItemMoveDialogProps> = ({
     if (selectedSectionId) {
       const selectedSection = sections.find(s => s.id === selectedSectionId);
       if (selectedSection?.items) {
-        itemsList = selectedSection.items.filter(i => i.id !== item.id && i.section_col === selectedColumn);
+        itemsList = selectedSection.items.filter(i => i.id !== item.id && i.column === selectedColumn);
       }
     }
     if (itemsList.length < 1) {
@@ -105,8 +102,8 @@ export const SectionItemMoveDialog: React.FC<ISectionItemMoveDialogProps> = ({
     }
 
     return itemsList?.map((i) => (
-      <option key={i.id} value={`${i.section_id}--${i.id}`}>
-        Section {`${i.section_id}, ${i.title}`}
+      <option key={i.id} value={`${i.id}`}>
+        {i.title}
       </option>
     ));
   };

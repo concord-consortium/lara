@@ -52,6 +52,7 @@ class Api::V1::InteractivePagesController < API::APIController
     old_sections = @interactive_page.sections
     # Put them in the correct order:
     index = 1
+    new_section_ids = param_sections.map { |s| s['id'] }
     new_sections = param_sections.map do |s|
       section = Section.find(s['id'])
       position = index
@@ -62,8 +63,14 @@ class Api::V1::InteractivePagesController < API::APIController
       index = index + 1
       section
     end
-    # TBD: Remove 'unused' sections?
-    # sections.to_remove = old_sections.filter { |s| s.id != }
+
+    # Remove deleted sections:
+    old_sections.each do |section|
+      unless (new_section_ids.include?(section.id.to_s))
+        section.delete
+      end
+    end
+
     @interactive_page.sections = new_sections
     @interactive_page.save!
     render_page_sections_json
@@ -75,10 +82,28 @@ class Api::V1::InteractivePagesController < API::APIController
   end
 
   def update_section
+    authorize! :update, @interactive_page
     section_params = params['section']
+
+    return error("Missing section parameter") if section_params.nil?
+    return error("Missing section[:id] parameter") if section_params['id'].nil?
+
     section_id = section_params.delete('id')
+    new_page_items = section_params.delete('items')
     section = Section.find(section_id)
+
     section.update_attributes(section_params)
+    # Usually we will just be reordering the page_items within the section:
+    if section && new_page_items
+      new_page_items.each do |pi|
+        page_item_id = pi.delete('id')
+        page_item = PageItem.find(page_item_id)
+        if page_item
+          new_attr = { column: pi['column'], position: pi['position'] }
+          page_item.update_attributes(new_attr)
+        end
+      end
+    end
     render_page_sections_json
   end
 
@@ -97,6 +122,7 @@ class Api::V1::InteractivePagesController < API::APIController
     return error("Missing page_item[embeddable] parameter") if serializeable_id.nil?
     position = page_item_params["position"]
     position = position.to_i unless position.nil?
+    column = page_item_params["column"] || PageItem::COLUMN_PRIMARY
 
     # currently we only support library interactives, this will change later
     case serializeable_id
@@ -110,7 +136,7 @@ class Api::V1::InteractivePagesController < API::APIController
       return error("Only library interactive embeddables are currently supported")
     end
 
-    @interactive_page.add_embeddable(embeddable, position, section.id)
+    @interactive_page.add_embeddable(embeddable, position, section.id, column)
     @interactive_page.reload
 
     render_page_sections_json
@@ -187,6 +213,8 @@ class Api::V1::InteractivePagesController < API::APIController
         items: s.page_items.map do |pi|
           {
             id: pi.id.to_s,
+            column: pi.column,
+            position: pi.position,
             type: pi.embeddable_type,
             data: pi.embeddable.respond_to?(:to_interactive) ? pi.embeddable.to_interactive : pi.embeddable.to_hash
           }

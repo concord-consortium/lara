@@ -1,5 +1,5 @@
 class PageItem < ActiveRecord::Base
-  attr_accessible :section, :position, :section, :embeddable
+  attr_accessible :section, :position, :embeddable, :column
   acts_as_list :scope => :section
 
   belongs_to :section
@@ -8,6 +8,9 @@ class PageItem < ActiveRecord::Base
   has_many :primary_linked_items, :foreign_key => :primary_id, :class_name => LinkedPageItem, :dependent => :destroy
   has_many :secondary_linked_items, :foreign_key => :secondary_id, :class_name => LinkedPageItem, :dependent => :destroy
   has_one :interactive_page, through: :section
+
+  COLUMN_PRIMARY ="primary"
+  COLUMN_SECONDARY ="secondary"
 
   default_scope order('position ASC')
   def toggle_hideshow_embeddable

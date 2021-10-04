@@ -1,0 +1,15 @@
+@import "../../vars.scss";
+
+.itemsContainer {
+  background: var(--ltst-teal);
+  border-radius: 4px;
+  padding: 10px;
+}
+.sectionItem {
+  background-color: white;
+  border: 1px solid var(--teal);
+  border-radius: 3px;
+  margin-bottom: 10px;
+  min-height: 200px;
+  width: 100%;
+}

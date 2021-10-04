@@ -175,7 +175,7 @@ class InteractivePage < ActiveRecord::Base
 
   # 2021-08-05 NP: Lets continue to add embeddables this way and
   ## look for a section identifier value
-  def add_embeddable(embeddable, position = nil, section_identifier = nil)
+  def add_embeddable(embeddable, position = nil, section_identifier = nil, column = PageItem::COLUMN_PRIMARY)
 
     section_identifier ||= Section::DEFAULT_SECTION_TITLE
     # Local function to test whether section_identifier is a numeric value
@@ -195,7 +195,7 @@ class InteractivePage < ActiveRecord::Base
 
     section ||= self.sections.create(Section::DEFAULT_PARAMS)
 
-    page_item = section.page_items.create!(embeddable: embeddable, position: position)
+    page_item = section.page_items.create!(embeddable: embeddable, position: position, column: column)
 
     if (position)
       page_item.insert_at(position)

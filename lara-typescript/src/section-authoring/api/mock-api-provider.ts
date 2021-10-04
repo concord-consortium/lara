@@ -2,7 +2,7 @@
 import {
   IPage, PageId,
   APIPageGetF, APIPagesGetF,
-  IAuthoringAPIProvider, ISection, ICreatePageItem, ISectionItem
+  IAuthoringAPIProvider, ISection, ICreatePageItem, ISectionItem, SectionColumns, ISectionItemType
 } from "./api-types";
 
 let pageCounter = 0;
@@ -30,8 +30,8 @@ const makeNewPageItem = (attributes: Partial<ISectionItem>): ISectionItem => {
     id: `${++itemCounter}`,
     embeddable: attributes.embeddable,
     title: `embeddable-${itemCounter}`,
-    section_col: 0,
-    position: 0
+    column: attributes.column || SectionColumns.PRIMARY,
+    position: attributes.position || 1
   };
   return newItem;
 };
@@ -98,9 +98,9 @@ const updateSection = (args: {pageId: PageId, changes: { section: Partial<ISecti
   return Promise.reject(`cant find page ${pageId}`);
 };
 
-const createPageItem = (pageId: PageId, newPageItem: ICreatePageItem) => {
+const createPageItem = (args: {pageId: PageId, newPageItem: ICreatePageItem}) => {
+  const {newPageItem, pageId} = args;
   const sectionId = newPageItem.section_id;
-  const {embeddable, position} = newPageItem;
   const page = pages.find(p => p.id === pageId);
   if (page) {
     const section = page.sections.find(s => s.id === sectionId);
@@ -113,7 +113,24 @@ const createPageItem = (pageId: PageId, newPageItem: ICreatePageItem) => {
   return Promise.reject(`cant find page ${pageId}`);
 };
 
+const getAllEmbeddables = () => {
+  const allEmbeddables: ISectionItemType[] = [
+    {id: "1", name: "Carousel", useCount: 1, dateAdded: 1630440496},
+    {id: "2", name: "CODAP", useCount: 5, dateAdded: 1630440497},
+    {id: "3", name: "Drag & Drop", useCount: 5, dateAdded: 1630440498},
+    {id: "4", name: "Fill in the Blank", useCount: 8, dateAdded: 1630440495},
+    {id: "5", name: "iFrame Interactive", useCount: 200, dateAdded: 1630440494, isQuickAddItem: true},
+    {id: "6", name: "Multiple Choice", useCount: 300, dateAdded: 1630440493},
+    {id: "7", name: "Open Response", useCount: 400, dateAdded: 1630440492, isQuickAddItem: true},
+    {id: "8", name: "SageModeler", useCount: 3, dateAdded: 1630440499},
+    {id: "9", name: "Teacher Edition Window Shade", useCount: 4, dateAdded: 1630440490},
+    {id: "10", name: "Text Box", useCount: 500, dateAdded: 1630440491, isQuickAddItem: true}
+  ];
+  return Promise.resolve({allEmbeddables});
+};
+
 export const API: IAuthoringAPIProvider = {
   getPages, getPage, createPage, deletePage,
-  createSection, updateSections, createPageItem, updateSection
+  createSection, updateSections, createPageItem, updateSection,
+  getAllEmbeddables
 };

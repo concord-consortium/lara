@@ -61,8 +61,9 @@
     });
 
     $(document).ready(function() {
-      var params = {id: "#{@page.id}"};
+      var params = {host: window.location.origin, activityId: "#{@activity.id}"};
       var element;
+      console.log(params);
       var container = $("#sections-container")[0];
       LARA.SectionAuthoring.renderAuthoringPage(container, params);
     });

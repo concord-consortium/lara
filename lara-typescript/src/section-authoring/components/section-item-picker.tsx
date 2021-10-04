@@ -4,39 +4,35 @@ import classNames from "classnames";
 import { Modal, ModalButtons } from "../../shared/components/modal/modal";
 import { Add } from "../../shared/components/icons/add-icon";
 import { absorbClickThen } from "../../shared/absorb-click";
+import { ISectionItemType } from "../api/api-types";
 
 import "./section-item-picker.scss";
-
-export interface ISectionItem {
-  id: string;
-  name: string;
-  useCount: number;
-  dateAdded: number;
-}
+import { usePageAPI } from "../api/use-api-provider";
 
 export interface IProps {
-  quickAddItems: ISectionItem[];
-  allItems: ISectionItem[];
   onClose: () => void;
   onAdd: (id: string) => void;
 }
 
 const SectionItemButton = ({item, disabled, className, onClick}: {
-  item: ISectionItem;
+  item: ISectionItemType;
   disabled: boolean;
   className: string;
-  onClick: (item: ISectionItem) => void;
+  onClick: (item: ISectionItemType) => void;
 }) => {
   const handleItemClick = absorbClickThen(() => onClick(item));
   return <button disabled={disabled} className={className} onClick={handleItemClick}>{item.name}</button>;
 };
 
 export const SectionItemPicker: React.FC<IProps> = (props) => {
-  const { allItems, quickAddItems, onClose, onAdd } = props;
+  const api = usePageAPI();
+  const allItems = api.getAllEmbeddables.data;
+  const quickAddItems = api.getAllEmbeddables.data?.allEmbeddables.filter(e => e.isQuickAddItem);
+  const { onClose, onAdd } = props;
   const modalIsVisible = true;
   const [itemSelected, setItemSelected] = useState(false);
-  const [currentSelectedItem, setCurrentSelectedItem] = useState<ISectionItem|undefined>();
-  const [allItemsList, setAllItemsList] = useState(allItems);
+  const [currentSelectedItem, setCurrentSelectedItem] = useState<ISectionItemType|undefined>();
+  const [allItemsList, setAllItemsList] = useState(allItems?.allEmbeddables || []);
   const [isSearching, setIsSearching] = useState(false);
   const [modalVisibility, setModalVisibility] = useState(modalIsVisible);
 
@@ -45,7 +41,9 @@ export const SectionItemPicker: React.FC<IProps> = (props) => {
   }, [allItems]);
 
   const sortItems = (sortType: string) => {
-    const allItemsSorted = [...allItems];
+    if (!allItems?.allEmbeddables) { return []; }
+
+    const allItemsSorted = [...allItems?.allEmbeddables];
     if (sortType === "popularity") {
       allItemsSorted.sort((a, b) => {
         return b.useCount - a.useCount;
@@ -80,7 +78,7 @@ export const SectionItemPicker: React.FC<IProps> = (props) => {
 
   const handleListSort = (event: React.ChangeEvent<HTMLSelectElement>) => sortItems(event.target.value);
 
-  const handleItemClick = (item: ISectionItem) => {
+  const handleItemClick = (item: ISectionItemType) => {
     setItemSelected(!itemSelected);
     if (currentSelectedItem !== item) {
       setCurrentSelectedItem(item);
@@ -92,9 +90,9 @@ export const SectionItemPicker: React.FC<IProps> = (props) => {
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setIsSearching(true);
     const searchString = event.target.value;
-    const matchingItems: ISectionItem[] = [];
+    const matchingItems: ISectionItemType[] = [];
     if (searchString !== "") {
-      allItems.forEach((item) => {
+      allItemsList.forEach((item) => {
         const regex = new RegExp(searchString, "i");
         if (item.name.match(regex)) {
           matchingItems.push(item);
@@ -102,7 +100,7 @@ export const SectionItemPicker: React.FC<IProps> = (props) => {
       });
       setAllItemsList(matchingItems);
     } else {
-      setAllItemsList(allItems);
+      setAllItemsList(allItems?.allEmbeddables || []);
     }
 
     setTimeout(() => { setIsSearching(false); }, 1000);
@@ -158,12 +156,16 @@ export const SectionItemPicker: React.FC<IProps> = (props) => {
   ];
 
   return (
-    <Modal title="Choose Assessment Item" visibility={modalVisibility} width={600}>
+    <Modal
+      closeFunction={handleCloseButtonClick}
+      title="Choose Assessment Item"
+      visibility={modalVisibility} width={600}
+    >
       <div className="sectionItemPicker">
         <div id="quickAddMenu">
           <h2>Quick-Add Items</h2>
           <ul>
-            {quickAddItems.map((item, index) => {
+            {quickAddItems?.map((item, index) => {
               const isSelectedItem = currentSelectedItem === item;
               const itemClass = setItemClasses(isSelectedItem);
               const itemDisabled = itemSelected && !isSelectedItem ? true : false;

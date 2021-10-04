@@ -9,11 +9,7 @@ const renderAuthoringSection = (root: HTMLElement, props: ISectionProps) => {
 };
 
 const renderAuthoringPage = (root: HTMLElement, props: IPageProps) => {
-  const queryClient = new QueryClient();
-  const App =
-    <QueryClientProvider client={queryClient}>
-      <QueryBoundPage {...props} />
-    </QueryClientProvider>;
+  const App = <QueryBoundPage {...props} />;
   return ReactDOM.render(App, root);
 };
 

@@ -1,15 +1,16 @@
 import * as React from "react";
 import { useState } from "react";
 import { PageSettingsDialog } from "../../page-settings/components/page-settings-dialog";
-import { AuthoringSection, ISectionProps } from "./authoring-section";
+import { AuthoringSection } from "./authoring-section";
 import { SectionMoveDialog } from "./section-move-dialog";
-import { ICreatePageItem, IPage, ISection, ISectionItem} from "../api/api-types";
+import { ICreatePageItem, IPage, ISection, ISectionItem, ISectionItemType, SectionColumns } from "../api/api-types";
 import { SectionItemMoveDialog } from "./section-item-move-dialog";
 import { DragDropContext, Droppable, Draggable, DropResult } from "react-beautiful-dnd";
 import { Add } from "../../shared/components/icons/add-icon";
 import { Cog } from "../../shared/components/icons/cog-icon";
 
 import "./authoring-page.scss";
+import { usePageAPI } from "../api/use-api-provider";
 
 export interface IPageProps extends IPage {
 
@@ -66,7 +67,7 @@ export interface IPageProps extends IPage {
   /*
    * List of all section items available
    */
-  allEmbeddables?: ISectionItem[];
+  allEmbeddables?: ISectionItemType[];
 
   /**
    * how to add a new page item
@@ -86,7 +87,6 @@ export const AuthoringPage: React.FC<IPageProps> = ({
   changeSection,
   setSections,
   sectionToMove: initSectionToMove,
-  items: initItems = [] as ISectionItem[],
   itemToMove: initItemToMove,
   allEmbeddables: allEmbeddables,
   addPageItem,
@@ -104,7 +104,6 @@ export const AuthoringPage: React.FC<IPageProps> = ({
   const [pageHasTESidebar, setPageHasTESidebar] = useState(hasTESidebar);
   const [sectionToMove, setSectionToMove] = useState(initSectionToMove);
   const [itemToMove, setItemToMove] = useState(initItemToMove);
-  const [items, setItems] = useState([...initItems]);
   const [showSettings, setShowSettings] = useState(isNew);
 
   const updateSettings = (
@@ -124,18 +123,10 @@ export const AuthoringPage: React.FC<IPageProps> = ({
     setShowSettings(false);
   };
 
-  const updateSectionItems = (newItems: ISectionItem[], sectionId: string) => {
-    const sectionIndex = sections.findIndex(i => i.id === sectionId);
-    sections[sectionIndex].items = newItems;
-    const updatedItems = [] as ISectionItem[];
-    sections.forEach((s) => {
-      if (s.items) {
-        s.items.forEach((i) => {
-          updatedItems.push(i);
-        });
-      }
-    });
-    setItems(updatedItems);
+  const getItems = () => {
+    const sectionItems: ISectionItem[][] = sections.map(s => s.items || []) || [];
+    // To flatten the nested array of ISectionItems
+    return [].concat.apply([], sectionItems) as ISectionItem[];
   };
 
   /*
@@ -239,7 +230,7 @@ export const AuthoringPage: React.FC<IPageProps> = ({
   };
 
   const handleMoveItemInit = (itemId: string) => {
-    const item = items.find(i => i.id === itemId);
+    const item = getItems().find(i => i.id === itemId);
     if (item) {
       setItemToMove(item);
     }
@@ -249,35 +240,41 @@ export const AuthoringPage: React.FC<IPageProps> = ({
     itemId: string,
     selectedPageId: string,
     selectedSectionId: string,
-    selectedColumn: number,
+    selectedColumn: SectionColumns,
     selectedPosition: string,
     selectedOtherItemId: string
     ) => {
+    const items = getItems();
     const itemIndex = items.findIndex(i => i.id === itemId);
     const item = items[itemIndex];
-    const otherItemIndex = items.findIndex(i => (i.id === selectedOtherItemId && i.id === selectedSectionId));
+    const otherItemIndex = items.findIndex(i => (i.id === selectedOtherItemId));
     const otherItem = items[otherItemIndex];
-    item.id = selectedSectionId;
-    item.section_col = selectedColumn;
-    item.position = otherItem ? otherItem.position : 1;
+    const targetSection = sections.find(s => s.id === selectedSectionId);
+    item.column = selectedColumn;
+    item.position = otherItem && otherItem.position
+                      ? selectedPosition === "after"
+                        ? otherItem.position + 1
+                        : otherItem.position
+                      : 1;
     const newIndex = otherItemIndex
                        ? selectedPosition === "after"
                          ? otherItemIndex + 1
-                         : otherItemIndex - 1
+                         : otherItemIndex
                        : 0;
-    const updatedItems = items;
-    updatedItems.splice(itemIndex, 1);
-    updatedItems.splice(newIndex, 0, item);
+    const updatedItems = targetSection?.items;
+    updatedItems?.splice(itemIndex, 1);
+    updatedItems?.splice(newIndex, 0, item);
     let sectionItemsCount = 0;
-    updatedItems.forEach((i, index) => {
-      if (otherItem && i.id === otherItem.id) {
-        updatedItems[index].position = ++sectionItemsCount;
+    updatedItems?.forEach((i, index) => {
+      sectionItemsCount++;
+      if (index > newIndex) {
+        updatedItems[index].position = sectionItemsCount;
       }
     });
-    setItems(updatedItems);
-    sections.forEach((s, index) => {
-      sections[index].items = items.filter(i => i.id === s.id);
-    });
+    // setItems(updatedItems);
+    if (targetSection) {
+      targetSection.items = updatedItems;
+    }
     if (setSections) {
       setSections({ id, sections });
     }
@@ -322,10 +319,9 @@ export const AuthoringPage: React.FC<IPageProps> = ({
                             moveFunction={handleMoveSectionInit}
                             deleteFunction={handleDelete}
                             copyFunction={handleCopy}
-                            allEmbeddables={allEmbeddables}
                             addPageItem={addPageItem}
                             moveItemFunction={handleMoveItemInit}
-                            updatePageItems={updateSectionItems} />
+                          />
                         </div>
                       )
                   }
@@ -370,4 +366,43 @@ export const AuthoringPage: React.FC<IPageProps> = ({
       }
     </>
   );
+};
+
+export const AuthoringPageUsingAPI = () => {
+  const api = usePageAPI();
+  const pages = api.getPages.data;
+  if (pages) {
+    // TODO: we will want to rebind this when we support navigation
+    const currentPage = pages[0];
+
+    const addSection = () => api.addSectionMutation.mutate(currentPage.id);
+
+    const setSections = (pageData: {id: string, sections: ISection[]}) => {
+      api.updateSections.mutate(pageData);
+    };
+
+    const changeSection = (changes: {
+      section: Partial<ISection>,
+      sectionID: string}) => api.updateSection.mutate({pageId: currentPage.id, changes});
+
+    const addPageItem = (pageItem: ICreatePageItem) =>
+      api.createPageItem.mutate({pageId: currentPage.id, newPageItem: pageItem});
+
+    return (
+      <AuthoringPage
+        sections={currentPage?.sections}
+        addSection={addSection }
+        setSections={setSections}
+        id={currentPage.id}
+        changeSection={changeSection}
+        addPageItem={addPageItem}
+        // setPageItems={setPageItems}
+      />
+    );
+  }
+  else {
+    return (
+      <div>loading ...</div>
+    );
+  }
 };

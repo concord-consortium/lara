@@ -13,7 +13,7 @@ export interface ISectionItemProps {
   /**
    * Record Type
    */
-   type: string;
+   type?: string;
 
   /**
    * Optional function to change the item
@@ -36,19 +36,9 @@ export interface ISectionItemProps {
   deleteFunction?: (id: string) => void;
 
   /**
-   * Section the item belongs in
-   */
-  section_id: string;
-
-  /**
-   * Section column item belongs in
-   */
-  section_col: number;
-
-  /**
    * Display order within the section
    */
-  position: number;
+  position?: number;
 
   /**
    * Name of the section will be displayed in the header
@@ -64,12 +54,16 @@ export const SectionItem: React.FC<ISectionItemProps> = ({
   moveFunction,
   copyFunction,
   deleteFunction,
-  position,
-  section_col,
-  section_id,
   type,
+  position,
   title
   }: ISectionItemProps) => {
+
+  const renderTitle = () => (
+    <>
+      {(title || "").length > 0 ? title : <i>Untitled</i>}
+    </>
+  );
 
   const toggleCollapse = () => {
     return;
@@ -96,7 +90,7 @@ export const SectionItem: React.FC<ISectionItemProps> = ({
       <header className="sectionItemMenu">
         <div className="menuStart">
           <GripLines />
-          <h4>{id} - {title}</h4>
+          <h4>{id} - {title} - {renderTitle()}</h4>
         </div>
         <div className="menuEnd">
           <ul>

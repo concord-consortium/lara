@@ -12,17 +12,30 @@ export enum SectionLayouts {
   LAYOUT_RESPONSIVE = "Responsive",
 }
 
+export enum SectionColumns {
+  PRIMARY =  "primary",
+  SECONDARY =  "secondary"
+}
 export interface ISectionItem {
   id: ItemId;
   title?: string;
   embeddable?: string;
-  section_col?: number;
+  column?: SectionColumns;
   section_id?: string;
   position?: number;
 }
 
+export interface ISectionItemType {
+  id: string;
+  name: string;
+  useCount: number;
+  dateAdded: number;
+  isQuickAddItem?: boolean;
+}
+
 export interface ICreatePageItem {
   section_id: string;
+  column: SectionColumns;
   embeddable: string;
   position?: number;
 }
@@ -85,6 +98,11 @@ export interface IPage {
   id: string;
 
   /**
+   * Indicates if this is a newly created page
+   */
+  isNew?: boolean;
+
+  /**
    * Optional title for the page
    */
   title?: string;
@@ -106,7 +124,6 @@ export interface IPage {
   items?: ISectionItem[];
 }
 
-
 // API Call Signatures
 export type APIPagesGetF = () => Promise<IPage[]>;
 export type APIPageGetF = (id: PageId) => Promise<IPage | null>;
@@ -117,7 +134,7 @@ export type APISectionCreateF = (pageId: PageId) => Promise<IPage>;
 export type APISectionsUpdateF = (nextPage: IPage) => Promise<IPage>;
 export type APISectionUpdateF = (args: {pageId: PageId, changes: { section: Partial<ISection>}}) => Promise<IPage>;
 
-export type APIPageItemCreateF = (pageId: PageId, newPageItem: ICreatePageItem) => Promise<IPage>;
+export type APIPageItemCreateF = (args: {pageId: PageId, newPageItem: ICreatePageItem}) => Promise<IPage>;
 
 /**
  * The implementation providing the API has to conform to this provider API
@@ -133,4 +150,6 @@ export interface IAuthoringAPIProvider {
   updateSection: APISectionUpdateF;
 
   createPageItem: APIPageItemCreateF;
+
+  getAllEmbeddables: () => Promise<{allEmbeddables: ISectionItemType[]}>;
 }
