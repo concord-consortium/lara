@@ -2,16 +2,26 @@ import * as React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { AuthoringSection, ISectionProps } from "../section-authoring/components/authoring-section";
 import { SectionLayouts } from "../section-authoring/api/api-types";
+import { APIContainer } from "../section-authoring/api/api-container";
 
 export default {
   title: "Authoring Section",
   component: AuthoringSection,
   argTypes: {
-    backgroundColor: { control: "color" },
+    layout: {
+      options: SectionLayouts,
+      control: { type: 'radio' }
+    }
   },
 } as ComponentMeta<typeof AuthoringSection>;
 
-const Template: ComponentStory<typeof AuthoringSection> = (args: ISectionProps) => <AuthoringSection {...args} />;
+const Template: ComponentStory<typeof AuthoringSection> = (args: ISectionProps) =>  {
+  return(
+    <APIContainer>
+      <AuthoringSection {...args} />
+    </APIContainer>
+  );
+};
 
 export const _30_70 = Template.bind({});
 _30_70.args  = {
@@ -46,4 +56,11 @@ FullWidth.args = {
   id: "1",
   interactive_page_id: "2",
   layout: SectionLayouts.LAYOUT_FULL_WIDTH
+};
+
+export const Responsive = Template.bind({});
+FullWidth.args = {
+  id: "1",
+  interactive_page_id: "2",
+  layout: SectionLayouts.LAYOUT_RESPONSIVE
 };

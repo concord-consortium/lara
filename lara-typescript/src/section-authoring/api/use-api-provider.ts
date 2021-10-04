@@ -46,7 +46,6 @@ export const usePageAPI = () => {
   // After we move or delete a section item, we call updateSectionItems
   const updateSectionItems = (args: {sectionId: string, newItems: ISectionItem[], column?: SectionColumns}) => {
     const { sectionId, newItems, column } = args;
-    // TODO: Get the correct page
     if (getPages.data) {
       const page = getPages.data[currentPageIndex];
       const section = page.sections.find(i => i.id === sectionId);
