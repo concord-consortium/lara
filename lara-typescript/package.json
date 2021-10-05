@@ -111,6 +111,7 @@
     "react-dom": "^16.14.0",
     "react-test-renderer": "^16.14.0",
     "resize-observer-polyfill": "^1.5.1",
+    "rimraf": "^3.0.2",
     "rollup": "^2.53.2",
     "rollup-plugin-dts": "^3.0.2",
     "sass-loader": "^10.2.0",
