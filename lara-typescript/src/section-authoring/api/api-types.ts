@@ -135,6 +135,7 @@ export type APISectionsUpdateF = (nextPage: IPage) => Promise<IPage>;
 export type APISectionUpdateF = (args: {pageId: PageId, changes: { section: Partial<ISection>}}) => Promise<IPage>;
 
 export type APIPageItemCreateF = (args: {pageId: PageId, newPageItem: ICreatePageItem}) => Promise<IPage>;
+export type APIPageItemDeleteF = (args: {pageId: PageId, pageItemId: ItemId}) => Promise<IPage>;
 
 /**
  * The implementation providing the API has to conform to this provider API
@@ -150,6 +151,7 @@ export interface IAuthoringAPIProvider {
   updateSection: APISectionUpdateF;
 
   createPageItem: APIPageItemCreateF;
+  deletePageItem: APIPageItemDeleteF;
 
   getAllEmbeddables: () => Promise<{allEmbeddables: ISectionItemType[]}>;
 }

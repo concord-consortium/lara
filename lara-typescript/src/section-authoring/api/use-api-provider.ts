@@ -2,7 +2,10 @@ import * as React from "react";
 import { useContext } from "react";
 import { useState } from "react";
 import {useMutation, useQuery, useQueryClient} from "react-query";
-import { IAuthoringAPIProvider, ICreatePageItem, IPage, ISection, ISectionItem, ISectionItemType, SectionColumns } from "./api-types";
+import {
+    IAuthoringAPIProvider, ICreatePageItem, IPage, ISection, ISectionItem,
+    ISectionItemType, ItemId, SectionColumns
+} from "./api-types";
 import { API as DEFAULT_API } from "./mock-api-provider";
 
 const PAGES_CACHE_KEY = "pages";
@@ -34,6 +37,17 @@ export const usePageAPI = () => {
     <IPage, Error, {pageId: string, newPageItem: ICreatePageItem}>
     (provider.createPageItem, mutationsOpts);
 
+  const deletePageItemMutation = useMutation
+    <IPage, Error, {pageId: string, pageItemId: ItemId}>
+    (provider.deletePageItem, mutationsOpts);
+
+  const deletePageItem = (pageItemId: ItemId) => {
+    if (getPages.data) {
+      const page = getPages.data[currentPageIndex];
+      deletePageItemMutation.mutate({pageId: page.id, pageItemId});
+    }
+  };
+
   const getAllEmbeddables = useQuery
     <{allEmbeddables: ISectionItemType[]}, Error>
     (SECTION_ITEM_TYPES_KEY, provider.getAllEmbeddables);
@@ -63,7 +77,7 @@ export const usePageAPI = () => {
   return {
     getPages, addPageMutation, deletePageMutation,
     addSectionMutation, updateSection, updateSections,
-    createPageItem,
+    createPageItem, deletePageItem,
     getAllEmbeddables, updateSectionItems
   };
 };

@@ -195,7 +195,7 @@ LightweightStandalone::Application.routes.draw do
       match 'get_portal_jwt(/:run_id)' => 'jwt#get_portal_jwt', :as => 'get_portal_jwt', :via => 'post'
       match 'get_interactive_list/:id' => 'interactive_pages#get_interactive_list', :as => 'get_interactive_list', :via => 'get'
 
-      # React authoring related routes. ()
+      # New Section (React) authoring routes:
       match 'get_page_sections/:id' => 'interactive_pages#get_sections', :as => 'get_page_sections', :via => 'get'
       # This will handle the delete case too ...
       match 'set_page_sections/:id' => 'interactive_pages#set_sections', :as => 'set_page_sections', :via => 'put'
@@ -203,6 +203,8 @@ LightweightStandalone::Application.routes.draw do
       match 'update_page_section/:id' => 'interactive_pages#update_section', :as => 'update_page_section', :via => 'post'
 
       match 'create_page_item/:id' => 'interactive_pages#create_page_item', :as => 'create_page_item', :via => 'post'
+      match 'delete_page_item/:id' => 'interactive_pages#delete_page_item', :as => 'delete_page_item', :via => 'post'
+
       match 'get_library_interactives_list' => 'interactive_pages#get_library_interactives_list', :as => 'get_library_interactives_list', :via => 'get'
 
       match 'get_pages/:activity_id' => 'interactive_pages#get_pages', :as => 'get_page_list', :via => 'get'
