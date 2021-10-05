@@ -118,17 +118,17 @@ const deletePageItem: APIPageItemDeleteF = (args: {pageId: PageId, pageItemId: I
   const { pageId, pageItemId } = args;
   const page = pages.find(p => p.id === pageId);
   if (page) {
-    let replaceMentSection: ISection | null = null;
+    let replacementSection: ISection | null = null;
     page?.sections.forEach(s => {
       s.items?.forEach(i => {
         if (i.id === pageItemId) {
-          replaceMentSection = s;
+          replacementSection = s;
         }
       });
     });
 
-    if (replaceMentSection) {
-      (replaceMentSection as ISection).items = (replaceMentSection as ISection).items?.filter(i => i.id !== pageItemId);
+    if (replacementSection) {
+      (replacementSection as ISection).items = (replacementSection as ISection).items?.filter(i => i.id !== pageItemId);
     }
     return Promise.resolve(page);
   }
