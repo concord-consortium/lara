@@ -53,11 +53,6 @@ export interface ISectionProps extends ISection {
   copyFunction?: (id: string) => void;
 
   /**
-   * Optional function to delete the section (elsewhere)
-   */
-  updatePageItems?: (items: ISectionItem[], sectionId: string) => void;
-
-  /**
    * Function to move an item
    */
   moveItemFunction?: (id: string) => void;
@@ -82,7 +77,6 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
   items = [],
   collapsed: initCollapsed = false,
   title,
-  updatePageItems,
   moveItemFunction,
   draggableProvided,
   addPageItem
@@ -227,7 +221,6 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
         items={getColumnItems(columnValueForIndex(0))}
         moveFunction={handleMoveItem}
         sectionId={id}
-        updatePageItems={updatePageItems}
         />
       }
       {layout !== "Full Width" &&
@@ -240,7 +233,6 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
           items={getColumnItems(columnValueForIndex(1))}
           moveFunction={handleMoveItem}
           sectionId={id}
-          updatePageItems={updatePageItems}
         />
       }
     </div>

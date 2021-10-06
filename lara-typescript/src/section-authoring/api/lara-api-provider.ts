@@ -1,11 +1,12 @@
 import {
   IAuthoringAPIProvider,
-  IPage, PageId, ISection, ICreatePageItem,
+  IPage, PageId, ISection, ICreatePageItem, ItemId,
   APIPageGetF, APIPagesGetF,
   APIPageCreateF, APIPageDeleteF,
   APISectionCreateF, APISectionsUpdateF, APISectionUpdateF,
   APIPageItemCreateF,
-  ILibraryInteractiveResponse
+  ILibraryInteractiveResponse,
+  APIPageItemDeleteF
 } from "./api-types";
 
 const APIBase = "/api/v1";
@@ -25,6 +26,7 @@ export const getLaraAuthoringAPI =
   const createPageSectionUrl = (pageId: PageId) => `${prefix}/create_page_section/${pageId}.json`;
   const updateSectionUrl = (pageId: PageId) => `${prefix}/update_page_section/${pageId}.json`;
   const createPageItemUrl = (pageId: PageId) => `${prefix}/create_page_item/${pageId}.json`;
+  const deletePageItemUrl = (pageId: PageId) => `${prefix}/delete_page_item/${pageId}.json`;
   const libraryInteractivesUrl = `${prefix}/get_library_interactives_list.json`;
 
   interface ISendToLaraParams {
@@ -86,6 +88,12 @@ export const getLaraAuthoringAPI =
     return sendToLara({url: createPageItemUrl(args.pageId), method: "POST", body});
   };
 
+  const deletePageItem: APIPageItemDeleteF = (args: {pageId: PageId, pageItemId: ItemId}) => {
+    const { pageId, pageItemId } = args;
+    const body = { page_item_id: pageItemId };
+    return sendToLara({url: deletePageItemUrl(pageId), method: "POST", body});
+  };
+
   const getAllEmbeddables = () => {
     return sendToLara({url: libraryInteractivesUrl})
       .then( (json: ILibraryInteractiveResponse) => {
@@ -109,7 +117,8 @@ export const getLaraAuthoringAPI =
 
   return {
     getPages, getPage, createPage, deletePage,
-    createSection, updateSections, createPageItem, updateSection,
+    createSection, updateSections, updateSection,
+    createPageItem, deletePageItem,
     getAllEmbeddables
   };
 };

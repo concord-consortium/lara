@@ -90,28 +90,22 @@ class Api::V1::InteractivePagesController < API::APIController
 
     section_id = section_params.delete('id')
     section = Section.find(section_id)
-    old_page_items = section.page_items
     new_page_items = section_params.delete('items')
-    new_page_item_ids = new_page_items.map { |i| i['id'] }
-
     section.update_attributes(section_params)
 
-    # Usually we will just be reordering the page_items within the section:
-    if section && new_page_items
-      new_page_items.each do |pi|
-        page_item_id = pi.delete('id')
-        page_item = PageItem.find(page_item_id)
-        if page_item
-          new_attr = { column: pi['column'], position: pi['position'] }
-          page_item.update_attributes(new_attr)
+    # Its OK for update_section to come in without items...
+    if (new_page_items.present?)
+      new_page_item_ids = new_page_items.map { |i| i['id'] }
+      # Usually we will just be reordering the page_items within the section:
+      if section && new_page_items
+        new_page_items.each do |pi|
+          page_item_id = pi.delete('id')
+          page_item = PageItem.find(page_item_id)
+          if page_item
+            new_attr = { column: pi['column'], position: pi['position'] }
+            page_item.update_attributes(new_attr)
+          end
         end
-      end
-    end
-
-    # Sometimes we need to delete items too:
-    old_page_items.each do | item |
-      unless (new_page_item_ids.include?(item.id.to_s))
-        item.delete
       end
     end
 
@@ -149,6 +143,25 @@ class Api::V1::InteractivePagesController < API::APIController
 
     @interactive_page.add_embeddable(embeddable, position, section.id, column)
     @interactive_page.reload
+
+    render_page_sections_json
+  end
+
+  def delete_page_item
+    authorize! :update, @interactive_page
+
+    page_item_id = params["page_item_id"]
+    return error("Missing page_item_id parameter") if page_item_id.nil?
+    changed = false
+
+    # The page_item must be in the current page:
+    @interactive_page.page_items.each do |page_item|
+      if page_item.id.to_s == page_item_id
+        changed = true
+        page_item.destroy
+      end
+    end
+    @interactive_page.reload if changed
 
     render_page_sections_json
   end

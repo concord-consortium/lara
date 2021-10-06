@@ -416,25 +416,19 @@ describe Api::V1::InteractivePagesController do
     end
 
     describe 'deleting items' do
-      let(:new_items) do
-        # There are three page_items, we just take the first two to post back
-        # This should result in the first one being deleted.
-        items.last(2).map { |i| { id: i.id, position: i.position, column: i.column } }
-      end
+      let(:item_to_delete) { items.last }
 
       let(:update_request) do
-        { id: page.id, section: { id: section.id, items: new_items } }
+        { id: page.id, page_item_id: item_to_delete.id }
       end
 
       describe 'success' do
         it 'deletes missing items not present in the items post request' do
-          xhr :post, 'update_section', update_request
+          xhr :post, 'delete_page_item', update_request
           expect(response.status).to eq(200)
           section.reload
           expect(section.page_items.length).to eq(2)
-          new_items.map { |i| i[:id] }.each do |included_id|
-            expect(section.page_items.map{ |i| i.id }).to include(included_id)
-          end
+          expect(section.page_items.map{ |i| i.id }).not_to include(item_to_delete.id)
         end
       end
 
