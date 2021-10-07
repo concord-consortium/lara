@@ -32700,7 +32700,7 @@ var RuntimeComponent = function (_a) {
             React.createElement("div", { className: "padded monospace pre" }, JSON.stringify(initMessage, null, 2))),
         React.createElement("fieldset", null,
             React.createElement("legend", null, "Interactive State"),
-            React.createElement("textarea", { className: "textarea", value: interactiveState, onChange: handleInteractiveStateValueChange }))));
+            React.createElement("textarea", { className: "textarea", value: interactiveState || "", onChange: handleInteractiveStateValueChange }))));
 };
 exports.RuntimeComponent = RuntimeComponent;
 

@@ -23,7 +23,7 @@ export const RuntimeComponent: React.FC<Props> = ({initMessage}) => {
         <legend>Interactive State</legend>
         <textarea
           className="textarea"
-          value={interactiveState}
+          value={interactiveState || ""}
           onChange={handleInteractiveStateValueChange}
         />
       </fieldset>
