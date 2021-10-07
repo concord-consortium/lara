@@ -4,19 +4,23 @@ import { useState } from "react";
 import {useMutation, useQuery, useQueryClient} from "react-query";
 import {
     IAuthoringAPIProvider, ICreatePageItem, IPage, ISection, ISectionItem,
-    ISectionItemType, ItemId, SectionColumns
+    ISectionItemType, ItemId, SectionColumns, SectionId
 } from "./api-types";
 import { API as DEFAULT_API } from "./mock-api-provider";
+import { UserInterfaceContext, useUserInterface } from "./use-user-interface-context";
 
 const PAGES_CACHE_KEY = "pages";
 const SECTION_ITEM_TYPES_KEY = "SectionItemTypes";
+
 // Use this in a parent component to setup API context:
 // <APIProviderContext.Provider value={someAPIProvider} />
-//
 export const APIContext  = React.createContext<IAuthoringAPIProvider>(DEFAULT_API);
 
 export const usePageAPI = () => {
-  const [currentPageIndex, setCurrentPageIndex] = useState(0);
+
+  // TODO use user-interface-context:
+  const { userInterface } = useContext(UserInterfaceContext);
+
   const provider: IAuthoringAPIProvider = useContext(APIContext);
   const client = useQueryClient(); // Get the context from our container.
   const mutationsOpts = {
@@ -32,7 +36,10 @@ export const usePageAPI = () => {
   const updateSection = useMutation<IPage, Error, {pageId: string, changes: {section: Partial<ISection> }}>
     (provider.updateSection, mutationsOpts);
 
-  const updateSections = useMutation<IPage, Error, IPage>(provider.updateSections, mutationsOpts);
+  const updateSectionsMutation = useMutation<IPage, Error, IPage>(provider.updateSections, mutationsOpts);
+
+  const updateSections = (nextPage: IPage) => updateSectionsMutation.mutate(nextPage);
+
   const createPageItem = useMutation
     <IPage, Error, {pageId: string, newPageItem: ICreatePageItem}>
     (provider.createPageItem, mutationsOpts);
@@ -43,7 +50,7 @@ export const usePageAPI = () => {
 
   const deletePageItem = (pageItemId: ItemId) => {
     if (getPages.data) {
-      const page = getPages.data[currentPageIndex];
+      const page = getPages.data[userInterface.currentPageIndex];
       deletePageItemMutation.mutate({pageId: page.id, pageItemId});
     }
   };
@@ -52,16 +59,60 @@ export const usePageAPI = () => {
     <{allEmbeddables: ISectionItemType[]}, Error>
     (SECTION_ITEM_TYPES_KEY, provider.getAllEmbeddables);
 
-  // const moveItem(oldSectionID, newSectionID) {
-  //   updateSectionItems(fromSectionID, {items: [previous value minus moved item]} )
-  //   updateSectionItems(roSectionID,   {items: [previous value plus moved item] } )
-  // }
+  const getPage =  () => {
+    if (getPages.data) {
+      return getPages.data[userInterface.currentPageIndex];
+    }
+    return null;
+  };
+
+  const getSections = () => {
+    const page = getPage();
+    if (!page) return [];
+    return page.sections;
+  };
+
+  const getSection = (id: SectionId) => {
+    return getSections().find(s => s.id === id);
+  };
+
+  const moveSection = (
+    sectionId: string,
+    selectedPageId: string,
+    relativePosition: "before" | "after",
+    selectedOtherSectionId: string
+    ) => {
+
+    const section = getSection(sectionId);
+    if (!section) return;
+    const sections = getSections();
+    const sectionIndex = sections.findIndex(s => s.id === sectionId);
+    const otherSectionIndex = sections.findIndex(s => s.id === selectedOtherSectionId);
+    const otherSection = getSections()[otherSectionIndex];
+    const newIndex = otherSectionIndex
+                        ? relativePosition === "after"
+                          ? otherSectionIndex + 1
+                          : otherSectionIndex - 1
+                        : 0;
+    const updatedSections = getSections();
+    updatedSections.splice(sectionIndex, 1);
+    updatedSections.splice(newIndex, 0, section);
+    let sectionsCount = 0;
+    updatedSections.forEach((s, index) => {
+      if (otherSection) {
+        updatedSections[index].position = ++sectionsCount;
+      }
+    });
+    if (updateSections && updatedSections) {
+      updateSections({id: selectedPageId, sections: updatedSections});
+    }
+  };
 
   // After we move or delete a section item, we call updateSectionItems
   const updateSectionItems = (args: {sectionId: string, newItems: ISectionItem[], column?: SectionColumns}) => {
     const { sectionId, newItems, column } = args;
     if (getPages.data) {
-      const page = getPages.data[currentPageIndex];
+      const page = getPages.data[userInterface.currentPageIndex];
       const section = page.sections.find(i => i.id === sectionId);
       if (section === undefined) return;
       if (column && section.items) {
@@ -76,7 +127,7 @@ export const usePageAPI = () => {
 
   return {
     getPages, addPageMutation, deletePageMutation,
-    addSectionMutation, updateSection, updateSections,
+    addSectionMutation, updateSection, moveSection, updateSections,
     createPageItem, deletePageItem,
     getAllEmbeddables, updateSectionItems
   };

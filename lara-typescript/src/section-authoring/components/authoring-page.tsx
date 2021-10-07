@@ -11,6 +11,7 @@ import { Cog } from "../../shared/components/icons/cog-icon";
 
 import "./authoring-page.scss";
 import { usePageAPI } from "../api/use-api-provider";
+import { UserInterfaceContext, useUserInterface } from "../api/use-user-interface-context";
 
 export interface IPageProps extends IPage {
 
@@ -52,7 +53,7 @@ export interface IPageProps extends IPage {
   /**
    * Move a section
    */
-  sectionToMove?: ISection;
+  sectionToMove: string|false;
 
   /*
    * Callback to invoke when items have been rearranged or deleted
@@ -86,7 +87,7 @@ export const AuthoringPage: React.FC<IPageProps> = ({
   addSection,
   changeSection,
   setSections,
-  sectionToMove: initSectionToMove,
+  sectionToMove,
   itemToMove: initItemToMove,
   allEmbeddables: allEmbeddables,
   addPageItem,
@@ -102,7 +103,7 @@ export const AuthoringPage: React.FC<IPageProps> = ({
   const [pageHasArgBlock, setPageHasArgBlock] = useState(hasArgBlock);
   const [pageHasStudentSidebar, setPageHasStudentSidebar] = useState(hasStudentSidebar);
   const [pageHasTESidebar, setPageHasTESidebar] = useState(hasTESidebar);
-  const [sectionToMove, setSectionToMove] = useState(initSectionToMove);
+
   const [itemToMove, setItemToMove] = useState(initItemToMove);
   const [showSettings, setShowSettings] = useState(isNew);
 
@@ -137,42 +138,6 @@ export const AuthoringPage: React.FC<IPageProps> = ({
     array[b] = array[a];
     array[a] = bItem;
     return [...array];
-  };
-
-  const handleMoveSectionInit = (sectionId: string) => {
-    const section = sections.find(s => s.id === sectionId);
-    if (section) {
-      setSectionToMove(section);
-    }
-  };
-
-  const handleMoveSection = (
-    sectionId: string,
-    selectedPageId: string,
-    selectedPosition: string,
-    selectedOtherSectionId: string
-    ) => {
-    const sectionIndex = sections.findIndex(s => s.id === sectionId);
-    const section = sections[sectionIndex];
-    const otherSectionIndex = sections.findIndex(s => s.id === selectedOtherSectionId);
-    const otherSection = sections[otherSectionIndex];
-    const newIndex = otherSectionIndex
-                       ? selectedPosition === "after"
-                         ? otherSectionIndex + 1
-                         : otherSectionIndex - 1
-                       : 0;
-    const updatedSections = sections;
-    updatedSections.splice(sectionIndex, 1);
-    updatedSections.splice(newIndex, 0, section);
-    let sectionsCount = 0;
-    updatedSections.forEach((s, index) => {
-      if (otherSection) {
-        updatedSections[index].position = ++sectionsCount;
-      }
-    });
-    if (setSections && updatedSections) {
-      setSections({id, sections: updatedSections});
-    }
   };
 
   const handleDelete = (sectionId: string) => {
@@ -282,7 +247,6 @@ export const AuthoringPage: React.FC<IPageProps> = ({
 
   const handleCloseDialog = () => {
     setShowSettings(false);
-    setSectionToMove(undefined);
     setItemToMove(undefined);
   };
 
@@ -316,7 +280,6 @@ export const AuthoringPage: React.FC<IPageProps> = ({
                             draggableProvided={draggableProvided}
                             key={`section-${sProps.id}-${index}`}
                             updateFunction={changeSection}
-                            moveFunction={handleMoveSectionInit}
                             deleteFunction={handleDelete}
                             copyFunction={handleCopy}
                             addPageItem={addPageItem}
@@ -348,12 +311,11 @@ export const AuthoringPage: React.FC<IPageProps> = ({
           closeDialogFunction={handleCloseDialog}
         />
       }
+      <div> Section To Move: {sectionToMove}</div>
       {sectionToMove &&
         <SectionMoveDialog
-          sectionId={sectionToMove.id}
+          sectionId={sectionToMove}
           sections={sections}
-          moveFunction={handleMoveSection}
-          closeDialogFunction={handleCloseDialog}
         />
       }
       {itemToMove &&
@@ -370,17 +332,14 @@ export const AuthoringPage: React.FC<IPageProps> = ({
 
 export const AuthoringPageUsingAPI = () => {
   const api = usePageAPI();
+  const {userInterface} = React.useContext(UserInterfaceContext);
+
   const pages = api.getPages.data;
   if (pages) {
     // TODO: we will want to rebind this when we support navigation
     const currentPage = pages[0];
 
     const addSection = () => api.addSectionMutation.mutate(currentPage.id);
-
-    const setSections = (pageData: {id: string, sections: ISection[]}) => {
-      api.updateSections.mutate(pageData);
-    };
-
     const changeSection = (changes: {
       section: Partial<ISection>,
       sectionID: string}) => api.updateSection.mutate({pageId: currentPage.id, changes});
@@ -389,15 +348,17 @@ export const AuthoringPageUsingAPI = () => {
       api.createPageItem.mutate({pageId: currentPage.id, newPageItem: pageItem});
 
     return (
-      <AuthoringPage
-        sections={currentPage?.sections}
-        addSection={addSection }
-        setSections={setSections}
-        id={currentPage.id}
-        changeSection={changeSection}
-        addPageItem={addPageItem}
-        // setPageItems={setPageItems}
-      />
+      <>
+        <AuthoringPage
+          sections={currentPage?.sections}
+          addSection={addSection }
+          setSections={api.updateSections}
+          sectionToMove={userInterface.movingSectionId}
+          id={currentPage.id}
+          changeSection={changeSection}
+          addPageItem={addPageItem}
+        />
+      </>
     );
   }
   else {

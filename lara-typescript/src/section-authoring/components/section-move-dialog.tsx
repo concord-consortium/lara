@@ -6,6 +6,8 @@ import { Close } from "../../shared/components/icons/close-icon";
 import { Move } from "../../shared/components/icons/move-icon";
 
 import "./section-move-dialog.scss";
+import { usePageAPI } from "../api/use-api-provider";
+import { UserInterfaceContext } from "../api/use-user-interface-context";
 
 export interface ISectionMoveDialogProps {
   sectionId: string;
@@ -13,13 +15,6 @@ export interface ISectionMoveDialogProps {
   selectedPageId?: string;
   selectedPosition?: string;
   selectedOtherSectionId?: string | undefined;
-  moveFunction: (
-    sectionId: string,
-    selectedPageId: string,
-    selectedPosition: string,
-    selectedOtherSectionId: string
-  ) => void;
-  closeDialogFunction: () => void;
 }
 
 export const SectionMoveDialog: React.FC<ISectionMoveDialogProps> = ({
@@ -27,12 +22,12 @@ export const SectionMoveDialog: React.FC<ISectionMoveDialogProps> = ({
   sections,
   selectedPageId = "0",
   selectedPosition = "after",
-  selectedOtherSectionId: initSelectedOtherSectionId = "0",
-  moveFunction,
-  closeDialogFunction
+  selectedOtherSectionId: initSelectedOtherSectionId = "0"
   }: ISectionMoveDialogProps) => {
   const [selectedOtherSectionId, setSelectedOtherSectionId] = useState(initSelectedOtherSectionId);
-  const [modalVisibility, setModalVisibility] = useState(true);
+
+  const { moveSection } = usePageAPI();
+  const { userInterface, actions: {setMovingSectionId}} = React.useContext(UserInterfaceContext);
 
   const handlePageChange = (change: React.ChangeEvent<HTMLSelectElement>) => {
     selectedPageId = change.target.value;
@@ -48,12 +43,12 @@ export const SectionMoveDialog: React.FC<ISectionMoveDialogProps> = ({
   };
 
   const handleCloseDialog = () => {
-    closeDialogFunction();
+    setMovingSectionId(false);
   };
 
   const handleMoveSection = () => {
-    moveFunction(sectionId, selectedPageId, selectedPosition, selectedOtherSectionId);
-    closeDialogFunction();
+    moveSection(sectionId, selectedPageId, selectedPosition as "before"|"after", selectedOtherSectionId);
+    handleCloseDialog();
   };
 
   const sectionOptions = () => {
@@ -81,7 +76,8 @@ export const SectionMoveDialog: React.FC<ISectionMoveDialogProps> = ({
   ];
 
   return (
-    <Modal title="Move this section to..." visibility={modalVisibility} width={600}>
+    <Modal title="Move this section to..."
+      visibility={true} width={600} closeFunction={handleCloseDialog}>
       <div className="sectionMoveDialog">
         <dl>
           <dt className="col1">Page</dt>
