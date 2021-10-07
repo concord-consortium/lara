@@ -13,7 +13,7 @@ export interface ISectionItemProps {
   /**
    * Record Type
    */
-   type?: string;
+  type?: string;
 
   /**
    * Optional function to change the item
@@ -24,6 +24,11 @@ export interface ISectionItemProps {
    * Optional function to move the item
    */
   moveFunction?: (id: string) => void;
+
+  /**
+   * Optional function to edit an item
+   */
+  editFunction?: (id: string) => void;
 
   /**
    * Optional function to copy the item
@@ -52,6 +57,7 @@ export interface ISectionItemProps {
 export const SectionItem: React.FC<ISectionItemProps> = ({
   id,
   moveFunction,
+  editFunction,
   copyFunction,
   deleteFunction,
   type,
@@ -70,7 +76,7 @@ export const SectionItem: React.FC<ISectionItemProps> = ({
   };
 
   const handleEdit = () => {
-    return;
+    editFunction?.(id);
   };
 
   const handleMove = () => {

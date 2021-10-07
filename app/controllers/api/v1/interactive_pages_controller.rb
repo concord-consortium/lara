@@ -147,7 +147,7 @@ class Api::V1::InteractivePagesController < API::APIController
       .select("library_interactives.id, library_interactives.name, count(managed_interactives.id) as use_count, UNIX_TIMESTAMP(library_interactives.created_at) as date_added")
       .joins("LEFT JOIN managed_interactives ON managed_interactives.linked_interactive_id = library_interactives.id")
       .group('library_interactives.id').map do |li|
-        {id: li.serializeable_id, name: li.name, use_count: li.use_count, date_added: li.date_added }
+        {id: li.serializeable_id, name: li.name, type: li.class.to_s use_count: li.use_count, date_added: li.date_added }
       end
 
     render :json => {

@@ -4,8 +4,9 @@ import {
   APIPageGetF, APIPagesGetF,
   APIPageCreateF, APIPageDeleteF,
   APISectionCreateF, APISectionsUpdateF, APISectionUpdateF,
-  APIPageItemCreateF,
-  ILibraryInteractiveResponse
+  APIPageItemCreateF, APIPageItemUpdateF,
+  ILibraryInteractiveResponse,
+  ISectionItem
 } from "./api-types";
 
 const APIBase = "/api/v1";
@@ -86,6 +87,10 @@ export const getLaraAuthoringAPI =
     return sendToLara({url: createPageItemUrl(args.pageId), method: "POST", body});
   };
 
+  const updatePageItem: APIPageItemUpdateF = (args: {pageId: string, sectionItem: ISectionItem}) => {
+    return Promise.reject("not implemented");
+  };
+
   const getAllEmbeddables = () => {
     return sendToLara({url: libraryInteractivesUrl})
       .then( (json: ILibraryInteractiveResponse) => {
@@ -93,6 +98,7 @@ export const getLaraAuthoringAPI =
           allEmbeddables: json.library_interactives.map(li => ({
             id: li.id,
             name: li.name,
+            type: li.type,
             useCount: li.use_count,
             dateAdded: li.date_added
           }))
@@ -100,6 +106,7 @@ export const getLaraAuthoringAPI =
         result.allEmbeddables.push({
           id: "MwInteractive",
           name: "Interactive IFrame",
+          type: "MwInteractive",
           useCount: 0,
           dateAdded: 0
         });
@@ -109,7 +116,7 @@ export const getLaraAuthoringAPI =
 
   return {
     getPages, getPage, createPage, deletePage,
-    createSection, updateSections, createPageItem, updateSection,
-    getAllEmbeddables
+    createSection, updateSections, createPageItem, updatePageItem, updateSection,
+    getAllEmbeddables, pathToTinyMCE: "/assets/tinymce.js"
   };
 };

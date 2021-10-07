@@ -103,7 +103,8 @@ export const SectionItemMoveDialog: React.FC<ISectionItemMoveDialogProps> = ({
 
     return itemsList?.map((i) => (
       <option key={i.id} value={`${i.id}`}>
-        {i.title}
+        {// i.title
+        }
       </option>
     ));
   };

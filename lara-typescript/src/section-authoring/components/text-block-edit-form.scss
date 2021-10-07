@@ -1,0 +1,97 @@
+@import "../../vars.scss";
+
+dl.textBlockEditForm {
+    column-gap: 5px;
+    display: grid;
+    grid-template-columns: 1fr 20fr;
+    grid-auto-flow: dense;
+    margin: 0 0 20px;
+    padding: 0;
+    row-gap: 0;
+
+  dt {
+    margin: 0;
+    padding: 0;
+
+    label {
+      font-size: 16px;
+      font-weight: 700;
+    }
+  }
+  dd {
+    margin: 0;
+    padding: 0;
+  }
+  dt.row1 {
+    grid-column-start: 1;
+    grid-column-end: span 20;
+    grid-row-start: 1;
+    grid-row-end: 1;
+    margin-bottom: 5px;    
+  }
+  dd.row1 {
+    grid-column-start: 1;
+    grid-column-end: span 20;
+    grid-row-start: 2;
+    grid-row-end: 2;
+    margin-bottom: 10px;    
+  }
+  dt.row2 {
+    grid-column-start: 1;
+    grid-column-end: span 20;
+    grid-row-start: 3;
+    grid-row-end: 3;
+    margin-bottom: 5px;    
+  }
+  dd.row2 {
+    grid-column-start: 1;
+    grid-column-end: span 20;
+    grid-row-start: 4;
+    grid-row-end: 4;
+    margin-bottom: 15px; 
+  }
+  dt.row3 {
+    justify-self: start;
+    grid-column-start: 2;
+    grid-column-end: span 20;
+    grid-row-start: 5;
+    grid-row-end: 5;
+  }
+  dd.row3 {
+    justify-self: start;
+    grid-column-start: 1;
+    grid-column-end: 1;
+    grid-row-start: 5;
+    grid-row-end: 5;
+
+    &.inputNote {
+      grid-column-start: 2;
+      grid-column-end: span 20;
+      grid-row-start: 6;
+      grid-row-end: 6;
+      margin-bottom: 10px;
+    }
+  }
+  dt.row4 {
+    justify-self: start;
+    grid-column-start: 2;
+    grid-column-end: span 20;
+    grid-row-start: 7;
+    grid-row-end: 7;
+  }
+  dd.row4 {
+    justify-self: start;
+    grid-column-start: 1;
+    grid-column-end: 1;
+    grid-row-start: 7;
+    grid-row-end: 7;
+
+
+    &.inputNote {
+      grid-column-start: 2;
+      grid-column-end: span 20;
+      grid-row-start: 8;
+      grid-row-end: 8;
+    }
+  }
+}

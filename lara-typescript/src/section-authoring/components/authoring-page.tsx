@@ -5,6 +5,7 @@ import { AuthoringSection } from "./authoring-section";
 import { SectionMoveDialog } from "./section-move-dialog";
 import { ICreatePageItem, IPage, ISection, ISectionItem, ISectionItemType, SectionColumns } from "../api/api-types";
 import { SectionItemMoveDialog } from "./section-item-move-dialog";
+import { ItemEditDialog } from "./item-edit-dialog";
 import { DragDropContext, Droppable, Draggable, DropResult } from "react-beautiful-dnd";
 import { Add } from "../../shared/components/icons/add-icon";
 import { Cog } from "../../shared/components/icons/cog-icon";
@@ -64,6 +65,11 @@ export interface IPageProps extends IPage {
    */
   itemToMove?: ISectionItem;
 
+  /**
+   * Move an item
+   */
+  itemToEdit?: ISectionItem;
+
   /*
    * List of all section items available
    */
@@ -88,6 +94,7 @@ export const AuthoringPage: React.FC<IPageProps> = ({
   setSections,
   sectionToMove: initSectionToMove,
   itemToMove: initItemToMove,
+  itemToEdit: initItemToEdit,
   allEmbeddables: allEmbeddables,
   addPageItem,
   isCompletion = false,
@@ -104,6 +111,7 @@ export const AuthoringPage: React.FC<IPageProps> = ({
   const [pageHasTESidebar, setPageHasTESidebar] = useState(hasTESidebar);
   const [sectionToMove, setSectionToMove] = useState(initSectionToMove);
   const [itemToMove, setItemToMove] = useState(initItemToMove);
+  const [itemToEdit, setItemToEdit] = useState(initItemToEdit);
   const [showSettings, setShowSettings] = useState(isNew);
 
   const updateSettings = (
@@ -280,10 +288,23 @@ export const AuthoringPage: React.FC<IPageProps> = ({
     }
   };
 
+  const handleEditItemInit = (itemId: string) => {
+    const items = getItems();
+    const item = items[items.length - 1];
+    if (item) {
+      setItemToEdit(item);
+    }
+  };
+
+  const handleEditItem = () => {
+    return;
+  };
+
   const handleCloseDialog = () => {
     setShowSettings(false);
     setSectionToMove(undefined);
     setItemToMove(undefined);
+    setItemToEdit(undefined);
   };
 
   const pageSettingsClickHandler = () => { setShowSettings(true); };
@@ -321,6 +342,7 @@ export const AuthoringPage: React.FC<IPageProps> = ({
                             copyFunction={handleCopy}
                             addPageItem={addPageItem}
                             moveItemFunction={handleMoveItemInit}
+                            editItemFunction={handleEditItemInit}
                           />
                         </div>
                       )
@@ -362,6 +384,14 @@ export const AuthoringPage: React.FC<IPageProps> = ({
           sections={sections}
           moveFunction={handleMoveItem}
           closeDialogFunction={handleCloseDialog}
+        />
+      }
+      {itemToEdit &&
+        <ItemEditDialog
+          closeDialogFunction={handleCloseDialog}
+          errorMessage={undefined}
+          item={itemToEdit}
+          updateFunction={handleEditItem}
         />
       }
     </>

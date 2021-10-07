@@ -33,7 +33,15 @@ export const usePageAPI = () => {
   const createPageItem = useMutation
     <IPage, Error, {pageId: string, newPageItem: ICreatePageItem}>
     (provider.createPageItem, mutationsOpts);
-
+  const _updatePageItem = useMutation
+    <ISectionItem, Error, {pageId: string, sectionItem: ISectionItem}>
+    (provider.updatePageItem, mutationsOpts);
+  const updatePageItem = (sectionItem: ISectionItem) => {
+    if (getPages.data) {
+      const page = getPages.data[currentPageIndex];
+      _updatePageItem.mutate({pageId: page.id, sectionItem});
+    }
+  };
   const getAllEmbeddables = useQuery
     <{allEmbeddables: ISectionItemType[]}, Error>
     (SECTION_ITEM_TYPES_KEY, provider.getAllEmbeddables);
@@ -63,7 +71,8 @@ export const usePageAPI = () => {
   return {
     getPages, addPageMutation, deletePageMutation,
     addSectionMutation, updateSection, updateSections,
-    createPageItem,
-    getAllEmbeddables, updateSectionItems
+    createPageItem, updatePageItem,
+    getAllEmbeddables, updateSectionItems,
+    pathToTinyMCE: provider.pathToTinyMCE
   };
 };

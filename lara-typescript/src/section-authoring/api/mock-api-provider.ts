@@ -1,7 +1,7 @@
 
 import {
   IPage, PageId,
-  APIPageGetF, APIPagesGetF,
+  APIPageGetF, APIPagesGetF, APIPageItemUpdateF,
   IAuthoringAPIProvider, ISection, ICreatePageItem, ISectionItem, SectionColumns, ISectionItemType
 } from "./api-types";
 
@@ -28,12 +28,36 @@ const makeNewSection = (): ISection => {
 const makeNewPageItem = (attributes: Partial<ISectionItem>): ISectionItem => {
   const newItem: ISectionItem = {
     id: `${++itemCounter}`,
-    embeddable: attributes.embeddable,
-    title: `embeddable-${itemCounter}`,
     column: attributes.column || SectionColumns.PRIMARY,
-    position: attributes.position || 1
+    data: {},
+    position: attributes.position || 1,
+    type: attributes.type
   };
   return newItem;
+};
+
+export const updatePageItem: APIPageItemUpdateF = (args: {pageId: string, sectionItem: ISectionItem}) => {
+  const { pageId, sectionItem } = args;
+  const page = pages.find(p => p.id === pageId);
+  let item: ISectionItem | undefined;
+  page?.sections.forEach((s) => {
+    item = s.items?.find(i => i.id === sectionItem.id);
+  });
+  if (item) {
+    const updatedItem: ISectionItem = {
+      id: sectionItem.id,
+      column: sectionItem.column || SectionColumns.PRIMARY,
+      data: sectionItem.data,
+      position: sectionItem.position || 1,
+      type: sectionItem.type
+    };
+    item = updatedItem;
+    if (page) {
+      updatePage(page.id, page);
+    }
+    return Promise.resolve(updatedItem);
+  }
+  return Promise.reject("something went wrong");
 };
 
 export const getPages: APIPagesGetF = () => {
@@ -115,22 +139,85 @@ const createPageItem = (args: {pageId: PageId, newPageItem: ICreatePageItem}) =>
 
 const getAllEmbeddables = () => {
   const allEmbeddables: ISectionItemType[] = [
-    {id: "1", name: "Carousel", useCount: 1, dateAdded: 1630440496},
-    {id: "2", name: "CODAP", useCount: 5, dateAdded: 1630440497},
-    {id: "3", name: "Drag & Drop", useCount: 5, dateAdded: 1630440498},
-    {id: "4", name: "Fill in the Blank", useCount: 8, dateAdded: 1630440495},
-    {id: "5", name: "iFrame Interactive", useCount: 200, dateAdded: 1630440494, isQuickAddItem: true},
-    {id: "6", name: "Multiple Choice", useCount: 300, dateAdded: 1630440493},
-    {id: "7", name: "Open Response", useCount: 400, dateAdded: 1630440492, isQuickAddItem: true},
-    {id: "8", name: "SageModeler", useCount: 3, dateAdded: 1630440499},
-    {id: "9", name: "Teacher Edition Window Shade", useCount: 4, dateAdded: 1630440490},
-    {id: "10", name: "Text Box", useCount: 500, dateAdded: 1630440491, isQuickAddItem: true}
+    {
+      id: "1",
+      name: "Carousel",
+      type: "ManagedInteractive",
+      useCount: 1,
+      dateAdded: 1630440496
+    },
+    {
+      id: "2",
+      name: "CODAP",
+      type: "ManagedInteractive",
+      useCount: 5,
+      dateAdded: 1630440497
+    },
+    {
+      id: "3",
+      name: "Drag & Drop",
+      type: "ManagedInteractive",
+      useCount: 5,
+      dateAdded: 1630440498
+    },
+    {
+      id: "4",
+      name: "Fill in the Blank",
+      type: "ManagedInteractive",
+      useCount: 8,
+      dateAdded: 1630440495
+    },
+    {
+      id: "5",
+      name: "iFrame Interactive",
+      type: "MwInteractive",
+      useCount: 200,
+      dateAdded: 1630440494,
+      isQuickAddItem: true
+    },
+    {
+      id: "6",
+      name: "Multiple Choice",
+      type: "ManagedInteractive",
+      useCount: 300,
+      dateAdded: 1630440493
+    },
+    {
+      id: "7",
+      name: "Open Response",
+      type: "ManagedInteractive",
+      useCount: 400,
+      dateAdded: 1630440492,
+      isQuickAddItem: true
+    },
+    {
+      id: "8",
+      name: "SageModeler",
+      type: "ManagedInteractive",
+      useCount: 3,
+      dateAdded: 1630440499
+    },
+    {
+      id: "9",
+      name: "Teacher Edition Window Shade",
+      type: "ManagedInteractive",
+      useCount: 4,
+      dateAdded: 1630440490
+    },
+    {
+      id: "10",
+      name: "Text Block",
+      type: "Embeddable::Xhtml",
+      useCount: 500,
+      dateAdded: 1630440491,
+      isQuickAddItem: true
+    }
   ];
   return Promise.resolve({allEmbeddables});
 };
 
 export const API: IAuthoringAPIProvider = {
   getPages, getPage, createPage, deletePage,
-  createSection, updateSections, createPageItem, updateSection,
-  getAllEmbeddables
+  createSection, updateSections, createPageItem, updatePageItem, updateSection,
+  getAllEmbeddables, pathToTinyMCE: null
 };
