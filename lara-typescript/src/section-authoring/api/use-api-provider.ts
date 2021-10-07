@@ -76,6 +76,30 @@ export const usePageAPI = () => {
     return getSections().find(s => s.id === id);
   };
 
+  const getItems = () => {
+    const sectionItems: ISectionItem[][] = getSections().map(s => s.items || []) || [];
+    return [].concat.apply([], sectionItems) as ISectionItem[];
+  };
+
+  // After we move or delete a section item, we call updateSectionItems
+  const updateSectionItems = (args: {sectionId: string, newItems: ISectionItem[], column?: SectionColumns}) => {
+    const { sectionId, newItems, column } = args;
+    if (getPages.data) {
+      const page = getPages.data[userInterface.currentPageIndex];
+      const section = page.sections.find(i => i.id === sectionId);
+      if (section === undefined) return;
+      if (column && section.items) {
+        const unalteredItems = section.items.filter(i => i.column !== column);
+        section.items = unalteredItems.concat(newItems);
+      } else {
+        section.items = newItems;
+      }
+      updateSection.mutate({pageId: page.id, changes: {section}});
+    }
+  };
+
+  const currentPage = getPage();
+
   const moveSection = (
     sectionId: string,
     selectedPageId: string,
@@ -108,27 +132,72 @@ export const usePageAPI = () => {
     }
   };
 
-  // After we move or delete a section item, we call updateSectionItems
-  const updateSectionItems = (args: {sectionId: string, newItems: ISectionItem[], column?: SectionColumns}) => {
-    const { sectionId, newItems, column } = args;
-    if (getPages.data) {
-      const page = getPages.data[userInterface.currentPageIndex];
-      const section = page.sections.find(i => i.id === sectionId);
-      if (section === undefined) return;
-      if (column && section.items) {
-        const unalteredItems = section.items.filter(i => i.column !== column);
-        section.items = unalteredItems.concat(newItems);
-      } else {
-        section.items = newItems;
+  const moveItem = (
+    itemId: string,
+    selectedSectionId: string,
+    selectedColumn: SectionColumns,
+    selectedPosition: string,
+    selectedOtherItemId: string
+    ) => {
+    const items = getItems();
+    const itemIndex = items.findIndex(i => i.id === itemId);
+    const item = items[itemIndex];
+    const otherItemIndex = items.findIndex(i => (i.id === selectedOtherItemId));
+    const otherItem = items[otherItemIndex];
+    const targetSection = getSection(selectedSectionId);
+    item.column = selectedColumn;
+    item.position = otherItem && otherItem.position
+                      ? selectedPosition === "after"
+                        ? otherItem.position + 1
+                        : otherItem.position
+                      : 1;
+    const newIndex = otherItemIndex
+                       ? selectedPosition === "after"
+                         ? otherItemIndex + 1
+                         : otherItemIndex
+                       : 0;
+    const updatedItems = targetSection?.items;
+    updatedItems?.splice(itemIndex, 1);
+    updatedItems?.splice(newIndex, 0, item);
+    let sectionItemsCount = 0;
+    updatedItems?.forEach((i, index) => {
+      sectionItemsCount++;
+      if (index > newIndex) {
+        updatedItems[index].position = sectionItemsCount;
       }
-      updateSection.mutate({pageId: page.id, changes: {section}});
+    });
+    // setItems(updatedItems);
+    if (targetSection) {
+      targetSection.items = updatedItems;
+      if (updateSectionItems && updatedItems) {
+        updateSectionItems({sectionId: selectedSectionId, newItems: updatedItems});
+      }
     }
   };
 
+
+
+  // tslint:disable-next-line
+  let addSection, changeSection, addPageItem = (a:any) => {
+    console.error("no page specified, cant invoke method.");
+  };
+
+  if (currentPage) {
+    addSection = () => addSectionMutation.mutate(currentPage.id);
+
+    changeSection = (changes: { section: Partial<ISection>, sectionID: string}) =>
+      updateSection.mutate({pageId: currentPage.id, changes});
+
+    addPageItem = (pageItem: ICreatePageItem) =>
+      createPageItem.mutate({pageId: currentPage.id, newPageItem: pageItem});
+
+    }
+
   return {
     getPages, addPageMutation, deletePageMutation,
-    addSectionMutation, updateSection, moveSection, updateSections,
-    createPageItem, deletePageItem,
-    getAllEmbeddables, updateSectionItems
+    addSection, changeSection, updateSection, getSections, moveSection, updateSections,
+    addPageItem, createPageItem, deletePageItem, updateSectionItems, moveItem,
+    getAllEmbeddables,
+    currentPage
   };
 };
