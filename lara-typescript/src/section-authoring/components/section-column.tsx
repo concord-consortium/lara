@@ -158,7 +158,6 @@ export const SectionColumn: React.FC<ISectionColumnProps> = ({
                             <SectionItem
                               {...item}
                               key={item.id}
-                              moveFunction={handleMoveItem}
                               copyFunction={handleCopyItem}
                               deleteFunction={deletePageItem}
                             />

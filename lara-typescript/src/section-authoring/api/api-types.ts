@@ -117,11 +117,6 @@ export interface IPage {
    */
   sections: ISection[];
 
-  /**
-   * Items on this page:
-   * TODO: NP: I don't think this should be flat like this.
-   */
-  items?: ISectionItem[];
 }
 
 // API Call Signatures

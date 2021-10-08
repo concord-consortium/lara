@@ -4,19 +4,22 @@ import { useState } from "react";
 import {useMutation, useQuery, useQueryClient} from "react-query";
 import {
     IAuthoringAPIProvider, ICreatePageItem, IPage, ISection, ISectionItem,
-    ISectionItemType, ItemId, SectionColumns
+    ISectionItemType, ItemId, SectionColumns, SectionId
 } from "./api-types";
 import { API as DEFAULT_API } from "./mock-api-provider";
+import { UserInterfaceContext, useUserInterface } from "./use-user-interface-context";
 
 const PAGES_CACHE_KEY = "pages";
 const SECTION_ITEM_TYPES_KEY = "SectionItemTypes";
+
 // Use this in a parent component to setup API context:
 // <APIProviderContext.Provider value={someAPIProvider} />
-//
 export const APIContext  = React.createContext<IAuthoringAPIProvider>(DEFAULT_API);
 
 export const usePageAPI = () => {
-  const [currentPageIndex, setCurrentPageIndex] = useState(0);
+
+  const { userInterface } = useContext(UserInterfaceContext);
+
   const provider: IAuthoringAPIProvider = useContext(APIContext);
   const client = useQueryClient(); // Get the context from our container.
   const mutationsOpts = {
@@ -32,7 +35,10 @@ export const usePageAPI = () => {
   const updateSection = useMutation<IPage, Error, {pageId: string, changes: {section: Partial<ISection> }}>
     (provider.updateSection, mutationsOpts);
 
-  const updateSections = useMutation<IPage, Error, IPage>(provider.updateSections, mutationsOpts);
+  const updateSectionsMutation = useMutation<IPage, Error, IPage>(provider.updateSections, mutationsOpts);
+
+  const updateSections = (nextPage: IPage) => updateSectionsMutation.mutate(nextPage);
+
   const createPageItem = useMutation
     <IPage, Error, {pageId: string, newPageItem: ICreatePageItem}>
     (provider.createPageItem, mutationsOpts);
@@ -43,7 +49,7 @@ export const usePageAPI = () => {
 
   const deletePageItem = (pageItemId: ItemId) => {
     if (getPages.data) {
-      const page = getPages.data[currentPageIndex];
+      const page = getPages.data[userInterface.currentPageIndex];
       deletePageItemMutation.mutate({pageId: page.id, pageItemId});
     }
   };
@@ -52,16 +58,33 @@ export const usePageAPI = () => {
     <{allEmbeddables: ISectionItemType[]}, Error>
     (SECTION_ITEM_TYPES_KEY, provider.getAllEmbeddables);
 
-  // const moveItem(oldSectionID, newSectionID) {
-  //   updateSectionItems(fromSectionID, {items: [previous value minus moved item]} )
-  //   updateSectionItems(roSectionID,   {items: [previous value plus moved item] } )
-  // }
+  const getPage =  () => {
+    if (getPages.data) {
+      return getPages.data[userInterface.currentPageIndex];
+    }
+    return null;
+  };
+
+  const getSections = () => {
+    const page = getPage();
+    if (!page) return [];
+    return page.sections;
+  };
+
+  const getSection = (id: SectionId) => {
+    return getSections().find(s => s.id === id);
+  };
+
+  const getItems = () => {
+    const sectionItems: ISectionItem[][] = getSections().map(s => s.items || []) || [];
+    return [].concat.apply([], sectionItems) as ISectionItem[];
+  };
 
   // After we move or delete a section item, we call updateSectionItems
   const updateSectionItems = (args: {sectionId: string, newItems: ISectionItem[], column?: SectionColumns}) => {
     const { sectionId, newItems, column } = args;
     if (getPages.data) {
-      const page = getPages.data[currentPageIndex];
+      const page = getPages.data[userInterface.currentPageIndex];
       const section = page.sections.find(i => i.id === sectionId);
       if (section === undefined) return;
       if (column && section.items) {
@@ -74,10 +97,104 @@ export const usePageAPI = () => {
     }
   };
 
+  const currentPage = getPage();
+
+  const moveSection = (
+    sectionId: string,
+    selectedPageId: string,
+    relativePosition: "before" | "after",
+    selectedOtherSectionId: string
+    ) => {
+
+    const section = getSection(sectionId);
+    if (!section) return;
+    const sections = getSections();
+    const sectionIndex = sections.findIndex(s => s.id === sectionId);
+    const otherSectionIndex = sections.findIndex(s => s.id === selectedOtherSectionId);
+    const otherSection = getSections()[otherSectionIndex];
+    const newIndex = otherSectionIndex
+                        ? relativePosition === "after"
+                          ? otherSectionIndex + 1
+                          : otherSectionIndex - 1
+                        : 0;
+    const updatedSections = getSections();
+    updatedSections.splice(sectionIndex, 1);
+    updatedSections.splice(newIndex, 0, section);
+    let sectionsCount = 0;
+    updatedSections.forEach((s, index) => {
+      if (otherSection) {
+        updatedSections[index].position = ++sectionsCount;
+      }
+    });
+    if (updateSections && updatedSections) {
+      updateSections({id: selectedPageId, sections: updatedSections});
+    }
+  };
+
+  const moveItem = (
+    itemId: string,
+    selectedSectionId: string,
+    selectedColumn: SectionColumns,
+    selectedPosition: string,
+    selectedOtherItemId: string
+    ) => {
+    const items = getItems();
+    const itemIndex = items.findIndex(i => i.id === itemId);
+    const item = items[itemIndex];
+    const otherItemIndex = items.findIndex(i => (i.id === selectedOtherItemId));
+    const otherItem = items[otherItemIndex];
+    const targetSection = getSection(selectedSectionId);
+    item.column = selectedColumn;
+    item.position = otherItem && otherItem.position
+                      ? selectedPosition === "after"
+                        ? otherItem.position + 1
+                        : otherItem.position
+                      : 1;
+    const newIndex = otherItemIndex
+                       ? selectedPosition === "after"
+                         ? otherItemIndex + 1
+                         : otherItemIndex
+                       : 0;
+    const updatedItems = targetSection?.items;
+    updatedItems?.splice(itemIndex, 1);
+    updatedItems?.splice(newIndex, 0, item);
+    let sectionItemsCount = 0;
+    updatedItems?.forEach((i, index) => {
+      sectionItemsCount++;
+      if (index > newIndex) {
+        updatedItems[index].position = sectionItemsCount;
+      }
+    });
+    // setItems(updatedItems);
+    if (targetSection) {
+      targetSection.items = updatedItems;
+      if (updateSectionItems && updatedItems) {
+        updateSectionItems({sectionId: selectedSectionId, newItems: updatedItems});
+      }
+    }
+  };
+
+  let addSection, changeSection, addPageItem = (a: any) => {
+    // tslint:disable-next-line
+    console.error("no page specified, cant invoke method.");
+  };
+
+  if (currentPage) {
+    addSection = () => addSectionMutation.mutate(currentPage.id);
+
+    changeSection = (changes: { section: Partial<ISection>, sectionID: string}) =>
+      updateSection.mutate({pageId: currentPage.id, changes});
+
+    addPageItem = (pageItem: ICreatePageItem) =>
+      createPageItem.mutate({pageId: currentPage.id, newPageItem: pageItem});
+
+    }
+
   return {
     getPages, addPageMutation, deletePageMutation,
-    addSectionMutation, updateSection, updateSections,
-    createPageItem, deletePageItem,
-    getAllEmbeddables, updateSectionItems
+    addSection, changeSection, updateSection, getSections, moveSection, updateSections,
+    addPageItem, createPageItem, deletePageItem, updateSectionItems, moveItem,
+    getAllEmbeddables,
+    currentPage
   };
 };
