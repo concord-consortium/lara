@@ -2,7 +2,8 @@
 import {
   IPage, PageId,
   APIPageGetF, APIPagesGetF, APIPageItemUpdateF,
-  IAuthoringAPIProvider, ISection, ICreatePageItem, ISectionItem, SectionColumns, ISectionItemType
+  IAuthoringAPIProvider, ISection, ICreatePageItem, ISectionItem, SectionColumns,
+  ISectionItemType, APIPageItemDeleteF, ItemId
 } from "./api-types";
 
 let pageCounter = 0;
@@ -137,6 +138,27 @@ const createPageItem = (args: {pageId: PageId, newPageItem: ICreatePageItem}) =>
   return Promise.reject(`cant find page ${pageId}`);
 };
 
+const deletePageItem: APIPageItemDeleteF = (args: {pageId: PageId, pageItemId: ItemId}) => {
+  const { pageId, pageItemId } = args;
+  const page = pages.find(p => p.id === pageId);
+  if (page) {
+    let replacementSection: ISection | null = null;
+    page?.sections.forEach(s => {
+      s.items?.forEach(i => {
+        if (i.id === pageItemId) {
+          replacementSection = s;
+        }
+      });
+    });
+
+    if (replacementSection) {
+      (replacementSection as ISection).items = (replacementSection as ISection).items?.filter(i => i.id !== pageItemId);
+    }
+    return Promise.resolve(page);
+  }
+  return Promise.reject(`cant find page ${pageId}`);
+};
+
 const getAllEmbeddables = () => {
   const allEmbeddables: ISectionItemType[] = [
     {
@@ -218,6 +240,7 @@ const getAllEmbeddables = () => {
 
 export const API: IAuthoringAPIProvider = {
   getPages, getPage, createPage, deletePage,
-  createSection, updateSections, createPageItem, updatePageItem, updateSection,
+  createSection, updateSections, updateSection,
+  createPageItem, updatePageItem, deletePageItem,
   getAllEmbeddables, pathToTinyMCE: null
 };

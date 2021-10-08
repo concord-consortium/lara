@@ -2,7 +2,7 @@ import * as React from "react";
 import { useState } from "react";
 import { SectionItem, ISectionItemProps} from "./section-item";
 import { absorbClickThen } from "../../shared/absorb-click";
-import { ICreatePageItem, ISection, ISectionItem, SectionColumns } from "../api/api-types";
+import { ICreatePageItem, ISection, ISectionItem, ItemId, SectionColumns } from "../api/api-types";
 import { DragDropContext, Droppable, Draggable, DropResult, DraggableProvided } from "react-beautiful-dnd";
 import { Add } from "../../shared/components/icons/add-icon";
 
@@ -52,15 +52,9 @@ export interface ISectionColumnProps {
   sectionId: string;
 
   /**
-   * Optional function to update section items
-   */
-  updatePageItems?: (items: ISectionItem[], sectionId: string) => void;
-
-  /**
    * Function to edit an item
    */
   editItemFunction?: (id: string) => void;
-
 }
 
 export const SectionColumn: React.FC<ISectionColumnProps> = ({
@@ -76,22 +70,25 @@ export const SectionColumn: React.FC<ISectionColumnProps> = ({
   }: ISectionColumnProps) => {
 
   const api = usePageAPI();
-  const updateSectionItems = api.updateSectionItems;
   const getAllEmbeddables = api.getAllEmbeddables;
   const embeddables = getAllEmbeddables.data?.allEmbeddables;
-
+  const { deletePageItem, updateSectionItems} = api;
   const [showAddItem, setShowAddItem] = useState(false);
 
-  const swapIndexes = (array: any[], a: number, b: number) => {
-    const aItem = array[a];
-    const bItem = array[b];
-    const aPos = aItem.position;
-    const bPos = bItem.position;
-    aItem.position = bPos;
-    bItem.position = aPos;
-    array[b] = aItem;
-    array[a] = bItem;
-    return [...array];
+  const updateItemPositions = (sectionItems: ISectionItemProps[], sourceIndex: number, destinationIndex: number) => {
+    const itemToMove = sectionItems[sourceIndex];
+    const otherItem = sectionItems[destinationIndex];
+    itemToMove.position = otherItem.position;
+    sectionItems.splice(sourceIndex, 1);
+    sectionItems.splice(destinationIndex, 0, itemToMove);
+    let itemsCount = 0;
+    sectionItems.forEach((i, index) => {
+      itemsCount++;
+      if (index > destinationIndex) {
+        i.position = itemsCount;
+      }
+    });
+    return [...sectionItems];
   };
 
   const onDragEnd = (e: DropResult) => {
@@ -105,7 +102,7 @@ export const SectionColumn: React.FC<ISectionColumnProps> = ({
       return;
     }
     if (e.destination && e.destination.index !== e.source.index) {
-      nextItems = swapIndexes(items, e.source.index, e.destination.index);
+      nextItems = updateItemPositions(items, e.source.index, e.destination.index);
       updateSectionItems({sectionId, newItems: nextItems, column });
     }
   };
@@ -123,16 +120,6 @@ export const SectionColumn: React.FC<ISectionColumnProps> = ({
     if (item) {
       addItem(column);
     }
-  };
-
-  const handleDeleteItem = (itemId: string) => {
-    const nextItems: ISectionItemProps[] = [];
-    items.forEach(i => {
-      if (i.id !== itemId) {
-        nextItems.push(i);
-      }
-    });
-    updateSectionItems({sectionId, newItems: nextItems, column});
   };
 
   const handleToggleShowAddItem = () => setShowAddItem((prev) => !prev);
@@ -190,10 +177,9 @@ export const SectionColumn: React.FC<ISectionColumnProps> = ({
                             <SectionItem
                               {...item}
                               key={item.id}
-                              moveFunction={handleMoveItem}
                               editFunction={handleEditItem}
                               copyFunction={handleCopyItem}
-                              deleteFunction={handleDeleteItem}
+                              deleteFunction={deletePageItem}
                             />
                           </div>
                         )}

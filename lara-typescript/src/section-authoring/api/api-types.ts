@@ -128,11 +128,6 @@ export interface IPage {
    */
   sections: ISection[];
 
-  /**
-   * Items on this page:
-   * TODO: NP: I don't think this should be flat like this.
-   */
-  items?: ISectionItem[];
 }
 
 // API Call Signatures
@@ -146,6 +141,7 @@ export type APISectionsUpdateF = (nextPage: IPage) => Promise<IPage>;
 export type APISectionUpdateF = (args: {pageId: PageId, changes: { section: Partial<ISection>}}) => Promise<IPage>;
 
 export type APIPageItemCreateF = (args: {pageId: PageId, newPageItem: ICreatePageItem}) => Promise<IPage>;
+export type APIPageItemDeleteF = (args: {pageId: PageId, pageItemId: ItemId}) => Promise<IPage>;
 export type APIPageItemUpdateF = (args: {pageId: PageId, sectionItem: ISectionItem}) => Promise<ISectionItem>;
 
 /**
@@ -162,6 +158,7 @@ export interface IAuthoringAPIProvider {
   updateSection: APISectionUpdateF;
 
   createPageItem: APIPageItemCreateF;
+  deletePageItem: APIPageItemDeleteF;
   updatePageItem: APIPageItemUpdateF;
 
   getAllEmbeddables: () => Promise<{allEmbeddables: ISectionItemType[]}>;

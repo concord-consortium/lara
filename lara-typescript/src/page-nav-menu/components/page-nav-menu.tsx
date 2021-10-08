@@ -1,7 +1,6 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
 import classNames from "classnames";
-import { IPageProps } from "../../section-authoring/components/authoring-page";
 import { ISectionProps } from "../../section-authoring/components/authoring-section";
 import { PageCopyDialog } from "./page-copy-dialog";
 import { Previous } from "../../shared/components/icons/previous-icon";
@@ -10,11 +9,12 @@ import { Next } from "../../shared/components/icons/next-icon";
 import { Completion } from "../../shared/components/icons/completion-icon";
 import { Add } from "../../shared/components/icons/add-icon";
 import { Copy } from "../../shared/components/icons/copy-icon";
+import { IPage } from "../../section-authoring/api/api-types";
 
 import "./page-nav-menu.scss";
 
 export interface IPageNavMenuProps {
-  pages: IPageProps[];
+  pages: IPage[];
   currentPageIndex: number | null;
   copyingPage: boolean;
 }

@@ -415,6 +415,36 @@ describe Api::V1::InteractivePagesController do
       end
     end
 
+    describe 'deleting items' do
+      let(:item_to_delete) { items.last }
+
+      let(:update_request) do
+        { id: page.id, page_item_id: item_to_delete.id }
+      end
+
+      describe 'success' do
+        it 'deletes missing items not present in the items post request' do
+          xhr :post, 'delete_page_item', update_request
+          expect(response.status).to eq(200)
+          section.reload
+          expect(section.page_items.length).to eq(2)
+          expect(section.page_items.map{ |i| i.id }).not_to include(item_to_delete.id)
+        end
+      end
+
+      describe 'failure' do
+        describe 'when we arent the author' do
+          before(:each) do
+            sign_out author
+          end
+          it "fails with not authorized" do
+            xhr :post, 'update_section', update_request
+            expect(response.status).to eq(403)
+            expect(response.body).to match(/not authorized/i)
+          end
+        end
+      end
+    end
   end
 
 
