@@ -50,11 +50,6 @@ export interface IPageProps extends IPage {
    */
   setSections?: (pageData: {id: string, sections: ISection[]}) => void;
 
-  /**
-   * Move a section
-   */
-  sectionToMove: string|false;
-
   /*
    * Callback to invoke when items have been rearranged or deleted
    */
@@ -64,11 +59,6 @@ export interface IPageProps extends IPage {
    * Move an item
    */
   itemToMove?: ISectionItem;
-
-  /*
-   * List of all section items available
-   */
-  allEmbeddables?: ISectionItemType[];
 
   /**
    * how to add a new page item
@@ -87,9 +77,7 @@ export const AuthoringPage: React.FC<IPageProps> = ({
   addSection,
   changeSection,
   setSections,
-  sectionToMove,
   itemToMove: initItemToMove,
-  allEmbeddables: allEmbeddables,
   addPageItem,
   isCompletion = false,
   isHidden = false,
@@ -273,10 +261,9 @@ export const AuthoringPageUsingAPI = () => {
     return (
       <>
         <AuthoringPage
-          sections={currentPage?.sections||[]}
+          sections={currentPage?.sections || []}
           addSection={addSection }
           setSections={updateSections}
-          sectionToMove={userInterface.movingSectionId}
           id={currentPage?.id || "none"}
           changeSection={changeSection}
           addPageItem={addPageItem}

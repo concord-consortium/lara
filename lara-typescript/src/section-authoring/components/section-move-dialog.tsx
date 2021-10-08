@@ -24,8 +24,8 @@ export const SectionMoveDialog: React.FC<ISectionMoveDialogProps> = ({
   }: ISectionMoveDialogProps) => {
   const [selectedOtherSectionId, setSelectedOtherSectionId] = useState(initSelectedOtherSectionId);
 
-  // TODO: We could remove sections from the property list too
-  const { moveSection, getSections } = usePageAPI();
+  // TODO: Should we remove sections from the property list too?
+  const { moveSection } = usePageAPI();
   const { userInterface: {movingSectionId}, actions: {setMovingSectionId}} = React.useContext(UserInterfaceContext);
 
   const handlePageChange = (change: React.ChangeEvent<HTMLSelectElement>) => {
@@ -46,7 +46,7 @@ export const SectionMoveDialog: React.FC<ISectionMoveDialogProps> = ({
   };
 
   const handleMoveSection = () => {
-    if(movingSectionId) {
+    if (movingSectionId) {
       moveSection(movingSectionId, selectedPageId, selectedPosition as "before"|"after", selectedOtherSectionId);
     }
     handleCloseDialog();

@@ -18,7 +18,6 @@ export const APIContext  = React.createContext<IAuthoringAPIProvider>(DEFAULT_AP
 
 export const usePageAPI = () => {
 
-  // TODO use user-interface-context:
   const { userInterface } = useContext(UserInterfaceContext);
 
   const provider: IAuthoringAPIProvider = useContext(APIContext);
@@ -175,10 +174,8 @@ export const usePageAPI = () => {
     }
   };
 
-
-
-  // tslint:disable-next-line
-  let addSection, changeSection, addPageItem = (a:any) => {
+  let addSection, changeSection, addPageItem = (a: any) => {
+    // tslint:disable-next-line
     console.error("no page specified, cant invoke method.");
   };
 

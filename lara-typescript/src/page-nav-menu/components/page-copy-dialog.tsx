@@ -1,15 +1,16 @@
 import * as React from "react";
 import { useState } from "react";
-import { IPageProps } from "../../section-authoring/components/authoring-page";
 import { Modal, ModalButtons } from "../../shared/components/modal/modal";
 import { Add } from "../../shared/components/icons/add-icon";
 import { Close } from "../../shared/components/icons/close-icon";
+import { IPage } from "../../section-authoring/api/api-types";
 
 import "./page-copy-dialog.scss";
 
+
 export interface IPageCopyDialogProps {
   pageId: string;
-  pages: IPageProps[];
+  pages: IPage[];
   currentPageIndex: number | null;
   selectedPosition?: string;
   selectedOtherPageId?: string;
