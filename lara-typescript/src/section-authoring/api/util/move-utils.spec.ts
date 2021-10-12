@@ -14,9 +14,9 @@ describe("moveSection", () => {
       };
       const setPage = (nextPage: IPage) => null;
       const sectionId = "section0";
-      const subject = moveSection({ destination, pages, sectionId, setPage });
+
       // Move failed:
-      expect(subject).toBeFalsy();
+      expect(moveSection({ destination, pages, sectionId, setPage })).toBeFalsy();
     });
 
     it ("it can't move non-existent sections", () => {
@@ -27,9 +27,9 @@ describe("moveSection", () => {
       };
       const setPage = (nextPage: IPage)  => null;
       const sectionId = "bogus";
-      const subject = moveSection({ destination, pages, sectionId, setPage });
+
       // Move failed:
-      expect(subject).toBeFalsy();
+      expect(moveSection({ destination, pages, sectionId, setPage })).toBeFalsy();
     });
   });
 
@@ -46,9 +46,9 @@ describe("moveSection", () => {
       }
     };
     const sectionId = "section0";
-    const subject = moveSection({ destination, pages, sectionId, setPage });
+
     // Move was successful:
-    expect(subject).toBeTruthy();
+    expect(moveSection({ destination, pages, sectionId, setPage })).toBeTruthy();
     // first page lost "section0":
     expect(pages[0].sections.map(s => s.id)).toEqual(["section1", "section2"]);
     // "section0" shows up after "section3"
@@ -68,9 +68,9 @@ describe("moveSection", () => {
       }
     };
     const sectionId = "section0";
-    const subject = moveSection({ destination, pages, sectionId, setPage });
+
     // Move was successful:
-    expect(subject).toBeTruthy();
+    expect(moveSection({ destination, pages, sectionId, setPage })).toBeTruthy();
     // first page lost "section0":
     expect(pages[0].sections.map(s => s.id)).toEqual(["section1", "section2"]);
     // "section0" shows up after "section3"

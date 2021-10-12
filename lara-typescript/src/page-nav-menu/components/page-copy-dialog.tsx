@@ -7,7 +7,6 @@ import { IPage } from "../../section-authoring/api/api-types";
 
 import "./page-copy-dialog.scss";
 
-
 export interface IPageCopyDialogProps {
   pageId: string;
   pages: IPage[];

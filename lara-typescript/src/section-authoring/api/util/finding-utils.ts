@@ -32,23 +32,15 @@ export const findSectionByAddress = (pages: IPage[], address: ISectionAddress) =
 
 // memoize me, invalidate on pages[]
 export const findSectionAddress = (pages: IPage[], sectionId: SectionId): ISectionAddress => {
-  let pageIndex = 0;
-  let sectionIndex = 0;
-  let page: IPage|null = null;
-  let section: ISection | null = null;
-  let sections: ISection[] = [];
-  while (pageIndex < pages.length) {
-    sectionIndex = 0;
-    page = pages[pageIndex];
-    sections = page.sections;
-    while (sectionIndex < sections.length) {
-      section = page.sections[sectionIndex];
+  for (let pageIndex = 0; pageIndex < pages.length; ++pageIndex) {
+    const page = pages[pageIndex];
+    const sections = page?.sections;
+    for (let sectionIndex = 0; sectionIndex < sections?.length; ++sectionIndex) {
+      const section = page.sections[sectionIndex];
       if (section.id === sectionId) {
-        return( {pageIndex, sectionIndex});
+        return({pageIndex, sectionIndex});
       }
-      sectionIndex++;
     }
-    pageIndex++;
   }
   return {pageIndex: null, sectionIndex: null};
 };

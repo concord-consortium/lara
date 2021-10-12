@@ -15,10 +15,8 @@ describe("findSectionAddress", () => {
 
   it ("returns null for sections that can't be found", () => {
     const nullResults = {pageIndex: null, sectionIndex: null};
-    expect(findSectionAddress(samplePages, "section9")).toEqual(nullResults);
     expect(findSectionAddress(samplePages, "Vorgon poetry")).toEqual(nullResults);
   });
-
 });
 
 describe("findSection", () => {
