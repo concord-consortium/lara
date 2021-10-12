@@ -19,7 +19,7 @@ describe("moveSection", () => {
       expect(subject).toBeFalsy();
     });
 
-    it ("it can't move non-existing sections", () => {
+    it ("it can't move non-existent sections", () => {
       const pages = makePages(3);
       const destination: ISectionDestination = {
         relativeLocation: RelativeLocation.After,
