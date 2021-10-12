@@ -24,7 +24,7 @@ export const findSection = (pages: IPage[], sectionId: SectionId): ISection|null
 
 export const findSectionByAddress = (pages: IPage[], address: ISectionAddress) => {
   const { pageIndex, sectionIndex } = address;
-  if (pageIndex !== null && sectionIndex !== null) {
+  if (pageIndex != null && sectionIndex != null) {
     return pages[pageIndex]?.sections[sectionIndex] || null;
   }
   return null;
