@@ -59,7 +59,7 @@ describe("findSectionByAddress", () => {
     expect(section).toBeNull();
   });
 
-  it("should return null when the sectionIndex outside the range", () => {
+  it("should return null when the sectionIndex is outside the range", () => {
     const address = { pageIndex: 0, sectionIndex: 5 };
     const section = findSectionByAddress(samplePages, address);
     expect(section).toBeNull();
