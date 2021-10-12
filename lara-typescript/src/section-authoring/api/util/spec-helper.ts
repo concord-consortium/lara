@@ -15,7 +15,8 @@ const makeSections = (count: number): ISection[] => {
   });
 };
 
-export const makePages = (count: number): IPage[] => {
+export const makePages = (count: number, reset: boolean = true): IPage[] => {
+  if (reset) { pageCounter = sectionCounter = itemCounter = 0; }
   return collect<IPage>(count, () => {
     return { id: `page${pageCounter++}`, sections: makeSections(3) };
   });

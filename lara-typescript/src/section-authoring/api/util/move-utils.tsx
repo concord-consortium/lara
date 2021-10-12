@@ -20,6 +20,11 @@ export interface IMoveSectionSignature {
   pages: IPage[];
 }
 
+const error = (msg: string) => {
+  // tslint:disable-next-line:no-console
+  console.error(msg);
+};
+
 export const moveSection = (args: IMoveSectionSignature) => {
   const { sectionId, destination, setPage, pages } = args;
   const { destPageId, destSectionId, relativeLocation } = destination;
@@ -29,8 +34,8 @@ export const moveSection = (args: IMoveSectionSignature) => {
   let destPageIndex: number|null = null;
 
   // The source page and section must exist
-  if (!(pageIndex && sectionIndex)) {
-    console.error(`can't find page and section for: ${sectionId}`);
+  if (pageIndex == null || sectionIndex == null) {
+    error(`can't find page and section for: ${sectionId}`);
     return false;
   }
 
@@ -46,7 +51,7 @@ export const moveSection = (args: IMoveSectionSignature) => {
 
   // We must have a destination page:
   if (!(destPageIndex)) {
-    console.error(`can't find destination  ${destination}`);
+    error(`can't find destination  ${destination}`);
     return false;
   }
 
@@ -75,11 +80,12 @@ export const moveSection = (args: IMoveSectionSignature) => {
   const nextDestPagePageSections = [... destPage.sections];
   const sourceSection = findSection(pages, sectionId);
   if (sourceSection === null) {
-    console.error(`can't find source section ${sectionId}`);
-    return;
+    error(`can't find source section ${sectionId}`);
+    return false;
   }
   nextSourcePagePageSections.splice(sectionIndex, 1);
   nextDestPagePageSections.splice(realDestSectionIndex, 0, sourceSection);
   setPage({...sourcePage, sections: nextSourcePagePageSections});
   setPage({...destPage, sections: nextDestPagePageSections});
+  return true;
 };
