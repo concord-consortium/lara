@@ -4,6 +4,7 @@ import { GripLines } from "../../shared/components/icons/grip-lines";
 import { SectionColumn } from "./section-column";
 import { ICreatePageItem, ISection, ISectionItem, SectionColumns, SectionLayouts } from "../api/api-types";
 import { DraggableProvided } from "react-beautiful-dnd";
+import { UserInterfaceContext } from "../api/use-user-interface-context";
 
 import "./authoring-section.scss";
 
@@ -43,19 +44,9 @@ export interface ISectionProps extends ISection {
   deleteFunction?: (id: string) => void;
 
   /**
-   * Optional function to move the section
-   */
-  moveFunction?: (id: string) => void;
-
-  /**
    * Optional function to copy the section
    */
   copyFunction?: (id: string) => void;
-
-  /**
-   * Optional function to delete the section (elsewhere)
-   */
-  updatePageItems?: (items: ISectionItem[], sectionId: string) => void;
 
   /**
    * Function to move an item
@@ -76,18 +67,17 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
   id,
   updateFunction,
   deleteFunction,
-  moveFunction,
   copyFunction,
   layout: initLayout = defaultLayout,
   items = [],
   collapsed: initCollapsed = false,
   title,
-  updatePageItems,
   moveItemFunction,
   draggableProvided,
   addPageItem
   }: ISectionProps) => {
 
+  const { actions: {setMovingSectionId}} = React.useContext(UserInterfaceContext);
   const [layout, setLayout] = useState(initLayout);
   const [collapsed, setCollapsed] = useState(initCollapsed);
 
@@ -115,9 +105,8 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
   //   updateFunction?.({section: {id, items: nextItems}});
   // };
 
-  const handleMove = () => {
-    moveFunction?.(id);
-
+  const handleMoveSection = () => {
+    setMovingSectionId(id);
   };
 
   const handleCopy = () => {
@@ -212,7 +201,7 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
         <div className="menuEnd">
           <ul>
             <li><button onClick={toggleCollapse}>Collapse</button></li>
-            <li><button onClick={handleMove}>Move</button></li>
+            <li><button onClick={handleMoveSection}>Move</button></li>
             <li><button onClick={handleCopy}>Copy</button></li>
             <li><button onClick={handleDelete}>Delete</button></li>
           </ul>
@@ -227,7 +216,6 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
         items={getColumnItems(columnValueForIndex(0))}
         moveFunction={handleMoveItem}
         sectionId={id}
-        updatePageItems={updatePageItems}
         />
       }
       {layout !== "Full Width" &&
@@ -240,7 +228,6 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
           items={getColumnItems(columnValueForIndex(1))}
           moveFunction={handleMoveItem}
           sectionId={id}
-          updatePageItems={updatePageItems}
         />
       }
     </div>

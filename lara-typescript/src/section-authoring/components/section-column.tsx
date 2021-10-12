@@ -2,7 +2,7 @@ import * as React from "react";
 import { useState } from "react";
 import { SectionItem, ISectionItemProps} from "./section-item";
 import { absorbClickThen } from "../../shared/absorb-click";
-import { ICreatePageItem, ISection, ISectionItem, SectionColumns } from "../api/api-types";
+import { ICreatePageItem, ISection, ISectionItem, ItemId, SectionColumns } from "../api/api-types";
 import { DragDropContext, Droppable, Draggable, DropResult, DraggableProvided } from "react-beautiful-dnd";
 import { Add } from "../../shared/components/icons/add-icon";
 
@@ -51,11 +51,6 @@ export interface ISectionColumnProps {
    */
   sectionId: string;
 
-  /**
-   * Optional function to update section items
-   */
-  updatePageItems?: (items: ISectionItem[], sectionId: string) => void;
-
 }
 
 export const SectionColumn: React.FC<ISectionColumnProps> = ({
@@ -70,8 +65,7 @@ export const SectionColumn: React.FC<ISectionColumnProps> = ({
   }: ISectionColumnProps) => {
 
   const api = usePageAPI();
-  const updateSectionItems = api.updateSectionItems;
-
+  const { deletePageItem, updateSectionItems} = api;
   const [showAddItem, setShowAddItem] = useState(false);
 
   const updateItemPositions = (sectionItems: ISectionItemProps[], sourceIndex: number, destinationIndex: number) => {
@@ -115,16 +109,6 @@ export const SectionColumn: React.FC<ISectionColumnProps> = ({
     if (item) {
       addItem(column);
     }
-  };
-
-  const handleDeleteItem = (itemId: string) => {
-    const nextItems: ISectionItemProps[] = [];
-    items.forEach(i => {
-      if (i.id !== itemId) {
-        nextItems.push(i);
-      }
-    });
-    updateSectionItems({sectionId, newItems: nextItems, column});
   };
 
   const handleToggleShowAddItem = () => setShowAddItem((prev) => !prev);
@@ -174,9 +158,8 @@ export const SectionColumn: React.FC<ISectionColumnProps> = ({
                             <SectionItem
                               {...item}
                               key={item.id}
-                              moveFunction={handleMoveItem}
                               copyFunction={handleCopyItem}
-                              deleteFunction={handleDeleteItem}
+                              deleteFunction={deletePageItem}
                             />
                           </div>
                         )}

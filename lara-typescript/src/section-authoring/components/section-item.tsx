@@ -1,5 +1,6 @@
 import * as React from "react";
 import { GripLines } from "../../shared/components/icons/grip-lines";
+import { UserInterfaceContext } from "../api/use-user-interface-context";
 
 import "./section-item.scss";
 
@@ -19,11 +20,6 @@ export interface ISectionItemProps {
    * Optional function to change the item
    */
   updateFunction?: (changes: {sectionItem: Partial<ISectionItemProps>}) => void;
-
-  /**
-   * Optional function to move the item
-   */
-  moveFunction?: (id: string) => void;
 
   /**
    * Optional function to copy the item
@@ -51,13 +47,14 @@ export interface ISectionItemProps {
  */
 export const SectionItem: React.FC<ISectionItemProps> = ({
   id,
-  moveFunction,
   copyFunction,
   deleteFunction,
   type,
   position,
   title
   }: ISectionItemProps) => {
+
+  const { userInterface: {movingItemId}, actions: {setMovingItemId}} = React.useContext(UserInterfaceContext);
 
   const renderTitle = () => (
     <>
@@ -74,7 +71,7 @@ export const SectionItem: React.FC<ISectionItemProps> = ({
   };
 
   const handleMove = () => {
-    moveFunction?.(id);
+    setMovingItemId(id);
   };
 
   const handleCopy = () => {
