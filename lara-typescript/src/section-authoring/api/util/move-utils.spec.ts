@@ -14,6 +14,7 @@ describe("moveSection", () => {
     };
     const sectionId = "section0";
     const subject = moveSection({destination, pages: samplePages, sectionId, setPage});
-    expect(1).toEql(1);
+    // 2021-10-12 NP TODO: Write this test! 
+    expect(1).toEqual(1);
   });
 });
