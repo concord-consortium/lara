@@ -64,7 +64,7 @@ export const moveSection = (args: IMoveSectionSignature) => {
 
   // At this point we should have indexes for everything...
   // 1. remove the item from the array
-  // 2. add the item back in it's new place
+  // 2. add the item back in its new place
   // 3. update the pages
   const sourcePage = pages[pageIndex];
   const destPage = pages[destPageIndex];
