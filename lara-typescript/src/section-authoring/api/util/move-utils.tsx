@@ -57,7 +57,7 @@ export const moveSection = (args: IMoveSectionSignature) => {
       destSectionIndex = destSectionIndex + 1;
     }
   }
-  // Otherwise we are using the the first.
+  // Otherwise we are using the first.
   else {
     destSectionIndex = 0;
   }
