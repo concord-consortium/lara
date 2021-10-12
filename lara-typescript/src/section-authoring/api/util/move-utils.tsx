@@ -79,7 +79,7 @@ export const moveSection = (args: IMoveSectionSignature) => {
   const nextSourcePagePageSections = [... sourcePage.sections];
   const nextDestPagePageSections = [... destPage.sections];
   const sourceSection = findSection(pages, sectionId);
-  if (sourceSection === null) {
+  if (sourceSection == null) {
     error(`can't find source section ${sectionId}`);
     return false;
   }
