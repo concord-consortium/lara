@@ -65,7 +65,7 @@ describe("findSectionByAddress", () => {
     expect(section).toBeNull();
   });
 
-  it("should return null when the any index is null", () => {
+  it("should return null when any index is null", () => {
     let address: ISectionAddress = { pageIndex: null, sectionIndex: 0 };
     let section = findSectionByAddress(samplePages, address);
     expect(section).toBeNull();
