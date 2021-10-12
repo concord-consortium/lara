@@ -51,7 +51,7 @@ export const moveSection = (args: IMoveSectionSignature) => {
 
   // We must have a destination page:
   if (!(destPageIndex)) {
-    error(`can't find destination  ${destination}`);
+    error(`can't find destination ${destination}`);
     return false;
   }
 
