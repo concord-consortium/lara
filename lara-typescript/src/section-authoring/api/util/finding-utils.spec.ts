@@ -25,7 +25,7 @@ describe("findSection", () => {
   it("finds sections that exist", () => {
     expect(findSection(samplePages, "section1")).not.toBeNull();
   });
-  it("returns a whole ISection", () => {
+  it("returns all the items in the section", () => {
     expect(findSection(samplePages, "section1")?.items).toHaveLength(3);
   });
   it("returns null when there is no such section", () => {
@@ -34,13 +34,13 @@ describe("findSection", () => {
 });
 
 describe("findPage", () => {
-  it("finds sections that exist", () => {
+  it("finds pages that exist", () => {
     expect(findPage(samplePages, "page1")).not.toBeNull();
   });
-  it("returns a whole ISection", () => {
+  it("returns all the sections in the page", () => {
     expect(findPage(samplePages, "page1")?.sections).toHaveLength(3);
   });
-  it("returns null when there is no such section", () => {
+  it("returns null when there is no such page", () => {
     expect(findPage(samplePages, "Vorgon poetry")).toBeNull();
   });
 });
