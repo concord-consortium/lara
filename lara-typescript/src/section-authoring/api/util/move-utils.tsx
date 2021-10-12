@@ -43,7 +43,7 @@ export const moveSection = (args: IMoveSectionSignature) => {
     ({
       sectionIndex: destSectionIndex,
       pageIndex: destPageIndex
-    } =  findSectionAddress(pages, destSectionId));
+    } = findSectionAddress(pages, destSectionId));
   }
   else if (destPageId) {
     destPageIndex = pages.findIndex(p => p.id === destPageId);
