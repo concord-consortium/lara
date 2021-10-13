@@ -8,18 +8,19 @@ import { Move } from "../../shared/components/icons/move-icon";
 import "./section-move-dialog.scss";
 import { usePageAPI } from "../api/use-api-provider";
 import { UserInterfaceContext } from "../api/use-user-interface-context";
+import { ISectionDestination, RelativeLocation } from "../api/util/move-utils";
 
 export interface ISectionMoveDialogProps {
   sections: ISectionProps[];
   selectedPageId?: string;
-  selectedPosition?: string;
+  selectedPosition?: RelativeLocation;
   selectedOtherSectionId?: string | undefined;
 }
 
 export const SectionMoveDialog: React.FC<ISectionMoveDialogProps> = ({
   sections,
   selectedPageId = "0",
-  selectedPosition = "after",
+  selectedPosition = RelativeLocation.After,
   selectedOtherSectionId: initSelectedOtherSectionId = "0"
   }: ISectionMoveDialogProps) => {
   const [selectedOtherSectionId, setSelectedOtherSectionId] = useState(initSelectedOtherSectionId);
@@ -33,7 +34,7 @@ export const SectionMoveDialog: React.FC<ISectionMoveDialogProps> = ({
   };
 
   const handlePositionChange = (change: React.ChangeEvent<HTMLSelectElement>) => {
-    selectedPosition = change.target.value;
+    selectedPosition = change.target.value as RelativeLocation;
   };
 
   const handleOtherSectionChange = (change: React.ChangeEvent<HTMLSelectElement>) => {
@@ -47,7 +48,12 @@ export const SectionMoveDialog: React.FC<ISectionMoveDialogProps> = ({
 
   const handleMoveSection = () => {
     if (movingSectionId) {
-      moveSection(movingSectionId, selectedPageId, selectedPosition as "before"|"after", selectedOtherSectionId);
+      const destination: ISectionDestination = {
+        relativeLocation: selectedPosition,
+        destPageId: selectedPageId,
+        destSectionId: selectedOtherSectionId
+      };
+      moveSection(movingSectionId, destination);
     }
     handleCloseDialog();
   };

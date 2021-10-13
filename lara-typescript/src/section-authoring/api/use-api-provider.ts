@@ -1,6 +1,7 @@
 import * as React from "react";
 import { useContext } from "react";
-import { useState } from "react";
+import { moveSection  as _moveSection, ISectionDestination} from "./util/move-utils";
+
 import {useMutation, useQuery, useQueryClient} from "react-query";
 import {
     IAuthoringAPIProvider, ICreatePageItem, IPage, ISection, ISectionItem,
@@ -125,37 +126,16 @@ export const usePageAPI = () => {
 
   const currentPage = getPage();
 
-  const moveSection = (
-    sectionId: string,
-    selectedPageId: string,
-    relativePosition: "before" | "after",
-    selectedOtherSectionId: string
-    ) => {
-
-    const section = getSection(sectionId);
-    if (!section) return;
-    const sections = getSections();
-    const sectionIndex = sections.findIndex(s => s.id === sectionId);
-    const otherSectionIndex = sections.findIndex(s => s.id === selectedOtherSectionId);
-    const otherSection = getSections()[otherSectionIndex];
-    const newIndex = otherSectionIndex
-                        ? relativePosition === "after"
-                          ? otherSectionIndex + 1
-                          : otherSectionIndex - 1
-                        : 0;
-    const updatedSections = getSections();
-    updatedSections.splice(sectionIndex, 1);
-    updatedSections.splice(newIndex, 0, section);
-    let sectionsCount = 0;
-    updatedSections.forEach((s, index) => {
-      if (otherSection) {
-        updatedSections[index].position = ++sectionsCount;
-      }
-    });
-    if (updateSections && updatedSections) {
-      updateSections({id: selectedPageId, sections: updatedSections});
+  const moveSection = (sectionId: string, destination: ISectionDestination) => {
+    if (getPages.data) {
+      const setPage = (page: IPage) => {
+        const {id, sections} = page;
+        updateSections({id, sections});
+      };
+      _moveSection({sectionId, destination, setPage, pages: getPages.data});
     }
   };
+
 
   const moveItem = (
     itemId: string,
