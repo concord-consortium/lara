@@ -2,7 +2,7 @@ import * as React from "react";
 const { useEffect, useState } = React;
 import { IRuntimeInitInteractive, getFirebaseJwt, useCustomMessages, ICustomMessage,
          getInteractiveSnapshot } from "../../../interactive-api-client";
-import { IAuthoredState } from "./types";
+import { IAuthoredState } from "../types";
 import { DecorateChildren } from "@concord-consortium/text-decorator";
 import { useGlossaryDecoration } from "../use-glossary-decoration";
 
