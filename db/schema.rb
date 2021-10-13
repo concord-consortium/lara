@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20211001193627) do
+ActiveRecord::Schema.define(:version => 20211013175200) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "kind"
@@ -545,7 +545,7 @@ ActiveRecord::Schema.define(:version => 20211001193627) do
   end
 
   add_index "page_items", ["embeddable_id", "embeddable_type"], :name => "index_page_items_on_embeddable_id_and_embeddable_type"
-  add_index "page_items", ["interactive_page_id"], :name => "index_page_items_on_interactive_page_id"
+  add_index "page_items", ["section_id", "position"], :name => "index_page_items_on_section_id_and_position"
 
   create_table "pending_portal_publications", :force => true do |t|
     t.integer  "portal_publication_id"
@@ -664,6 +664,8 @@ ActiveRecord::Schema.define(:version => 20211001193627) do
     t.datetime "created_at",          :null => false
     t.datetime "updated_at",          :null => false
   end
+
+  add_index "sections", ["interactive_page_id", "position"], :name => "index_sections_on_interactive_page_id_and_position"
 
   create_table "sequence_runs", :force => true do |t|
     t.integer  "user_id"
