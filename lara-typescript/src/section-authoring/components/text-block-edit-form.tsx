@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { Editor } from "@tinymce/tinymce-react";
 import { ISectionItem, ITextBlockData } from "../api/api-types";
 import { usePageAPI } from "../api/use-api-provider";
@@ -8,48 +8,52 @@ import "./text-block-edit-form.scss";
 
 export interface ITextBlockEditFormProps {
   pageItem: ISectionItem;
+  handleUpdateData: (itemData: any) => (void);
 }
 
 export const TextBlockEditForm: React.FC<ITextBlockEditFormProps> = ({
-  pageItem
+  pageItem,
+  handleUpdateData
   }: ITextBlockEditFormProps) => {
-  const { content, name, isCallout, isFullWidth } = pageItem.data as ITextBlockData;
-  const editorRef = useRef(null);
+  const { content, name, isCallout, isFullWidth } = pageItem?.data as ITextBlockData;
+  const editorRef = useRef<any>(null);
   const initEditor = (e: any, editor: any) => {
     editorRef.current = editor;
   };
   const pathToTinyMCE = usePageAPI().pathToTinyMCE;
-  const updatePageItem = usePageAPI().updatePageItem;
+  // Create a new item data object for recording changes so the
+  // real pageItem isn't updated if the user cancels editing.
+  const initItemData = { content, isCallout, isFullWidth, name };
+  const [itemData, setItemData] = useState(initItemData);
 
   const handleChangeName = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const nextItem = {...pageItem};
-    nextItem.data.name = event.target.value;
-    updatePageItem(nextItem);
+    itemData.name = event.target.value;
+    setItemData(itemData);
+    handleUpdateData(itemData);
   };
 
-  const handleChangeContent = (value: any, editor: any) => {
-    // content = value;
-    // if (editorRef.current) {
-    //   content = editorRef.current.getContent();
-    // }
+  const handleChangeContent = () => {
+    itemData.content = editorRef.current.getContent();
+    setItemData(itemData);
+    handleUpdateData(itemData);
   };
 
   const handleTextareaChangeContent = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const nextItem = {...pageItem};
-    nextItem.data.content = event.target.value;
-    updatePageItem(nextItem);
+    itemData.content = event.target.value;
+    setItemData(itemData);
+    handleUpdateData(itemData);
   };
 
   const handleChangeIsCallout = () => {
-    const nextItem = {...pageItem};
-    nextItem.data.isCallout = !isCallout;
-    updatePageItem(nextItem);
+    itemData.isCallout = !isCallout;
+    setItemData(itemData);
+    handleUpdateData(itemData);
   };
 
   const handleChangeIsFullWidth = () => {
-    const nextItem = {...pageItem};
-    nextItem.data.isFullWidth = !isFullWidth;
-    updatePageItem(nextItem);
+    itemData.isFullWidth = !isFullWidth;
+    setItemData(itemData);
+    handleUpdateData(itemData);
   };
 
   return (

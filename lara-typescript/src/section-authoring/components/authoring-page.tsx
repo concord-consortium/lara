@@ -62,7 +62,7 @@ export interface IPageProps extends IPage {
   itemToMove?: ISectionItem;
 
   /**
-   * Move an item
+   * Edit an item
    */
   itemToEdit?: ISectionItem;
 
@@ -267,6 +267,7 @@ export const AuthoringPage: React.FC<IPageProps> = ({
       }
       <SectionMoveDialog sections={sections} />
       <SectionItemMoveDialog sections={sections} />
+      <ItemEditDialog />
     </>
   );
 };

@@ -22,11 +22,6 @@ export interface ISectionItemProps {
   updateFunction?: (changes: {sectionItem: Partial<ISectionItemProps>}) => void;
 
   /**
-   * Optional function to edit an item
-   */
-  editFunction?: (id: string) => void;
-
-  /**
    * Optional function to copy the item
    */
   copyFunction?: (id: string) => void;
@@ -52,7 +47,6 @@ export interface ISectionItemProps {
  */
 export const SectionItem: React.FC<ISectionItemProps> = ({
   id,
-  editFunction,
   copyFunction,
   deleteFunction,
   type,
@@ -61,6 +55,7 @@ export const SectionItem: React.FC<ISectionItemProps> = ({
   }: ISectionItemProps) => {
 
   const { userInterface: {movingItemId}, actions: {setMovingItemId}} = React.useContext(UserInterfaceContext);
+  const { userInterface: {editingItemId}, actions: {setEditingItemId}} = React.useContext(UserInterfaceContext);
 
   const renderTitle = () => (
     <>
@@ -73,7 +68,7 @@ export const SectionItem: React.FC<ISectionItemProps> = ({
   };
 
   const handleEdit = () => {
-    editFunction?.(id);
+    setEditingItemId(id);
   };
 
   const handleMove = () => {

@@ -57,6 +57,7 @@ export interface ILibraryInteractiveResponse {
     type: string;
     use_count: number;
     date_added: number;
+    isQuickAddItem: boolean;
   }>;
 }
 
@@ -140,7 +141,7 @@ export type APISectionCreateF = (pageId: PageId) => Promise<IPage>;
 export type APISectionsUpdateF = (nextPage: IPage) => Promise<IPage>;
 export type APISectionUpdateF = (args: {pageId: PageId, changes: { section: Partial<ISection>}}) => Promise<IPage>;
 
-export type APIPageItemCreateF = (args: {pageId: PageId, newPageItem: ICreatePageItem}) => Promise<IPage>;
+export type APIPageItemCreateF = (args: {pageId: PageId, newPageItem: ICreatePageItem}) => Promise<ISectionItem>;
 export type APIPageItemDeleteF = (args: {pageId: PageId, pageItemId: ItemId}) => Promise<IPage>;
 export type APIPageItemUpdateF = (args: {pageId: PageId, sectionItem: ISectionItem}) => Promise<ISectionItem>;
 

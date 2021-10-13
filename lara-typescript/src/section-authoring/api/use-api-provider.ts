@@ -18,12 +18,18 @@ export const APIContext  = React.createContext<IAuthoringAPIProvider>(DEFAULT_AP
 
 export const usePageAPI = () => {
 
-  const { userInterface } = useContext(UserInterfaceContext);
+  const { userInterface, actions } = useContext(UserInterfaceContext);
 
   const provider: IAuthoringAPIProvider = useContext(APIContext);
   const client = useQueryClient(); // Get the context from our container.
   const mutationsOpts = {
     onSuccess: () => client.invalidateQueries(PAGES_CACHE_KEY)
+  };
+  const addPageItemMutationsOpts = {
+    onSuccess: (sectionItem: ISectionItem) => {
+      client.invalidateQueries(PAGES_CACHE_KEY);
+      actions.setEditingItemId(sectionItem.id);
+    }
   };
 
   const getPages = useQuery<IPage[], Error>(PAGES_CACHE_KEY, provider.getPages);
@@ -40,8 +46,8 @@ export const usePageAPI = () => {
   const updateSections = (nextPage: IPage) => updateSectionsMutation.mutate(nextPage);
 
   const createPageItem = useMutation
-    <IPage, Error, {pageId: string, newPageItem: ICreatePageItem}>
-    (provider.createPageItem, mutationsOpts);
+    <ISectionItem, Error, {pageId: string, newPageItem: ICreatePageItem}>
+    (provider.createPageItem, addPageItemMutationsOpts);
 
   const _updatePageItem = useMutation
     <ISectionItem, Error, {pageId: string, sectionItem: ISectionItem}>
@@ -197,7 +203,6 @@ export const usePageAPI = () => {
 
     addPageItem = (pageItem: ICreatePageItem) =>
       createPageItem.mutate({pageId: currentPage.id, newPageItem: pageItem});
-
     }
 
   return {

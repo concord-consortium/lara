@@ -1,51 +1,58 @@
 import * as React from "react";
 import { useState } from "react";
+import { ISectionItem, ITextBlockData } from "../api/api-types";
 import { Modal, ModalButtons } from "../../shared/components/modal/modal";
 import { TextBlockEditForm } from "./text-block-edit-form";
 import { Save } from "../../shared/components/icons/save-icon";
 import { Close } from "../../shared/components/icons/close-icon";
+import { usePageAPI } from "../api/use-api-provider";
+import { UserInterfaceContext } from "../api/use-user-interface-context";
 
 import "./item-edit-dialog.scss";
 
 export interface IItemEditDialogProps {
-  closeDialogFunction: () => void;
   errorMessage?: string;
-  item: any;
-  updateFunction: (itemId: string) => void;
 }
 
 export const ItemEditDialog: React.FC<IItemEditDialogProps> = ({
-  closeDialogFunction,
-  errorMessage,
-  item,
-  updateFunction
+  errorMessage
   }: IItemEditDialogProps) => {
+  const { userInterface: {editingItemId}, actions: {setEditingItemId}} = React.useContext(UserInterfaceContext);
+  const api = usePageAPI();
+  const updatePageItem = api.updatePageItem;
+  const pageItems = api.getItems();
+  const pageItem = pageItems.find(pi => pi.id === editingItemId);
   const [modalVisibility, setModalVisibility] = useState(true);
+  const [itemData, setItemData] = useState({});
 
-  const handleChangeContent = () => {
-    return;
-  };
-
-  const handleChangeIsCallout = () => {
-    return;
-  };
-
-  const handleChangeIsFullWidth = () => {
-    return;
+  const handleUpdateData = (updateItemData: ITextBlockData) => {
+    setItemData(updateItemData);
   };
 
   const handleUpdateItem = () => {
+    if (pageItem && itemData !== {}) {
+      pageItem.data = itemData;
+      // tslint:disable-next-line
+      console.log(itemData);
+      // tslint:disable-next-line
+      console.log(pageItem);
+      updatePageItem(pageItem);
+    }
+    handleCloseDialog();
+  };
+
+  const handleCancelUpdateItem = () => {
     handleCloseDialog();
   };
 
   const handleCloseDialog = () => {
-    closeDialogFunction();
+    setEditingItemId(false);
   };
 
   const modalButtons = [
     {
       classes: "cancel",
-      clickHandler: handleCloseDialog,
+      clickHandler: handleCancelUpdateItem,
       disabled: false,
       svg: <Close height="12" width="12"/>,
       text: "Cancel"
@@ -59,17 +66,20 @@ export const ItemEditDialog: React.FC<IItemEditDialogProps> = ({
     }
   ];
 
-  return (
-    <Modal title="Edit" closeFunction={handleCloseDialog} visibility={modalVisibility} width={600}>
-      <div className="itemEditDialog">
-        {errorMessage &&
-          <div className="errorMessage">
-            {errorMessage}
-          </div>
-        }
-        <TextBlockEditForm pageItem={item} />
-        <ModalButtons buttons={modalButtons} />
-      </div>
-    </Modal>
-  );
+  if (pageItem) {
+    return (
+      <Modal title="Edit" closeFunction={handleCancelUpdateItem} visibility={modalVisibility} width={600}>
+        <div className="itemEditDialog">
+          {errorMessage &&
+            <div className="errorMessage">
+              {errorMessage}
+            </div>
+          }
+          <TextBlockEditForm pageItem={pageItem} handleUpdateData={handleUpdateData} />
+          <ModalButtons buttons={modalButtons} />
+        </div>
+      </Modal>
+    );
+  }
+  return null;
 };

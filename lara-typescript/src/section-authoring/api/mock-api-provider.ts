@@ -130,8 +130,9 @@ const createPageItem = (args: {pageId: PageId, newPageItem: ICreatePageItem}) =>
   if (page) {
     const section = page.sections.find(s => s.id === sectionId);
     if (section) {
-      section.items?.push(makeNewPageItem(newPageItem));
-      return Promise.resolve(page);
+      const newlyCreatedPageItem = makeNewPageItem(newPageItem);
+      section.items?.push(newlyCreatedPageItem);
+      return Promise.resolve(newlyCreatedPageItem);
     }
     return Promise.reject(`cant find section ${sectionId}`);
   }

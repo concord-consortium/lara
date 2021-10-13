@@ -27,6 +27,7 @@ export const getLaraAuthoringAPI =
   const createPageSectionUrl = (pageId: PageId) => `${prefix}/create_page_section/${pageId}.json`;
   const updateSectionUrl = (pageId: PageId) => `${prefix}/update_page_section/${pageId}.json`;
   const createPageItemUrl = (pageId: PageId) => `${prefix}/create_page_item/${pageId}.json`;
+  const updatePageItemUrl = (pageId: PageId) => `${prefix}/update_page_item/${pageId}.json`;
   const deletePageItemUrl = (pageId: PageId) => `${prefix}/delete_page_item/${pageId}.json`;
   const libraryInteractivesUrl = `${prefix}/get_library_interactives_list.json`;
 
@@ -90,7 +91,9 @@ export const getLaraAuthoringAPI =
   };
 
   const updatePageItem: APIPageItemUpdateF = (args: {pageId: string, sectionItem: ISectionItem}) => {
-    return Promise.reject("not implemented");
+    // return Promise.reject("not implemented");
+    const body = { page_item: args.sectionItem };
+    return sendToLara({url: updatePageItemUrl(args.pageId), method: "POST", body});
   };
 
   const deletePageItem: APIPageItemDeleteF = (args: {pageId: PageId, pageItemId: ItemId}) => {
@@ -101,9 +104,10 @@ export const getLaraAuthoringAPI =
 
   const getAllEmbeddables = () => {
     return sendToLara({url: libraryInteractivesUrl})
-      .then( (json: ILibraryInteractiveResponse) => {
+      // tslint:disable-next-line
+      .then( (json: any) => {
         const result = {
-          allEmbeddables: json.library_interactives.map(li => ({
+          allEmbeddables: json.library_interactives.map((li: any) => ({
             id: li.id,
             name: li.name,
             type: li.type,
@@ -116,7 +120,16 @@ export const getLaraAuthoringAPI =
           name: "Interactive IFrame",
           type: "MwInteractive",
           useCount: 0,
-          dateAdded: 0
+          dateAdded: 0,
+          isQuickAddItem: true
+        });
+        result.allEmbeddables.push({
+          id: "Embeddable::Xhtml",
+          name: "Text Block",
+          type: "Embeddable::Xhtml",
+          useCount: 0,
+          dateAdded: 0,
+          isQuickAddItem: true
         });
         return result;
       });

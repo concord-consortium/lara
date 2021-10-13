@@ -137,10 +137,6 @@ export const SectionColumn: React.FC<ISectionColumnProps> = ({
       type: itemType
     });
     handleToggleShowAddItem();
-    const newItemId = items[-1]?.id;
-    if (newItemId) {
-      handleEditItem(newItemId);
-    }
   };
 
   const showItemPicker = () => setShowAddItem(true);
@@ -177,7 +173,6 @@ export const SectionColumn: React.FC<ISectionColumnProps> = ({
                             <SectionItem
                               {...item}
                               key={item.id}
-                              editFunction={handleEditItem}
                               copyFunction={handleCopyItem}
                               deleteFunction={deletePageItem}
                             />

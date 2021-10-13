@@ -18,6 +18,7 @@ const defaultUI: IUserInterface = {
 interface IUIActions {
   setMovingItemId: (id: false|string) => void;
   setMovingSectionId: (id: false|string) => void;
+  setEditingItemId: (id: false|string) => void;
 }
 
 interface IUIContext {
@@ -31,7 +32,9 @@ const defaultContext: IUIContext = {
     // tslint:disable-next-line
     setMovingItemId: (id) => console.log(id),
     // tslint:disable-next-line
-    setMovingSectionId: (id) => console.log(id)
+    setMovingSectionId: (id) => console.log(id),
+    // tslint:disable-next-line
+    setEditingItemId: (id) => console.log(id)
   }
 };
 
@@ -54,7 +57,11 @@ const useUserInterface = (): IUIContext => {
     setUserInterface( (draft) => { draft.movingSectionId = id; });
   };
 
-  const actions = { setMovingItemId, setMovingSectionId };
+  const setEditingItemId = (id: string| false) => {
+    setUserInterface( (draft) => { draft.editingItemId = id; });
+  };
+
+  const actions = { setMovingItemId, setMovingSectionId, setEditingItemId };
   return({userInterface, actions} );
 };
 
