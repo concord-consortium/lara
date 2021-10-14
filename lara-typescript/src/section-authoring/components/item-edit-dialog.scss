@@ -1,0 +1,60 @@
+@import "../../vars.scss";
+
+.itemEditDialog {
+  input, textarea {
+    border: solid 1.5px var(--med-gray);
+    border-radius: 4px;
+    padding: 5px 10px;
+    width: calc(100% - 18px);
+  }
+  textarea {
+    height: 200px;
+  }
+  input[type="checkbox"] {
+    border: solid 1.5px var(--med-gray);
+    border-radius: 5px;
+    cursor: pointer;
+    height: 20px;
+    line-height: 1;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    width: 20px;
+    -webkit-appearance: none;
+  
+    &:checked {
+      background: var(--teal);
+  
+      &:after {
+        border: solid white;
+        border-width: 0 3px 3px 0;
+        color: white;
+        content: " ";
+        display: block;
+        height: 10px;
+        left: 4px;
+        position: absolute;
+        top: 0;
+        width: 5px;
+        -webkit-transform: rotate(40deg);
+        -ms-transform: rotate(40deg);
+        transform: rotate(40deg);
+      }
+    }
+    &:hover {
+      &:after {
+        color: var(--lt-teal);
+      }    
+    }
+    &:active {
+      &:after {
+        color: var(--teal);
+      }
+    }
+  }
+  .inputNote {
+    color: var(--med-gray);
+    font-size: 14px;
+    font-style: italic;
+  }
+}

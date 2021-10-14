@@ -129,7 +129,7 @@ class Api::V1::InteractivePagesController < API::APIController
     position = position.to_i unless position.nil?
     column = page_item_params["column"] || PageItem::COLUMN_PRIMARY
 
-    # currently we only support library interactives, this will change later
+    # currently we only support library interactives and text blocks, this will change later
     case serializeable_id
     when /LibraryInteractive/
       library_interactive = LibraryInteractive.find_by_serializeable_id(serializeable_id)
@@ -137,14 +137,70 @@ class Api::V1::InteractivePagesController < API::APIController
       embeddable = ManagedInteractive.create!(library_interactive_id: library_interactive.id)
     when /MwInteractive/
       embeddable = MwInteractive.create!
+    when /Embeddable::Xhtml/
+      embeddable = Embeddable::Xhtml.create!
     else
-      return error("Only library interactive embeddables are currently supported")
+      return error("Only library interactive embeddables and text blocks are currently supported")
     end
 
     @interactive_page.add_embeddable(embeddable, position, section.id, column)
     @interactive_page.reload
 
-    render_page_sections_json
+    embeddable.reload
+    pi = embeddable.p_item
+    result = {
+      id: pi.id.to_s,
+      column: pi.column,
+      position: pi.position,
+      type: pi.embeddable_type,
+      data: pi.embeddable.respond_to?(:to_interactive) ? pi.embeddable.to_interactive : pi.embeddable.to_hash
+    }
+    render json: result.to_json
+  end
+
+  def update_page_item
+    authorize! :update, @interactive_page
+
+    page_item_params = params["page_item"]
+    return error("Missing page_item parameter") if page_item_params.nil?
+
+    # verify the parameters
+    page_item_id = page_item_params["id"]
+    return error("Missing page_item[id] parameter") if page_item_id.nil?
+    column = page_item_params["column"]
+    return error("Missing page_item[column] parameter") if column.nil?
+    position = page_item_params["position"]
+    return error("Missing page_item[position] parameter") if position.nil?
+    data = page_item_params["data"]
+    return error("Missing page_item[data] parameter") if data.nil?
+    type = page_item_params["type"]
+    return error("Missing page_item[type] parameter") if type.nil?
+
+    page_item = PageItem.find(page_item_id)
+    if page_item
+      new_attr = {
+        column: column,
+        position: position
+      }
+      page_item.update_attributes(new_attr)
+      embeddable_type = type.constantize
+      embeddable = embeddable_type.find(page_item.embeddable_id)
+      if embeddable
+        embeddable.update_attributes(data)
+      end
+    end
+    @interactive_page.reload
+
+    embeddable.reload
+    pi = embeddable.p_item
+    result = {
+      id: pi.id.to_s,
+      column: pi.column,
+      position: pi.position,
+      type: pi.embeddable_type,
+      data: pi.embeddable.respond_to?(:to_interactive) ? pi.embeddable.to_interactive : pi.embeddable.to_hash
+    }
+    render json: result.to_json     
   end
 
   def delete_page_item
@@ -171,7 +227,7 @@ class Api::V1::InteractivePagesController < API::APIController
       .select("library_interactives.id, library_interactives.name, count(managed_interactives.id) as use_count, UNIX_TIMESTAMP(library_interactives.created_at) as date_added")
       .joins("LEFT JOIN managed_interactives ON managed_interactives.linked_interactive_id = library_interactives.id")
       .group('library_interactives.id').map do |li|
-        {id: li.serializeable_id, name: li.name, use_count: li.use_count, date_added: li.date_added }
+        {id: li.serializeable_id, name: li.name, type: li.class.to_s, use_count: li.use_count, date_added: li.date_added }
       end
 
     render :json => {

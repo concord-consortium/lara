@@ -51,6 +51,10 @@ export interface ISectionColumnProps {
    */
   sectionId: string;
 
+  /**
+   * Function to edit an item
+   */
+  editItemFunction?: (id: string) => void;
 }
 
 export const SectionColumn: React.FC<ISectionColumnProps> = ({
@@ -61,10 +65,13 @@ export const SectionColumn: React.FC<ISectionColumnProps> = ({
   columnNumber,
   items,
   moveFunction,
+  editItemFunction,
   sectionId
   }: ISectionColumnProps) => {
 
   const api = usePageAPI();
+  const getAllEmbeddables = api.getAllEmbeddables;
+  const embeddables = getAllEmbeddables.data?.allEmbeddables;
   const { deletePageItem, updateSectionItems} = api;
   const [showAddItem, setShowAddItem] = useState(false);
 
@@ -104,6 +111,10 @@ export const SectionColumn: React.FC<ISectionColumnProps> = ({
     moveFunction?.(itemId);
   };
 
+  const handleEditItem = (itemId: string) => {
+    editItemFunction?.(itemId);
+  };
+
   const handleCopyItem = (itemId: string) => {
     const item = items.find(i => i.id === itemId);
     if (item) {
@@ -116,14 +127,18 @@ export const SectionColumn: React.FC<ISectionColumnProps> = ({
 
   const handleAddItem = (itemId: string) => {
     const position = items.length + 1;
+    const embeddable = embeddables?.find(e => e.id === itemId);
+    const itemType = embeddable?.type;
     addPageItem?.({
       section_id: sectionId,
       embeddable: itemId,
       column,
-      position
+      position,
+      type: itemType
     });
     handleToggleShowAddItem();
   };
+
   const showItemPicker = () => setShowAddItem(true);
 
   return (

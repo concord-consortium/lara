@@ -1,12 +1,15 @@
+import { stringify } from "uuid";
+import { camelToSnakeCaseKeys } from "../../shared/convert-keys";
 import {
   IAuthoringAPIProvider,
   IPage, PageId, ISection, ICreatePageItem, ItemId,
   APIPageGetF, APIPagesGetF,
   APIPageCreateF, APIPageDeleteF,
   APISectionCreateF, APISectionsUpdateF, APISectionUpdateF,
-  APIPageItemCreateF,
-  ILibraryInteractiveResponse,
-  APIPageItemDeleteF
+  APIPageItemCreateF, APIPageItemUpdateF,
+  ILibraryInteractive, ILibraryInteractiveResponse,
+  APIPageItemDeleteF,
+  ISectionItem
 } from "./api-types";
 
 const APIBase = "/api/v1";
@@ -26,6 +29,7 @@ export const getLaraAuthoringAPI =
   const createPageSectionUrl = (pageId: PageId) => `${prefix}/create_page_section/${pageId}.json`;
   const updateSectionUrl = (pageId: PageId) => `${prefix}/update_page_section/${pageId}.json`;
   const createPageItemUrl = (pageId: PageId) => `${prefix}/create_page_item/${pageId}.json`;
+  const updatePageItemUrl = (pageId: PageId) => `${prefix}/update_page_item/${pageId}.json`;
   const deletePageItemUrl = (pageId: PageId) => `${prefix}/delete_page_item/${pageId}.json`;
   const libraryInteractivesUrl = `${prefix}/get_library_interactives_list.json`;
 
@@ -88,6 +92,15 @@ export const getLaraAuthoringAPI =
     return sendToLara({url: createPageItemUrl(args.pageId), method: "POST", body});
   };
 
+  const updatePageItem: APIPageItemUpdateF = (args: {pageId: string, sectionItem: ISectionItem}) => {
+    const pageItem = args.sectionItem;
+    const pageItemData = pageItem.data;
+    const translatedData = camelToSnakeCaseKeys(pageItemData);
+    pageItem.data = translatedData;
+    const body = { page_item: pageItem };
+    return sendToLara({url: updatePageItemUrl(args.pageId), method: "POST", body});
+  };
+
   const deletePageItem: APIPageItemDeleteF = (args: {pageId: PageId, pageItemId: ItemId}) => {
     const { pageId, pageItemId } = args;
     const body = { page_item_id: pageItemId };
@@ -96,11 +109,13 @@ export const getLaraAuthoringAPI =
 
   const getAllEmbeddables = () => {
     return sendToLara({url: libraryInteractivesUrl})
-      .then( (json: ILibraryInteractiveResponse) => {
+      // tslint:disable-next-line
+      .then( (json: any) => {
         const result = {
-          allEmbeddables: json.library_interactives.map(li => ({
+          allEmbeddables: json.library_interactives.map((li: ILibraryInteractive) => ({
             id: li.id,
             name: li.name,
+            type: li.type,
             useCount: li.use_count,
             dateAdded: li.date_added
           }))
@@ -108,8 +123,18 @@ export const getLaraAuthoringAPI =
         result.allEmbeddables.push({
           id: "MwInteractive",
           name: "Interactive IFrame",
+          type: "MwInteractive",
           useCount: 0,
-          dateAdded: 0
+          dateAdded: 0,
+          isQuickAddItem: true
+        });
+        result.allEmbeddables.push({
+          id: "Embeddable::Xhtml",
+          name: "Text Block",
+          type: "Embeddable::Xhtml",
+          useCount: 0,
+          dateAdded: 0,
+          isQuickAddItem: true
         });
         return result;
       });
@@ -118,7 +143,8 @@ export const getLaraAuthoringAPI =
   return {
     getPages, getPage, createPage, deletePage,
     createSection, updateSections, updateSection,
-    createPageItem, deletePageItem,
-    getAllEmbeddables
+    createPageItem, updatePageItem, deletePageItem,
+    getAllEmbeddables,
+    pathToTinyMCE: "/assets/tinymce.js", pathToTinyMCECSS: "/assets/tinymce-content.css"
   };
 };

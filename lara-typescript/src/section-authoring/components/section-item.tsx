@@ -14,7 +14,7 @@ export interface ISectionItemProps {
   /**
    * Record Type
    */
-   type?: string;
+  type?: string;
 
   /**
    * Optional function to change the item
@@ -55,6 +55,7 @@ export const SectionItem: React.FC<ISectionItemProps> = ({
   }: ISectionItemProps) => {
 
   const { userInterface: {movingItemId}, actions: {setMovingItemId}} = React.useContext(UserInterfaceContext);
+  const { userInterface: {editingItemId}, actions: {setEditingItemId}} = React.useContext(UserInterfaceContext);
 
   const renderTitle = () => (
     <>
@@ -67,7 +68,7 @@ export const SectionItem: React.FC<ISectionItemProps> = ({
   };
 
   const handleEdit = () => {
-    return;
+    setEditingItemId(id);
   };
 
   const handleMove = () => {

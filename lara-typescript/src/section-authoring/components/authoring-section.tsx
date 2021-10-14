@@ -58,6 +58,11 @@ export interface ISectionProps extends ISection {
    */
   addPageItem?: (pageItem: ICreatePageItem) => void;
 
+  /**
+   * Function to initiate editing of an item
+   */
+  editItemFunction?: (itemId: string) => void;
+
 }
 
 /**
@@ -73,6 +78,7 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
   collapsed: initCollapsed = false,
   title,
   moveItemFunction,
+  editItemFunction,
   draggableProvided,
   addPageItem
   }: ISectionProps) => {
@@ -169,6 +175,12 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
     }
   };
 
+  const handleEditItem = (itemId: string) => {
+    if (editItemFunction) {
+      editItemFunction(itemId);
+    }
+  };
+
   const sectionClassNames = () => {
     const layoutClass = "section-" + layout.toLowerCase().replace(/ /g, "-");
     return `edit-page-grid-container sectionContainer ${layoutClass}`;
@@ -215,6 +227,7 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
         columnNumber={1}
         items={getColumnItems(columnValueForIndex(0))}
         moveFunction={handleMoveItem}
+        editItemFunction={handleEditItem}
         sectionId={id}
         />
       }

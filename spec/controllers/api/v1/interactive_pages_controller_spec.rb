@@ -189,7 +189,7 @@ describe Api::V1::InteractivePagesController do
         }}
         expect(response.status).to eq(500)
         expect(response.content_type).to eq("application/json")
-        expect(response.body).to include "Only library interactive embeddables are currently supported"
+        expect(response.body).to include "Only library interactive embeddables and text blocks are currently supported"
       end
 
       it "fails with an invalid library interactive parameter" do
@@ -234,7 +234,7 @@ describe Api::V1::InteractivePagesController do
   describe "#get_library_interactives_list" do
     let (:managed_interactive1) { FactoryGirl.create(:managed_interactive,
       :library_interactive_id => library_interactive1.id
-     )}
+    )}
 
     it "returns the list of library interactives" do
       # make sure the mocks exist
@@ -248,8 +248,130 @@ describe Api::V1::InteractivePagesController do
       expect(response.body).to eql({
         success: true,
         library_interactives: [
-          {id: library_interactive1.serializeable_id, name: library_interactive1.name, use_count: 1, date_added: library_interactive1.created_at.to_i},
-          {id: library_interactive2.serializeable_id, name: library_interactive2.name, use_count: 0, date_added: library_interactive2.created_at.to_i}
+          {id: library_interactive1.serializeable_id, name: library_interactive1.name, type: 'LibraryInteractive', use_count: 1, date_added: library_interactive1.created_at.to_i},
+          {id: library_interactive2.serializeable_id, name: library_interactive2.name, type: 'LibraryInteractive', use_count: 0, date_added: library_interactive2.created_at.to_i}
+        ]
+      }.to_json)
+    end
+  end
+
+  describe "#update_page_item" do
+    let(:section) { FactoryGirl.create(:section, :interactive_page => page, :layout => Section::LAYOUT_FULL_WIDTH) }
+    let(:data) { { name: "Text Block 1", content: "Some text.", is_callout: false, is_full_width: false, is_hidden: false } }
+    let(:new_data) { { name: "Text Block 1v2", content: "I changed my mind.", is_callout: true, is_full_width: true, is_hidden: true } }
+    let(:embeddable) { FactoryGirl.create(:xhtml, data)}
+    let(:embeddable_type) { "Embeddable::Xhtml" }
+    let(:page_item) { FactoryGirl.create(:page_item, { section: section, column: PageItem::COLUMN_PRIMARY, position: 1, embeddable: embeddable })}
+
+    before :each do
+      sign_in author
+    end
+
+    describe "fails" do
+      it "without a page_item parameter" do
+        xhr :post, "update_page_item", {id: page.id}
+        expect(response.status).to eq(500)
+        expect(response.content_type).to eq("application/json")
+        expect(response.body).to include "Missing page_item parameter"
+      end
+
+      it "without an id parameter" do
+        xhr :post, "update_page_item", {id: page.id, page_item: {}}
+        expect(response.status).to eq(500)
+        expect(response.content_type).to eq("application/json")
+        expect(response.body).to include "Missing page_item[id] parameter"
+      end
+
+      it "without a column parameter" do
+        xhr :post, "update_page_item", {id: page.id, page_item: {
+          id: page_item.id
+        }}
+        expect(response.status).to eq(500)
+        expect(response.content_type).to eq("application/json")
+        expect(response.body).to include "Missing page_item[column] parameter"
+      end
+
+      it "without a position parameter" do
+        xhr :post, "update_page_item", {id: page.id, page_item: {
+          id: page_item.id,
+          column: page_item.column
+        }}
+        expect(response.status).to eq(500)
+        expect(response.content_type).to eq("application/json")
+        expect(response.body).to include "Missing page_item[position] parameter"
+      end
+
+      it "without a data parameter" do
+        xhr :post, "update_page_item", {id: page.id, page_item: {
+          id: page_item.id,
+          column: page_item.column,
+          position: page_item.position
+        }}
+        expect(response.status).to eq(500)
+        expect(response.content_type).to eq("application/json")
+        expect(response.body).to include "Missing page_item[data] parameter"
+      end
+
+      it "without a type parameter" do
+        xhr :post, "update_page_item", {id: page.id, page_item: {
+          id: page_item.id,
+          column: page_item.column,
+          position: page_item.position,
+          data: new_data
+        }}
+        expect(response.status).to eq(500)
+        expect(response.content_type).to eq("application/json")
+        expect(response.body).to include "Missing page_item[type] parameter"
+      end
+    end
+
+    it "succeeds with valid parameters" do
+      xhr :post, "update_page_item", {id: page.id, page_item: {
+        id: page_item.id,
+        column: page_item.column,
+        position: page_item.position,
+        data: new_data,
+        type: embeddable_type
+      }}
+      expect(response.status).to eq(200)
+      expect(response.content_type).to eq("application/json")
+      expect(response.body).to eql(
+        {
+          id: page_item.id.to_s,
+          column: page_item.column,
+          position: page_item.position,
+          type: embeddable_type,
+          data: {
+            name: new_data[:name],
+            content: new_data[:content],
+            is_hidden: new_data[:is_hidden],
+            is_full_width: new_data[:is_full_width],
+            is_callout: new_data[:is_callout]
+          }
+        }.to_json
+      )
+    end
+  end
+
+  describe "#get_library_interactives_list" do
+    let (:managed_interactive1) { FactoryGirl.create(:managed_interactive,
+      :library_interactive_id => library_interactive1.id
+    )}
+
+    it "returns the list of library interactives" do
+      # make sure the mocks exist
+      library_interactive1
+      library_interactive2
+      managed_interactive1
+
+      xhr :get, "get_library_interactives_list"
+      expect(response.status).to eq(200)
+      expect(response.content_type).to eq("application/json")
+      expect(response.body).to eql({
+        success: true,
+        library_interactives: [
+          {id: library_interactive1.serializeable_id, name: library_interactive1.name, type: 'LibraryInteractive', use_count: 1, date_added: library_interactive1.created_at.to_i},
+          {id: library_interactive2.serializeable_id, name: library_interactive2.name, type: 'LibraryInteractive', use_count: 0, date_added: library_interactive2.created_at.to_i}
         ]
       }.to_json)
     end

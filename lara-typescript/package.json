@@ -141,6 +141,7 @@
     "@concord-consortium/interactive-api-host": "^0.3.0",
     "@concord-consortium/text-decorator": "^1.0.2",
     "@concord-consortium/token-service": "^2.1.0",
+    "@tinymce/tinymce-react": "^3.12.7",
     "@types/react-query": "^1.2.9",
     "classnames": "^2.3.1",
     "deep-freeze": "0.0.1",

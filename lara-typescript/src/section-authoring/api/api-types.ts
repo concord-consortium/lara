@@ -17,17 +17,18 @@ export enum SectionColumns {
   SECONDARY =  "secondary"
 }
 export interface ISectionItem {
-  id: ItemId;
-  title?: string;
-  embeddable?: string;
   column?: SectionColumns;
-  section_id?: string;
+  data?: any;
+  id: ItemId;
   position?: number;
+  section_id?: string;
+  type?: string;
 }
 
 export interface ISectionItemType {
   id: string;
   name: string;
+  type: string;
   useCount: number;
   dateAdded: number;
   isQuickAddItem?: boolean;
@@ -36,16 +37,36 @@ export interface ISectionItemType {
 export interface ICreatePageItem {
   section_id: string;
   column: SectionColumns;
+  data?: any;
   embeddable: string;
   position?: number;
+  type?: string;
+}
+
+export interface ITextBlockData {
+  content?: string;
+  name?: string;
+  isCallout?: boolean;
+  isFullWidth?: boolean;
+}
+
+export interface ILibraryInteractive {
+  id: string;
+  name: string;
+  type: string;
+  use_count: number;
+  date_added: number;
+  isQuickAddItem: boolean;
 }
 
 export interface ILibraryInteractiveResponse {
   library_interactives: Array<{
     id: string;
     name: string;
+    type: string;
     use_count: number;
     date_added: number;
+    isQuickAddItem: boolean;
   }>;
 }
 
@@ -129,8 +150,9 @@ export type APISectionCreateF = (pageId: PageId) => Promise<IPage>;
 export type APISectionsUpdateF = (nextPage: IPage) => Promise<IPage>;
 export type APISectionUpdateF = (args: {pageId: PageId, changes: { section: Partial<ISection>}}) => Promise<IPage>;
 
-export type APIPageItemCreateF = (args: {pageId: PageId, newPageItem: ICreatePageItem}) => Promise<IPage>;
+export type APIPageItemCreateF = (args: {pageId: PageId, newPageItem: ICreatePageItem}) => Promise<ISectionItem>;
 export type APIPageItemDeleteF = (args: {pageId: PageId, pageItemId: ItemId}) => Promise<IPage>;
+export type APIPageItemUpdateF = (args: {pageId: PageId, sectionItem: ISectionItem}) => Promise<ISectionItem>;
 
 /**
  * The implementation providing the API has to conform to this provider API
@@ -147,6 +169,10 @@ export interface IAuthoringAPIProvider {
 
   createPageItem: APIPageItemCreateF;
   deletePageItem: APIPageItemDeleteF;
+  updatePageItem: APIPageItemUpdateF;
 
   getAllEmbeddables: () => Promise<{allEmbeddables: ISectionItemType[]}>;
+
+  pathToTinyMCE: string | null;
+  pathToTinyMCECSS: string | undefined;
 }
