@@ -1,4 +1,3 @@
-
 import {
   IPage, PageId,
   APIPageGetF, APIPagesGetF, APIPageItemUpdateF,
@@ -243,5 +242,5 @@ export const API: IAuthoringAPIProvider = {
   getPages, getPage, createPage, deletePage,
   createSection, updateSections, updateSection,
   createPageItem, updatePageItem, deletePageItem,
-  getAllEmbeddables, pathToTinyMCE: null
+  getAllEmbeddables, pathToTinyMCE: null, pathToTinyMCECSS: undefined
 };

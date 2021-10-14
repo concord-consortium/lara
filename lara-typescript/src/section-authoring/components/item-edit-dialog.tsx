@@ -32,10 +32,6 @@ export const ItemEditDialog: React.FC<IItemEditDialogProps> = ({
   const handleUpdateItem = () => {
     if (pageItem && itemData !== {}) {
       pageItem.data = itemData;
-      // tslint:disable-next-line
-      console.log(itemData);
-      // tslint:disable-next-line
-      console.log(pageItem);
       updatePageItem(pageItem);
     }
     handleCloseDialog();

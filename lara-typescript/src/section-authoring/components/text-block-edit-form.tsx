@@ -20,7 +20,9 @@ export const TextBlockEditForm: React.FC<ITextBlockEditFormProps> = ({
   const initEditor = (e: any, editor: any) => {
     editorRef.current = editor;
   };
-  const pathToTinyMCE = usePageAPI().pathToTinyMCE;
+  const api = usePageAPI();
+  const pathToTinyMCE = api.pathToTinyMCE;
+  const pathToTinyMCECSS = api.pathToTinyMCECSS;
   // Create a new item data object for recording changes so the
   // real pageItem isn't updated if the user cancels editing.
   const initItemData = { content, isCallout, isFullWidth, name };
@@ -104,7 +106,7 @@ export const TextBlockEditForm: React.FC<ITextBlockEditFormProps> = ({
               toolbar: "bold italic underline | " +
               "aligncenter alignleft alignright indent outdent | " +
               "subscript superscript | numlist bullist | link unlink | hr image | code",
-              content_css: "/assets/tinymce-content.css"
+              content_css: pathToTinyMCECSS
             }}
           />
         }

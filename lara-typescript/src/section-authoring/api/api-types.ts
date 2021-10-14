@@ -165,4 +165,5 @@ export interface IAuthoringAPIProvider {
   getAllEmbeddables: () => Promise<{allEmbeddables: ISectionItemType[]}>;
 
   pathToTinyMCE: string | null;
+  pathToTinyMCECSS: string | undefined;
 }

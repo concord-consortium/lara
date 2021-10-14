@@ -210,6 +210,6 @@ export const usePageAPI = () => {
     addSectionMutation, addSection, changeSection, updateSection, getSections, moveSection, updateSections,
     addPageItem, createPageItem, updatePageItem, deletePageItem, updateSectionItems, moveItem, getItems,
     getAllEmbeddables, currentPage,
-    pathToTinyMCE: provider.pathToTinyMCE
+    pathToTinyMCE: provider.pathToTinyMCE, pathToTinyMCECSS: provider.pathToTinyMCECSS
   };
 };

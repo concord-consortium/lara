@@ -1,3 +1,5 @@
+import { stringify } from "uuid";
+import { camelToSnakeCase } from "../../shared/convert-case";
 import {
   IAuthoringAPIProvider,
   IPage, PageId, ISection, ICreatePageItem, ItemId,
@@ -91,8 +93,15 @@ export const getLaraAuthoringAPI =
   };
 
   const updatePageItem: APIPageItemUpdateF = (args: {pageId: string, sectionItem: ISectionItem}) => {
-    // return Promise.reject("not implemented");
-    const body = { page_item: args.sectionItem };
+    const pageItem = args.sectionItem;
+    const pageItemData = pageItem.data;
+    const translatedData: any = {};
+    Object.keys(pageItemData).forEach((key: string) => {
+      const newKey = camelToSnakeCase(key);
+      translatedData[newKey] = pageItemData[key];
+    });
+    pageItem.data = translatedData;
+    const body = { page_item: pageItem };
     return sendToLara({url: updatePageItemUrl(args.pageId), method: "POST", body});
   };
 
@@ -139,6 +148,7 @@ export const getLaraAuthoringAPI =
     getPages, getPage, createPage, deletePage,
     createSection, updateSections, updateSection,
     createPageItem, updatePageItem, deletePageItem,
-    getAllEmbeddables, pathToTinyMCE: "/assets/tinymce.js"
+    getAllEmbeddables,
+    pathToTinyMCE: "/assets/tinymce.js", pathToTinyMCECSS: "/assets/tinymce-content.css"
   };
 };

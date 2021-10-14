@@ -174,7 +174,7 @@ class Api::V1::InteractivePagesController < API::APIController
     data = page_item_params["data"]
     return error("Missing page_item[data] parameter") if data.nil?
     type = page_item_params["type"]
-    return error("Missing page_item[type] parameter") if data.nil?
+    return error("Missing page_item[type] parameter") if type.nil?
 
     page_item = PageItem.find(page_item_id)
     if page_item

@@ -99,7 +99,6 @@ export const AuthoringPage: React.FC<IPageProps> = ({
   const [pageHasStudentSidebar, setPageHasStudentSidebar] = useState(hasStudentSidebar);
   const [pageHasTESidebar, setPageHasTESidebar] = useState(hasTESidebar);
 
-  const [itemToMove, setItemToMove] = useState(initItemToMove);
   const [itemToEdit, setItemToEdit] = useState(initItemToEdit);
   const [showSettings, setShowSettings] = useState(isNew);
 
@@ -200,7 +199,6 @@ export const AuthoringPage: React.FC<IPageProps> = ({
 
   const handleCloseDialog = () => {
     setShowSettings(false);
-    setItemToMove(undefined);
     setItemToEdit(undefined);
   };
 
