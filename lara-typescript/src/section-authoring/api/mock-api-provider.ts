@@ -242,5 +242,6 @@ export const API: IAuthoringAPIProvider = {
   getPages, getPage, createPage, deletePage,
   createSection, updateSections, updateSection,
   createPageItem, updatePageItem, deletePageItem,
-  getAllEmbeddables, pathToTinyMCE: null, pathToTinyMCECSS: undefined
+  getAllEmbeddables,
+  pathToTinyMCE: "https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.10.0/tinymce.min.js", pathToTinyMCECSS: undefined
 };

@@ -62,6 +62,16 @@ export const ItemEditDialog: React.FC<IItemEditDialogProps> = ({
     }
   ];
 
+  const getEditForm = (itemToEdit: ISectionItem) => {
+    switch (itemToEdit.type) {
+      case "Embeddable::Xhtml":
+        return <TextBlockEditForm pageItem={itemToEdit} handleUpdateData={handleUpdateData} />;
+        break;
+      default:
+        return "Editing not supported.";
+    }
+  };
+
   if (pageItem) {
     return (
       <Modal title="Edit" closeFunction={handleCancelUpdateItem} visibility={modalVisibility} width={600}>
@@ -71,7 +81,7 @@ export const ItemEditDialog: React.FC<IItemEditDialogProps> = ({
               {errorMessage}
             </div>
           }
-          <TextBlockEditForm pageItem={pageItem} handleUpdateData={handleUpdateData} />
+          {getEditForm(pageItem)}
           <ModalButtons buttons={modalButtons} />
         </div>
       </Modal>

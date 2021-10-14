@@ -1,5 +1,5 @@
 import { stringify } from "uuid";
-import { camelToSnakeCase } from "../../shared/convert-case";
+import { camelToSnakeCaseKeys } from "../../shared/convert-keys";
 import {
   IAuthoringAPIProvider,
   IPage, PageId, ISection, ICreatePageItem, ItemId,
@@ -7,7 +7,7 @@ import {
   APIPageCreateF, APIPageDeleteF,
   APISectionCreateF, APISectionsUpdateF, APISectionUpdateF,
   APIPageItemCreateF, APIPageItemUpdateF,
-  ILibraryInteractiveResponse,
+  ILibraryInteractive, ILibraryInteractiveResponse,
   APIPageItemDeleteF,
   ISectionItem
 } from "./api-types";
@@ -95,11 +95,7 @@ export const getLaraAuthoringAPI =
   const updatePageItem: APIPageItemUpdateF = (args: {pageId: string, sectionItem: ISectionItem}) => {
     const pageItem = args.sectionItem;
     const pageItemData = pageItem.data;
-    const translatedData: any = {};
-    Object.keys(pageItemData).forEach((key: string) => {
-      const newKey = camelToSnakeCase(key);
-      translatedData[newKey] = pageItemData[key];
-    });
+    const translatedData = camelToSnakeCaseKeys(pageItemData);
     pageItem.data = translatedData;
     const body = { page_item: pageItem };
     return sendToLara({url: updatePageItemUrl(args.pageId), method: "POST", body});
@@ -116,7 +112,7 @@ export const getLaraAuthoringAPI =
       // tslint:disable-next-line
       .then( (json: any) => {
         const result = {
-          allEmbeddables: json.library_interactives.map((li: any) => ({
+          allEmbeddables: json.library_interactives.map((li: ILibraryInteractive) => ({
             id: li.id,
             name: li.name,
             type: li.type,

@@ -50,6 +50,15 @@ export interface ITextBlockData {
   isFullWidth?: boolean;
 }
 
+export interface ILibraryInteractive {
+  id: string;
+  name: string;
+  type: string;
+  use_count: number;
+  date_added: number;
+  isQuickAddItem: boolean;
+}
+
 export interface ILibraryInteractiveResponse {
   library_interactives: Array<{
     id: string;
