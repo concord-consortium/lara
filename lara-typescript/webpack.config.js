@@ -2,6 +2,54 @@
 const CopyPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
+const exampleInteractive = (name) => {
+  return {
+    context: __dirname, // to automatically find tsconfig.json
+    devtool: 'source-map',
+    entry: {
+      [`example-interactive-${name}`]: `./src/example-interactives/src/${name}/index.tsx`,
+    },
+    mode: 'development',
+    output: {
+      filename: `example-interactives/${name}/index.js`
+    },
+    performance: { hints: false },
+    module: {
+      rules: [
+        {
+          test: /\.tsx?$/,
+          enforce: 'pre',
+          use: [
+            {
+              loader: 'tslint-loader'
+            }
+          ]
+        },
+        {
+          test: /\.tsx?$/,
+          loader: 'ts-loader'
+        }
+      ]
+    },
+    resolve: {
+      extensions: [ '.ts', '.tsx', '.js' ]
+    },
+    stats: {
+      // suppress "export not found" warnings about re-exported types
+      warningsFilter: /export .* was not found in/
+    },
+    plugins: [
+      new CopyPlugin({
+        patterns: [
+          { from: 'src/example-interactives/index.html', to: 'example-interactives' },
+          { from: 'src/example-interactives/index.css', to: 'example-interactives' },
+          { from: `src/example-interactives/src/${name}/index.html`, to: `example-interactives/${name}` }
+        ]
+      })
+    ]
+  }
+}
+
 module.exports = (env, argv) => {
   return [
   // Outputs built by this configuration:
@@ -212,51 +260,10 @@ module.exports = (env, argv) => {
   },
 
   // Outputs built by this configuration:
-  // - example-interactive: for use by developers and testers
+  // - example-interactives: for use by developers and testers
   //   needs separate config as different files are copied,
   //   and no externals should be used
-  {
-    context: __dirname, // to automatically find tsconfig.json
-    devtool: 'source-map',
-    entry: {
-      'example-interactive': './src/example-interactive/src/index.tsx',
-    },
-    mode: 'development',
-    output: {
-      filename: '[name]/index.js'
-    },
-    performance: { hints: false },
-    module: {
-      rules: [
-        {
-          test: /\.tsx?$/,
-          enforce: 'pre',
-          use: [
-            {
-              loader: 'tslint-loader'
-            }
-          ]
-        },
-        {
-          test: /\.tsx?$/,
-          loader: 'ts-loader'
-        }
-      ]
-    },
-    resolve: {
-      extensions: [ '.ts', '.tsx', '.js' ]
-    },
-    stats: {
-      // suppress "export not found" warnings about re-exported types
-      warningsFilter: /export .* was not found in/
-    },
-    plugins: [
-      new CopyPlugin({
-        patterns: [
-          { from: 'src/example-interactive/index.html', to: 'example-interactive' },
-          { from: 'src/example-interactive/index.css', to: 'example-interactive' }
-        ]
-      })
-    ]
-  }];
+  exampleInteractive("testbed"),
+  exampleInteractive("linked-state")
+  ];
 };
