@@ -8,6 +8,7 @@ import {
 } from "./api-types";
 import { API as DEFAULT_API } from "./mock-api-provider";
 import { UserInterfaceContext, useUserInterface } from "./use-user-interface-context";
+import { snakeToCamelCaseKeys } from "../../shared/convert-keys";
 
 const PAGES_CACHE_KEY = "pages";
 const SECTION_ITEM_TYPES_KEY = "SectionItemTypes";
@@ -91,8 +92,17 @@ export const usePageAPI = () => {
     return getSections().find(s => s.id === id);
   };
 
+  const translateItems = (items: ISectionItem[] | undefined) => {
+    items?.forEach((item: ISectionItem) => {
+      const itemData = item.data;
+      const translatedData = snakeToCamelCaseKeys(itemData);
+      item.data = translatedData;
+    });
+    return items;
+  };
+
   const getItems = () => {
-    const sectionItems: ISectionItem[][] = getSections().map(s => s.items || []) || [];
+    const sectionItems: ISectionItem[][] = getSections().map(s => translateItems(s.items) || []) || [];
     return [].concat.apply([], sectionItems) as ISectionItem[];
   };
 
