@@ -1,5 +1,31 @@
+@mixin font-import {
+    @font-face {
+      font-family: 'Lato-Light';
+      font-style: normal;
+      font-weight: 100;
+      src: local('Lato Light'), local('Lato-Light'), url(//fonts.googleapis.com/css?family=Lato:100) format('woff');
+    }
+  
+    @font-face {
+      font-family: 'Lato-Regular';
+      font-style: normal;
+      font-weight: 400;
+      src: local('Lato Regular'), local('Lato-Regular'), url(//themes.googleusercontent.com/static/fonts/lato/v6/qIIYRU-oROkIk8vfvxw6QvesZW2xOQ-xsNqO47m55DA.woff) format('woff');
+    }
+  
+    @font-face {
+      font-family: 'Lato-Bold';
+      font-style: normal;
+      font-weight: 700;
+      src: local('Lato Bold'), local('Lato-Bold'), url(//themes.googleusercontent.com/static/fonts/lato/v6/qdgUG4U09HnJwhYI-uK18wLUuEpTyoUstqEm5AMlJo4.woff) format('woff');
+    }
+  }
+@include font-import;
+
 :root {
-  --font-family-default: lato, helvetica, verdana, sans-serif;
+  --font-family-bold: Lato-Bold, helvetica, verdana, sans-serif;
+  --font-family-default: Lato-Regular, helvetica, verdana, sans-serif;
+  --font-family-light: Lato-Light, helvetica, verdana, sans-serif;
   --font-color-default: #313131;
   --dark-teal: #016082;
   --teal: #0592af;
@@ -14,3 +40,4 @@
   --lt-gray: hsl(0, 0%, 90%);
   --ltr-gray: hsl(0, 0%, 95%);
 }
+
