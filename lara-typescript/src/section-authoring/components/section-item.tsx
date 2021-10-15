@@ -1,6 +1,8 @@
 import * as React from "react";
+import { usePageAPI } from "../api/use-api-provider";
 import { GripLines } from "../../shared/components/icons/grip-lines";
 import { UserInterfaceContext } from "../api/use-user-interface-context";
+import { TextBlockPreview } from "./text-block-preview";
 
 import "./section-item.scss";
 
@@ -54,6 +56,9 @@ export const SectionItem: React.FC<ISectionItemProps> = ({
   title
   }: ISectionItemProps) => {
 
+  const api = usePageAPI();
+  const pageItems = api.getItems();
+  const pageItem = pageItems.find(pi => pi.id === id);
   const { userInterface: {movingItemId}, actions: {setMovingItemId}} = React.useContext(UserInterfaceContext);
   const { userInterface: {editingItemId}, actions: {setEditingItemId}} = React.useContext(UserInterfaceContext);
 
@@ -83,6 +88,20 @@ export const SectionItem: React.FC<ISectionItemProps> = ({
     deleteFunction?.(id);
   };
 
+  const getContent = () => {
+    switch (pageItem?.type) {
+      case "Embeddable::Xhtml":
+        return <TextBlockPreview pageItem={pageItem} />;
+        break;
+      default:
+        return (
+          <div className="previewNotSupported">
+            <span>Authoring mode preview not supported.</span>
+          </div>
+        );
+    }
+  };
+
   return(
     <div className="sectionItemContainer">
       <header className="sectionItemMenu">
@@ -100,7 +119,9 @@ export const SectionItem: React.FC<ISectionItemProps> = ({
           </ul>
         </div>
       </header>
-      <section/>
+      <section>
+        {getContent()}
+      </section>
     </div>
   );
 };

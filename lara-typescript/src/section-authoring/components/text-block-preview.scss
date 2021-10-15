@@ -1,0 +1,26 @@
+@import "../../vars.scss";
+.textBlock {
+  font-family: var(--font-family-default);
+  font-size: 16px;
+
+  &.callout {
+    .textBlockName {
+      background: #dfdfdf;
+      padding: 5px 20px;
+    }
+    .textBlockContent {
+      background: #f4f4f4;
+      padding: 5px 20px 20px 20px;
+    }
+  }
+
+  p {
+    margin: 20px 0;
+  }
+  .textBlockName {
+    clear: both;
+    font-family: var(--font-family-bold);
+    font-weight: bold;
+    position: relative;
+  }
+}
