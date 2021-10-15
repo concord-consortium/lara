@@ -26,6 +26,7 @@ services:
       UNISON_GROUP: root
       UNISON_DIR: /data
       UNISON_HOST_DIR: /host_data
+    command:  ["-ignore", "Name *.log", "-ignore", "Path lara-typescript", "-ignore", "Path lara-plugin-api-V2", "-ignore", "Path cypress"]
     volumes:
       - sync-volume:/data
       - .:/host_data:cached
