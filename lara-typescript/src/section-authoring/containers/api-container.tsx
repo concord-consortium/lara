@@ -1,9 +1,9 @@
 import * as React from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
-import { APIContext } from "./use-api-provider";
-import { IAuthoringAPIProvider } from "./api-types";
-import { API as mockProvider } from "./mock-api-provider";
-import { getLaraAuthoringAPI } from "./lara-api-provider";
+import { APIContext } from "../hooks/use-api-provider";
+import { IAuthoringAPIProvider } from "../api/api-types";
+import { API as mockProvider } from "../api/mock-api-provider";
+import { getLaraAuthoringAPI } from "../api/lara-api-provider";
 import { UserInterfaceContext, UserInterfaceProvider } from "./user-interface-provider";
 import { ReactQueryDevtools } from "react-query/devtools";
 

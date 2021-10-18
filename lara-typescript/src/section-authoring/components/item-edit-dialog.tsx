@@ -5,8 +5,8 @@ import { Modal, ModalButtons } from "../../shared/components/modal/modal";
 import { TextBlockEditForm } from "./text-block-edit-form";
 import { Save } from "../../shared/components/icons/save-icon";
 import { Close } from "../../shared/components/icons/close-icon";
-import { usePageAPI } from "../api/use-api-provider";
-import { UserInterfaceContext } from "../api/user-interface-provider";
+import { usePageAPI } from "../hooks/use-api-provider";
+import { UserInterfaceContext } from "../containers/user-interface-provider";
 
 import "./item-edit-dialog.scss";
 

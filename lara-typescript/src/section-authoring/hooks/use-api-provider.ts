@@ -6,9 +6,9 @@ import {useMutation, useQuery, useQueryClient} from "react-query";
 import {
     IAuthoringAPIProvider, ICreatePageItem, IPage, ISection, ISectionItem,
     ISectionItemType, ItemId, SectionColumns, SectionId
-} from "./api-types";
-import { API as DEFAULT_API } from "./mock-api-provider";
-import { UserInterfaceContext  } from "./user-interface-provider";
+} from "../api/api-types";
+import { API as DEFAULT_API } from "../api/mock-api-provider";
+import { UserInterfaceContext  } from "../containers/user-interface-provider";
 import { snakeToCamelCaseKeys } from "../../shared/convert-keys";
 
 const PAGES_CACHE_KEY = "pages";

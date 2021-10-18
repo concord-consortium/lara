@@ -3,7 +3,7 @@ import { ComponentStory, ComponentMeta } from "@storybook/react";
 
 import { IProps, SectionItemPicker } from "../section-authoring/components/section-item-picker";
 import { QueryClient, QueryClientProvider } from "react-query";
-import { APIContext } from "../section-authoring/api/use-api-provider";
+import { APIContext } from "../section-authoring/hooks/use-api-provider";
 import { API as mockProvider } from "../section-authoring/api/mock-api-provider";
 export default {
   title: "Section Item Picker",

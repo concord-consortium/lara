@@ -2,7 +2,7 @@ import * as React from "react";
 import { useRef, useState } from "react";
 import { Editor } from "@tinymce/tinymce-react";
 import { ISectionItem, ITextBlockData } from "../api/api-types";
-import { usePageAPI } from "../api/use-api-provider";
+import { usePageAPI } from "../hooks/use-api-provider";
 
 import "./text-block-edit-form.scss";
 

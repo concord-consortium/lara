@@ -11,8 +11,8 @@ import { Add } from "../../shared/components/icons/add-icon";
 import { Cog } from "../../shared/components/icons/cog-icon";
 
 import "./authoring-page.scss";
-import { usePageAPI } from "../api/use-api-provider";
-import { UserInterfaceContext} from "../api/user-interface-provider";
+import { usePageAPI } from "../hooks/use-api-provider";
+import { UserInterfaceContext} from "../containers/user-interface-provider";
 
 export interface IPageProps extends IPage {
 
