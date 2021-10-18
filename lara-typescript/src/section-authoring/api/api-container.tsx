@@ -4,7 +4,7 @@ import { APIContext } from "./use-api-provider";
 import { IAuthoringAPIProvider } from "./api-types";
 import { API as mockProvider } from "./mock-api-provider";
 import { getLaraAuthoringAPI } from "./lara-api-provider";
-import { UserInterfaceContext, UserInterfaceProvider } from "./use-user-interface-context";
+import { UserInterfaceContext, UserInterfaceProvider } from "./user-interface-provider";
 import { ReactQueryDevtools } from "react-query/devtools";
 
 export interface IAPIContainerProps {

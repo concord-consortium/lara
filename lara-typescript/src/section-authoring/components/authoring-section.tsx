@@ -4,7 +4,7 @@ import { GripLines } from "../../shared/components/icons/grip-lines";
 import { SectionColumn } from "./section-column";
 import { ICreatePageItem, ISection, ISectionItem, SectionColumns, SectionLayouts } from "../api/api-types";
 import { DraggableProvided } from "react-beautiful-dnd";
-import { UserInterfaceContext } from "../api/use-user-interface-context";
+import { UserInterfaceContext } from "../api/user-interface-provider";
 
 import "./authoring-section.scss";
 import { usePageAPI } from "../api/use-api-provider";

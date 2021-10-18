@@ -1,7 +1,7 @@
 import * as React from "react";
 import { usePageAPI } from "../api/use-api-provider";
 import { GripLines } from "../../shared/components/icons/grip-lines";
-import { UserInterfaceContext } from "../api/use-user-interface-context";
+import { UserInterfaceContext } from "../api/user-interface-provider";
 import { TextBlockPreview } from "./text-block-preview";
 
 import "./section-item.scss";

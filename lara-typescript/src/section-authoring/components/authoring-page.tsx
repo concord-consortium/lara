@@ -12,7 +12,7 @@ import { Cog } from "../../shared/components/icons/cog-icon";
 
 import "./authoring-page.scss";
 import { usePageAPI } from "../api/use-api-provider";
-import { UserInterfaceContext} from "../api/use-user-interface-context";
+import { UserInterfaceContext} from "../api/user-interface-provider";
 
 export interface IPageProps extends IPage {
 

@@ -5,7 +5,7 @@ import { Modal, ModalButtons } from "../../shared/components/modal/modal";
 import { Close } from "../../shared/components/icons/close-icon";
 import { Move } from "../../shared/components/icons/move-icon";
 import { usePageAPI } from "../api/use-api-provider";
-import { UserInterfaceContext } from "../api/use-user-interface-context";
+import { UserInterfaceContext } from "../api/user-interface-provider";
 
 import "./section-item-move-dialog.scss";
 

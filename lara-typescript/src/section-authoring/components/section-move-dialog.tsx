@@ -7,7 +7,7 @@ import { Move } from "../../shared/components/icons/move-icon";
 
 import "./section-move-dialog.scss";
 import { usePageAPI } from "../api/use-api-provider";
-import { UserInterfaceContext } from "../api/use-user-interface-context";
+import { UserInterfaceContext } from "../api/user-interface-provider";
 import { ISectionDestination, RelativeLocation } from "../api/util/move-utils";
 
 export interface ISectionMoveDialogProps {
