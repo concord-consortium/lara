@@ -26,7 +26,7 @@ export const APIContainer: React.FC<IAPIContainerProps> = (props) => {
     <UserInterfaceProvider>
       <APIContext.Provider value={APIProvider}>
         <QueryClientProvider client={queryClient}>
-          <ReactQueryDevtools />
+          {/* Handy for debugging ReactQuery: <ReactQueryDevtools /> */}
           {props.children}
         </QueryClientProvider>
       </APIContext.Provider>
