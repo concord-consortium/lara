@@ -1,4 +1,4 @@
-import { IPage, SectionId, ISection, PageId } from "../api-types";
+import { IPage, SectionId, ISection, PageId } from "../api/api-types";
 
 export interface ISectionAddress {
   pageIndex: number|null;

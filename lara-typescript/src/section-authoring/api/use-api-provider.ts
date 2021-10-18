@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useContext } from "react";
-import { moveSection  as _moveSection, ISectionDestination} from "./util/move-utils";
+import { moveSection  as _moveSection, ISectionDestination} from "../util/move-utils";
 
 import {useMutation, useQuery, useQueryClient} from "react-query";
 import {

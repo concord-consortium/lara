@@ -1,4 +1,4 @@
-import { ISectionItem, ISection, IPage } from "../api-types";
+import { ISectionItem, ISection, IPage } from "../api/api-types";
 import { collect } from "./array-util";
 
 let pageCounter = 0;

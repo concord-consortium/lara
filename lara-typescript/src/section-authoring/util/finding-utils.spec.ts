@@ -1,4 +1,4 @@
-import { IPage, ISection, ISectionItem } from "../api-types";
+import { IPage, ISection, ISectionItem } from "../api/api-types";
 import { findSectionAddress, findSection, findSectionByAddress, ISectionAddress, findPage } from "./finding-utils";
 import { makePages } from "./spec-helper";
 

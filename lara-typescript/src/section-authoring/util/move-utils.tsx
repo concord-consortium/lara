@@ -1,4 +1,4 @@
-import { IPage, ISection, PageId, SectionId } from "../api-types";
+import { IPage, ISection, PageId, SectionId } from "../api/api-types";
 import { findSection, findSectionAddress } from "./finding-utils";
 
 export enum RelativeLocation {
