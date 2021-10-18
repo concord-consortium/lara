@@ -1,5 +1,4 @@
 import * as React from "react";
-import { useState } from "react";
 import { useImmer } from "use-immer";
 
 interface IUserInterface {
@@ -47,28 +46,21 @@ const UserInterfaceContext = React.createContext<IUIContext>(defaultUIContext);
 // Sample from consuming component:
 // `const { userInterface, actions }  = React.useContext(UserInterfaceContext);`
 
-interface IProps { }
-
 const UserInterfaceProvider: React.FC = ({children}) => {
   const [userInterface, setUserInterface] = useImmer<IUserInterface>(defaultUI);
-  // const [userInterface, setUserInterface] = useState<IUserInterface>(defaultUI);
   const setMovingItemId = (id: string| false) => {
     setUserInterface( (draft) => { draft.movingItemId = id; });
   };
 
   const setMovingSectionId = (id: string| false) => {
-    // setUserInterface({...userInterface, movingSectionId: id});
     setUserInterface( (draft) => { draft.movingSectionId = id; });
   };
 
   const setEditingItemId = (id: string| false) => {
-    // setUserInterface({...userInterface, movingSectionId: id});
     setUserInterface( (draft) => { draft.editingItemId = id; });
-    // setUserInterface({...userInterface, editingItemId: id});
   };
 
   const actions = { setMovingItemId, setMovingSectionId, setEditingItemId };
-  // return({userInterface, actions} );
   return (
     <UserInterfaceContext.Provider value={{actions, userInterface}}>
       {children}
