@@ -8,7 +8,7 @@ import {
     ISectionItemType, ItemId, SectionColumns, SectionId
 } from "./api-types";
 import { API as DEFAULT_API } from "./mock-api-provider";
-import { UserInterfaceContext, useUserInterface } from "./use-user-interface-context";
+import { UserInterfaceContext  } from "./use-user-interface-context";
 import { snakeToCamelCaseKeys } from "../../shared/convert-keys";
 
 const PAGES_CACHE_KEY = "pages";
@@ -21,7 +21,6 @@ export const APIContext  = React.createContext<IAuthoringAPIProvider>(DEFAULT_AP
 export const usePageAPI = () => {
 
   const { userInterface, actions } = useContext(UserInterfaceContext);
-
   const provider: IAuthoringAPIProvider = useContext(APIContext);
   const client = useQueryClient(); // Get the context from our container.
   const mutationsOpts = {
@@ -127,16 +126,30 @@ export const usePageAPI = () => {
   const currentPage = getPage();
 
   const moveSection = (sectionId: string, destination: ISectionDestination) => {
-    if (getPages.data) {
-      const setPage = (page: IPage) => {
-        const {id, sections} = page;
-        updateSections({id, sections});
-      };
-      _moveSection({sectionId, destination, setPage, pages: getPages.data});
+    if (currentPage) {
+      const changes = _moveSection({sectionId, destination, pages: getPages.data || []});
+      if (changes) {
+        updateSectionsMutation.mutate({...changes[0]});
+      }
+    }
+    else {
+      // tslint:disable-next-line
+      console.error("no page specified, cant invoke method.");
     }
   };
 
-
+  const deleteSectionFunction = (sectionId: string) => {
+    if (currentPage) {
+      const nextSections: ISection[] = [];
+      currentPage.sections.forEach(s => {
+        if (s.id !== sectionId) {
+          nextSections.push(s);
+        }
+      });
+      const update = { ...currentPage, sections: nextSections };
+      updateSections(update);
+    }
+  };
   const moveItem = (
     itemId: string,
     selectedSectionId: string,
@@ -199,7 +212,7 @@ export const usePageAPI = () => {
     getPages, addPageMutation, deletePageMutation,
     addSectionMutation, addSection, changeSection, updateSection, getSections, moveSection, updateSections,
     addPageItem, createPageItem, updatePageItem, deletePageItem, updateSectionItems, moveItem, getItems,
-    getAllEmbeddables, currentPage,
+    getAllEmbeddables, currentPage, deleteFunction: deleteSectionFunction,
     pathToTinyMCE: provider.pathToTinyMCE, pathToTinyMCECSS: provider.pathToTinyMCECSS
   };
 };

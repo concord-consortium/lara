@@ -7,6 +7,7 @@ import { DraggableProvided } from "react-beautiful-dnd";
 import { UserInterfaceContext } from "../api/use-user-interface-context";
 
 import "./authoring-section.scss";
+import { usePageAPI } from "../api/use-api-provider";
 
 const defaultLayout = SectionLayouts.LAYOUT_FULL_WIDTH;
 const layoutClassNames = {
@@ -71,7 +72,6 @@ export interface ISectionProps extends ISection {
 export const AuthoringSection: React.FC<ISectionProps> = ({
   id,
   updateFunction,
-  deleteFunction,
   copyFunction,
   layout: initLayout = defaultLayout,
   items = [],
@@ -84,6 +84,7 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
   }: ISectionProps) => {
 
   const { actions: {setMovingSectionId}} = React.useContext(UserInterfaceContext);
+  const { deleteFunction } = usePageAPI();
   const [layout, setLayout] = useState(initLayout);
   const [collapsed, setCollapsed] = useState(initCollapsed);
 

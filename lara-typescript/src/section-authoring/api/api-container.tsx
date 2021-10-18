@@ -4,7 +4,9 @@ import { APIContext } from "./use-api-provider";
 import { IAuthoringAPIProvider } from "./api-types";
 import { API as mockProvider } from "./mock-api-provider";
 import { getLaraAuthoringAPI } from "./lara-api-provider";
-import { UserInterfaceContext, useUserInterface } from "./use-user-interface-context";
+import { UserInterfaceContext, UserInterfaceProvider } from "./use-user-interface-context";
+import { ReactQueryDevtools } from "react-query/devtools";
+
 export interface IAPIContainerProps {
   activityId?: string;
   host?: string;
@@ -13,7 +15,7 @@ export interface IAPIContainerProps {
 export const APIContainer: React.FC<IAPIContainerProps> = (props) => {
   const {activityId, host} = props;
   const queryClient = new QueryClient();
-  const ui = useUserInterface();
+  const ui = React.useContext(UserInterfaceContext);
 
   let APIProvider: IAuthoringAPIProvider = mockProvider;
   if (activityId && host) {
@@ -21,12 +23,13 @@ export const APIContainer: React.FC<IAPIContainerProps> = (props) => {
   }
 
   return (
-    <UserInterfaceContext.Provider value={ui}>
+    <UserInterfaceProvider>
       <APIContext.Provider value={APIProvider}>
         <QueryClientProvider client={queryClient}>
+          <ReactQueryDevtools />
           {props.children}
         </QueryClientProvider>
       </APIContext.Provider>
-    </UserInterfaceContext.Provider>
+    </UserInterfaceProvider>
   );
 };

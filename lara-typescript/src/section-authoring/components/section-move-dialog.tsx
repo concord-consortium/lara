@@ -12,29 +12,22 @@ import { ISectionDestination, RelativeLocation } from "../api/util/move-utils";
 
 export interface ISectionMoveDialogProps {
   sections: ISectionProps[];
-  selectedPageId?: string;
-  selectedPosition?: RelativeLocation;
-  selectedOtherSectionId?: string | undefined;
 }
 
-export const SectionMoveDialog: React.FC<ISectionMoveDialogProps> = ({
-  sections,
-  selectedPageId = "0",
-  selectedPosition = RelativeLocation.After,
-  selectedOtherSectionId: initSelectedOtherSectionId = "0"
+export const SectionMoveDialog: React.FC<ISectionMoveDialogProps> = ({sections
   }: ISectionMoveDialogProps) => {
-  const [selectedOtherSectionId, setSelectedOtherSectionId] = useState(initSelectedOtherSectionId);
-
-  // TODO: Should we remove sections from the property list too?
-  const { moveSection } = usePageAPI();
-  const { userInterface: {movingSectionId}, actions: {setMovingSectionId}} = React.useContext(UserInterfaceContext);
+  const { userInterface: { movingSectionId }, actions: {setMovingSectionId}} = React.useContext(UserInterfaceContext);
+  const { moveSection, currentPage } = usePageAPI();
+  const [selectedOtherSectionId, setSelectedOtherSectionId] = useState("");
+  const [selectedPageId, setSelectedPageId] = useState(currentPage?.id || "");
+  const [selectedPosition, setSelectedPosition] = useState(RelativeLocation.After);
 
   const handlePageChange = (change: React.ChangeEvent<HTMLSelectElement>) => {
-    selectedPageId = change.target.value;
+    setSelectedPageId(change.target.value);
   };
 
   const handlePositionChange = (change: React.ChangeEvent<HTMLSelectElement>) => {
-    selectedPosition = change.target.value as RelativeLocation;
+    setSelectedPosition(change.target.value as RelativeLocation);
   };
 
   const handleOtherSectionChange = (change: React.ChangeEvent<HTMLSelectElement>) => {
@@ -84,7 +77,7 @@ export const SectionMoveDialog: React.FC<ISectionMoveDialogProps> = ({
 
   if (movingSectionId) {
     return (
-      <Modal title="Move this section to..."
+      <Modal title={`Move section ${movingSectionId} to...`}
         visibility={true} width={600} closeFunction={handleCloseDialog}>
         <div className="sectionMoveDialog">
           <dl>

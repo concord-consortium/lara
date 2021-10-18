@@ -12,7 +12,7 @@ import { Cog } from "../../shared/components/icons/cog-icon";
 
 import "./authoring-page.scss";
 import { usePageAPI } from "../api/use-api-provider";
-import { UserInterfaceContext, useUserInterface } from "../api/use-user-interface-context";
+import { UserInterfaceContext} from "../api/use-user-interface-context";
 
 export interface IPageProps extends IPage {
 
@@ -102,7 +102,7 @@ export const AuthoringPage: React.FC<IPageProps> = ({
   const [itemToEdit, setItemToEdit] = useState(initItemToEdit);
   const [showSettings, setShowSettings] = useState(isNew);
 
-  const { getItems } = usePageAPI();
+  const { getItems, moveSection } = usePageAPI();
 
   const updateSettings = (
     updatedTitle: string | undefined,
@@ -129,19 +129,6 @@ export const AuthoringPage: React.FC<IPageProps> = ({
     array[b] = array[a];
     array[a] = bItem;
     return [...array];
-  };
-
-  const handleDelete = (sectionId: string) => {
-    if (setSections) {
-      const nextSections: ISection[] = [];
-      sections.forEach(s => {
-        if (s.id !== sectionId) {
-          nextSections.push(s);
-        }
-      });
-      const update = { id, sections: nextSections };
-      setSections(update);
-    }
   };
 
   const handleCopy = (sectionId: string) => {
@@ -232,7 +219,6 @@ export const AuthoringPage: React.FC<IPageProps> = ({
                             draggableProvided={draggableProvided}
                             key={`section-${sProps.id}-${index}`}
                             updateFunction={changeSection}
-                            deleteFunction={handleDelete}
                             copyFunction={handleCopy}
                             addPageItem={addPageItem}
                             editItemFunction={handleEditItemInit}
@@ -273,27 +259,34 @@ export const AuthoringPage: React.FC<IPageProps> = ({
 export const AuthoringPageUsingAPI = () => {
   const api  = usePageAPI();
   const { addSection, changeSection, updateSections, currentPage, addPageItem } = api;
-
-  const {userInterface} = React.useContext(UserInterfaceContext);
-
-  const pages = api.getPages.data;
-  if (pages) {
-    return (
-      <>
+  const { getPages } = api;
+  const { error } = getPages;
+  return (
+    <>
+      {error &&
+        <div className="error">
+          <h1>
+            {error}
+          </h1>
+        </div>
+      }
+      { !getPages &&
+        <div className="error">
+          <h1>
+            LOADING LOADING LOADING
+          </h1>
+        </div>
+      }
+      { getPages.data?.[0] &&
         <AuthoringPage
-          sections={currentPage?.sections || []}
+          sections={getPages.data?.[0].sections || []}
           addSection={addSection }
           setSections={updateSections}
           id={currentPage?.id || "none"}
           changeSection={changeSection}
           addPageItem={addPageItem}
         />
-      </>
-    );
-  }
-  else {
-    return (
-      <div>loading ...</div>
-    );
-  }
+      }
+    </>
+  );
 };

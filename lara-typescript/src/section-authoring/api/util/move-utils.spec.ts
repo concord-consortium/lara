@@ -6,74 +6,118 @@ import { makePages } from "./spec-helper";
 describe("moveSection", () => {
 
   describe("Failing scenarios" , () => {
-    it ("it can't move a section to after a bogus section name", () => {
-      const pages = makePages(3);
-      const destination: ISectionDestination = {
-        relativeLocation: RelativeLocation.After,
-        destSectionId: "bogus" // not specifying a page...
-      };
-      const setPage = (nextPage: IPage) => null;
-      const sectionId = "section0";
-
-      // Move failed:
-      expect(moveSection({ destination, pages, sectionId, setPage })).toBeFalsy();
-    });
-
     it ("it can't move non-existent sections", () => {
       const pages = makePages(3);
       const destination: ISectionDestination = {
+        destPageId: pages[0].id,
         relativeLocation: RelativeLocation.After,
         destSectionId: "section3" // not specifying a page...
       };
-      const setPage = (nextPage: IPage)  => null;
       const sectionId = "bogus";
 
       // Move failed:
-      expect(moveSection({ destination, pages, sectionId, setPage })).toBeFalsy();
+      expect(moveSection({ destination, pages, sectionId })).toEqual([]);
     });
   });
 
-  it ("it can move a section to after section3", () => {
-    const pages = makePages(3);
-    const destination: ISectionDestination = {
-      relativeLocation: RelativeLocation.After,
-      destSectionId: "section3" // not specifying a page...
-    };
-    const setPage = (nextPage: IPage) => {
-      const page = pages.find(p => p.id === nextPage.id);
-      if (page) {
-        page.sections = nextPage.sections;
-      }
-    };
-    const sectionId = "section0";
+  describe("moving sections in the same page", () => {
 
-    // Move was successful:
-    expect(moveSection({ destination, pages, sectionId, setPage })).toBeTruthy();
-    // first page lost "section0":
-    expect(pages[0].sections.map(s => s.id)).toEqual(["section1", "section2"]);
-    // "section0" shows up after "section3"
-    expect(pages[1].sections.map(s => s.id)).toEqual(["section3", "section0", "section4", "section5"]);
+    it ("it can move a section to the end of the page with a bogus section name", () => {
+      const pages = makePages(3);
+      const destination: ISectionDestination = {
+        relativeLocation: RelativeLocation.After,
+        destPageId: pages[0].id,
+        destSectionId: "bogus" // not specifying a page...
+      };
+      const sectionId = "section0";
+
+      const changedPages = moveSection({ destination, pages, sectionId });
+      expect(changedPages.length).toEqual(1);
+      expect(changedPages[0].sections.map(s => s.id)).toEqual(["section1", "section2", "section0" ]);
+    });
+
+    it("can move a section ahead within the same page", () => {
+      const pages = makePages(3);
+      const destination: ISectionDestination = {
+        destPageId: pages[0].id,
+        relativeLocation: RelativeLocation.Before,
+        destSectionId: "section0" // not specifying a page...
+      };
+
+      const sectionId = "section1";
+      const changedPages = moveSection({ destination, pages, sectionId });
+      expect(changedPages.length).toEqual(1);
+      expect(changedPages[0].sections.map(s => s.id)).toEqual(["section1", "section0", "section2"]);
+    });
+
+    it("can move a section ahead within the same page", () => {
+      const pages = makePages(3);
+      const destination: ISectionDestination = {
+        destPageId: pages[0].id,
+        relativeLocation: RelativeLocation.Before,
+        destSectionId: "section0" // not specifying a page...
+      };
+
+      const sectionId = "section2";
+      const changedPages = moveSection({ destination, pages, sectionId });
+      expect(changedPages.length).toEqual(1);
+      expect(changedPages[0].sections.map(s => s.id)).toEqual(["section2", "section0", "section1"]);
+
+    });
+
+    it("can move a section back within the same page", () => {
+      const pages = makePages(3);
+      const destination: ISectionDestination = {
+        destPageId: pages[0].id,
+        relativeLocation: RelativeLocation.After,
+        destSectionId: "section1" // not specifying a page...
+      };
+      const sectionId = "section2";
+      const changedPages = moveSection({ destination, pages, sectionId });
+      expect(changedPages.length).toEqual(1);
+      expect(changedPages[0].sections.map(s => s.id)).toEqual(["section0", "section1", "section2"]);
+      // "section0" shows up after "section3"
+    });
   });
 
-  it ("can move a section to before section3", () => {
-    const pages = makePages(3);
-    const destination: ISectionDestination = {
-      relativeLocation: RelativeLocation.Before,
-      destSectionId: "section3"
-    };
-    const setPage = (nextPage: IPage) => {
-      const page = pages.find(p => p.id === nextPage.id);
-      if (page) {
-        page.sections = nextPage.sections;
-      }
-    };
-    const sectionId = "section0";
+  describe("moving to other pages", () => {
+    it ("can move a section to after section3", () => {
+      const pages = makePages(3);
+      const destination: ISectionDestination = {
+        relativeLocation: RelativeLocation.After,
+        destPageId: "page1",
+        destSectionId: "section3" // not specifying a page...
+      };
 
-    // Move was successful:
-    expect(moveSection({ destination, pages, sectionId, setPage })).toBeTruthy();
-    // first page lost "section0":
-    expect(pages[0].sections.map(s => s.id)).toEqual(["section1", "section2"]);
-    // "section0" shows up after "section3"
-    expect(pages[1].sections.map(s => s.id)).toEqual(["section0", "section3", "section4", "section5"]);
+      const sectionId = "section1";
+      expect(moveSection({ destination, pages, sectionId })).toBeTruthy();
+      const changedPages = moveSection({ destination, pages, sectionId });
+      expect(changedPages.length).toEqual(2);
+
+      // first page lost "section0":
+      expect(changedPages[0].sections.map(s => s.id)).toEqual(["section0", "section2"]);
+      // "section0" shows up after "section3"
+      expect(changedPages[1].sections.map(s => s.id)).toEqual(["section3", "section1", "section4", "section5"]);
+    });
+
+    it ("can move a section to before section3", () => {
+      const pages = makePages(3);
+      const destination: ISectionDestination = {
+        relativeLocation: RelativeLocation.Before,
+        destPageId: "page1",
+        destSectionId: "section3"
+      };
+      const sectionId = "section0";
+      expect(moveSection({ destination, pages, sectionId })).toBeTruthy();
+      const changedPages = moveSection({ destination, pages, sectionId });
+      expect(changedPages.length).toEqual(2);
+
+      // first page lost "section0":
+      expect(changedPages[0].sections.map(s => s.id)).toEqual(["section1", "section2"]);
+      // "section0" shows up after "section3"
+      expect(changedPages[1].sections.map(s => s.id)).toEqual(["section0", "section3", "section4", "section5"]);
+    });
   });
+
+  // TODO:  Tests asserting position of Sections.
 });

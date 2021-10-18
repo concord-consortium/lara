@@ -1,4 +1,4 @@
-import { IPage, PageId, SectionId } from "../api-types";
+import { IPage, ISection, PageId, SectionId } from "../api-types";
 import { findSection, findSectionAddress } from "./finding-utils";
 
 export enum RelativeLocation {
@@ -8,34 +8,38 @@ export enum RelativeLocation {
 
 export interface ISectionDestination {
   destSectionId?: SectionId;
-  destPageId?: PageId;
+  destPageId: PageId;
   relativeLocation: RelativeLocation;
 }
 
 export interface IMoveSectionSignature {
   sectionId: SectionId;
   destination: ISectionDestination;
-  setPage: (nextPage: IPage) => void;
   pages: IPage[];
 }
 
-const error = (msg: string) => {
-  // tslint:disable-next-line:no-console
-  console.error(msg);
+const setSectionPositions = (page: IPage)  => {
+  page.sections = page.sections.map( (s, i) => ({ ...s, position: i}) );
+  return page;
 };
 
-export const moveSection = (args: IMoveSectionSignature) => {
-  const { sectionId, destination, setPage, pages } = args;
+export const moveSection = (args: IMoveSectionSignature): IPage[] => {
+  const { sectionId, destination,  pages } = args;
   const { destPageId, destSectionId, relativeLocation } = destination;
   const { pageIndex, sectionIndex } = findSectionAddress(pages, sectionId);
+
+  const error = (msg: string) => {
+    // tslint:disable-next-line:no-console
+    console.error(msg);
+    return [] as IPage[];
+  };
 
   let destSectionIndex: number|null = null;
   let destPageIndex: number|null = null;
 
   // The source page and section must exist
   if (pageIndex == null || sectionIndex == null) {
-    error(`can't find page and section for: ${sectionId}`);
-    return false;
+    return error(`can't find page and section for: ${sectionId}`);
   }
 
   if (destSectionId) {
@@ -44,14 +48,15 @@ export const moveSection = (args: IMoveSectionSignature) => {
       pageIndex: destPageIndex
     } = findSectionAddress(pages, destSectionId));
   }
-  else if (destPageId) {
-    destPageIndex = pages.findIndex(p => p.id === destPageId);
+
+  destPageIndex = pages.findIndex(p => p.id === destPageId);
+  if (destSectionIndex == null) {
+    destSectionIndex = (pages.find(p => p.id === destPageId)?.sections.length) || 0;
   }
 
   // We must have a destination page:
-  if (!(destPageIndex)) {
-    error(`can't find destination ${destination}`);
-    return false;
+  if (destPageIndex == null) {
+    return error(`can't find destination ${destination}`);
   }
 
   // If we have a destination section:
@@ -75,16 +80,25 @@ export const moveSection = (args: IMoveSectionSignature) => {
   const realDestSectionIndex = relativeLocation === RelativeLocation.After
     ? destSectionIndex + 1
     : destSectionIndex;
-  const nextSourcePagePageSections = [... sourcePage.sections];
-  const nextDestPagePageSections = [... destPage.sections];
+
   const sourceSection = findSection(pages, sectionId);
   if (sourceSection == null) {
-    error(`can't find source section ${sectionId}`);
-    return false;
+    return error(`can't find source section ${sectionId}`);
   }
-  nextSourcePagePageSections.splice(sectionIndex, 1);
-  nextDestPagePageSections.splice(realDestSectionIndex, 0, sourceSection);
-  setPage({...sourcePage, sections: nextSourcePagePageSections});
-  setPage({...destPage, sections: nextDestPagePageSections});
-  return true;
+  // Remove the sourceSection from the sourcePage
+  const nextSourcePage = {
+    ... sourcePage,
+    sections: sourcePage.sections.filter(s => s.id !== sourceSection.id)
+  };
+  if (pageIndex === destPageIndex) {
+    nextSourcePage.sections.splice(realDestSectionIndex, 0, sourceSection);
+    return [ setSectionPositions(nextSourcePage) ];
+  }
+
+  const nextDestPage = {
+    ... destPage,
+    sections: [...destPage.sections || []]
+  };
+  nextDestPage.sections.splice(realDestSectionIndex, 0, sourceSection);
+  return [setSectionPositions(nextSourcePage), setSectionPositions(nextDestPage)];
 };

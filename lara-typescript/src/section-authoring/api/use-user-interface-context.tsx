@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useState } from "react";
 import { useImmer } from "use-immer";
 
 interface IUserInterface {
@@ -26,7 +27,7 @@ interface IUIContext {
   actions: IUIActions;
 }
 
-const defaultContext: IUIContext = {
+export const defaultUIContext: IUIContext = {
   userInterface: defaultUI,
   actions: {
     // tslint:disable-next-line
@@ -38,31 +39,41 @@ const defaultContext: IUIContext = {
   }
 };
 
-const UserInterfaceContext = React.createContext<IUIContext>(defaultContext);
+const UserInterfaceContext = React.createContext<IUIContext>(defaultUIContext);
 
-// 1: We define a context to be consumed from by subcomponents.
+// 1: We define a context to be consumed from by sub-components.
 // 2: We provide a hook for the wrapping component in api-container component
 // 3: This api-container component provides UI features via context.
 // Sample from consuming component:
 // `const { userInterface, actions }  = React.useContext(UserInterfaceContext);`
 
-const useUserInterface = (): IUIContext => {
-  const [userInterface, setUserInterface] = useImmer<IUserInterface>(defaultUI);
+interface IProps { }
 
+const UserInterfaceProvider: React.FC = ({children}) => {
+  const [userInterface, setUserInterface] = useImmer<IUserInterface>(defaultUI);
+  // const [userInterface, setUserInterface] = useState<IUserInterface>(defaultUI);
   const setMovingItemId = (id: string| false) => {
     setUserInterface( (draft) => { draft.movingItemId = id; });
   };
 
   const setMovingSectionId = (id: string| false) => {
+    // setUserInterface({...userInterface, movingSectionId: id});
     setUserInterface( (draft) => { draft.movingSectionId = id; });
   };
 
   const setEditingItemId = (id: string| false) => {
+    // setUserInterface({...userInterface, movingSectionId: id});
     setUserInterface( (draft) => { draft.editingItemId = id; });
+    // setUserInterface({...userInterface, editingItemId: id});
   };
 
   const actions = { setMovingItemId, setMovingSectionId, setEditingItemId };
-  return({userInterface, actions} );
+  // return({userInterface, actions} );
+  return (
+    <UserInterfaceContext.Provider value={{actions, userInterface}}>
+      {children}
+    </UserInterfaceContext.Provider>
+  );
 };
 
-export { UserInterfaceContext, useUserInterface };
+export { UserInterfaceContext, UserInterfaceProvider };
