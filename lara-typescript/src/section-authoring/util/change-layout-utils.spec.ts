@@ -23,13 +23,13 @@ const setUpFullWidthPage = () => {
             id: "item-3",
             column: SectionColumns.PRIMARY,
             position: 3
-          }          
+          }
         ]
       }
     ]
-  }
+  };
   return page;
-}
+};
 
 const setUp4060Page = () => {
   const page = {
@@ -53,13 +53,13 @@ const setUp4060Page = () => {
             id: "item-3",
             column: SectionColumns.PRIMARY,
             position: 1
-          }          
+          }
         ]
       }
     ]
-  }
+  };
   return page;
-}
+};
 
 const setUpResponsivePage = () => {
   const page = {
@@ -83,13 +83,13 @@ const setUpResponsivePage = () => {
             id: "item-3",
             column: SectionColumns.PRIMARY,
             position: 1
-          }          
+          }
         ]
       }
     ]
-  }
+  };
   return page;
-}
+};
 
 describe("changeLayout", () => {
 
@@ -98,7 +98,7 @@ describe("changeLayout", () => {
       const page = setUpFullWidthPage();
       const sectionId = "sectionRed";
       const newLayout = SectionLayouts.LAYOUT_40_60;
-      expect(changeLayout({ id: sectionId, layout: newLayout, page: page })).toBeFalsy();
+      expect(changeLayout({ id: sectionId, layout: newLayout, page })).toBeFalsy();
     });
   });
 
@@ -107,7 +107,7 @@ describe("changeLayout", () => {
     const sectionId = "section-1";
     const newLayout = SectionLayouts.LAYOUT_40_60;
     const items = page.sections[0].items;
-    expect(changeLayout({ id: sectionId, layout: newLayout, page: page })).toBeTruthy();
+    expect(changeLayout({ id: sectionId, layout: newLayout, page })).toBeTruthy();
     expect(items.filter(i => i.column === SectionColumns.SECONDARY)).toHaveLength(3);
   });
 
@@ -116,7 +116,7 @@ describe("changeLayout", () => {
     const sectionId = "section-1";
     const items = page.sections[0].items;
     const newLayout = SectionLayouts.LAYOUT_60_40;
-    expect(changeLayout({ id: sectionId, layout: newLayout, page: page })).toBeTruthy();
+    expect(changeLayout({ id: sectionId, layout: newLayout, page })).toBeTruthy();
     expect(items[0].column).toEqual(SectionColumns.SECONDARY);
     expect(items[1].column).toEqual(SectionColumns.SECONDARY);
     expect(items[2].column).toEqual(SectionColumns.PRIMARY);
@@ -128,19 +128,19 @@ describe("changeLayout", () => {
     const items = page.sections[0].items;
 
     let newLayout = SectionLayouts.LAYOUT_60_40;
-    expect(changeLayout({ id: sectionId, layout: newLayout, page: page })).toBeTruthy();
+    expect(changeLayout({ id: sectionId, layout: newLayout, page })).toBeTruthy();
     expect(items[0].column).toEqual(SectionColumns.SECONDARY);
     expect(items[1].column).toEqual(SectionColumns.SECONDARY);
     expect(items[2].column).toEqual(SectionColumns.PRIMARY);
 
     newLayout = SectionLayouts.LAYOUT_30_70;
-    expect(changeLayout({ id: sectionId, layout: newLayout, page: page })).toBeTruthy();
+    expect(changeLayout({ id: sectionId, layout: newLayout, page })).toBeTruthy();
     expect(items[0].column).toEqual(SectionColumns.SECONDARY);
     expect(items[1].column).toEqual(SectionColumns.SECONDARY);
     expect(items[2].column).toEqual(SectionColumns.PRIMARY);
 
     newLayout = SectionLayouts.LAYOUT_RESPONSIVE;
-    expect(changeLayout({ id: sectionId, layout: newLayout, page: page })).toBeTruthy();
+    expect(changeLayout({ id: sectionId, layout: newLayout, page })).toBeTruthy();
     expect(items[0].column).toEqual(SectionColumns.SECONDARY);
     expect(items[1].column).toEqual(SectionColumns.SECONDARY);
     expect(items[2].column).toEqual(SectionColumns.PRIMARY);
@@ -149,9 +149,9 @@ describe("changeLayout", () => {
   it ("it will move items in the primary column into the secondary column and place them first in the overall order when switching from any non full-width layout to the full-width layout", () => {
     const page = setUp4060Page();
     const sectionId = "section-1";
-    let newLayout = SectionLayouts.LAYOUT_FULL_WIDTH;
+    const newLayout = SectionLayouts.LAYOUT_FULL_WIDTH;
     const items = page.sections[0].items;
-    expect(changeLayout({ id: sectionId, layout: newLayout, page: page })).toBeTruthy();
+    expect(changeLayout({ id: sectionId, layout: newLayout, page })).toBeTruthy();
     expect(items.filter(i => i.column === SectionColumns.SECONDARY)).toHaveLength(3);
     expect(items[0].id).toEqual("item-3");
     expect(items[1].id).toEqual("item-1");
