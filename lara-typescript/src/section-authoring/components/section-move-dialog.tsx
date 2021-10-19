@@ -6,34 +6,28 @@ import { Close } from "../../shared/components/icons/close-icon";
 import { Move } from "../../shared/components/icons/move-icon";
 
 import "./section-move-dialog.scss";
-import { usePageAPI } from "../api/use-api-provider";
-import { UserInterfaceContext } from "../api/use-user-interface-context";
+import { usePageAPI } from "../hooks/use-api-provider";
+import { UserInterfaceContext } from "../containers/user-interface-provider";
+import { ISectionDestination, RelativeLocation } from "../util/move-utils";
 
 export interface ISectionMoveDialogProps {
   sections: ISectionProps[];
-  selectedPageId?: string;
-  selectedPosition?: string;
-  selectedOtherSectionId?: string | undefined;
 }
 
-export const SectionMoveDialog: React.FC<ISectionMoveDialogProps> = ({
-  sections,
-  selectedPageId = "0",
-  selectedPosition = "after",
-  selectedOtherSectionId: initSelectedOtherSectionId = "0"
+export const SectionMoveDialog: React.FC<ISectionMoveDialogProps> = ({sections
   }: ISectionMoveDialogProps) => {
-  const [selectedOtherSectionId, setSelectedOtherSectionId] = useState(initSelectedOtherSectionId);
-
-  // TODO: Should we remove sections from the property list too?
-  const { moveSection } = usePageAPI();
-  const { userInterface: {movingSectionId}, actions: {setMovingSectionId}} = React.useContext(UserInterfaceContext);
+  const { userInterface: { movingSectionId }, actions: {setMovingSectionId}} = React.useContext(UserInterfaceContext);
+  const { moveSection, currentPage } = usePageAPI();
+  const [selectedOtherSectionId, setSelectedOtherSectionId] = useState("");
+  const [selectedPageId, setSelectedPageId] = useState(currentPage?.id || "");
+  const [selectedPosition, setSelectedPosition] = useState(RelativeLocation.After);
 
   const handlePageChange = (change: React.ChangeEvent<HTMLSelectElement>) => {
-    selectedPageId = change.target.value;
+    setSelectedPageId(change.target.value);
   };
 
   const handlePositionChange = (change: React.ChangeEvent<HTMLSelectElement>) => {
-    selectedPosition = change.target.value;
+    setSelectedPosition(change.target.value as RelativeLocation);
   };
 
   const handleOtherSectionChange = (change: React.ChangeEvent<HTMLSelectElement>) => {
@@ -47,7 +41,12 @@ export const SectionMoveDialog: React.FC<ISectionMoveDialogProps> = ({
 
   const handleMoveSection = () => {
     if (movingSectionId) {
-      moveSection(movingSectionId, selectedPageId, selectedPosition as "before"|"after", selectedOtherSectionId);
+      const destination: ISectionDestination = {
+        relativeLocation: selectedPosition,
+        destPageId: selectedPageId,
+        destSectionId: selectedOtherSectionId
+      };
+      moveSection(movingSectionId, destination);
     }
     handleCloseDialog();
   };
@@ -78,7 +77,7 @@ export const SectionMoveDialog: React.FC<ISectionMoveDialogProps> = ({
 
   if (movingSectionId) {
     return (
-      <Modal title="Move this section to..."
+      <Modal title={`Move section ${movingSectionId} to...`}
         visibility={true} width={600} closeFunction={handleCloseDialog}>
         <div className="sectionMoveDialog">
           <dl>

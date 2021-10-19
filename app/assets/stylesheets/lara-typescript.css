@@ -355,19 +355,23 @@
 .textBlock {
   font-family: var(--font-family-default);
   font-size: 16px; }
+  .textBlock.callout p {
+    margin: 20px 0; }
   .textBlock.callout .textBlockName {
     background: #dfdfdf;
+    margin: 0;
     padding: 5px 20px; }
   .textBlock.callout .textBlockContent {
     background: #f4f4f4;
+    margin: 0;
     padding: 5px 20px 20px 20px; }
   .textBlock p {
-    margin: 20px 0; }
+    margin: 0 10px 20px; }
   .textBlock .textBlockName {
     clear: both;
     font-family: var(--font-family-bold);
     font-weight: bold;
-    position: relative; }
+    margin: 10px 10px 0; }
 
 @font-face {
   font-family: 'Lato-Light';
@@ -491,7 +495,7 @@
     display: flex;
     font-family: var(--font-family-default);
     font-size: 16px;
-    padding: 20px; }
+    padding: 10px; }
     .sectionItemContainer .previewNotSupported:before {
       align-self: center;
       content: "\26A0";

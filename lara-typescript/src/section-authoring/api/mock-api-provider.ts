@@ -11,7 +11,7 @@ let itemCounter = 0;
 
 let pages: IPage[] = [
   {
-    id: `${++pageCounter}`,
+    id: `${pageCounter++}`,
     title: `Page ${pageCounter}`,
     sections: []
   }
@@ -86,9 +86,11 @@ export const deletePage = (id: PageId) => {
 export const updatePage = (id: PageId, changes: Partial<IPage>) => {
   const indx = pages.findIndex(p => p.id === id);
   if (indx > -1) {
-    pages[indx] = {... pages[indx], ...changes };
+    const nextPage = {... pages[indx], ...changes };
+    pages[indx] = nextPage;
+    return Promise.resolve({... nextPage});
   }
-  return Promise.resolve(pages[indx]);
+  return Promise.reject("Can't find that page");
 };
 
 const createSection = (id: PageId) => {

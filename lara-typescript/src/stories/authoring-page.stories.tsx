@@ -1,5 +1,5 @@
 import * as React from "react";
-import { APIContainer } from "../section-authoring/api/api-container";
+import { APIContainer } from "../section-authoring/containers/api-container";
 import { ComponentMeta, ComponentStory } from "@storybook/react";
 import { AuthoringPage, AuthoringPageUsingAPI } from "../section-authoring/components/authoring-page";
 

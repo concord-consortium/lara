@@ -4,8 +4,8 @@ import { ISectionItem, ISection, SectionColumns } from "../api/api-types";
 import { Modal, ModalButtons } from "../../shared/components/modal/modal";
 import { Close } from "../../shared/components/icons/close-icon";
 import { Move } from "../../shared/components/icons/move-icon";
-import { usePageAPI } from "../api/use-api-provider";
-import { UserInterfaceContext } from "../api/use-user-interface-context";
+import { usePageAPI } from "../hooks/use-api-provider";
+import { UserInterfaceContext } from "../containers/user-interface-provider";
 
 import "./section-item-move-dialog.scss";
 

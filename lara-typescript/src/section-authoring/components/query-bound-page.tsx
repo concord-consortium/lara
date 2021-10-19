@@ -1,5 +1,5 @@
 import * as React from "react";
-import { APIContainer } from "../api/api-container";
+import { APIContainer } from "../containers/api-container";
 import { AuthoringPageUsingAPI, IPageProps } from "./authoring-page";
 
 interface IQueryBoundPage extends IPageProps {
