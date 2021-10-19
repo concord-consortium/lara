@@ -220,15 +220,11 @@ export const usePageAPI = () => {
     let sectionItemsCount = 0;
     updatedItems?.forEach((i, index) => {
       sectionItemsCount++;
-      const itemPosition = updatedItems[index].position;
-      updatedItems[index].position = i.column === selectedColumn
-                                       ? index > newIndex
-                                         ? sectionItemsCount
-                                         : itemPosition
-                                       : itemIndex < index && itemPosition
-                                         ? itemPosition - 1
-                                         : undefined;
+      if (index > newIndex) {
+        updatedItems[index].position = sectionItemsCount;
+      }
     });
+    // setItems(updatedItems);
     if (targetSection) {
       targetSection.items = updatedItems;
       if (updateSectionItems && updatedItems) {
