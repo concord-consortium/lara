@@ -1,8 +1,9 @@
+import { findSectionAddress } from "../util/finding-utils";
 import {
   IPage, PageId,
   APIPageGetF, APIPagesGetF, APIPageItemUpdateF,
   IAuthoringAPIProvider, ISection, ICreatePageItem, ISectionItem, SectionColumns,
-  ISectionItemType, APIPageItemDeleteF, ItemId
+  ISectionItemType, APIPageItemDeleteF, ItemId, SectionId
 } from "./api-types";
 
 let pageCounter = 0;
@@ -124,6 +125,43 @@ const updateSection = (args: {pageId: PageId, changes: { section: Partial<ISecti
   return Promise.reject(`cant find page ${pageId}`);
 };
 
+const copySection = (args: {pageId: PageId, sectionId: SectionId}) => {
+  const {pageId, sectionId} = args;
+  const page = pages.find(p => p.id === pageId);
+  if (!page) {
+    return Promise.reject(`can't find page: ${pageId}`);
+  }
+  const address = findSectionAddress(pages, sectionId);
+
+  // Assumes are array is in the right order.
+  const reorderSection = (sections: ISection[]) => {
+    sections.forEach((s, i) => {
+      s.position = i;
+    });
+  };
+
+  // Deep Clone object:
+  const clone = <T>(source: T): T => {
+    return JSON.parse(JSON.stringify(source));
+  };
+
+  if (! (address.pageIndex === null || address.sectionIndex ===  null)) {
+    const section = page.sections[address.sectionIndex];
+    const newSection = clone(section);
+    newSection.id = `${sectionCounter++}`;
+    newSection.position = (newSection.position || 0) + 1;
+    newSection.items?.forEach(i => {
+      i.id = `${itemCounter++}`;
+    });
+    const start = page.sections.findIndex(i => i.id === sectionId);
+    if (start > -1) {
+      page.sections.splice(start + 1, 0, newSection);
+      reorderSection(page.sections);
+    }
+  }
+  return Promise.resolve(page);
+};
+
 const createPageItem = (args: {pageId: PageId, newPageItem: ICreatePageItem}) => {
   const {newPageItem, pageId} = args;
   const sectionId = newPageItem.section_id;
@@ -242,7 +280,7 @@ const getAllEmbeddables = () => {
 
 export const API: IAuthoringAPIProvider = {
   getPages, getPage, createPage, deletePage,
-  createSection, updateSections, updateSection,
+  createSection, updateSections, updateSection, copySection,
   createPageItem, updatePageItem, deletePageItem,
   getAllEmbeddables,
   pathToTinyMCE: "https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.10.0/tinymce.min.js", pathToTinyMCECSS: undefined

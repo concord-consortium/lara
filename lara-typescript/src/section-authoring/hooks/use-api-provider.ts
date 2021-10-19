@@ -5,7 +5,7 @@ import { moveSection  as _moveSection, ISectionDestination} from "../util/move-u
 import {useMutation, useQuery, useQueryClient} from "react-query";
 import {
     IAuthoringAPIProvider, ICreatePageItem, IPage, ISection, ISectionItem,
-    ISectionItemType, ItemId, SectionColumns, SectionId
+    ISectionItemType, ItemId, PageId, SectionColumns, SectionId
 } from "../api/api-types";
 import { API as DEFAULT_API } from "../api/mock-api-provider";
 import { UserInterfaceContext  } from "../containers/user-interface-provider";
@@ -23,9 +23,11 @@ export const usePageAPI = () => {
   const { userInterface, actions } = useContext(UserInterfaceContext);
   const provider: IAuthoringAPIProvider = useContext(APIContext);
   const client = useQueryClient(); // Get the context from our container.
+
   const mutationsOpts = {
     onSuccess: () => client.invalidateQueries(PAGES_CACHE_KEY)
   };
+
   const addPageItemMutationsOpts = {
     onSuccess: (sectionItem: ISectionItem) => {
       client.invalidateQueries(PAGES_CACHE_KEY);
@@ -33,16 +35,18 @@ export const usePageAPI = () => {
     }
   };
 
+  // Pages:
   const getPages = useQuery<IPage[], Error>(PAGES_CACHE_KEY, provider.getPages);
   const addPageMutation = useMutation<IPage, Error>(provider.createPage, mutationsOpts);
   const deletePageMutation = useMutation<IPage[], Error, string>(provider.deletePage, mutationsOpts);
 
+  // Section Mutations:
   const addSectionMutation = useMutation<IPage, Error, string>(provider.createSection, mutationsOpts);
-
   const updateSection = useMutation<IPage, Error, {pageId: string, changes: {section: Partial<ISection> }}>
     (provider.updateSection, mutationsOpts);
-
   const updateSectionsMutation = useMutation<IPage, Error, IPage>(provider.updateSections, mutationsOpts);
+  const copySectionMutation =
+    useMutation<IPage, Error, {pageId: PageId, sectionId: SectionId}>(provider.copySection, mutationsOpts);
 
   const updateSections = (nextPage: IPage) => updateSectionsMutation.mutate(nextPage);
 
@@ -138,7 +142,14 @@ export const usePageAPI = () => {
     }
   };
 
-  const deleteSectionFunction = (sectionId: string) => {
+  const copySection = (sectionId: SectionId) => {
+    if (currentPage) {
+      const pageId = currentPage.id;
+      copySectionMutation.mutate({pageId, sectionId});
+    }
+  };
+
+  const deleteSectionFunction = (sectionId: SectionId) => {
     if (currentPage) {
       const nextSections: ISection[] = [];
       currentPage.sections.forEach(s => {
@@ -210,7 +221,8 @@ export const usePageAPI = () => {
 
   return {
     getPages, addPageMutation, deletePageMutation,
-    addSectionMutation, addSection, changeSection, updateSection, getSections, moveSection, updateSections,
+    addSectionMutation, addSection, changeSection, updateSection, getSections,
+    moveSection, updateSections, copySection,
     addPageItem, createPageItem, updatePageItem, deletePageItem, updateSectionItems, moveItem, getItems,
     getAllEmbeddables, currentPage, deleteSectionFunction,
     pathToTinyMCE: provider.pathToTinyMCE, pathToTinyMCECSS: provider.pathToTinyMCECSS

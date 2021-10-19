@@ -40,11 +40,6 @@ export interface ISectionProps extends ISection {
   updateFunction?: (changes: {section: Partial<ISection>}) => void;
 
   /**
-   * Optional function to copy the section
-   */
-  copyFunction?: (id: string) => void;
-
-  /**
    * Function to move an item
    */
   moveItemFunction?: (id: string) => void;
@@ -67,7 +62,6 @@ export interface ISectionProps extends ISection {
 export const AuthoringSection: React.FC<ISectionProps> = ({
   id,
   updateFunction,
-  copyFunction,
   layout: initLayout = defaultLayout,
   items = [],
   collapsed: initCollapsed = false,
@@ -79,7 +73,7 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
   }: ISectionProps) => {
 
   const { actions: {setMovingSectionId}} = React.useContext(UserInterfaceContext);
-  const { deleteSectionFunction: deleteSectionFunction } = usePageAPI();
+  const { deleteSectionFunction, copySection } = usePageAPI();
   const [layout, setLayout] = useState(initLayout);
   const [collapsed, setCollapsed] = useState(initCollapsed);
 
@@ -103,21 +97,13 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
     deleteSectionFunction?.(id);
   };
 
-  // const setItems = (nextItems: ISection[]) => {
-  //   updateFunction?.({section: {id, items: nextItems}});
-  // };
-
   const handleMoveSection = () => {
     setMovingSectionId(id);
   };
 
   const handleCopy = () => {
-    copyFunction?.(id);
+    copySection(id);
   };
-
-  // const sortedItems = () => {
-  //   return items.sort((a, b) => (a?.position || 0) - (b?.position || 0));
-  // };
 
   const getColumnItems = (column: SectionColumns) => {
     if (layout === SectionLayouts.LAYOUT_FULL_WIDTH) return items;
