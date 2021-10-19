@@ -1,5 +1,6 @@
 import * as React from "react";
 import { useState } from "react";
+import { usePageAPI } from "../api/use-api-provider";
 import { GripLines } from "../../shared/components/icons/grip-lines";
 import { SectionColumn } from "./section-column";
 import { ICreatePageItem, ISection, ISectionItem, SectionColumns, SectionLayouts } from "../api/api-types";
@@ -86,6 +87,8 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
   const { actions: {setMovingSectionId}} = React.useContext(UserInterfaceContext);
   const [layout, setLayout] = useState(initLayout);
   const [collapsed, setCollapsed] = useState(initCollapsed);
+  const api = usePageAPI();
+  const { changeLayout } = api;
 
   React.useEffect(() => {
     setLayout(initLayout);
@@ -94,7 +97,7 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
   const layoutChanged = (change: React.ChangeEvent<HTMLSelectElement>) => {
     const newLayout = change.target.value as SectionLayouts;
     setLayout(newLayout);
-    updateFunction?.({section: {layout: newLayout, id}});
+    changeLayout({section: {layout: newLayout, id}});
   };
 
   const toggleCollapse = () => {

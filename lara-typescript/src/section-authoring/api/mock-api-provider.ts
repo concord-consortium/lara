@@ -115,7 +115,6 @@ const updateSection = (args: {pageId: PageId, changes: { section: Partial<ISecti
     const section  = page.sections.find(s => s.id === changes.section.id);
     if (section) {
       Object.assign(section, changes.section);
-
     }
     return Promise.resolve(page);
   }

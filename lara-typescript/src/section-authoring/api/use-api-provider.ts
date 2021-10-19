@@ -4,7 +4,7 @@ import { useState } from "react";
 import {useMutation, useQuery, useQueryClient} from "react-query";
 import {
     IAuthoringAPIProvider, ICreatePageItem, IPage, ISection, ISectionItem,
-    ISectionItemType, ItemId, SectionColumns, SectionId
+    ISectionItemType, ItemId, SectionColumns, SectionId, SectionLayouts
 } from "./api-types";
 import { API as DEFAULT_API } from "./mock-api-provider";
 import { UserInterfaceContext, useUserInterface } from "./use-user-interface-context";
@@ -125,6 +125,39 @@ export const usePageAPI = () => {
 
   const currentPage = getPage();
 
+  const changeLayout = (changes: { section: Partial<ISection> }) => {
+    if (getPages.data) {
+      const page = getPages.data[userInterface.currentPageIndex];
+      const section  = page.sections.find(s => s.id === changes.section.id);
+      if (section) {
+        if (changes.section.layout === SectionLayouts.LAYOUT_FULL_WIDTH) {
+          // All items get moved to secondary column.
+          // Items from the former primary column are listed first.
+          const primaryItems = section.items?.filter(i => i.column === SectionColumns.PRIMARY);
+          section.items?.forEach((item: ISectionItem, index: number) => {
+            if (primaryItems && item.column === SectionColumns.SECONDARY) {
+              item.position = item.position ? primaryItems.length + item.position : primaryItems.length + index + 1;
+            }
+            item.column = SectionColumns.SECONDARY;
+          });
+          section.items?.sort((a, b) => {
+            if (a.position === undefined && b.position === undefined) {
+              return 0;
+            } else if (a.position === undefined) {
+              return 1;
+            } else if (b.position === undefined) {
+              return -1;
+            } else {
+              return a.position - b.position;
+            }
+          });
+        }
+      }
+      changes.section.items = section?.items;
+      updateSection.mutate({pageId: page.id, changes});
+    }
+  };
+
   const moveSection = (
     sectionId: string,
     selectedPageId: string,
@@ -187,11 +220,15 @@ export const usePageAPI = () => {
     let sectionItemsCount = 0;
     updatedItems?.forEach((i, index) => {
       sectionItemsCount++;
-      if (index > newIndex) {
-        updatedItems[index].position = sectionItemsCount;
-      }
+      const itemPosition = updatedItems[index].position;
+      updatedItems[index].position = i.column === selectedColumn
+                                       ? index > newIndex
+                                         ? sectionItemsCount
+                                         : itemPosition
+                                       : itemIndex < index && itemPosition
+                                         ? itemPosition - 1
+                                         : undefined;
     });
-    // setItems(updatedItems);
     if (targetSection) {
       targetSection.items = updatedItems;
       if (updateSectionItems && updatedItems) {
@@ -219,7 +256,7 @@ export const usePageAPI = () => {
     getPages, addPageMutation, deletePageMutation,
     addSectionMutation, addSection, changeSection, updateSection, getSections, moveSection, updateSections,
     addPageItem, createPageItem, updatePageItem, deletePageItem, updateSectionItems, moveItem, getItems,
-    getAllEmbeddables, currentPage,
+    getAllEmbeddables, currentPage, changeLayout,
     pathToTinyMCE: provider.pathToTinyMCE, pathToTinyMCECSS: provider.pathToTinyMCECSS
   };
 };
