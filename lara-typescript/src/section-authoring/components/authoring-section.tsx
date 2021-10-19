@@ -40,11 +40,6 @@ export interface ISectionProps extends ISection {
   updateFunction?: (changes: {section: Partial<ISection>}) => void;
 
   /**
-   * Optional function to delete the section (elsewhere)
-   */
-  deleteFunction?: (id: string) => void;
-
-  /**
    * Optional function to copy the section
    */
   copyFunction?: (id: string) => void;
@@ -84,7 +79,7 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
   }: ISectionProps) => {
 
   const { actions: {setMovingSectionId}} = React.useContext(UserInterfaceContext);
-  const { deleteFunction } = usePageAPI();
+  const { deleteSectionFunction: deleteSectionFunction } = usePageAPI();
   const [layout, setLayout] = useState(initLayout);
   const [collapsed, setCollapsed] = useState(initCollapsed);
 
@@ -105,7 +100,7 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
   };
 
   const handleDelete = () => {
-    deleteFunction?.(id);
+    deleteSectionFunction?.(id);
   };
 
   // const setItems = (nextItems: ISection[]) => {

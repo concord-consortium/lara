@@ -212,7 +212,7 @@ export const usePageAPI = () => {
     getPages, addPageMutation, deletePageMutation,
     addSectionMutation, addSection, changeSection, updateSection, getSections, moveSection, updateSections,
     addPageItem, createPageItem, updatePageItem, deletePageItem, updateSectionItems, moveItem, getItems,
-    getAllEmbeddables, currentPage, deleteFunction: deleteSectionFunction,
+    getAllEmbeddables, currentPage, deleteSectionFunction,
     pathToTinyMCE: provider.pathToTinyMCE, pathToTinyMCECSS: provider.pathToTinyMCECSS
   };
 };
