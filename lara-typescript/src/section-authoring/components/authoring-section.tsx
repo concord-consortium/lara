@@ -1,13 +1,13 @@
 import * as React from "react";
 import { useState } from "react";
+import { DraggableProvided } from "react-beautiful-dnd";
 import { GripLines } from "../../shared/components/icons/grip-lines";
 import { SectionColumn } from "./section-column";
-import { ICreatePageItem, ISection, ISectionItem, SectionColumns, SectionLayouts } from "../api/api-types";
-import { DraggableProvided } from "react-beautiful-dnd";
+import { ICreatePageItem, ISection, SectionColumns, SectionLayouts } from "../api/api-types";
 import { UserInterfaceContext } from "../containers/user-interface-provider";
+import { usePageAPI } from "../hooks/use-api-provider";
 
 import "./authoring-section.scss";
-import { usePageAPI } from "../hooks/use-api-provider";
 
 const defaultLayout = SectionLayouts.LAYOUT_FULL_WIDTH;
 const layoutClassNames = {

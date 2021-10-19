@@ -50,25 +50,20 @@ export const moveSection = (args: IMoveSectionSignature): IPage[] => {
   }
 
   destPageIndex = pages.findIndex(p => p.id === destPageId);
-  if (destSectionIndex == null) {
-    destSectionIndex = (pages.find(p => p.id === destPageId)?.sections.length) || 0;
-  }
-
   // We must have a destination page:
-  if (destPageIndex == null) {
+  if ((destPageIndex === null) || (destPageIndex === -1)) {
     return error(`can't find destination ${destination}`);
   }
 
-  // If we have a destination section:
-  if (destSectionIndex) {
+  // If no section is specified, insert at the start.
+  if ((destSectionIndex == null) || (destSectionIndex === -1)) {
+    destSectionIndex = (pages.find(p => p.id === destPageId)?.sections.length) || 0;
+  }
+  else {
     // Adjust destination index by relative location:
     if (relativeLocation === RelativeLocation.After) {
       destSectionIndex = destSectionIndex + 1;
     }
-  }
-  // Otherwise we are using the first.
-  else {
-    destSectionIndex = 0;
   }
 
   // At this point we should have indexes for everything...
@@ -77,9 +72,6 @@ export const moveSection = (args: IMoveSectionSignature): IPage[] => {
   // 3. update the pages
   const sourcePage = pages[pageIndex];
   const destPage = pages[destPageIndex];
-  const realDestSectionIndex = relativeLocation === RelativeLocation.After
-    ? destSectionIndex + 1
-    : destSectionIndex;
 
   const sourceSection = findSection(pages, sectionId);
   if (sourceSection == null) {
@@ -91,7 +83,7 @@ export const moveSection = (args: IMoveSectionSignature): IPage[] => {
     sections: sourcePage.sections.filter(s => s.id !== sourceSection.id)
   };
   if (pageIndex === destPageIndex) {
-    nextSourcePage.sections.splice(realDestSectionIndex, 0, sourceSection);
+    nextSourcePage.sections.splice(destSectionIndex, 0, sourceSection);
     return [ setSectionPositions(nextSourcePage) ];
   }
 
@@ -99,6 +91,6 @@ export const moveSection = (args: IMoveSectionSignature): IPage[] => {
     ... destPage,
     sections: [...destPage.sections || []]
   };
-  nextDestPage.sections.splice(realDestSectionIndex, 0, sourceSection);
+  nextDestPage.sections.splice(destSectionIndex, 0, sourceSection);
   return [setSectionPositions(nextSourcePage), setSectionPositions(nextDestPage)];
 };

@@ -271,15 +271,15 @@ export const AuthoringPageUsingAPI = () => {
         </div>
       }
       { !getPages &&
-        <div className="error">
+        <div className="loading">
           <h1>
-            LOADING LOADING LOADING
+            Loading ...
           </h1>
         </div>
       }
-      { getPages.data?.[0] &&
+      { currentPage &&
         <AuthoringPage
-          sections={getPages.data?.[0].sections || []}
+          sections={currentPage.sections || []}
           addSection={addSection }
           setSections={updateSections}
           id={currentPage?.id || "none"}
