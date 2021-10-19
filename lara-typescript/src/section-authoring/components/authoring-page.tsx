@@ -282,7 +282,7 @@ export const AuthoringPageUsingAPI = () => {
       <>
         <AuthoringPage
           sections={currentPage?.sections || []}
-          addSection={addSection }
+          addSection={addSection}
           setSections={updateSections}
           id={currentPage?.id || "none"}
           changeSection={changeSection}

@@ -2,7 +2,7 @@ import {
   IPage, PageId,
   APIPageGetF, APIPagesGetF, APIPageItemUpdateF,
   IAuthoringAPIProvider, ISection, ICreatePageItem, ISectionItem, SectionColumns,
-  ISectionItemType, APIPageItemDeleteF, ItemId
+  ISectionItemType, APIPageItemDeleteF, ItemId, SectionLayouts
 } from "./api-types";
 
 let pageCounter = 0;
@@ -20,7 +20,8 @@ let pages: IPage[] = [
 const makeNewSection = (): ISection => {
   const section: ISection = {
     id: `${++sectionCounter}`,
-    items: []
+    items: [],
+    layout: SectionLayouts.LAYOUT_FULL_WIDTH
   };
   return section;
 };

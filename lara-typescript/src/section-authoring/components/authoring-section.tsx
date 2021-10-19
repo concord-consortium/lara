@@ -1,11 +1,12 @@
 import * as React from "react";
 import { useState } from "react";
-import { usePageAPI } from "../api/use-api-provider";
 import { GripLines } from "../../shared/components/icons/grip-lines";
 import { SectionColumn } from "./section-column";
 import { ICreatePageItem, ISection, ISectionItem, SectionColumns, SectionLayouts } from "../api/api-types";
 import { DraggableProvided } from "react-beautiful-dnd";
+import { usePageAPI } from "../api/use-api-provider";
 import { UserInterfaceContext } from "../api/use-user-interface-context";
+import { changeLayout } from "../util/change-layout-utils";
 
 import "./authoring-section.scss";
 
@@ -84,11 +85,10 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
   addPageItem
   }: ISectionProps) => {
 
+  const { currentPage, updateSection } = usePageAPI();
   const { actions: {setMovingSectionId}} = React.useContext(UserInterfaceContext);
   const [layout, setLayout] = useState(initLayout);
   const [collapsed, setCollapsed] = useState(initCollapsed);
-  const api = usePageAPI();
-  const { changeLayout } = api;
 
   React.useEffect(() => {
     setLayout(initLayout);
@@ -96,8 +96,14 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
 
   const layoutChanged = (change: React.ChangeEvent<HTMLSelectElement>) => {
     const newLayout = change.target.value as SectionLayouts;
+    const page = currentPage;
     setLayout(newLayout);
-    changeLayout({section: {layout: newLayout, id}});
+    if (page) {
+      const updatedSection = changeLayout({id, layout: newLayout, page});
+      if (updatedSection) {
+        updateSection.mutate({pageId: page.id, changes: {section: updatedSection}});
+      }
+    }
   };
 
   const toggleCollapse = () => {
