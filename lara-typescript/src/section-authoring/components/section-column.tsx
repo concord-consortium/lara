@@ -8,7 +8,7 @@ import { Add } from "../../shared/components/icons/add-icon";
 
 import "./section-column.scss";
 import { SectionItemPicker } from "./section-item-picker";
-import { usePageAPI } from "../api/use-api-provider";
+import { usePageAPI } from "../hooks/use-api-provider";
 
 export interface ISectionColumnProps {
 

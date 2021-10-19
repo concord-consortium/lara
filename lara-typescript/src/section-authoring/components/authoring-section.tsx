@@ -1,11 +1,11 @@
 import * as React from "react";
 import { useState } from "react";
+import { DraggableProvided } from "react-beautiful-dnd";
 import { GripLines } from "../../shared/components/icons/grip-lines";
 import { SectionColumn } from "./section-column";
-import { ICreatePageItem, ISection, ISectionItem, SectionColumns, SectionLayouts } from "../api/api-types";
-import { DraggableProvided } from "react-beautiful-dnd";
-import { usePageAPI } from "../api/use-api-provider";
-import { UserInterfaceContext } from "../api/use-user-interface-context";
+import { ICreatePageItem, ISection, SectionColumns, SectionLayouts } from "../api/api-types";
+import { UserInterfaceContext } from "../containers/user-interface-provider";
+import { usePageAPI } from "../hooks/use-api-provider";
 import { changeLayout } from "../util/change-layout-utils";
 
 import "./authoring-section.scss";
@@ -41,11 +41,6 @@ export interface ISectionProps extends ISection {
   updateFunction?: (changes: {section: Partial<ISection>}) => void;
 
   /**
-   * Optional function to delete the section (elsewhere)
-   */
-  deleteFunction?: (id: string) => void;
-
-  /**
    * Optional function to copy the section
    */
   copyFunction?: (id: string) => void;
@@ -73,7 +68,6 @@ export interface ISectionProps extends ISection {
 export const AuthoringSection: React.FC<ISectionProps> = ({
   id,
   updateFunction,
-  deleteFunction,
   copyFunction,
   layout: initLayout = defaultLayout,
   items = [],
@@ -87,6 +81,7 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
 
   const { currentPage, updateSection } = usePageAPI();
   const { actions: {setMovingSectionId}} = React.useContext(UserInterfaceContext);
+  const { deleteSectionFunction: deleteSectionFunction } = usePageAPI();
   const [layout, setLayout] = useState(initLayout);
   const [collapsed, setCollapsed] = useState(initCollapsed);
 
@@ -113,7 +108,7 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
   };
 
   const handleDelete = () => {
-    deleteFunction?.(id);
+    deleteSectionFunction?.(id);
   };
 
   // const setItems = (nextItems: ISection[]) => {

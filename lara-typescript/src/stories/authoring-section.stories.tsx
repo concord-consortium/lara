@@ -2,7 +2,7 @@ import * as React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { AuthoringSection, ISectionProps } from "../section-authoring/components/authoring-section";
 import { SectionLayouts } from "../section-authoring/api/api-types";
-import { APIContainer } from "../section-authoring/api/api-container";
+import { APIContainer } from "../section-authoring/containers/api-container";
 
 export default {
   title: "Authoring Section",

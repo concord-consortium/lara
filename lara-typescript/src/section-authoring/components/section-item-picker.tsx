@@ -7,7 +7,7 @@ import { absorbClickThen } from "../../shared/absorb-click";
 import { ISectionItemType } from "../api/api-types";
 
 import "./section-item-picker.scss";
-import { usePageAPI } from "../api/use-api-provider";
+import { usePageAPI } from "../hooks/use-api-provider";
 
 export interface IProps {
   onClose: () => void;
