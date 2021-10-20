@@ -6,6 +6,7 @@ import { SectionColumn } from "./section-column";
 import { ICreatePageItem, ISection, SectionColumns, SectionLayouts } from "../api/api-types";
 import { UserInterfaceContext } from "../containers/user-interface-provider";
 import { usePageAPI } from "../hooks/use-api-provider";
+import { changeLayout } from "../util/change-layout-utils";
 
 import "./authoring-section.scss";
 
@@ -72,6 +73,7 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
   addPageItem
   }: ISectionProps) => {
 
+  const { currentPage, updateSection } = usePageAPI();
   const { actions: {setMovingSectionId}} = React.useContext(UserInterfaceContext);
   const { deleteSectionFunction, copySection } = usePageAPI();
   const [layout, setLayout] = useState(initLayout);
@@ -83,8 +85,14 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
 
   const layoutChanged = (change: React.ChangeEvent<HTMLSelectElement>) => {
     const newLayout = change.target.value as SectionLayouts;
+    const page = currentPage;
     setLayout(newLayout);
-    updateFunction?.({section: {layout: newLayout, id}});
+    if (page) {
+      const updatedSection = changeLayout({id, layout: newLayout, page});
+      if (updatedSection) {
+        updateSection.mutate({pageId: page.id, changes: {section: updatedSection}});
+      }
+    }
   };
 
   const toggleCollapse = () => {
