@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20211001193627) do
+ActiveRecord::Schema.define(:version => 20211020183637) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "kind"
@@ -639,6 +639,7 @@ ActiveRecord::Schema.define(:version => 20211001193627) do
     t.string   "platform_id"
     t.string   "platform_user_id"
     t.string   "resource_link_id"
+    t.integer  "status",               :default => 0
   end
 
   add_index "runs", ["activity_id"], :name => "index_runs_on_activity_id"
@@ -647,6 +648,8 @@ ActiveRecord::Schema.define(:version => 20211001193627) do
   add_index "runs", ["remote_endpoint"], :name => "index_runs_on_remote_endpoint"
   add_index "runs", ["sequence_id"], :name => "index_runs_on_sequence_id"
   add_index "runs", ["sequence_run_id"], :name => "index_runs_on_sequence_run_id"
+  add_index "runs", ["status"], :name => "index_runs_on_status"
+  add_index "runs", ["updated_at"], :name => "index_runs_on_updated_at"
   add_index "runs", ["user_id", "activity_id"], :name => "index_runs_on_user_id_and_activity_id"
   add_index "runs", ["user_id", "remote_id", "remote_endpoint"], :name => "runs_user_remote_endpt_idx"
   add_index "runs", ["user_id"], :name => "index_runs_on_user_id"
