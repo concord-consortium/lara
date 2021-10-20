@@ -1,6 +1,5 @@
 require 'spec_helper'
 
-
 describe Section do
   let(:params)  { {} }
   let(:section) { Section.create(params) }
@@ -59,6 +58,36 @@ describe Section do
         end
       end
     end
+  end
+
+  describe "#duplicate" do
+    let(:original) { FactoryGirl.create(:section, :on_page, :with_items) }
+
+    let(:copy) { original.duplicate }
+
+    it "should create a copy of itself" do
+      expect(copy.title).to eql(original.title)
+      expect(copy.layout).to eql(original.layout)
+      expect(copy.can_collapse_small).to eql(original.can_collapse_small)
+      expect(copy.show).to eql(original.show)
+
+      expect(copy.interactive_page).to be_valid
+    end
+
+    describe "its items" do
+      it "should copy the items" do
+        expect(copy.page_items.length).to eql(3)
+      end
+
+      it "should copy the item embeddables" do
+        original_embeddable_ids = original.embeddables.map(&:id)
+        expect(copy.embeddables.length).to eql(original.embeddables.length)
+        copy.embeddables.map(&:id).map do |copy_e_id|
+          expect(original_embeddable_ids).not_to include(copy_e_id)
+        end
+      end
+    end
+
   end
 
 end
