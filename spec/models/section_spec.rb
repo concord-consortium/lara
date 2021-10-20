@@ -79,6 +79,11 @@ describe Section do
         expect(copy.page_items.length).to eql(3)
       end
 
+      it "should copy all the page_item fields" do
+        copy.page_items.each_with_index do |item, index|
+          expect(item.column).to eql(original.page_items[index].column)
+        end
+      end
       it "should copy the item embeddables" do
         original_embeddable_ids = original.embeddables.map(&:id)
         expect(copy.embeddables.length).to eql(original.embeddables.length)
