@@ -273,45 +273,12 @@ class InteractivePage < ActiveRecord::Base
 
   def duplicate(helper=nil)
     helper = LaraDuplicationHelper.new if helper.nil?
-    new_page = InteractivePage.new(self.to_hash)
+    new_page = InteractivePage.new(to_hash)
+    new_sections = sections.map { |s| s.duplicate(helper) }
 
     InteractivePage.transaction do
       new_page.save!(validate: false)
-
-      # Now, add them to the page and resolve some dependencies between embeddables.
-      self.embeddables.each do |embed|
-        copy = helper.get_copy(embed)
-
-        if embed.respond_to?(:embeddable=) && embed.embeddable
-          copy.embeddable = helper.get_copy(embed.embeddable)
-        end
-        if embed.respond_to?(:interactive=) && embed.interactive
-          copy.interactive = helper.get_copy(embed.interactive)
-        end
-        if embed.respond_to?(:linked_interactive=) && embed.linked_interactive
-          copy.linked_interactive = helper.get_copy(embed.linked_interactive)
-        end
-        copy.save!(validate: false)
-        if embed.respond_to? :question_tracker and embed.question_tracker
-          embed.question_tracker.add_question(copy)
-        end
-
-        new_page.add_embeddable(copy, nil, embed.page_section)
-      end
-
-      # with the embeddables added link any interactive links
-      self.embeddables.each do |embed|
-        if embed.respond_to?(:primary_linked_items)
-          embed.primary_linked_items.each do |pli|
-            primary = helper.get_copy(embed)
-            secondary = helper.get_copy(pli.secondary.embeddable)
-            if primary && secondary
-              lpi = LinkedPageItem.new(primary_id: primary.page_item.id, secondary_id: secondary.page_item.id, label: pli.label)
-              lpi.save!(validate: false)
-            end
-          end
-        end
-      end
+      new_sections.each { |s| s.update_attribute(:interactive_page_id, new_page.id) }
     end
     new_page.reload
   end
