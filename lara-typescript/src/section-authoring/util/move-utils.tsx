@@ -1,4 +1,4 @@
-import { IPage, ISection, PageId, SectionId } from "../api/api-types";
+import { IPage, ISection, PageId, SectionId, ItemId, ISectionItem} from "../api/api-types";
 import { findSection, findSectionAddress } from "./finding-utils";
 
 export enum RelativeLocation {
@@ -18,8 +18,17 @@ export interface IMoveSectionSignature {
   pages: IPage[];
 }
 
+export interface IItemDestination extends ISectionDestination {
+  destSectionId: SectionId;
+  destItemId?: ItemId;
+}
+
+const updatePositions = (items: ISection[] | ISectionItem[] ) => {
+  items.forEach ( (item, index) => { item.position = index + 1; });
+};
+
 const setSectionPositions = (page: IPage)  => {
-  page.sections = page.sections.map( (s, i) => ({ ...s, position: i}) );
+  updatePositions(page.sections);
   return page;
 };
 

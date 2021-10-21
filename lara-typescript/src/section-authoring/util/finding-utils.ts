@@ -1,8 +1,13 @@
-import { IPage, SectionId, ISection, PageId } from "../api/api-types";
+import { IPage, SectionId, ISection, PageId, ItemId } from "../api/api-types";
 
 export interface ISectionAddress {
   pageIndex: number|null;
   sectionIndex: number|null;
+}
+
+export interface IItemAddress extends ISectionAddress {
+  column: string; // TODO: Lookup this type
+
 }
 
 // memoize me, invalidate on pages[]
@@ -44,3 +49,7 @@ export const findSectionAddress = (pages: IPage[], sectionId: SectionId): ISecti
   }
   return {pageIndex: null, sectionIndex: null};
 };
+
+export const findItemAddress = (sectionID: SectionId, itemId: ItemId): IItemAddress => {
+
+}
