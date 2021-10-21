@@ -133,7 +133,7 @@ const copySection = (args: {pageId: PageId, sectionId: SectionId}) => {
   }
   const address = findSectionAddress(pages, sectionId);
 
-  // Assumes are array is in the right order.
+  // updates position, assumes the array is in the right order.
   const reorderSection = (sections: ISection[]) => {
     sections.forEach((s, i) => {
       s.position = i;
