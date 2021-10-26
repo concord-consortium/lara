@@ -8,38 +8,28 @@ import { usePageAPI } from "../hooks/use-api-provider";
 import { UserInterfaceContext } from "../containers/user-interface-provider";
 
 import "./section-item-move-dialog.scss";
+import { RelativeLocation } from "../util/move-utils";
 
 export interface ISectionItemMoveDialogProps {
-  sections: ISection[];
-  selectedPageId?: string;
-  selectedSectionId?: string;
-  selectedColumn?: SectionColumns;
-  selectedPosition?: string;
-  selectedOtherItemId?: string | undefined;
 }
 
-export const SectionItemMoveDialog: React.FC<ISectionItemMoveDialogProps> = ({
-  sections,
-  selectedPageId = "0",
-  selectedSectionId: initSelectedSectionId = "1",
-  selectedColumn: initSelectedColumn = SectionColumns.PRIMARY,
-  selectedPosition: initSelectedPosition = "after",
-  selectedOtherItemId: initSelectedOtherItemId = "0",
-  }: ISectionItemMoveDialogProps) => {
-  const [selectedSectionId, setSelectedSectionId] = useState(initSelectedSectionId);
-  const [selectedColumn, setSelectedColumn] = useState(initSelectedColumn);
-  const [selectedPosition, setSelectedPosition] = useState(initSelectedPosition);
-  const [selectedOtherItemId, setSelectedOtherItemId] = useState(initSelectedOtherItemId);
+export const SectionItemMoveDialog: React.FC<ISectionItemMoveDialogProps> = () => {
+  const [selectedPageId, setSelectedPageId] = useState("0");
+  const [selectedSectionId, setSelectedSectionId] = useState("");
+  const [selectedColumn, setSelectedColumn] = useState("");
+  const [selectedPosition, setSelectedPosition] = useState(RelativeLocation.After);
+  const [selectedOtherItemId, setSelectedOtherItemId] = useState("");
   const [modalVisibility, setModalVisibility] = useState(true);
 
   const { moveItem, getSections } = usePageAPI();
   const { userInterface: {movingItemId}, actions: {setMovingItemId}} = React.useContext(UserInterfaceContext);
 
   const handlePageChange = (change: React.ChangeEvent<HTMLSelectElement>) => {
-    selectedPageId = change.target.value;
+    setSelectedPageId(change.target.value);
   };
 
   const handleSectionChange = (change: React.ChangeEvent<HTMLSelectElement>) => {
+    console.log(change.target.value);
     setSelectedSectionId(change.target.value);
   };
 
@@ -48,7 +38,7 @@ export const SectionItemMoveDialog: React.FC<ISectionItemMoveDialogProps> = ({
   };
 
   const handlePositionChange = (change: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedPosition(change.target.value);
+    setSelectedPosition(change.target.value as RelativeLocation);
   };
 
   const handleOtherItemChange = (change: React.ChangeEvent<HTMLSelectElement>) => {
@@ -61,7 +51,12 @@ export const SectionItemMoveDialog: React.FC<ISectionItemMoveDialogProps> = ({
 
   const handleMoveItem = () => {
     if (movingItemId) {
-      moveItem(movingItemId, selectedSectionId, selectedColumn, selectedPosition, selectedOtherItemId);
+      moveItem(movingItemId, {
+        destPageId: selectedPageId,
+        destSectionId: selectedSectionId,
+        destItemId: selectedOtherItemId,
+        relativeLocation: selectedPosition,
+      });
     }
     handleCloseDialog();
   };
@@ -69,7 +64,7 @@ export const SectionItemMoveDialog: React.FC<ISectionItemMoveDialogProps> = ({
   const columnOptions = () => {
     const options: any = [{value: SectionColumns.PRIMARY}];
     if (selectedSectionId) {
-      const section = sections.find(s => s.id === selectedSectionId);
+      const section = getSections().find(s => s.id === selectedSectionId);
       if (section?.layout !== "Full Width") {
         options.push({value: SectionColumns.SECONDARY});
       }
@@ -84,9 +79,9 @@ export const SectionItemMoveDialog: React.FC<ISectionItemMoveDialogProps> = ({
   const itemOptions = () => {
     let itemsList: ISectionItem[] = [];
     if (selectedSectionId) {
-      const selectedSection = sections.find(s => s.id === selectedSectionId);
+      const selectedSection = getSections().find(s => s.id === selectedSectionId);
       if (selectedSection?.items) {
-        itemsList = selectedSection.items.filter(i => i.id !== movingItemId && i.column === selectedColumn);
+        itemsList = selectedSection.items.filter(i => i.id !== movingItemId);
       }
     }
     if (itemsList.length < 1) {
@@ -119,7 +114,7 @@ export const SectionItemMoveDialog: React.FC<ISectionItemMoveDialogProps> = ({
             <dt className="col2">Section</dt>
             <dd className="col2">
               <select name="section" onChange={handleSectionChange}>
-                {sections.map((s) => {
+                {getSections().map((s) => {
                     return <option key={`section-option-${s.id}`} value={s.id}>{s.id}</option>;
                   })}
               </select>
@@ -133,8 +128,8 @@ export const SectionItemMoveDialog: React.FC<ISectionItemMoveDialogProps> = ({
             <dt className="col4">Position</dt>
             <dd className="col4">
             <select name="position" onChange={handlePositionChange}>
-                <option value="after">After</option>
-                <option value="before">Before</option>
+                <option value={RelativeLocation.After}>{RelativeLocation.After}</option>
+                <option value={RelativeLocation.Before}>{RelativeLocation.Before}</option>
               </select>
             </dd>
             <dt className="col5">Item</dt>

@@ -1,6 +1,4 @@
-import { IPage, ISection, ISectionItem } from "../api/api-types";
-import { findSectionAddress, findSection, findSectionByAddress } from "./finding-utils";
-import { moveSection, ISectionDestination, RelativeLocation } from "./move-utils";
+import { moveSection, ISectionDestination, RelativeLocation, moveItem, IItemDestination } from "./move-utils";
 import { makePages } from "./spec-helper";
 
 describe("moveSection", () => {
@@ -124,4 +122,67 @@ describe("moveSection", () => {
   });
 
   // TODO:  Tests asserting position of Sections.
+});
+
+describe("moveItem", () => {
+
+  describe("Failing scenarios" , () => {
+    it ("it can't move non-existent item", () => {
+      const pages = makePages(3);
+      const destination: IItemDestination = {
+        destPageId: pages[0].id,
+        relativeLocation: RelativeLocation.After,
+        destSectionId: "section3"
+      };
+      const itemId = "bogus";
+
+      // Move failed:
+      expect(moveItem({ destination, pages, itemId })).toEqual([]);
+    });
+  });
+
+  describe("moving items within the same section", () => {
+
+    it ("it can move the first item in the section to the end of the section", () => {
+      const pages = makePages(3);
+      const destination: IItemDestination = {
+        destPageId: "page0",
+        relativeLocation: RelativeLocation.After,
+        destSectionId: "section0",
+        destItemId: "item2"
+      };
+      const itemId = "item0";
+
+      const changedPages = moveItem({ destination, pages, itemId });
+      expect(changedPages.length).toEqual(1);
+      expect(changedPages[0].sections[0].items!.map(i => i.id)).toEqual(["item1", "item2", "item0" ]);
+    });
+
+    it("can move an item forward from one page to another", () => {
+      const pages = makePages(3);
+      const destination: IItemDestination = {
+        destPageId: pages[0].id,
+        relativeLocation: RelativeLocation.Before,
+        destSectionId: "section0",
+        destItemId: "item0"
+      };
+      const itemId = "item9";
+      const changedPages = moveItem({ destination, pages, itemId });
+      expect(changedPages.length).toEqual(2);
+      expect(changedPages[1].sections[0].items!.map(i => i.id)).toEqual(["item9", "item0", "item1", "item2" ]);
+    });
+
+    it("can move an item backward from one page to another, not specifying item destination", () => {
+      const pages = makePages(3);
+      const destination: IItemDestination = {
+        destPageId: "page1",
+        relativeLocation: RelativeLocation.Before,
+        destSectionId: "section3",
+      };
+      const itemId = "item0";
+      const changedPages = moveItem({ destination, pages, itemId });
+      expect(changedPages.length).toEqual(2);
+      expect(changedPages[1].sections[0].items!.map(i => i.id)).toEqual(["item9", "item10", "item11", "item0" ]);
+    });
+  });
 });

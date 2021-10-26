@@ -1,22 +1,56 @@
 import { IPage, ISection, ISectionItem } from "../api/api-types";
-import { findSectionAddress, findSection, findSectionByAddress, ISectionAddress, findPage } from "./finding-utils";
+import { findSection, findSectionByAddress,
+  ISectionAddress, findPage, findItemAddress } from "./finding-utils";
 import { makePages } from "./spec-helper";
 
 const samplePages = makePages(3);
 
-describe("findSectionAddress", () => {
-  it ("finds sections that exist, and returns index", () => {
-    expect(findSectionAddress(samplePages, "section0")).toEqual({pageIndex: 0, sectionIndex: 0});
-    expect(findSectionAddress(samplePages, "section1")).toEqual({pageIndex: 0, sectionIndex: 1});
-    expect(findSectionAddress(samplePages, "section2")).toEqual({pageIndex: 0, sectionIndex: 2});
-    expect(findSectionAddress(samplePages, "section3")).toEqual({pageIndex: 1, sectionIndex: 0});
-    expect(findSectionAddress(samplePages, "section8")).toEqual({pageIndex: 2, sectionIndex: 2});
+const nullResults = { pageIndex: null, sectionIndex: null, itemIndex: null, column: null };
+
+describe("get a Sections nested address", () => {
+  it ("finds sections that exist, and returns nested index", () => {
+    expect(findItemAddress({pages: samplePages, sectionId: "section0"}))
+      .toMatchObject({pageIndex: 0, sectionIndex: 0});
+
+    expect(findItemAddress({pages: samplePages, sectionId: "section1"}))
+      .toMatchObject({pageIndex: 0, sectionIndex: 1});
+    expect(findItemAddress({pages: samplePages, sectionId: "section2"}))
+      .toMatchObject({pageIndex: 0, sectionIndex: 2});
+    expect(findItemAddress({pages: samplePages, sectionId: "section3"}))
+      .toMatchObject({pageIndex: 1, sectionIndex: 0});
+    expect(findItemAddress({pages: samplePages, sectionId: "section8"}))
+      .toMatchObject({pageIndex: 2, sectionIndex: 2});
   });
 
   it ("returns null for sections that can't be found", () => {
-    const nullResults = {pageIndex: null, sectionIndex: null};
-    expect(findSectionAddress(samplePages, "Vorgon poetry")).toEqual(nullResults);
+    expect(findItemAddress({pages: samplePages, sectionId: "Vorgon poetry"}))
+      .toEqual(nullResults);
   });
+
+  describe("get an items nested address", () => {
+    it("finds the nested index for items that exist", () => {
+      expect(findItemAddress({pages: samplePages, itemId: "item1"}))
+        .toMatchObject({pageIndex: 0, sectionIndex: 0});
+      expect(findItemAddress({pages: samplePages, itemId: "item3"}))
+        .toMatchObject({pageIndex: 0, sectionIndex: 1});
+      expect(findItemAddress({pages: samplePages, itemId: "item9"}))
+        .toMatchObject({pageIndex: 1, sectionIndex: 0});
+    });
+    it("finds the nested index for items that exist", () => {
+      expect(findItemAddress({pages: samplePages, itemId: "item1"}))
+        .toMatchObject({pageIndex: 0, sectionIndex: 0});
+      expect(findItemAddress({pages: samplePages, itemId: "item3"}))
+        .toMatchObject({pageIndex: 0, sectionIndex: 1});
+      expect(findItemAddress({pages: samplePages, itemId: "item9"}))
+        .toMatchObject({pageIndex: 1, sectionIndex: 0});
+    });
+
+    it("returns null index for items that do not exist", () => {
+      expect(findItemAddress({pages: samplePages, itemId: "Vorgon poetry"}))
+        .toEqual(nullResults);
+    });
+  });
+
 });
 
 describe("findSection", () => {

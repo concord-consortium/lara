@@ -1,13 +1,13 @@
-import { IPage, SectionId, ISection, PageId, ItemId } from "../api/api-types";
+import { IPage, SectionId, ISection, PageId, ItemId, SectionColumns} from "../api/api-types";
 
 export interface ISectionAddress {
-  pageIndex: number|null;
+  pageIndex: number | null;
   sectionIndex: number|null;
 }
 
 export interface IItemAddress extends ISectionAddress {
-  column: string; // TODO: Lookup this type
-
+  column: SectionColumns | null;
+  itemIndex: number|null;
 }
 
 // memoize me, invalidate on pages[]
@@ -27,6 +27,14 @@ export const findSection = (pages: IPage[], sectionId: SectionId): ISection|null
   return null;
 };
 
+export const findItemByAddress = (pages: IPage[], address: IItemAddress) => {
+  const { pageIndex, sectionIndex, itemIndex } = address;
+  if (pageIndex != null && sectionIndex != null && itemIndex != null) {
+    return pages[pageIndex].sections[sectionIndex].items?.[itemIndex] || null;
+  }
+  return null;
+};
+
 export const findSectionByAddress = (pages: IPage[], address: ISectionAddress) => {
   const { pageIndex, sectionIndex } = address;
   if (pageIndex != null && sectionIndex != null) {
@@ -35,21 +43,41 @@ export const findSectionByAddress = (pages: IPage[], address: ISectionAddress) =
   return null;
 };
 
-// memoize me, invalidate on pages[]
-export const findSectionAddress = (pages: IPage[], sectionId: SectionId): ISectionAddress => {
-  for (let pageIndex = 0; pageIndex < pages.length; ++pageIndex) {
-    const page = pages[pageIndex];
-    const sections = page?.sections;
-    for (let sectionIndex = 0; sectionIndex < sections?.length; ++sectionIndex) {
-      const section = page.sections[sectionIndex];
-      if (section.id === sectionId) {
-        return({pageIndex, sectionIndex});
-      }
-    }
-  }
-  return {pageIndex: null, sectionIndex: null};
-};
-
-export const findItemAddress = (sectionID: SectionId, itemId: ItemId): IItemAddress => {
-
+export interface IAddressQuery {
+  pages: IPage[];
+  itemId?: ItemId;
+  sectionId?: SectionId;
+  pageId?: PageId;
 }
+
+export const findItemAddress = (args: IAddressQuery): IItemAddress => {
+  const { pages, itemId, sectionId, pageId } = args;
+  let sectionIndex = null;
+  let pageIndex = null;
+  let itemIndex = null;
+  let column = null;
+
+  pageIndex = 0;
+  for (const page of pages) {
+    sectionIndex = 0;
+    for (const section of page.sections || []) {
+      itemIndex = 0;
+      for (const item of section.items || []) {
+        if (item.id === itemId) {
+          column = item.column;
+          return {pageIndex, sectionIndex, itemIndex, column};
+          }
+        itemIndex++;
+      }
+      if (sectionId && section.id === sectionId) {
+        return {pageIndex, sectionIndex, itemIndex, column};
+      }
+      sectionIndex++;
+    }
+    if (pageId && pageId === page.id) {
+      return {pageIndex, sectionIndex, itemIndex, column};
+    }
+    pageIndex++;
+  }
+  return {pageIndex: null, sectionIndex: null, itemIndex: null, column: null};
+};

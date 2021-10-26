@@ -1,5 +1,5 @@
 import { IPage, ISection, PageId, SectionId, ItemId, ISectionItem} from "../api/api-types";
-import { findSection, findSectionAddress } from "./finding-utils";
+import { findSection, findItemAddress, IAddressQuery, findItemByAddress, findSectionByAddress } from "./finding-utils";
 
 export enum RelativeLocation {
   Before = "before",
@@ -23,6 +23,12 @@ export interface IItemDestination extends ISectionDestination {
   destItemId?: ItemId;
 }
 
+export interface IMoveItemSignature {
+  itemId: ItemId;
+  destination: IItemDestination;
+  pages: IPage[];
+}
+
 const updatePositions = (items: ISection[] | ISectionItem[] ) => {
   items.forEach ( (item, index) => { item.position = index + 1; });
 };
@@ -32,46 +38,49 @@ const setSectionPositions = (page: IPage)  => {
   return page;
 };
 
+const setItemPositions = (section: ISection) => {
+  section.items = section.items || [];
+  updatePositions(section.items);
+  return section;
+};
+
+const error = (msg: string) => {
+  // tslint:disable-next-line:no-console
+  console.error(msg);
+  return [] as IPage[];
+};
+
 export const moveSection = (args: IMoveSectionSignature): IPage[] => {
   const { sectionId, destination,  pages } = args;
-  const { destPageId, destSectionId, relativeLocation } = destination;
-  const { pageIndex, sectionIndex } = findSectionAddress(pages, sectionId);
+  const { relativeLocation } = destination;
+  const sourceAddress = findItemAddress({ pages, sectionId});
+  const destAddress = findItemAddress({pages, pageId: destination.destPageId, sectionId: destination.destSectionId});
 
-  const error = (msg: string) => {
-    // tslint:disable-next-line:no-console
-    console.error(msg);
-    return [] as IPage[];
-  };
-
-  let destSectionIndex: number|null = null;
-  let destPageIndex: number|null = null;
+  // The source section has to exist:
+  const sourceSection = findSection(pages, sectionId);
+  if (sourceSection == null) {
+    return error(`can't find source section ${sectionId}`);
+  }
 
   // The source page and section must exist
-  if (pageIndex == null || sectionIndex == null) {
+  if (sourceAddress.pageIndex == null || sourceAddress.sectionIndex == null) {
     return error(`can't find page and section for: ${sectionId}`);
   }
 
-  if (destSectionId) {
-    ({
-      sectionIndex: destSectionIndex,
-      pageIndex: destPageIndex
-    } = findSectionAddress(pages, destSectionId));
-  }
-
-  destPageIndex = pages.findIndex(p => p.id === destPageId);
   // We must have a destination page:
-  if ((destPageIndex === null) || (destPageIndex === -1)) {
+  if (destAddress.pageIndex === null) {
     return error(`can't find destination ${destination}`);
   }
 
-  // If no section is specified, insert at the start.
-  if ((destSectionIndex == null) || (destSectionIndex === -1)) {
-    destSectionIndex = (pages.find(p => p.id === destPageId)?.sections.length) || 0;
+  // If no section is specified, insert at the end
+  if (destAddress.sectionIndex == null) {
+    destAddress.sectionIndex = (pages[destAddress.pageIndex].sections.length) || 0;
   }
+  // Otherwise, optionally add one if we are inserting after.
   else {
     // Adjust destination index by relative location:
     if (relativeLocation === RelativeLocation.After) {
-      destSectionIndex = destSectionIndex + 1;
+      destAddress.sectionIndex = destAddress.sectionIndex + 1;
     }
   }
 
@@ -79,27 +88,103 @@ export const moveSection = (args: IMoveSectionSignature): IPage[] => {
   // 1. remove the item from the array
   // 2. add the item back in its new place
   // 3. update the pages
-  const sourcePage = pages[pageIndex];
-  const destPage = pages[destPageIndex];
+  const sourcePage = pages[sourceAddress.pageIndex];
+  const destPage = pages[destAddress.pageIndex];
 
-  const sourceSection = findSection(pages, sectionId);
-  if (sourceSection == null) {
-    return error(`can't find source section ${sectionId}`);
-  }
   // Remove the sourceSection from the sourcePage
   const nextSourcePage = {
     ... sourcePage,
     sections: sourcePage.sections.filter(s => s.id !== sourceSection.id)
   };
-  if (pageIndex === destPageIndex) {
-    nextSourcePage.sections.splice(destSectionIndex, 0, sourceSection);
+
+  // If we are adding the section to the same section we are removing it from:
+  if (sourceAddress.pageIndex === destAddress.pageIndex) {
+    nextSourcePage.sections.splice(destAddress.sectionIndex, 0, sourceSection);
     return [ setSectionPositions(nextSourcePage) ];
   }
 
-  const nextDestPage = {
-    ... destPage,
-    sections: [...destPage.sections || []]
-  };
-  nextDestPage.sections.splice(destSectionIndex, 0, sourceSection);
+  // ensure the destination page has sections...
+  const nextDestPage = { ... destPage, sections: [...destPage.sections || []] };
+
+  nextDestPage.sections.splice(destAddress.sectionIndex, 0, sourceSection);
   return [setSectionPositions(nextSourcePage), setSectionPositions(nextDestPage)];
+};
+
+export const moveItem = (args: IMoveItemSignature): IPage[] => {
+  const { itemId, destination,  pages } = args;
+  const { relativeLocation } = destination;
+  const sourceAddress = findItemAddress({ pages, itemId});
+  const destAddress = findItemAddress({pages,
+    pageId: destination.destPageId,
+    sectionId: destination.destSectionId,
+    itemId: destination.destItemId
+  });
+  // The source item has to exist:
+  const sourceItem = findItemByAddress(pages, sourceAddress);
+  if (sourceItem == null || sourceAddress.pageIndex == null) {
+    return error(`can't find itemId ${itemId}`);
+  }
+
+  // We must have a destination section:
+  if (destAddress.sectionIndex == null || destAddress.pageIndex == null) {
+    return error(`can't find destination ${destination}`);
+  }
+
+  // If no item is specified, insert at the end of the section
+  if (destAddress.itemIndex == null) {
+    destAddress.itemIndex = (
+      pages[destAddress.pageIndex]
+      .sections[destAddress.sectionIndex]
+      .items!.length) || 0;
+  }
+  // Otherwise, optionally add one if we are inserting after.
+  else {
+    // Adjust destination index by relative location:
+    if (relativeLocation === RelativeLocation.After) {
+      destAddress.itemIndex = destAddress.itemIndex + 1;
+    }
+  }
+
+  // At this point we should have indexes for everything...
+  // 1. remove the item from the source section items
+  // 2. add the item back into the dest section items
+  // 3. update the sections and pages
+  const sourcePage = pages[sourceAddress.pageIndex];
+  const destPage = pages[destAddress.pageIndex];
+  const sourceSection = findSectionByAddress(pages, sourceAddress);
+  const destSection = findSectionByAddress(pages, destAddress);
+  if (destSection == null || sourceSection == null) {
+    return error("Destination or source section missing ...");
+  }
+
+  // Remove the sourceItem from the sourceSection
+  const nextSourceSection = {
+    ... sourceSection,
+    items: sourceSection.items?.filter(s => s.id !== sourceItem.id) || []
+  };
+  sourcePage.sections[sourceAddress.sectionIndex!] = nextSourceSection;
+
+  // If we are adding the item to the same section we are removing it from:
+  if (
+      (sourceAddress.pageIndex === destAddress.pageIndex) &&
+      (sourceAddress.sectionIndex === destAddress.sectionIndex)
+   ) {
+    nextSourceSection.items.splice(destAddress.itemIndex, 0, sourceItem);
+    setItemPositions(nextSourceSection);
+    // Just return the one page that changed:
+    return [ {...sourcePage,  sections: [...sourcePage.sections]}];
+  }
+
+  setItemPositions(nextSourceSection);
+  setItemPositions(destSection);
+
+  // Prepare the next destination section:
+  const nextDestSection = {
+    ... destSection,
+    items: [
+      ...(destSection.items || []).splice(destAddress.itemIndex, 0, sourceItem)
+    ]
+  };
+  setItemPositions(nextDestSection);
+  return [setSectionPositions(sourcePage), setSectionPositions(destPage)];
 };
