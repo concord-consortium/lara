@@ -2,6 +2,7 @@ class Api::V1::InteractivePagesController < API::APIController
   layout false
   before_filter :set_interactive_page, except: [
     :get_library_interactives_list,
+    :get_library_interactives,
     :get_pages,
     :create_page
   ]
@@ -153,7 +154,7 @@ class Api::V1::InteractivePagesController < API::APIController
       column: pi.column,
       position: pi.position,
       type: pi.embeddable_type,
-      data: pi.embeddable.respond_to?(:to_interactive) ? pi.embeddable.to_interactive : pi.embeddable.to_hash
+      data: pi.embeddable.to_hash # using pi.embeddable.to_interactive here broke editing/saving by sending unnecessary/incorrect data back
     }
     render json: result.to_json
   end
@@ -198,7 +199,7 @@ class Api::V1::InteractivePagesController < API::APIController
       column: pi.column,
       position: pi.position,
       type: pi.embeddable_type,
-      data: pi.embeddable.respond_to?(:to_interactive) ? pi.embeddable.to_interactive : pi.embeddable.to_hash
+      data: pi.embeddable.to_hash # using pi.embeddable.to_interactive here broke editing/saving by sending unnecessary/incorrect data back
     }
     render json: result.to_json     
   end
@@ -229,6 +230,15 @@ class Api::V1::InteractivePagesController < API::APIController
       .group('library_interactives.id').map do |li|
         {id: li.serializeable_id, name: li.name, type: li.class.to_s, use_count: li.use_count, date_added: li.date_added }
       end
+
+    render :json => {
+      success: true,
+      library_interactives: library_interactives
+    }
+  end
+
+  def get_library_interactives
+    library_interactives = LibraryInteractive.all
 
     render :json => {
       success: true,
@@ -296,7 +306,7 @@ class Api::V1::InteractivePagesController < API::APIController
             column: pi.column,
             position: pi.position,
             type: pi.embeddable_type,
-            data: pi.embeddable.respond_to?(:to_interactive) ? pi.embeddable.to_interactive : pi.embeddable.to_hash
+            data: pi.embeddable.to_hash # using pi.embeddable.to_interactive here broke editing/saving by sending unnecessary/incorrect data back
           }
         end
       }

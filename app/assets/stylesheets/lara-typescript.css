@@ -626,64 +626,68 @@
   z-index: 2; }
 
 .modalContainer {
-  background: transparent;
-  border: none;
   bottom: auto;
-  display: block;
-  font-family: var(--font-family-default);
-  height: auto;
-  left: 50%;
-  margin: 0;
-  min-height: 450px;
-  overflow: hidden;
-  padding: 0;
+  height: 100%;
+  left: 0;
+  overflow: auto;
   position: fixed;
-  top: 20px;
-  transform: translate(-50%, 0);
-  width: 600px;
-  z-index: 3; }
-  .modalContainer header {
-    background: var(--teal);
-    color: white;
-    display: flex;
-    padding: 10px; }
-    .modalContainer header h1 {
-      clear: none;
+  top: 0;
+  width: 100%;
+  z-index: 5; }
+  .modalContainer .modalBody {
+    background: transparent;
+    border: none;
+    display: block;
+    font-family: var(--font-family-default);
+    margin: 20px 0 20px 50%;
+    min-height: 450px;
+    overflow: auto;
+    padding: 0;
+    position: relative;
+    transform: translate(-50%, 0);
+    width: 600px; }
+    .modalContainer .modalBody header {
+      background: var(--teal);
       color: white;
-      flex-grow: 2;
-      font-family: var(--font-family-default);
-      font-size: 16px;
-      font-weight: 700;
-      line-height: 1;
-      margin: 0;
-      padding: 0; }
-    .modalContainer header .modalClose {
-      align-self: center;
-      background: transparent;
-      border: none;
-      color: white;
-      height: 16px;
-      line-height: 1;
-      margin: 0;
-      overflow: hidden;
-      padding: 0;
-      position: relative;
-      text-indent: 100%;
-      white-space: nowrap;
-      width: 12px; }
-      .modalContainer header .modalClose:before {
-        content: "\2716";
-        cursor: pointer;
+      display: flex;
+      padding: 10px; }
+      .modalContainer .modalBody header h1 {
+        clear: none;
+        color: white;
+        flex-grow: 2;
+        font-family: var(--font-family-default);
         font-size: 16px;
-        left: 0;
-        position: absolute;
-        text-indent: 0;
-        top: 0; }
-  .modalContainer section {
-    background: white;
-    border: solid 1px var(--med-gray);
-    border-top: none;
-    padding: 10px; }
+        font-weight: 700;
+        line-height: 1;
+        margin: 0;
+        padding: 0; }
+      .modalContainer .modalBody header .modalClose {
+        align-self: center;
+        background: transparent;
+        border: none;
+        color: white;
+        height: 16px;
+        line-height: 1;
+        margin: 0;
+        overflow: hidden;
+        padding: 0;
+        position: relative;
+        text-indent: 100%;
+        white-space: nowrap;
+        width: 12px; }
+        .modalContainer .modalBody header .modalClose:before {
+          content: "\2716";
+          cursor: pointer;
+          font-size: 16px;
+          left: 0;
+          position: absolute;
+          text-indent: 0;
+          top: 0; }
+    .modalContainer .modalBody section {
+      background: white;
+      border: solid 1px var(--med-gray);
+      border-top: none;
+      padding: 10px; }
 
 .actionButtons {
   border-top: solid 1px var(--med-gray);
@@ -1613,11 +1617,29 @@ dl.textBlockEditForm {
   --lt-gray: hsl(0, 0%, 90%);
   --ltr-gray: hsl(0, 0%, 95%); }
 
+.itemEditDialog fieldset {
+  border: none;
+  margin-bottom: 10px;
+  padding: 0; }
+  .itemEditDialog fieldset label {
+    display: block;
+    margin-bottom: 5px; }
+    .itemEditDialog fieldset label.checkboxLabel {
+      display: flex;
+      font-size: 14px;
+      margin: 0; }
+    .itemEditDialog fieldset label input[type="checkbox"] {
+      margin-right: 5px; }
+  .itemEditDialog fieldset legend {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 10px; }
+
 .itemEditDialog input, .itemEditDialog textarea {
   border: solid 1.5px var(--med-gray);
   border-radius: 4px;
   padding: 5px 10px;
-  width: calc(100% - 18px); }
+  width: calc(100% - 22px); }
 
 .itemEditDialog textarea {
   height: 200px; }
@@ -1642,7 +1664,7 @@ dl.textBlockEditForm {
       content: " ";
       display: block;
       height: 10px;
-      left: 4px;
+      left: 5px;
       position: absolute;
       top: 0;
       width: 5px;

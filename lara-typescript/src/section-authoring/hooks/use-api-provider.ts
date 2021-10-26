@@ -5,7 +5,7 @@ import { moveSection  as _moveSection, ISectionDestination} from "../util/move-u
 import {useMutation, useQuery, useQueryClient} from "react-query";
 import {
     IAuthoringAPIProvider, ICreatePageItem, IPage, ISection, ISectionItem,
-    ISectionItemType, ItemId, SectionColumns, SectionId
+    ISectionItemType, ItemId, SectionColumns, SectionId, ILibraryInteractive
 } from "../api/api-types";
 import { API as DEFAULT_API } from "../api/mock-api-provider";
 import { UserInterfaceContext  } from "../containers/user-interface-provider";
@@ -13,6 +13,7 @@ import { snakeToCamelCaseKeys } from "../../shared/convert-keys";
 
 const PAGES_CACHE_KEY = "pages";
 const SECTION_ITEM_TYPES_KEY = "SectionItemTypes";
+const LIBRARY_INTERACTIVES_TYPES_KEY = "LibraryInteractiveTypes";
 
 // Use this in a parent component to setup API context:
 // <APIProviderContext.Provider value={someAPIProvider} />
@@ -74,6 +75,10 @@ export const usePageAPI = () => {
   const getAllEmbeddables = useQuery
     <{allEmbeddables: ISectionItemType[]}, Error>
     (SECTION_ITEM_TYPES_KEY, provider.getAllEmbeddables);
+
+  const useLibraryInteractives = useQuery
+    <{libraryInteractives: ILibraryInteractive[]}, Error>
+    (LIBRARY_INTERACTIVES_TYPES_KEY, provider.useLibraryInteractives);
 
   const getPage =  () => {
     if (getPages.data) {
@@ -212,7 +217,7 @@ export const usePageAPI = () => {
     getPages, addPageMutation, deletePageMutation,
     addSectionMutation, addSection, changeSection, updateSection, getSections, moveSection, updateSections,
     addPageItem, createPageItem, updatePageItem, deletePageItem, updateSectionItems, moveItem, getItems,
-    getAllEmbeddables, currentPage, deleteSectionFunction,
+    getAllEmbeddables, useLibraryInteractives, currentPage, deleteSectionFunction,
     pathToTinyMCE: provider.pathToTinyMCE, pathToTinyMCECSS: provider.pathToTinyMCECSS
   };
 };

@@ -70,6 +70,31 @@ export interface ILibraryInteractiveResponse {
   }>;
 }
 
+export interface ILibraryInteractiveDetails {
+  id: number;
+  name: string;
+  aspect_ratio_method: string;
+  authoring_guidance: string;
+  base_url: string;
+  click_to_play: boolean;
+  click_to_play_prompt: string;
+  description: string;
+  enable_learner_state: boolean;
+  export_hash: string;
+  full_window: boolean;
+  has_report_url: boolean;
+  image_url: string;
+  native_height: number;
+  native_width: number;
+  no_snapshots: boolean;
+  show_delete_data_button: boolean;
+  thumbnail_url: string;
+  created_at: string;
+  updated_at: string;
+  customizable: boolean;
+  authorable: boolean;
+}
+
 export interface ISection {
   /**
    * Can the smaller side collapse?
@@ -171,6 +196,7 @@ export interface IAuthoringAPIProvider {
   deletePageItem: APIPageItemDeleteF;
   updatePageItem: APIPageItemUpdateF;
 
+  useLibraryInteractives: () => Promise<{libraryInteractives: ILibraryInteractive[]}>;
   getAllEmbeddables: () => Promise<{allEmbeddables: ISectionItemType[]}>;
 
   pathToTinyMCE: string | null;

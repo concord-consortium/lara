@@ -7,7 +7,7 @@ import {
   APIPageCreateF, APIPageDeleteF,
   APISectionCreateF, APISectionsUpdateF, APISectionUpdateF,
   APIPageItemCreateF, APIPageItemUpdateF,
-  ILibraryInteractive, ILibraryInteractiveResponse,
+  ILibraryInteractive, ILibraryInteractiveResponse, ILibraryInteractiveDetails,
   APIPageItemDeleteF,
   ISectionItem
 } from "./api-types";
@@ -31,7 +31,8 @@ export const getLaraAuthoringAPI =
   const createPageItemUrl = (pageId: PageId) => `${prefix}/create_page_item/${pageId}.json`;
   const updatePageItemUrl = (pageId: PageId) => `${prefix}/update_page_item/${pageId}.json`;
   const deletePageItemUrl = (pageId: PageId) => `${prefix}/delete_page_item/${pageId}.json`;
-  const libraryInteractivesUrl = `${prefix}/get_library_interactives_list.json`;
+  const libraryInteractivesUrl = `${prefix}/get_library_interactives.json`;
+  const libraryInteractivesListUrl = `${prefix}/get_library_interactives_list.json`;
 
   interface ISendToLaraParams {
     url: string;
@@ -107,8 +108,42 @@ export const getLaraAuthoringAPI =
     return sendToLara({url: deletePageItemUrl(pageId), method: "POST", body});
   };
 
-  const getAllEmbeddables = () => {
+  const useLibraryInteractives = () => {
     return sendToLara({url: libraryInteractivesUrl})
+      // tslint:disable-next-line
+      .then( (json: any) => {
+        const result = {
+          libraryInteractives: json.library_interactives.map((li: ILibraryInteractiveDetails) => ({
+            id: li.id,
+            name: li.name,
+            aspect_ratio_method: li.aspect_ratio_method,
+            authoring_guidance: li.authoring_guidance,
+            base_url: li.base_url,
+            click_to_play: li.click_to_play,
+            click_to_play_prompt: li.click_to_play_prompt,
+            description: li.description,
+            enable_learner_state: li.enable_learner_state,
+            export_hash: li.export_hash,
+            full_window: li.full_window,
+            has_report_url: li.has_report_url,
+            image_url: li.image_url,
+            native_height: li.native_height,
+            native_width: li.native_width,
+            no_snapshots: li.no_snapshots,
+            show_delete_data_button: li.show_delete_data_button,
+            thumbnail_url: li.thumbnail_url,
+            created_at: li.created_at,
+            updated_at: li.updated_at,
+            customizable: li.customizable,
+            authorable: li.authorable
+          }))
+        };
+        return result;
+      });
+  };
+
+  const getAllEmbeddables = () => {
+    return sendToLara({url: libraryInteractivesListUrl})
       // tslint:disable-next-line
       .then( (json: any) => {
         const result = {
@@ -144,7 +179,7 @@ export const getLaraAuthoringAPI =
     getPages, getPage, createPage, deletePage,
     createSection, updateSections, updateSection,
     createPageItem, updatePageItem, deletePageItem,
-    getAllEmbeddables,
+    getAllEmbeddables, useLibraryInteractives,
     pathToTinyMCE: "/assets/tinymce.js", pathToTinyMCECSS: "/assets/tinymce-content.css"
   };
 };
