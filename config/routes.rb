@@ -17,7 +17,6 @@ LightweightStandalone::Application.routes.draw do
     end
   end
 
-
   resources :themes
   root :to => 'home#home'
 
@@ -200,6 +199,7 @@ LightweightStandalone::Application.routes.draw do
       # This will handle the delete case too ...
       match 'set_page_sections/:id' => 'interactive_pages#set_sections', :as => 'set_page_sections', :via => 'put'
       match 'create_page_section/:id' => 'interactive_pages#create_section', :as => 'create_page_section', :via => 'post'
+      match 'copy_page_section/:id' => 'interactive_pages#copy_section', :as => 'copy_page_section', :via => 'post'
       match 'update_page_section/:id' => 'interactive_pages#update_section', :as => 'update_page_section', :via => 'post'
 
       match 'create_page_item/:id' => 'interactive_pages#create_page_item', :as => 'create_page_item', :via => 'post'

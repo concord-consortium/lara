@@ -9,7 +9,9 @@ import {
   APIPageItemCreateF, APIPageItemUpdateF,
   ILibraryInteractive, ILibraryInteractiveResponse, ILibraryInteractiveDetails,
   APIPageItemDeleteF,
-  ISectionItem
+  ISectionItem,
+  APISectionCopyF,
+  SectionId
 } from "./api-types";
 
 const APIBase = "/api/v1";
@@ -28,6 +30,7 @@ export const getLaraAuthoringAPI =
   const updatePageSectionsURL = (pageId: PageId) => `${prefix}/set_page_sections/${pageId}.json`;
   const createPageSectionUrl = (pageId: PageId) => `${prefix}/create_page_section/${pageId}.json`;
   const updateSectionUrl = (pageId: PageId) => `${prefix}/update_page_section/${pageId}.json`;
+  const copySectionUrl = (pageId: PageId) => `${prefix}/copy_page_section/${pageId}.json`;
   const createPageItemUrl = (pageId: PageId) => `${prefix}/create_page_item/${pageId}.json`;
   const updatePageItemUrl = (pageId: PageId) => `${prefix}/update_page_item/${pageId}.json`;
   const deletePageItemUrl = (pageId: PageId) => `${prefix}/delete_page_item/${pageId}.json`;
@@ -76,6 +79,12 @@ export const getLaraAuthoringAPI =
 
   const createSection: APISectionCreateF = (id: PageId) => {
     return sendToLara({url: createPageSectionUrl(id), method: "POST"});
+  };
+
+  const copySection: APISectionCopyF = (args: {pageId: PageId, sectionId: SectionId}) => {
+    const { pageId, sectionId } = args;
+    const body = { section_id: sectionId };
+    return sendToLara({url: copySectionUrl(pageId), method: "POST", body});
   };
 
   const updateSections: APISectionsUpdateF = (nextPage: IPage) => {
@@ -177,7 +186,7 @@ export const getLaraAuthoringAPI =
 
   return {
     getPages, getPage, createPage, deletePage,
-    createSection, updateSections, updateSection,
+    createSection, updateSections, updateSection, copySection,
     createPageItem, updatePageItem, deletePageItem,
     getAllEmbeddables, useLibraryInteractives,
     pathToTinyMCE: "/assets/tinymce.js", pathToTinyMCECSS: "/assets/tinymce-content.css"

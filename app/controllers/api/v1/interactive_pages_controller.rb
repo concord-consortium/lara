@@ -82,6 +82,16 @@ class Api::V1::InteractivePagesController < API::APIController
     render_page_sections_json
   end
 
+  def copy_section
+    authorize! :update, @interactive_page
+    section_id = params['section_id']
+    return error("Missing section parameter") if section_id.nil?
+
+    section = @interactive_page.sections.find(section_id)
+    section.duplicate
+    render_page_sections_json
+  end
+
   def update_section
     authorize! :update, @interactive_page
     section_params = params['section']

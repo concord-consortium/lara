@@ -607,6 +607,65 @@ end
       end
     end
 
+    describe "#copy_section" do
+      let(:section) { FactoryGirl.create(:section, :with_items, :interactive_page => page, :layout => Section::LAYOUT_FULL_WIDTH) }
+
+      before :each do
+        sign_in author
+      end
+
+      describe "success" do
+        it "creates a copy with copies of the same items" do
+          copy_request = { id: page.id, section_id: section.id }
+          xhr :post, 'copy_section', copy_request
+          expect(response.status).to eq(200)
+          next_pages = JSON.parse(response.body, object_class:OpenStruct)
+          expect(next_pages.id).to eq(page.id)
+          expect(next_pages.sections.length).to eq(2)
+          next_pages.sections.each do |s|
+            expect(s.items.length).to eql(3)
+            s.items.each_with_index do |item, index|
+              original = section.page_items[index]
+              expect(item.data.prompt).to eql(original.embeddable.prompt)
+              expect(item.data.name).to eql(original.embeddable.name)
+              expect(item.type).to eql(original.embeddable.class.name)
+              expect(item.position).to eql(original.position)
+              expect(item.column).to eql(original.column)
+            end
+          end
+        end
+      end
+
+      describe 'failure' do
+        it 'fails without a page param' do
+          copy_request = { section_id: section.id }
+          xhr :post, 'copy_section', copy_request
+          expect(response.status).to eq(200)
+          expect(JSON.parse(response.body)).to include( {'success' => false })
+        end
+
+        it 'fails when we dont specify a section' do
+          copy_request = { id: page.id }
+          xhr :post, 'copy_section', copy_request
+          expect(response.status).to eq(500)
+          expect(response.body).to match(/Missing section/)
+        end
+
+        describe 'when we arent the author' do
+          before(:each) do
+            sign_out author
+          end
+          it "fails with not authorized" do
+            copy_request = { id: page.id, section_id: section.id }
+            xhr :post, 'copy_section', copy_request
+            expect(response.status).to eq(403)
+            expect(response.body).to match(/not authorized/i)
+          end
+        end
+      end
+
+    end
+
     describe 'deleting items' do
       let(:item_to_delete) { items.last }
 

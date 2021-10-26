@@ -1,12 +1,27 @@
 FactoryGirl.define do
 
-  factory :section, class: Section  do
+  factory :section, class: Section do
+    title  { Faker::Lorem.sentence(3) }
+    layout { Section::DEFAULT_SECTION_TITLE }
+    show   { true }
+    can_collapse_small { true }
 
-    title { Section::DEFAULT_SECTION_TITLE }
-    position 1
-    show 1
-    interactive_page { FactoryGirl.create(:interactive_page)}
-    can_collapse_small 1
+    trait :with_items do
+      after :create do |section|
+        3.times do |count|
+          embeddable = FactoryGirl.create(:or_embeddable)
+          section.page_items.create!(
+            embeddable: embeddable,
+            position: count + 1,
+            column: PageItem::COLUMN_SECONDARY
+          )
+        end
+      end
+    end
 
+    trait :on_page do
+      association :interactive_page
+    end
   end
+
 end

@@ -174,6 +174,7 @@ export type APIPageDeleteF = (id: PageId) => Promise<IPage[]>;
 export type APISectionCreateF = (pageId: PageId) => Promise<IPage>;
 export type APISectionsUpdateF = (nextPage: IPage) => Promise<IPage>;
 export type APISectionUpdateF = (args: {pageId: PageId, changes: { section: Partial<ISection>}}) => Promise<IPage>;
+export type APISectionCopyF = (args: {pageId: PageId, sectionId: SectionId}) => Promise<IPage>;
 
 export type APIPageItemCreateF = (args: {pageId: PageId, newPageItem: ICreatePageItem}) => Promise<ISectionItem>;
 export type APIPageItemDeleteF = (args: {pageId: PageId, pageItemId: ItemId}) => Promise<IPage>;
@@ -183,6 +184,7 @@ export type APIPageItemUpdateF = (args: {pageId: PageId, sectionItem: ISectionIt
  * The implementation providing the API has to conform to this provider API
  */
 export interface IAuthoringAPIProvider {
+  copySection: APISectionCopyF;
   getPages: APIPagesGetF;
   getPage: APIPageGetF;
   createPage: APIPageCreateF;

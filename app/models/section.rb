@@ -49,4 +49,69 @@ class Section < ActiveRecord::Base
     end
   end
 
+  def to_hash
+    {
+      title: title,
+      show: show,
+      layout: layout,
+      position: position,
+      interactive_page_id: interactive_page_id,
+      can_collapse_small: can_collapse_small
+    }
+  end
+
+  def embeddables
+    page_items.map(&:embeddable)
+  end
+
+  def duplicate(helper=nil)
+    helper = LaraDuplicationHelper.new if helper.nil?
+    new_section = Section.new(to_hash)
+
+    Section.transaction do
+      new_section.save!(validate: false)
+
+      # Now, add them to the page and resolve some dependencies between embeddables.
+      page_items.each do |item|
+        embed = item.embeddable
+        emb_copy = helper.get_copy(embed)
+
+        if embed.respond_to?(:embeddable=) && embed.embeddable
+          emb_copy.embeddable = helper.get_copy(embed.embeddable)
+        end
+        if embed.respond_to?(:interactive=) && embed.interactive
+          emb_copy.interactive = helper.get_copy(embed.interactive)
+        end
+        if embed.respond_to?(:linked_interactive=) && embed.linked_interactive
+          emb_copy.linked_interactive = helper.get_copy(embed.linked_interactive)
+        end
+        emb_copy.save!(validate: false)
+        if embed.respond_to? :question_tracker and embed.question_tracker
+          embed.question_tracker.add_question(emb_copy)
+        end
+        new_section.page_items.create!(
+          embeddable: emb_copy,
+          position: item.position,
+          column: item.column
+        )
+        # interactive_page.add_embeddable(copy, nil, new_section)
+      end
+
+      # with the embeddables added link any interactive links
+      embeddables.each do |embed|
+        if embed.respond_to?(:primary_linked_items)
+          embed.primary_linked_items.each do |pli|
+            primary = helper.get_copy(embed)
+            secondary = helper.get_copy(pli.secondary.embeddable)
+            if primary && secondary
+              lpi = LinkedPageItem.new(primary_id: primary.page_item.id, secondary_id: secondary.page_item.id, label: pli.label)
+              lpi.save!(validate: false)
+            end
+          end
+        end
+      end
+    end
+    new_section.reload
+  end
+
 end
