@@ -102,7 +102,7 @@
     "jest": "^27.0.6",
     "jest-fetch-mock": "^1.7.5",
     "jquery": "^3.6.0",
-    "jquery-ui": "^1.12.1",
+    "jquery-ui": "^1.13.0",
     "live-server": "^1.2.1",
     "mini-css-extract-plugin": "^1.6.2",
     "node-sass": "^4.14.1",
