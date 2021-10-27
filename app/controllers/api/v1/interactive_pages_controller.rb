@@ -55,13 +55,30 @@ class Api::V1::InteractivePagesController < API::APIController
     new_section_ids = param_sections.map { |s| s['id'] }
     new_sections = param_sections.map do |s|
       section = Section.find(s['id'])
+      old_items = section.page_items
       position = index
       if section.position != position
         section.position = position
         section.save!(validate: false)
       end
-      index = index + 1
-      section
+      new_items = s['items'] || []
+      new_item_ids = new_items.map { |i| i['id'] }
+      new_position = 1
+      new_items.map do |i|
+        item = PageItem.find(i['id'])
+        if item.position != new_position
+          item.position = new_position
+          item.section_id = section.id
+          item.save!(validate: false)
+        end
+        new_position += 1
+      end
+      index += 1
+      old_items.each do |item|
+        unless new_item_ids.include?(item.id.to_s)
+          item.section_id = nil
+        end
+      end
     end
 
     # Remove deleted sections:
@@ -210,7 +227,7 @@ class Api::V1::InteractivePagesController < API::APIController
       type: pi.embeddable_type,
       data: pi.embeddable.to_hash # using pi.embeddable.to_interactive here broke editing/saving by sending unnecessary/incorrect data back
     }
-    render json: result.to_json     
+    render json: result.to_json
   end
 
   def delete_page_item
