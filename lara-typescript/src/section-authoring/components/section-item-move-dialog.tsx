@@ -29,7 +29,6 @@ export const SectionItemMoveDialog: React.FC<ISectionItemMoveDialogProps> = () =
   };
 
   const handleSectionChange = (change: React.ChangeEvent<HTMLSelectElement>) => {
-    console.log(change.target.value);
     setSelectedSectionId(change.target.value);
   };
 

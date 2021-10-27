@@ -1,7 +1,7 @@
 import { moveSection, ISectionDestination, RelativeLocation, moveItem, IItemDestination } from "./move-utils";
 import { makePages } from "./spec-helper";
 
-const verifyPositions = (items: Array<{position?: number, id: string}>):boolean => {
+const verifyPositions = (items: Array<{position?: number, id: string}>): boolean => {
   let counter = 1;
   for (const item of items) {
     if (item.position !== counter++) { return false; }
@@ -230,7 +230,7 @@ describe("moveItem", () => {
       const changedPages = moveItem({ destination, pages, itemId });
       for (const page of changedPages) {
         verifyPositions(page.sections);
-        for(const section of page.sections) {
+        for (const section of page.sections) {
           verifyPositions(section.items!);
         }
       }

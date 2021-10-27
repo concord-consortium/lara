@@ -220,7 +220,7 @@ export const AuthoringPage: React.FC<IPageProps> = ({
         />
       }
       <SectionMoveDialog sections={sections} />
-      <SectionItemMoveDialog sections={sections} />
+      <SectionItemMoveDialog />
       <ItemEditDialog />
     </>
   );

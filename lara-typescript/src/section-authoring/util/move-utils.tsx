@@ -170,7 +170,6 @@ export const moveItem = (args: IMoveItemSignature): IPage[] => {
     return [ setSectionPositions(sourcePage) ];
   }
 
-
   destSection.items!.splice(destAddress.itemIndex, 0, sourceItem);
   if (sourcePage.id === destPage.id) {
     return [setSectionPositions(destPage)];
