@@ -3,6 +3,7 @@ import { usePageAPI } from "../hooks/use-api-provider";
 import { GripLines } from "../../shared/components/icons/grip-lines";
 import { UserInterfaceContext } from "../containers/user-interface-provider";
 import { TextBlockPreview } from "./text-block-preview";
+import { ManagedInteractivePreview } from "./managed-interactive-preview";
 
 import "./section-item.scss";
 
@@ -92,6 +93,9 @@ export const SectionItem: React.FC<ISectionItemProps> = ({
     switch (pageItem?.type) {
       case "Embeddable::Xhtml":
         return <TextBlockPreview pageItem={pageItem} />;
+        break;
+      case "ManagedInteractive":
+        return <ManagedInteractivePreview pageItem={pageItem} />;
         break;
       default:
         return (
