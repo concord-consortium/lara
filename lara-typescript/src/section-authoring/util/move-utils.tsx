@@ -71,11 +71,11 @@ export const moveSection = (args: IMoveSectionSignature): IPage[] => {
     return error(`can't find destination ${destination}`);
   }
 
-  // If no section is specified, insert at the end
+  // If no section is specified, insert it at the end
   if (destAddress.sectionIndex == null) {
     destAddress.sectionIndex = (pages[destAddress.pageIndex].sections.length) || 0;
   }
-  // Otherwise, optionally add one if we are inserting after.
+  // Otherwise, optionally add one to the index if we are inserting after.
   else {
     // Adjust destination index by relative location:
     if (relativeLocation === RelativeLocation.After) {
@@ -96,7 +96,7 @@ export const moveSection = (args: IMoveSectionSignature): IPage[] => {
     sections: sourcePage.sections.filter(s => s.id !== sourceSection.id)
   };
 
-  // If we are adding the section to the same section we are removing it from:
+  // If we are adding the section to the same page we are removing it from:
   if (sourceAddress.pageIndex === destAddress.pageIndex) {
     nextSourcePage.sections.splice(destAddress.sectionIndex, 0, sourceSection);
     return [ setSectionPositions(nextSourcePage) ];
