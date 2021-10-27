@@ -173,7 +173,6 @@ export const usePageAPI = () => {
   };
 
   const moveItem = (itemId: string, destination: IItemDestination) => {
-    debugger
     if (currentPage) {
       const changes = _moveItem({itemId, destination, pages: getPages.data || []});
       if (changes) {

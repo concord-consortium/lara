@@ -114,6 +114,7 @@ export const SectionItemMoveDialog: React.FC<ISectionItemMoveDialogProps> = () =
             <dt className="col2">Section</dt>
             <dd className="col2">
               <select name="section" onChange={handleSectionChange}>
+                <option value="">Select ...</option>
                 {getSections().map((s) => {
                     return <option key={`section-option-${s.id}`} value={s.id}>{s.id}</option>;
                   })}

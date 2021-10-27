@@ -1,6 +1,14 @@
 import { moveSection, ISectionDestination, RelativeLocation, moveItem, IItemDestination } from "./move-utils";
 import { makePages } from "./spec-helper";
 
+const verifyPositions = (items: Array<{position?: number, id: string}>):boolean => {
+  let counter = 1;
+  for (const item of items) {
+    if (item.position !== counter++) { return false; }
+  }
+  return true;
+};
+
 describe("moveSection", () => {
 
   describe("Failing scenarios" , () => {
@@ -183,6 +191,49 @@ describe("moveItem", () => {
       const changedPages = moveItem({ destination, pages, itemId });
       expect(changedPages.length).toEqual(2);
       expect(changedPages[1].sections[0].items!.map(i => i.id)).toEqual(["item9", "item10", "item11", "item0" ]);
+    });
+
+    it("can move an item backward from the first section to the last not specifying item destination", () => {
+      const pages = makePages(3);
+      const destination: IItemDestination = {
+        destPageId: "page2",
+        relativeLocation: RelativeLocation.Before,
+        destSectionId: "section8",
+      };
+      const itemId = "item0";
+      const changedPages = moveItem({ destination, pages, itemId });
+      expect(changedPages.length).toEqual(2);
+      expect(changedPages[1].sections[2].items!.map(i => i.id)).toEqual(["item24", "item25", "item26", "item0" ]);
+    });
+
+    it("can move an item backward from the first section on a page the last not specifying item destination", () => {
+      const pages = makePages(3);
+      const destination: IItemDestination = {
+        destPageId: "page0",
+        relativeLocation: RelativeLocation.Before,
+        destSectionId: "section2",
+      };
+      const itemId = "item0";
+      const changedPages = moveItem({ destination, pages, itemId });
+      expect(changedPages.length).toEqual(1);
+      expect(changedPages[0].sections[2].items!.map(i => i.id)).toEqual(["item6", "item7", "item8", "item0" ]);
+    });
+
+    it("will update the position attributes of the sections and items that moved", () => {
+      const pages = makePages(3);
+      const destination: IItemDestination = {
+        destPageId: "page0",
+        relativeLocation: RelativeLocation.Before,
+        destSectionId: "section2",
+      };
+      const itemId = "item0";
+      const changedPages = moveItem({ destination, pages, itemId });
+      for (const page of changedPages) {
+        verifyPositions(page.sections);
+        for(const section of page.sections) {
+          verifyPositions(section.items!);
+        }
+      }
     });
   });
 });

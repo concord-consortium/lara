@@ -29,19 +29,18 @@ export interface IMoveItemSignature {
   pages: IPage[];
 }
 
-const updatePositions = (items: ISection[] | ISectionItem[] ) => {
-  items.forEach ( (item, index) => { item.position = index + 1; });
+const updatePositions = (items: Array<{position?: number}>) => {
+  items.forEach ( (item, index) => {
+    item.position = index + 1;
+  });
 };
 
 const setSectionPositions = (page: IPage)  => {
   updatePositions(page.sections);
+  for (const section of page.sections) {
+    updatePositions(section.items!);
+  }
   return page;
-};
-
-const setItemPositions = (section: ISection) => {
-  section.items = section.items || [];
-  updatePositions(section.items);
-  return section;
 };
 
 const error = (msg: string) => {
@@ -119,6 +118,7 @@ export const moveItem = (args: IMoveItemSignature): IPage[] => {
     sectionId: destination.destSectionId,
     itemId: destination.destItemId
   });
+
   // The source item has to exist:
   const sourceItem = findItemByAddress(pages, sourceAddress);
   if (sourceItem == null || sourceAddress.pageIndex == null) {
@@ -158,33 +158,22 @@ export const moveItem = (args: IMoveItemSignature): IPage[] => {
   }
 
   // Remove the sourceItem from the sourceSection
-  const nextSourceSection = {
-    ... sourceSection,
-    items: sourceSection.items?.filter(s => s.id !== sourceItem.id) || []
-  };
-  sourcePage.sections[sourceAddress.sectionIndex!] = nextSourceSection;
+  sourceSection.items = sourceSection.items?.filter(s => s.id !== sourceItem.id) || [];
 
-  // If we are adding the item to the same section we are removing it from:
+  // Here we add the item back to the same section we removed it from:
   if (
       (sourceAddress.pageIndex === destAddress.pageIndex) &&
       (sourceAddress.sectionIndex === destAddress.sectionIndex)
    ) {
-    nextSourceSection.items.splice(destAddress.itemIndex, 0, sourceItem);
-    setItemPositions(nextSourceSection);
+    sourceSection.items.splice(destAddress.itemIndex, 0, sourceItem);
     // Just return the one page that changed:
-    return [ {...sourcePage,  sections: [...sourcePage.sections]}];
+    return [ setSectionPositions(sourcePage) ];
   }
 
-  setItemPositions(nextSourceSection);
-  setItemPositions(destSection);
 
-  // Prepare the next destination section:
-  const nextDestSection = {
-    ... destSection,
-    items: [
-      ...(destSection.items || []).splice(destAddress.itemIndex, 0, sourceItem)
-    ]
-  };
-  setItemPositions(nextDestSection);
+  destSection.items!.splice(destAddress.itemIndex, 0, sourceItem);
+  if (sourcePage.id === destPage.id) {
+    return [setSectionPositions(destPage)];
+  }
   return [setSectionPositions(sourcePage), setSectionPositions(destPage)];
 };
