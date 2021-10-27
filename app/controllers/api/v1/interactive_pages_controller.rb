@@ -48,6 +48,7 @@ class Api::V1::InteractivePagesController < API::APIController
   end
 
   def set_sections
+    authorize! :update, @interactive_page
     param_sections = params['sections'] || [] # array of [{:id,:layout}]
     old_sections = @interactive_page.sections
     # Put them in the correct order:
