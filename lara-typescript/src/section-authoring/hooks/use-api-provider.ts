@@ -174,9 +174,13 @@ export const usePageAPI = () => {
 
   const moveItem = (itemId: string, destination: IItemDestination) => {
     if (currentPage) {
-      const changes = _moveItem({itemId, destination, pages: getPages.data || []});
-      if (changes) {
-        updateSectionsMutation.mutate({...changes[0]});
+      const updatedSections = _moveItem({itemId, destination, pages: getPages.data || []});
+      for (const updatedSection of updatedSections) {
+        if (updatedSection.items) {
+          const changes = {section: updatedSection, sectionId: updatedSection.id};
+          updateSection.mutate({pageId: currentPage.id, changes});
+          updateSectionItems({sectionId: updatedSection.id, newItems: updatedSection.items});
+        }
       }
     }
     else {

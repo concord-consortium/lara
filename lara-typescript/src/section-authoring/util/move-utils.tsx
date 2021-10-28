@@ -109,7 +109,7 @@ export const moveSection = (args: IMoveSectionSignature): IPage[] => {
   return [setSectionPositions(nextSourcePage), setSectionPositions(nextDestPage)];
 };
 
-export const moveItem = (args: IMoveItemSignature): IPage[] => {
+export const moveItem = (args: IMoveItemSignature): ISection[] => {
   const { itemId, destination,  pages } = args;
   const { relativeLocation } = destination;
   const sourceAddress = findItemAddress({ pages, itemId});
@@ -166,13 +166,12 @@ export const moveItem = (args: IMoveItemSignature): IPage[] => {
       (sourceAddress.sectionIndex === destAddress.sectionIndex)
    ) {
     sourceSection.items.splice(destAddress.itemIndex, 0, sourceItem);
+    updatePositions(sourceSection.items);
     // Just return the one page that changed:
-    return [ setSectionPositions(sourcePage) ];
+    return [ sourceSection ];
   }
 
   destSection.items!.splice(destAddress.itemIndex, 0, sourceItem);
-  if (sourcePage.id === destPage.id) {
-    return [setSectionPositions(destPage)];
-  }
-  return [setSectionPositions(sourcePage), setSectionPositions(destPage)];
+  updatePositions(destSection?.items || []);
+  return [sourceSection, destSection];
 };

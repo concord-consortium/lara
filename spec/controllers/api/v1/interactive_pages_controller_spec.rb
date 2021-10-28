@@ -533,6 +533,28 @@ end
           new_id_order = section.page_items.map(& :id)
           expect(new_id_order).to eql(old_id_order.reverse)
         end
+
+        it 'will add new items' do
+          extra_item = FactoryGirl.create(:page_item, { column: PageItem::COLUMN_PRIMARY })
+          items << extra_item
+          expect(section.page_items.length).to eql(3)
+          update_request = { id: page.id, section: { id: section.id, items: items.map(&:attributes) } }
+          xhr :post, 'update_section', update_request
+          expect(response.status).to eq(200)
+          section.reload
+          expect(section.page_items.length).to eql(4)
+        end
+
+        it 'will delete missing items' do
+          new_items = items[0, 2].map { |i| { id: i.id, column: i.column } }
+          expect(section.page_items.length).to eql(3)
+          update_request = { id: page.id, section: { id: section.id, items: new_items } }
+          xhr :post, 'update_section', update_request
+          expect(response.status).to eq(200)
+          section.reload
+          expect(section.page_items.length).to eql(2)
+        end
+
       end
 
       describe 'failures' do
