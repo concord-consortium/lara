@@ -33,14 +33,13 @@ export const Modal: React.FC<IModalProps> = ({
   width
   }: IModalProps) => {
 
-  const modalStyle = width ? { width: width + "px" } : undefined;
   const [isVisible, setIsVisible] = useState(initVisibility);
   const [modalContainer] = useState(() => {
     return document.createElement("div");
   });
 
   useEffect(() => {
-    document.getElementById("modal-content")?.appendChild(modalContainer);
+    document.getElementById("modalContent")?.appendChild(modalContainer);
   }, []);
 
   const closeModal = () => {
@@ -56,16 +55,18 @@ export const Modal: React.FC<IModalProps> = ({
   return (
     <>
       <div className="modalOverlay" onClick={closeButtonClickHandler}/>
-      <div id="modal" className="modalContainer" style={modalStyle}>
-        <header>
-          <h1>{title}</h1>
-          <button aria-label="close" className="modalClose" onClick={closeButtonClickHandler}>
-            <Close height="14" width="14" />
-          </button>
-        </header>
-        <section id="modal-content">
-          {createPortal(children, modalContainer)}
-        </section>
+      <div id="modal" className="modalContainer">
+        <div className="modalBody">
+          <header>
+            <h1>{title}</h1>
+            <button aria-label="close" className="modalClose" onClick={closeButtonClickHandler}>
+              <Close height="14" width="14" />
+            </button>
+          </header>
+          <section id="modalContent">
+            {createPortal(children, modalContainer)}
+          </section>
+        </div>
       </div>
     </>
   );

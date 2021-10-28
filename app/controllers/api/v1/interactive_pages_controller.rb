@@ -163,7 +163,7 @@ class Api::V1::InteractivePagesController < API::APIController
       column: pi.column,
       position: pi.position,
       type: pi.embeddable_type,
-      data: pi.embeddable.respond_to?(:to_interactive) ? pi.embeddable.to_interactive : pi.embeddable.to_hash
+      data: pi.embeddable.to_hash # using pi.embeddable.to_interactive here broke editing/saving by sending unnecessary/incorrect data back
     }
     render json: result.to_json
   end
@@ -208,7 +208,7 @@ class Api::V1::InteractivePagesController < API::APIController
       column: pi.column,
       position: pi.position,
       type: pi.embeddable_type,
-      data: pi.embeddable.respond_to?(:to_interactive) ? pi.embeddable.to_interactive : pi.embeddable.to_hash
+      data: pi.embeddable.to_hash # using pi.embeddable.to_interactive here broke editing/saving by sending unnecessary/incorrect data back
     }
     render json: result.to_json     
   end
@@ -234,11 +234,9 @@ class Api::V1::InteractivePagesController < API::APIController
 
   def get_library_interactives_list
     library_interactives = LibraryInteractive
-      .select("library_interactives.id, library_interactives.name, count(managed_interactives.id) as use_count, UNIX_TIMESTAMP(library_interactives.created_at) as date_added")
+      .select("library_interactives.*, CONCAT('LibraryInteractive_', library_interactives.id) as serializeable_id, count(managed_interactives.id) as use_count, UNIX_TIMESTAMP(library_interactives.created_at) as date_added")
       .joins("LEFT JOIN managed_interactives ON managed_interactives.linked_interactive_id = library_interactives.id")
-      .group('library_interactives.id').map do |li|
-        {id: li.serializeable_id, name: li.name, type: li.class.to_s, use_count: li.use_count, date_added: li.date_added }
-      end
+      .group('library_interactives.id')
 
     render :json => {
       success: true,
@@ -306,7 +304,7 @@ class Api::V1::InteractivePagesController < API::APIController
             column: pi.column,
             position: pi.position,
             type: pi.embeddable_type,
-            data: pi.embeddable.respond_to?(:to_interactive) ? pi.embeddable.to_interactive : pi.embeddable.to_hash
+            data: pi.embeddable.to_hash # using pi.embeddable.to_interactive here broke editing/saving by sending unnecessary/incorrect data back
           }
         end
       }

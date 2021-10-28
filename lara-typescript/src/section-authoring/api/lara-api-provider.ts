@@ -116,18 +116,23 @@ export const getLaraAuthoringAPI =
     return sendToLara({url: deletePageItemUrl(pageId), method: "POST", body});
   };
 
+  const getLibraryInteractives = () => {
+    return sendToLara({url: libraryInteractivesUrl})
+      // tslint:disable-next-line
+      .then( (json: any) => {
+        const result = {
+          libraryInteractives: json.library_interactives.map((li: ILibraryInteractive) => ({...li}))
+        };
+        return result;
+      });
+  };
+
   const getAllEmbeddables = () => {
     return sendToLara({url: libraryInteractivesUrl})
       // tslint:disable-next-line
       .then( (json: any) => {
         const result = {
-          allEmbeddables: json.library_interactives.map((li: ILibraryInteractive) => ({
-            id: li.id,
-            name: li.name,
-            type: li.type,
-            useCount: li.use_count,
-            dateAdded: li.date_added
-          }))
+          allEmbeddables: json.library_interactives.map((li: ILibraryInteractive) => ({...li}))
         };
         result.allEmbeddables.push({
           id: "MwInteractive",
@@ -153,7 +158,7 @@ export const getLaraAuthoringAPI =
     getPages, getPage, createPage, deletePage,
     createSection, updateSections, updateSection, copySection,
     createPageItem, updatePageItem, deletePageItem,
-    getAllEmbeddables,
+    getAllEmbeddables, getLibraryInteractives,
     pathToTinyMCE: "/assets/tinymce.js", pathToTinyMCECSS: "/assets/tinymce-content.css"
   };
 };

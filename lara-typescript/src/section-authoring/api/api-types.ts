@@ -26,7 +26,8 @@ export interface ISectionItem {
 }
 
 export interface ISectionItemType {
-  id: string;
+  id: ItemId;
+  serializeable_id: string;
   name: string;
   type: string;
   useCount: number;
@@ -51,12 +52,33 @@ export interface ITextBlockData {
 }
 
 export interface ILibraryInteractive {
-  id: string;
-  name: string;
-  type: string;
-  use_count: number;
+  aspect_ratio_method: string;
+  authorable: boolean;
+  authoring_guidance: string;
+  base_url: string;
+  click_to_play: boolean;
+  click_to_play_prompt: string;
+  created_at: string;
+  customizable: boolean;
   date_added: number;
-  isQuickAddItem: boolean;
+  description: string;
+  enable_learner_state: boolean;
+  export_hash: string;
+  full_window: boolean;
+  has_report_url: boolean;
+  id: number;
+  image_url: string;
+  isQuickAddItem?: boolean;
+  name: string;
+  native_height: number;
+  native_width: number;
+  no_snapshots: boolean;
+  serializeable_id: string;
+  show_delete_data_button: boolean;
+  thumbnail_url: string;
+  type: string;
+  updated_at: string;
+  use_count: number;
 }
 
 export interface ILibraryInteractiveResponse {
@@ -173,6 +195,7 @@ export interface IAuthoringAPIProvider {
   deletePageItem: APIPageItemDeleteF;
   updatePageItem: APIPageItemUpdateF;
 
+  getLibraryInteractives: () => Promise<{libraryInteractives: ILibraryInteractive[]}>;
   getAllEmbeddables: () => Promise<{allEmbeddables: ISectionItemType[]}>;
 
   pathToTinyMCE: string | null;

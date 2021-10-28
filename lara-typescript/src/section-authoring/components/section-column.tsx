@@ -128,15 +128,16 @@ export const SectionColumn: React.FC<ISectionColumnProps> = ({
   const handleAddItem = (itemId: string) => {
     const position = items.length + 1;
     const embeddable = embeddables?.find(e => e.id === itemId);
-    const itemType = embeddable?.type;
-    addPageItem?.({
-      section_id: sectionId,
-      embeddable: itemId,
-      column,
-      position,
-      type: itemType
-    });
-    handleToggleShowAddItem();
+    if (embeddable) {
+      addPageItem?.({
+        section_id: sectionId,
+        embeddable: embeddable.serializeable_id,
+        column,
+        position,
+        type: embeddable.type
+      });
+      handleToggleShowAddItem();
+    }
   };
 
   const showItemPicker = () => setShowAddItem(true);

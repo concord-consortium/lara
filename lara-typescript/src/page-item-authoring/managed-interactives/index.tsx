@@ -1,8 +1,7 @@
 import * as React from "react";
 import { useState, useRef } from "react";
-import Select from "react-select";
 import { Tabs, TabList, Tab, TabPanel} from "react-tabs";
-import { useLibraryInteractives, ILibraryInteractive } from "../common/hooks/use-library-interactives";
+import { ILibraryInteractive } from "../common/hooks/use-library-interactives";
 import { InteractiveAuthoring } from "../common/components/interactive-authoring";
 import { RailsFormField } from "../common/utils/rails-form-field";
 import { CustomizeManagedInteractive } from "./customize";
@@ -11,6 +10,8 @@ import { useCurrentUser } from "../common/hooks/use-current-user";
 import { AuthoredState } from "../common/components/authored-state";
 import { AuthoringApiUrls } from "../common/types";
 import { ILinkedInteractive, ISetLinkedInteractives } from "../../interactive-api-client";
+import { saveAuthoredPluginState } from "../../plugins/plugin-context";
+
 import "react-tabs/style/react-tabs.css";
 
 interface Props {
@@ -18,6 +19,7 @@ interface Props {
   libraryInteractive?: ILibraryInteractive;
   defaultClickToPlayPrompt: string;
   authoringApiUrls: AuthoringApiUrls;
+  onUpdate?: (updates: Partial<IManagedInteractive>) => void;
 }
 
 interface ISelectOption {
@@ -60,41 +62,47 @@ export interface IManagedInteractive {
 const formField = RailsFormField<IManagedInteractive>("managed_interactive");
 
 export const ManagedInteractiveAuthoring: React.FC<Props> = (props) => {
-  const { managedInteractive, defaultClickToPlayPrompt, authoringApiUrls } = props;
-  const libraryInteractives = useLibraryInteractives();
+  const { managedInteractive, defaultClickToPlayPrompt, authoringApiUrls, onUpdate } = props;
   const [libraryInteractive, setLibraryInteractive] = useState<ILibraryInteractive|undefined>(props.libraryInteractive);
   const libraryInteractiveIdRef = useRef<HTMLInputElement|null>(null);
   const libraryInteractiveAuthoredStateRef = useRef<HTMLInputElement|null>(null);
   const linkedInteractivesRef = useRef<HTMLInputElement|null>(null);
   const [urlFragment, setUrlFragment] = useState(managedInteractive.url_fragment);
+  const [name, setName] = useState(managedInteractive.name);
+  const nameRef = useRef<HTMLInputElement|null>(null);
+  const [isFullWidth, setIsFullWidth] = useState(managedInteractive.is_full_width);
+  const isFullWidthRef = useRef<HTMLInputElement|null>(null);
+  const [authoredState, setAuthoredState] = useState(managedInteractive.authored_state);
   const user = useCurrentUser();
 
-  if (libraryInteractives.state === "loading") {
-    return <div className="loading">Loading library ...</div>;
-  }
-  if (libraryInteractives.state === "error") {
-    return <div className="error">{libraryInteractives.error}</div>;
-  }
-
-  const createSelectOption = (li: ILibraryInteractive) => ({value: li.id, label: li.name});
-  const selectOptions = libraryInteractives.list.map(createSelectOption);
-  const selectedOption = libraryInteractive ? createSelectOption(libraryInteractive) : undefined;
-
-  const handleSelectChange = (newSelectedOption: ISelectOption) => {
-    const selectedLibraryInteractive = libraryInteractives.list.find(li => li.id === newSelectedOption.value);
-    if (selectedLibraryInteractive) {
-      const confirmMessage = `Use ${selectedLibraryInteractive.name}?  Once selected it can't be changed.`;
-      if (confirm(confirmMessage)) {
-        setLibraryInteractive(selectedLibraryInteractive);
-        if (libraryInteractiveIdRef.current) {
-          libraryInteractiveIdRef.current.value = newSelectedOption.value.toString();
-        }
-      }
-    }
+  // Noah and Ethan were confused about how this form works.
+  // Changes to fields in the InteractiveAuthoring component
+  // seemed to clobber any changes to the name and full width
+  // fields and to this component's state variables. We added
+  // refs for name and full width and used those here. We pass
+  // a value for newAuthoredState because the authored state
+  // ref is not available here like the other refs are.
+  const handleUpdate = (newAuthoredState: any) => {
+    const updates = {
+      name: nameRef.current?.value,
+      is_full_width: isFullWidthRef.current?.checked,
+      authored_state: newAuthoredState
+    };
+    onUpdate?.(updates);
   };
 
   const handleUrlFragmentBlur = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setUrlFragment(e.target.value);
+  };
+
+  const handleIsFullWidthChange = (isFullWidthVal: boolean) => {
+    setIsFullWidth(isFullWidthVal);
+    handleUpdate(authoredState);
+  };
+
+  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setName(e.target.value);
+    handleUpdate(authoredState);
   };
 
   const renderRequiredFields = () => {
@@ -102,26 +110,27 @@ export const ManagedInteractiveAuthoring: React.FC<Props> = (props) => {
       return undefined;
     }
 
-    const { name, is_full_width } = managedInteractive;
-
     return <>
       <fieldset>
-        <legend>Name</legend>
+        <label htmlFor={formField("name").id}>Name</label>
         <input
+          ref={nameRef}
           type="text"
           id={formField("name").id}
           name={formField("name").name}
           defaultValue={name}
+          onChange={handleNameChange}
         />
       </fieldset>
 
       <fieldset>
-        <legend>Options</legend>
         <Checkbox
+          checkboxRef={isFullWidthRef}
           id={formField("is_full_width").id}
           name={formField("is_full_width").name}
-          defaultChecked={is_full_width}
+          defaultChecked={isFullWidth}
           label="Full width? (Full width layout only)"
+          onChange={handleIsFullWidthChange}
         />
       </fieldset>
     </>;
@@ -145,9 +154,11 @@ export const ManagedInteractiveAuthoring: React.FC<Props> = (props) => {
 
     const handleAuthoredStateChange = (newAuthoredState: string | object) => {
       if (libraryInteractiveAuthoredStateRef.current) {
-        libraryInteractiveAuthoredStateRef.current.value = typeof newAuthoredState === "string"
+        const jsonValue = libraryInteractiveAuthoredStateRef.current.value = typeof newAuthoredState === "string"
           ? newAuthoredState
           : JSON.stringify(newAuthoredState);
+        setAuthoredState(jsonValue);
+        handleUpdate(jsonValue);
       }
     };
 
@@ -171,7 +182,7 @@ export const ManagedInteractiveAuthoring: React.FC<Props> = (props) => {
             />
           : <>
               <fieldset>
-                <legend>Url Fragment</legend>
+                <legend>URL Fragment</legend>
                 <textarea
                   id={formField("url_fragment").id}
                   name={formField("url_fragment").name}
@@ -223,8 +234,6 @@ export const ManagedInteractiveAuthoring: React.FC<Props> = (props) => {
 
   // this generates a form element that renders inside the rails popup form
   return <>
-    <fieldset>
-      <legend>Library Interactive</legend>
       <input
         type="hidden"
         id={formField("library_interactive_id").id}
@@ -245,14 +254,7 @@ export const ManagedInteractiveAuthoring: React.FC<Props> = (props) => {
         name={formField("linked_interactives").name}
         ref={linkedInteractivesRef}
       />
-      {selectedOption
-        ? selectedOption.label
-        : <Select value={selectedOption} onChange={handleSelectChange} options={selectOptions} />
-      }
-    </fieldset>
-
     {renderRequiredFields()}
-
     {renderTabs()}
   </>;
 };

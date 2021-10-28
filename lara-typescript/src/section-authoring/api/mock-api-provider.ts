@@ -3,12 +3,14 @@ import {
   IPage, PageId,
   APIPageGetF, APIPagesGetF, APIPageItemUpdateF,
   IAuthoringAPIProvider, ISection, ICreatePageItem, ISectionItem, SectionColumns,
-  ISectionItemType, APIPageItemDeleteF, ItemId, SectionId, SectionLayouts
+  ISectionItemType, APIPageItemDeleteF, ItemId, SectionId, SectionLayouts, ILibraryInteractive
 } from "./api-types";
+import { IManagedInteractive } from "../../page-item-authoring/managed-interactives";
 
 let pageCounter = 0;
 let sectionCounter = 0;
 let itemCounter = 0;
+let managedInteractiveCounter = 0;
 
 let pages: IPage[] = [
   {
@@ -27,15 +29,71 @@ const makeNewSection = (): ISection => {
   return section;
 };
 
-const makeNewPageItem = (attributes: Partial<ISectionItem>): ISectionItem => {
+const makeNewPageItem = (attributes: ICreatePageItem): ISectionItem => {
+  const returnAttributes = {...attributes, type: makePageItemType(attributes.type)};
   const newItem: ISectionItem = {
     id: `${++itemCounter}`,
     column: attributes.column || SectionColumns.PRIMARY,
-    data: {},
+    data: makeNewEmbeddable(returnAttributes),
     position: attributes.position || 1,
-    type: attributes.type
+    type: returnAttributes.type
   };
   return newItem;
+};
+
+const makePageItemType = (pickerType: string | undefined) => {
+  switch (pickerType) {
+    case "LibraryInteractive":
+      return "ManagedInteractive";
+    default:
+      return pickerType;
+  }
+};
+
+const makeNewEmbeddable = (attributes: ICreatePageItem) => {
+  const itemType = attributes.type;
+
+  switch (itemType) {
+    case "Embeddable::Xhtml":
+      return ({});
+      break;
+    case "ManagedInteractive":
+      const [libraryInteractiveType, libraryInteractiveId] = attributes.embeddable.split("_");
+      return (
+        {
+          id: managedInteractiveCounter++,
+          library_interactive_id: parseInt(libraryInteractiveId, 10),
+          name: "",
+          url_fragment: "",
+          authored_state: "",
+          is_hidden: false,
+          is_full_width: false,
+          aspect_ratio: 1,
+          enable_learner_state: false,
+          linked_interactive_type: "",
+          show_in_featured_question_report: false,
+          inherit_aspect_ratio_method: false,
+          custom_aspect_ratio_method: "",
+          inherit_native_width: false,
+          custom_native_width: 576,
+          inherit_native_height: false,
+          custom_native_height: 435,
+          inherit_click_to_play: false,
+          custom_click_to_play: false,
+          inherit_full_window: false,
+          custom_full_window: false,
+          inherit_click_to_play_prompt: false,
+          custom_click_to_play_prompt: "",
+          inherit_image_url: false,
+          custom_image_url: "",
+          interactive_item_id: "",
+          linked_interactive_item_id: "",
+          linked_interactives: []
+        }) as Partial<IManagedInteractive>;
+      break;
+    default:
+      return ({});
+  }
 };
 
 export const updatePageItem: APIPageItemUpdateF = (args: {pageId: string, sectionItem: ISectionItem}) => {
@@ -203,34 +261,39 @@ const getAllEmbeddables = () => {
   const allEmbeddables: ISectionItemType[] = [
     {
       id: "1",
+      serializeable_id: "LibraryInteractive_1",
       name: "Carousel",
-      type: "ManagedInteractive",
+      type: "LibraryInteractive",
       useCount: 1,
-      dateAdded: 1630440496
+      dateAdded: 1630440496,
     },
     {
       id: "2",
+      serializeable_id: "LibraryInteractive_2",
       name: "CODAP",
-      type: "ManagedInteractive",
+      type: "LibraryInteractive",
       useCount: 5,
       dateAdded: 1630440497
     },
     {
       id: "3",
+      serializeable_id: "LibraryInteractive_3",
       name: "Drag & Drop",
-      type: "ManagedInteractive",
+      type: "LibraryInteractive",
       useCount: 5,
       dateAdded: 1630440498
     },
     {
       id: "4",
+      serializeable_id: "LibraryInteractive_4",
       name: "Fill in the Blank",
-      type: "ManagedInteractive",
+      type: "LibraryInteractive",
       useCount: 8,
       dateAdded: 1630440495
     },
     {
       id: "5",
+      serializeable_id: "MwInteractive_5",
       name: "iFrame Interactive",
       type: "MwInteractive",
       useCount: 200,
@@ -239,35 +302,40 @@ const getAllEmbeddables = () => {
     },
     {
       id: "6",
+      serializeable_id: "LibraryInteractive_6",
       name: "Multiple Choice",
-      type: "ManagedInteractive",
+      type: "LibraryInteractive",
       useCount: 300,
       dateAdded: 1630440493
     },
     {
       id: "7",
+      serializeable_id: "LibraryInteractive_7",
       name: "Open Response",
-      type: "ManagedInteractive",
+      type: "LibraryInteractive",
       useCount: 400,
       dateAdded: 1630440492,
       isQuickAddItem: true
     },
     {
       id: "8",
+      serializeable_id: "LibraryInteractive_8",
       name: "SageModeler",
-      type: "ManagedInteractive",
+      type: "LibraryInteractive",
       useCount: 3,
       dateAdded: 1630440499
     },
     {
       id: "9",
+      serializeable_id: "LibraryInteractive_9",
       name: "Teacher Edition Window Shade",
-      type: "ManagedInteractive",
+      type: "LibraryInteractive",
       useCount: 4,
       dateAdded: 1630440490
     },
     {
       id: "10",
+      serializeable_id: "Embeddable::Xhtml_10",
       name: "Text Block",
       type: "Embeddable::Xhtml",
       useCount: 500,
@@ -278,10 +346,157 @@ const getAllEmbeddables = () => {
   return Promise.resolve({allEmbeddables});
 };
 
+const getLibraryInteractives = () => {
+  const libraryInteractives: ILibraryInteractive[] = [
+    {
+      id: 1,
+      serializeable_id: "LibraryInteractive_1",
+      name: "Carousel",
+      type: "LibraryInteractive",
+      use_count: 1,
+      date_added: 1630440496,
+      aspect_ratio_method: "DEFAULT",
+      authorable: true,
+      authoring_guidance: "",
+      base_url: "https://localhost:8081/carousel/",
+      click_to_play: false,
+      click_to_play_prompt: "",
+      created_at: "2020-07-27T16:33:01Z",
+      customizable: true,
+      description: "",
+      enable_learner_state: true,
+      export_hash: "ccdfa2d588c34914cb072ef5e88834bce7e0702a",
+      full_window: false,
+      has_report_url: false,
+      image_url: "",
+      native_height: 435,
+      native_width: 576,
+      no_snapshots: false,
+      show_delete_data_button: false,
+      thumbnail_url: "",
+      updated_at: "2021-05-04T21:26:18Z"
+    },
+    {
+      id: 3,
+      serializeable_id: "LibraryInteractive_3",
+      name: "Drag & Drop",
+      type: "LibraryInteractive",
+      use_count: 5,
+      date_added: 1630440498,
+      aspect_ratio_method: "DEFAULT",
+      authorable: true,
+      authoring_guidance: "",
+      base_url: "https://localhost:8081/drag-and-drop/",
+      click_to_play: false,
+      click_to_play_prompt: "",
+      created_at: "2020-07-27T16:33:01Z",
+      customizable: true,
+      description: "",
+      enable_learner_state: true,
+      export_hash: "ccdfa2d588c34914cb072ef5e88834bce7e0702b",
+      full_window: false,
+      has_report_url: false,
+      image_url: "",
+      native_height: 435,
+      native_width: 576,
+      no_snapshots: false,
+      show_delete_data_button: false,
+      thumbnail_url: "",
+      updated_at: "2021-05-04T21:26:18Z"
+    },
+    {
+      id: 4,
+      serializeable_id: "LibraryInteractive_4",
+      name: "Fill in the Blank",
+      type: "LibraryInteractive",
+      use_count: 8,
+      date_added: 1630440495,
+      aspect_ratio_method: "DEFAULT",
+      authorable: true,
+      authoring_guidance: "",
+      base_url: "https://localhost:8081/fill-in-the-blank/",
+      click_to_play: false,
+      click_to_play_prompt: "",
+      created_at: "2020-07-27T16:33:01Z",
+      customizable: true,
+      description: "",
+      enable_learner_state: true,
+      export_hash: "ccdfa2d588c34914cb072ef5e88834bce7e0702c",
+      full_window: false,
+      has_report_url: false,
+      image_url: "",
+      native_height: 435,
+      native_width: 576,
+      no_snapshots: false,
+      show_delete_data_button: false,
+      thumbnail_url: "",
+      updated_at: "2021-05-04T21:26:18Z"
+    },
+    {
+      id: 6,
+      serializeable_id: "LibraryInteractive_6",
+      name: "Multiple Choice",
+      type: "LibraryInteractive",
+      use_count: 300,
+      date_added: 1630440493,
+      aspect_ratio_method: "DEFAULT",
+      authorable: true,
+      authoring_guidance: "",
+      base_url: "https://localhost:8081/multiple-choice/",
+      click_to_play: false,
+      click_to_play_prompt: "",
+      created_at: "2020-07-27T16:33:01Z",
+      customizable: true,
+      description: "",
+      enable_learner_state: true,
+      export_hash: "ccdfa2d588c34914cb072ef5e88834bce7e0702d",
+      full_window: false,
+      has_report_url: false,
+      image_url: "",
+      native_height: 435,
+      native_width: 576,
+      no_snapshots: false,
+      show_delete_data_button: false,
+      thumbnail_url: "",
+      updated_at: "2021-05-04T21:26:18Z"
+    },
+    {
+      id: 7,
+      serializeable_id: "LibraryInteractive_7",
+      name: "Open Response",
+      type: "LibraryInteractive",
+      use_count: 400,
+      date_added: 1630440492,
+      isQuickAddItem: true,
+      aspect_ratio_method: "DEFAULT",
+      authorable: true,
+      authoring_guidance: "",
+      base_url: "https://localhost:8081/open-response/",
+      click_to_play: false,
+      click_to_play_prompt: "",
+      created_at: "2020-07-27T16:33:01Z",
+      customizable: true,
+      description: "",
+      enable_learner_state: true,
+      export_hash: "ccdfa2d588c34914cb072ef5e88834bce7e0702e",
+      full_window: false,
+      has_report_url: false,
+      image_url: "",
+      native_height: 435,
+      native_width: 576,
+      no_snapshots: false,
+      show_delete_data_button: false,
+      thumbnail_url: "",
+      updated_at: "2021-05-04T21:26:18Z"
+    }
+  ];
+  return Promise.resolve({libraryInteractives});
+};
+
 export const API: IAuthoringAPIProvider = {
   getPages, getPage, createPage, deletePage,
   createSection, updateSections, updateSection, copySection,
   createPageItem, updatePageItem, deletePageItem,
-  getAllEmbeddables,
+  getAllEmbeddables, getLibraryInteractives,
   pathToTinyMCE: "https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.10.0/tinymce.min.js", pathToTinyMCECSS: undefined
 };

@@ -1,6 +1,7 @@
 import * as React from "react";
 
 interface Props {
+  checkboxRef?: any;
   id?: string;
   name: string;
   checked?: boolean;
@@ -11,7 +12,7 @@ interface Props {
 }
 
 export const Checkbox: React.FC<Props> = (props) => {
-  const {id, name, checked, defaultChecked, label, warning, onChange} = props;
+  const {checkboxRef, id, name, checked, defaultChecked, label, warning, onChange} = props;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (onChange) {
@@ -34,15 +35,18 @@ export const Checkbox: React.FC<Props> = (props) => {
   return (
     <>
       <input type="hidden" name={name} value="0" />
-      <input
-        type="checkbox"
-        id={id}
-        name={name}
-        value="1"
-        checked={checked}
-        defaultChecked={defaultChecked}
-        onChange={handleChange}
+      <label className="checkboxLabel" htmlFor={id}>
+        <input
+          ref={checkboxRef}
+          type="checkbox"
+          id={id}
+          name={name}
+          value="1"
+          checked={checked}
+          defaultChecked={defaultChecked}
+          onChange={handleChange}
         /> {label}
+      </label>
       {renderWarning()}
     </>
   );
