@@ -346,7 +346,7 @@ const getAllEmbeddables = () => {
   return Promise.resolve({allEmbeddables});
 };
 
-const useLibraryInteractives = () => {
+const getLibraryInteractives = () => {
   const libraryInteractives: ILibraryInteractive[] = [
     {
       id: 1,
@@ -497,6 +497,6 @@ export const API: IAuthoringAPIProvider = {
   getPages, getPage, createPage, deletePage,
   createSection, updateSections, updateSection, copySection,
   createPageItem, updatePageItem, deletePageItem,
-  getAllEmbeddables, useLibraryInteractives,
+  getAllEmbeddables, getLibraryInteractives,
   pathToTinyMCE: "https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.10.0/tinymce.min.js", pathToTinyMCECSS: undefined
 };

@@ -80,9 +80,9 @@ export const usePageAPI = () => {
     <{allEmbeddables: ISectionItemType[]}, Error>
     (SECTION_ITEM_TYPES_KEY, provider.getAllEmbeddables);
 
-  const useLibraryInteractives = useQuery
+  const getLibraryInteractives = useQuery
     <{libraryInteractives: ILibraryInteractive[]}, Error>
-    (LIBRARY_INTERACTIVES_KEY, provider.useLibraryInteractives);
+    (LIBRARY_INTERACTIVES_KEY, provider.getLibraryInteractives);
 
   const getPage =  () => {
     if (getPages.data) {
@@ -229,7 +229,7 @@ export const usePageAPI = () => {
     addSectionMutation, addSection, changeSection, updateSection, getSections,
     moveSection, updateSections, copySection,
     addPageItem, createPageItem, updatePageItem, deletePageItem, updateSectionItems, moveItem, getItems,
-    getAllEmbeddables, useLibraryInteractives, currentPage, deleteSectionFunction,
+    getAllEmbeddables, getLibraryInteractives, currentPage, deleteSectionFunction,
     pathToTinyMCE: provider.pathToTinyMCE, pathToTinyMCECSS: provider.pathToTinyMCECSS
   };
 };

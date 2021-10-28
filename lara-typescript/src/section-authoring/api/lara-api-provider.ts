@@ -116,7 +116,7 @@ export const getLaraAuthoringAPI =
     return sendToLara({url: deletePageItemUrl(pageId), method: "POST", body});
   };
 
-  const useLibraryInteractives = () => {
+  const getLibraryInteractives = () => {
     return sendToLara({url: libraryInteractivesUrl})
       // tslint:disable-next-line
       .then( (json: any) => {
@@ -158,7 +158,7 @@ export const getLaraAuthoringAPI =
     getPages, getPage, createPage, deletePage,
     createSection, updateSections, updateSection, copySection,
     createPageItem, updatePageItem, deletePageItem,
-    getAllEmbeddables, useLibraryInteractives,
+    getAllEmbeddables, getLibraryInteractives,
     pathToTinyMCE: "/assets/tinymce.js", pathToTinyMCECSS: "/assets/tinymce-content.css"
   };
 };

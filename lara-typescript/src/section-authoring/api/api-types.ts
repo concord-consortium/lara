@@ -195,7 +195,7 @@ export interface IAuthoringAPIProvider {
   deletePageItem: APIPageItemDeleteF;
   updatePageItem: APIPageItemUpdateF;
 
-  useLibraryInteractives: () => Promise<{libraryInteractives: ILibraryInteractive[]}>;
+  getLibraryInteractives: () => Promise<{libraryInteractives: ILibraryInteractive[]}>;
   getAllEmbeddables: () => Promise<{allEmbeddables: ISectionItemType[]}>;
 
   pathToTinyMCE: string | null;

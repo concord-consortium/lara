@@ -21,12 +21,12 @@ export const ItemEditDialog: React.FC<IItemEditDialogProps> = ({
   errorMessage
   }: IItemEditDialogProps) => {
   const { userInterface: {editingItemId}, actions: {setEditingItemId}} = React.useContext(UserInterfaceContext);
-  const { getItems, updatePageItem, useLibraryInteractives } = usePageAPI();
+  const { getItems, updatePageItem, getLibraryInteractives } = usePageAPI();
   const pageItems = getItems();
   const pageItem = pageItems.find(pi => pi.id === editingItemId);
   const [modalVisibility, setModalVisibility] = useState(true);
   const [itemData, setItemData] = useState({});
-  const libraryInteractives = useLibraryInteractives.data?.libraryInteractives;
+  const libraryInteractives = getLibraryInteractives.data?.libraryInteractives;
 
   const handleUpdateTextBlockData = (updateItemData: ITextBlockData) => {
     setItemData(updateItemData);
