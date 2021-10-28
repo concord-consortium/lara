@@ -13,7 +13,7 @@ import { snakeToCamelCaseKeys } from "../../shared/convert-keys";
 
 const PAGES_CACHE_KEY = "pages";
 const SECTION_ITEM_TYPES_KEY = "SectionItemTypes";
-const LIBRARY_INTERACTIVES_TYPES_KEY = "LibraryInteractiveTypes";
+const LIBRARY_INTERACTIVES_KEY = "LibraryInteractives";
 
 // Use this in a parent component to setup API context:
 // <APIProviderContext.Provider value={someAPIProvider} />
@@ -82,7 +82,7 @@ export const usePageAPI = () => {
 
   const useLibraryInteractives = useQuery
     <{libraryInteractives: ILibraryInteractive[]}, Error>
-    (LIBRARY_INTERACTIVES_TYPES_KEY, provider.useLibraryInteractives);
+    (LIBRARY_INTERACTIVES_KEY, provider.useLibraryInteractives);
 
   const getPage =  () => {
     if (getPages.data) {

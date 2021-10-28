@@ -232,30 +232,6 @@ describe Api::V1::InteractivePagesController do
   end
 
   describe "#get_library_interactives_list" do
-    let (:managed_interactive1) { FactoryGirl.create(:managed_interactive,
-      :library_interactive_id => library_interactive1.id
-    )}
-
-    it "returns the list of library interactives" do
-      # make sure the mocks exist
-      library_interactive1
-      library_interactive2
-      managed_interactive1
-
-      xhr :get, "get_library_interactives_list"
-      expect(response.status).to eq(200)
-      expect(response.content_type).to eq("application/json")
-      expect(response.body).to eql({
-        success: true,
-        library_interactives: [
-          {id: library_interactive1.serializeable_id, name: library_interactive1.name, type: 'LibraryInteractive', use_count: 1, date_added: library_interactive1.created_at.to_i},
-          {id: library_interactive2.serializeable_id, name: library_interactive2.name, type: 'LibraryInteractive', use_count: 0, date_added: library_interactive2.created_at.to_i}
-        ]
-      }.to_json)
-    end
-  end
-
-  describe "#get_library_interactives" do
   let (:managed_interactive1) { FactoryGirl.create(:managed_interactive,
     :library_interactive_id => library_interactive1.id
   )}
@@ -266,7 +242,7 @@ describe Api::V1::InteractivePagesController do
     library_interactive2
     managed_interactive1
 
-    xhr :get, "get_library_interactives"
+    xhr :get, "get_library_interactives_list"
     expect(response.status).to eq(200)
     expect(response.content_type).to eq("application/json")
     expect(response.body).to eql({
@@ -281,6 +257,7 @@ describe Api::V1::InteractivePagesController do
           click_to_play_prompt: library_interactive1.click_to_play_prompt, 
           created_at: library_interactive1.created_at, 
           customizable: library_interactive1.customizable, 
+          date_added: library_interactive1.created_at.to_i,
           description: library_interactive1.description, 
           enable_learner_state: library_interactive1.enable_learner_state, 
           export_hash: library_interactive1.export_hash, 
@@ -292,9 +269,11 @@ describe Api::V1::InteractivePagesController do
           native_height: library_interactive1.native_height, 
           native_width: library_interactive1.native_width, 
           no_snapshots: library_interactive1.no_snapshots, 
+          serializeable_id: library_interactive1.serializeable_id,
           show_delete_data_button: library_interactive1.show_delete_data_button, 
           thumbnail_url: library_interactive1.thumbnail_url, 
-          updated_at: library_interactive1.updated_at
+          updated_at: library_interactive1.updated_at,
+          use_count: 1
         },
         {
           aspect_ratio_method: library_interactive2.aspect_ratio_method, 
@@ -305,6 +284,7 @@ describe Api::V1::InteractivePagesController do
           click_to_play_prompt: library_interactive2.click_to_play_prompt, 
           created_at: library_interactive2.created_at, 
           customizable: library_interactive2.customizable, 
+          date_added: library_interactive2.created_at.to_i,
           description: library_interactive2.description, 
           enable_learner_state: library_interactive2.enable_learner_state, 
           export_hash: library_interactive2.export_hash, 
@@ -316,9 +296,11 @@ describe Api::V1::InteractivePagesController do
           native_height: library_interactive2.native_height, 
           native_width: library_interactive2.native_width, 
           no_snapshots: library_interactive2.no_snapshots, 
+          serializeable_id: library_interactive2.serializeable_id,
           show_delete_data_button: library_interactive2.show_delete_data_button, 
-          thumbnail_url: library_interactive2.thumbnail_url, 
-          updated_at: library_interactive2.updated_at
+          thumbnail_url: library_interactive2.thumbnail_url,
+          updated_at: library_interactive2.updated_at,
+          use_count: 0
         }
       ]
     }.to_json)
@@ -440,8 +422,60 @@ end
       expect(response.body).to eql({
         success: true,
         library_interactives: [
-          {id: library_interactive1.serializeable_id, name: library_interactive1.name, type: 'LibraryInteractive', use_count: 1, date_added: library_interactive1.created_at.to_i},
-          {id: library_interactive2.serializeable_id, name: library_interactive2.name, type: 'LibraryInteractive', use_count: 0, date_added: library_interactive2.created_at.to_i}
+          {
+            aspect_ratio_method: library_interactive1.aspect_ratio_method, 
+            authorable: library_interactive1.authorable, 
+            authoring_guidance: library_interactive1.authoring_guidance, 
+            base_url: library_interactive1.base_url, 
+            click_to_play: library_interactive1.click_to_play, 
+            click_to_play_prompt: library_interactive1.click_to_play_prompt, 
+            created_at: library_interactive1.created_at, 
+            customizable: library_interactive1.customizable, 
+            date_added: library_interactive1.created_at.to_i,
+            description: library_interactive1.description, 
+            enable_learner_state: library_interactive1.enable_learner_state, 
+            export_hash: library_interactive1.export_hash, 
+            full_window: library_interactive1.full_window, 
+            has_report_url: library_interactive1.has_report_url, 
+            id: library_interactive1.id, 
+            image_url: library_interactive1.image_url, 
+            name: library_interactive1.name, 
+            native_height: library_interactive1.native_height, 
+            native_width: library_interactive1.native_width, 
+            no_snapshots: library_interactive1.no_snapshots, 
+            serializeable_id: library_interactive1.serializeable_id,
+            show_delete_data_button: library_interactive1.show_delete_data_button, 
+            thumbnail_url: library_interactive1.thumbnail_url, 
+            updated_at: library_interactive1.updated_at,
+            use_count: 1
+          },
+          {
+            aspect_ratio_method: library_interactive2.aspect_ratio_method, 
+            authorable: library_interactive2.authorable, 
+            authoring_guidance: library_interactive2.authoring_guidance, 
+            base_url: library_interactive2.base_url, 
+            click_to_play: library_interactive2.click_to_play, 
+            click_to_play_prompt: library_interactive2.click_to_play_prompt, 
+            created_at: library_interactive2.created_at, 
+            customizable: library_interactive2.customizable, 
+            date_added: library_interactive2.created_at.to_i,
+            description: library_interactive2.description, 
+            enable_learner_state: library_interactive2.enable_learner_state, 
+            export_hash: library_interactive2.export_hash, 
+            full_window: library_interactive2.full_window, 
+            has_report_url: library_interactive2.has_report_url, 
+            id: library_interactive2.id, 
+            image_url: library_interactive2.image_url, 
+            name: library_interactive2.name, 
+            native_height: library_interactive2.native_height, 
+            native_width: library_interactive2.native_width, 
+            no_snapshots: library_interactive2.no_snapshots, 
+            serializeable_id: library_interactive2.serializeable_id,
+            show_delete_data_button: library_interactive2.show_delete_data_button, 
+            thumbnail_url: library_interactive2.thumbnail_url,
+            updated_at: library_interactive2.updated_at,
+            use_count: 0
+          }
         ]
       }.to_json)
     end

@@ -234,7 +234,6 @@ export const ManagedInteractiveAuthoring: React.FC<Props> = (props) => {
 
   // this generates a form element that renders inside the rails popup form
   return <>
-    {<fieldset>
       <input
         type="hidden"
         id={formField("library_interactive_id").id}
@@ -255,7 +254,6 @@ export const ManagedInteractiveAuthoring: React.FC<Props> = (props) => {
         name={formField("linked_interactives").name}
         ref={linkedInteractivesRef}
       />
-    </fieldset>}
     {renderRequiredFields()}
     {renderTabs()}
   </>;

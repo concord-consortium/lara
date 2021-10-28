@@ -3,7 +3,7 @@ import {
   IPage, PageId,
   APIPageGetF, APIPagesGetF, APIPageItemUpdateF,
   IAuthoringAPIProvider, ISection, ICreatePageItem, ISectionItem, SectionColumns,
-  ISectionItemType, APIPageItemDeleteF, ItemId, SectionId, SectionLayouts
+  ISectionItemType, APIPageItemDeleteF, ItemId, SectionId, SectionLayouts, ILibraryInteractive
 } from "./api-types";
 import { IManagedInteractive } from "../../page-item-authoring/managed-interactives";
 
@@ -260,35 +260,40 @@ const deletePageItem: APIPageItemDeleteF = (args: {pageId: PageId, pageItemId: I
 const getAllEmbeddables = () => {
   const allEmbeddables: ISectionItemType[] = [
     {
-      id: "LibraryInteractive_1",
+      id: "1",
+      serializeable_id: "LibraryInteractive_1",
       name: "Carousel",
       type: "LibraryInteractive",
       useCount: 1,
-      dateAdded: 1630440496
+      dateAdded: 1630440496,
     },
     {
-      id: "LibraryInteractive_2",
+      id: "2",
+      serializeable_id: "LibraryInteractive_2",
       name: "CODAP",
       type: "LibraryInteractive",
       useCount: 5,
       dateAdded: 1630440497
     },
     {
-      id: "LibraryInteractive_3",
+      id: "3",
+      serializeable_id: "LibraryInteractive_3",
       name: "Drag & Drop",
       type: "LibraryInteractive",
       useCount: 5,
       dateAdded: 1630440498
     },
     {
-      id: "LibraryInteractive_4",
+      id: "4",
+      serializeable_id: "LibraryInteractive_4",
       name: "Fill in the Blank",
       type: "LibraryInteractive",
       useCount: 8,
       dateAdded: 1630440495
     },
     {
-      id: "MwInteractive_5",
+      id: "5",
+      serializeable_id: "MwInteractive_5",
       name: "iFrame Interactive",
       type: "MwInteractive",
       useCount: 200,
@@ -296,14 +301,16 @@ const getAllEmbeddables = () => {
       isQuickAddItem: true
     },
     {
-      id: "LibraryInteractive_6",
+      id: "6",
+      serializeable_id: "LibraryInteractive_6",
       name: "Multiple Choice",
       type: "LibraryInteractive",
       useCount: 300,
       dateAdded: 1630440493
     },
     {
-      id: "LibraryInteractive_7",
+      id: "7",
+      serializeable_id: "LibraryInteractive_7",
       name: "Open Response",
       type: "LibraryInteractive",
       useCount: 400,
@@ -311,21 +318,24 @@ const getAllEmbeddables = () => {
       isQuickAddItem: true
     },
     {
-      id: "LibraryInteractive_8",
+      id: "8",
+      serializeable_id: "LibraryInteractive_8",
       name: "SageModeler",
       type: "LibraryInteractive",
       useCount: 3,
       dateAdded: 1630440499
     },
     {
-      id: "LibraryInteractive_9",
+      id: "9",
+      serializeable_id: "LibraryInteractive_9",
       name: "Teacher Edition Window Shade",
       type: "LibraryInteractive",
       useCount: 4,
       dateAdded: 1630440490
     },
     {
-      id: "Embeddable::Xhtml_10",
+      id: "10",
+      serializeable_id: "Embeddable::Xhtml_10",
       name: "Text Block",
       type: "Embeddable::Xhtml",
       useCount: 500,
@@ -337,8 +347,14 @@ const getAllEmbeddables = () => {
 };
 
 const useLibraryInteractives = () => {
-  const libraryInteractives: any[] = [
+  const libraryInteractives: ILibraryInteractive[] = [
     {
+      id: 1,
+      serializeable_id: "LibraryInteractive_1",
+      name: "Carousel",
+      type: "LibraryInteractive",
+      use_count: 1,
+      date_added: 1630440496,
       aspect_ratio_method: "DEFAULT",
       authorable: true,
       authoring_guidance: "",
@@ -352,9 +368,7 @@ const useLibraryInteractives = () => {
       export_hash: "ccdfa2d588c34914cb072ef5e88834bce7e0702a",
       full_window: false,
       has_report_url: false,
-      id: 1,
       image_url: "",
-      name: "Carousel",
       native_height: 435,
       native_width: 576,
       no_snapshots: false,
@@ -363,6 +377,12 @@ const useLibraryInteractives = () => {
       updated_at: "2021-05-04T21:26:18Z"
     },
     {
+      id: 3,
+      serializeable_id: "LibraryInteractive_3",
+      name: "Drag & Drop",
+      type: "LibraryInteractive",
+      use_count: 5,
+      date_added: 1630440498,
       aspect_ratio_method: "DEFAULT",
       authorable: true,
       authoring_guidance: "",
@@ -376,9 +396,7 @@ const useLibraryInteractives = () => {
       export_hash: "ccdfa2d588c34914cb072ef5e88834bce7e0702b",
       full_window: false,
       has_report_url: false,
-      id: 5,
       image_url: "",
-      name: "Drag & Drop",
       native_height: 435,
       native_width: 576,
       no_snapshots: false,
@@ -387,6 +405,12 @@ const useLibraryInteractives = () => {
       updated_at: "2021-05-04T21:26:18Z"
     },
     {
+      id: 4,
+      serializeable_id: "LibraryInteractive_4",
+      name: "Fill in the Blank",
+      type: "LibraryInteractive",
+      use_count: 8,
+      date_added: 1630440495,
       aspect_ratio_method: "DEFAULT",
       authorable: true,
       authoring_guidance: "",
@@ -400,9 +424,7 @@ const useLibraryInteractives = () => {
       export_hash: "ccdfa2d588c34914cb072ef5e88834bce7e0702c",
       full_window: false,
       has_report_url: false,
-      id: 8,
       image_url: "",
-      name: "Fill in the Blank",
       native_height: 435,
       native_width: 576,
       no_snapshots: false,
@@ -411,6 +433,12 @@ const useLibraryInteractives = () => {
       updated_at: "2021-05-04T21:26:18Z"
     },
     {
+      id: 6,
+      serializeable_id: "LibraryInteractive_6",
+      name: "Multiple Choice",
+      type: "LibraryInteractive",
+      use_count: 300,
+      date_added: 1630440493,
       aspect_ratio_method: "DEFAULT",
       authorable: true,
       authoring_guidance: "",
@@ -424,9 +452,7 @@ const useLibraryInteractives = () => {
       export_hash: "ccdfa2d588c34914cb072ef5e88834bce7e0702d",
       full_window: false,
       has_report_url: false,
-      id: 6,
       image_url: "",
-      name: "Multiple Choice",
       native_height: 435,
       native_width: 576,
       no_snapshots: false,
@@ -435,6 +461,13 @@ const useLibraryInteractives = () => {
       updated_at: "2021-05-04T21:26:18Z"
     },
     {
+      id: 7,
+      serializeable_id: "LibraryInteractive_7",
+      name: "Open Response",
+      type: "LibraryInteractive",
+      use_count: 400,
+      date_added: 1630440492,
+      isQuickAddItem: true,
       aspect_ratio_method: "DEFAULT",
       authorable: true,
       authoring_guidance: "",
@@ -448,9 +481,7 @@ const useLibraryInteractives = () => {
       export_hash: "ccdfa2d588c34914cb072ef5e88834bce7e0702e",
       full_window: false,
       has_report_url: false,
-      id: 7,
       image_url: "",
-      name: "Open Response",
       native_height: 435,
       native_width: 576,
       no_snapshots: false,
