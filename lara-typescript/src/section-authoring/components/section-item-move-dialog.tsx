@@ -16,7 +16,7 @@ export interface ISectionItemMoveDialogProps {
 export const SectionItemMoveDialog: React.FC<ISectionItemMoveDialogProps> = () => {
   const [selectedPageId, setSelectedPageId] = useState("0");
   const [selectedSectionId, setSelectedSectionId] = useState("");
-  const [selectedColumn, setSelectedColumn] = useState("");
+  const [selectedColumn, setSelectedColumn] = useState(SectionColumns.PRIMARY);
   const [selectedPosition, setSelectedPosition] = useState(RelativeLocation.After);
   const [selectedOtherItemId, setSelectedOtherItemId] = useState("");
   const [modalVisibility, setModalVisibility] = useState(true);
@@ -55,6 +55,7 @@ export const SectionItemMoveDialog: React.FC<ISectionItemMoveDialogProps> = () =
         destSectionId: selectedSectionId,
         destItemId: selectedOtherItemId,
         relativeLocation: selectedPosition,
+        destColumn: selectedColumn as SectionColumns
       });
     }
     handleCloseDialog();
@@ -80,7 +81,9 @@ export const SectionItemMoveDialog: React.FC<ISectionItemMoveDialogProps> = () =
     if (selectedSectionId) {
       const selectedSection = getSections().find(s => s.id === selectedSectionId);
       if (selectedSection?.items) {
-        itemsList = selectedSection.items.filter(i => i.id !== movingItemId);
+        itemsList = selectedSection.items
+          .filter(i => i.column === selectedColumn)
+          .filter(i => i.id !== movingItemId);
       }
     }
     if (itemsList.length < 1) {

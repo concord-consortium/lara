@@ -1,3 +1,4 @@
+import { SectionColumns } from "../api/api-types";
 import { moveSection, ISectionDestination, RelativeLocation, moveItem, IItemDestination } from "./move-utils";
 import { makePages } from "./spec-helper";
 
@@ -139,7 +140,8 @@ describe("moveItem", () => {
       const destination: IItemDestination = {
         destPageId: pages[0].id,
         relativeLocation: RelativeLocation.After,
-        destSectionId: "section3"
+        destSectionId: "section3",
+        destColumn: SectionColumns.PRIMARY
       };
       const itemId = "bogus";
 
@@ -156,7 +158,8 @@ describe("moveItem", () => {
         destPageId: "page0",
         relativeLocation: RelativeLocation.After,
         destSectionId: "section0",
-        destItemId: "item2"
+        destItemId: "item2",
+        destColumn: SectionColumns.PRIMARY
       };
       const itemId = "item0";
 
@@ -171,7 +174,8 @@ describe("moveItem", () => {
         destPageId: pages[0].id,
         relativeLocation: RelativeLocation.Before,
         destSectionId: "section0",
-        destItemId: "item0"
+        destItemId: "item0",
+        destColumn: SectionColumns.PRIMARY
       };
       const itemId = "item9";
       const changedSections = moveItem({ destination, pages, itemId });
@@ -185,6 +189,7 @@ describe("moveItem", () => {
         destPageId: "page1",
         relativeLocation: RelativeLocation.Before,
         destSectionId: "section3",
+        destColumn: SectionColumns.PRIMARY
       };
       const itemId = "item0";
       const changedSections = moveItem({ destination, pages, itemId });
@@ -198,6 +203,7 @@ describe("moveItem", () => {
         destPageId: "page2",
         relativeLocation: RelativeLocation.Before,
         destSectionId: "section8",
+        destColumn: SectionColumns.PRIMARY
       };
       const itemId = "item0";
       const changedSections = moveItem({ destination, pages, itemId });
@@ -211,6 +217,7 @@ describe("moveItem", () => {
         destPageId: "page0",
         relativeLocation: RelativeLocation.Before,
         destSectionId: "section2",
+        destColumn: SectionColumns.PRIMARY
       };
       const itemId = "item0";
       const changedSections = moveItem({ destination, pages, itemId });
@@ -225,6 +232,7 @@ describe("moveItem", () => {
         destPageId: "page0",
         relativeLocation: RelativeLocation.Before,
         destSectionId: "section2",
+        destColumn: SectionColumns.PRIMARY
       };
       const itemId = "item0";
       const changedSections = moveItem({ destination, pages, itemId });

@@ -1,4 +1,4 @@
-import { IPage, ISection, PageId, SectionId, ItemId, ISectionItem} from "../api/api-types";
+import { IPage, ISection, PageId, SectionId, ItemId, ISectionItem, SectionColumns} from "../api/api-types";
 import { findSection, findItemAddress, IAddressQuery, findItemByAddress, findSectionByAddress } from "./finding-utils";
 
 export enum RelativeLocation {
@@ -20,6 +20,7 @@ export interface IMoveSectionSignature {
 
 export interface IItemDestination extends ISectionDestination {
   destSectionId: SectionId;
+  destColumn: SectionColumns;
   destItemId?: ItemId;
 }
 
@@ -125,6 +126,8 @@ export const moveItem = (args: IMoveItemSignature): ISection[] => {
     return error(`can't find itemId ${itemId}`);
   }
 
+  // Set the items column:
+  sourceItem.column = destination.destColumn;
   // We must have a destination section:
   if (destAddress.sectionIndex == null || destAddress.pageIndex == null) {
     return error(`can't find destination ${destination}`);
@@ -148,9 +151,7 @@ export const moveItem = (args: IMoveItemSignature): ISection[] => {
   // At this point we should have indexes for everything...
   // 1. remove the item from the source section items
   // 2. add the item back into the dest section items
-  // 3. update the sections and pages
-  const sourcePage = pages[sourceAddress.pageIndex];
-  const destPage = pages[destAddress.pageIndex];
+  // 3. update the sections
   const sourceSection = findSectionByAddress(pages, sourceAddress);
   const destSection = findSectionByAddress(pages, destAddress);
   if (destSection == null || sourceSection == null) {

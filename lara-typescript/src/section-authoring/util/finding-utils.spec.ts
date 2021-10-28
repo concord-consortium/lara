@@ -1,11 +1,12 @@
 import { IPage, ISection, ISectionItem } from "../api/api-types";
+import { SectionColumn } from "../components/section-column";
 import { findSection, findSectionByAddress,
   ISectionAddress, findPage, findItemAddress } from "./finding-utils";
 import { makePages } from "./spec-helper";
 
 const samplePages = makePages(3);
 
-const nullResults = { pageIndex: null, sectionIndex: null, itemIndex: null, column: null };
+const nullResults = { pageIndex: null, sectionIndex: null, itemIndex: null };
 
 describe("get a Sections nested address", () => {
   it ("finds sections that exist, and returns nested index", () => {
@@ -24,7 +25,7 @@ describe("get a Sections nested address", () => {
 
   it ("returns null for sections that can't be found", () => {
     expect(findItemAddress({pages: samplePages, sectionId: "Vorgon poetry"}))
-      .toEqual(nullResults);
+      .toMatchObject(nullResults);
   });
 
   describe("get an items nested address", () => {
@@ -47,7 +48,7 @@ describe("get a Sections nested address", () => {
 
     it("returns null index for items that do not exist", () => {
       expect(findItemAddress({pages: samplePages, itemId: "Vorgon poetry"}))
-        .toEqual(nullResults);
+        .toMatchObject(nullResults);
     });
   });
 

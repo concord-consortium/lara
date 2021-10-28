@@ -6,7 +6,7 @@ export interface ISectionAddress {
 }
 
 export interface IItemAddress extends ISectionAddress {
-  column: SectionColumns | null;
+  column: SectionColumns;
   itemIndex: number|null;
 }
 
@@ -55,7 +55,7 @@ export const findItemAddress = (args: IAddressQuery): IItemAddress => {
   let sectionIndex = null;
   let pageIndex = null;
   let itemIndex = null;
-  let column = null;
+  let column = SectionColumns.PRIMARY;
 
   pageIndex = 0;
   for (const page of pages) {
@@ -79,5 +79,5 @@ export const findItemAddress = (args: IAddressQuery): IItemAddress => {
     }
     pageIndex++;
   }
-  return {pageIndex: null, sectionIndex: null, itemIndex: null, column: null};
+  return {pageIndex: null, sectionIndex: null, itemIndex: null, column};
 };
