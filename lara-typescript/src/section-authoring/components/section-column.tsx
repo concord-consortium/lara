@@ -72,7 +72,7 @@ export const SectionColumn: React.FC<ISectionColumnProps> = ({
   const api = usePageAPI();
   const getAllEmbeddables = api.getAllEmbeddables;
   const embeddables = getAllEmbeddables.data?.allEmbeddables;
-  const { deletePageItem, updateSectionItems} = api;
+  const { deletePageItem, updateSectionItems, copyPageItem } = api;
   const [showAddItem, setShowAddItem] = useState(false);
 
   const updateItemPositions = (sectionItems: ISectionItem[], sourceIndex: number, destinationIndex: number) => {
@@ -113,13 +113,6 @@ export const SectionColumn: React.FC<ISectionColumnProps> = ({
 
   const handleEditItem = (itemId: string) => {
     editItemFunction?.(itemId);
-  };
-
-  const handleCopyItem = (itemId: string) => {
-    const item = items.find(i => i.id === itemId);
-    if (item) {
-      addItem(column);
-    }
   };
 
   const handleToggleShowAddItem = () => setShowAddItem((prev) => !prev);
@@ -174,7 +167,7 @@ export const SectionColumn: React.FC<ISectionColumnProps> = ({
                             <SectionItem
                               {...item}
                               key={item.id}
-                              copyFunction={handleCopyItem}
+                              copyFunction={copyPageItem}
                               deleteFunction={deletePageItem}
                             />
                           </div>
