@@ -39,7 +39,7 @@ export interface ISectionColumnProps {
   /*
    * List of all items in the column
    */
-  items: ISection[];
+  items: ISectionItem[];
 
   /**
    * Function to move an item
@@ -75,7 +75,7 @@ export const SectionColumn: React.FC<ISectionColumnProps> = ({
   const { deletePageItem, updateSectionItems} = api;
   const [showAddItem, setShowAddItem] = useState(false);
 
-  const updateItemPositions = (sectionItems: ISectionItemProps[], sourceIndex: number, destinationIndex: number) => {
+  const updateItemPositions = (sectionItems: ISectionItem[], sourceIndex: number, destinationIndex: number) => {
     const itemToMove = sectionItems[sourceIndex];
     const otherItem = sectionItems[destinationIndex];
     itemToMove.position = otherItem.position;
@@ -95,7 +95,7 @@ export const SectionColumn: React.FC<ISectionColumnProps> = ({
     if (!e.destination) {
       return;
     }
-    let nextItems: ISectionItemProps[] = [];
+    let nextItems: ISectionItem[] = [];
     if (e.source.droppableId !== e.destination.droppableId) {
       // items[e.source.index].section_col = items[e.source.index].section_col === 0 ? 1 : 0;
       // disallow cross column reordering for now

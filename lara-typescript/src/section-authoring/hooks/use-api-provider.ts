@@ -1,6 +1,11 @@
 import * as React from "react";
 import { useContext } from "react";
-import { moveSection  as _moveSection, ISectionDestination} from "../util/move-utils";
+import {
+  moveSection  as _moveSection,
+  moveItem  as _moveItem,
+  ISectionDestination,
+  IItemDestination
+} from "../util/move-utils";
 
 import {useMutation, useQuery, useQueryClient} from "react-query";
 import {
@@ -166,46 +171,21 @@ export const usePageAPI = () => {
       updateSections(update);
     }
   };
-  const moveItem = (
-    itemId: string,
-    selectedSectionId: string,
-    selectedColumn: SectionColumns,
-    selectedPosition: string,
-    selectedOtherItemId: string
-    ) => {
-    const items = getItems();
-    const itemIndex = items.findIndex(i => i.id === itemId);
-    const item = items[itemIndex];
-    const otherItemIndex = items.findIndex(i => (i.id === selectedOtherItemId));
-    const otherItem = items[otherItemIndex];
-    const targetSection = getSection(selectedSectionId);
-    item.column = selectedColumn;
-    item.position = otherItem && otherItem.position
-                      ? selectedPosition === "after"
-                        ? otherItem.position + 1
-                        : otherItem.position
-                      : 1;
-    const newIndex = otherItemIndex
-                       ? selectedPosition === "after"
-                         ? otherItemIndex + 1
-                         : otherItemIndex
-                       : 0;
-    const updatedItems = targetSection?.items;
-    updatedItems?.splice(itemIndex, 1);
-    updatedItems?.splice(newIndex, 0, item);
-    let sectionItemsCount = 0;
-    updatedItems?.forEach((i, index) => {
-      sectionItemsCount++;
-      if (index > newIndex) {
-        updatedItems[index].position = sectionItemsCount;
+
+  const moveItem = (itemId: string, destination: IItemDestination) => {
+    if (currentPage) {
+      const updatedSections = _moveItem({itemId, destination, pages: getPages.data || []});
+      for (const updatedSection of updatedSections) {
+        if (updatedSection.items) {
+          const changes = {section: updatedSection, sectionId: updatedSection.id};
+          updateSection.mutate({pageId: currentPage.id, changes});
+          updateSectionItems({sectionId: updatedSection.id, newItems: updatedSection.items});
+        }
       }
-    });
-    // setItems(updatedItems);
-    if (targetSection) {
-      targetSection.items = updatedItems;
-      if (updateSectionItems && updatedItems) {
-        updateSectionItems({sectionId: selectedSectionId, newItems: updatedItems});
-      }
+    }
+    else {
+      // tslint:disable-next-line
+      console.error("no page specified, cant invoke method.");
     }
   };
 

@@ -48,6 +48,7 @@ class Api::V1::InteractivePagesController < API::APIController
   end
 
   def set_sections
+    authorize! :update, @interactive_page
     param_sections = params['sections'] || [] # array of [{:id,:layout}]
     old_sections = @interactive_page.sections
     # Put them in the correct order:
@@ -60,7 +61,7 @@ class Api::V1::InteractivePagesController < API::APIController
         section.position = position
         section.save!(validate: false)
       end
-      index = index + 1
+      index += 1
       section
     end
 
@@ -100,25 +101,34 @@ class Api::V1::InteractivePagesController < API::APIController
 
     section_id = section_params.delete('id')
     section = Section.find(section_id)
-    new_page_items = section_params.delete('items')
+    new_items = section_params.delete('items')
+    new_item_ids = new_items&.map { |i| i['id'] }
+    new_item_ids.compact! # remove nil items
+    old_items = section.page_items
     section.update_attributes(section_params)
 
     # Its OK for update_section to come in without items...
-    if (new_page_items.present?)
-      new_page_item_ids = new_page_items.map { |i| i['id'] }
+    if new_items.present?
       # Usually we will just be reordering the page_items within the section:
-      if section && new_page_items
-        new_page_items.each do |pi|
-          page_item_id = pi.delete('id')
-          page_item = PageItem.find(page_item_id)
-          if page_item
-            new_attr = { column: pi['column'], position: pi['position'] }
-            page_item.update_attributes(new_attr)
-          end
+      if section && new_items
+        new_items.each do |pi|
+          page_item = PageItem.find(pi.delete('id'))
+          page_item&.update_attributes(
+            {
+              column: pi['column'],
+              position: pi['position'],
+              section: section
+            })
         end
       end
     end
 
+    # remove any missing items...
+    if new_item_ids && !new_item_ids.empty?
+      old_items.each do |item|
+        item.update_attributes({ section: nil }) unless new_item_ids.include?(item.id.to_s)
+      end
+    end
     render_page_sections_json
   end
 
@@ -210,7 +220,7 @@ class Api::V1::InteractivePagesController < API::APIController
       type: pi.embeddable_type,
       data: pi.embeddable.to_hash # using pi.embeddable.to_interactive here broke editing/saving by sending unnecessary/incorrect data back
     }
-    render json: result.to_json     
+    render json: result.to_json
   end
 
   def delete_page_item

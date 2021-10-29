@@ -17,7 +17,7 @@ export enum SectionColumns {
   SECONDARY =  "secondary"
 }
 export interface ISectionItem {
-  column?: SectionColumns;
+  column: SectionColumns;
   data?: any;
   id: ItemId;
   position?: number;
