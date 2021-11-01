@@ -1,4 +1,4 @@
-import { findSectionAddress } from "../util/finding-utils";
+import { findItemAddress } from "../util/finding-utils";
 import {
   IPage, PageId,
   APIPageGetF, APIPagesGetF, APIPageItemUpdateF,
@@ -189,7 +189,7 @@ const copySection = (args: {pageId: PageId, sectionId: SectionId}) => {
   if (!page) {
     return Promise.reject(`can't find page: ${pageId}`);
   }
-  const address = findSectionAddress(pages, sectionId);
+  const address = findItemAddress({pages, sectionId});
 
   // updates position, assumes the array is in the right order.
   const reorderSection = (sections: ISection[]) => {

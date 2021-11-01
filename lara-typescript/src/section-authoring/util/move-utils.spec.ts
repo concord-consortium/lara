@@ -1,7 +1,14 @@
-import { IPage, ISection, ISectionItem } from "../api/api-types";
-import { findSectionAddress, findSection, findSectionByAddress } from "./finding-utils";
-import { moveSection, ISectionDestination, RelativeLocation } from "./move-utils";
+import { SectionColumns } from "../api/api-types";
+import { moveSection, ISectionDestination, RelativeLocation, moveItem, IItemDestination } from "./move-utils";
 import { makePages } from "./spec-helper";
+
+const verifyPositions = (items: Array<{position?: number, id: string}>): boolean => {
+  let counter = 1;
+  for (const item of items) {
+    if (item.position !== counter++) { return false; }
+  }
+  return true;
+};
 
 describe("moveSection", () => {
 
@@ -30,7 +37,6 @@ describe("moveSection", () => {
         destSectionId: "bogus" // not specifying a page...
       };
       const sectionId = "section0";
-
       const changedPages = moveSection({ destination, pages, sectionId });
       expect(changedPages.length).toEqual(1);
       expect(changedPages[0].sections.map(s => s.id)).toEqual(["section1", "section2", "section0" ]);
@@ -124,4 +130,115 @@ describe("moveSection", () => {
   });
 
   // TODO:  Tests asserting position of Sections.
+});
+
+describe("moveItem", () => {
+
+  describe("Failing scenarios" , () => {
+    it ("it can't move non-existent item", () => {
+      const pages = makePages(3);
+      const destination: IItemDestination = {
+        destPageId: pages[0].id,
+        relativeLocation: RelativeLocation.After,
+        destSectionId: "section3",
+        destColumn: SectionColumns.PRIMARY
+      };
+      const itemId = "bogus";
+
+      // Move failed:
+      expect(moveItem({ destination, pages, itemId })).toEqual([]);
+    });
+  });
+
+  describe("moving items within the same section", () => {
+
+    it ("it can move the first item in the section to the end of the section", () => {
+      const pages = makePages(3);
+      const destination: IItemDestination = {
+        destPageId: "page0",
+        relativeLocation: RelativeLocation.After,
+        destSectionId: "section0",
+        destItemId: "item2",
+        destColumn: SectionColumns.PRIMARY
+      };
+      const itemId = "item0";
+
+      const changedSections = moveItem({ destination, pages, itemId });
+      expect(changedSections.length).toEqual(1);
+      expect(changedSections[0].items!.map(i => i.id)).toEqual(["item1", "item2", "item0" ]);
+    });
+
+    it("can move an item forward from one page to another", () => {
+      const pages = makePages(3);
+      const destination: IItemDestination = {
+        destPageId: pages[0].id,
+        relativeLocation: RelativeLocation.Before,
+        destSectionId: "section0",
+        destItemId: "item0",
+        destColumn: SectionColumns.PRIMARY
+      };
+      const itemId = "item9";
+      const changedSections = moveItem({ destination, pages, itemId });
+      expect(changedSections.length).toEqual(2);
+      expect(changedSections[1].items!.map(i => i.id)).toEqual(["item9", "item0", "item1", "item2" ]);
+    });
+
+    it("can move an item backward from one page to another, not specifying item destination", () => {
+      const pages = makePages(3);
+      const destination: IItemDestination = {
+        destPageId: "page1",
+        relativeLocation: RelativeLocation.Before,
+        destSectionId: "section3",
+        destColumn: SectionColumns.PRIMARY
+      };
+      const itemId = "item0";
+      const changedSections = moveItem({ destination, pages, itemId });
+      expect(changedSections.length).toEqual(2);
+      expect(changedSections[1].items!.map(i => i.id)).toEqual(["item9", "item10", "item11", "item0" ]);
+    });
+
+    it("can move an item backward from the first section to the last not specifying item destination", () => {
+      const pages = makePages(3);
+      const destination: IItemDestination = {
+        destPageId: "page2",
+        relativeLocation: RelativeLocation.Before,
+        destSectionId: "section8",
+        destColumn: SectionColumns.PRIMARY
+      };
+      const itemId = "item0";
+      const changedSections = moveItem({ destination, pages, itemId });
+      expect(changedSections.length).toEqual(2);
+      expect(changedSections[1].items!.map(i => i.id)).toEqual(["item24", "item25", "item26", "item0" ]);
+    });
+
+    it("can move an item backward from the first section on a page to the last not specifying item destination", () => {
+      const pages = makePages(3);
+      const destination: IItemDestination = {
+        destPageId: "page0",
+        relativeLocation: RelativeLocation.Before,
+        destSectionId: "section2",
+        destColumn: SectionColumns.PRIMARY
+      };
+      const itemId = "item0";
+      const changedSections = moveItem({ destination, pages, itemId });
+      expect(changedSections.length).toEqual(2);
+      expect(changedSections[0].items!.map(i => i.id)).toEqual(["item1", "item2" ]);
+      expect(changedSections[1].items!.map(i => i.id)).toEqual(["item6", "item7", "item8", "item0" ]);
+    });
+
+    it("will update the position attributes of the sections and items that moved", () => {
+      const pages = makePages(3);
+      const destination: IItemDestination = {
+        destPageId: "page0",
+        relativeLocation: RelativeLocation.Before,
+        destSectionId: "section2",
+        destColumn: SectionColumns.PRIMARY
+      };
+      const itemId = "item0";
+      const changedSections = moveItem({ destination, pages, itemId });
+      for (const section of changedSections) {
+        verifyPositions(section.items!);
+      }
+    });
+  });
 });
