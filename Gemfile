@@ -13,11 +13,6 @@ group :assets do
   gem "turbo-sprockets-rails3", "~> 0.3"
 end
 
-# Rails assets:
-source 'https://rails-assets.org' do
-  gem 'rails-assets-drawing-tool', '1.3.2'
-  gem 'rails-assets-modulejs', '1.6.0'
-end
 
 group :development do
   gem "binding_of_caller", "~> 0.7"
