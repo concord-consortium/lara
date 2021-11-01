@@ -50,9 +50,6 @@ export const ManagedInteractivePreview: React.FC<IManagedInteractivePreviewProps
 
   return (
     <div className={wrapperClasses}>
-      {name && <div className="managedInteractiveName">
-        {name}
-      </div>}
       <div className="managedInteractiveContent">
         <InteractiveAuthoringPreview interactive={interactive} user={mockUser} />
       </div>

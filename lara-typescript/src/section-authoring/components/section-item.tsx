@@ -39,10 +39,6 @@ export interface ISectionItemProps {
    */
   position?: number;
 
-  /**
-   * Name of the section will be displayed in the header
-   */
-  title?: string;
 }
 
 /**
@@ -53,8 +49,7 @@ export const SectionItem: React.FC<ISectionItemProps> = ({
   copyFunction,
   deleteFunction,
   type,
-  position,
-  title
+  position
   }: ISectionItemProps) => {
 
   const api = usePageAPI();
@@ -65,7 +60,7 @@ export const SectionItem: React.FC<ISectionItemProps> = ({
 
   const renderTitle = () => (
     <>
-      {(title || "").length > 0 ? title : <i>Untitled</i>}
+      {(pageItem?.data.name || "").length > 0 ? pageItem?.data.name : <em>Untitled</em>}
     </>
   );
 
@@ -111,7 +106,7 @@ export const SectionItem: React.FC<ISectionItemProps> = ({
       <header className="sectionItemMenu">
         <div className="menuStart">
           <GripLines />
-          <h4>{id} - {title} - {renderTitle()}</h4>
+          <h4>{id} - {renderTitle()}</h4>
         </div>
         <div className="menuEnd">
           <ul>
