@@ -15,18 +15,18 @@ GIT
       railties
 
 GIT
-  remote: git://github.com/concord-consortium/secure-samesite-cookies
+  remote: git://github.com/lostapathy/yaml_db.git
+  revision: 98e9a5dca43e3fedd3268c76a73af40d1bdf1dfd
+  specs:
+    yaml_db (0.2.2)
+
+GIT
+  remote: https://github.com/concord-consortium/secure-samesite-cookies.git
   revision: da3078b1f2d1ac9c4c62b5cd7cd4c1fce1eb6dd1
   tag: v1.0.2
   specs:
     rack-secure_samesite_cookies (1.0.2)
       rack (>= 1.4.7)
-
-GIT
-  remote: git://github.com/lostapathy/yaml_db.git
-  revision: 98e9a5dca43e3fedd3268c76a73af40d1bdf1dfd
-  specs:
-    yaml_db (0.2.2)
 
 GIT
   remote: https://github.com/intridea/omniauth-oauth2.git
