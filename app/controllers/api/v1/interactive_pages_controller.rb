@@ -170,7 +170,7 @@ class Api::V1::InteractivePagesController < API::APIController
     when /Embeddable::Xhtml/
       embeddable = Embeddable::Xhtml.create!
     else
-      return error("Only library interactive embeddables and text blocks are currently supported")
+      return error("Only library interactive embeddables, iFrame interactives, and text blocks are currently supported")
     end
 
     @interactive_page.add_embeddable(embeddable, position, section.id, column)
@@ -215,6 +215,14 @@ class Api::V1::InteractivePagesController < API::APIController
       page_item.update_attributes(new_attr)
       embeddable_type = type.constantize
       embeddable = embeddable_type.find(page_item.embeddable_id)
+      # linked_interactives param follows ISetLinkedInteractives interface format. It isn't a regular attribute.
+      # It requires special treatment and should be removed from params before .update_attributes is called.
+      if data.has_key? :linked_interactives
+        linked_linteractives = data.delete :linked_interactives
+        if linked_linteractives.present?
+          page_item.set_linked_interactives(JSON.parse(linked_linteractives))
+        end
+      end 
       if embeddable
         embeddable.update_attributes(data)
       end

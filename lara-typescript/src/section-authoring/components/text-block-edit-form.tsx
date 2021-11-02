@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import { Editor } from "@tinymce/tinymce-react";
 import { ISectionItem, ITextBlockData } from "../api/api-types";
 import { usePageAPI } from "../hooks/use-api-provider";
@@ -8,65 +8,45 @@ import "./text-block-edit-form.scss";
 
 export interface ITextBlockEditFormProps {
   pageItem: ISectionItem;
-  handleUpdateData: (itemData: any) => (void);
 }
 
 export const TextBlockEditForm: React.FC<ITextBlockEditFormProps> = ({
-  pageItem,
-  handleUpdateData
+  pageItem
   }: ITextBlockEditFormProps) => {
   const { content, name, isCallout, isFullWidth } = pageItem?.data as ITextBlockData;
   const editorRef = useRef<any>(null);
   const initEditor = (e: any, editor: any) => {
     editorRef.current = editor;
   };
+  const contentRef = useRef<HTMLTextAreaElement|null>(null);
   const api = usePageAPI();
   const pathToTinyMCE = api.pathToTinyMCE;
   const pathToTinyMCECSS = api.pathToTinyMCECSS;
-  // Create a new item data object for recording changes so the
-  // real pageItem isn't updated if the user cancels editing.
-  const initItemData = { content, isCallout, isFullWidth, name };
-  const [itemData, setItemData] = useState(initItemData);
-
-  const handleChangeName = (event: React.ChangeEvent<HTMLInputElement>) => {
-    itemData.name = event.target.value;
-    setItemData(itemData);
-    handleUpdateData(itemData);
-  };
 
   const handleChangeContent = () => {
-    itemData.content = editorRef.current.getContent();
-    setItemData(itemData);
-    handleUpdateData(itemData);
-  };
-
-  const handleTextareaChangeContent = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    itemData.content = event.target.value;
-    setItemData(itemData);
-    handleUpdateData(itemData);
-  };
-
-  const handleChangeIsCallout = () => {
-    itemData.isCallout = !isCallout;
-    setItemData(itemData);
-    handleUpdateData(itemData);
-  };
-
-  const handleChangeIsFullWidth = () => {
-    itemData.isFullWidth = !isFullWidth;
-    setItemData(itemData);
-    handleUpdateData(itemData);
+    if (contentRef.current) {
+      contentRef.current.value = editorRef.current.getContent();
+    }
   };
 
   return (
-    <dl className="textBlockEditForm">
+    <>
+      {pathToTinyMCE &&
+        <textarea
+          defaultValue={content}
+          id="content"
+          name="content"
+          ref={contentRef}
+          style={{ display: "none" }}
+        />
+      }
+      <dl className="textBlockEditForm">
       <dt className="row1"><label htmlFor="name">Heading <span className="inputNote">optional</span></label></dt>
       <dd className="row1">
         <input
           defaultValue={name}
           id="name"
           name="name"
-          onChange={handleChangeName}
         />
       </dd>
       <dt className="row2">
@@ -79,7 +59,6 @@ export const TextBlockEditForm: React.FC<ITextBlockEditFormProps> = ({
             defaultValue={content}
             id="content"
             name="content"
-            onChange={handleTextareaChangeContent}
           />
         }
         {pathToTinyMCE &&
@@ -119,7 +98,6 @@ export const TextBlockEditForm: React.FC<ITextBlockEditFormProps> = ({
           defaultChecked={isCallout}
           id="is-callout"
           name="is_callout"
-          onChange={handleChangeIsCallout}
           type="checkbox"
         />
       </dd>
@@ -132,11 +110,11 @@ export const TextBlockEditForm: React.FC<ITextBlockEditFormProps> = ({
           defaultChecked={isFullWidth}
           id="is-full-width"
           name="is_full_width"
-          onChange={handleChangeIsFullWidth}
           type="checkbox"
           />
       </dd>
       <dd className="inputNote row4">In full width layout only.</dd>
     </dl>
+    </>
   );
 };

@@ -1683,6 +1683,9 @@ dl.textBlockEditForm {
   padding: 5px 10px;
   width: calc(100% - 22px); }
 
+.itemEditDialog input[type="radio"], .itemEditDialog input[type="checkbox"] {
+  width: auto; }
+
 .itemEditDialog textarea {
   height: 200px; }
 

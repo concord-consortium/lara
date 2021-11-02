@@ -144,6 +144,7 @@ export const getLaraAuthoringAPI =
         };
         result.allEmbeddables.push({
           id: "MwInteractive",
+          serializeable_id: "MwInteractive",
           name: "Interactive IFrame",
           type: "MwInteractive",
           useCount: 0,
@@ -152,6 +153,7 @@ export const getLaraAuthoringAPI =
         });
         result.allEmbeddables.push({
           id: "Embeddable::Xhtml",
+          serializeable_id: "Embeddable::Xhtml",
           name: "Text Block",
           type: "Embeddable::Xhtml",
           useCount: 0,
