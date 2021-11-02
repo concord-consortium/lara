@@ -37,13 +37,6 @@ export const ManagedInteractivePreview: React.FC<IManagedInteractivePreviewProps
     linked_interactives: linkedInteractives
   };
 
-  // This is a placeholder mock user for development
-  const mockUser = {
-    authProvider: null,
-    loggedIn: false,
-    email: "unknown@concord.org"
-  };
-
   const wrapperClasses = classNames("managedInteractive", {
     fullWidth: isFullWidth
   });
@@ -51,7 +44,7 @@ export const ManagedInteractivePreview: React.FC<IManagedInteractivePreviewProps
   return (
     <div className={wrapperClasses}>
       <div className="managedInteractiveContent">
-        <InteractiveAuthoringPreview interactive={interactive} user={mockUser} />
+        <InteractiveAuthoringPreview interactive={interactive} />
       </div>
     </div>
   );
