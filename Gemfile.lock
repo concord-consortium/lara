@@ -1,5 +1,5 @@
 GIT
-  remote: git://github.com/concord-consortium/capistrano-autoscaling.git
+  remote: https://github.com/concord-consortium/capistrano-autoscaling.git
   revision: 49d6bff5002d188495bec53996b9bdbaa5b4a01f
   branch: concord
   specs:
@@ -8,17 +8,11 @@ GIT
       capistrano (< 3)
 
 GIT
-  remote: git://github.com/concord-consortium/ribbons-rails.git
+  remote: https://github.com/concord-consortium/ribbons-rails.git
   revision: 8e5f5701f53ad2026c3cafb0d2bc49b2d172a69d
   specs:
     ribbons-rails (0.0.1)
       railties
-
-GIT
-  remote: git://github.com/lostapathy/yaml_db.git
-  revision: 98e9a5dca43e3fedd3268c76a73af40d1bdf1dfd
-  specs:
-    yaml_db (0.2.2)
 
 GIT
   remote: https://github.com/concord-consortium/secure-samesite-cookies.git
@@ -35,6 +29,14 @@ GIT
     omniauth-oauth2 (1.1.1)
       oauth2 (~> 0.9.0)
       omniauth (~> 1.0)
+
+GIT
+  remote: https://github.com/lostapathy/yaml_db.git
+  revision: 729be462da1f7c7f140dae5482a922934e27bcc6
+  specs:
+    yaml_db (0.3.0)
+      rails (>= 3.0, < 4.3)
+      rake (>= 0.8.7)
 
 GIT
   remote: https://github.com/zebitex/aws-ses.git
