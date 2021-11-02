@@ -21,6 +21,7 @@ export interface IInteractiveStateProps<InteractiveState = {}> {
   pageNumber?: number;
   pageName?: string;
   activityName?: string;
+  externalReportUrl?: string;
 }
 
 export interface IHostFeatureSupport extends Record<string, unknown> {

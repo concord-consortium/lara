@@ -13,11 +13,16 @@ group :assets do
   gem "turbo-sprockets-rails3", "~> 0.3"
 end
 
-# Rails assets:
-source 'https://rails-assets.org' do
-  gem 'rails-assets-drawing-tool', '1.3.2'
-  gem 'rails-assets-modulejs', '1.6.0'
-end
+# 2021-11-01 -- NP: rails-assets.org SSL certificate has expired.
+# For now we have just put the JS and CSS files for drawing tool and its deps
+# into app/assets/javascript & app/assets/css
+# however managing those dependencies isn't going to be easy. We need a better
+# long term solution
+#
+# source 'https://rails-assets.org' do
+#   gem 'rails-assets-drawing-tool', '1.3.2'
+#   gem 'rails-assets-modulejs', '1.6.0'
+# end
 
 group :development do
   gem "binding_of_caller", "~> 0.7"
@@ -112,4 +117,4 @@ gem "spreadsheet", "~> 1.0"
 gem "nokogiri", ">= 1.8.5"
 gem "rack-cors","~> 0.4.1", :require => 'rack/cors'
 gem "test-unit", "~> 3.0"
-gem 'rack-secure_samesite_cookies', {:git => 'git://github.com/concord-consortium/secure-samesite-cookies', :tag => 'v1.0.2'}
+gem 'rack-secure_samesite_cookies', {:git => 'https://github.com/concord-consortium/secure-samesite-cookies.git', :tag => 'v1.0.2'}

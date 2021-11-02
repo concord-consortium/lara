@@ -28,6 +28,7 @@
 * [collaboratorUrls](iruntimeinitinteractive.md#collaboratorurls)
 * [createdAt](iruntimeinitinteractive.md#optional-createdat)
 * [error](iruntimeinitinteractive.md#error)
+* [externalReportUrl](iruntimeinitinteractive.md#optional-externalreporturl)
 * [globalInteractiveState](iruntimeinitinteractive.md#globalinteractivestate)
 * [hasLinkedInteractive](iruntimeinitinteractive.md#optional-haslinkedinteractive)
 * [hostFeatures](iruntimeinitinteractive.md#hostfeatures)
@@ -105,6 +106,14 @@ ___
 ###  error
 
 • **error**: *any*
+
+___
+
+### `Optional` externalReportUrl
+
+• **externalReportUrl**? : *undefined | string*
+
+*Inherited from [IInteractiveStateProps](iinteractivestateprops.md).[externalReportUrl](iinteractivestateprops.md#optional-externalreporturl)*
 
 ___
 

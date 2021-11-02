@@ -19,6 +19,7 @@
 * [activityName](iinteractivestateprops.md#optional-activityname)
 * [allLinkedStates](iinteractivestateprops.md#optional-alllinkedstates)
 * [createdAt](iinteractivestateprops.md#optional-createdat)
+* [externalReportUrl](iinteractivestateprops.md#optional-externalreporturl)
 * [hasLinkedInteractive](iinteractivestateprops.md#optional-haslinkedinteractive)
 * [interactive](iinteractivestateprops.md#interactive)
 * [interactiveState](iinteractivestateprops.md#interactivestate)
@@ -45,6 +46,12 @@ ___
 ### `Optional` createdAt
 
 • **createdAt**? : *undefined | string*
+
+___
+
+### `Optional` externalReportUrl
+
+• **externalReportUrl**? : *undefined | string*
 
 ___
 

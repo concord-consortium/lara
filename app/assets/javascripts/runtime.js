@@ -19,7 +19,7 @@
 //= require react-factories
 //= require jquery-ajax-csrf
 //= require fabric
-//= require hammerjs
+//= require hammer
 //= require eventemitter2
 //= require drawing-tool
 //= require jquery_ujs
