@@ -61,6 +61,7 @@ interface IInteractiveRunStateResponse {
   page_name: string;
   activity_name: string;
   metadata: string;
+  external_report_url: string;
 }
 
 const safeJSONParse = (obj: any) => {
@@ -92,7 +93,9 @@ const interactiveStateProps = (data: IInteractiveRunStateResponse | null): IInte
 
   pageNumber: (data != null ? data.page_number : undefined),
   pageName: (data != null ? data.page_name : undefined),
-  activityName: (data != null ? data.activity_name : undefined)
+  activityName: (data != null ? data.activity_name : undefined),
+
+  externalReportUrl: (data != null ? data.external_report_url : undefined)
 });
 
 type SuccessCallback = () => void;
