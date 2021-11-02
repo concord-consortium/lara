@@ -117,4 +117,4 @@ gem "spreadsheet", "~> 1.0"
 gem "nokogiri", ">= 1.8.5"
 gem "rack-cors","~> 0.4.1", :require => 'rack/cors'
 gem "test-unit", "~> 3.0"
-gem 'rack-secure_samesite_cookies', {:git => 'git://github.com/concord-consortium/secure-samesite-cookies', :tag => 'v1.0.2'}
+gem 'rack-secure_samesite_cookies', {:git => 'https://github.com/concord-consortium/secure-samesite-cookies.git', :tag => 'v1.0.2'}
