@@ -176,6 +176,7 @@ export type APISectionCopyF = (args: {pageId: PageId, sectionId: SectionId}) => 
 export type APIPageItemCreateF = (args: {pageId: PageId, newPageItem: ICreatePageItem}) => Promise<ISectionItem>;
 export type APIPageItemDeleteF = (args: {pageId: PageId, pageItemId: ItemId}) => Promise<IPage>;
 export type APIPageItemUpdateF = (args: {pageId: PageId, sectionItem: ISectionItem}) => Promise<ISectionItem>;
+export type APIPageItemCopyF = (args: {pageId: PageId, sectionItemId: ItemId}) => Promise<ISectionItem>;
 
 /**
  * The implementation providing the API has to conform to this provider API
@@ -194,6 +195,7 @@ export interface IAuthoringAPIProvider {
   createPageItem: APIPageItemCreateF;
   deletePageItem: APIPageItemDeleteF;
   updatePageItem: APIPageItemUpdateF;
+  copyPageItem: APIPageItemCopyF;
 
   getLibraryInteractives: () => Promise<{libraryInteractives: ILibraryInteractive[]}>;
   getAllEmbeddables: () => Promise<{allEmbeddables: ISectionItemType[]}>;

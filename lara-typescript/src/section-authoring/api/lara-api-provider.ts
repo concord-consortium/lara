@@ -11,7 +11,8 @@ import {
   APIPageItemDeleteF,
   ISectionItem,
   APISectionCopyF,
-  SectionId
+  SectionId,
+  APIPageItemCopyF
 } from "./api-types";
 
 const APIBase = "/api/v1";
@@ -34,6 +35,7 @@ export const getLaraAuthoringAPI =
   const createPageItemUrl = (pageId: PageId) => `${prefix}/create_page_item/${pageId}.json`;
   const updatePageItemUrl = (pageId: PageId) => `${prefix}/update_page_item/${pageId}.json`;
   const deletePageItemUrl = (pageId: PageId) => `${prefix}/delete_page_item/${pageId}.json`;
+  const copyPageItemUrl = (pageId: PageId) => `${prefix}/copy_page_item/${pageId}.json`;
   const libraryInteractivesUrl = `${prefix}/get_library_interactives_list.json`;
 
   interface ISendToLaraParams {
@@ -116,6 +118,12 @@ export const getLaraAuthoringAPI =
     return sendToLara({url: deletePageItemUrl(pageId), method: "POST", body});
   };
 
+  const copyPageItem: APIPageItemCopyF = (args: {pageId: PageId, sectionItemId: ItemId}) => {
+    const { pageId, sectionItemId } = args;
+    const body = { page_item_id: sectionItemId };
+    return sendToLara({url: copyPageItemUrl(pageId), method: "POST", body});
+  };
+
   const getLibraryInteractives = () => {
     return sendToLara({url: libraryInteractivesUrl})
       // tslint:disable-next-line
@@ -157,7 +165,7 @@ export const getLaraAuthoringAPI =
   return {
     getPages, getPage, createPage, deletePage,
     createSection, updateSections, updateSection, copySection,
-    createPageItem, updatePageItem, deletePageItem,
+    createPageItem, updatePageItem, deletePageItem, copyPageItem,
     getAllEmbeddables, getLibraryInteractives,
     pathToTinyMCE: "/assets/tinymce.js", pathToTinyMCECSS: "/assets/tinymce-content.css"
   };

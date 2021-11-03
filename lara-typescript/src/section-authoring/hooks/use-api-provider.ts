@@ -81,6 +81,16 @@ export const usePageAPI = () => {
     }
   };
 
+  const copyPageItemMutation = useMutation
+    <ISectionItem, Error, {pageId: PageId, sectionItemId: SectionId}>(provider.copyPageItem, mutationsOpts);
+
+  const copyPageItem = (sectionItemId: ItemId) => {
+    if (getPages.data) {
+      const page = getPages.data[userInterface.currentPageIndex];
+      copyPageItemMutation.mutate({pageId: page.id, sectionItemId});
+    }
+  };
+
   const getAllEmbeddables = useQuery
     <{allEmbeddables: ISectionItemType[]}, Error>
     (SECTION_ITEM_TYPES_KEY, provider.getAllEmbeddables);
@@ -208,7 +218,8 @@ export const usePageAPI = () => {
     getPages, addPageMutation, deletePageMutation,
     addSectionMutation, addSection, changeSection, updateSection, getSections,
     moveSection, updateSections, copySection,
-    addPageItem, createPageItem, updatePageItem, deletePageItem, updateSectionItems, moveItem, getItems,
+    addPageItem, createPageItem, updatePageItem, deletePageItem, copyPageItem,
+    updateSectionItems, moveItem, getItems,
     getAllEmbeddables, getLibraryInteractives, currentPage, deleteSectionFunction,
     pathToTinyMCE: provider.pathToTinyMCE, pathToTinyMCECSS: provider.pathToTinyMCECSS
   };

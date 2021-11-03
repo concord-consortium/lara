@@ -89,12 +89,12 @@ class Section < ActiveRecord::Base
         if embed.respond_to? :question_tracker and embed.question_tracker
           embed.question_tracker.add_question(emb_copy)
         end
-        new_section.page_items.create!(
+        new_item = new_section.page_items.create!(
           embeddable: emb_copy,
           position: item.position,
           column: item.column
         )
-        # interactive_page.add_embeddable(copy, nil, new_section)
+        new_item.move_lower
       end
 
       # with the embeddables added link any interactive links

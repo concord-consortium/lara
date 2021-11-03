@@ -1,4 +1,4 @@
-import { findItemAddress } from "../util/finding-utils";
+import { findItemAddress, findItemByAddress } from "../util/finding-utils";
 import {
   IPage, PageId,
   APIPageGetF, APIPagesGetF, APIPageItemUpdateF,
@@ -493,10 +493,35 @@ const getLibraryInteractives = () => {
   return Promise.resolve({libraryInteractives});
 };
 
+const copyPageItem = (args: {pageId: PageId, sectionItemId: ItemId}) => {
+  const {sectionItemId, pageId} = args;
+  const page = pages.find(p => p.id === pageId);
+  let nextItem = null;
+  let destSection = null;
+  if (page) {
+    sectionLoop:
+    for (const pageSection of page.sections) {
+      for (const item of pageSection.items || []) {
+        if (item.id === sectionItemId) {
+          nextItem = {...item};
+          nextItem.id = `${++itemCounter}`;
+          destSection = pageSection;
+          break sectionLoop;
+        }
+      }
+    }
+    if (nextItem && destSection) {
+      (destSection.items || []).push(nextItem);
+      return Promise.resolve(nextItem);
+    }
+  }
+  return Promise.reject(`cant find page:${pageId}, item: ${sectionItemId}`);
+};
+
 export const API: IAuthoringAPIProvider = {
   getPages, getPage, createPage, deletePage,
   createSection, updateSections, updateSection, copySection,
-  createPageItem, updatePageItem, deletePageItem,
+  createPageItem, updatePageItem, deletePageItem, copyPageItem,
   getAllEmbeddables, getLibraryInteractives,
   pathToTinyMCE: "https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.10.0/tinymce.min.js", pathToTinyMCECSS: undefined
 };

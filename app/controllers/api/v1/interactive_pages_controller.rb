@@ -92,6 +92,16 @@ class Api::V1::InteractivePagesController < API::APIController
     render_page_sections_json
   end
 
+  def copy_page_item
+    authorize! :update, @interactive_page
+    item_id = params['page_item_id']
+    return error("Missing page_item_id parameter") if item_id.nil?
+
+    item = @interactive_page.page_items.find { |i| i.id == item_id.to_i }
+    duplicate = item.duplicate
+    render json:  generate_item_json(duplicate)
+  end
+
   def update_section
     authorize! :update, @interactive_page
     section_params = params['section']
@@ -303,23 +313,29 @@ class Api::V1::InteractivePagesController < API::APIController
 
   private
 
+  def generate_item_json(page_item)
+    {
+      id: page_item.id.to_s,
+      column: page_item.column,
+      position: page_item.position,
+      type: page_item.embeddable_type,
+      data: page_item.embeddable.to_hash
+      # using `to_interactive` here broke
+      # editing/saving by sending incorrect data back
+    }
+  end
+
+  def generate_section_json(section)
+    {
+      id: section.id.to_s,
+      layout: section.layout,
+      items: section.page_items.map { |pi| generate_item_json(pi) }
+    }
+  end
+
   def generate_page_json(page)
-    sections = page.sections.map do |s|
-      {
-        id: s.id.to_s,
-        layout: s.layout,
-        items: s.page_items.map do |pi|
-          {
-            id: pi.id.to_s,
-            column: pi.column,
-            position: pi.position,
-            type: pi.embeddable_type,
-            data: pi.embeddable.to_hash # using pi.embeddable.to_interactive here broke editing/saving by sending unnecessary/incorrect data back
-          }
-        end
-      }
-    end
-    return {
+    sections = page.sections.map { |s| generate_section_json(s) }
+    {
       id: page.id,
       title: page.name,
       sections: sections

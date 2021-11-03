@@ -56,4 +56,44 @@ describe PageItem do
     expect(LinkedPageItem.where(id: primary_ids).length).to eq 0
   end
 
+  describe 'duplicate' do
+    let(:page_item) { page.page_items.first }
+    describe 'on a page' do
+      it 'should create a new pageItem' do
+        expect(page.page_items.length).to eq 4
+        first_page_item = page.page_items.first
+        first_page_item.duplicate
+        page.reload
+        expect(page.page_items.length).to eq 5
+
+        # Each embeddable should have its own uniq id:
+        embed_ids = page.page_items.map(&:embeddable_id)
+        expect(embed_ids.uniq.length).to eq 5
+
+        # Each embeddable should have its own uniq position
+        embed_positions = page.page_items.map(&:position)
+        expect(embed_positions.uniq.length).to eq 5
+      end
+    end
+
+    describe "it copies the embeddables associations" do
+      let(:helper) { spy('helper') }
+      let(:embeddable) { Embeddable::OpenResponse.new }
+      before(:each) do
+        helper.stub(:get_copy) { embeddable }
+        page_item.stub(:embeddable) { embeddable }
+        embeddable.stub(:embeddable=) { true }
+        embeddable.stub(:embeddable) { true }
+        embeddable.stub(:interactive=) { true }
+        embeddable.stub(:interactive) { true }
+        embeddable.stub(:linked_interactive=) { true }
+        embeddable.stub(:linked_interactive) { true }
+      end
+
+      it "it calls `get_copy` for all of the associations" do
+        page_item.duplicate(helper)
+        expect(helper).to have_received(:get_copy).at_least(4).times
+      end
+    end
+  end
 end
