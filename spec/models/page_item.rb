@@ -56,4 +56,22 @@ describe PageItem do
     expect(LinkedPageItem.where(id: primary_ids).length).to eq 0
   end
 
+  describe 'duplicate' do
+    it 'should create a new pageItem' do
+      expect(page.page_items.length).to eq 4
+      first_page_item = page.page_items.first
+      first_page_item.duplicate
+      page.reload
+      expect(page.page_items.length).to eq 5
+
+      # Each embeddable shouve have its own uniq id:
+      embed_ids = page.page_items.map(&:embeddable_id)
+      expect(embed_ids.uniq.length).to eq 5
+
+      # Each embeddable shouve have its own uniq position
+      embed_positions = page.page_items.map(&:position)
+      expect(embed_positions.uniq.length).to eq 5
+
+    end
+  end
 end
