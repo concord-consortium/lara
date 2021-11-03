@@ -17,7 +17,7 @@ export const ManagedInteractivePreview: React.FC<IManagedInteractivePreviewProps
     aspectRatio, aspectRatioMethod, authoredState, customAspectRatioMethod,
     id, interactiveItemId, isFullWidth, name, libraryInteractiveId,
     linkedInteractives, urlFragment
-   } = pageItem.data as any;
+   } = pageItem.data as any; // TODO: Add typing for pageItem.data
   const { getLibraryInteractives } = usePageAPI();
 
   if (!authoredState) {
