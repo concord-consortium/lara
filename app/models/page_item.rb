@@ -37,10 +37,12 @@ class PageItem < ActiveRecord::Base
     if embeddable.respond_to? :question_tracker and embeddable.question_tracker
       embeddable.question_tracker.add_question(emb_copy)
     end
-    next_section.page_items.create!(
+    next_item = next_section.page_items.create!(
       embeddable: emb_copy,
       position: position,
       column: column
     )
+    next_item.move_lower
+    next_item
   end
 end

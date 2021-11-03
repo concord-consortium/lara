@@ -643,8 +643,64 @@ end
           end
         end
       end
+    end
+
+
+    describe "#copy_page_item" do
+      let(:section) { FactoryGirl.create(:section, :with_items, :interactive_page => page, :layout => Section::LAYOUT_FULL_WIDTH) }
+      let(:original_item) { section.page_items[0] }
+      let(:number_of_items) { section.page_items.length }
+      let(:page_id) { page.id }
+      let(:page_item_id) { original_item.id }
+
+      before :each do
+        sign_in author
+      end
+
+      describe "success" do
+        it 'creates a copy with copies of the same items' do
+          xhr :post, 'copy_page_item', { id: page_id, page_item_id: page_item_id }
+          expect(response.status).to eq(200)
+          section.reload
+          puts response.body
+          # expect(section.page_items.length).to eq(number_of_items+1)
+          copied_item = JSON.parse(response.body, object_class:OpenStruct)
+          puts copied_item
+          expect(copied_item.column).to eq(original_item.column)
+          expect(copied_item.type).to eq(original_item.embeddable_type)
+          expect(copied_item.data.prompt).to eq(original_item.embeddable.prompt)
+          expect(copied_item.id).not_to eq(original_item.id)
+          expect(copied_item.position).not_to eq(original_item.position)
+        end
+      end
+
+      describe 'failure' do
+        it 'fails without a page param' do
+          xhr :post, 'copy_page_item',  { page_item_id: page_item_id }
+          expect(response.status).to eq(200)
+          expect(JSON.parse(response.body)).to include( {'success' => false })
+        end
+
+        it 'fails when we dont specify a page_item' do
+          xhr :post, 'copy_page_item',  { id: page_id  }
+          expect(response.status).to eq(500)
+          expect(response.body).to match(/Missing page_item_id/)
+        end
+
+        describe 'when we arent the author' do
+          before(:each) do
+            sign_out author
+          end
+          it 'fails with not authorized' do
+            xhr :post, 'copy_page_item',  { id: page_id, page_item_id: page_item_id }
+            expect(response.status).to eq(403)
+            expect(response.body).to match(/not authorized/i)
+          end
+        end
+      end
 
     end
+
 
     describe 'deleting items' do
       let(:item_to_delete) { items.last }
