@@ -3,6 +3,7 @@ import { usePageAPI } from "../hooks/use-api-provider";
 import { GripLines } from "../../shared/components/icons/grip-lines";
 import { UserInterfaceContext } from "../containers/user-interface-provider";
 import { TextBlockPreview } from "./text-block-preview";
+import { ManagedInteractivePreview } from "./managed-interactive-preview";
 
 import "./section-item.scss";
 
@@ -38,10 +39,6 @@ export interface ISectionItemProps {
    */
   position?: number;
 
-  /**
-   * Name of the section will be displayed in the header
-   */
-  title?: string;
 }
 
 /**
@@ -52,8 +49,7 @@ export const SectionItem: React.FC<ISectionItemProps> = ({
   copyFunction,
   deleteFunction,
   type,
-  position,
-  title
+  position
   }: ISectionItemProps) => {
 
   const api = usePageAPI();
@@ -64,7 +60,7 @@ export const SectionItem: React.FC<ISectionItemProps> = ({
 
   const renderTitle = () => (
     <>
-      {(title || "").length > 0 ? title : <i>Untitled</i>}
+      {(pageItem?.data.name || "").length > 0 ? pageItem?.data.name : <em>Untitled</em>}
     </>
   );
 
@@ -93,6 +89,9 @@ export const SectionItem: React.FC<ISectionItemProps> = ({
       case "Embeddable::Xhtml":
         return <TextBlockPreview pageItem={pageItem} />;
         break;
+      case "ManagedInteractive":
+        return <ManagedInteractivePreview pageItem={pageItem} />;
+        break;
       default:
         return (
           <div className="previewNotSupported">
@@ -107,7 +106,7 @@ export const SectionItem: React.FC<ISectionItemProps> = ({
       <header className="sectionItemMenu">
         <div className="menuStart">
           <GripLines />
-          <h4>{id} - {title} - {renderTitle()}</h4>
+          <h4>{id} - {renderTitle()}</h4>
         </div>
         <div className="menuEnd">
           <ul>

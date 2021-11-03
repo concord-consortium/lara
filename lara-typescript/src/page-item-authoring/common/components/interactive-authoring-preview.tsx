@@ -22,7 +22,7 @@ export interface IPreviewUser {
 
 interface Props {
   interactive: IPreviewInteractive;
-  user: IPreviewUser;
+  user?: IPreviewUser;
 }
 
 export const InteractiveAuthoringPreview: React.FC<Props> = ({interactive, user}) => {
@@ -56,9 +56,9 @@ export const InteractiveAuthoringPreview: React.FC<Props> = ({interactive, user}
       name: interactive.name
     },
     authInfo: {
-      provider: user.authProvider as any,
-      loggedIn: user.loggedIn,
-      email: user.email as any
+      provider: user!.authProvider as any,
+      loggedIn: user!.loggedIn,
+      email: user!.email as any
     },
     linkedInteractives,
     themeInfo: {            // TODO: add theme colors (future story)
@@ -81,4 +81,12 @@ export const InteractiveAuthoringPreview: React.FC<Props> = ({interactive, user}
       />
     </div>
   );
+};
+
+InteractiveAuthoringPreview.defaultProps = {
+  user: {
+    authProvider: null,
+    loggedIn: false,
+    email: "anonymous@concord.org"
+  }
 };

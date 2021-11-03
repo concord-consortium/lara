@@ -71,16 +71,20 @@ export const InteractiveIframe: React.FC<Props> = (props) => {
   const handleGetInteractiveList = (request: LaraInteractiveApi.IGetInteractiveListRequest, url: string) => {
     const {requestId, scope, supportsSnapshots} = request;
 
-    return $.ajax({
-      type: "GET",
-      url,
-      data: {scope, supportsSnapshots},
-      success: (data: {interactives: IInteractiveListResponseItem[]}) => {
-        phone.post("interactiveList", {requestId, interactives: data.interactives});
+    return fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-type": "application/json"
       },
-      error: (jqxhr, status, error) => {
-        phone.post("interactiveList", {requestId, response_type: "ERROR", message: error});
-      }});
+      body: JSON.stringify({scope, supportsSnapshots})
+    })
+    .then(response => response.json())
+    .then((data: {interactives: IInteractiveListResponseItem[]}) => {
+      phone.post("interactiveList", {requestId, interactives: data.interactives});
+    })
+    .catch((error) => {
+      phone.post("interactiveList", {requestId, response_type: "ERROR", message: error});
+    });
   };
 
   const handleGetFirebaseJwt = (request?: IGetFirebaseJwtRequestOptionalRequestId) => {
@@ -97,17 +101,20 @@ export const InteractiveIframe: React.FC<Props> = (props) => {
       return baseResponse;
     };
 
-    // TODO: after typescript upgrade remove `requestId: requestId!, `
-    return $.ajax({
-      type: "POST",
-      url: "/api/v1/get_firebase_jwt",
-      data: opts,
-      success: (data: {token: string}) => {
-        phone.post("firebaseJWT", createResponse({requestId: requestId!, token: data.token}));
+    return fetch("/api/v1/get_firebase_jwt", {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json"
       },
-      error: (jqxhr, status, error) => {
-        phone.post("firebaseJWT", createResponse({requestId: requestId!, response_type: "ERROR", message: error}));
-    }});
+      body: JSON.stringify({opts})
+    })
+    .then(response => response.json())
+    .then((data: {token: string}) => {
+      phone.post("firebaseJWT", createResponse({requestId: requestId!, token: data.token}));
+    })
+    .catch((error) => {
+      phone.post("firebaseJWT", createResponse({requestId: requestId!, response_type: "ERROR", message: error}));
+    });
   };
 
   const [iframeId, setIFrameId] = useState<number>(0);
