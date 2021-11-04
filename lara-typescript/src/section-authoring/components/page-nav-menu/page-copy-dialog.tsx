@@ -1,9 +1,9 @@
 import * as React from "react";
 import { useState } from "react";
-import { Modal, ModalButtons } from "../../shared/components/modal/modal";
-import { Add } from "../../shared/components/icons/add-icon";
-import { Close } from "../../shared/components/icons/close-icon";
-import { IPage } from "../../section-authoring/api/api-types";
+import { Modal, ModalButtons } from "../../../shared/components/modal/modal";
+import { Add } from "../../../shared/components/icons/add-icon";
+import { Close } from "../../../shared/components/icons/close-icon";
+import { IPage } from "../../api/api-types";
 
 import "./page-copy-dialog.scss";
 
@@ -42,11 +42,11 @@ export const PageCopyDialog: React.FC<IPageCopyDialogProps> = ({
   };
 
   const handleCopyPage = () => {
-    if (currentPageIndex) {
+    if (currentPageIndex != null && currentPageIndex > -1) {
       const copiedPageId = pages[currentPageIndex].id;
       copyPageFunction(copiedPageId, selectedPosition, selectedOtherPageId);
-      closeDialogFunction();
     }
+    closeDialogFunction();
   };
 
   const pageOptions = () => {

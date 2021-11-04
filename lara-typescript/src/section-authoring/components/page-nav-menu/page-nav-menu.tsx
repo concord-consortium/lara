@@ -1,38 +1,42 @@
 import * as React from "react";
-import { useState, useEffect } from "react";
 import classNames from "classnames";
-import { ISectionProps } from "../../section-authoring/components/authoring-section";
 import { PageCopyDialog } from "./page-copy-dialog";
-import { Previous } from "../../shared/components/icons/previous-icon";
-import { Home } from "../../shared/components/icons/home-icon";
-import { Next } from "../../shared/components/icons/next-icon";
-import { Completion } from "../../shared/components/icons/completion-icon";
-import { Add } from "../../shared/components/icons/add-icon";
-import { Copy } from "../../shared/components/icons/copy-icon";
-import { IPage } from "../../section-authoring/api/api-types";
+import { Previous } from "../../../shared/components/icons/previous-icon";
+import { Home } from "../../../shared/components/icons/home-icon";
+import { Next } from "../../../shared/components/icons/next-icon";
+import { Completion } from "../../../shared/components/icons/completion-icon";
+import { Add } from "../../../shared/components/icons/add-icon";
+import { Copy } from "../../../shared/components/icons/copy-icon";
+import { IPage, PageId } from "../../api/api-types";
 
 import "./page-nav-menu.scss";
 
 export interface IPageNavMenuProps {
   pages: IPage[];
-  currentPageIndex: number | null;
+  currentPageId: PageId | null;
   copyingPage: boolean;
+  setCurrentPageId: (id: PageId) => void;
+  addPage: () => void;
+  copyPage: (id: PageId) => void;
+  deletePage: () => void;
+  showCopyDialog: () => void;
+  hideCopyDialog: () => void;
 }
 
 export const PageNavMenu: React.FC<IPageNavMenuProps> = ({
-  pages: initPages = [],
-  currentPageIndex: initCurrentPage = 0,
-  copyingPage: initCopyingPage = false
+  pages,
+  currentPageId,
+  copyingPage,
+  addPage,
+  copyPage,
+  setCurrentPageId,
+  deletePage,
+  showCopyDialog,
+  hideCopyDialog
   }: IPageNavMenuProps) => {
 
-  const [currentPageIndex, setCurrentPageIndex] = useState(initCurrentPage);
-  const [pages, setPages] = useState([...initPages]);
-  const [copyingPage, setCopyingPage] = useState(initCopyingPage);
-
-  useEffect(() => {
-    setPages(initPages);
-  }, [initPages]);
-
+  const currentPageIndex = pages.findIndex(p => p.id === currentPageId);
+  const currentPage = pages[currentPageIndex];
   const pageButtons = () => {
     const buttons = pages.map((p, index) => {
       const pageNumber = index + 1;
@@ -56,50 +60,21 @@ export const PageNavMenu: React.FC<IPageNavMenuProps> = ({
 
   const handleNavButtonClick = (pageNum: number | null) => {
     const allowNavigation = pageNum !== pages.length;
-    if (allowNavigation) {
-      setCurrentPageIndex(pageNum);
+    if (pageNum == null) { return; }
+    const outsideIndex = pageNum < 0 || pageNum + 1 > pages.length;
+    if (!outsideIndex) {
+      console.log(`Set current Page for index: ${pageNum}`);
+      console.log(`Set current PageId to : ${pages[pageNum].id}`);
+      setCurrentPageId(pages[pageNum].id);
     }
   };
 
   const handleAddPageButtonClick = () => {
-    const newPageNum = (pages.length + 1).toString();
-    const id = newPageNum;
-    const title = `Page ${newPageNum}`;
-    const sections: ISectionProps[] = [];
-    const pageIndex = pages.length;
-    addPage(id, title, sections, pageIndex);
+    addPage();
   };
 
   const handleCopyPageButtonClick = () => {
-    toggleCopyPageDialog();
-  };
-
-  const addPage = (id: string, title: string, sections: ISectionProps[], pageIndex: number) => {
-    const newPage = {
-      id,
-      title,
-      sections,
-      is_completion: false
-    };
-    pages.splice(pageIndex, 0, newPage);
-    setPages([...pages]);
-    setCurrentPageIndex(pageIndex);
-  };
-
-  const toggleCopyPageDialog = () => {
-    setCopyingPage(!copyingPage);
-  };
-
-  const copyPage = (pageId: string, position: string, otherPageId: string) => {
-    const copiedPage = pages.find(i => i.id === pageId);
-    const otherPageIndex = pages.findIndex(i => i.id === otherPageId);
-    const newPageIndex = position === "before" ? otherPageIndex : otherPageIndex + 1;
-    const newPageNum = (pages.length + 1).toString();
-    const id = newPageNum;
-    const title = copiedPage?.title ? copiedPage.title : `Page ${newPageNum}`;
-    const sections: ISectionProps[] = [];
-    addPage(id, title, sections, newPageIndex);
-    toggleCopyPageDialog();
+    showCopyDialog();
   };
 
   const prevPage = currentPageIndex && currentPageIndex > 0 ? currentPageIndex - 1 : null;
@@ -107,7 +82,7 @@ export const PageNavMenu: React.FC<IPageNavMenuProps> = ({
                      ? 0
                      : currentPageIndex < pages.length - 1
                        ? currentPageIndex + 1 : pages.length - 1;
-  const currentPageIsCopyable = currentPageIndex !== null && !pages[currentPageIndex].isCompletion;
+  const currentPageIsCopyable = currentPageIndex !== null && !currentPage?.isCompletion;
   const prevPageClassName = `page-button ${currentPageIndex === null ? "disabled " : ""}`;
   const prevClickHandler = () => handleNavButtonClick(prevPage);
   const nextPageClassName = `page-button ${currentPageIndex === pages.length - 1 ? "disabled" : ""}`;
@@ -160,7 +135,7 @@ export const PageNavMenu: React.FC<IPageNavMenuProps> = ({
           pages={pages}
           currentPageIndex={currentPageIndex}
           copyPageFunction={copyPage}
-          closeDialogFunction={toggleCopyPageDialog} />}
+          closeDialogFunction={hideCopyDialog} />}
     </>
   );
 };
