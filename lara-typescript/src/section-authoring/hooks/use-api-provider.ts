@@ -30,6 +30,16 @@ export const usePageAPI = () => {
   const provider: IAuthoringAPIProvider = useContext(APIContext);
   const client = useQueryClient(); // Get the context from our container.
 
+  const getPages = useQuery<IPage[], Error>(PAGES_CACHE_KEY, provider.getPages);
+  const getPage =  () => {
+    if (getPages.data) {
+      return getPages.data[userInterface.currentPageIndex];
+    }
+    return null;
+  };
+
+  const currentPage = getPage();
+
   const mutationsOpts = {
     onSuccess: () => client.invalidateQueries(PAGES_CACHE_KEY)
   };
@@ -42,7 +52,6 @@ export const usePageAPI = () => {
   };
 
   // Pages:
-  const getPages = useQuery<IPage[], Error>(PAGES_CACHE_KEY, provider.getPages);
   const addPageMutation = useMutation<IPage, Error>(provider.createPage, mutationsOpts);
   const deletePageMutation = useMutation<IPage[], Error, string>(provider.deletePage, mutationsOpts);
 
@@ -99,12 +108,6 @@ export const usePageAPI = () => {
     <{libraryInteractives: ILibraryInteractive[]}, Error>
     (LIBRARY_INTERACTIVES_KEY, provider.getLibraryInteractives);
 
-  const getPage =  () => {
-    if (getPages.data) {
-      return getPages.data[userInterface.currentPageIndex];
-    }
-    return null;
-  };
 
   const getSections = () => {
     const page = getPage();
@@ -146,8 +149,6 @@ export const usePageAPI = () => {
       updateSection.mutate({pageId: page.id, changes: {section}});
     }
   };
-
-  const currentPage = getPage();
 
   const moveSection = (sectionId: string, destination: ISectionDestination) => {
     if (currentPage) {
