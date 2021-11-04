@@ -163,8 +163,6 @@ const copyPage = (pageId: PageId) => {
     });
   }
   pages.splice(pageIndex, 0, nextPage);
-  console.log(`copy page ${pageId}`);
-  console.dir(nextPage);
   return Promise.resolve(nextPage);
 };
 

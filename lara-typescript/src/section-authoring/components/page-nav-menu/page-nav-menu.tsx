@@ -63,8 +63,6 @@ export const PageNavMenu: React.FC<IPageNavMenuProps> = ({
     if (pageNum == null) { return; }
     const outsideIndex = pageNum < 0 || pageNum + 1 > pages.length;
     if (!outsideIndex) {
-      console.log(`Set current Page for index: ${pageNum}`);
-      console.log(`Set current PageId to : ${pages[pageNum].id}`);
       setCurrentPageId(pages[pageNum].id);
     }
   };
