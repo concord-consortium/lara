@@ -26,6 +26,9 @@ export const changeLayout = (args: IChangeLayoutSignature) => {
     // All items get placed in secondary column.
     // Items from the former primary column are listed first.
     const primaryItems = section.items?.filter(i => i.column === SectionColumns.PRIMARY);
+    primaryItems?.forEach((item: ISectionItem, index: number) => {
+      item.position = index + 1;
+    });
     section.items?.forEach((item: ISectionItem, index: number) => {
       if (primaryItems && item.column === SectionColumns.SECONDARY) {
         item.position = item.position ? primaryItems.length + item.position : primaryItems.length + index + 1;
