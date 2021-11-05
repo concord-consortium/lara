@@ -179,7 +179,6 @@ export type APIPageItemDeleteF = (args: {pageId: PageId, pageItemId: ItemId}) =>
 export type APIPageItemUpdateF = (args: {pageId: PageId, sectionItem: ISectionItem}) => Promise<ISectionItem>;
 export type APIPageItemCopyF = (args: {pageId: PageId, sectionItemId: ItemId}) => Promise<ISectionItem>;
 
-
 /**
  * The implementation providing the API has to conform to this provider API
  */

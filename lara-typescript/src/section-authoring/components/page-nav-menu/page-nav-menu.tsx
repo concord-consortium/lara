@@ -59,7 +59,6 @@ export const PageNavMenu: React.FC<IPageNavMenuProps> = ({
   };
 
   const handleNavButtonClick = (pageNum: number | null) => {
-    const allowNavigation = pageNum !== pages.length;
     if (pageNum == null) { return; }
     const outsideIndex = pageNum < 0 || pageNum + 1 > pages.length;
     if (!outsideIndex) {
