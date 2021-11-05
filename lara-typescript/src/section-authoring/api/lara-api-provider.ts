@@ -12,7 +12,8 @@ import {
   ISectionItem,
   APISectionCopyF,
   SectionId,
-  APIPageItemCopyF
+  APIPageItemCopyF,
+  APIPageCopyF
 } from "./api-types";
 
 const APIBase = "/api/v1";
@@ -27,6 +28,8 @@ export const getLaraAuthoringAPI =
   const getPageUrl = (pageId: PageId) => `${prefix}/get_page/${pageId}.json`;
   const createPageUrl = `${prefix}/create_page/${activityId}.json`;
   const deletePageUrl = (pageId: PageId) => `${prefix}/delete_page/${pageId}.json`;
+  const copyPageUrl = (pageId: PageId) => `${prefix}/copy_page/${pageId}.json`;
+
   const pageSectionsUrl = (pageId: PageId) => `${prefix}/get_page_sections/${pageId}.json`;
   const updatePageSectionsURL = (pageId: PageId) => `${prefix}/set_page_sections/${pageId}.json`;
   const createPageSectionUrl = (pageId: PageId) => `${prefix}/create_page_section/${pageId}.json`;
@@ -76,6 +79,10 @@ export const getLaraAuthoringAPI =
 
   const deletePage: APIPageDeleteF = (id: PageId) => {
     return sendToLara({url: deletePageUrl(id), method: "POST"});
+  };
+
+  const copyPage: APIPageCopyF = (pageId: PageId) => {
+    return sendToLara({url: copyPageUrl(pageId), method: "POST"});
   };
 
   const createSection: APISectionCreateF = (id: PageId) => {
@@ -163,7 +170,7 @@ export const getLaraAuthoringAPI =
   };
 
   return {
-    getPages, getPage, createPage, deletePage,
+    getPages, getPage, createPage, deletePage, copyPage,
     createSection, updateSections, updateSection, copySection,
     createPageItem, updatePageItem, deletePageItem, copyPageItem,
     getAllEmbeddables, getLibraryInteractives,

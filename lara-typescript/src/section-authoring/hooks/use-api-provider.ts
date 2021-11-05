@@ -30,6 +30,20 @@ export const usePageAPI = () => {
   const provider: IAuthoringAPIProvider = useContext(APIContext);
   const client = useQueryClient(); // Get the context from our container.
 
+  const getPages = useQuery<IPage[], Error>(PAGES_CACHE_KEY, provider.getPages);
+
+  const getPage =  () => {
+    const pages = getPages.data;
+    if (pages && pages.length > -1) {
+      if (userInterface.currentPageId == null) {
+        actions.setCurrentPageId(getPages.data[0].id);
+      }
+      return getPages.data.find( (p: IPage) => p.id === userInterface.currentPageId);
+    }
+    return null;
+  };
+
+  const currentPage = getPage();
   const mutationsOpts = {
     onSuccess: () => client.invalidateQueries(PAGES_CACHE_KEY)
   };
@@ -42,9 +56,9 @@ export const usePageAPI = () => {
   };
 
   // Pages:
-  const getPages = useQuery<IPage[], Error>(PAGES_CACHE_KEY, provider.getPages);
-  const addPageMutation = useMutation<IPage, Error>(provider.createPage, mutationsOpts);
-  const deletePageMutation = useMutation<IPage[], Error, string>(provider.deletePage, mutationsOpts);
+  const createPageMutation = useMutation<IPage, Error, PageId>(provider.createPage, mutationsOpts);
+  const deletePageMutation = useMutation<IPage[], Error, PageId>(provider.deletePage, mutationsOpts);
+  const copyPageMutation = useMutation<IPage, Error, PageId>(provider.copyPage, mutationsOpts);
 
   // Section Mutations:
   const addSectionMutation = useMutation<IPage, Error, string>(provider.createSection, mutationsOpts);
@@ -63,10 +77,10 @@ export const usePageAPI = () => {
   const _updatePageItem = useMutation
     <ISectionItem, Error, {pageId: string, sectionItem: ISectionItem}>
     (provider.updatePageItem, mutationsOpts);
+
   const updatePageItem = (sectionItem: ISectionItem) => {
-    if (getPages.data) {
-      const page = getPages.data[userInterface.currentPageIndex];
-      _updatePageItem.mutate({pageId: page.id, sectionItem});
+    if (getPages.data && userInterface.currentPageId) {
+      _updatePageItem.mutate({pageId: userInterface.currentPageId, sectionItem});
     }
   };
 
@@ -75,9 +89,8 @@ export const usePageAPI = () => {
     (provider.deletePageItem, mutationsOpts);
 
   const deletePageItem = (pageItemId: ItemId) => {
-    if (getPages.data) {
-      const page = getPages.data[userInterface.currentPageIndex];
-      deletePageItemMutation.mutate({pageId: page.id, pageItemId});
+    if (getPages.data && userInterface.currentPageId) {
+      deletePageItemMutation.mutate({pageId: userInterface.currentPageId, pageItemId});
     }
   };
 
@@ -85,9 +98,8 @@ export const usePageAPI = () => {
     <ISectionItem, Error, {pageId: PageId, sectionItemId: SectionId}>(provider.copyPageItem, mutationsOpts);
 
   const copyPageItem = (sectionItemId: ItemId) => {
-    if (getPages.data) {
-      const page = getPages.data[userInterface.currentPageIndex];
-      copyPageItemMutation.mutate({pageId: page.id, sectionItemId});
+    if (getPages.data && userInterface.currentPageId) {
+      copyPageItemMutation.mutate({pageId: userInterface.currentPageId, sectionItemId});
     }
   };
 
@@ -99,17 +111,9 @@ export const usePageAPI = () => {
     <{libraryInteractives: ILibraryInteractive[]}, Error>
     (LIBRARY_INTERACTIVES_KEY, provider.getLibraryInteractives);
 
-  const getPage =  () => {
-    if (getPages.data) {
-      return getPages.data[userInterface.currentPageIndex];
-    }
-    return null;
-  };
-
   const getSections = () => {
-    const page = getPage();
-    if (!page) return [];
-    return page.sections;
+    if (!currentPage) return [];
+    return currentPage.sections;
   };
 
   const getSection = (id: SectionId) => {
@@ -126,16 +130,16 @@ export const usePageAPI = () => {
   };
 
   const getItems = () => {
-    const sectionItems: ISectionItem[][] = getSections().map(s => translateItems(s.items) || []) || [];
+    const sectionItems: ISectionItem[][] = getSections().map((s) => translateItems(s.items) || []) || [];
     return [].concat.apply([], sectionItems) as ISectionItem[];
   };
 
   // After we move or delete a section item, we call updateSectionItems
   const updateSectionItems = (args: {sectionId: string, newItems: ISectionItem[], column?: SectionColumns}) => {
     const { sectionId, newItems, column } = args;
-    if (getPages.data) {
-      const page = getPages.data[userInterface.currentPageIndex];
-      const section = page.sections.find(i => i.id === sectionId);
+
+    if (currentPage) {
+      const section = currentPage.sections.find( (i: ISection) => i.id === sectionId);
       if (section === undefined) return;
       if (column && section.items) {
         const unalteredItems = section.items.filter(i => i.column !== column);
@@ -143,11 +147,9 @@ export const usePageAPI = () => {
       } else {
         section.items = newItems;
       }
-      updateSection.mutate({pageId: page.id, changes: {section}});
+      updateSection.mutate({pageId: currentPage.id, changes: {section}});
     }
   };
-
-  const currentPage = getPage();
 
   const moveSection = (sectionId: string, destination: ISectionDestination) => {
     if (currentPage) {
@@ -199,10 +201,20 @@ export const usePageAPI = () => {
     }
   };
 
-  let addSection, changeSection, addPageItem = (a: any) => {
+  let addSection, changeSection, addPageItem  = (a: any) => {
     // tslint:disable-next-line
     console.error("no page specified, cant invoke method.");
   };
+
+  let addPage = () => {
+    // tslint:disable-next-line
+    console.error("no page specified, cant invoke method.");
+  };
+
+  let copyPage = ((pageId: PageId) => {
+    // tslint:disable-next-line
+    console.error("no page specified, cant invoke method.");
+  });
 
   if (currentPage) {
     addSection = () => addSectionMutation.mutate(currentPage.id);
@@ -212,10 +224,13 @@ export const usePageAPI = () => {
 
     addPageItem = (pageItem: ICreatePageItem) =>
       createPageItem.mutate({pageId: currentPage.id, newPageItem: pageItem});
-    }
+
+    addPage = () => createPageMutation.mutate(currentPage.id);
+    copyPage = () => copyPageMutation.mutate(currentPage.id);
+  }
 
   return {
-    getPages, addPageMutation, deletePageMutation,
+    getPages, addPage, deletePageMutation, copyPage,
     addSectionMutation, addSection, changeSection, updateSection, getSections,
     moveSection, updateSections, copySection,
     addPageItem, createPageItem, updatePageItem, deletePageItem, copyPageItem,

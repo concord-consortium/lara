@@ -1,15 +1,16 @@
 import * as React from "react";
 import { useImmer } from "use-immer";
+import { PageId } from "../api/api-types";
 
 interface IUserInterface {
-  currentPageIndex: number;
+  currentPageId: PageId | null;
   movingItemId: string | false;
   movingSectionId: string | false;
   editingItemId: string | false;
 }
 
 const defaultUI: IUserInterface = {
-  currentPageIndex: 0,
+  currentPageId: null,
   movingItemId: false,
   movingSectionId: false,
   editingItemId: false
@@ -19,6 +20,7 @@ interface IUIActions {
   setMovingItemId: (id: false|string) => void;
   setMovingSectionId: (id: false|string) => void;
   setEditingItemId: (id: false|string) => void;
+  setCurrentPageId: (id: false|string) => void;
 }
 
 interface IUIContext {
@@ -34,7 +36,9 @@ export const defaultUIContext: IUIContext = {
     // tslint:disable-next-line
     setMovingSectionId: (id) => console.log(id),
     // tslint:disable-next-line
-    setEditingItemId: (id) => console.log(id)
+    setEditingItemId: (id) => console.log(id),
+    // tslint:disable-next-line
+    setCurrentPageId: (id) => console.log(id)
   }
 };
 
@@ -60,7 +64,11 @@ const UserInterfaceProvider: React.FC = ({children}) => {
     setUserInterface( (draft) => { draft.editingItemId = id; });
   };
 
-  const actions = { setMovingItemId, setMovingSectionId, setEditingItemId };
+  const setCurrentPageId = (id: string) => {
+    setUserInterface( (draft) => {draft.currentPageId = id; });
+  };
+
+  const actions = { setMovingItemId, setMovingSectionId, setEditingItemId, setCurrentPageId};
   return (
     <UserInterfaceContext.Provider value={{actions, userInterface}}>
       {children}

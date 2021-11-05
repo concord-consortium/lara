@@ -143,6 +143,29 @@ export const deletePage = (id: PageId) => {
   return Promise.resolve(pages);
 };
 
+const copyPage = (pageId: PageId) => {
+  const page = pages.find(p => p.id === pageId);
+  const pageIndex = pages.findIndex(p => p.id === pageId);
+  let nextPage: IPage = {
+    id: `${++pageCounter}`,
+    title: "untitled",
+    sections: []
+  };
+  if (page) {
+    nextPage = {...page};
+    nextPage.id = `${++pageCounter}`;
+    nextPage.sections = page.sections.map( s => {
+      const items = s.items?.map(item => {
+        const id = `${++itemCounter}`;
+        return {...item, id };
+      });
+      return { ...s, items };
+    });
+  }
+  pages.splice(pageIndex, 0, nextPage);
+  return Promise.resolve(nextPage);
+};
+
 export const updatePage = (id: PageId, changes: Partial<IPage>) => {
   const indx = pages.findIndex(p => p.id === id);
   if (indx > -1) {
@@ -519,7 +542,7 @@ const copyPageItem = (args: {pageId: PageId, sectionItemId: ItemId}) => {
 };
 
 export const API: IAuthoringAPIProvider = {
-  getPages, getPage, createPage, deletePage,
+  getPages, getPage, createPage, deletePage, copyPage,
   createSection, updateSections, updateSection, copySection,
   createPageItem, updatePageItem, deletePageItem, copyPageItem,
   getAllEmbeddables, getLibraryInteractives,
