@@ -155,7 +155,9 @@ export const usePageAPI = () => {
     if (currentPage) {
       const changes = _moveSection({sectionId, destination, pages: getPages.data || []});
       if (changes) {
-        updateSectionsMutation.mutate({...changes[0]});
+        for (const change of changes) {
+          updateSectionsMutation.mutate(change);
+        }
       }
     }
     else {

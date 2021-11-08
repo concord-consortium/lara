@@ -1,6 +1,5 @@
 import * as React from "react";
 import { useState } from "react";
-import { ISectionProps } from "./authoring-section";
 import { Modal, ModalButtons } from "../../shared/components/modal/modal";
 import { Close } from "../../shared/components/icons/close-icon";
 import { Move } from "../../shared/components/icons/move-icon";
@@ -9,21 +8,33 @@ import "./section-move-dialog.scss";
 import { usePageAPI } from "../hooks/use-api-provider";
 import { UserInterfaceContext } from "../containers/user-interface-provider";
 import { ISectionDestination, RelativeLocation } from "../util/move-utils";
+import { PageId } from "../api/api-types";
 
-export interface ISectionMoveDialogProps {
-  sections: ISectionProps[];
-}
+export interface ISectionMoveDialogProps { }
 
-export const SectionMoveDialog: React.FC<ISectionMoveDialogProps> = ({sections
-  }: ISectionMoveDialogProps) => {
+export const SectionMoveDialog: React.FC<ISectionMoveDialogProps> = () => {
   const { userInterface: { movingSectionId }, actions: {setMovingSectionId}} = React.useContext(UserInterfaceContext);
-  const { moveSection, currentPage } = usePageAPI();
+  const { moveSection, currentPage, getPages } = usePageAPI();
   const [selectedOtherSectionId, setSelectedOtherSectionId] = useState("");
   const [selectedPageId, setSelectedPageId] = useState(currentPage?.id || "");
   const [selectedPosition, setSelectedPosition] = useState(RelativeLocation.After);
+  const [sections, setSections] = useState(currentPage?.sections || []);
+  let pagesForPicking: PageId[] = [];
+
+  if (getPages.data) {
+    pagesForPicking = getPages.data.map( (p, i) => p.id);
+    const pageId = currentPage?.id;
+    if (pageId && selectedPageId === "") {
+      setSections(getPages.data.find(p => p.id === pageId)?.sections || []);
+      setSelectedPageId(currentPage.id);
+    }
+  }
 
   const handlePageChange = (change: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedPageId(change.target.value);
+    if (getPages.data) {
+      setSections(getPages.data.find(p => p.id === change.target.value)?.sections || []);
+    }
   };
 
   const handlePositionChange = (change: React.ChangeEvent<HTMLSelectElement>) => {
@@ -52,17 +63,10 @@ export const SectionMoveDialog: React.FC<ISectionMoveDialogProps> = ({sections
   };
 
   const sectionOptions = () => {
-    let sectionsList: ISectionProps[] = [];
-    if (selectedPageId) {
-      const selectedSection = sections.find(s => s.id === movingSectionId);
-      if (selectedSection?.items) {
-        sectionsList = sections.filter(s => s.id !== movingSectionId);
-      }
-    }
+    const sectionsList = sections.filter(s => s.id !== movingSectionId);
     if (sectionsList.length < 1) {
       return;
     }
-
     return sectionsList?.map((s) => (
       <option key={s.id} value={`${s.id}`}>
         Section {`${s.id} ${s.title ? s.title : ""}`}
@@ -84,7 +88,11 @@ export const SectionMoveDialog: React.FC<ISectionMoveDialogProps> = ({sections
             <dt className="col1">Page</dt>
             <dd className="col1">
               <select name="page" onChange={handlePageChange}>
-                <option value="1">1</option>
+                { pagesForPicking.map( (id, index) => (
+                    <option key={id} value={id}>{index + 1}</option>
+                  ))
+                }
+
               </select>
             </dd>
             <dt className="col2">Position</dt>

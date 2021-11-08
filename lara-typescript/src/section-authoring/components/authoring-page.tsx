@@ -13,6 +13,7 @@ import { Cog } from "../../shared/components/icons/cog-icon";
 import "./authoring-page.scss";
 import { usePageAPI } from "../hooks/use-api-provider";
 import { UserInterfaceContext} from "../containers/user-interface-provider";
+import { PageNavContainer } from "../containers/page-nav-container";
 
 export interface IPageProps extends IPage {
 
@@ -165,6 +166,7 @@ export const AuthoringPage: React.FC<IPageProps> = ({
 
   return (
     <>
+      <PageNavContainer />
       <header className="editPageHeader">
         <h2>Page: {displayTitle}</h2>
         <button onClick={pageSettingsClickHandler}><Cog height="16" width="16" /> Page Settings</button>
@@ -219,7 +221,7 @@ export const AuthoringPage: React.FC<IPageProps> = ({
           closeDialogFunction={handleCloseDialog}
         />
       }
-      <SectionMoveDialog sections={sections} />
+      <SectionMoveDialog />
       <SectionItemMoveDialog />
       <ItemEditDialog />
     </>
