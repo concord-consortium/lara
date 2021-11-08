@@ -18,6 +18,7 @@
 * [expiresIn](iattachmenturlrequest.md#optional-expiresin)
 * [name](iattachmenturlrequest.md#name)
 * [operation](iattachmenturlrequest.md#operation)
+* [questionId](iattachmenturlrequest.md#optional-questionid)
 * [requestId](iattachmenturlrequest.md#requestid)
 
 ## Properties
@@ -43,6 +44,12 @@ ___
 ###  operation
 
 • **operation**: *"read" | "write"*
+
+___
+
+### `Optional` questionId
+
+• **questionId**? : *undefined | string*
 
 ___
 

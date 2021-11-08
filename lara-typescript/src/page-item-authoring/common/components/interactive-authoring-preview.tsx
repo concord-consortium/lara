@@ -12,6 +12,7 @@ export interface IPreviewInteractive {
   aspect_ratio_method: string;
   authored_state: string | object;
   linked_interactives: string | object;
+  question_id: string;
 }
 
 export interface IPreviewUser {
@@ -53,7 +54,8 @@ export const InteractiveAuthoringPreview: React.FC<Props> = ({interactive, user}
     classInfoUrl: "",
     interactive: {
       id: interactive.id,
-      name: interactive.name
+      name: interactive.name,
+      questionId: interactive.question_id
     },
     authInfo: {
       provider: user.authProvider as any,

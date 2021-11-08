@@ -484,15 +484,13 @@ ___
 
 ### `Const` getAttachmentUrl
 
-▸ **getAttachmentUrl**(`name`: string, `contentType?`: undefined | string, `expiresIn?`: undefined | number): *Promise‹string›*
+▸ **getAttachmentUrl**(`params`: GetAttachmentUrlParams): *Promise‹string›*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
-`name` | string |
-`contentType?` | undefined &#124; string |
-`expiresIn?` | undefined &#124; number |
+`params` | GetAttachmentUrlParams |
 
 **Returns:** *Promise‹string›*
 
@@ -661,13 +659,13 @@ ___
 
 ### `Const` readAttachment
 
-▸ **readAttachment**(`name`: string): *Promise‹Response›*
+▸ **readAttachment**(`params`: ReadAttachmentParams): *Promise‹Response›*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
-`name` | string |
+`params` | ReadAttachmentParams |
 
 **Returns:** *Promise‹Response›*
 

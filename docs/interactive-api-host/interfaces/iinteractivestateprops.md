@@ -71,6 +71,8 @@ ___
 
 * **name**? : *undefined | string*
 
+* **questionId**? : *undefined | string*
+
 ___
 
 ###  interactiveState

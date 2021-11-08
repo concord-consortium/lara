@@ -18,6 +18,7 @@
 * [name](iwriteattachmentrequest.md#name)
 * [operation](iwriteattachmentrequest.md#operation)
 * [options](iwriteattachmentrequest.md#optional-options)
+* [questionId](iwriteattachmentrequest.md#optional-questionid)
 * [requestId](iwriteattachmentrequest.md#requestid)
 
 ## Properties
@@ -63,6 +64,14 @@ ___
 ### `Optional` options
 
 • **options**? : *RequestInit*
+
+___
+
+### `Optional` questionId
+
+• **questionId**? : *undefined | string*
+
+*Inherited from [IAttachmentUrlRequest](iattachmenturlrequest.md).[questionId](iattachmenturlrequest.md#optional-questionid)*
 
 ___
 

@@ -45299,11 +45299,11 @@ var writeAttachment = function (params) {
     });
 };
 exports.writeAttachment = writeAttachment;
-var readAttachment = function (name) {
+var readAttachment = function (params) {
     return new Promise(function (resolve, reject) {
         // set up response listener
         var client = (0, client_1.getClient)();
-        var request = { name: name, operation: "read", requestId: client.getNextRequestId() };
+        var request = __assign(__assign({}, params), { operation: "read", requestId: client.getNextRequestId() });
         client.addListener("attachmentUrl", function (response) { return __awaiter(void 0, void 0, void 0, function () {
             var _a, e_2;
             return __generator(this, function (_b) {
@@ -45338,12 +45338,12 @@ var readAttachment = function (name) {
     });
 };
 exports.readAttachment = readAttachment;
-var getAttachmentUrl = function (name, contentType, expiresIn) {
+var getAttachmentUrl = function (params) {
     return new Promise(function (resolve, reject) {
         // set up response listener
         var client = (0, client_1.getClient)();
         var requestId = client.getNextRequestId();
-        var request = { name: name, operation: "read", contentType: contentType, expiresIn: expiresIn, requestId: requestId };
+        var request = __assign(__assign({}, params), { operation: "read", requestId: requestId });
         client.addListener("attachmentUrl", function (response) { return __awaiter(void 0, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 if (response.url) {

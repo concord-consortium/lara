@@ -47,6 +47,15 @@ class Api::V1::InteractiveRunStatesController < ApplicationController
 
   def set_interactive_run
     @interactive_run_state = InteractiveRunState.find_by_key!(params['key'])
+    if params.has_key?('question_id')
+      # find the related interactive state in the same run
+      interactive_type, interactive_id = Embeddable.parse_embeddable_id!(params['question_id'])
+      @interactive_run_state = InteractiveRunState.find_by_run_id_and_interactive_id_and_interactive_type!(
+        @interactive_run_state.run_id,
+        interactive_id,
+        interactive_type
+      )
+    end
   end
 
   def authorization_error(action)

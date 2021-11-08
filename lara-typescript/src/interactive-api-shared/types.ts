@@ -17,6 +17,7 @@ export interface IInteractiveStateProps<InteractiveState = {}> {
   interactive: {
     id?: number;
     name?: string;
+    questionId?: string;
   };
   pageNumber?: number;
   pageName?: string;
@@ -54,6 +55,7 @@ export interface IRuntimeInitInteractive<InteractiveState = {}, AuthoredState = 
   interactive: {
     id: number;
     name: string;
+    questionId: string;
   };
   authInfo: {
     provider: string;
@@ -360,6 +362,7 @@ export interface IAuthInfo {
 export interface IAttachmentUrlRequest extends IBaseRequestResponse {
   name: string;
   operation: "read" | "write";
+  questionId?: string;
   contentType?: string; // defaults to text/plain
   expiresIn?: number; // seconds
 }

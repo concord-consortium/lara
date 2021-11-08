@@ -293,6 +293,7 @@ class InteractiveRunState < ActiveRecord::Base
         interactive_state_url: interactive_state_url(protocol, host),
         interactive_id: interactive_id,
         interactive_name: interactive.name,
+        interactive_question_id: interactive.embeddable_id,
         page_number: page && page.page_number,
         page_name: page && page.name,
         activity_name: activity && activity.name,
