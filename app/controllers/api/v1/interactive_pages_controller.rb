@@ -29,6 +29,14 @@ class Api::V1::InteractivePagesController < API::APIController
   end
 
   ## Mutations
+  def copy_page
+    activity = @interactive_page.lightweight_activity
+    authorize! :update, activity
+    return error("Can't find activity #{params[:activity_id]}") unless activity
+    next_page = @interactive_page.duplicate
+    render :json => generate_page_json(next_page)
+  end
+
   def create_page
     activity = LightweightActivity.find(params[:activity_id])
     authorize! :update, activity
