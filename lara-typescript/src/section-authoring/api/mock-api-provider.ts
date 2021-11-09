@@ -7,9 +7,9 @@ import {
 } from "./api-types";
 import { IManagedInteractive } from "../../page-item-authoring/managed-interactives";
 
-let pageCounter = 0;
-let sectionCounter = 0;
-let itemCounter = 0;
+let pageCounter = 1;
+let sectionCounter = 1;
+let itemCounter = 1;
 let managedInteractiveCounter = 0;
 
 let pages: IPage[] = [
