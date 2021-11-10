@@ -15,7 +15,7 @@ export interface IInteractiveStateProps<InteractiveState = {}> {
   updatedAt?: string;
   interactiveStateUrl?: string;
   interactive: {
-    id?: number;
+    id?: string;
     name?: string;
   };
   pageNumber?: number;
@@ -52,7 +52,7 @@ export interface IRuntimeInitInteractive<InteractiveState = {}, AuthoredState = 
   collaboratorUrls: string[] | null;
   classInfoUrl: string;
   interactive: {
-    id: number;
+    id: string;
     name: string;
   };
   authInfo: {
@@ -360,6 +360,7 @@ export interface IAuthInfo {
 export interface IAttachmentUrlRequest extends IBaseRequestResponse {
   name: string;
   operation: "read" | "write";
+  interactiveId?: string;
   contentType?: string; // defaults to text/plain
   expiresIn?: number; // seconds
 }
@@ -371,6 +372,10 @@ export interface IAttachmentUrlResponse extends IBaseRequestResponse {
   url?: string;
   error?: string;
 }
+
+export type ReadAttachmentParams = Omit<IAttachmentUrlRequest, "requestId" | "operation" | "contentType" | "expiresIn">;
+export type WriteAttachmentParams = Omit<IWriteAttachmentRequest, "requestId" | "operation">;
+export type GetAttachmentUrlParams = Omit<IAttachmentUrlRequest, "requestId" | "operation">;
 
 export interface IGetAuthInfoRequest extends IBaseRequestResponse {
   // no extra options, just the requestId

@@ -16,6 +16,7 @@
 
 * [contentType](iattachmenturlrequest.md#optional-contenttype)
 * [expiresIn](iattachmenturlrequest.md#optional-expiresin)
+* [interactiveId](iattachmenturlrequest.md#optional-interactiveid)
 * [name](iattachmenturlrequest.md#name)
 * [operation](iattachmenturlrequest.md#operation)
 * [requestId](iattachmenturlrequest.md#requestid)
@@ -31,6 +32,12 @@ ___
 ### `Optional` expiresIn
 
 • **expiresIn**? : *undefined | number*
+
+___
+
+### `Optional` interactiveId
+
+• **interactiveId**? : *undefined | string*
 
 ___
 

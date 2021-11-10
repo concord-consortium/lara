@@ -145,7 +145,7 @@ ___
 
 #### Type declaration:
 
-* **id**: *number*
+* **id**: *string*
 
 * **name**: *string*
 

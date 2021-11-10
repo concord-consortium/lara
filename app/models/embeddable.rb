@@ -42,6 +42,30 @@ module Embeddable
     return nil
   end
 
+  def self.get_types
+    Types
+  end
+
+  def self.get_embeddable_class(c)
+    c.to_s.demodulize.underscore
+  end
+
+  # parses 'mw_interactive_100' to ('MwInteractive', 100)
+  def self.parse_embeddable_id!(embeddable_id)
+    match = embeddable_id.split(/^(.*)_(\d+)$/)
+    if match.length == 3
+      _, embeddable_class, id = match
+      embeddable_class = Types.find {|t| self.get_embeddable_class(t) == embeddable_class}
+      if embeddable_class
+        return embeddable_class.to_s, id.to_i
+      else
+        raise ArgumentError, 'Not a valid Embeddable class'
+      end
+    else
+      raise ArgumentError, 'Not a valid Embeddable id'
+    end
+  end
+
   def p_item
     # Some embeddables define page_item, some page_items.
     # In practice, there's always just one page, so many to many relationship isn't necessary.
@@ -92,11 +116,11 @@ module Embeddable
 
   # ID which is unique among all the embeddable types.
   def embeddable_dom_id
-    "embeddable-#{self.class.to_s.demodulize.underscore}_#{self.id}"
+    "embeddable-#{Embeddable.get_embeddable_class(self.class)}_#{self.id}"
   end
 
   # ID which is unique among all the embeddable types.
   def embeddable_id
-    "#{self.class.to_s.demodulize.underscore}_#{self.id}"
+    "#{Embeddable.get_embeddable_class(self.class)}_#{self.id}"
   end
 end

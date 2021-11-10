@@ -67,7 +67,7 @@ ___
 
 #### Type declaration:
 
-* **id**? : *undefined | number*
+* **id**? : *undefined | string*
 
 * **name**? : *undefined | string*
 

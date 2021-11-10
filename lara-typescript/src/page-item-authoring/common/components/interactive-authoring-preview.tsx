@@ -5,7 +5,7 @@ import { InteractiveIframe } from "./interactive-iframe";
 import { IInitInteractive } from "../../../interactive-api-client";
 
 export interface IPreviewInteractive {
-  id: number;
+  id: string;
   name: string;
   url: string;
   aspect_ratio: number;

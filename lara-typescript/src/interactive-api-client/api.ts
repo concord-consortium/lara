@@ -29,7 +29,10 @@ import {
   ITextDecorationHandler,
   IAttachmentUrlRequest,
   IAttachmentUrlResponse,
-  IWriteAttachmentRequest
+  IWriteAttachmentRequest,
+  WriteAttachmentParams,
+  ReadAttachmentParams,
+  GetAttachmentUrlParams
 } from "./types";
 import { getClient } from "./client";
 import { v4 as uuidv4 } from "uuid";
@@ -392,7 +395,6 @@ export const getLibraryInteractiveList = (options: IGetLibraryInteractiveListReq
   THROW_NOT_IMPLEMENTED_YET("getLibraryInteractiveList");
 };
 
-type WriteAttachmentParams = Omit<IWriteAttachmentRequest, "requestId" | "operation">;
 export const writeAttachment = (params: WriteAttachmentParams): Promise<Response> => {
   return new Promise<Response>((resolve, reject) => {
     const client = getClient();
@@ -420,11 +422,11 @@ export const writeAttachment = (params: WriteAttachmentParams): Promise<Response
   });
 };
 
-export const readAttachment = (name: string): Promise<Response> => {
+export const readAttachment = (params: ReadAttachmentParams): Promise<Response> => {
   return new Promise<Response>((resolve, reject) => {
     // set up response listener
     const client = getClient();
-    const request: IAttachmentUrlRequest = { name, operation: "read", requestId: client.getNextRequestId() };
+    const request: IAttachmentUrlRequest = { ...params, operation: "read", requestId: client.getNextRequestId() };
     client.addListener("attachmentUrl", async (response: IAttachmentUrlResponse) => {
       if (response.url) {
         try {
@@ -444,12 +446,12 @@ export const readAttachment = (name: string): Promise<Response> => {
   });
 };
 
-export const getAttachmentUrl = (name: string, contentType?: string, expiresIn?: number) => {
+export const getAttachmentUrl = (params: GetAttachmentUrlParams) => {
   return new Promise<string>((resolve, reject) => {
     // set up response listener
     const client = getClient();
     const requestId = client.getNextRequestId();
-    const request: IAttachmentUrlRequest = { name, operation: "read", contentType, expiresIn, requestId };
+    const request: IAttachmentUrlRequest = { ...params, operation: "read", requestId };
     client.addListener("attachmentUrl", async (response: IAttachmentUrlResponse) => {
       if (response.url) {
         resolve(response.url);

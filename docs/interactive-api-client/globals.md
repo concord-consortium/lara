@@ -84,6 +84,7 @@
 * [ClientMessage](globals.md#clientmessage)
 * [DeprecatedRuntimeClientMessage](globals.md#deprecatedruntimeclientmessage)
 * [DeprecatedRuntimeServerMessage](globals.md#deprecatedruntimeservermessage)
+* [GetAttachmentUrlParams](globals.md#getattachmenturlparams)
 * [GlobalIFrameSaverClientMessage](globals.md#globaliframesaverclientmessage)
 * [GlobalIFrameSaverServerMessage](globals.md#globaliframesaverservermessage)
 * [IAuthoringClientMessage](globals.md#iauthoringclientmessage)
@@ -103,7 +104,9 @@
 * [InteractiveItemId](globals.md#interactiveitemid)
 * [LoggerClientMessage](globals.md#loggerclientmessage)
 * [ModalType](globals.md#modaltype)
+* [ReadAttachmentParams](globals.md#readattachmentparams)
 * [ServerMessage](globals.md#servermessage)
+* [WriteAttachmentParams](globals.md#writeattachmentparams)
 
 ### Variables
 
@@ -180,6 +183,12 @@ ___
 ###  DeprecatedRuntimeServerMessage
 
 Ƭ **DeprecatedRuntimeServerMessage**: *"getLearnerUrl" | "loadInteractive"*
+
+___
+
+###  GetAttachmentUrlParams
+
+Ƭ **GetAttachmentUrlParams**: *Omit‹[IAttachmentUrlRequest](interfaces/iattachmenturlrequest.md), "requestId" | "operation"›*
 
 ___
 
@@ -317,9 +326,21 @@ ___
 
 ___
 
+###  ReadAttachmentParams
+
+Ƭ **ReadAttachmentParams**: *Omit‹[IAttachmentUrlRequest](interfaces/iattachmenturlrequest.md), "requestId" | "operation" | "contentType" | "expiresIn"›*
+
+___
+
 ###  ServerMessage
 
 Ƭ **ServerMessage**: *[IframePhoneServerMessage](globals.md#iframephoneservermessage) | [DeprecatedRuntimeServerMessage](globals.md#deprecatedruntimeservermessage) | [IRuntimeServerMessage](globals.md#iruntimeservermessage) | [IAuthoringServerMessage](globals.md#iauthoringservermessage) | [GlobalIFrameSaverServerMessage](globals.md#globaliframesaverservermessage)*
+
+___
+
+###  WriteAttachmentParams
+
+Ƭ **WriteAttachmentParams**: *Omit‹[IWriteAttachmentRequest](interfaces/iwriteattachmentrequest.md), "requestId" | "operation"›*
 
 ## Variables
 
@@ -484,15 +505,13 @@ ___
 
 ### `Const` getAttachmentUrl
 
-▸ **getAttachmentUrl**(`name`: string, `contentType?`: undefined | string, `expiresIn?`: undefined | number): *Promise‹string›*
+▸ **getAttachmentUrl**(`params`: [GetAttachmentUrlParams](globals.md#getattachmenturlparams)): *Promise‹string›*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
-`name` | string |
-`contentType?` | undefined &#124; string |
-`expiresIn?` | undefined &#124; number |
+`params` | [GetAttachmentUrlParams](globals.md#getattachmenturlparams) |
 
 **Returns:** *Promise‹string›*
 
@@ -661,13 +680,13 @@ ___
 
 ### `Const` readAttachment
 
-▸ **readAttachment**(`name`: string): *Promise‹Response›*
+▸ **readAttachment**(`params`: [ReadAttachmentParams](globals.md#readattachmentparams)): *Promise‹Response›*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
-`name` | string |
+`params` | [ReadAttachmentParams](globals.md#readattachmentparams) |
 
 **Returns:** *Promise‹Response›*
 
@@ -1070,12 +1089,12 @@ ___
 
 ### `Const` writeAttachment
 
-▸ **writeAttachment**(`params`: WriteAttachmentParams): *Promise‹Response›*
+▸ **writeAttachment**(`params`: [WriteAttachmentParams](globals.md#writeattachmentparams)): *Promise‹Response›*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
-`params` | WriteAttachmentParams |
+`params` | [WriteAttachmentParams](globals.md#writeattachmentparams) |
 
 **Returns:** *Promise‹Response›*

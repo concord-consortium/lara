@@ -15,6 +15,7 @@
 * [content](iwriteattachmentrequest.md#content)
 * [contentType](iwriteattachmentrequest.md#optional-contenttype)
 * [expiresIn](iwriteattachmentrequest.md#optional-expiresin)
+* [interactiveId](iwriteattachmentrequest.md#optional-interactiveid)
 * [name](iwriteattachmentrequest.md#name)
 * [operation](iwriteattachmentrequest.md#operation)
 * [options](iwriteattachmentrequest.md#optional-options)
@@ -41,6 +42,14 @@ ___
 • **expiresIn**? : *undefined | number*
 
 *Inherited from [IAttachmentUrlRequest](iattachmenturlrequest.md).[expiresIn](iattachmenturlrequest.md#optional-expiresin)*
+
+___
+
+### `Optional` interactiveId
+
+• **interactiveId**? : *undefined | string*
+
+*Inherited from [IAttachmentUrlRequest](iattachmenturlrequest.md).[interactiveId](iattachmenturlrequest.md#optional-interactiveid)*
 
 ___
 
