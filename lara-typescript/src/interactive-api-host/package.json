@@ -1,6 +1,6 @@
 {
   "name": "@concord-consortium/interactive-api-host",
-  "version": "0.5.0-pre.2",
+  "version": "0.5.0-pre.3",
   "description": "Interactive API host helpers and types",
   "main": "./index.js",
   "types": "./index-bundle.d.ts",

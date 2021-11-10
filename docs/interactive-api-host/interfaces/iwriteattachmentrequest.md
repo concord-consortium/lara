@@ -15,10 +15,10 @@
 * [content](iwriteattachmentrequest.md#content)
 * [contentType](iwriteattachmentrequest.md#optional-contenttype)
 * [expiresIn](iwriteattachmentrequest.md#optional-expiresin)
+* [interactiveId](iwriteattachmentrequest.md#optional-interactiveid)
 * [name](iwriteattachmentrequest.md#name)
 * [operation](iwriteattachmentrequest.md#operation)
 * [options](iwriteattachmentrequest.md#optional-options)
-* [questionId](iwriteattachmentrequest.md#optional-questionid)
 * [requestId](iwriteattachmentrequest.md#requestid)
 
 ## Properties
@@ -45,6 +45,14 @@ ___
 
 ___
 
+### `Optional` interactiveId
+
+• **interactiveId**? : *undefined | string*
+
+*Inherited from [IAttachmentUrlRequest](iattachmenturlrequest.md).[interactiveId](iattachmenturlrequest.md#optional-interactiveid)*
+
+___
+
 ###  name
 
 • **name**: *string*
@@ -64,14 +72,6 @@ ___
 ### `Optional` options
 
 • **options**? : *RequestInit*
-
-___
-
-### `Optional` questionId
-
-• **questionId**? : *undefined | string*
-
-*Inherited from [IAttachmentUrlRequest](iattachmenturlrequest.md).[questionId](iattachmenturlrequest.md#optional-questionid)*
 
 ___
 

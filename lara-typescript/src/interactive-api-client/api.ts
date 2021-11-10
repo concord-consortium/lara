@@ -29,7 +29,10 @@ import {
   ITextDecorationHandler,
   IAttachmentUrlRequest,
   IAttachmentUrlResponse,
-  IWriteAttachmentRequest
+  IWriteAttachmentRequest,
+  WriteAttachmentParams,
+  ReadAttachmentParams,
+  GetAttachmentUrlParams
 } from "./types";
 import { getClient } from "./client";
 import { v4 as uuidv4 } from "uuid";
@@ -392,7 +395,6 @@ export const getLibraryInteractiveList = (options: IGetLibraryInteractiveListReq
   THROW_NOT_IMPLEMENTED_YET("getLibraryInteractiveList");
 };
 
-type WriteAttachmentParams = Omit<IWriteAttachmentRequest, "requestId" | "operation">;
 export const writeAttachment = (params: WriteAttachmentParams): Promise<Response> => {
   return new Promise<Response>((resolve, reject) => {
     const client = getClient();
@@ -420,7 +422,6 @@ export const writeAttachment = (params: WriteAttachmentParams): Promise<Response
   });
 };
 
-type ReadAttachmentParams = Omit<IAttachmentUrlRequest, "requestId" | "operation" | "contentType" | "expiresIn">;
 export const readAttachment = (params: ReadAttachmentParams): Promise<Response> => {
   return new Promise<Response>((resolve, reject) => {
     // set up response listener
@@ -445,7 +446,6 @@ export const readAttachment = (params: ReadAttachmentParams): Promise<Response> 
   });
 };
 
-type GetAttachmentUrlParams = Omit<IAttachmentUrlRequest, "requestId" | "operation">;
 export const getAttachmentUrl = (params: GetAttachmentUrlParams) => {
   return new Promise<string>((resolve, reject) => {
     // set up response listener

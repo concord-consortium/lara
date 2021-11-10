@@ -16,9 +16,9 @@
 
 * [contentType](iattachmenturlrequest.md#optional-contenttype)
 * [expiresIn](iattachmenturlrequest.md#optional-expiresin)
+* [interactiveId](iattachmenturlrequest.md#optional-interactiveid)
 * [name](iattachmenturlrequest.md#name)
 * [operation](iattachmenturlrequest.md#operation)
-* [questionId](iattachmenturlrequest.md#optional-questionid)
 * [requestId](iattachmenturlrequest.md#requestid)
 
 ## Properties
@@ -35,6 +35,12 @@ ___
 
 ___
 
+### `Optional` interactiveId
+
+• **interactiveId**? : *undefined | string*
+
+___
+
 ###  name
 
 • **name**: *string*
@@ -44,12 +50,6 @@ ___
 ###  operation
 
 • **operation**: *"read" | "write"*
-
-___
-
-### `Optional` questionId
-
-• **questionId**? : *undefined | string*
 
 ___
 

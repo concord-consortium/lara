@@ -55,9 +55,8 @@ interface IInteractiveRunStateResponse {
   created_at: string;
   updated_at: string;
   interactive_state_url: string;
-  interactive_id: number;
+  interactive_id: string;
   interactive_name: string;
-  interactive_question_id: string;
   page_number: number;
   page_name: string;
   activity_name: string;
@@ -89,8 +88,7 @@ const interactiveStateProps = (data: IInteractiveRunStateResponse | null): IInte
     // as they might be obtained the other way. See "init_interactive" function which extends basic data using object
     // returned from this one. `undefined` ensures that we won"t overwrite a valid value.
     id: (data != null ? data.interactive_id : undefined),
-    name: (data != null ? data.interactive_name : undefined),
-    questionId: (data != null ? data.interactive_question_id : undefined),
+    name: (data != null ? data.interactive_name : undefined)
   },
 
   pageNumber: (data != null ? data.page_number : undefined),
@@ -137,9 +135,8 @@ export class IFrameSaver {
   private loggedIn: boolean;
   private authoredState: object | null;
   private classInfoUrl: string;
-  private interactiveId: number;
+  private interactiveId: string;
   private interactiveName: string;
-  private interactiveQuestionId: string;
   private getFirebaseJWTUrl: string;
   private runKey: string | undefined;
   private runRemoteEndpoint: string | undefined;
@@ -165,7 +162,6 @@ export class IFrameSaver {
     this.classInfoUrl = $dataDiv.data("class-info-url");
     this.interactiveId = $dataDiv.data("interactive-id");
     this.interactiveName = $dataDiv.data("interactive-name");
-    this.interactiveQuestionId = $dataDiv.data("interactive-question-id");
     this.getFirebaseJWTUrl = $dataDiv.data("get-firebase-jwt-url");
     this.runKey = $dataDiv.data("run-key");
     this.runRemoteEndpoint = $dataDiv.data("run-remote-endpoint");
@@ -380,8 +376,8 @@ export class IFrameSaver {
 
     this.addListener("getAttachmentUrl", async (request: IAttachmentUrlRequest) => {
       let answerMeta: IAnswerMetadataWithAttachmentsInfo = this.metadata || {};
-      if (request.questionId) {
-        answerMeta = await this.getLinkedAnswerMetadata(request.questionId);
+      if (request.interactiveId) {
+        answerMeta = await this.getLinkedAnswerMetadata(request.interactiveId);
       }
       const response = await handleGetAttachmentUrl({
         request,
@@ -389,7 +385,7 @@ export class IFrameSaver {
         writeOptions: {
           interactiveId: this.interactiveId.toString(),
           onAnswerMetaUpdate: newMeta => {
-            // don't allow writes over passed in questionId (for now, until it is needed and thought through...)
+            // don't allow writes over passed in interactiveId (for now, until it is needed and thought through...)
             this.saveMetadata({...(this.metadata || {}), ...newMeta});
           }
         }
@@ -408,7 +404,7 @@ export class IFrameSaver {
     });
   }
 
-  private async getLinkedAnswerMetadata(questionId: string) {
+  private async getLinkedAnswerMetadata(interactiveId: string) {
     // start with fallback to the current answer
     let answerMeta: IAnswerMetadataWithAttachmentsInfo = this.metadata || {};
     return new Promise<IAnswerMetadataWithAttachmentsInfo>((resolve) => {
@@ -416,7 +412,7 @@ export class IFrameSaver {
         url: this.interactiveRunStateUrl,
         type: "GET",
         data: {
-          question_id: questionId
+          interactive_id: interactiveId
         },
         success: (response: IInteractiveRunStateResponse) => {
           answerMeta = safeJSONParse(response.metadata);
@@ -536,8 +532,7 @@ export class IFrameSaver {
       classInfoUrl: this.classInfoUrl,
       interactive: {
         id: this.interactiveId,
-        name: this.interactiveName,
-        questionId: this.interactiveQuestionId
+        name: this.interactiveName
       },
       authInfo: {
         provider: this.authProvider,

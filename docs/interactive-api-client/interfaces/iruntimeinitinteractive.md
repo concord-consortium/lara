@@ -145,11 +145,9 @@ ___
 
 #### Type declaration:
 
-* **id**: *number*
+* **id**: *string*
 
 * **name**: *string*
-
-* **questionId**: *string*
 
 ___
 

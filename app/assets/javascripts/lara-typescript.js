@@ -41391,8 +41391,7 @@ var interactiveStateProps = function (data) {
       // as they might be obtained the other way. See "init_interactive" function which extends basic data using object
       // returned from this one. `undefined` ensures that we won"t overwrite a valid value.
       id: data != null ? data.interactive_id : undefined,
-      name: data != null ? data.interactive_name : undefined,
-      questionId: data != null ? data.interactive_question_id : undefined
+      name: data != null ? data.interactive_name : undefined
     },
     pageNumber: data != null ? data.page_number : undefined,
     pageName: data != null ? data.page_name : undefined,
@@ -41421,7 +41420,6 @@ var IFrameSaver = function () {
     this.classInfoUrl = $dataDiv.data("class-info-url");
     this.interactiveId = $dataDiv.data("interactive-id");
     this.interactiveName = $dataDiv.data("interactive-name");
-    this.interactiveQuestionId = $dataDiv.data("interactive-question-id");
     this.getFirebaseJWTUrl = $dataDiv.data("get-firebase-jwt-url");
     this.runKey = $dataDiv.data("run-key");
     this.runRemoteEndpoint = $dataDiv.data("run-remote-endpoint");
@@ -41717,12 +41715,12 @@ var IFrameSaver = function () {
           switch (_a.label) {
             case 0:
               answerMeta = this.metadata || {};
-              if (!request.questionId) return [3
+              if (!request.interactiveId) return [3
               /*break*/
               , 2];
               return [4
               /*yield*/
-              , this.getLinkedAnswerMetadata(request.questionId)];
+              , this.getLinkedAnswerMetadata(request.interactiveId)];
 
             case 1:
               answerMeta = _a.sent();
@@ -41737,7 +41735,7 @@ var IFrameSaver = function () {
                 writeOptions: {
                   interactiveId: this.interactiveId.toString(),
                   onAnswerMetaUpdate: function (newMeta) {
-                    // don't allow writes over passed in questionId (for now, until it is needed and thought through...)
+                    // don't allow writes over passed in interactiveId (for now, until it is needed and thought through...)
                     _this.saveMetadata(__assign(__assign({}, _this.metadata || {}), newMeta));
                   }
                 }
@@ -41765,7 +41763,7 @@ var IFrameSaver = function () {
     });
   };
 
-  IFrameSaver.prototype.getLinkedAnswerMetadata = function (questionId) {
+  IFrameSaver.prototype.getLinkedAnswerMetadata = function (interactiveId) {
     return __awaiter(this, void 0, void 0, function () {
       var answerMeta;
 
@@ -41780,7 +41778,7 @@ var IFrameSaver = function () {
             url: _this.interactiveRunStateUrl,
             type: "GET",
             data: {
-              question_id: questionId
+              interactive_id: interactiveId
             },
             success: function (response) {
               answerMeta = safeJSONParse(response.metadata);
@@ -41924,8 +41922,7 @@ var IFrameSaver = function () {
       classInfoUrl: this.classInfoUrl,
       interactive: {
         id: this.interactiveId,
-        name: this.interactiveName,
-        questionId: this.interactiveQuestionId
+        name: this.interactiveName
       },
       authInfo: {
         provider: this.authProvider,
@@ -42763,8 +42760,7 @@ var InteractiveAuthoringPreview = function (_a) {
     classInfoUrl: "",
     interactive: {
       id: interactive.id,
-      name: interactive.name,
-      questionId: interactive.question_id
+      name: interactive.name
     },
     authInfo: {
       provider: user.authProvider,

@@ -5,14 +5,13 @@ import { InteractiveIframe } from "./interactive-iframe";
 import { IInitInteractive } from "../../../interactive-api-client";
 
 export interface IPreviewInteractive {
-  id: number;
+  id: string;
   name: string;
   url: string;
   aspect_ratio: number;
   aspect_ratio_method: string;
   authored_state: string | object;
   linked_interactives: string | object;
-  question_id: string;
 }
 
 export interface IPreviewUser {
@@ -54,8 +53,7 @@ export const InteractiveAuthoringPreview: React.FC<Props> = ({interactive, user}
     classInfoUrl: "",
     interactive: {
       id: interactive.id,
-      name: interactive.name,
-      questionId: interactive.question_id
+      name: interactive.name
     },
     authInfo: {
       provider: user.authProvider as any,
