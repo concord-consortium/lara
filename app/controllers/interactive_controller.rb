@@ -33,4 +33,4 @@ class InteractiveController < ApplicationController
       @activity = @interactive.activity
     end
   end
-end∏
+end
