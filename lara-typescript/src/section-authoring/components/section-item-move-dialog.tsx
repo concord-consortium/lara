@@ -10,10 +10,7 @@ import { UserInterfaceContext } from "../containers/user-interface-provider";
 import "./section-item-move-dialog.scss";
 import { RelativeLocation } from "../util/move-utils";
 
-export interface ISectionItemMoveDialogProps {
-}
-
-export const SectionItemMoveDialog: React.FC<ISectionItemMoveDialogProps> = () => {
+export const SectionItemMoveDialog: React.FC = () => {
   const { moveItem, getSections, getPages, currentPage } = usePageAPI();
   const { userInterface: {movingItemId}, actions: {setMovingItemId}} = React.useContext(UserInterfaceContext);
 
