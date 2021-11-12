@@ -9,46 +9,24 @@ import { UserInterfaceContext } from "../containers/user-interface-provider";
 
 import "./section-item-move-dialog.scss";
 import { RelativeLocation } from "../util/move-utils";
+import { useDestinationChooser } from "../hooks/use-destination-chooser";
 
 export const SectionItemMoveDialog: React.FC = () => {
   const { moveItem, getSections, getPages, currentPage } = usePageAPI();
   const { userInterface: {movingItemId}, actions: {setMovingItemId}} = React.useContext(UserInterfaceContext);
-
-  const [selectedPageId, setSelectedPageId] = useState("0");
-  const [selectedSectionId, setSelectedSectionId] = useState("");
   const [selectedColumn, setSelectedColumn] = useState(SectionColumns.PRIMARY);
-  const [selectedPosition, setSelectedPosition] = useState(RelativeLocation.After);
   const [selectedOtherItemId, setSelectedOtherItemId] = useState("");
   const [modalVisibility, setModalVisibility] = useState(true);
-  const [sections, setSections] = useState(currentPage?.sections || []);
+  const {
+    sections, selectedSectionId,
+    pagesForPicking, handlePageChange, selectedPageId,
+    handlePositionChange, selectedPosition,
+    handleSectionChange
+  } = useDestinationChooser();
 
-  let pagesForPicking: PageId[] = [];
-  if (getPages.data) {
-    pagesForPicking = getPages.data.map( (p, i) => p.id);
-    const pageId = currentPage?.id;
-    if (pageId && selectedPageId === "") {
-      setSections(getPages.data.find(p => p.id === pageId)?.sections || []);
-      setSelectedPageId(currentPage.id);
-    }
-  }
-
-  const handlePageChange = (change: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedPageId(change.target.value);
-    if (getPages.data) {
-      setSections(getPages.data.find(p => p.id === change.target.value)?.sections || []);
-    }
-  };
-
-  const handleSectionChange = (change: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedSectionId(change.target.value);
-  };
 
   const handleColumnChange = (change: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedColumn(change.target.value as SectionColumns);
-  };
-
-  const handlePositionChange = (change: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedPosition(change.target.value as RelativeLocation);
   };
 
   const handleOtherItemChange = (change: React.ChangeEvent<HTMLSelectElement>) => {
