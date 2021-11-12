@@ -7,29 +7,44 @@ import { RelativeLocation } from "../util/move-utils";
 
 export const useDestinationChooser = () => {
   const { getPages, currentPage } = usePageAPI();
-  const [selectedPageId, setSelectedPageId] = React.useState("0");
+  const [selectedPageId, setSelectedPageId] = React.useState("");
   const [selectedSectionId, setSelectedSectionId] = React.useState("");
   const [sections, setSections] = React.useState(currentPage?.sections || []);
   const [selectedPosition, setSelectedPosition] = React.useState(RelativeLocation.After);
+  const [validPage, setValidPage] = React.useState(false);
+  const [validSection, setValidSection] = React.useState(false);
 
   const pagesForPicking = getPages.data ? getPages.data.map(p => p.id) : [];
 
   React.useEffect( () => {
     if (getPages.data) {
       const foundPage = getPages.data.find(p => p.id.toString() === selectedPageId);
+      if (foundPage) {
+        setValidPage(true);
+      } else {
+        setValidPage(false);
+      }
       setSections(foundPage?.sections || []);
     }
   }, [selectedPageId]);
 
   React.useEffect( () => {
-    if (currentPage) {
-      setSections(currentPage?.sections || []);
+    if (currentPage && !validPage) {
+      setSelectedPageId(currentPage.id);
     }
   }, [currentPage]);
+
+  React.useEffect( () => {
+    if (selectedSectionId.length > 0) {
+      setValidSection(true);
+    }
+  }, [selectedSectionId]);
 
   const handlePageChange = (change: React.ChangeEvent<HTMLSelectElement>) => {
     const pageId = change.target.value;
     setSelectedPageId(pageId);
+    setSelectedSectionId("");
+    setValidSection(false);
   };
 
   const handleSectionChange = (change: React.ChangeEvent<HTMLSelectElement>) => {
@@ -42,8 +57,8 @@ export const useDestinationChooser = () => {
 
   return {
     sections, selectedSectionId, selectedPageId,
-    handlePageChange, handleSectionChange,
-    handlePositionChange, selectedPosition,
+    handlePageChange, handleSectionChange, validPage,
+    handlePositionChange, selectedPosition, validSection,
     pagesForPicking
   };
 };

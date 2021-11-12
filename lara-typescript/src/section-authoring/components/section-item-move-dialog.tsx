@@ -16,12 +16,11 @@ export const SectionItemMoveDialog: React.FC = () => {
   const { userInterface: {movingItemId}, actions: {setMovingItemId}} = React.useContext(UserInterfaceContext);
   const [selectedColumn, setSelectedColumn] = useState(SectionColumns.PRIMARY);
   const [selectedOtherItemId, setSelectedOtherItemId] = useState("");
-  const [modalVisibility, setModalVisibility] = useState(true);
   const {
     sections, selectedSectionId,
-    pagesForPicking, handlePageChange, selectedPageId,
+    pagesForPicking, handlePageChange, selectedPageId, validPage,
     handlePositionChange, selectedPosition,
-    handleSectionChange
+    handleSectionChange, validSection
   } = useDestinationChooser();
 
 
@@ -88,17 +87,18 @@ export const SectionItemMoveDialog: React.FC = () => {
 
   const modalButtons = [
     {classes: "cancel", clickHandler: handleCloseDialog, disabled: false, svg: <Close height="12" width="12"/>, text: "Cancel"},
-    {classes: "move", clickHandler: handleMoveItem, disabled: false, svg: <Move height="16" width="16"/>, text: "Move"}
+    {classes: "move", clickHandler: handleMoveItem, disabled: !validSection, svg: <Move height="16" width="16"/>, text: "Move"}
   ];
 
   if (movingItemId) {
     return (
-      <Modal title="Move this item to..." visibility={modalVisibility} width={600}>
+      <Modal title="Move this item to..." visibility={true} width={600}>
         <div className="sectionItemMoveDialog">
           <dl>
             <dt className="col1">Page</dt>
             <dd className="col1">
-              <select name="page" onChange={handlePageChange}>
+              <select value={selectedPageId} name="page" onChange={handlePageChange}>
+                <option value="">Select ...</option>
                 { pagesForPicking.map( (id, index) => (
                     <option key={id} value={id}>{index + 1}</option>
                   ))

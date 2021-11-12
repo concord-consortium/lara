@@ -14,7 +14,7 @@ export const SectionMoveDialog: React.FC = () => {
   const { moveSection } = usePageAPI();
   const {
     sections, selectedSectionId,
-    pagesForPicking, handlePageChange, selectedPageId,
+    pagesForPicking, handlePageChange, selectedPageId, validPage,
     handlePositionChange, selectedPosition,
     handleSectionChange
   } = useDestinationChooser();
@@ -49,7 +49,7 @@ export const SectionMoveDialog: React.FC = () => {
 
   const modalButtons = [
     {classes: "cancel", clickHandler: handleCloseDialog, disabled: false, svg: <Close height="12" width="12"/>, text: "Cancel"},
-    {classes: "move", clickHandler: handleMoveSection, disabled: false, svg: <Move height="16" width="16"/>, text: "Move"}
+    {classes: "move", clickHandler: handleMoveSection, disabled: !validPage, svg: <Move height="16" width="16"/>, text: "Move"}
   ];
 
   if (movingSectionId) {
@@ -60,7 +60,8 @@ export const SectionMoveDialog: React.FC = () => {
           <dl>
             <dt className="col1">Page</dt>
             <dd className="col1">
-              <select name="page" onChange={handlePageChange}>
+              <select value={selectedPageId} name="page" onChange={handlePageChange}>
+                <option >Select ...</option>
                 { pagesForPicking.map( (id, index) => (
                     <option key={id} value={id}>{index + 1}</option>
                   ))
