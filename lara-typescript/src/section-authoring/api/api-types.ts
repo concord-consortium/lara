@@ -167,6 +167,7 @@ export type APIPagesGetF = () => Promise<IPage[]>;
 export type APIPageGetF = (id: PageId) => Promise<IPage | null>;
 export type APIPageCreateF = () => Promise<IPage>;
 export type APIPageDeleteF = (id: PageId) => Promise<IPage[]>;
+export type APIPageCopyF = (id: PageId) => Promise<IPage>;
 
 export type APISectionCreateF = (pageId: PageId) => Promise<IPage>;
 export type APISectionsUpdateF = (nextPage: IPage) => Promise<IPage>;
@@ -187,6 +188,7 @@ export interface IAuthoringAPIProvider {
   getPage: APIPageGetF;
   createPage: APIPageCreateF;
   deletePage: APIPageDeleteF;
+  copyPage: APIPageCopyF;
 
   createSection: APISectionCreateF;
   updateSections: APISectionsUpdateF;

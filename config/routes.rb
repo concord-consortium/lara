@@ -213,6 +213,7 @@ LightweightStandalone::Application.routes.draw do
       match 'get_page/:id' => 'interactive_pages#get_page', :as => 'get_page', :via => 'get'
       match 'delete_page/:id' => 'interactive_pages#delete_page', as: 'delete_page', :via => 'post'
       match 'create_page/:activity_id' => 'interactive_pages#create_page', :as => 'create_page', :via => 'post'
+      match 'copy_page/:id' => 'interactive_pages#copy_page', :as => 'copy_page', :via => 'post'
 
 
       match 'plugin_learner_states/:plugin_id/:run_id' =>

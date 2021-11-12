@@ -7,9 +7,9 @@ import {
 } from "./api-types";
 import { IManagedInteractive } from "../../page-item-authoring/managed-interactives";
 
-let pageCounter = 0;
-let sectionCounter = 0;
-let itemCounter = 0;
+let pageCounter = 1;
+let sectionCounter = 1;
+let itemCounter = 1;
 let managedInteractiveCounter = 0;
 
 let pages: IPage[] = [
@@ -141,6 +141,29 @@ export const createPage = () => {
 export const deletePage = (id: PageId) => {
   pages = pages.filter(p => p.id !== id);
   return Promise.resolve(pages);
+};
+
+const copyPage = (pageId: PageId) => {
+  const page = pages.find(p => p.id === pageId);
+  const pageIndex = pages.findIndex(p => p.id === pageId);
+  let nextPage: IPage = {
+    id: `${++pageCounter}`,
+    title: "untitled",
+    sections: []
+  };
+  if (page) {
+    nextPage = {...page};
+    nextPage.id = `${++pageCounter}`;
+    nextPage.sections = page.sections.map( s => {
+      const items = s.items?.map(item => {
+        const id = `${++itemCounter}`;
+        return {...item, id };
+      });
+      return { ...s, items };
+    });
+  }
+  pages.splice(pageIndex, 0, nextPage);
+  return Promise.resolve(nextPage);
 };
 
 export const updatePage = (id: PageId, changes: Partial<IPage>) => {
@@ -519,7 +542,7 @@ const copyPageItem = (args: {pageId: PageId, sectionItemId: ItemId}) => {
 };
 
 export const API: IAuthoringAPIProvider = {
-  getPages, getPage, createPage, deletePage,
+  getPages, getPage, createPage, deletePage, copyPage,
   createSection, updateSections, updateSection, copySection,
   createPageItem, updatePageItem, deletePageItem, copyPageItem,
   getAllEmbeddables, getLibraryInteractives,

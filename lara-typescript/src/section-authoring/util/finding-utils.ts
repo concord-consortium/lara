@@ -70,12 +70,12 @@ export const findItemAddress = (args: IAddressQuery): IItemAddress => {
         itemIndex++;
       }
       if (sectionId && section.id === sectionId) {
-        return {pageIndex, sectionIndex, itemIndex, column};
+        return {pageIndex, sectionIndex, itemIndex: null, column};
       }
       sectionIndex++;
     }
     if (pageId && pageId === page.id) {
-      return {pageIndex, sectionIndex, itemIndex, column};
+      return {pageIndex, sectionIndex: null, itemIndex: null, column};
     }
     pageIndex++;
   }
