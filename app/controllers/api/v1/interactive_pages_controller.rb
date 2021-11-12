@@ -76,7 +76,7 @@ class Api::V1::InteractivePagesController < API::APIController
     # Remove deleted sections:
     old_sections.each do |section|
       unless (new_section_ids.include?(section.id.to_s))
-        section.delete
+        section.update_attribute(:interactive_page_id, nil)
       end
     end
 
@@ -121,12 +121,12 @@ class Api::V1::InteractivePagesController < API::APIController
     section = Section.find(section_id)
     new_items = section_params.delete('items')
     new_item_ids = new_items&.map { |i| i['id'] }
-    new_item_ids.compact! # remove nil items
     old_items = section.page_items
     section.update_attributes(section_params)
 
     # Its OK for update_section to come in without items...
     if new_items.present?
+      new_item_ids.compact! # remove nil items
       # Usually we will just be reordering the page_items within the section:
       if section && new_items
         new_items.each do |pi|
@@ -352,7 +352,7 @@ class Api::V1::InteractivePagesController < API::APIController
   def generate_page_json(page)
     sections = page.sections.map { |s| generate_section_json(s) }
     {
-      id: page.id,
+      id: page.id.to_s,
       title: page.name,
       sections: sections
     }
