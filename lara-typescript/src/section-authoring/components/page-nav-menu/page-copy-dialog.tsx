@@ -6,6 +6,7 @@ import { Close } from "../../../shared/components/icons/close-icon";
 import { IPage } from "../../api/api-types";
 
 import "./page-copy-dialog.scss";
+import { RelativeLocation } from "../../util/move-utils";
 
 export interface IPageCopyDialogProps {
   pageId: string;
@@ -13,7 +14,7 @@ export interface IPageCopyDialogProps {
   currentPageIndex: number | null;
   selectedPosition?: string;
   selectedOtherPageId?: string;
-  copyPageFunction: (pageId: string, selectedPosition: string, selectedOtherPageId: string) => void;
+  copyPageFunction: (destIndex: number) => void;
   closeDialogFunction: () => void;
 }
 
@@ -44,7 +45,11 @@ export const PageCopyDialog: React.FC<IPageCopyDialogProps> = ({
   const handleCopyPage = () => {
     if (currentPageIndex != null && currentPageIndex > -1) {
       const copiedPageId = pages[currentPageIndex].id;
-      copyPageFunction(copiedPageId, selectedPosition, selectedOtherPageId);
+      let destIndex = pages.findIndex(p => p.id === selectedOtherPageId);
+      if (selectedPosition === RelativeLocation.After) {
+        destIndex++;
+      }
+      copyPageFunction(destIndex);
     }
     closeDialogFunction();
   };

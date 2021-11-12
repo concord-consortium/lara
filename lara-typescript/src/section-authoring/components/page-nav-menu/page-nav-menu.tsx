@@ -17,7 +17,7 @@ export interface IPageNavMenuProps {
   copyingPage: boolean;
   setCurrentPageId: (id: PageId) => void;
   addPage: () => void;
-  copyPage: (id: PageId) => void;
+  copyPage: (destIndex: number) => void;
   deletePage: () => void;
   showCopyDialog: () => void;
   hideCopyDialog: () => void;

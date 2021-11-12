@@ -31,9 +31,19 @@ class Api::V1::InteractivePagesController < API::APIController
   ## Mutations
   def copy_page
     activity = @interactive_page.lightweight_activity
+
     authorize! :update, activity
-    return error("Can't find activity #{params[:activity_id]}") unless activity
+    return error("Can't find required parameter 'dest_index'") unless params[:dest_index]
+
+    return error("Can't find activity for page") unless activity
+
+    position = params[:dest_index];
+
     next_page = @interactive_page.duplicate
+    next_page.lightweight_activity = activity
+    next_page.insert_at(position)
+    activity.reload
+    next_page.reload
     render :json => generate_page_json(next_page)
   end
 
