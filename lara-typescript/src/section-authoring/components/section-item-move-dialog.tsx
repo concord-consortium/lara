@@ -23,7 +23,6 @@ export const SectionItemMoveDialog: React.FC = () => {
     handleSectionChange, validSection
   } = useDestinationChooser();
 
-
   const handleColumnChange = (change: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedColumn(change.target.value as SectionColumns);
   };
