@@ -62,7 +62,11 @@
     });
 
     $(document).ready(function() {
-      var params = {host: window.location.origin, activityId: "#{@activity.id}"};
+      var params = {
+        host: window.location.origin,
+        activityId: "#{@activity.id}",
+        id: "#{@page.id}"
+      };
       var element;
       console.log(params);
       var container = $("#sections-container")[0];
