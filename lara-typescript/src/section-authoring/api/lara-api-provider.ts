@@ -81,8 +81,10 @@ export const getLaraAuthoringAPI =
     return sendToLara({url: deletePageUrl(id), method: "POST"});
   };
 
-  const copyPage: APIPageCopyF = (pageId: PageId) => {
-    return sendToLara({url: copyPageUrl(pageId), method: "POST"});
+  const copyPage: APIPageCopyF = (args: {pageId: PageId, destIndex: number}) => {
+    const {pageId, destIndex} = args;
+    const body = { dest_index: destIndex };
+    return sendToLara({url: copyPageUrl(pageId), method: "POST", body});
   };
 
   const createSection: APISectionCreateF = (id: PageId) => {

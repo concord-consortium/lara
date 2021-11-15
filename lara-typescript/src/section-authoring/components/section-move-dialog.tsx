@@ -1,5 +1,4 @@
 import * as React from "react";
-import { useState } from "react";
 import { Modal, ModalButtons } from "../../shared/components/modal/modal";
 import { Close } from "../../shared/components/icons/close-icon";
 import { Move } from "../../shared/components/icons/move-icon";
@@ -7,44 +6,18 @@ import { Move } from "../../shared/components/icons/move-icon";
 import "./section-move-dialog.scss";
 import { usePageAPI } from "../hooks/use-api-provider";
 import { UserInterfaceContext } from "../containers/user-interface-provider";
-import { ISectionDestination, RelativeLocation } from "../util/move-utils";
-import { PageId } from "../api/api-types";
+import { ISectionDestination } from "../util/move-utils";
+import { useDestinationChooser } from "../hooks/use-destination-chooser";
 
-export interface ISectionMoveDialogProps { }
-
-export const SectionMoveDialog: React.FC<ISectionMoveDialogProps> = () => {
+export const SectionMoveDialog: React.FC = () => {
   const { userInterface: { movingSectionId }, actions: {setMovingSectionId}} = React.useContext(UserInterfaceContext);
-  const { moveSection, currentPage, getPages } = usePageAPI();
-  const [selectedOtherSectionId, setSelectedOtherSectionId] = useState("");
-  const [selectedPageId, setSelectedPageId] = useState(currentPage?.id || "");
-  const [selectedPosition, setSelectedPosition] = useState(RelativeLocation.After);
-  const [sections, setSections] = useState(currentPage?.sections || []);
-  let pagesForPicking: PageId[] = [];
-
-  if (getPages.data) {
-    pagesForPicking = getPages.data.map( (p, i) => p.id);
-    const pageId = currentPage?.id;
-    if (pageId && selectedPageId === "") {
-      setSections(getPages.data.find(p => p.id === pageId)?.sections || []);
-      setSelectedPageId(currentPage.id);
-    }
-  }
-
-  const handlePageChange = (change: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedPageId(change.target.value);
-    if (getPages.data) {
-      setSections(getPages.data.find(p => p.id === change.target.value)?.sections || []);
-    }
-  };
-
-  const handlePositionChange = (change: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedPosition(change.target.value as RelativeLocation);
-  };
-
-  const handleOtherSectionChange = (change: React.ChangeEvent<HTMLSelectElement>) => {
-    const otherSectionId = change.target.value;
-    setSelectedOtherSectionId(otherSectionId);
-  };
+  const { moveSection } = usePageAPI();
+  const {
+    sections, selectedSectionId,
+    pagesForPicking, handlePageChange, selectedPageId, validPage,
+    handlePositionChange, selectedPosition,
+    handleSectionChange
+  } = useDestinationChooser();
 
   const handleCloseDialog = () => {
     setMovingSectionId(false);
@@ -55,7 +28,7 @@ export const SectionMoveDialog: React.FC<ISectionMoveDialogProps> = () => {
       const destination: ISectionDestination = {
         relativeLocation: selectedPosition,
         destPageId: selectedPageId,
-        destSectionId: selectedOtherSectionId
+        destSectionId: selectedSectionId
       };
       moveSection(movingSectionId, destination);
     }
@@ -76,7 +49,7 @@ export const SectionMoveDialog: React.FC<ISectionMoveDialogProps> = () => {
 
   const modalButtons = [
     {classes: "cancel", clickHandler: handleCloseDialog, disabled: false, svg: <Close height="12" width="12"/>, text: "Cancel"},
-    {classes: "move", clickHandler: handleMoveSection, disabled: false, svg: <Move height="16" width="16"/>, text: "Move"}
+    {classes: "move", clickHandler: handleMoveSection, disabled: !validPage, svg: <Move height="16" width="16"/>, text: "Move"}
   ];
 
   if (movingSectionId) {
@@ -87,7 +60,8 @@ export const SectionMoveDialog: React.FC<ISectionMoveDialogProps> = () => {
           <dl>
             <dt className="col1">Page</dt>
             <dd className="col1">
-              <select name="page" onChange={handlePageChange}>
+              <select value={selectedPageId} name="page" onChange={handlePageChange}>
+                <option >Select ...</option>
                 { pagesForPicking.map( (id, index) => (
                     <option key={id} value={id}>{index + 1}</option>
                   ))
@@ -104,7 +78,7 @@ export const SectionMoveDialog: React.FC<ISectionMoveDialogProps> = () => {
             </dd>
             <dt className="col3">Section</dt>
             <dd className="col3">
-              <select name="otherItem" onChange={handleOtherSectionChange}>
+              <select name="otherItem" onChange={handleSectionChange}>
                 <option value="">Select one...</option>
                 {sectionOptions()}
               </select>

@@ -160,6 +160,11 @@ export interface IPage {
    */
   sections: ISection[];
 
+  /**
+   * Position of this page in the activity:
+   */
+  position?: number;
+
 }
 
 // API Call Signatures
@@ -167,7 +172,7 @@ export type APIPagesGetF = () => Promise<IPage[]>;
 export type APIPageGetF = (id: PageId) => Promise<IPage | null>;
 export type APIPageCreateF = () => Promise<IPage>;
 export type APIPageDeleteF = (id: PageId) => Promise<IPage[]>;
-export type APIPageCopyF = (id: PageId) => Promise<IPage>;
+export type APIPageCopyF = (args: {pageId: PageId, destIndex: number}) => Promise<IPage>;
 
 export type APISectionCreateF = (pageId: PageId) => Promise<IPage>;
 export type APISectionsUpdateF = (nextPage: IPage) => Promise<IPage>;

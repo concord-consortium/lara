@@ -33,7 +33,7 @@ class InteractivePage < ActiveRecord::Base
   # PageItem is a join model; if this is deleted, it should go too
   # has_many :page_items, :order => [:old_section, :position], :dependent => :destroy, :include => [:embeddable]
 
-  has_many :sections, order: :position, dependent: :destroy, include: [:page_items]
+  has_many :sections, order: :position, include: [:page_items]
 
   # NP: 2021-09-01 TODO: This has-many was incorrectly ordering page_items.
   # I don't think it really matters B/C our sections include the page_items.

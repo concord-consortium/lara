@@ -30,7 +30,7 @@ export interface IMoveItemSignature {
   pages: IPage[];
 }
 
-const updatePositions = (items: Array<{position?: number}>) => {
+export const updatePositions = (items: Array<{position?: number}>) => {
   items.forEach ( (item, index) => {
     item.position = index + 1;
   });

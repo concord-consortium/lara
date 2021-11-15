@@ -58,7 +58,8 @@ export const usePageAPI = () => {
   // Pages:
   const createPageMutation = useMutation<IPage, Error, PageId>(provider.createPage, mutationsOpts);
   const deletePageMutation = useMutation<IPage[], Error, PageId>(provider.deletePage, mutationsOpts);
-  const copyPageMutation = useMutation<IPage, Error, PageId>(provider.copyPage, mutationsOpts);
+  const copyPageMutation = useMutation<IPage, Error, {pageId: PageId, destIndex: number}>
+    (provider.copyPage, mutationsOpts);
 
   // Section Mutations:
   const addSectionMutation = useMutation<IPage, Error, string>(provider.createSection, mutationsOpts);
@@ -213,7 +214,7 @@ export const usePageAPI = () => {
     console.error("no page specified, cant invoke method.");
   };
 
-  let copyPage = ((pageId: PageId) => {
+  let copyPage = ((destIndex: number) => {
     // tslint:disable-next-line
     console.error("no page specified, cant invoke method.");
   });
@@ -228,7 +229,7 @@ export const usePageAPI = () => {
       createPageItem.mutate({pageId: currentPage.id, newPageItem: pageItem});
 
     addPage = () => createPageMutation.mutate(currentPage.id);
-    copyPage = () => copyPageMutation.mutate(currentPage.id);
+    copyPage = (destIndex: number) => copyPageMutation.mutate({pageId: currentPage.id, destIndex});
   }
 
   return {

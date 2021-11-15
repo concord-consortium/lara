@@ -1,4 +1,5 @@
 import { findItemAddress, findItemByAddress } from "../util/finding-utils";
+import { updatePositions } from "../util/move-utils";
 import {
   IPage, PageId,
   APIPageGetF, APIPagesGetF, APIPageItemUpdateF,
@@ -135,6 +136,7 @@ export const createPage = () => {
     sections: []
   };
   pages.push(newPage);
+  updatePositions(pages);
   return Promise.resolve(newPage);
 };
 
@@ -143,16 +145,11 @@ export const deletePage = (id: PageId) => {
   return Promise.resolve(pages);
 };
 
-const copyPage = (pageId: PageId) => {
+const copyPage = (args: {pageId: PageId, destIndex: number}) => {
+  const {pageId, destIndex} = args;
   const page = pages.find(p => p.id === pageId);
-  const pageIndex = pages.findIndex(p => p.id === pageId);
-  let nextPage: IPage = {
-    id: `${++pageCounter}`,
-    title: "untitled",
-    sections: []
-  };
   if (page) {
-    nextPage = {...page};
+    const nextPage = {...page};
     nextPage.id = `${++pageCounter}`;
     nextPage.sections = page.sections.map( s => {
       const items = s.items?.map(item => {
@@ -161,9 +158,11 @@ const copyPage = (pageId: PageId) => {
       });
       return { ...s, items };
     });
+    pages.splice(destIndex, 0, nextPage);
+    updatePositions(pages);
+    return Promise.resolve(nextPage);
   }
-  pages.splice(pageIndex, 0, nextPage);
-  return Promise.resolve(nextPage);
+  return Promise.reject("no source page in copy");
 };
 
 export const updatePage = (id: PageId, changes: Partial<IPage>) => {
