@@ -74,10 +74,10 @@ export const AspectRatioChooser: React.FC<Props> = (props) => {
 
   return (
     <div style={{display: "flex", flexDirection: "row", padding: "0.5em", alignItems: "baseline"}}>
-      <select style={{margin: "0.2em"}} onChange={handleSelectChange}>
+      <select defaultValue={mode} style={{margin: "0.2em"}} onChange={handleSelectChange}>
       {Object.keys(availableAspectRatios).map((key: AspectRatioMode) => {
         const value = availableAspectRatios[key];
-        return <option key={key} value={key} label={value} selected={key === mode}>{value}</option>;
+        return <option key={key} value={key} label={value}>{value}</option>;
       }
       )}
       </select>

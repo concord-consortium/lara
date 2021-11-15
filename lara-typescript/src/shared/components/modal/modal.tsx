@@ -7,7 +7,7 @@ import "./modal.scss";
 
 export interface IModalButton {
   classes: string;
-  clickHandler: (e: React.MouseEvent<HTMLElement> | MouseEvent) => void;
+  clickHandler: (e: React.FormEvent | React.MouseEvent<HTMLElement> | MouseEvent) => void;
   disabled: boolean;
   svg: any;
   text: string;

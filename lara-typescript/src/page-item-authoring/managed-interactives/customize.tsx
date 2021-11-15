@@ -1,8 +1,7 @@
 import * as React from "react";
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { IManagedInteractive } from "./index";
 import { ILibraryInteractive } from "../common/hooks/use-library-interactives";
-import { RailsFormField } from "../common/utils/rails-form-field";
 import { ReadOnlyFormField } from "../common/components/read-only-form-field";
 import { AspectRatioChooser,
          AspectRatioMode,
@@ -17,8 +16,6 @@ interface Props {
   libraryInteractive: ILibraryInteractive;
   defaultClickToPlayPrompt: string;
 }
-
-const formField = RailsFormField<IManagedInteractive>("managed_interactive");
 
 export const CustomizeManagedInteractive: React.FC<Props> = (props) => {
   const { managedInteractive, libraryInteractive, defaultClickToPlayPrompt } = props;
@@ -35,8 +32,6 @@ export const CustomizeManagedInteractive: React.FC<Props> = (props) => {
     custom_full_window,
     inherit_image_url,
     custom_image_url,
-    linked_interactive_id,
-    linked_interactive_type,
     show_in_featured_question_report,
     linked_interactive_item_id
   } = managedInteractive;
@@ -52,7 +47,6 @@ export const CustomizeManagedInteractive: React.FC<Props> = (props) => {
   const [inheritClickToPlayPrompt, setInheritClickToPlayPrompt] = useState(inherit_click_to_play_prompt);
   const [customClickToPlayPrompt, setCustomClickToPlayPrompt] = useState(custom_click_to_play_prompt);
   const [inheritFullWindow, setInheritFullWindow] = useState(inherit_full_window);
-  const [customFullWindow, setCustomFullWindow] = useState(custom_full_window);
   const [inheritImageUrl, setInheritImageUrl] = useState(inherit_image_url);
   const [customImageUrl, setCustomImageUrl] = useState(custom_image_url);
 
@@ -87,7 +81,7 @@ export const CustomizeManagedInteractive: React.FC<Props> = (props) => {
           <legend>Link Saved Work From</legend>
           <input
             type="text"
-            name={formField("linked_interactive_item_id").name}
+            name="linked_interactive_item_id"
             defaultValue={`${linked_interactive_item_id || ""}`}
           />
           <div className="warning">
@@ -98,8 +92,8 @@ export const CustomizeManagedInteractive: React.FC<Props> = (props) => {
         <fieldset>
           <legend>Featured Report</legend>
           <Checkbox
-              id={formField("show_in_featured_question_report").id}
-              name={formField("show_in_featured_question_report").name}
+              id="show_in_featured_question_report"
+              name="show_in_featured_question_report"
               defaultChecked={show_in_featured_question_report}
               label="Show in featured question report?"
             />
@@ -153,15 +147,15 @@ export const CustomizeManagedInteractive: React.FC<Props> = (props) => {
     return <>
       <CustomizableOption
         label="Click To Play Prompt"
-        inheritName={formField("inherit_click_to_play_prompt").name}
-        customName={formField("custom_click_to_play_prompt").name}
+        inheritName="inherit_click_to_play_prompt"
+        customName="custom_click_to_play_prompt"
         inherit={inheritClickToPlayPrompt}
         defaultLabel={`"${defaultPrompt}"`}
         onChange={setInheritClickToPlayPrompt}
       >
         <input
           type="text"
-          name={formField("custom_click_to_play_prompt").name}
+          name="custom_click_to_play_prompt"
           value={customClickToPlayPrompt}
           onChange={handleChangeCustomClickToPlayPrompt}
         />
@@ -169,31 +163,30 @@ export const CustomizeManagedInteractive: React.FC<Props> = (props) => {
 
       <CustomizableOption
         label="Full Window"
-        inheritName={formField("inherit_full_window").name}
-        customName={formField("custom_full_window").name}
+        inheritName="inherit_full_window"
+        customName="custom_full_window"
         inherit={inheritFullWindow}
         defaultLabel={libraryInteractive.full_window ? "Enabled" : "Disabled"}
         onChange={setInheritFullWindow}
       >
         <Checkbox
-          name={formField("custom_full_window").name}
-          checked={customFullWindow}
-          onChange={setCustomFullWindow}
+          name="custom_full_window"
+          defaultChecked={custom_full_window}
           label="Enabled"
         />
       </CustomizableOption>
 
       <CustomizableOption
         label="Image Url"
-        inheritName={formField("inherit_image_url").name}
-        customName={formField("custom_image_url").name}
+        inheritName="inherit_image_url"
+        customName="custom_image_url"
         inherit={inheritImageUrl}
         defaultLabel={libraryInteractive.image_url ? libraryInteractive.image_url : "No default image url"}
         onChange={setInheritImageUrl}
       >
         <input
           type="text"
-          name={formField("custom_image_url").name}
+          name="custom_image_url"
           value={customImageUrl}
           onChange={handleChangeCustomImageUrl}
         />
@@ -209,34 +202,34 @@ export const CustomizeManagedInteractive: React.FC<Props> = (props) => {
       <legend>Aspect Ratio</legend>
       <input
         type="hidden"
-        name={formField("custom_aspect_ratio_method").name}
+        name="custom_aspect_ratio_method"
         value={customAspectRatioValues.mode}
       />
       <input
         type="hidden"
-        name={formField("inherit_native_width").name}
+        name="inherit_native_width"
         value={inheritAspectRatio ? "true" : "false"}
       />
       <input
         type="hidden"
-        name={formField("custom_native_width").name}
+        name="custom_native_width"
         value={customAspectRatioValues.width}
       />
       <input
         type="hidden"
-        name={formField("inherit_native_height").name}
+        name="inherit_native_height"
         value={inheritAspectRatio ? "true" : "false"}
       />
       <input
         type="hidden"
-        name={formField("custom_native_height").name}
+        name="custom_native_height"
         value={customAspectRatioValues.height}
       />
       <input
         type="radio"
-        name={formField("inherit_aspect_ratio_method").name}
+        name="inherit_aspect_ratio_method"
         value="true"
-        checked={inheritAspectRatio}
+        defaultChecked={inheritAspectRatio}
         onChange={handleChangeCustomizeAspectRatio}
       />
       <span className="radio-label">Use default: </span>
@@ -249,9 +242,9 @@ export const CustomizeManagedInteractive: React.FC<Props> = (props) => {
       <div className="customizable-option">
         <input
           type="radio"
-          name={formField("inherit_aspect_ratio_method").name}
+          name="inherit_aspect_ratio_method"
           value="false"
-          checked={!inheritAspectRatio}
+          defaultChecked={!inheritAspectRatio}
           onChange={handleChangeCustomizeAspectRatio}
         />
         <span className="radio-label">Customize</span>
@@ -273,9 +266,9 @@ export const CustomizeManagedInteractive: React.FC<Props> = (props) => {
         <div className="customizable-option">
           <input
             type="radio"
-            name={formField("inherit_click_to_play").name}
+            name="inherit_click_to_play"
             value="true"
-            checked={inheritClickToPlay}
+            defaultChecked={inheritClickToPlay}
             onChange={handleChangeClickToPlay}
           />
           <span className="radio-label">
@@ -285,9 +278,9 @@ export const CustomizeManagedInteractive: React.FC<Props> = (props) => {
         <div className="customizable-option">
           <input
             type="radio"
-            name={formField("inherit_click_to_play").name}
+            name="inherit_click_to_play"
             value="false"
-            checked={!inheritClickToPlay}
+            defaultChecked={!inheritClickToPlay}
             onChange={handleChangeClickToPlay}
           />
           <span className="radio-label">Customize</span>
@@ -295,9 +288,9 @@ export const CustomizeManagedInteractive: React.FC<Props> = (props) => {
             ? <>
                 <input
                   type="checkbox"
-                  name={formField("custom_click_to_play").name}
+                  name="custom_click_to_play"
                   value="true"
-                  checked={customClickToPlay}
+                  defaultChecked={customClickToPlay}
                   onChange={handleChangeCustomClickToPlay}
                 /> Enabled
               </>

@@ -11,7 +11,7 @@ interface Props {
     aspect_ratio_method: string;
     authored_state: string | object;
     interactive_item_id: string;
-    linked_interactives: ILinkedInteractive[];
+    linked_interactives?: ILinkedInteractive[];
   };
   onAuthoredStateChange: (authoredState: string | object) => void;
   onLinkedInteractivesChange: (linkedInteractives: ISetLinkedInteractives) => void;
@@ -60,9 +60,12 @@ export const InteractiveAuthoring: React.FC<Props> = (props) => {
         colorB: "green"
       }
     },
-    interactiveItemId,
-    linkedInteractives: interactive.linked_interactives
+    interactiveItemId
   };
+
+  if (interactive.linked_interactives) {
+    initMsg.linkedInteractives = interactive.linked_interactives;
+  }
 
   return (
     <div className="authoring-mw-interactive">

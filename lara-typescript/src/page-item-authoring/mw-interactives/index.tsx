@@ -2,7 +2,6 @@ import * as React from "react";
 import { useRef, useState } from "react";
 import { Tabs, TabList, Tab, TabPanel} from "react-tabs";
 import { InteractiveAuthoring } from "../common/components/interactive-authoring";
-import { RailsFormField } from "../common/utils/rails-form-field";
 import { CustomizeMWInteractive } from "./customize";
 import { Checkbox } from "../common/components/checkbox";
 import { useCurrentUser } from "../common/hooks/use-current-user";
@@ -10,6 +9,7 @@ import { AuthoredState } from "../common/components/authored-state";
 import { AuthoringApiUrls } from "../common/types";
 import { ILinkedInteractive, ISetLinkedInteractives } from "../../interactive-api-client";
 import "react-tabs/style/react-tabs.css";
+import { valueContainerCSS } from "react-select/src/components/containers";
 
 interface Props {
   interactive: IMWInteractive;
@@ -44,12 +44,12 @@ export interface IMWInteractive {
   linked_interactives: ILinkedInteractive[];
 }
 
-const formField = RailsFormField<IMWInteractive>("mw_interactive");
-
 export const MWInteractiveAuthoring: React.FC<Props> = (props) => {
   const { interactive, defaultClickToPlayPrompt, authoringApiUrls } = props;
   const interactiveAuthoredStateRef = useRef<HTMLInputElement|null>(null);
   const linkedInteractivesRef = useRef<HTMLInputElement|null>(null);
+  const enableLearnerStateRef = useRef<HTMLInputElement|null>(null);
+  const [authoredState, setAuthoredState] = useState(interactive.authored_state);
   const [authoringUrl, setAuthoringUrl] = useState(interactive.url);
   const user = useCurrentUser();
 
@@ -63,8 +63,8 @@ export const MWInteractiveAuthoring: React.FC<Props> = (props) => {
         <legend>Name</legend>
         <input
           type="text"
-          id={formField("name").id}
-          name={formField("name").name}
+          id="name"
+          name="name"
           defaultValue={name}
         />
       </fieldset>
@@ -72,8 +72,8 @@ export const MWInteractiveAuthoring: React.FC<Props> = (props) => {
       <fieldset>
         <legend>URL</legend>
         <textarea
-          id={formField("url").id}
-          name={formField("url").name}
+          id="url"
+          name="url"
           defaultValue={url || ""}
           onBlur={handleUrlBlur}
         />
@@ -82,15 +82,15 @@ export const MWInteractiveAuthoring: React.FC<Props> = (props) => {
       <fieldset>
         <legend>Options</legend>
         <Checkbox
-          id={formField("is_full_width").id}
-          name={formField("is_full_width").name}
+          id="is_full_width"
+          name="is_full_width"
           defaultChecked={is_full_width}
           label="Full width? (Full width layout only)"
         />
         <br />
         <Checkbox
-          id={formField("no_snapshots").id}
-          name={formField("no_snapshots").name}
+          id="no_snapshots"
+          name="no_snapshots"
           defaultChecked={no_snapshots}
           label="Snapshots not supported"
         />
@@ -101,9 +101,10 @@ export const MWInteractiveAuthoring: React.FC<Props> = (props) => {
   const renderTabs = () => {
     const handleAuthoredStateChange = (newAuthoredState: string | object) => {
       if (interactiveAuthoredStateRef.current) {
-        interactiveAuthoredStateRef.current.value = typeof newAuthoredState === "string"
+        const jsonValue = interactiveAuthoredStateRef.current.value = typeof newAuthoredState === "string"
           ? newAuthoredState
           : JSON.stringify(newAuthoredState);
+        setAuthoredState(jsonValue);
       }
     };
 
@@ -141,20 +142,21 @@ export const MWInteractiveAuthoring: React.FC<Props> = (props) => {
                 allowReset={false}
                 authoringApiUrls={authoringApiUrls}
               />
-            : <div>Please enter an url above and then move the focus out of the url field.</div>
+            : <div>Please enter a URL above and then move the focus out of the URL field.</div>
           }
         </TabPanel>
         <TabPanel forceRender={true}>
           <CustomizeMWInteractive
-            interactive={interactive}
             defaultClickToPlayPrompt={defaultClickToPlayPrompt}
+            enableLearnerStateRef={enableLearnerStateRef}
+            interactive={interactive}
           />
         </TabPanel>
         {user?.isAdmin
           ? <TabPanel forceRender={true}>
               <AuthoredState
-                id={formField("authored_state").id}
-                name={formField("authored_state").name}
+                id="authored_state"
+                name="authored_state"
                 authoredState={interactive.authored_state}
               />
             </TabPanel>
@@ -169,15 +171,15 @@ export const MWInteractiveAuthoring: React.FC<Props> = (props) => {
       <legend>Iframe Interactive</legend>
       <input
         type="hidden"
-        id={formField("authored_state").id}
-        name={formField("authored_state").name}
+        id="authored_state"
+        name="authored_state"
         ref={interactiveAuthoredStateRef}
         defaultValue={interactive.authored_state}
       />
       <input
         type="hidden"
-        id={formField("linked_interactives").id}
-        name={formField("linked_interactives").name}
+        id="linked_interactives"
+        name="linked_interactives"
         ref={linkedInteractivesRef}
       />
     </fieldset>

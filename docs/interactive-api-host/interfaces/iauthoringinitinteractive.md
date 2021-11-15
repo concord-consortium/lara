@@ -18,7 +18,7 @@
 * [error](iauthoringinitinteractive.md#error)
 * [hostFeatures](iauthoringinitinteractive.md#hostfeatures)
 * [interactiveItemId](iauthoringinitinteractive.md#interactiveitemid)
-* [linkedInteractives](iauthoringinitinteractive.md#linkedinteractives)
+* [linkedInteractives](iauthoringinitinteractive.md#optional-linkedinteractives)
 * [mode](iauthoringinitinteractive.md#mode)
 * [themeInfo](iauthoringinitinteractive.md#themeinfo)
 * [version](iauthoringinitinteractive.md#version)
@@ -49,9 +49,9 @@ ___
 
 ___
 
-###  linkedInteractives
+### `Optional` linkedInteractives
 
-• **linkedInteractives**: *[ILinkedInteractive](ilinkedinteractive.md)[]*
+• **linkedInteractives**? : *[ILinkedInteractive](ilinkedinteractive.md)[]*
 
 ___
 

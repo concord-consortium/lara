@@ -1,23 +1,26 @@
 import * as React from "react";
-import { useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { IMWInteractive } from "./index";
-import { RailsFormField } from "../common/utils/rails-form-field";
 import { AspectRatioChooser,
          AspectRatioMode,
-         IAspectRatioChooserValues,
-         availableAspectRatios
+         IAspectRatioChooserValues
        } from "../common/components/aspect-ratio-chooser";
 import { Checkbox } from "../common/components/checkbox";
 
 interface Props {
-  interactive: IMWInteractive;
+  checkboxHandler?: (name: string, checked: boolean) => void;
   defaultClickToPlayPrompt: string;
+  enableLearnerStateRef: any;
+  interactive: IMWInteractive;
 }
 
-const formField = RailsFormField<IMWInteractive>("mw_interactive");
-
 export const CustomizeMWInteractive: React.FC<Props> = (props) => {
-  const { interactive, defaultClickToPlayPrompt } = props;
+  const {
+    checkboxHandler,
+    defaultClickToPlayPrompt,
+    enableLearnerStateRef,
+    interactive
+  } = props;
   const {
     native_width,
     native_height,
@@ -30,8 +33,6 @@ export const CustomizeMWInteractive: React.FC<Props> = (props) => {
     image_url,
     show_in_featured_question_report,
     aspect_ratio_method,
-    linked_interactive_id,
-    linked_interactive_type,
     linked_interactive_item_id
   } = interactive;
 
@@ -40,16 +41,48 @@ export const CustomizeMWInteractive: React.FC<Props> = (props) => {
     height: native_height,
     mode: (aspect_ratio_method || "DEFAULT") as AspectRatioMode
   });
-  const [clickToPlay, setClickToPlay] = useState(click_to_play);
-  const [enableLearnerState, setEnableLearnerState] = useState(enable_learner_state);
+
+  const [state, setState] = useState({
+    aspect_ratio_method,
+    click_to_play,
+    enable_learner_state,
+    native_height,
+    native_width,
+  });
+
+  useEffect(() => {
+    setState(currentState => ({
+      ...currentState,
+      aspect_ratio_method: aspectRatioValues.mode,
+      native_height: aspectRatioValues.height,
+      native_width: aspectRatioValues.width
+    }));
+  }, [aspectRatioValues]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setState(currentState => ({
+      ...currentState,
+      [name]: value,
+    }));
+  };
+
+  const handleCheckboxChange = (name: string, checked: boolean) => {
+    setState(currentState => ({
+      ...currentState,
+      [name]: checked
+    }));
+    checkboxHandler?.(name, checked);
+  };
 
   const renderClickToPlayOptions = () => {
     return <>
       <div>
         <Checkbox
-          name={formField("full_window").name}
+          name="full_window"
           defaultChecked={full_window}
           label="Full window"
+          onChange={handleCheckboxChange}
         />
       </div>
 
@@ -57,17 +90,19 @@ export const CustomizeMWInteractive: React.FC<Props> = (props) => {
         <legend>Click To Play Prompt</legend>
         <input
           type="text"
-          name={formField("click_to_play_prompt").name}
+          name="click_to_play_prompt"
           defaultValue={click_to_play_prompt || defaultClickToPlayPrompt}
+          onChange={handleChange}
         />
       </fieldset>
 
       <fieldset>
-        <legend>Image Url</legend>
+        <legend>Image URL</legend>
         <input
           type="text"
-          name={formField("image_url").name}
+          name="image_url"
           defaultValue={image_url}
+          onChange={handleChange}
         />
         <br/>
         <div className="warning">
@@ -81,7 +116,7 @@ export const CustomizeMWInteractive: React.FC<Props> = (props) => {
     return <>
       <div>
         <Checkbox
-          name={formField("show_delete_data_button").name}
+          name="show_delete_data_button"
           defaultChecked={show_delete_data_button}
           label={`Show "Undo all my work" button`}
         />
@@ -89,7 +124,7 @@ export const CustomizeMWInteractive: React.FC<Props> = (props) => {
 
       <div>
         <Checkbox
-          name={formField("has_report_url").name}
+          name="has_report_url"
           defaultChecked={has_report_url}
           label="This interactive has a report URL"
           warning="Please do not select this unless your interactive includes a report url in its saved state."
@@ -98,7 +133,7 @@ export const CustomizeMWInteractive: React.FC<Props> = (props) => {
 
       <div>
         <Checkbox
-          name={formField("show_in_featured_question_report").name}
+          name="show_in_featured_question_report"
           defaultChecked={show_in_featured_question_report}
           label="Show in featured question report"
         />
@@ -108,7 +143,7 @@ export const CustomizeMWInteractive: React.FC<Props> = (props) => {
         <legend>Link Saved Work From</legend>
         <input
           type="text"
-          name={formField("linked_interactive_item_id").name}
+          name="linked_interactive_item_id"
           defaultValue={`${linked_interactive_item_id || ""}`}
         />
         <div className="warning">
@@ -125,17 +160,17 @@ export const CustomizeMWInteractive: React.FC<Props> = (props) => {
       <legend>Aspect Ratio</legend>
       <input
         type="hidden"
-        name={formField("aspect_ratio_method").name}
+        name="aspect_ratio_method"
         value={aspectRatioValues.mode}
       />
       <input
         type="hidden"
-        name={formField("native_width").name}
+        name="native_width"
         value={aspectRatioValues.width}
       />
       <input
         type="hidden"
-        name={formField("native_height").name}
+        name="native_height"
         value={aspectRatioValues.height}
       />
       <AspectRatioChooser
@@ -150,12 +185,12 @@ export const CustomizeMWInteractive: React.FC<Props> = (props) => {
       <legend>Click to Play Options</legend>
       <div className="option_group">
         <Checkbox
-          name={formField("click_to_play").name}
-          checked={clickToPlay}
-          onChange={setClickToPlay}
+          name="click_to_play"
+          defaultChecked={state.click_to_play}
+          onChange={handleCheckboxChange}
           label="Enable click to play"
         />
-        {clickToPlay ? renderClickToPlayOptions() : undefined}
+        {state.click_to_play ? renderClickToPlayOptions() : undefined}
       </div>
     </fieldset>
 
@@ -163,13 +198,14 @@ export const CustomizeMWInteractive: React.FC<Props> = (props) => {
       <legend>Interactive State Options</legend>
       <div className="option_group">
         <Checkbox
-          name={formField("enable_learner_state").name}
-          checked={enableLearnerState}
-          onChange={setEnableLearnerState}
+          checkboxRef={enableLearnerStateRef}
+          name="enable_learner_state"
+          defaultChecked={state.enable_learner_state}
+          onChange={handleCheckboxChange}
           label="Enable save state"
           warning="Please do not select this unless your interactive contains a serializable data set"
         />
-        {enableLearnerState ? renderInteractiveStateOptions() : undefined}
+        {state.enable_learner_state ? renderInteractiveStateOptions() : undefined}
       </div>
     </fieldset>
   </>;

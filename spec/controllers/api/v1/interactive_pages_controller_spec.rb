@@ -189,7 +189,7 @@ describe Api::V1::InteractivePagesController do
         }}
         expect(response.status).to eq(500)
         expect(response.content_type).to eq("application/json")
-        expect(response.body).to include "Only library interactive embeddables and text blocks are currently supported"
+        expect(response.body).to include "Only library interactive embeddables, iFrame interactives, and text blocks are currently supported"
       end
 
       it "fails with an invalid library interactive parameter" do
