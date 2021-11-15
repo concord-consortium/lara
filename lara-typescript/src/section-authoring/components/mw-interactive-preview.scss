@@ -1,0 +1,10 @@
+@import "../../vars.scss";
+
+.mwInteractive {
+  font-family: var(--font-family-default);
+  font-size: 16px;
+
+  .mwInteractiveContent {
+    background: transparent;
+  }
+}

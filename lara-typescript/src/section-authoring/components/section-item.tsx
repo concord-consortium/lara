@@ -4,6 +4,7 @@ import { GripLines } from "../../shared/components/icons/grip-lines";
 import { UserInterfaceContext } from "../containers/user-interface-provider";
 import { TextBlockPreview } from "./text-block-preview";
 import { ManagedInteractivePreview } from "./managed-interactive-preview";
+import { MWInteractivePreview } from "./mw-interactive-preview";
 
 import "./section-item.scss";
 
@@ -91,6 +92,9 @@ export const SectionItem: React.FC<ISectionItemProps> = ({
         break;
       case "ManagedInteractive":
         return <ManagedInteractivePreview pageItem={pageItem} />;
+        break;
+      case "MwInteractive":
+        return <MWInteractivePreview pageItem={pageItem} />;
         break;
       default:
         return (
