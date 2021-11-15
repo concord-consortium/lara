@@ -60,17 +60,18 @@ export const CustomizeMWInteractive: React.FC<Props> = (props) => {
   }, [aspectRatioValues]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setState({
-      ...state,
-      [e.target.name]: e.target.value,
-    });
+    const { name, value } = e.target;
+    setState(currentState => ({
+      ...currentState,
+      [name]: value,
+    }));
   };
 
   const handleCheckboxChange = (name: string, checked: boolean) => {
-    setState({
-      ...state,
+    setState(currentState => ({
+      ...currentState,
       [name]: checked
-    });
+    }));
     checkboxHandler?.(name, checked);
   };
 

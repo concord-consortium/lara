@@ -226,9 +226,9 @@ class Api::V1::InteractivePagesController < API::APIController
       # linked_interactives param follows ISetLinkedInteractives interface format. It isn't a regular attribute.
       # It requires special treatment and should be removed from params before .update_attributes is called.
       if data.has_key? :linked_interactives
-        linked_linteractives = data.delete :linked_interactives
-        if linked_linteractives.present?
-          page_item.set_linked_interactives(JSON.parse(linked_linteractives))
+        linked_interactives = data.delete :linked_interactives
+        if linked_interactives.present?
+          page_item.set_linked_interactives(JSON.parse(linked_interactives))
         end
       end 
       if embeddable
