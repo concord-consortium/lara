@@ -161,7 +161,7 @@ export interface IPage {
   sections: ISection[];
 
   /**
-   * Sections on this page:
+   * Position of this page in the activity:
    */
   position?: number;
 
