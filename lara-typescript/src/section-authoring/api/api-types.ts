@@ -92,6 +92,71 @@ export interface ILibraryInteractiveResponse {
   }>;
 }
 
+export interface IManagedInteractiveData {
+  aspectRatio: number;
+  authoredState: string;
+  customAspectRatioMethod: string;
+  customClickToPlay: boolean;
+  customClickToPlayPrompt: string;
+  customFullWindow: boolean;
+  customImageUrl: string;
+  customNativeHeight: number;
+  customNativeWidth: number;
+  enableLearnerState: boolean;
+  hasReportUrl: boolean;
+  id: number;
+  imageUrl: string;
+  inheritAspectRatioMethod: boolean;
+  inheritClickToPlay: boolean;
+  inheritClickToPlayPrompt: boolean;
+  inheritFullWindow: boolean;
+  inheritImageUrl: boolean;
+  inheritNativeHeight: boolean;
+  inheritNativeWidth: boolean;
+  interactiveItemId: string;
+  isHidden: boolean;
+  isFullWidth: boolean;
+  libraryInteractiveId: number;
+  linkedInteractiveId: number;
+  linkedInteractiveType: string;
+  linkedInteractiveItemId: string;
+  linkedInteractives: any[];
+  modelLibraryUrl: string;
+  name: string;
+  noSnapshots: boolean;
+  showDeleteDataButton: boolean;
+  showInFeaturedQuestionReport: boolean;
+  urlFragment: string;
+}
+
+export interface IMWInteractiveData {
+  aspectRatio: number;
+  aspectRatioMethod: string;
+  authoredState: string;
+  clickToPlay: boolean;
+  clickToPlayPrompt: string;
+  enableLearnerState: boolean;
+  fullWindow: boolean;
+  hasReportUrl: boolean;
+  id: number;
+  imageUrl: string;
+  interactiveItemId: string;
+  isHidden: boolean;
+  isFullWidth: boolean;
+  modelLibraryUrl: string;
+  linkedInteractiveId: number;
+  linkedInteractiveType: string;
+  linkedInteractiveItemId: string;
+  linkedInteractives: any[];
+  name: string;
+  nativeHeight: number;
+  nativeWidth: number;
+  noSnapshots: boolean;
+  showDeleteDataButton: boolean;
+  showInFeaturedQuestionReport: boolean;
+  url: string;
+}
+
 export interface ISection {
   /**
    * Can the smaller side collapse?

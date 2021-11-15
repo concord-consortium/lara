@@ -1,6 +1,6 @@
 import * as React from "react";
 import classNames from "classnames";
-import { ISectionItem } from "../api/api-types";
+import { IManagedInteractiveData, ISectionItem } from "../api/api-types";
 import { usePageAPI } from "../hooks/use-api-provider";
 import { InteractiveAuthoringPreview } from "../../page-item-authoring/common/components/interactive-authoring-preview";
 
@@ -14,10 +14,9 @@ export const ManagedInteractivePreview: React.FC<IManagedInteractivePreviewProps
   pageItem
   }: IManagedInteractivePreviewProps) => {
   const {
-    aspectRatio, aspectRatioMethod, authoredState, customAspectRatioMethod,
-    id, interactiveItemId, isFullWidth, name, libraryInteractiveId,
-    linkedInteractives, urlFragment
-   } = pageItem.data as any; // TODO: Add typing for pageItem.data
+    aspectRatio, authoredState, customAspectRatioMethod, id, interactiveItemId,
+    isFullWidth, name, libraryInteractiveId, linkedInteractives, urlFragment
+   } = pageItem.data as IManagedInteractiveData;
   const { getLibraryInteractives } = usePageAPI();
 
   if (!authoredState) {
@@ -31,7 +30,7 @@ export const ManagedInteractivePreview: React.FC<IManagedInteractivePreviewProps
     name,
     url: `${libraryInteractive?.base_url}${urlFragment || ""}`,
     aspect_ratio: aspectRatio,
-    aspect_ratio_method: aspectRatioMethod ? aspectRatioMethod : customAspectRatioMethod,
+    aspect_ratio_method: customAspectRatioMethod ? customAspectRatioMethod : "",
     authored_state: authoredState,
     interactive_item_id: interactiveItemId,
     linked_interactives: linkedInteractives
