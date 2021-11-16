@@ -12,7 +12,7 @@ import { RelativeLocation } from "../util/move-utils";
 import { useDestinationChooser } from "../hooks/use-destination-chooser";
 
 export const SectionItemMoveDialog: React.FC = () => {
-  const { moveItem, getSections, getPages, currentPage } = usePageAPI();
+  const { moveItem, getSections  } = usePageAPI();
   const { userInterface: {movingItemId}, actions: {setMovingItemId}} = React.useContext(UserInterfaceContext);
   const [selectedColumn, setSelectedColumn] = useState(SectionColumns.PRIMARY);
   const [selectedOtherItemId, setSelectedOtherItemId] = useState("");
@@ -91,7 +91,7 @@ export const SectionItemMoveDialog: React.FC = () => {
 
   if (movingItemId) {
     return (
-      <Modal title="Move this item to..." visibility={true} width={600}>
+      <Modal title="Move this item to..." visibility={true} closeFunction={handleCloseDialog} width={600}>
         <div className="sectionItemMoveDialog">
           <dl>
             <dt className="col1">Page</dt>
