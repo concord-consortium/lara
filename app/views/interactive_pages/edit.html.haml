@@ -16,8 +16,9 @@
       %li
         \/
         = @page.name
-
-= render :partial => "publications/publication_failures", :locals =>{ :publication => @activity}
+-# 2021-11-15 NP stopped rendering the publication partial. It was chatty (polling) and ugly
+-# TODO: TBD: Do we need to update publication status?
+-# = render :partial => "publications/publication_failures", :locals =>{ :publication => @activity}
 
 .activity-name= @activity.name
 
@@ -61,7 +62,11 @@
     });
 
     $(document).ready(function() {
-      var params = {host: window.location.origin, activityId: "#{@activity.id}"};
+      var params = {
+        host: window.location.origin,
+        activityId: "#{@activity.id}",
+        id: "#{@page.id}"
+      };
       var element;
       console.log(params);
       var container = $("#sections-container")[0];

@@ -65,6 +65,11 @@ const UserInterfaceProvider: React.FC = ({children}) => {
   };
 
   const setCurrentPageId = (id: string) => {
+    const url = window.location.toString();
+    const nextUrl = url.replace(/\/pages\/\d+\//, `/pages/${id}/`);
+    const title = `edit page ${id}`;
+    const data = {title};
+    window.history.pushState(data, `edit page ${id}`, nextUrl);
     setUserInterface( (draft) => {draft.currentPageId = id; });
   };
 
