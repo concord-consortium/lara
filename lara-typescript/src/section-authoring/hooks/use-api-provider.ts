@@ -32,11 +32,25 @@ export const usePageAPI = () => {
 
   const getPages = useQuery<IPage[], Error>(PAGES_CACHE_KEY, provider.getPages);
 
+  const getPageIdFromLocation = () => {
+    const pageIdRegex = /pages\/(\d+)\/edit/;
+    const currentLoc = window.location.toString();
+    const matchData = currentLoc.match(pageIdRegex);
+    if (matchData && matchData[1]) {
+      return matchData[1];
+    }
+    return null;
+  };
+
   const getPage =  () => {
     const pages = getPages.data;
     if (pages && pages.length > -1) {
       if (userInterface.currentPageId == null) {
-        actions.setCurrentPageId(getPages.data[0].id);
+        // Look for the pageId in the URL in the address bar
+        // if its not there, fallback to the first page
+        const fromLocation = getPageIdFromLocation();
+        const pageId = fromLocation ? fromLocation :  getPages.data[0].id;
+        actions.setCurrentPageId(pageId);
       }
       return getPages.data.find( (p: IPage) => p.id === userInterface.currentPageId);
     }

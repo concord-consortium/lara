@@ -10,17 +10,12 @@ import { ReactQueryDevtools } from "react-query/devtools";
 export interface IAPIContainerProps {
   activityId?: string;
   host?: string;
-  pageId?: string;
 }
 
 export const APIContainer: React.FC<IAPIContainerProps> = (props) => {
-  const {activityId, host, pageId} = props;
+  const {activityId, host} = props;
   const queryClient = new QueryClient();
   const ui = React.useContext(UserInterfaceContext);
-  const {actions} = ui;
-  if (pageId) {
-    actions.setCurrentPageId(pageId);
-  }
   let APIProvider: IAuthoringAPIProvider = mockProvider;
   if (activityId && host) {
     APIProvider = getLaraAuthoringAPI(activityId, host);

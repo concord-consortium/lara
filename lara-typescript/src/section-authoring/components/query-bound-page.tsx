@@ -12,7 +12,7 @@ export const QueryBoundPage = (props: IQueryBoundPage) => {
   const activityId = props.activityId || "55";
   const pageId = props.id;
   return (
-    <APIContainer activityId={activityId} host={host} pageId={pageId}>
+    <APIContainer activityId={activityId} host={host}>
       <AuthoringPageUsingAPI />
     </APIContainer>
   );
