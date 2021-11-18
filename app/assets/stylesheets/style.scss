@@ -69,7 +69,7 @@ i, em {
   font-style: italic;
 }
 body {
-  background: #fff url(/assets/body-bg.gif) right 60px no-repeat;
+  background: #0592af;
   color: #3f3f3f;
   font: 80% 'Lato', arial, helvetica, sans-serif;
 }
@@ -102,38 +102,12 @@ button.disabled, .btn-primary.disabled, span.edit_trigger.disabled {
 }
 
 #container {
+  padding: 40px;
 }
 #header {
-  background: #bddfdf;
-  height: 75px;
+  margin: 0 auto 3px;
   position: relative;
-  div {
-    height: 130px;
-    margin: 0 auto;
-    position: relative;
-    width: 960px;
-
-    img {
-      height: auto;
-      max-height: 70px;
-      width: auto;
-    }
-  }
-  #mw-logo {
-    border: none;
-    float: left;
-    font-size: 1.5em;
-    height: 60px;
-    margin-top: 7px;
-    width: 159px;
-  }
-  #cc-logo {
-    border: none;
-    float: right;
-    height: 35px;
-    margin-top: 19px;
-    width: 114px;
-  }
+  width: 1140px;
 }
 .clear {
   clear: both;
@@ -145,11 +119,13 @@ button.disabled, .btn-primary.disabled, span.edit_trigger.disabled {
   clear: both;
 }
 .content {
+  background: white;
   height: auto;
   margin: 0 auto;
   min-height: 500px;
+  padding: 0 10px 10px;
   position: relative;
-  width: 1140px;
+  width: 1120px;
   h1 {
     clear: both;
     color: #eb8723;
@@ -166,11 +142,7 @@ button.disabled, .btn-primary.disabled, span.edit_trigger.disabled {
     font: 400 1.3em 'Lato', georgia, 'times new roman', serif;
     min-height: 1em;
   }
-  nav {
-    padding: 10px 0;
-    width: 79%;
-    margin: 1em;
-  }
+  nav { }
   .breadcrumbs {
     height: auto;
     text-align: left;
@@ -527,19 +499,20 @@ div.summary {
     clear: both;
 }
 #footer {
-  background: #bddfdf;
+  background: #cdebf2;
   clear: both;
-  color: #3a878b;
+  color: #0592af;
   margin-top: 20px;
   display: block;
-  padding: 1em;
+  padding: 10px 0;
   div {
     margin: 0 auto;
-    width: 960px;
+    padding: 0 10px;
+    width: 1120px;
   }
 }
 #footer a {
-  color: #3a878b;
+  color: #0592af;
 }
 #overlay {
   background: #000;

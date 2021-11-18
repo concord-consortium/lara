@@ -4,6 +4,7 @@ import * as PluginAPI from "./plugin-api";
 import * as InteractiveAPI from "./interactive-api-lara-host";
 import * as Plugins from "./plugins";
 import * as Events from "./events";
+import * as PageHeader from "./section-authoring/components/page-header";
 import * as PageItemAuthoring from "./page-item-authoring";
 import * as SectionAuthoring from "./section-authoring";
 
@@ -18,6 +19,7 @@ export {
   InteractiveAPI,
   Plugins,
   Events,
+  PageHeader,
   PageItemAuthoring,
   SectionAuthoring
 };
@@ -28,6 +30,7 @@ export {
 (window as any).LARA.PluginAPI_V3 = PluginAPI;
 (window as any).LARA.Plugins = Plugins;
 (window as any).LARA.Events = Events;
+(window as any).LARA.PageHeader = PageHeader;
 (window as any).LARA.InteractiveAPI = InteractiveAPI;
 (window as any).LARA.PageItemAuthoring = PageItemAuthoring;
 (window as any).LARA.SectionAuthoring = SectionAuthoring;

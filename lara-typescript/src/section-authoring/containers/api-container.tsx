@@ -17,8 +17,8 @@ export const APIContainer: React.FC<IAPIContainerProps> = (props) => {
   const queryClient = new QueryClient();
   const ui = React.useContext(UserInterfaceContext);
   let APIProvider: IAuthoringAPIProvider = mockProvider;
-  if (activityId && host) {
-    APIProvider = getLaraAuthoringAPI(activityId, host);
+  if (host) {
+    APIProvider = getLaraAuthoringAPI({activityId: activityId || "", host});
   }
 
   return (

@@ -8,6 +8,7 @@ import {
   APISectionCreateF, APISectionsUpdateF, APISectionUpdateF,
   APIPageItemCreateF, APIPageItemUpdateF,
   ILibraryInteractive, ILibraryInteractiveResponse,
+  IPortal,
   APIPageItemDeleteF,
   ISectionItem,
   APISectionCopyF,
@@ -18,9 +19,17 @@ import {
 
 const APIBase = "/api/v1";
 
-export const getLaraAuthoringAPI =
-  (activityId: string, host: string = window.location.origin): IAuthoringAPIProvider => {
+interface IGetLARAAuthoringAPIParams {
+  activityId: string;
+  host: string;
+}
 
+export const getLaraAuthoringAPI =
+  (authoringArgs: IGetLARAAuthoringAPIParams = {
+    activityId: "",
+    host: window.location.origin
+  }): IAuthoringAPIProvider => {
+  const { activityId, host } = authoringArgs;
   const prefix = `${host}${APIBase}`;
   // endpoints:
 
@@ -40,6 +49,7 @@ export const getLaraAuthoringAPI =
   const deletePageItemUrl = (pageId: PageId) => `${prefix}/delete_page_item/${pageId}.json`;
   const copyPageItemUrl = (pageId: PageId) => `${prefix}/copy_page_item/${pageId}.json`;
   const libraryInteractivesUrl = `${prefix}/get_library_interactives_list.json`;
+  const portalsURL = `${prefix}/get_portal_list.json`;
 
   interface ISendToLaraParams {
     url: string;
@@ -144,6 +154,17 @@ export const getLaraAuthoringAPI =
       });
   };
 
+  const getPortals = () => {
+    return sendToLara({url: portalsURL})
+    // tslint:disable-next-line
+    .then( (json: any) => {
+      const result = {
+        portals: json.portals.map((p: IPortal) => ({...p}))
+      };
+      return result;
+    });
+  };
+
   const getAllEmbeddables = () => {
     return sendToLara({url: libraryInteractivesUrl})
       // tslint:disable-next-line
@@ -177,7 +198,7 @@ export const getLaraAuthoringAPI =
     getPages, getPage, createPage, deletePage, copyPage,
     createSection, updateSections, updateSection, copySection,
     createPageItem, updatePageItem, deletePageItem, copyPageItem,
-    getAllEmbeddables, getLibraryInteractives,
+    getAllEmbeddables, getLibraryInteractives, getPortals,
     pathToTinyMCE: "/assets/tinymce.js", pathToTinyMCECSS: "/assets/tinymce-content.css"
   };
 };

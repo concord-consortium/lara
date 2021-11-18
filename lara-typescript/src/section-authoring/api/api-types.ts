@@ -232,6 +232,11 @@ export interface IPage {
 
 }
 
+export interface IPortal {
+  name: string;
+  path: string;
+}
+
 // API Call Signatures
 export type APIPagesGetF = () => Promise<IPage[]>;
 export type APIPageGetF = (id: PageId) => Promise<IPage | null>;
@@ -271,6 +276,8 @@ export interface IAuthoringAPIProvider {
 
   getLibraryInteractives: () => Promise<{libraryInteractives: ILibraryInteractive[]}>;
   getAllEmbeddables: () => Promise<{allEmbeddables: ISectionItemType[]}>;
+
+  getPortals: () => Promise<{portals: IPortal[]}>;
 
   pathToTinyMCE: string | null;
   pathToTinyMCECSS: string | undefined;
