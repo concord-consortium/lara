@@ -36,7 +36,7 @@ export const updatePositions = (items: Array<{position?: number}>) => {
   });
 };
 
-const setSectionPositions = (page: IPage)  => {
+export const setSectionPositions = (page: IPage)  => {
   updatePositions(page.sections);
   for (const section of page.sections) {
     updatePositions(section.items!);

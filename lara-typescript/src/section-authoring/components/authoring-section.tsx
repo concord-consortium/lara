@@ -65,6 +65,7 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
   updateFunction,
   layout: initLayout = defaultLayout,
   items = [],
+  position,
   collapsed: initCollapsed = false,
   title,
   moveItemFunction,
@@ -146,12 +147,12 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
 
   const addItem = (column: SectionColumns) => {
     const nextId = `section-${id}-item-${items.length}`;
-    const position = items.length + 1;
+    const itemPosition = items.length + 1;
     const newItem: ICreatePageItem = {
       // id: `${nextId}`,
       section_id: id,
       column,
-      position,
+      position: itemPosition,
       embeddable: "unknown",
       // title: `Item ${position} - ${Math.random().toString(36).substr(2, 9)}`
     };
@@ -176,6 +177,7 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
     return `edit-page-grid-container sectionContainer ${layoutClass}`;
   };
 
+  // console.log(id, items, title, position);
   return (
     <div className={sectionClassNames()}>
       <header className="sectionMenu full-row">
@@ -183,7 +185,7 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
           <span className="sectionDragHandle" {...draggableProvided?.dragHandleProps}>
             <GripLines  />
           </span>
-          <h3>{title}{id}</h3>
+          <h3>{title}{position}</h3>
           <label htmlFor="section_layout">Layout: </label>
           <select
             id="section_layout"
