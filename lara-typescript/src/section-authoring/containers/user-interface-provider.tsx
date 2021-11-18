@@ -9,8 +9,18 @@ interface IUserInterface {
   editingItemId: string | false;
 }
 
+const getPageIdFromLocation = () => {
+  const pageIdRegex = /pages\/(\d+)\/edit/;
+  const currentLoc = window.location.toString();
+  const matchData = currentLoc.match(pageIdRegex);
+  if (matchData && matchData[1]) {
+    return matchData[1];
+  }
+  return null;
+};
+
 const defaultUI: IUserInterface = {
-  currentPageId: null,
+  currentPageId: getPageIdFromLocation(),
   movingItemId: false,
   movingSectionId: false,
   editingItemId: false

@@ -44,7 +44,6 @@ export const PageCopyDialog: React.FC<IPageCopyDialogProps> = ({
 
   const handleCopyPage = () => {
     if (currentPageIndex != null && currentPageIndex > -1) {
-      const copiedPageId = pages[currentPageIndex].id;
       let destIndex = pages.findIndex(p => p.id === selectedOtherPageId);
       if (selectedPosition === RelativeLocation.After) {
         destIndex++;
