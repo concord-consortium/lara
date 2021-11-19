@@ -26,7 +26,7 @@ export const useDestinationChooser = () => {
       }
       setSections(foundPage?.sections || []);
     }
-  }, [selectedPageId]);
+  }, [selectedPageId, getPages]);
 
   React.useEffect( () => {
     if (currentPage && !validPage) {

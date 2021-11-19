@@ -110,7 +110,7 @@ export const SectionItemMoveDialog: React.FC = () => {
                 <option value="">Select ...</option>
                 {
                   sections.map((s) => {
-                    return <option key={`section-option-${s.id}`} value={s.id}>{s.id}</option>;
+                    return <option key={`section-option-${s.id}`} value={s.id}>{s.position}</option>;
                     })
                 }
               </select>
