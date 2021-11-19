@@ -281,9 +281,9 @@ class Api::V1::InteractivePagesController < API::APIController
 
   def get_portal_list
     portals = []
-    Concord::AuthPortal.all.each_pair do |key,portal|
+    Concord::AuthPortal.all.each_pair do |key, portal|
       name = portal.link_name
-      path = omniauth_authorize_path("user", portal.strategy_name);
+      path = user_omniauth_authorize_path(portal.strategy_name)
       portals.push({:name => name, :path => path})
     end
 
