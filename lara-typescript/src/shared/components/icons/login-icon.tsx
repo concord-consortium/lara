@@ -1,6 +1,6 @@
 import * as React from "react";
 
-const kDefaultHight = "1em";
+const kDefaultHeight = "1em";
 const kDefaultWidth = "1em";
 
 export interface ILoginProps {
@@ -9,7 +9,7 @@ export interface ILoginProps {
 }
 
 export const Login = (props: ILoginProps) => {
-  const height = props.height ? props.height : kDefaultHight;
+  const height = props.height ? props.height : kDefaultHeight;
   const width = props.width ? props.width : kDefaultWidth;
 
   return(

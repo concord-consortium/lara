@@ -1,13 +1,13 @@
 import * as React from "react";
 
-const kDefaultHight = "1em";
+const kDefaultHeight = "1em";
 
 export interface IGripLinesProps {
   height?: string;
 }
 
 export const GripLines = (props: IGripLinesProps) => {
-  const height = props.height ? props.height : kDefaultHight;
+  const height = props.height ? props.height : kDefaultHeight;
 
   return(
     <svg
