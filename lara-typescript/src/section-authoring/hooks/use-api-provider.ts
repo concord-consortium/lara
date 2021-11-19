@@ -32,29 +32,39 @@ export const usePageAPI = () => {
   const provider: IAuthoringAPIProvider = useContext(APIContext);
   const client = useQueryClient(); // Get the context from our container.
 
-  const getPages = useQuery<IPage[], Error>(PAGES_CACHE_KEY, provider.getPages);
+  const getPages = useQuery
+  <IPage[], Error>
+  (PAGES_CACHE_KEY, provider.getPages, {
+    refetchOnWindowFocus: false,
+    staleTime: 1000 * 60 * 5,
+    refetchOnMount: false
+  });
 
-  const getPageIdFromLocation = () => {
-    const pageIdRegex = /pages\/(\d+)\/edit/;
-    const currentLoc = window.location.toString();
-    const matchData = currentLoc.match(pageIdRegex);
-    if (matchData && matchData[1]) {
-      return matchData[1];
-    }
-    return null;
-  };
+  const getAllEmbeddables = useQuery
+    <{allEmbeddables: ISectionItemType[]}, Error>
+    (SECTION_ITEM_TYPES_KEY, provider.getAllEmbeddables, {
+      refetchOnWindowFocus: false,
+      staleTime: Infinity,
+      refetchOnMount: false
+    });
+
+  const getLibraryInteractives = useQuery
+    <{libraryInteractives: ILibraryInteractive[]}, Error>
+    (LIBRARY_INTERACTIVES_KEY, provider.getLibraryInteractives, {
+      refetchOnWindowFocus: false,
+      staleTime: Infinity,
+      refetchOnMount: false
+    });
 
   const getPage =  () => {
     const pages = getPages.data;
     if (pages && pages.length > -1) {
-      if (userInterface.currentPageId == null) {
-        // Look for the pageId in the URL in the address bar
-        // if its not there, fallback to the first page
-        const fromLocation = getPageIdFromLocation();
-        const pageId = fromLocation ? fromLocation :  getPages.data[0].id;
-        actions.setCurrentPageId(pageId);
+      if (userInterface.currentPageId != null) {
+        return getPages.data.find( (p: IPage) => p.id === userInterface.currentPageId);
       }
-      return getPages.data.find( (p: IPage) => p.id === userInterface.currentPageId);
+      else {
+        return getPages.data[0];
+      }
     }
     return null;
   };
@@ -119,18 +129,6 @@ export const usePageAPI = () => {
       copyPageItemMutation.mutate({pageId: userInterface.currentPageId, sectionItemId});
     }
   };
-
-  const getAllEmbeddables = useQuery
-    <{allEmbeddables: ISectionItemType[]}, Error>
-    (SECTION_ITEM_TYPES_KEY, provider.getAllEmbeddables);
-
-  const getLibraryInteractives = useQuery
-    <{libraryInteractives: ILibraryInteractive[]}, Error>
-    (LIBRARY_INTERACTIVES_KEY, provider.getLibraryInteractives);
-
-  const getPortals = useQuery
-    <{portals: IPortal[]}, Error>
-    (PORTAL_KEY, provider.getPortals);
 
   const getSections = () => {
     if (!currentPage) return [];
@@ -251,6 +249,10 @@ export const usePageAPI = () => {
     addPage = () => createPageMutation.mutate(currentPage.id);
     copyPage = (destIndex: number) => copyPageMutation.mutate({pageId: currentPage.id, destIndex});
   }
+
+  const getPortals = useQuery
+    <{portals: IPortal[]}, Error>
+    (PORTAL_KEY, provider.getPortals);
 
   return {
     getPages, addPage, deletePageMutation, copyPage,

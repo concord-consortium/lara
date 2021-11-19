@@ -38,7 +38,7 @@ class Api::V1::InteractivePagesController < API::APIController
 
     return error("Can't find activity for page") unless activity
 
-    position = params[:dest_index];
+    position = params[:dest_index]
 
     next_page = @interactive_page.duplicate
     next_page.lightweight_activity = activity
