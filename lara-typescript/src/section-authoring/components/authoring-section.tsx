@@ -184,7 +184,7 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
           <span className="sectionDragHandle" {...draggableProvided?.dragHandleProps}>
             <GripLines  />
           </span>
-          <h3>{title}{position}</h3>
+          <h3>Section {position}{title ? " " + title : ""}</h3>
           <label htmlFor="section_layout">Layout: </label>
           <select
             id="section_layout"
