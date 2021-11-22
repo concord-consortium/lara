@@ -1,9 +1,5 @@
 - if current_user
-  #{t("WELCOME")}, #{current_user.email}
-  |
-  = link_to "Log Out", destroy_user_session_path, :method => :delete
   -if can? :manage, User
-    |
     = link_to "User Admin", admin_users_path
   -if can? :manage, Theme
     |
@@ -26,17 +22,3 @@
   -if can? :manage, LibraryInteractive
     |
     = link_to "Library Interactives", library_interactives_path
-- else
-  -#= link_to "Log In", user_omniauth_authorize_path(Concord::AuthPortal.default.strategy_name)
-  - if Concord::AuthPortal.configured_portal_names.size > 1 # Note that this means no Twitter/GitHub/other at this point - easy to fix when needed
-    .login_portal
-      .login_portal_widget_toggle
-        Log In
-        %i.fa.fa-sign-in
-      .login_portals_widget
-        %ul
-          - Concord::AuthPortal.all.each_pair do |key,portal|
-            %li.session_link
-              .text-link
-                = link_to "Sign in via #{portal.link_name}", omniauth_authorize_path("user", portal.strategy_name)
-  -#= link_to "Log In", user_omniauth_authorize_path(:concord_portal)

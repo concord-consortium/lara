@@ -1,6 +1,6 @@
 import * as React from "react";
 
-const kDefaultHight = "1em";
+const kDefaultHeight = "1em";
 
 export interface IMinusSquareProps {
   height?: string;
@@ -8,7 +8,7 @@ export interface IMinusSquareProps {
 }
 
 export const MinusSquare = (props: IMinusSquareProps) => {
-  const height = props.height ? props.height : kDefaultHight;
+  const height = props.height ? props.height : kDefaultHeight;
 
   return(
     <svg

@@ -1,0 +1,29 @@
+@import "../../../../vars.scss";
+
+  .project-logo {
+    align-items: center;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    height: 40px;
+    margin: 0 0 0 10px;
+    padding: 2px 10px;
+
+    &:hover {
+      background-color: var(--lt-teal);
+    }
+    &:active {
+      background-color: var(--teal);
+    }
+
+    &.no-link {
+      cursor: auto;
+      outline: none;
+    }
+
+    .logo-img {
+      height: 80%;
+      padding: 6px 10px;
+    }
+  }

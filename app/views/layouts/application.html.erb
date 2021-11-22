@@ -23,13 +23,7 @@
   }
 </script>
 <div id="container" class="<%= content_for :container_css_classes %>">
-  <div id="header">
-    <div>
-      <%= project_logo_tag %>
-      <a href="https://concord.org/" title="The Concord Consortium"><%= image_tag "cc-logo.png", :alt => "The Concord Consortium", :id => "cc-logo" %></a>
-      <!-- <nav>Home / Activities / Physics</nav> -->
-    </div>
-  </div>
+  <div id="header"></div>
   <div id="content" class="content">
     <nav><%= yield :nav %></nav>
     <%= yield :session %>
@@ -57,5 +51,16 @@
 <%= render :partial => 'shared/modal' %>
 <%= render :partial => 'shared/analytics' %>
 <%= yield :extra_javascript %>
+<script>
+$(document).ready(function() {
+  var params = {
+    currentUser: <%= current_user.to_json.html_safe %>, // Make sure using html_safe is safe. XSS issue? See https://stackoverflow.com/questions/3757457/handling-json-in-js-erb-template-in-rails-3
+    logOutURL: "<%= destroy_user_session_path %>",
+    host: window.location.origin
+  }; 
+  var container = $("#header")[0];
+  LARA.PageHeader.renderPageHeader(container, params);
+});
+</script>
 </body>
 </html>

@@ -2,6 +2,7 @@ class Api::V1::InteractivePagesController < API::APIController
   layout false
   before_filter :set_interactive_page, except: [
     :get_library_interactives_list,
+    :get_portal_list,
     :get_pages,
     :create_page
   ]
@@ -276,6 +277,20 @@ class Api::V1::InteractivePagesController < API::APIController
     @interactive_page.reload if changed
 
     render_page_sections_json
+  end
+
+  def get_portal_list
+    portals = []
+    Concord::AuthPortal.all.each_pair do |key, portal|
+      name = portal.link_name
+      path = user_omniauth_authorize_path(portal.strategy_name)
+      portals.push({:name => name, :path => path})
+    end
+
+    render :json => {
+      success: true,
+      portals: portals
+    }
   end
 
   def get_library_interactives_list

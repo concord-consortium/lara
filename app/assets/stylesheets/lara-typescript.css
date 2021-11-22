@@ -268,6 +268,284 @@
     color: #000;
     padding: 0.2em 0; }
 
+@font-face {
+  font-family: 'Lato-Light';
+  font-style: normal;
+  font-weight: 100;
+  src: local("Lato Light"), local("Lato-Light"), url(//fonts.googleapis.com/css?family=Lato:100) format("woff"); }
+
+@font-face {
+  font-family: 'Lato-Regular';
+  font-style: normal;
+  font-weight: 400;
+  src: local("Lato Regular"), local("Lato-Regular"), url(//themes.googleusercontent.com/static/fonts/lato/v6/qIIYRU-oROkIk8vfvxw6QvesZW2xOQ-xsNqO47m55DA.woff) format("woff"); }
+
+@font-face {
+  font-family: 'Lato-Bold';
+  font-style: normal;
+  font-weight: 700;
+  src: local("Lato Bold"), local("Lato-Bold"), url(//themes.googleusercontent.com/static/fonts/lato/v6/qdgUG4U09HnJwhYI-uK18wLUuEpTyoUstqEm5AMlJo4.woff) format("woff"); }
+
+:root {
+  --font-family-bold: Lato-Bold, helvetica, verdana, sans-serif;
+  --font-family-default: Lato-Regular, helvetica, verdana, sans-serif;
+  --font-family-light: Lato-Light, helvetica, verdana, sans-serif;
+  --font-color-default: #313131;
+  --dark-teal: #016082;
+  --teal: #0592af;
+  --lt-teal: #93d5e4;
+  --ltr-teal: #cdebf2;
+  --ltst-teal: #e2f4f8;
+  --gold: #ffc320;
+  --lt-orange: #ffe6d0;
+  --orange: #ea6d2f;
+  --dark-gray: #3f3f3f;
+  --med-gray: #979797;
+  --lt-gray: hsl(0, 0%, 90%);
+  --ltr-gray: hsl(0, 0%, 95%); }
+
+.project-logo {
+  align-items: center;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  height: 40px;
+  margin: 0 0 0 10px;
+  padding: 2px 10px; }
+  .project-logo:hover {
+    background-color: var(--lt-teal); }
+  .project-logo:active {
+    background-color: var(--teal); }
+  .project-logo.no-link {
+    cursor: auto;
+    outline: none; }
+  .project-logo .logo-img {
+    height: 80%;
+    padding: 6px 10px; }
+
+@font-face {
+  font-family: 'Lato-Light';
+  font-style: normal;
+  font-weight: 100;
+  src: local("Lato Light"), local("Lato-Light"), url(//fonts.googleapis.com/css?family=Lato:100) format("woff"); }
+
+@font-face {
+  font-family: 'Lato-Regular';
+  font-style: normal;
+  font-weight: 400;
+  src: local("Lato Regular"), local("Lato-Regular"), url(//themes.googleusercontent.com/static/fonts/lato/v6/qIIYRU-oROkIk8vfvxw6QvesZW2xOQ-xsNqO47m55DA.woff) format("woff"); }
+
+@font-face {
+  font-family: 'Lato-Bold';
+  font-style: normal;
+  font-weight: 700;
+  src: local("Lato Bold"), local("Lato-Bold"), url(//themes.googleusercontent.com/static/fonts/lato/v6/qdgUG4U09HnJwhYI-uK18wLUuEpTyoUstqEm5AMlJo4.woff) format("woff"); }
+
+:root {
+  --font-family-bold: Lato-Bold, helvetica, verdana, sans-serif;
+  --font-family-default: Lato-Regular, helvetica, verdana, sans-serif;
+  --font-family-light: Lato-Light, helvetica, verdana, sans-serif;
+  --font-color-default: #313131;
+  --dark-teal: #016082;
+  --teal: #0592af;
+  --lt-teal: #93d5e4;
+  --ltr-teal: #cdebf2;
+  --ltst-teal: #e2f4f8;
+  --gold: #ffc320;
+  --lt-orange: #ffe6d0;
+  --orange: #ea6d2f;
+  --dark-gray: #3f3f3f;
+  --med-gray: #979797;
+  --lt-gray: hsl(0, 0%, 90%);
+  --ltr-gray: hsl(0, 0%, 95%); }
+
+.account-owner {
+  align-items: center;
+  color: var(--teal);
+  display: flex;
+  flex-direction: row;
+  font-family: var(--font-family-default);
+  font-size: 18px;
+  font-weight: bold;
+  margin: 0 10px 0 10px;
+  padding: 0;
+  position: relative; }
+  .account-owner .account-owner-name {
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-left: 8px;
+    padding: 4px 10px 4px 4px;
+    position: relative; }
+    .account-owner .account-owner-name:hover {
+      background-color: var(--lt-teal); }
+    .account-owner .account-owner-name:active {
+      background-color: var(--teal);
+      color: white; }
+      .account-owner .account-owner-name:active .icon {
+        fill: var(--teal); }
+      .account-owner .account-owner-name:active svg {
+        fill: white; }
+    .account-owner .account-owner-name a :hover {
+      fill: var(--teal); }
+    .account-owner .account-owner-name div {
+      display: flex; }
+    .account-owner .account-owner-name svg {
+      fill: var(--teal);
+      margin-right: 5px; }
+  .account-owner .icon {
+    fill: var(--orange);
+    height: 32px;
+    object-fit: contain;
+    width: 32px; }
+  .account-owner .account-log-in-options {
+    background-color: white;
+    border-radius: 0 0 4px 4px;
+    box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    padding: 10px 0 5px;
+    pointer-events: none;
+    position: absolute;
+    right: -10px;
+    top: calc(100% + 16px);
+    transition-property: opacity;
+    transition: .25s;
+    width: 210px; }
+    .account-owner .account-log-in-options.show {
+      opacity: 1;
+      pointer-events: auto;
+      z-index: 5; }
+    .account-owner .account-log-in-options a {
+      color: var(--dark-gray);
+      display: flex;
+      padding: 10px 20px;
+      text-decoration: none;
+      width: calc(100% - 40px); }
+      .account-owner .account-log-in-options a:hover {
+        background: var(--ltst-teal); }
+      .account-owner .account-log-in-options a:active {
+        background: var(--lt-teal); }
+      .account-owner .account-log-in-options a svg {
+        fill: var(--teal);
+        margin-right: 5px; }
+    .account-owner .account-log-in-options ul {
+      list-style: none;
+      margin: 0;
+      padding: 0; }
+      .account-owner .account-log-in-options ul li {
+        font-size: 16px;
+        font-weight: 300;
+        margin: 0;
+        padding: 0; }
+        .account-owner .account-log-in-options ul li:last-child {
+          border-top: solid 1px var(--ltr-teal); }
+
+@font-face {
+  font-family: 'Lato-Light';
+  font-style: normal;
+  font-weight: 100;
+  src: local("Lato Light"), local("Lato-Light"), url(//fonts.googleapis.com/css?family=Lato:100) format("woff"); }
+
+@font-face {
+  font-family: 'Lato-Regular';
+  font-style: normal;
+  font-weight: 400;
+  src: local("Lato Regular"), local("Lato-Regular"), url(//themes.googleusercontent.com/static/fonts/lato/v6/qIIYRU-oROkIk8vfvxw6QvesZW2xOQ-xsNqO47m55DA.woff) format("woff"); }
+
+@font-face {
+  font-family: 'Lato-Bold';
+  font-style: normal;
+  font-weight: 700;
+  src: local("Lato Bold"), local("Lato-Bold"), url(//themes.googleusercontent.com/static/fonts/lato/v6/qdgUG4U09HnJwhYI-uK18wLUuEpTyoUstqEm5AMlJo4.woff) format("woff"); }
+
+:root {
+  --font-family-bold: Lato-Bold, helvetica, verdana, sans-serif;
+  --font-family-default: Lato-Regular, helvetica, verdana, sans-serif;
+  --font-family-light: Lato-Light, helvetica, verdana, sans-serif;
+  --font-color-default: #313131;
+  --dark-teal: #016082;
+  --teal: #0592af;
+  --lt-teal: #93d5e4;
+  --ltr-teal: #cdebf2;
+  --ltst-teal: #e2f4f8;
+  --gold: #ffc320;
+  --lt-orange: #ffe6d0;
+  --orange: #ea6d2f;
+  --dark-gray: #3f3f3f;
+  --med-gray: #979797;
+  --lt-gray: hsl(0, 0%, 90%);
+  --ltr-gray: hsl(0, 0%, 95%); }
+
+.authoring-header {
+  font-family: var(--font-family-default);
+  font-size: 16px;
+  font-weight: bold;
+  height: 60px;
+  margin-bottom: 3px;
+  width: 100%; }
+  .authoring-header.in-sequence {
+    margin-bottom: 0; }
+  .authoring-header .inner {
+    align-items: center;
+    background-color: var(--ltr-teal);
+    box-sizing: border-box;
+    color: var(--dark-gray);
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    margin: auto;
+    width: auto; }
+    .authoring-header .inner.full {
+      width: 100%; }
+    .authoring-header .inner .header-left {
+      align-items: center;
+      display: flex;
+      flex-direction: row;
+      height: 100%;
+      justify-content: flex-start; }
+      .authoring-header .inner .header-left .separator {
+        background-color: var(--teal);
+        height: 30px;
+        margin: 2px;
+        width: 1px; }
+    .authoring-header .inner .header-center {
+      align-items: center;
+      display: flex;
+      flex: 1;
+      flex-direction: row;
+      justify-content: flex-start;
+      min-width: 0;
+      overflow: hidden; }
+      .authoring-header .inner .header-center .title-container {
+        align-items: center;
+        border-radius: 4px;
+        display: flex;
+        height: 20px;
+        padding: 8px 10px;
+        width: calc(100% - 20px); }
+        .authoring-header .inner .header-center .title-container.link {
+          cursor: pointer; }
+        .authoring-header .inner .header-center .title-container.link:hover {
+          background-color: var(--lt-teal); }
+        .authoring-header .inner .header-center .title-container.link:active {
+          background-color: var(--teal);
+          color: white; }
+          .authoring-header .inner .header-center .title-container.link:active .sequence-icon {
+            fill: white; }
+        .authoring-header .inner .header-center .title-container .activity-title {
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap; }
+        .authoring-header .inner .header-center .title-container .sequence-icon {
+          fill: var(--dark-gray);
+          margin-right: 5px; }
+    .authoring-header .inner .header-right {
+      align-items: center;
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-end; }
+
 .react-tabs {
   -webkit-tap-highlight-color: transparent; }
 

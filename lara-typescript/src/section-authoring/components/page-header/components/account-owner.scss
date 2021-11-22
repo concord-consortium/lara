@@ -1,0 +1,117 @@
+@import "../../../../vars.scss";
+
+.account-owner {
+  align-items: center;
+  color: var(--teal);
+  display: flex;
+  flex-direction: row;
+  font-family: var(--font-family-default);
+  font-size: 18px;
+  font-weight: bold;
+  margin: 0 10px 0 10px;
+  padding: 0;
+  position: relative;
+
+  .account-owner-name {
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-left: 8px;
+    padding: 4px 10px 4px 4px;
+    position: relative;
+
+    &:hover {
+      background-color: var(--lt-teal);
+    }
+    &:active {
+      background-color: var(--teal);
+      color: white;
+
+      .icon {
+        fill: var(--teal);
+      }
+      svg {
+        fill: white;
+      }
+    }
+
+    a {
+      :hover {
+        fill: var(--teal);
+      }
+    }
+
+    div {
+      display: flex;
+    }
+
+    svg {
+      fill: var(--teal);
+      margin-right: 5px;
+    }
+  }
+
+  .icon {
+    fill: var(--orange);
+    height: 32px;
+    object-fit: contain;
+    width: 32px;
+  }
+
+  .account-log-in-options {
+    background-color: white;
+    border-radius: 0 0 4px 4px;
+    box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    padding: 10px 0 5px;
+    pointer-events: none;
+    position: absolute;
+    right: -10px;
+    top: calc(100% + 16px);
+    transition-property: opacity;
+    transition: .25s;
+    width: 210px;
+
+    &.show {
+      opacity: 1;
+      pointer-events: auto;
+      z-index: 5;
+    }
+
+    a {
+      color: var(--dark-gray);
+      display: flex;
+      padding: 10px 20px;
+      text-decoration: none;
+      width: calc(100% - 40px);
+
+      &:hover {
+        background: var(--ltst-teal);
+      }
+      &:active {
+        background: var(--lt-teal);
+      }
+  
+      svg {
+        fill: var(--teal);
+        margin-right: 5px;
+      }
+    }
+    ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+
+      li {
+        font-size: 16px;
+        font-weight: 300;
+        margin: 0;
+        padding: 0;
+
+        &:last-child {
+          border-top: solid 1px var(--ltr-teal);
+        }
+      }
+    }
+  }
+}

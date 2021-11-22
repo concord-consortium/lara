@@ -4,7 +4,8 @@ import {
   IPage, PageId,
   APIPageGetF, APIPagesGetF, APIPageItemUpdateF,
   IAuthoringAPIProvider, ISection, ICreatePageItem, ISectionItem, SectionColumns,
-  ISectionItemType, APIPageItemDeleteF, ItemId, SectionId, SectionLayouts, ILibraryInteractive
+  ISectionItemType, APIPageItemDeleteF, ItemId, SectionId, SectionLayouts, ILibraryInteractive,
+  IPortal
 } from "./api-types";
 import { IManagedInteractive } from "../../page-item-authoring/managed-interactives";
 
@@ -515,11 +516,21 @@ const getLibraryInteractives = () => {
   return Promise.resolve({libraryInteractives});
 };
 
+const getPortals = () => {
+  const portals: IPortal[] = [
+    {
+      name: "Fake Portal",
+      path: "#"
+    }
+  ];
+  return Promise.resolve({portals});
+};
+
 const copyPageItem = (args: {pageId: PageId, sectionItemId: ItemId}) => {
   const {sectionItemId, pageId} = args;
   const page = pages.find(p => p.id === pageId);
-  let nextItem = null;
-  let destSection = null;
+  let nextItem: ISectionItem | null = null;
+  let destSection: ISection | null = null;
   if (page) {
     sectionLoop:
     for (const pageSection of page.sections) {
@@ -544,6 +555,6 @@ export const API: IAuthoringAPIProvider = {
   getPages, getPage, createPage, deletePage, copyPage,
   createSection, updateSections, updateSection, copySection,
   createPageItem, updatePageItem, deletePageItem, copyPageItem,
-  getAllEmbeddables, getLibraryInteractives,
+  getAllEmbeddables, getLibraryInteractives, getPortals,
   pathToTinyMCE: "https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.10.0/tinymce.min.js", pathToTinyMCECSS: undefined
 };
