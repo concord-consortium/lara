@@ -1,12 +1,15 @@
 class Run < ActiveRecord::Base
 
+  # NOTE: additional status flags should use bitmask values (0x2, 0x4, etc) so that multiple flags can be set at the same time
+  SentToReportServiceStatusFlag = 0x1
+
   # Trigger whenever a portal update job needs to be re-run
   class PortalUpdateIncomplete < StandardError; end
   class InvalidJobState < StandardError; end
 
   attr_accessible :run_count, :user_id, :key, :activity, :user, :page_id,
   :remote_id, :remote_endpoint, :activity_id, :sequence_id, :context_id,
-  :class_info_url, :platform_id, :platform_user_id, :resource_link_id
+  :class_info_url, :platform_id, :platform_user_id, :resource_link_id, :status
 
   belongs_to :activity, :class_name => LightweightActivity
 
@@ -401,5 +404,15 @@ class Run < ActiveRecord::Base
 
   def lara_to_portal_secret_auth
     return 'Bearer %s' % Concord::AuthPortal.auth_token_for_url(self.remote_endpoint)
+  end
+
+  def set_status_flag(flag)
+    self.status = status | flag
+    self.save
+  end
+
+  def clear_status_flag(flag)
+    self.status = status & ~flag
+    self.save
   end
 end

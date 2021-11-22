@@ -732,4 +732,21 @@ describe Run do
       end
     end
   end
+
+  describe "status flags" do
+    it "constants are set" do
+      expect(Run::SentToReportServiceStatusFlag).to eq 1
+    end
+
+    it "can be set and cleared" do
+      expect(run.status).to eq 0
+      run.set_status_flag(Run::SentToReportServiceStatusFlag)
+      expect(run.status).to eq Run::SentToReportServiceStatusFlag
+      run.clear_status_flag(Run::SentToReportServiceStatusFlag)
+      expect(run.status).to eq 0
+
+      # NOTE: when/if other flags are added tests should be added to ensure only that flag is set and cleared
+      # and the other existing flags are kept as is
+    end
+  end
 end
