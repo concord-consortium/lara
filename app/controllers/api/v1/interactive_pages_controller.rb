@@ -241,7 +241,7 @@ class Api::V1::InteractivePagesController < API::APIController
         if linked_interactives.present?
           page_item.set_linked_interactives(JSON.parse(linked_interactives))
         end
-      end 
+      end
       if embeddable
         embeddable.update_attributes(data)
       end
@@ -370,6 +370,7 @@ class Api::V1::InteractivePagesController < API::APIController
     {
       id: section.id.to_s,
       layout: section.layout,
+      position: section.position,
       items: section.page_items.map { |pi| generate_item_json(pi) }
     }
   end
@@ -379,7 +380,8 @@ class Api::V1::InteractivePagesController < API::APIController
     {
       id: page.id.to_s,
       title: page.name,
-      sections: sections
+      sections: sections,
+      position: page.position
     }
   end
 

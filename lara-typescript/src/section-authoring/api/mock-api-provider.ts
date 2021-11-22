@@ -1,5 +1,5 @@
 import { findItemAddress, findItemByAddress } from "../util/finding-utils";
-import { updatePositions } from "../util/move-utils";
+import { setSectionPositions, updatePositions } from "../util/move-utils";
 import {
   IPage, PageId,
   APIPageGetF, APIPagesGetF, APIPageItemUpdateF,
@@ -171,6 +171,7 @@ export const updatePage = (id: PageId, changes: Partial<IPage>) => {
   if (indx > -1) {
     const nextPage = {... pages[indx], ...changes };
     pages[indx] = nextPage;
+    setSectionPositions(nextPage);
     return Promise.resolve({... nextPage});
   }
   return Promise.reject("Can't find that page");
@@ -180,6 +181,7 @@ const createSection = (id: PageId) => {
   const page = pages.find(p => p.id === id);
   if (page) {
     page.sections.push(makeNewSection());
+    setSectionPositions(page);
     return Promise.resolve(page);
   }
   return Promise.reject(`cant find page ${id}`);
