@@ -54,7 +54,7 @@
 <script>
 $(document).ready(function() {
   var params = {
-    currentUser: <%= current_user.to_json.html_safe %>, // Make sure using html_safe is safe. XSS issue? See https://stackoverflow.com/questions/3757457/handling-json-in-js-erb-template-in-rails-3
+    currentUser: <%= current_user.to_json.html_safe %>,
     logOutURL: "<%= destroy_user_session_path %>",
     host: window.location.origin
   }; 

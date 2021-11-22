@@ -8,7 +8,7 @@ export interface IHelpProps {
   width?: string;
 }
 
-export const Help = (props: IHelpProps) => {
+export const HelpIcon = (props: IHelpProps) => {
   const height = props.height ? props.height : kDefaultHeight;
   const width = props.width ? props.width : kDefaultWidth;
 

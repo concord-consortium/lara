@@ -1,8 +1,9 @@
 import * as React from "react";
 import { useState } from "react";
 import { usePageAPI } from "../../../hooks/use-api-provider";
-import { Login } from "../../../../shared/components/icons/login-icon";
-import { Help } from "../../../../shared/components/icons/help-icon";
+import { LoginIcon } from "../../../../shared/components/icons/login-icon";
+import { HelpIcon } from "../../../../shared/components/icons/help-icon";
+import { AccountOwnerIcon } from "../../../../shared/components/icons/account-owner-icon";
 
 import "./account-owner.scss";
 
@@ -11,9 +12,11 @@ export interface IUser {
   can_export: boolean;
   created_at: string;
   email: string;
+  first_name: string;
   id: number;
   is_admin: boolean;
   is_author: boolean;
+  last_name: string;
   updated_at: string;
 }
 
@@ -45,7 +48,7 @@ export const AccountOwner: React.FC<IAccountOwnerProps> = ({
     return (
       <>
         <div className="account-owner-name">
-          <div onClick={handleLogInClick}><Login height="20" width="20" />Log In</div>
+          <div onClick={handleLogInClick}><LoginIcon height="20" width="20" />Log In</div>
         </div>
         <div className={`account-log-in-options ${showLogInOptions ? "show" : ""}`}>
           <ul>
@@ -56,7 +59,7 @@ export const AccountOwner: React.FC<IAccountOwnerProps> = ({
                 target="_blank"
                 rel="noopener"
               >
-                <Help height="20" width="20" />
+                <HelpIcon height="20" width="20" />
                 Help
               </a>
             </li>
@@ -67,9 +70,15 @@ export const AccountOwner: React.FC<IAccountOwnerProps> = ({
   };
 
   const renderLoggedInUserContent = () => {
+    const displayName = currentUser.first_name && currentUser.last_name
+                          ? `${currentUser.first_name} ${currentUser.last_name}`
+                          : currentUser.first_name
+                            ? currentUser.first_name
+                            : currentUser.email;
     return (
       <div className="account-owner-name">
-        Welcome, {currentUser?.email} | <a href={logOutURL} data-method="delete">Log Out</a>
+        <AccountOwnerIcon />
+        {displayName} | <a href={logOutURL} data-method="delete">Log Out</a>
       </div>
     );
   };

@@ -362,7 +362,7 @@
 
 .account-owner {
   align-items: center;
-  color: var(--teal);
+  color: var(--dark-gray);
   display: flex;
   flex-direction: row;
   font-family: var(--font-family-default);
@@ -372,33 +372,22 @@
   padding: 0;
   position: relative; }
   .account-owner .account-owner-name {
+    align-items: center;
     border-radius: 4px;
     cursor: pointer;
+    display: flex;
     font-size: 16px;
     margin-left: 8px;
     padding: 4px 10px 4px 4px;
     position: relative; }
-    .account-owner .account-owner-name:hover {
-      background-color: var(--lt-teal); }
-    .account-owner .account-owner-name:active {
-      background-color: var(--teal);
-      color: white; }
-      .account-owner .account-owner-name:active .icon {
-        fill: var(--teal); }
-      .account-owner .account-owner-name:active svg {
-        fill: white; }
-    .account-owner .account-owner-name a :hover {
-      fill: var(--teal); }
+    .account-owner .account-owner-name a {
+      color: var(--teal);
+      margin-left: 4px; }
     .account-owner .account-owner-name div {
       display: flex; }
     .account-owner .account-owner-name svg {
       fill: var(--teal);
       margin-right: 5px; }
-  .account-owner .icon {
-    fill: var(--orange);
-    height: 32px;
-    object-fit: contain;
-    width: 32px; }
   .account-owner .account-log-in-options {
     background-color: white;
     border-radius: 0 0 4px 4px;

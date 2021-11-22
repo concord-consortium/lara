@@ -8,7 +8,7 @@ export interface ILoginProps {
   width?: string;
 }
 
-export const Login = (props: ILoginProps) => {
+export const LoginIcon = (props: ILoginProps) => {
   const height = props.height ? props.height : kDefaultHeight;
   const width = props.width ? props.width : kDefaultWidth;
 
