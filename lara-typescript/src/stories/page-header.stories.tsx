@@ -27,9 +27,11 @@ PageHeaderStory.args = {
     can_export: false,
     created_at: "2021-11-19 12:24PM",
     email: "lara.author@concord.org",
+    first_name: "Lara",
     id: 1,
     is_admin: false,
     is_author: true,
+    last_name: "Jones",
     updated_at: "2021-11-19 12:24PM"
   },
   logOutURL: "#",

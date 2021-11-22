@@ -16,7 +16,6 @@ export const PageHeader: React.FC<IPageHeaderProps> = ({
     logOutURL,
     host
   }: IPageHeaderProps) => {
-
   return (
     <APIContainer host={host}>
       <div className="authoring-header" data-cy="authoring-header">
