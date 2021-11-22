@@ -22,11 +22,13 @@ namespace :reporting do
       payload = sender_class.new(resource, opts)
       result = payload.send()
       if (result && result["success"])
+        resource.set_status_flag(Run::SentToReportServiceStatusFlag) if resource.respond_to?(:set_status_flag)
         return true
       end
     rescue => e
       Rails.logger.error "Error: #{e}"
     end
+    resource.clear_status_flag(Run::SentToReportServiceStatusFlag) if resource.respond_to?(:clear_status_flag)
     return false
   end
 
@@ -72,7 +74,7 @@ namespace :reporting do
   desc "publish student runs to report service"
   task :publish_student_runs => :environment do
     # limit this to portal runs by default:
-    where_query = 'remote_endpoint is not null'
+    where_query = "remote_endpoint is not null and status & #{Run::SentToReportServiceStatusFlag} = 0"
     # Or specify remote endpoint substring to match:
     env_value = ENV["REPORT_PUSH_RUN_SELECT_REMOTE"]
     if env_value && env_value.present?
@@ -85,10 +87,10 @@ namespace :reporting do
 
   desc "publish anonymous runs to report service"
   task :publish_anonymous_runs => :environment do
-    runs = Run.where('remote_endpoint is null')
-    env_value = ENV["REPORT_PUSH_RUN_ACTIVITY_ID"]
+    runs = Run.where("remote_endpoint is null and status & #{Run::SentToReportServiceStatusFlag} = 0")
+    env_value = ENV["REPORT_PUSH_RUN_START_DATE"]
     if env_value && env_value.present?
-      runs = runs.where(activity_id: env_value)
+      runs = runs.where("updated_at >= :date", date: env_value)
     end
     opts = { send_all_answers: true }
     send_all_resources(runs, ReportService::RunSender, opts)
