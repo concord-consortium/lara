@@ -13,6 +13,19 @@ class Api::V1::InteractivePagesController < API::APIController
     render_page_sections_json
   end
 
+  def get_preview_url
+    page = @interactive_page
+    activity = page.lightweight_activity
+    base_url = request.base_url
+    activity_player_url = activity.activity_player_url(base_url, page: page)
+    activity_player_te_url = activity.activity_player_url(base_url, page: page, mode: "teacher-edition")
+    render json: {
+      'Select an option...' => '',
+      'Activity Player' => activity_player_url,
+      'Activity Player Teacher Edition' => activity_player_te_url
+    }
+  end
+
   # This is identical to get_sections. Why use different names?
   # Because it expresses the intent. Its possible we will want to return
   # different responses for each in the future.

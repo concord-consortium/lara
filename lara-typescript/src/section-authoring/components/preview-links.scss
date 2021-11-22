@@ -1,0 +1,40 @@
+@import "../../vars.scss";
+
+.preview-links {
+  color: var(--font-color-default);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  font-family: var(--font-family-default);
+  font-size: 12pt;
+  font-weight: bold;
+  margin-left: 1em;
+  margin-bottom: 1em;
+  position: relative;
+    a {
+      color: var(--orange);
+      margin: 0px 5px;
+      &:hover {
+        fill: var(--teal);
+      }
+    }
+
+    span {
+      display: flex;
+      margin: 0px 5px;
+    }
+
+    svg {
+      color: var(--orange);
+      fill: var(--orange);
+      font-size: 1.3em;
+    }
+
+    .disabled {
+      color: var(--dark-gray);
+      svg {
+        fill: var(--dark-gray);
+      }
+    }
+}
