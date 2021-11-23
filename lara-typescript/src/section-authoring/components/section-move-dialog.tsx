@@ -11,7 +11,7 @@ import { useDestinationChooser } from "../hooks/use-destination-chooser";
 
 export const SectionMoveDialog: React.FC = () => {
   const { userInterface: { movingSectionId }, actions: { setMovingSectionId }} = React.useContext(UserInterfaceContext);
-  const { moveSection } = usePageAPI();
+  const { moveSection, currentPage } = usePageAPI();
   const {
     sections, selectedSectionId,
     pagesForPicking, handlePageChange, selectedPageId, validPage,
@@ -48,7 +48,8 @@ export const SectionMoveDialog: React.FC = () => {
   };
 
   const movingSectionPosition = () => {
-    const sectionToMove =  sections.find(s => s.id === movingSectionId);
+    const currentPageSections = currentPage && currentPage.sections;
+    const sectionToMove =  currentPageSections && currentPageSections.find(s => s.id === movingSectionId);
     return sectionToMove?.position;
   };
 
