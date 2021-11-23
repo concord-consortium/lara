@@ -25,3 +25,14 @@
 - if @activity.active_runs > 0
   %p.active-runs
     = "This activity has been used by #{pluralize(@activity.active_runs, "learner")}. Editing may cause problems with results data."
+
+
+:javascript
+  $(document).ready(function() {
+    var params = { host: window.location.origin };
+    var container = $("#preview-menu")[0];
+    LARA.SectionAuthoring.renderPreviewLinks(
+      container,
+      { previewLinks: #{activity_preview_options(@activity).to_json}
+    });
+  });

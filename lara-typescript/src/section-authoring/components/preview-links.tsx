@@ -51,11 +51,9 @@ export const PreviewLinks: React.FC<IPreviewLinksProps> =
   };
 
   return (
-    <>
       <div className="preview-links">
         <span>Preview in:</span>
         {renderPreviewOptions()}
       </div>
-    </>
   );
 };
