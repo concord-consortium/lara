@@ -2,6 +2,7 @@ import * as React from "react";
 import { APIContainer } from "../../../containers/api-container";
 import { Logo } from "./logo";
 import { AccountOwner, IUser } from "./account-owner";
+import { PageHeaderMenu, IHeaderMenuLink } from "./page-header-menu";
 
 import "./page-header.scss";
 
@@ -9,12 +10,14 @@ export interface IPageHeaderProps {
   currentUser: IUser | null;
   logOutURL: string;
   host: string;
+  userLinks: IHeaderMenuLink[];
 }
 
 export const PageHeader: React.FC<IPageHeaderProps> = ({
     currentUser,
     logOutURL,
-    host
+    host,
+    userLinks
   }: IPageHeaderProps) => {
   return (
     <APIContainer host={host}>
@@ -28,7 +31,8 @@ export const PageHeader: React.FC<IPageHeaderProps> = ({
             <div className="title-container" />
           </div>
           <div className="header-right">
-            <AccountOwner currentUser={currentUser} logOutURL={logOutURL} />
+            <AccountOwner currentUser={currentUser} />
+            <PageHeaderMenu logOutURL={logOutURL} userLinks={userLinks} />
           </div>
         </div>
       </div>

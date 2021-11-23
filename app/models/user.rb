@@ -143,4 +143,34 @@ class User < ActiveRecord::Base
     end
   end
 
+  def user_links
+    links = []
+    if can? :manage, User
+      links.push({text: "User Admin", path: Rails.application.routes.url_helpers.admin_users_path})
+    end
+    if can? :manage, Theme
+      links.push({text: "Themes", path: Rails.application.routes.url_helpers.themes_path})
+    end
+    if can? :manage, Project
+      links.push({text: "Projects", path: Rails.application.routes.url_helpers.projects_path})
+    end
+    if can? :manage, QuestionTracker
+      links.push({text: "QuestionTrackers", path: Rails.application.routes.url_helpers.question_trackers_path})
+    end
+    if can? :manage, ApprovedScript
+      links.push({text: "Plugins", path: Rails.application.routes.url_helpers.approved_scripts_path})
+    end
+    if can? :manage, User
+      links.push({text: "Failed Runs", path: Rails.application.routes.url_helpers.dirty_runs_path})
+    end
+    if can? :manage, CRater::ScoreMapping
+      links.push({text: "Score Mappings", path: Rails.application.routes.url_helpers.c_rater_score_mappings_path})
+    end
+    if can? :manage, LibraryInteractive
+      links.push({text: "Library Interactives", path: Rails.application.routes.url_helpers.library_interactives_path})
+    end
+
+    return links
+  end
+
 end

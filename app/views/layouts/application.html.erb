@@ -26,7 +26,6 @@
   <div id="header"></div>
   <div id="content" class="content">
     <nav><%= yield :nav %></nav>
-    <%= yield :session %>
     <p class="notice"><%= notice %></p>
     <p class="alert"><%= alert %></p>
     <%= yield %>
@@ -55,8 +54,9 @@
 $(document).ready(function() {
   var params = {
     currentUser: <%= current_user.to_json.html_safe %>,
-    logOutURL: "<%= destroy_user_session_path %>",
-    host: window.location.origin
+    logOutURL: "<%= current_user ? destroy_user_session_path : '' %>",
+    host: window.location.origin,
+    userLinks: <%= current_user ? current_user.user_links.to_json.html_safe : [] %>
   }; 
   var container = $("#header")[0];
   LARA.PageHeader.renderPageHeader(container, params);
