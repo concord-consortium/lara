@@ -1,5 +1,6 @@
 import * as React from "react";
-import {CCLogo} from "./cc-logo";
+import { accessibilityClick } from "../../../util/accessibility-helper";
+import { CCLogo } from "./cc-logo";
 
 import "./logo.scss";
 
@@ -13,8 +14,15 @@ export const Logo: React.FC<ILogoProps> = ({
   const logo = logoPath
                  ? <img data-cy="logo-img" className="logo-img" src={logoPath} alt="Authoring Home"/>
                  : <CCLogo/>;
+
+  const handleClick = (e: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => {
+    if (accessibilityClick(e)) {
+      window.location.href = "/";
+    }
+  };
+
   return (
-    <div className="project-logo">
+    <div className="project-logo" onClick={handleClick} onKeyDown={handleClick} tabIndex={0}>
       {logo}
     </div>
   );
