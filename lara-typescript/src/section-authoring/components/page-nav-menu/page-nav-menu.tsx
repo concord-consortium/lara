@@ -59,10 +59,13 @@ export const PageNavMenu: React.FC<IPageNavMenuProps> = ({
   };
 
   const handleNavButtonClick = (pageNum: number | null) => {
-    if (pageNum == null) { return; }
-    const outsideIndex = pageNum < 0 || pageNum + 1 > pages.length;
-    if (!outsideIndex) {
-      setCurrentPageId(pages[pageNum].id);
+    if (pageNum == null) {
+      handleSelectHomeButton();
+    } else {
+      const outsideIndex = pageNum < 0 || pageNum + 1 > pages.length;
+      if (!outsideIndex) {
+        setCurrentPageId(pages[pageNum].id);
+      }
     }
   };
 
@@ -72,6 +75,11 @@ export const PageNavMenu: React.FC<IPageNavMenuProps> = ({
 
   const handleCopyPageButtonClick = () => {
     showCopyDialog();
+  };
+
+  const handleSelectHomeButton = () => {
+    const activityPath = window.location.pathname.split("/pages")[0];
+    window.location.href = activityPath + "/edit";
   };
 
   const prevPage = currentPageIndex && currentPageIndex > 0 ? currentPageIndex - 1 : null;
@@ -85,7 +93,6 @@ export const PageNavMenu: React.FC<IPageNavMenuProps> = ({
   const nextPageClassName = `page-button ${currentPageIndex === pages.length - 1 ? "disabled" : ""}`;
   const nextClickHandler = () => handleNavButtonClick(nextPage);
   const homeButtonClassName = `page-button ${currentPageIndex === null ? "current" : ""}`;
-  const homeClickHandler = () => handleNavButtonClick(null);
   const copyPageClassName = `page-button ${!currentPageIsCopyable ? "disabled" : ""}`;
   const copyClickHandler = currentPageIsCopyable ? handleCopyPageButtonClick : undefined;
 
@@ -102,7 +109,7 @@ export const PageNavMenu: React.FC<IPageNavMenuProps> = ({
           <button
             className={homeButtonClassName}
             aria-label="Home"
-            onClick={homeClickHandler}>
+            onClick={handleSelectHomeButton}>
             <Home height="24" width="24" />
           </button>
           {pageButtons()}
