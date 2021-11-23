@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useEffect, useRef } from "react";
 import { useState } from "react";
 import { usePageAPI } from "../../../hooks/use-api-provider";
 import { LoginIcon } from "../../../../shared/components/icons/login-icon";
@@ -23,7 +24,12 @@ export const PageHeaderMenu: React.FC<IAccountOwnerProps> = ({
     userLinks
   }: IAccountOwnerProps) => {
   const { getPortals } = usePageAPI();
+  const menuRef = useRef<HTMLDivElement|null>(null);
   const [showHeaderMenu, setShowHeaderMenu] = useState(false);
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClick, false);
+  }, []);
 
   const handleLogInClick = () => {
     setShowHeaderMenu(!showHeaderMenu);
@@ -31,6 +37,12 @@ export const PageHeaderMenu: React.FC<IAccountOwnerProps> = ({
 
   const handleMenuClick = () => {
     setShowHeaderMenu(!showHeaderMenu);
+  };
+
+  const handleClick = (e: MouseEvent) => {
+    if (menuRef.current && e.target && !menuRef.current.contains(e.target as Node)) {
+      setShowHeaderMenu(false);
+    }
   };
 
   const renderPortalList = () => {
@@ -55,7 +67,7 @@ export const PageHeaderMenu: React.FC<IAccountOwnerProps> = ({
           <LoginIcon height="20" width="20" />
           Log In
         </div>
-        <div className={`header-menu-links ${showHeaderMenu ? "show" : ""}`}>
+        <div ref={menuRef} className={`header-menu-links ${showHeaderMenu ? "show" : ""}`}>
           <ul>
             {renderPortalList()}
             <li className="divider">
@@ -81,7 +93,7 @@ export const PageHeaderMenu: React.FC<IAccountOwnerProps> = ({
           ? <MenuCloseIcon />
           : <MenuIcon />
         }
-        <div className={`header-menu-links ${showHeaderMenu ? "show" : ""}`}>
+        <div ref={menuRef} className={`header-menu-links ${showHeaderMenu ? "show" : ""}`}>
           <ul>
             {renderMenuLinks()}
             <li className="divider">
