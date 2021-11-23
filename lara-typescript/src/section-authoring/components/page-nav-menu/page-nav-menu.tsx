@@ -11,6 +11,8 @@ import { IPage, PageId } from "../../api/api-types";
 
 import "./page-nav-menu.scss";
 
+const kMaxPageNavigationButtons = 11;
+
 export interface IPageNavMenuProps {
   pages: IPage[];
   currentPageId: PageId | null;
@@ -37,26 +39,7 @@ export const PageNavMenu: React.FC<IPageNavMenuProps> = ({
 
   const currentPageIndex = pages.findIndex(p => p.id === currentPageId);
   const currentPage = pages[currentPageIndex];
-  const pageButtons = () => {
-    const buttons = pages.map((p, index) => {
-      const pageNumber = index + 1;
-      const buttonContent = p.isCompletion ? <Completion height="24" width="24" /> : pageNumber;
-      const buttonClasses = classNames("page-button", {
-        current: index === currentPageIndex,
-        completionPage: p.isCompletion
-      });
-      const clickHandler = () => handleNavButtonClick(index);
-      return <button
-        key={`page-${index}-button`}
-        className={buttonClasses}
-        data-cy="nav-pages-button"
-        aria-label={`Page ${index}`}
-        onClick={clickHandler}>
-          {buttonContent}
-        </button>;
-    });
-    return buttons;
-  };
+  const [pageChangeInProgress, setPageChangeInProcess] = React.useState(false);
 
   const handleNavButtonClick = (pageNum: number | null) => {
     if (pageNum == null) {
@@ -92,45 +75,126 @@ export const PageNavMenu: React.FC<IPageNavMenuProps> = ({
   const prevClickHandler = () => handleNavButtonClick(prevPage);
   const nextPageClassName = `page-button ${currentPageIndex === pages.length - 1 ? "disabled" : ""}`;
   const nextClickHandler = () => handleNavButtonClick(nextPage);
-  const homeButtonClassName = `page-button ${currentPageIndex === null ? "current" : ""}`;
   const copyPageClassName = `page-button ${!currentPageIsCopyable ? "disabled" : ""}`;
   const copyClickHandler = currentPageIsCopyable ? handleCopyPageButtonClick : undefined;
+
+  const renderPreviousButton = () => {
+    return (
+      <button
+        className={`page-button ${pageChangeInProgress || currentPageIndex === null ? "disabled" : ""}`}
+        onClick={prevClickHandler}
+        aria-label="Previous page"
+      >
+        <Previous height="24" width="24"/>
+      </button>
+    );
+  };
+  const renderNextButton = () => {
+    const totalPages = pages.length;
+    return (
+      <button
+        className={`page-button ${pageChangeInProgress || currentPageIndex + 1 === totalPages ? "disabled" : ""}`}
+        onClick={nextClickHandler}
+        aria-label="Next page"
+      >
+        <Next height="24" width="24"/>
+      </button>
+    );
+  };
+
+  const renderHomePageButton = () => {
+    const currentClass = currentPageIndex === null ? "current" : "";
+    return (
+      <button
+        className={`page-button ${currentClass} ${(pageChangeInProgress) ? "disabled" : ""}`}
+        onClick={handleSelectHomeButton}
+        aria-label="Home">
+        <Home
+          className={`icon ${currentClass}`}
+          width="24"
+          height="24"
+        />
+      </button>
+    );
+  };
+
+  const renderPageButtons = () => {
+    const totalPages = pages.length;
+    const maxPagesLeftOfCurrent = currentPageIndex - 1;
+    const maxPagesRightOfCurrent = totalPages - currentPageIndex;
+    let minPage = 1;
+    let maxPage = totalPages;
+    const maxButtonsPerSide = Math.floor(kMaxPageNavigationButtons / 2);
+    if (maxPagesLeftOfCurrent < maxButtonsPerSide) {
+      maxPage =
+        Math.min(totalPages, currentPageIndex + maxButtonsPerSide + (maxButtonsPerSide - maxPagesLeftOfCurrent));
+    } else if (maxPagesRightOfCurrent < maxButtonsPerSide) {
+      minPage = Math.max(1, currentPageIndex - maxButtonsPerSide - (maxButtonsPerSide - maxPagesRightOfCurrent));
+    } else if (totalPages > kMaxPageNavigationButtons) {
+      minPage = currentPageIndex - maxButtonsPerSide;
+      maxPage = currentPageIndex + maxButtonsPerSide;
+    }
+
+    return (
+      pages.map((page: any, pageIndex: number) => {
+        const pageNum = pageIndex + 1;
+        const currentClass = currentPageIndex === pageIndex ? "current" : "";
+        const completionClass = page.is_completion ? "completion-page-button" : "";
+        const disabledClass = pageChangeInProgress ? "disabled" : "";
+        const buttonContent = page.is_completion
+                              ? <Completion className={`icon ${currentClass}`} width="28" height="28" />
+                              : pageNum;
+        const clickHandler = () => handleNavButtonClick(pageIndex);
+
+        return (
+          pageNum >= minPage && pageNum <= maxPage
+            ? <button
+                className={`page-button ${currentClass} ${completionClass} ${disabledClass}`}
+                onClick={clickHandler}
+                key={`page ${pageNum}`}
+                data-cy={`${page.is_completion ? "nav-pages-completion-page-button" : "nav-pages-button"}`}
+                aria-label={`Page ${pageNum}`}
+              >
+                {buttonContent}
+              </button>
+            : ""
+        );
+      })
+    );
+  };
+
+  const renderAddPageButton = () => {
+    return (
+      <button
+        className="page-button"
+        aria-label="Add Page"
+        onClick={handleAddPageButtonClick}>
+        <Add height="24" width="24" />
+      </button>
+    );
+  };
+
+  const renderCopyPageButton = () => {
+    return (
+      <button
+        className={copyPageClassName}
+        aria-label="Copy Page"
+        onClick={copyClickHandler}>
+        <Copy height="24" width="24" />
+      </button>
+    );
+  };
 
   return (
     <>
       <nav className="activity-nav" data-cy="activity-nav">
         <div className="nav-pages" data-cy="nav-pages">
-          <button
-            className={prevPageClassName}
-            aria-label="Previous Page"
-            onClick={prevClickHandler}>
-            <Previous height="24" width="24" />
-          </button>
-          <button
-            className={homeButtonClassName}
-            aria-label="Home"
-            onClick={handleSelectHomeButton}>
-            <Home height="24" width="24" />
-          </button>
-          {pageButtons()}
-          <button
-            className={nextPageClassName}
-            aria-label="Next Page"
-            onClick={nextClickHandler}>
-            <Next height="24" width="24" />
-          </button>
-          <button
-            className="page-button"
-            aria-label="Add Page"
-            onClick={handleAddPageButtonClick}>
-            <Add height="24" width="24" />
-          </button>
-          <button
-            className={copyPageClassName}
-            aria-label="Copy Page"
-            onClick={copyClickHandler}>
-            <Copy height="24" width="24" />
-          </button>
+          {renderPreviousButton()}
+          {renderHomePageButton()}
+          {renderPageButtons()}
+          {renderNextButton()}
+          {renderAddPageButton()}
+          {renderCopyPageButton()}
         </div>
       </nav>
       { copyingPage &&
