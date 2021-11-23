@@ -59,7 +59,6 @@ export const PageNavMenu: React.FC<IPageNavMenuProps> = ({
   };
 
   const handleNavButtonClick = (pageNum: number | null) => {
-    console.log("in handleNavButtonClick", pageNum, currentPageIndex);
     if (pageNum == null) {
       handleSelectHomeButton();
     } else {
