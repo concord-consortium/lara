@@ -74,6 +74,11 @@ export const PageNavMenu: React.FC<IPageNavMenuProps> = ({
     showCopyDialog();
   };
 
+  const handleHomeButtonClick = () => {
+    const activityPath = window.location.pathname.split("/pages")[0];
+    window.location.href = activityPath + "/edit";
+  };
+
   const prevPage = currentPageIndex && currentPageIndex > 0 ? currentPageIndex - 1 : null;
   const nextPage = currentPageIndex === null
                      ? 0
@@ -85,7 +90,7 @@ export const PageNavMenu: React.FC<IPageNavMenuProps> = ({
   const nextPageClassName = `page-button ${currentPageIndex === pages.length - 1 ? "disabled" : ""}`;
   const nextClickHandler = () => handleNavButtonClick(nextPage);
   const homeButtonClassName = `page-button ${currentPageIndex === null ? "current" : ""}`;
-  const homeClickHandler = () => handleNavButtonClick(null);
+  const homeClickHandler = () =>  handleHomeButtonClick();
   const copyPageClassName = `page-button ${!currentPageIsCopyable ? "disabled" : ""}`;
   const copyClickHandler = currentPageIsCopyable ? handleCopyPageButtonClick : undefined;
 
@@ -102,7 +107,7 @@ export const PageNavMenu: React.FC<IPageNavMenuProps> = ({
           <button
             className={homeButtonClassName}
             aria-label="Home"
-            onClick={homeClickHandler}>
+            onClick={handleHomeButtonClick}>
             <Home height="24" width="24" />
           </button>
           {pageButtons()}
