@@ -56,7 +56,8 @@ $(document).ready(function() {
   var params = {
     currentUser: <%= current_user.to_json.html_safe %>,
     logOutURL: "<%= destroy_user_session_path %>",
-    host: window.location.origin
+    host: window.location.origin,
+    resourceName: "<%= resource_name %>"
   }; 
   var container = $("#header")[0];
   LARA.PageHeader.renderPageHeader(container, params);

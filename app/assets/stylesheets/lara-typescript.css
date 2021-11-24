@@ -509,18 +509,18 @@
       .authoring-header .inner .header-center .title-container {
         align-items: center;
         border-radius: 4px;
+        cursor: pointer;
         display: flex;
+        font-size: 18px;
         height: 20px;
         padding: 8px 10px;
         width: calc(100% - 20px); }
-        .authoring-header .inner .header-center .title-container.link {
-          cursor: pointer; }
-        .authoring-header .inner .header-center .title-container.link:hover {
+        .authoring-header .inner .header-center .title-container:hover {
           background-color: var(--lt-teal); }
-        .authoring-header .inner .header-center .title-container.link:active {
+        .authoring-header .inner .header-center .title-container:active {
           background-color: var(--teal);
           color: white; }
-          .authoring-header .inner .header-center .title-container.link:active .sequence-icon {
+          .authoring-header .inner .header-center .title-container:active .sequence-icon {
             fill: white; }
         .authoring-header .inner .header-center .title-container .activity-title {
           overflow: hidden;

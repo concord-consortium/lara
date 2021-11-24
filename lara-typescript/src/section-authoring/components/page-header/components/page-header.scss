@@ -54,18 +54,17 @@
       .title-container {
         align-items: center;
         border-radius: 4px;
+        cursor: pointer;
         display: flex;
+        font-size: 18px;
         height: 20px;
         padding: 8px 10px;
         width: calc(100% - 20px);
 
-        &.link {
-          cursor: pointer;
-        }
-        &.link:hover {
+        &:hover {
           background-color: var(--lt-teal);
         }
-        &.link:active {
+        &:active {
           background-color: var(--teal);
           color: white;
           .sequence-icon {

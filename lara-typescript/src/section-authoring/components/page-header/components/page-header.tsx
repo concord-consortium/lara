@@ -9,13 +9,21 @@ export interface IPageHeaderProps {
   currentUser: IUser | null;
   logOutURL: string;
   host: string;
+  resourceName: string;
 }
 
 export const PageHeader: React.FC<IPageHeaderProps> = ({
     currentUser,
     logOutURL,
-    host
+    host,
+    resourceName
   }: IPageHeaderProps) => {
+
+  const handleTitleClick = () => {
+    const activityPath = window.location.pathname.split("/pages")[0];
+    window.location.href = activityPath + "/edit";
+  };
+
   return (
     <APIContainer host={host}>
       <div className="authoring-header" data-cy="authoring-header">
@@ -25,7 +33,11 @@ export const PageHeader: React.FC<IPageHeaderProps> = ({
             <div className="separator" />
           </div>
           <div className="header-center">
-            <div className="title-container" />
+            <div className="title-container" onClick={handleTitleClick}>
+              <div className="activity-title">
+                {resourceName}
+              </div>
+            </div>
           </div>
           <div className="header-right">
             <AccountOwner currentUser={currentUser} logOutURL={logOutURL} />
