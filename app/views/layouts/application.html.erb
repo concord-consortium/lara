@@ -56,7 +56,7 @@ $(document).ready(function() {
     currentUser: <%= current_user.to_json.html_safe %>,
     logOutURL: "<%= destroy_user_session_path %>",
     host: window.location.origin,
-    resourceName: "<%= resource_name %>"
+    resourceName: "<%= resource_name %>",
     userLinks: <%= current_user ? current_user.user_links.to_json.html_safe : [] %>
   }; 
   var container = $("#header")[0];
