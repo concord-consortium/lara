@@ -1,3 +1,4 @@
+import { current } from "immer";
 import { stringify } from "uuid";
 import { camelToSnakeCaseKeys } from "../../shared/convert-keys";
 import {
@@ -48,6 +49,7 @@ export const getLaraAuthoringAPI =
   const updatePageItemUrl = (pageId: PageId) => `${prefix}/update_page_item/${pageId}.json`;
   const deletePageItemUrl = (pageId: PageId) => `${prefix}/delete_page_item/${pageId}.json`;
   const copyPageItemUrl = (pageId: PageId) => `${prefix}/copy_page_item/${pageId}.json`;
+  const getPreviewUrl = (pageId: PageId) => `${prefix}/get_preview_url/${pageId}.json`;
   const libraryInteractivesUrl = `${prefix}/get_library_interactives_list.json`;
   const portalsURL = `${prefix}/get_portal_list.json`;
 
@@ -194,11 +196,19 @@ export const getLaraAuthoringAPI =
       });
   };
 
+  const getPreviewOptions = (args: {pageId: PageId}) => {
+    const { pageId } = args;
+    if (pageId) {
+      return sendToLara({url: getPreviewUrl(args.pageId)});
+    }
+    return Promise.resolve(null);
+  };
+
   return {
     getPages, getPage, createPage, deletePage, copyPage,
     createSection, updateSections, updateSection, copySection,
     createPageItem, updatePageItem, deletePageItem, copyPageItem,
-    getAllEmbeddables, getLibraryInteractives, getPortals,
+    getAllEmbeddables, getLibraryInteractives, getPortals, getPreviewOptions,
     pathToTinyMCE: "/assets/tinymce.js", pathToTinyMCECSS: "/assets/tinymce-content.css"
   };
 };

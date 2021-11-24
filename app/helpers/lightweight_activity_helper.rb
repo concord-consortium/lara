@@ -88,12 +88,6 @@ module LightweightActivityHelper
                        'Activity Player' => activity_player_url,
                        'Activity Player Teacher Edition' => activity_player_te_url
                       }
-
-    if activity.runtime != "Activity Player"
-      preview_options['LARA Runtime'] = lara_runtime_url
-      preview_options['LARA Runtime Teacher Edition'] = lara_runtime_te_url
-    end
-
     return preview_options
   end
 

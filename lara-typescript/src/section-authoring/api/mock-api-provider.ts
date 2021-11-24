@@ -22,6 +22,14 @@ let pages: IPage[] = [
   }
 ];
 
+const getPreviewOptions = (args: {pageId: PageId}): Promise<Record<string, string>> => {
+  return Promise.resolve({
+    "Select an option...": "",
+    "Fake Activity Player": "https://activity-player.concord.org/branch/master",
+    "Fake Activity Player Teachers": "https://activity-player.concord.org/branch/master"
+  });
+};
+
 const makeNewSection = (): ISection => {
   const section: ISection = {
     id: `${++sectionCounter}`,
@@ -558,5 +566,6 @@ export const API: IAuthoringAPIProvider = {
   createSection, updateSections, updateSection, copySection,
   createPageItem, updatePageItem, deletePageItem, copyPageItem,
   getAllEmbeddables, getLibraryInteractives, getPortals,
+  getPreviewOptions,
   pathToTinyMCE: "https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.10.0/tinymce.min.js", pathToTinyMCECSS: undefined
 };

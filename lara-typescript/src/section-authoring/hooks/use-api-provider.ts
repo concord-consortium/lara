@@ -21,6 +21,7 @@ const PAGES_CACHE_KEY = "pages";
 const SECTION_ITEM_TYPES_KEY = "SectionItemTypes";
 const LIBRARY_INTERACTIVES_KEY = "LibraryInteractives";
 const PORTAL_KEY = "Portal";
+const LAUNCH_URLS_KEY = "LaunchUrls";
 
 // Use this in a parent component to setup API context:
 // <APIProviderContext.Provider value={someAPIProvider} />
@@ -37,6 +38,15 @@ export const usePageAPI = () => {
   (PAGES_CACHE_KEY, provider.getPages, {
     refetchOnWindowFocus: false,
     staleTime: 1000 * 60 * 5,
+    refetchOnMount: false
+  });
+
+  const getPreviewOptions =
+    useQuery<Record<string, string>|null, Error>
+  ([LAUNCH_URLS_KEY, userInterface.currentPageId],
+    () => provider.getPreviewOptions({pageId: userInterface.currentPageId}), {
+    refetchOnWindowFocus: false,
+    staleTime: Infinity,
     refetchOnMount: false
   });
 
@@ -261,6 +271,7 @@ export const usePageAPI = () => {
     addPageItem, createPageItem, updatePageItem, deletePageItem, copyPageItem,
     updateSectionItems, moveItem, getItems, getPortals,
     getAllEmbeddables, getLibraryInteractives, currentPage, deleteSectionFunction,
+    getPreviewOptions,
     pathToTinyMCE: provider.pathToTinyMCE, pathToTinyMCECSS: provider.pathToTinyMCECSS
   };
 };

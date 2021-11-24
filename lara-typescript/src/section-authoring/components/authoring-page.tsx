@@ -14,6 +14,7 @@ import "./authoring-page.scss";
 import { usePageAPI } from "../hooks/use-api-provider";
 import { UserInterfaceContext} from "../containers/user-interface-provider";
 import { PageNavContainer } from "../containers/page-nav-container";
+import { PreviewLinksContainer } from "../containers/preview-links-container";
 
 export interface IPageProps extends IPage {
 
@@ -152,10 +153,6 @@ export const AuthoringPage: React.FC<IPageProps> = ({
     }
   };
 
-  const handleEditItem = () => {
-    return;
-  };
-
   const handleCloseDialog = () => {
     setShowSettings(false);
     setItemToEdit(undefined);
@@ -167,6 +164,7 @@ export const AuthoringPage: React.FC<IPageProps> = ({
   return (
     <>
       <PageNavContainer />
+      <PreviewLinksContainer />
       <header className="editPageHeader">
         <h2>Page: {displayTitle}</h2>
         <button onClick={pageSettingsClickHandler}><Cog height="16" width="16" /> Page Settings</button>

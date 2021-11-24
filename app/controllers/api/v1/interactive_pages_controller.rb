@@ -13,6 +13,12 @@ class Api::V1::InteractivePagesController < API::APIController
     render_page_sections_json
   end
 
+  def get_preview_url
+    page = @interactive_page
+    activity = page.lightweight_activity
+    render json: view_context.activity_preview_options(activity, page)
+  end
+
   # This is identical to get_sections. Why use different names?
   # Because it expresses the intent. Its possible we will want to return
   # different responses for each in the future.
