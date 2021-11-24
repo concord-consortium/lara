@@ -88,7 +88,7 @@ button, .btn-primary, span.edit_trigger, #modal .embeddable-save, #modal .close 
 }
 
 button.disabled, .btn-primary.disabled, span.edit_trigger.disabled {
-  background: #ccc !important;
+  background: #ccc;
 }
 
 .select_container {
@@ -535,7 +535,7 @@ div.summary {
     display: inline-block;
     list-style: none;
     margin: 0 0 0 15px;
-    
+
     a {
       color: #333;
       font-size: 12px;
@@ -569,7 +569,7 @@ ul.quiet_list {
     padding: 10px 5px;
     margin: 0;
     border-bottom: dashed 1px #ddd;
-    
+
 
     .action_menu {
       display: flex;

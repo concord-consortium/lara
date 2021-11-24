@@ -6,6 +6,7 @@ const kDefaultWidth = "1em";
 export interface IHomeProps {
   height?: string;
   width?: string;
+  className?: string;
 }
 
 export const Home = (props: IHomeProps) => {
