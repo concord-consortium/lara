@@ -323,6 +323,11 @@
   .project-logo .logo-img {
     height: 80%;
     padding: 6px 10px; }
+  .project-logo .project-logo-label {
+    font-family: var(--font-family-default);
+    font-size: 14px;
+    margin-left: 12px;
+    text-transform: uppercase; }
 
 @font-face {
   font-family: 'Lato-Light';
@@ -368,7 +373,7 @@
   font-family: var(--font-family-default);
   font-size: 18px;
   font-weight: bold;
-  margin: 0 10px 0 10px;
+  margin: 0 10px;
   padding: 0;
   position: relative; }
   .account-owner .account-owner-name {
@@ -388,7 +393,73 @@
     .account-owner .account-owner-name svg {
       fill: var(--teal);
       margin-right: 5px; }
-  .account-owner .account-log-in-options {
+
+@font-face {
+  font-family: 'Lato-Light';
+  font-style: normal;
+  font-weight: 100;
+  src: local("Lato Light"), local("Lato-Light"), url(//fonts.googleapis.com/css?family=Lato:100) format("woff"); }
+
+@font-face {
+  font-family: 'Lato-Regular';
+  font-style: normal;
+  font-weight: 400;
+  src: local("Lato Regular"), local("Lato-Regular"), url(//themes.googleusercontent.com/static/fonts/lato/v6/qIIYRU-oROkIk8vfvxw6QvesZW2xOQ-xsNqO47m55DA.woff) format("woff"); }
+
+@font-face {
+  font-family: 'Lato-Bold';
+  font-style: normal;
+  font-weight: 700;
+  src: local("Lato Bold"), local("Lato-Bold"), url(//themes.googleusercontent.com/static/fonts/lato/v6/qdgUG4U09HnJwhYI-uK18wLUuEpTyoUstqEm5AMlJo4.woff) format("woff"); }
+
+:root {
+  --font-family-bold: Lato-Bold, helvetica, verdana, sans-serif;
+  --font-family-default: Lato-Regular, helvetica, verdana, sans-serif;
+  --font-family-light: Lato-Light, helvetica, verdana, sans-serif;
+  --font-color-default: #313131;
+  --dark-teal: #016082;
+  --teal: #0592af;
+  --lt-teal: #93d5e4;
+  --ltr-teal: #cdebf2;
+  --ltst-teal: #e2f4f8;
+  --gold: #ffc320;
+  --lt-orange: #ffe6d0;
+  --orange: #ea6d2f;
+  --dark-gray: #3f3f3f;
+  --med-gray: #979797;
+  --lt-gray: hsl(0, 0%, 90%);
+  --ltr-gray: hsl(0, 0%, 95%); }
+
+.header-menu {
+  align-items: center;
+  border-radius: 4px;
+  color: var(--teal);
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  font-family: var(--font-family-default);
+  font-size: 18px;
+  font-weight: bold;
+  margin: 0 10px 0 0;
+  padding: 0;
+  position: relative;
+  transition-duration: .25s; }
+  .header-menu .login-link {
+    align-items: center;
+    display: flex;
+    padding: 5px; }
+    .header-menu .login-link svg {
+      margin-right: 4px; }
+  .header-menu:hover {
+    background: var(--lt-teal); }
+  .header-menu:active {
+    background: var(--teal);
+    color: white; }
+    .header-menu:active svg {
+      fill: white; }
+  .header-menu svg {
+    fill: var(--teal); }
+  .header-menu .header-menu-links {
     background-color: white;
     border-radius: 0 0 4px 4px;
     box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
@@ -401,33 +472,35 @@
     transition-property: opacity;
     transition: .25s;
     width: 210px; }
-    .account-owner .account-log-in-options.show {
+    .header-menu .header-menu-links.show {
       opacity: 1;
       pointer-events: auto;
       z-index: 5; }
-    .account-owner .account-log-in-options a {
+    .header-menu .header-menu-links a {
       color: var(--dark-gray);
       display: flex;
+      margin: 0;
       padding: 10px 20px;
       text-decoration: none;
       width: calc(100% - 40px); }
-      .account-owner .account-log-in-options a:hover {
+      .header-menu .header-menu-links a:hover {
         background: var(--ltst-teal); }
-      .account-owner .account-log-in-options a:active {
+      .header-menu .header-menu-links a:active {
         background: var(--lt-teal); }
-      .account-owner .account-log-in-options a svg {
+      .header-menu .header-menu-links a svg {
         fill: var(--teal);
         margin-right: 5px; }
-    .account-owner .account-log-in-options ul {
+    .header-menu .header-menu-links ul {
       list-style: none;
       margin: 0;
-      padding: 0; }
-      .account-owner .account-log-in-options ul li {
+      padding: 0;
+      width: 100%; }
+      .header-menu .header-menu-links ul li {
         font-size: 16px;
         font-weight: 300;
         margin: 0;
         padding: 0; }
-        .account-owner .account-log-in-options ul li:last-child {
+        .header-menu .header-menu-links ul li.divider {
           border-top: solid 1px var(--ltr-teal); }
 
 @font-face {

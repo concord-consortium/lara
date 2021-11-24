@@ -2,6 +2,7 @@ import * as React from "react";
 import { APIContainer } from "../../../containers/api-container";
 import { Logo } from "./logo";
 import { AccountOwner, IUser } from "./account-owner";
+import { PageHeaderMenu, IHeaderMenuLink } from "./page-header-menu";
 
 import "./page-header.scss";
 
@@ -10,13 +11,15 @@ export interface IPageHeaderProps {
   logOutURL: string;
   host: string;
   resourceName: string;
+  userLinks: IHeaderMenuLink[];
 }
 
 export const PageHeader: React.FC<IPageHeaderProps> = ({
     currentUser,
     logOutURL,
     host,
-    resourceName
+    resourceName,
+    userLinks
   }: IPageHeaderProps) => {
 
   const handleTitleClick = () => {
@@ -40,7 +43,8 @@ export const PageHeader: React.FC<IPageHeaderProps> = ({
             </div>
           </div>
           <div className="header-right">
-            <AccountOwner currentUser={currentUser} logOutURL={logOutURL} />
+            <AccountOwner currentUser={currentUser} />
+            <PageHeaderMenu logOutURL={logOutURL} userLinks={userLinks} />
           </div>
         </div>
       </div>

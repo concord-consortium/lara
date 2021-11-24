@@ -1122,7 +1122,19 @@ fieldset {
   }
 }
 /* Breadcrumbs */
-div.breadcrumbs li { list-style: none; float: left; margin-right: .5em; }
+div.breadcrumbs {
+  padding-top: 10px;
+
+  ul {
+    margin-left: 0;
+
+    li {
+      float: left;
+      list-style: none;
+      margin-right: .5em;
+    }
+  }
+}
 
 /* Inside the modal edit window */
 @import "partials/authoring/modal_edit";
