@@ -24,6 +24,7 @@ export const Logo: React.FC<ILogoProps> = ({
   return (
     <div className="project-logo" onClick={handleClick} onKeyDown={handleClick} tabIndex={0}>
       {logo}
+      <span className="project-logo-label">Authoring</span>
     </div>
   );
 };
