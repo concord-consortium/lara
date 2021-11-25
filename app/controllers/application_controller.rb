@@ -44,6 +44,8 @@ class ApplicationController < ActionController::Base
   before_filter :set_api_urls
   after_filter :log_session_after
 
+  helper_method :resource_name
+
   # Try to set local from the request headers
   def set_locale
     logger.debug "* Accept-Language: #{request.env['HTTP_ACCEPT_LANGUAGE']}"
@@ -364,5 +366,15 @@ class ApplicationController < ActionController::Base
       :id => resource && resource.respond_to?(:id) ? resource.id : 'n/a',
       :message => message
     }
+  end
+
+  def resource_name
+    if @activity
+      return @activity.name
+    elsif @sequence
+      return @sequence.title
+    else
+      return ""
+    end
   end
 end
