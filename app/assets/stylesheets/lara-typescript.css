@@ -2210,11 +2210,11 @@ dl.textBlockEditForm {
   --ltr-gray: hsl(0, 0%, 95%); }
 
 .editPageHeader {
-  background: var(--teal);
-  color: white;
+  background: transparent;
+  color: var(--orange);
   display: flex;
   gap: 20px;
-  padding: 10px 20px; }
+  padding: 10px 0; }
   .editPageHeader button {
     align-self: center;
     background: transparent;
@@ -2242,8 +2242,8 @@ dl.textBlockEditForm {
       fill: white;
       margin-right: 5px; }
   .editPageHeader h2 {
-    font-family: var(--font-family-default);
-    font-size: 20px;
+    font-family: var(--font-family-bold);
+    font-size: 24px;
     line-height: 1.3;
     margin: 0;
     padding: 0; }
