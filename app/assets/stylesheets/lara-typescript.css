@@ -2218,9 +2218,9 @@ dl.textBlockEditForm {
   .editPageHeader button {
     align-self: center;
     background: transparent;
-    border: solid 1.5px white;
+    border: solid 1.5px var(--teal);
     border-radius: 4px;
-    color: white;
+    color: var(--teal);
     cursor: pointer;
     display: flex;
     font-family: var(--font-family-default);
@@ -2232,14 +2232,16 @@ dl.textBlockEditForm {
       border-color: var(--teal);
       color: var(--teal); }
       .editPageHeader button:hover svg {
-        color: var(--teal); }
+        fill: var(--teal); }
     .editPageHeader button:active {
-      background: var(--ltst-teal);
+      background: var(--teal);
       border-color: var(--teal);
-      color: var(--teal); }
+      color: white; }
+      .editPageHeader button:active svg {
+        fill: white; }
     .editPageHeader button svg {
       align-self: center;
-      fill: white;
+      fill: var(--teal);
       margin-right: 5px; }
   .editPageHeader h2 {
     font-family: var(--font-family-bold);

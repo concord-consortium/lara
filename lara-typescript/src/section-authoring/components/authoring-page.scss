@@ -10,9 +10,9 @@
   button {
     align-self: center;
     background: transparent;
-    border: solid 1.5px white;
+    border: solid 1.5px var(--teal);
     border-radius: 4px;
-    color: white;
+    color: var(--teal);
     cursor: pointer;
     display: flex;
     font-family: var(--font-family-default);
@@ -26,18 +26,22 @@
       color: var(--teal);
 
       svg {
-        color: var(--teal);
+        fill: var(--teal);
       }
     }
     &:active {
-      background: var(--ltst-teal);
+      background: var(--teal);
       border-color: var(--teal);
-      color: var(--teal);    
+      color: white;
+
+      svg {
+        fill: white;
+      }
     }
 
     svg {
       align-self: center;
-      fill: white;
+      fill: var(--teal);
       margin-right: 5px;
     }
   }
