@@ -140,14 +140,14 @@ select {
 }
 
 .activity-name {
-  color: var(--orange); 
+  color: var(--orange);
   font-size: 18pt;
-  grid-column: 2/8; 
+  grid-column: 2/8;
   justify-self: start;
 }
 
 .page-name {
-  color: black;  
+  color: black;
   font-size: 18pt;
   grid-column: 2/8;
   justify-self: start;
@@ -177,7 +177,7 @@ select {
   grid-column: span 10;
 }
 
-.sectionMenu { 
+.sectionMenu {
   background-color: var(--teal);
   color: white;
   display: flex;
@@ -209,6 +209,7 @@ select {
       white-space: nowrap;
     }
     .sectionDragHandle {
+      margin-top: 5px;
       align-self: center;
     }
     .toggleSecondaryColumnOption {
