@@ -1,5 +1,7 @@
 import * as React from "react";
 import { useState } from "react";
+import { usePageAPI } from "../hooks/use-api-provider";
+import { PageNavContainer } from "../containers/page-nav-container";
 import { PageSettingsDialog } from "../../page-settings/components/page-settings-dialog";
 import { AuthoringSection } from "./authoring-section";
 import { SectionMoveDialog } from "./section-move-dialog";
@@ -11,9 +13,7 @@ import { Add } from "../../shared/components/icons/add-icon";
 import { Cog } from "../../shared/components/icons/cog-icon";
 
 import "./authoring-page.scss";
-import { usePageAPI } from "../hooks/use-api-provider";
 import { UserInterfaceContext} from "../containers/user-interface-provider";
-import { PageNavContainer } from "../containers/page-nav-container";
 import { PreviewLinksContainer } from "../containers/preview-links-container";
 
 export interface IPageProps extends IPage {
@@ -37,6 +37,11 @@ export interface IPageProps extends IPage {
    * Does page have a Teacher Edition sidebar?
    */
   hasTESidebar?: boolean;
+
+  /**
+   *  Update page when page settings or sections change
+   */
+  updatePage?: (changes: Partial<IPage>) => void;
 
   /**
    * Callback to invoke when section has been added
@@ -80,7 +85,7 @@ export interface IPageProps extends IPage {
 export const AuthoringPage: React.FC<IPageProps> = ({
   id,
   isNew = false,
-  title,
+  name,
   sections = [],
   addSection,
   changeSection,
@@ -94,17 +99,11 @@ export const AuthoringPage: React.FC<IPageProps> = ({
   hasStudentSidebar = false,
   hasTESidebar = false
   }: IPageProps) => {
-  const [pageTitle, setPageTitle] = useState(title);
-  const [isCompletionPage, setIsCompletionPage] = useState(isCompletion);
-  const [isHiddenPage, setIsHiddenPage] = useState(isHidden);
-  const [pageHasArgBlock, setPageHasArgBlock] = useState(hasArgBlock);
-  const [pageHasStudentSidebar, setPageHasStudentSidebar] = useState(hasStudentSidebar);
-  const [pageHasTESidebar, setPageHasTESidebar] = useState(hasTESidebar);
 
   const [itemToEdit, setItemToEdit] = useState(initItemToEdit);
   const [showSettings, setShowSettings] = useState(isNew);
 
-  const { getItems, moveSection } = usePageAPI();
+  const { getItems, updatePage, moveSection } = usePageAPI();
 
   const updateSettings = (
     updatedTitle: string | undefined,
@@ -114,13 +113,13 @@ export const AuthoringPage: React.FC<IPageProps> = ({
     updatedHasStudentSidebar: boolean,
     updatedHasTESidebar: boolean
   ) => {
-    setPageTitle(updatedTitle);
-    setIsCompletionPage(updatedIsCompletion);
-    setIsHiddenPage(updatedIsHidden);
-    setPageHasArgBlock(updatedHasArgBlock);
-    setPageHasStudentSidebar(updatedHasStudentSidebar);
-    setPageHasTESidebar(updatedHasTESidebar);
     setShowSettings(false);
+
+    updatePage({ id,
+                 name: updatedTitle,
+                 isCompletion: updatedIsCompletion,
+                 isHidden: updatedIsHidden,
+               });
   };
 
   /*
@@ -159,7 +158,7 @@ export const AuthoringPage: React.FC<IPageProps> = ({
   };
 
   const pageSettingsClickHandler = () => { setShowSettings(true); };
-  const displayTitle = pageTitle && pageTitle !== "" ? pageTitle : <em>(title not set)</em>;
+  const displayTitle = name && name !== "" ? name : <em>(title not set)</em>;
 
   return (
     <>
@@ -209,12 +208,12 @@ export const AuthoringPage: React.FC<IPageProps> = ({
       </DragDropContext>
       {showSettings &&
         <PageSettingsDialog
-          title={pageTitle}
-          isCompletion={isCompletionPage}
-          isHidden={isHiddenPage}
-          hasArgBlock={pageHasArgBlock}
-          hasStudentSidebar={pageHasStudentSidebar}
-          hasTESidebar={pageHasTESidebar}
+          name={name}
+          isCompletion={isCompletion}
+          isHidden={isHidden}
+          hasArgBlock={hasArgBlock}
+          hasStudentSidebar={hasStudentSidebar}
+          hasTESidebar={hasTESidebar}
           updateSettingsFunction={updateSettings}
           closeDialogFunction={handleCloseDialog}
         />
@@ -253,6 +252,9 @@ export const AuthoringPageUsingAPI = () => {
           addSection={addSection }
           setSections={updateSections}
           id={currentPage?.id || "none"}
+          name={currentPage?.name}
+          isCompletion={currentPage?.isCompletion}
+          isHidden={currentPage?.isHidden}
           changeSection={changeSection}
           addPageItem={addPageItem}
         />

@@ -72,6 +72,26 @@ class Api::V1::InteractivePagesController < API::APIController
     render :json => ({success: true})
   end
 
+  def update_page
+    activity = @interactive_page.lightweight_activity
+    authorize! :update, activity, @interactive_page
+    page_params = params['page']
+    return error("Missing page parameter") if page_params.nil?
+
+    if page_params
+      @interactive_page.update_attributes({
+        name: page_params['name'],
+        is_completion: page_params['isCompletion'],
+        is_hidden: page_params['isHidden']
+      })
+    end
+    @interactive_page.save!
+    pages = activity.reload.pages.map do |page|
+      generate_page_json page
+    end
+    render :json => pages
+  end
+
   def set_sections
     authorize! :update, @interactive_page
     param_sections = params['sections'] || [] # array of [{:id,:layout}]
@@ -385,9 +405,14 @@ class Api::V1::InteractivePagesController < API::APIController
     sections = page.sections.map { |s| generate_section_json(s) }
     {
       id: page.id.to_s,
-      title: page.name,
-      sections: sections,
-      position: page.position
+      name: page.name,
+      isCompletion: page.is_completion,
+      isHidden: page.is_hidden,
+      showSidebar: page.show_sidebar,
+      sidebar: page.sidebar,
+      # sidebarTitle: sidebar_title,
+      position: page.position,
+      sections: sections
     }
   end
 

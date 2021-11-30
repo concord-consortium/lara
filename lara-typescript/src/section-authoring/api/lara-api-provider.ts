@@ -5,7 +5,7 @@ import {
   IAuthoringAPIProvider,
   IPage, PageId, ISection, ICreatePageItem, ItemId,
   APIPageGetF, APIPagesGetF,
-  APIPageCreateF, APIPageDeleteF,
+  APIPageCreateF, APIPageUpdateF, APIPageDeleteF,
   APISectionCreateF, APISectionsUpdateF, APISectionUpdateF,
   APIPageItemCreateF, APIPageItemUpdateF,
   ILibraryInteractive, ILibraryInteractiveResponse,
@@ -37,6 +37,7 @@ export const getLaraAuthoringAPI =
   const getPagesUrl = `${prefix}/get_pages/${activityId}.json`;
   const getPageUrl = (pageId: PageId) => `${prefix}/get_page/${pageId}.json`;
   const createPageUrl = `${prefix}/create_page/${activityId}.json`;
+  const updatePageUrl = (pageId: PageId) => `${prefix}/update_page/${pageId}.json`;
   const deletePageUrl = (pageId: PageId) => `${prefix}/delete_page/${pageId}.json`;
   const copyPageUrl = (pageId: PageId) => `${prefix}/copy_page/${pageId}.json`;
 
@@ -87,6 +88,16 @@ export const getLaraAuthoringAPI =
 
   const createPage: APIPageCreateF = () => {
     return sendToLara({url: createPageUrl, method: "POST"});
+  };
+
+  const updatePage: APIPageUpdateF = (args: {pageId: PageId, changes: Partial<IPage>}) => {
+    const {pageId, changes} = args;
+    const data = { id: pageId,
+                   page: { id: pageId,
+                           name: changes.name,
+                           isCompletion: changes.isCompletion,
+                           isHidden: changes.isHidden } };
+    return sendToLara({url: updatePageUrl(pageId), method: "PUT", body: data});
   };
 
   const deletePage: APIPageDeleteF = (id: PageId) => {
@@ -205,7 +216,7 @@ export const getLaraAuthoringAPI =
   };
 
   return {
-    getPages, getPage, createPage, deletePage, copyPage,
+    getPages, getPage, createPage, updatePage, deletePage, copyPage,
     createSection, updateSections, updateSection, copySection,
     createPageItem, updatePageItem, deletePageItem, copyPageItem,
     getAllEmbeddables, getLibraryInteractives, getPortals, getPreviewOptions,

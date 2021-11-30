@@ -6,7 +6,7 @@ import { Close } from "../../shared/components/icons/close-icon";
 import "./page-settings-dialog.scss";
 
 export interface IPageSettingsDialogProps {
-  title: string | undefined;
+  name: string | undefined;
   isHidden?: boolean;
   isCompletion?: boolean;
   hasArgBlock?: boolean;
@@ -24,7 +24,7 @@ export interface IPageSettingsDialogProps {
 }
 
 export const PageSettingsDialog: React.FC<IPageSettingsDialogProps> = ({
-  title,
+  name,
   isHidden = false,
   isCompletion = false,
   hasArgBlock = false,
@@ -39,7 +39,7 @@ export const PageSettingsDialog: React.FC<IPageSettingsDialogProps> = ({
   const [teSidebarSettingEnabled, setTESidebarSettingEnabled] = React.useState(false);
 
   const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    title = event.target.value;
+    name = event.target.value;
   };
 
   const handleIsCompletionChange = () => {
@@ -64,7 +64,7 @@ export const PageSettingsDialog: React.FC<IPageSettingsDialogProps> = ({
 
   const handleUpdateSettings = () => {
     updateSettingsFunction(
-      title,
+      name,
       isCompletion,
       isHidden,
       hasArgBlock,
@@ -94,7 +94,7 @@ export const PageSettingsDialog: React.FC<IPageSettingsDialogProps> = ({
               type="text"
               id="pageTitle"
               name="pageTitle"
-              defaultValue={title}
+              defaultValue={name}
               onChange={handleTitleChange}
               placeholder="Enter a title"
             />
