@@ -11,12 +11,12 @@ class Section < ActiveRecord::Base
   INTERACTIVE_BOX = 'interactive_box'
   ASSESSMENT_BLOCK = "assessment_block"
   DEFAULT_SECTION_TITLE = ASSESSMENT_BLOCK
-  LAYOUT_FULL_WIDTH="Full Width"
+  LAYOUT_FULL_WIDTH="full-width"
   LAYOUT_60_40="60-40"
   LAYOUT_40_60="40-60"
   LAYOUT_70_30="70-30"
-  LAYOUT_30_70="30_70"
-  LAYOUT_RESPONSIVE="Responsive"
+  LAYOUT_30_70="30-70"
+  LAYOUT_RESPONSIVE="responsive"
   LAYOUT_DFEAULT=LAYOUT_FULL_WIDTH
 
   LAYOUT_OPTIONS = [
@@ -57,6 +57,23 @@ class Section < ActiveRecord::Base
       position: position,
       interactive_page_id: interactive_page_id,
       can_collapse_small: can_collapse_small
+    }
+  end
+
+  def export
+    helper = LaraSerializationHelper.new
+    {
+      title: title,
+      is_hidden: !show,
+      layout: layout,
+      secondary_column_collapsible: can_collapse_small,
+      secondary_column_display_mode: "stacked", # TODO: FIXME
+      # embeddables: embeddables.map do |embed|
+      #   helper.export(embed)
+      # end
+      embeddables: page_items.map do |page_item|
+        page_item.export(helper)
+      end
     }
   end
 

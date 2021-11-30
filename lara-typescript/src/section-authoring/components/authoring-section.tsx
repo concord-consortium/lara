@@ -222,7 +222,7 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
         sectionId={id}
         />
       }
-      {layout !== "Full Width" &&
+      {layout !== "full-width" &&
         <SectionColumn
           addItem={addItem}
           addPageItem={addPageItem}
