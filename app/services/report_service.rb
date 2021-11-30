@@ -47,7 +47,7 @@ module ReportService
     query["firebase-app"] = ENV['REPORT_SERVICE_URL'] && ENV['REPORT_SERVICE_URL'].match(/report-service-pro/) ? "report-service-pro" : "report-service-dev"
     query["sourceKey"] = ReportService::Sender::source_key
 
-    if !run.user || !run.class_info_url || !run.platform_user_id || !run.resource_link_id || !run.platform_id
+    if !run.class_info_url || !run.platform_user_id || !run.resource_link_id || !run.platform_id
       # Anonymous run or a logged in user that didn't come from Portal (e.g. teacher running a preview).
       resource_url = self_url + (sequence ? Rails.application.routes.url_helpers.sequence_path(sequence) : Rails.application.routes.url_helpers.activity_path(activity))
 
