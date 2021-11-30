@@ -751,7 +751,7 @@ describe Api::V1::InteractivePagesController do
               path: "/auth/foo"
             },
             {
-              name: "Portal",
+              name: "Portal", # See spec/spec_helper.rb line 54
               path: "/auth/foo"
             }
           ]
