@@ -67,10 +67,7 @@ class Section < ActiveRecord::Base
       is_hidden: !show,
       layout: layout,
       secondary_column_collapsible: can_collapse_small,
-      secondary_column_display_mode: "stacked", # TODO: FIXME
-      # embeddables: embeddables.map do |embed|
-      #   helper.export(embed)
-      # end
+      secondary_column_display_mode: "stacked", # TODO: Add display mode
       embeddables: page_items.map do |page_item|
         page_item.export(helper)
       end

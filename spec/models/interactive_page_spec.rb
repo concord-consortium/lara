@@ -201,7 +201,6 @@ describe InteractivePage do
   describe '#export' do
     it 'returns json of an interactive page' do
       page_json = page.export.as_json
-      puts page_json
       expect(page_json['sections'][0]['embeddables'].length).to eq(page.embeddables.count)
       expect(page_json['is_hidden']).to eq(page.is_hidden)
       expect(page_json['is_completion']).to eq(page.is_completion)
