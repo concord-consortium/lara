@@ -198,7 +198,7 @@ select {
   .menuStart {
     align-self: center;
     display: flex;
-    max-width: 25%;
+    max-width: 60%;
     overflow: hidden;
     text-overflow: ellipsis;
 
@@ -210,6 +210,57 @@ select {
     }
     .sectionDragHandle {
       align-self: center;
+    }
+    .toggleSecondaryColumnOption {
+      align-items: center;
+      cursor: pointer;
+      display: flex;
+      font-size: 14px;
+      margin: 0 0 0 10px;
+
+      input[type="checkbox"] {
+        background: white;
+        border: solid 1.5px var(--med-gray);
+        border-radius: 5px;
+        cursor: pointer;
+        height: 20px;
+        line-height: 1;
+        margin: 0 5px 0 0;
+        padding: 0;
+        position: relative;
+        width: 20px;
+        -webkit-appearance: none;
+
+        &:checked {
+          background: white;
+    
+          &:after {
+            border: solid var(--teal);
+            border-width: 0 3px 3px 0;
+            color: var(--teal);
+            content: " ";
+            display: block;
+            height: 10px;
+            left: 5px;
+            position: absolute;
+            top: 0;
+            width: 5px;
+            -webkit-transform: rotate(40deg);
+            -ms-transform: rotate(40deg);
+            transform: rotate(40deg);
+          }
+        }
+        &:hover {
+          &:after {
+            color: var(--lt-teal);
+          }    
+        }
+        &:active {
+          &:after {
+            color: var(--teal);
+          }  
+        }
+      }
     }
   }
 
