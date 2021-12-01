@@ -186,7 +186,6 @@ select {
   justify-content: space-between;
   align-items: center;
   padding: 5px;
-
   & > a { color: white; }
 
   label {
@@ -232,7 +231,7 @@ select {
 
         &:checked {
           background: white;
-    
+
           &:after {
             border: solid var(--teal);
             border-width: 0 3px 3px 0;
@@ -252,12 +251,12 @@ select {
         &:hover {
           &:after {
             color: var(--lt-teal);
-          }    
+          }
         }
         &:active {
           &:after {
             color: var(--teal);
-          }  
+          }
         }
       }
     }
