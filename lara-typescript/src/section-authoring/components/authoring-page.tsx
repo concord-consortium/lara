@@ -9,6 +9,7 @@ import { ICreatePageItem, IPage, ISection, ISectionItem, ISectionItemType, Secti
 import { SectionItemMoveDialog } from "./section-item-move-dialog";
 import { ItemEditDialog } from "./item-edit-dialog";
 import { DragDropContext, Droppable, Draggable, DropResult } from "react-beautiful-dnd";
+import { CompletionPage } from "./completion-page/completion-page";
 import { Add } from "../../shared/components/icons/add-icon";
 import { Cog } from "../../shared/components/icons/cog-icon";
 
@@ -168,59 +169,64 @@ export const AuthoringPage: React.FC<IPageProps> = ({
         <h2>Page: {displayTitle}</h2>
         <button onClick={pageSettingsClickHandler}><Cog height="16" width="16" /> Page Settings</button>
       </header>
-      <DragDropContext onDragEnd={onDragEnd}>
-        <Droppable droppableId="droppable">
-          {(droppableProvided, snapshot) => (
-            <div ref={droppableProvided.innerRef}
-              className="editPageContainer"
-              {...droppableProvided.droppableProps}>
-              {
-                sections.map( (sProps, index) => (
-                  <Draggable
-                    key={`section-${sProps.id}-${index}-draggable`}
-                    draggableId={`section-${sProps.id}-${index}`}
-                    index={index}>
+      {isCompletionPage
+        ? <CompletionPage />
+        : <>
+            <DragDropContext onDragEnd={onDragEnd}>
+              <Droppable droppableId="droppable">
+                {(droppableProvided, snapshot) => (
+                <div ref={droppableProvided.innerRef}
+                  className="editPageContainer"
+                  {...droppableProvided.droppableProps}>
                   {
-                    (draggableProvided) => (
-                      <div
-                        {...draggableProvided.draggableProps}
-                        ref={draggableProvided.innerRef}>
-                          <AuthoringSection {...sProps}
-                            draggableProvided={draggableProvided}
-                            key={`section-${sProps.id}-${index}`}
-                            updateFunction={changeSection}
-                            addPageItem={addPageItem}
-                            editItemFunction={handleEditItemInit}
-                          />
-                        </div>
-                      )
+                    sections.map( (sProps, index) => (
+                      <Draggable
+                        key={`section-${sProps.id}-${index}-draggable`}
+                        draggableId={`section-${sProps.id}-${index}`}
+                        index={index}>
+                      {
+                        (draggableProvided) => (
+                          <div
+                            {...draggableProvided.draggableProps}
+                            ref={draggableProvided.innerRef}>
+                              <AuthoringSection {...sProps}
+                                draggableProvided={draggableProvided}
+                                key={`section-${sProps.id}-${index}`}
+                                updateFunction={changeSection}
+                                addPageItem={addPageItem}
+                                editItemFunction={handleEditItemInit}
+                              />
+                            </div>
+                          )
+                      }
+                      </Draggable>
+                    ))
                   }
-                  </Draggable>
-                ))
-              }
-              { droppableProvided.placeholder }
-              <button className="bigButton" onClick={addSection}>
-                <Add height="16" width="16" /> <span className="lineAdjust">Add Section</span>
-              </button>
-            </div>
-          )}
-        </Droppable>
-      </DragDropContext>
-      {showSettings &&
-        <PageSettingsDialog
-          name={name}
-          isCompletion={isCompletion}
-          isHidden={isHidden}
-          hasArgBlock={hasArgBlock}
-          hasStudentSidebar={hasStudentSidebar}
-          hasTESidebar={hasTESidebar}
-          updateSettingsFunction={updateSettings}
-          closeDialogFunction={handleCloseDialog}
-        />
+                  { droppableProvided.placeholder }
+                  <button className="bigButton" onClick={addSection}>
+                    <Add height="16" width="16" /> <span className="lineAdjust">Add Section</span>
+                  </button>
+                </div>
+                )}
+              </Droppable>
+            </DragDropContext>
+            {showSettings &&
+              <PageSettingsDialog
+                title={pageTitle}
+                isCompletion={isCompletionPage}
+                isHidden={isHiddenPage}
+                hasArgBlock={pageHasArgBlock}
+                hasStudentSidebar={pageHasStudentSidebar}
+                hasTESidebar={pageHasTESidebar}
+                updateSettingsFunction={updateSettings}
+                closeDialogFunction={handleCloseDialog}
+              />
+            }
+            <SectionMoveDialog />
+            <SectionItemMoveDialog />
+            <ItemEditDialog />
+          </>
       }
-      <SectionMoveDialog />
-      <SectionItemMoveDialog />
-      <ItemEditDialog />
     </>
   );
 };

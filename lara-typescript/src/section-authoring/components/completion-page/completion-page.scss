@@ -1,0 +1,23 @@
+@import "../../../vars.scss";
+
+.completion-page {
+  color: var(--dark-gray);
+  font-family: var(--font-family-default);
+
+  .completion-page-title {
+    font-size: x-large;
+    margin-bottom: 5px;
+  }
+
+  .completion-description-heading {
+    font-size: large;
+    margin: 5px 0;
+  }
+  ol {
+    margin: 0;
+  }
+  p, li {
+    font-size: small;
+    margin: 2px;
+  }
+}
