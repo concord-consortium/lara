@@ -284,7 +284,6 @@ class InteractivePage < ActiveRecord::Base
   end
 
   def export
-    helper = LaraSerializationHelper.new
     page_json = self.as_json(only: [:id,
                                     :name,
                                     :position,
@@ -300,11 +299,10 @@ class InteractivePage < ActiveRecord::Base
                                     :embeddable_display_mode,
                                     :additional_sections,
                                     :is_completion])
-    page_json[:embeddables] = []
+    page_json[:sections] = []
 
-    self.embeddables.each do |embed|
-      embeddable_hash = helper.export(embed)
-      page_json[:embeddables] << { embeddable: embeddable_hash, section: embed.page_section }
+    sections.each do |section|
+      page_json[:sections] << section.export
     end
 
     page_json

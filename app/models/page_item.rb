@@ -104,4 +104,11 @@ class PageItem < ActiveRecord::Base
     m = interactive_id.match(/^interactive_(.+)$/)
     m ? m[1] : nil
   end
+
+  def export(export_helper)
+    export_hash = export_helper.export(embeddable)
+    export_hash[:column] = column
+    export_hash[:position] = position
+    export_hash
+  end
 end

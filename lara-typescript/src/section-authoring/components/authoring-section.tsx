@@ -22,7 +22,10 @@ const layoutClassNames = {
 };
 
 const classNameForItem = (_layout: SectionLayouts, itemIndex: number) => {
-  const layout = _layout || defaultLayout;
+  // If the layout specified isn't valid, use the default layout:
+  const layout = Object.keys(layoutClassNames).indexOf(_layout) !== -1
+    ? _layout
+    : defaultLayout;
   const layouts = layoutClassNames[layout];
   const classNameIndex = itemIndex % layouts.length;
   return layoutClassNames[layout][classNameIndex];
@@ -251,7 +254,7 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
         sectionId={id}
         />
       }
-      {layout !== "Full Width" &&
+      {layout !== "full-width" &&
         <SectionColumn
           addItem={addItem}
           addPageItem={addPageItem}

@@ -201,7 +201,7 @@ describe InteractivePage do
   describe '#export' do
     it 'returns json of an interactive page' do
       page_json = page.export.as_json
-      expect(page_json['embeddables'].length).to eq(page.embeddables.count)
+      expect(page_json['sections'][0]['embeddables'].length).to eq(page.embeddables.count)
       expect(page_json['is_hidden']).to eq(page.is_hidden)
       expect(page_json['is_completion']).to eq(page.is_completion)
       expect(page_json['id']).to eq(page.id)
@@ -222,9 +222,9 @@ describe InteractivePage do
         expect(interactive).not_to be_nil
         expect(labbook.interactive).not_to be_nil
         export_data = page.export.as_json
-        interactive_box_embeddables = export_data['embeddables'].select { |e| e['section'] == 'interactive_box' }
-        interactive_id = interactive_box_embeddables.first['embeddable']['ref_id']
-        labbook = export_data['embeddables'].select { |e| e['section'] == Section::DEFAULT_SECTION_TITLE }.last['embeddable']
+        interactive_box_embeddables = export_data['sections'][1]['embeddables']
+        interactive_id = interactive_box_embeddables.first['ref_id']
+        labbook = export_data['sections'][0]['embeddables'].find { |e| e["type"] == "Embeddable::Labbook"}
         expect(labbook).to match a_hash_including('interactive_ref_id' => interactive_id)
       end
     end
