@@ -181,7 +181,6 @@ export const updatePage = (args: {pageId: PageId, changes: Partial<IPage>}) => {
     const nextPage = {... pages[indx], ...changes };
     pages[indx] = nextPage;
     setSectionPositions(nextPage);
-    Object.assign(nextPage, changes);
     return Promise.resolve({... nextPage});
   }
   return Promise.reject("Can't find that page");
