@@ -37,21 +37,26 @@ describe Embeddable::ExternalScript do
           expect(script.reload.page_section).to eql(Section::DEFAULT_SECTION_TITLE)
         end
         describe 'the page export' do
-          it "should include an ebmeddables section" do
-            expect(page.export).to include(:embeddables)
+          it "should include ebmeddables in each section" do
+            export_sections = page.export[:sections]
+            expect(export_sections.length).to be > 0
+            export_sections.each do |section|
+              expect(section).to include(:embeddables)
+            end
           end
         end
       end
 
       describe 'when the embeddable is added to the C-RATER section' do
         let(:section) { CRater::ARG_SECTION_NAME }
-        it "The section should be returned as CRater::ARG_SECTION_NAME" do
-          expect(script.reload.page_section).to eql(CRater::ARG_SECTION_NAME)
-        end
 
         describe 'the page export' do
-          it "should include an ebmeddables section" do
-            expect(page.export).to include(:embeddables)
+          it "should include a section named 'arg_block' with some ebmeddables" do
+            expect(page.export[:sections]).to include(hash_including(
+              {
+                title: CRater::ARG_SECTION_NAME,
+                embeddables: array_including(anything)
+              }))
           end
         end
       end

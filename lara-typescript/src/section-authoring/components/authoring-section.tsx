@@ -1,6 +1,7 @@
 import * as React from "react";
 import { useState } from "react";
 import { DraggableProvided } from "react-beautiful-dnd";
+import classNames from "classnames";
 import { GripLines } from "../../shared/components/icons/grip-lines";
 import { SectionColumn } from "./section-column";
 import { ICreatePageItem, ISection, SectionColumns, SectionLayouts } from "../api/api-types";
@@ -21,7 +22,10 @@ const layoutClassNames = {
 };
 
 const classNameForItem = (_layout: SectionLayouts, itemIndex: number) => {
-  const layout = _layout || defaultLayout;
+  // If the layout specified isn't valid, use the default layout:
+  const layout = Object.keys(layoutClassNames).indexOf(_layout) !== -1
+    ? _layout
+    : defaultLayout;
   const layouts = layoutClassNames[layout];
   const classNameIndex = itemIndex % layouts.length;
   return layoutClassNames[layout][classNameIndex];
@@ -62,6 +66,7 @@ export interface ISectionProps extends ISection {
  */
 export const AuthoringSection: React.FC<ISectionProps> = ({
   id,
+  can_collapse_small,
   updateFunction,
   layout: initLayout = defaultLayout,
   items = [],
@@ -112,6 +117,17 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
 
   const handleCopy = () => {
     copySection(id);
+  };
+
+  const handleToggleSecondaryColumnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const page = currentPage;
+    const section = page?.sections.find(s => s.id === id);
+    if (section) {
+      section.can_collapse_small = e.target.checked;
+      if (page) {
+        updateSection.mutate({pageId: page.id, changes: {section}});
+      }
+    }
   };
 
   const getColumnItems = (column: SectionColumns) => {
@@ -177,6 +193,11 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
     return `edit-page-grid-container sectionContainer ${layoutClass}`;
   };
 
+  const toggleSecondaryColumnDisabled = layout === SectionLayouts.LAYOUT_FULL_WIDTH;
+  const toggleSecondaryColumnOptionClass = classNames("toggleSecondaryColumnOption", {
+    disabled: toggleSecondaryColumnDisabled
+  });
+
   return (
     <div className={sectionClassNames()}>
       <header className="sectionMenu full-row">
@@ -200,6 +221,17 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
               })
             }
           </select>
+          <label className={toggleSecondaryColumnOptionClass} htmlFor="toggle-secondary-column">
+            <input
+              defaultChecked={can_collapse_small}
+              disabled={toggleSecondaryColumnDisabled}
+              id="toggle-secondary-column"
+              name="can_collapse_small"
+              onChange={handleToggleSecondaryColumnChange}
+              type="checkbox"
+            />
+            Allow student to hide secondary column
+          </label>
         </div>
         <div className="menuEnd">
           <ul>
@@ -222,7 +254,7 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
         sectionId={id}
         />
       }
-      {layout !== "Full Width" &&
+      {layout !== "full-width" &&
         <SectionColumn
           addItem={addItem}
           addPageItem={addPageItem}

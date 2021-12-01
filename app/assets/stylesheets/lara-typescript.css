@@ -1512,7 +1512,7 @@ select {
   .sectionMenu .menuStart {
     align-self: center;
     display: flex;
-    max-width: 25%;
+    max-width: 60%;
     overflow: hidden;
     text-overflow: ellipsis; }
     .sectionMenu .menuStart h3 {
@@ -1522,6 +1522,44 @@ select {
       white-space: nowrap; }
     .sectionMenu .menuStart .sectionDragHandle {
       align-self: center; }
+    .sectionMenu .menuStart .toggleSecondaryColumnOption {
+      align-items: center;
+      cursor: pointer;
+      display: flex;
+      font-size: 14px;
+      margin: 0 0 0 10px; }
+      .sectionMenu .menuStart .toggleSecondaryColumnOption input[type="checkbox"] {
+        background: white;
+        border: solid 1.5px var(--med-gray);
+        border-radius: 5px;
+        cursor: pointer;
+        height: 20px;
+        line-height: 1;
+        margin: 0 5px 0 0;
+        padding: 0;
+        position: relative;
+        width: 20px;
+        -webkit-appearance: none; }
+        .sectionMenu .menuStart .toggleSecondaryColumnOption input[type="checkbox"]:checked {
+          background: white; }
+          .sectionMenu .menuStart .toggleSecondaryColumnOption input[type="checkbox"]:checked:after {
+            border: solid var(--teal);
+            border-width: 0 3px 3px 0;
+            color: var(--teal);
+            content: " ";
+            display: block;
+            height: 10px;
+            left: 5px;
+            position: absolute;
+            top: 0;
+            width: 5px;
+            -webkit-transform: rotate(40deg);
+            -ms-transform: rotate(40deg);
+            transform: rotate(40deg); }
+        .sectionMenu .menuStart .toggleSecondaryColumnOption input[type="checkbox"]:hover:after {
+          color: var(--lt-teal); }
+        .sectionMenu .menuStart .toggleSecondaryColumnOption input[type="checkbox"]:active:after {
+          color: var(--teal); }
   .sectionMenu .menuEnd {
     align-self: center;
     margin-right: 5px;
@@ -2440,14 +2478,14 @@ select {
       .nav-pages .page-button.disabled svg {
         background: white;
         fill: var(--teal); }
-    .nav-pages .page-button.completionPage:hover {
+    .nav-pages .page-button.completion-page-button:hover {
       background: var(--lt-orange); }
-    .nav-pages .page-button.completionPage.current, .nav-pages .page-button.completionPage:active {
+    .nav-pages .page-button.completion-page-button.current, .nav-pages .page-button.completion-page-button:active {
       background-color: var(--orange);
       color: white; }
-      .nav-pages .page-button.completionPage.current svg, .nav-pages .page-button.completionPage:active svg {
+      .nav-pages .page-button.completion-page-button.current svg, .nav-pages .page-button.completion-page-button:active svg {
         fill: white; }
-    .nav-pages .page-button.completionPage svg {
+    .nav-pages .page-button.completion-page-button svg {
       fill: var(--orange); }
     .nav-pages .page-button svg {
       fill: var(--teal); }

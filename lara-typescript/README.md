@@ -106,6 +106,7 @@ You can list the current links using:
 npm run list:links
 ```
 
+
 ### Code that is used by LARA internals
 
 Other API that is meant to be used by LARA itself is exposed to global/window object under `LARA` namespace.
