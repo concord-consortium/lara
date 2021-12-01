@@ -184,33 +184,31 @@ select {
   font-family: var(--font-family-default);
   font-size: 16px;
   justify-content: space-between;
+  align-items: center;
   padding: 5px;
 
   & > a { color: white; }
 
   label {
-    align-self: center;
     line-height: 1;
     margin-right: 5px;
     text-transform: none;
   }
 
   .menuStart {
-    align-self: center;
+    align-items: center;
     display: flex;
     max-width: 60%;
     overflow: hidden;
     text-overflow: ellipsis;
 
     h3 {
-      align-self: center;
       display: inline;
       margin: 0 10px;
       white-space: nowrap;
     }
     .sectionDragHandle {
       margin-top: 5px;
-      align-self: center;
     }
     .toggleSecondaryColumnOption {
       align-items: center;
