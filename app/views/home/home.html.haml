@@ -5,12 +5,12 @@
   Lightweight Activities Runtime and Authoring
 
 %ul#new-menu
-  %li#desc-toggle= toggle_all 'descriptions'
-  %li#collection_filter= collection_filter_tag @filter
   %li#search
     %form
       %input{:type => "text", :name => "search", :placeholder => "Search..."}
       %input{:type => "submit", :value => "Search"}
+  %li#desc-toggle= toggle_all 'descriptions'
+  %li#collection_filter= collection_filter_tag @filter
 .buttons-menu
   - if can? :create, LightweightActivity
     %a{ :href => new_activity_path }
@@ -24,7 +24,7 @@
 
 -if @activities
   #activity_listing_head
-    %h1 Activities:
+    %h1 Activities
   %ul.quiet_list.activities
     - @activities.each do |activity|
       =render :partial => "lightweight_activities/index_item", :locals => {:activity => activity}
@@ -33,7 +33,7 @@
 
 -if @sequences
   #sequence_listing_head
-    %h1 Sequences:
+    %h1 Sequences
   %ul.quiet_list.sequences
     - @sequences.each do |sequence|
       =render :partial => "sequences/index_item", :locals => {:sequence => sequence}

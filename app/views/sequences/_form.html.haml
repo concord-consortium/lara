@@ -10,57 +10,59 @@
             %li= msg
 
     = hidden_field :user_id, current_user.id
+    %header
+      %h2 Sequence Settings
+      .submit
+        = f.submit "Save", :id => 'save-top', :class => 'btn-primary'
     .field
       = f.label :title
-      = f.text_field :title
+      = f.text_field :title, :id => "sequence_title"
     .field
-      = f.label :display_title
-      = f.text_field :display_title
-    .field
-      = f.label :logo
-      = f.text_field :logo
-    .field
-      = f.label :thumbnail_url, "Thumbnail URL"
-      = f.text_field :thumbnail_url, :class => "thumbnail_source"
-      %br
-      .thumbnail_info.hint
-        Your thumbnail image should be 300px x 250px
-        %a#toggle_thumbnail_preview
-          [preview]
-        .activity_thumbnail#thumbnail_preview
-          %img
-    .field{:class => ("disabled" if @sequence.runtime != 'LARA')}
-      = f.label :theme_id, "Theme"
-      = f.select :theme_id, options_from_collection_for_select(Theme.all, 'id', 'name', @sequence.theme_id), { :include_blank => "None (inherit from project, or site default)" }
+      = f.label :display_title, "Display Title"
+      = f.text_field :display_title, :id => "sequence_display_title"
+    .field{:class => ("disabled" if @sequence.latest_publication_portals.length > 0)}
+      = f.label :runtime, "Runtime Environment"
+      = f.select :runtime, options_for_select(Sequence::RUNTIME_OPTIONS, @sequence.runtime), :disabled => @sequence.latest_publication_portals.length > 0
+      .hint Once the sequence is published, you can't change this setting.
     .field{:class => ("disabled" if @sequence.runtime != 'Activity Player')}
       = f.label :fixed_width_layout, 'Fixed Width Layout'
       = f.select :fixed_width_layout, options_for_select(LightweightActivity::FIXED_WIDTH_LAYOUT_OPTIONS, @sequence.fixed_width_layout)
-      .hint (NOTE: This value is only used by Activity Player.)
     .field{:class => ("disabled" if @sequence.runtime != 'Activity Player')}
-      = f.label :background_image, 'Background Image URL'
-      = f.text_field :background_image
-      .hint (Specify the full URL of a background image file. NOTE: This value is only used by Activity Player. For LARA runtime, a background image can be specified in the theme.)
+      = f.label :background_image, 'Activity Player Background Image URL'
+      = f.text_field :background_image, :id => "sequence_background_image"
+      .hint Specify the full URL of a background image file.
+    .field{:class => ("disabled" if @sequence.runtime != 'LARA')}
+      = f.label :theme_id, "Theme"
+      = f.select :theme_id, options_from_collection_for_select(Theme.all, 'id', 'name', @sequence.theme_id), { :include_blank => "None (inherit from project, or site default)" }
     .field
       = f.label :project_id, "Project"
       = f.select :project_id, options_from_collection_for_select(Project.all, 'id', 'title', @sequence.project_id), { :include_blank => true }
     .field
-      = f.label :publication_status, "Publication status"
+      = f.label :logo
+      = f.text_field :logo
+    - if current_user.is_admin
+      .field
+        = f.check_box :is_official
+        = f.label :is_official, "Offical CC Sequence"
+        .hint Official activities appear in the STEM Resource Finder and should be vetted before being designated as such.
+    .field
+      = f.label :publication_status, "Publication Status"
       = f.select :publication_status, options_for_select(LightweightActivity::PUB_STATUSES_OPTIONS, @sequence.publication_status)
-    .field{:class => ("disabled" if @sequence.latest_publication_portals.length > 0)}
-      = f.label :runtime, "Runtime environment"
-      = f.select :runtime, options_for_select(Sequence::RUNTIME_OPTIONS, @sequence.runtime), :disabled => @sequence.latest_publication_portals.length > 0
-      .hint (Once the sequence is published, you can't change this setting. You'll have to make a copy and change it for the copy instead.)
     .field
-      = f.label :is_official, "Offical CC Sequence"
-      = f.check_box :is_official
-
-    .field
-      = f.label :description, "Text for index page"
-      %br
+      = f.label :description, "Index Page Text"
       = f.text_area :description, { :class => 'wysiwyg', :cols => 60, :rows => 10 }
     .field
+      = f.label :thumbnail_url, "Thumbnail URL"
+      = f.text_field :thumbnail_url, :class => "thumbnail_source", :id => "sequence_thumbnail_source"
+      .thumbnail_info.hint
+        Thumbnail image should be 1460 pixels wide by 800 pixels high.
+        %a#toggle_thumbnail_preview
+          [preview]
+        .activity_thumbnail#thumbnail_preview
+          %img
+    .field
       = f.label :abstract, "Abstract [DEPRECATED] Works only with old Portals"
-      %br
       = f.text_area :abstract, { :class => 'wysiwyg', :cols => 60, :rows => 10 }
-    .actions
-      = f.submit
+    %footer
+      .submit
+        = f.submit "Save", :class => "btn-primary"

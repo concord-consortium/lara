@@ -19,7 +19,7 @@ modulejs.define 'components/itsi_authoring/publication_details',
           else
             "This item is not published to any of the portals. Click on the publish button to publish this item."
         )
-        (ul {className: 'details', style: {marginTop: 10}},
+        (ul {className: 'details'},
           for portal in @state.latest_publication_portals
             debugTitle = "Activity: #{@state.last_publication_hash} => Portal: #{portal.publication_hash}"
             (li {className: 'detail', key: portal.url},

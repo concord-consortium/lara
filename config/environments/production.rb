@@ -67,6 +67,9 @@ LightweightStandalone::Application.configure do
   theme-geohazard-wildfire.css theme-geohazard-flood.css theme-waters-2.css theme-geocode-seismic.css)
   # CSS file used by TinyMCE iframe:
   config.assets.precompile += %w(tinymce-content.css)
+  # Icon SVGs used by activity page nav menu:
+  config.assets.precompile += %w(
+  icons/page-nav/*)
   # Disable delivery errors, bad email addresses will be ignored
   # config.action_mailer.raise_delivery_errors = false
   # config.action_mailer.default_url_options = { :host => 'authoring.concord.org' }

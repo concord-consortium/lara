@@ -1,12 +1,9 @@
 .thumbnail_info {
-  margin: 1em;
-  font-size:12px;
-  color: #444;
   .activity_thumbnail {
     display: none;
     clear: both;
-    height: 250px;
-    width: 300px;
+    height: 200px;
+    width: 365px;
     border: 2px solid #000;
     overflow: hidden;
     img {
@@ -15,36 +12,82 @@
   }
 }
 .sequence_form {
+  background: #f1f1f1;
+
+  header, footer {
+    align-items: center;
+    background: var(--teal);
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    padding: 10px 20px;
+
+    h2 {
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .submit {
+      margin: 0;
+      width: auto;
+
+      .btn-primary {
+        margin: 0;
+
+        &:active {
+          background-color: white;
+          color: var(--teal);
+        }
+      }
+    }
+  }
+  footer {
+    background: transparent;
+    justify-content: flex-end;
+    margin-bottom: 0;
+  }
   .field {
-    background-color: #FFF6E5;
-    border-radius: 8px;
-    clear: both;
-    float: left;
-    margin-bottom: 0.5em;
-    padding: 0.5em;
-    width: calc(100% - 1em);
+    margin-bottom: 15px;
+    padding: 0 20px;
 
     label {
-      font-weight: bold;
-      color: #A68547;
-      display: inline-block;
-      width: 30%;
-      text-align: right;
-      margin-right: 1em;
+      display: block;
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 5px;
     }
     input {
-      display: inline-block;
-      max-width: 45%;
-      clear: right;
+      display: block;
+      font-family: var(--font-family-default);
+
+      &#lightweight_activity_name,
+      &#lightweight_activity_background_image,
+      &#lightweight_activity_thumbnail_url,
+      &#sequence_title,
+      &#sequence_display_title,
+      &#sequence_background_image,
+      &#sequence_thumbnail_source {
+        width: calc(100% - 22px);
+      }
+    }
+    input[type="checkbox"],
+    input[type="checkbox"] + label {
+      display: inline;
+    }
+    select {
+      min-width: 220px;
     }
     textarea {
-      display: inline-block;
-      float: right;
+      display: block;
+      font-family: var(--font-family-default);
+
+      &#lightweight_activity_notes {
+        width: 100%;
+      }
     }
     .edit_trigger {
-      float: right;
-      text-align: right;
-      display: inline-block;
+      display: block;
     }
     a#toggle_thumbnail_preview {
       margin-left: 1em;
@@ -53,17 +96,29 @@
       text-decoration: underline;
     }
     .hint {
-      font-size: 11px;
-      color: #A68547;
+      font-size: 12px;
+      color: #555;
     }
     &.disabled {
-      background: #ccc;
       color: #555;
       cursor: not-allowed;
       opacity: .6;
       pointer-events: none;
 
-      label, .hint {
+      label {
+        color: #555;
+
+        &:after {
+          color: var(--med-gray);
+          content: "(not available with current settings)";
+          font-size: 14px;
+          font-style: italic;
+          font-weight: normal;
+          margin-left: 5px;
+        }
+      }
+      
+      .hint {
         color: #555;
       }
     }
@@ -73,9 +128,9 @@
 #leftcol {
     clear: left;
     float: left;
-    width: 62%;
+    width: 680px;
 }
 #rightcol {
 	float: right;
-	width: 36.65%;
+	width: 420px;
 }

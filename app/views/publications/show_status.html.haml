@@ -5,24 +5,58 @@
     %span.close.close_link
       close (✖)
   .info
-    %ul
-      - @portals.each do |portal|
-        %li
-          - case portal.status(current_user)
-          - when "publish_ok"
-            %span.published added
-          - when "publish_fail"
-            %span.published.failed.error
-              =link_to "try again", publication_publish_path(@publishable.class, @publishable.id), {:remote => true}, {:class => "not_published"}
-          - when "add_to_fail"
-            %span.published.failed.error
-              = link_to "try again", publication_add_portal_path(@publishable.class, @publishable.id, :portal_url => portal.url), {:remote => true}, {:class => "not_published"}
-          - when "publishable"
-            = link_to "add to", publication_add_portal_path(@publishable.class, @publishable.id, :portal_url => portal.url), {:remote => true}, {:class => "not_published"}
-          - else
-            = link_to "login-to-publish", user_omniauth_authorize_path(portal.name), {:class => "not_published"}
-
-          =portal.name
-          %span.tiny=portal.date
+    %table
+      %thead
+        %tr
+          %th
+            Portal
+          %th
+            Status
+          %th 
+            Action
+      %tbody
+        - @portals.each do |portal|
+          %tr
+            - case portal.status(current_user)
+              - when "publish_ok"
+                %td
+                  = portal.url
+                %td
+                  added
+                  %span.tiny
+                    = portal.date
+                %td
+                  %span.disabled
+                    published
+                  
+              - when "publish_fail"
+                %td
+                  = portal.url
+                %td
+                  not published (failure)
+                %td
+                  =link_to "Try Again", publication_publish_path(@publishable.class, @publishable.id), {:remote => true}, {:class => "not_published"}
+              - when "add_to_fail"
+                %td
+                  = portal.url
+                %td
+                  not published (failure)
+                %td
+                  =link_to "Try Again", publication_add_portal_path(@publishable.class, @publishable.id, :portal_url => portal.url), {:remote => true}, {:class => "not_published"}
+              - when "publishable"
+                %td
+                  = portal.url
+                %td
+                  not published
+                %td
+                  = link_to "Publish", publication_add_portal_path(@publishable.class, @publishable.id, :portal_url => portal.url), {:remote => true}, {:class => "not_published"}
+              - else
+                %td
+                  = portal.url
+                %td
+                  not published
+                %td
+                  = link_to "Log In to Publish", user_omniauth_authorize_path(portal.name), {:class => "not_published"}
+  
   .message
     =@message

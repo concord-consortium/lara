@@ -18,4 +18,4 @@
     - if @activities
       = form_tag add_activity_sequence_path(@sequence) do
         = select_tag :activity_id, options_from_collection_for_select(@activities, :id, :name_with_id), class: "chosen-select"
-        = submit_tag "Add"
+        = submit_tag "Add", :class => "btn-primary"

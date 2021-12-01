@@ -221,4 +221,10 @@ module ApplicationHelper
       url_or_path
     end
   end
+
+  def svg_icon(path)
+    File.open("#{Rails.root}/app#{path}") do |file|
+      raw file.read
+    end
+  end
 end

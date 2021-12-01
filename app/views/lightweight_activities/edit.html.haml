@@ -18,77 +18,79 @@
   .sequence_form
     = form_for @activity, {:url => "/activities/#{@activity.id}", :method => 'put'} do |f|
       = f.error_messages
-      .submit
-        = f.submit "Save", :id => 'save-top'
+      %header
+        %h2 Activity Settings
+        .submit
+          = f.submit "Save", :id => 'save-top', :class => 'btn-primary'
       .field
         = f.label :name, 'Activity Name'
-        = f.text_field :name, :size => 80
-      .field{:class => ("disabled" if @activity.runtime != 'LARA')}
-        = f.label :theme_id, 'Theme'
-        = f.select :theme_id, options_from_collection_for_select(Theme.all, 'id', 'name', @activity.theme_id), { :include_blank => "None (inherit from sequence, project, or site default)" }
+        = f.text_field :name
+      .field{:class => ("disabled" if @activity.latest_publication_portals.length > 0)}
+        = f.label :runtime, "Runtime Environment"
+        = f.select :runtime, options_for_select(LightweightActivity::RUNTIME_OPTIONS, @activity.runtime), :disabled => @activity.latest_publication_portals.length > 0
+        .hint
+          Once the activity is published, you can't change this setting.
       .field{:class => ("disabled" if @activity.runtime != 'Activity Player')}
-        = f.label :fixed_width_layout, 'Fixed Width Layout'
+        = f.label :fixed_width_layout, 'Activity Player Fixed Width Layout'
         = f.select :fixed_width_layout, options_for_select(LightweightActivity::FIXED_WIDTH_LAYOUT_OPTIONS, @activity.fixed_width_layout)
-        .hint (NOTE: This value is only used by Activity Player.)
       .field{:class => ("disabled" if @activity.runtime != 'Activity Player')}
-        = f.label :background_image, 'Background Image URL'
+        = f.label :background_image, 'Activity Player Background Image URL'
         = f.text_field :background_image
-        .hint (Specify the full URL of a background image file. NOTE: This value is only used by Activity Player. For LARA runtime, a background image can be specified in the theme.)
+        .hint Specify the full URL of a background image file.
+      .field{:class => ("disabled" if @activity.runtime != 'LARA')}
+        = f.label :theme_id, 'LARA Theme'
+        = f.select :theme_id, options_from_collection_for_select(Theme.all, 'id', 'name', @activity.theme_id), { :include_blank => "None (inherit from sequence, project, or site default)" }
       - if current_user.is_admin
         .field
           = f.label :project_id, 'Project'
           = f.select :project_id, options_from_collection_for_select(Project.all, 'id', 'title', @activity.project_id), { :include_blank => true }
         .field
-          = f.label :is_official,  "Official CC Activity"
           = f.check_box :is_official
+          = f.label :is_official,  "Official CC Activity"
+          .hint Official activities appear in the STEM Resource Finder and should be vetted before being designated as such.
         .field
-          = f.label :is_locked, "Is this activity locked?"
           = f.check_box :is_locked
-          .hint ("Locked" activities may only be copied or edited by admin users, not regular authors.)
+          = f.label :is_locked, "Activity Locked"
+          .hint "Locked" activities may only be copied or edited by admin users, not regular authors.
       .field
-        = f.label :publication_status, 'Publication status'
+        = f.label :publication_status, 'Publication Status'
         = f.select :publication_status, options_for_select(LightweightActivity::PUB_STATUSES_OPTIONS, @activity.publication_status)
-      .field{:class => ("disabled" if @activity.latest_publication_portals.length > 0)}
-        = f.label :runtime, "Runtime environment"
-        = f.select :runtime, options_for_select(LightweightActivity::RUNTIME_OPTIONS, @activity.runtime), :disabled => @activity.latest_publication_portals.length > 0
-        .hint (Once the activity is published, you can't change this setting. You'll have to make a copy and change it for the copy instead.)
       .field
-        = f.label :description, 'Text for index page'
+        = f.label :description, 'Index Page Text'
         = f.text_area :description, :class => 'wysiwyg'
-      .field
-        = f.label :related, 'Related Content'
-        = f.text_area :related, :class => 'wysiwyg'
-      .field
-        = f.label :time_to_complete,  'Estimated time to complete, in minutes'
-        = f.text_field :time_to_complete
       .field
         = f.label :thumbnail_url, "Thumbnail URL"
         = f.text_field :thumbnail_url, :class=>"thumbnail_source"
-        %br
         .thumbnail_info.hint
-          Your thumbnail image should be 300px x 250px
+          Thumbnail image should be 1460 pixels wide by 800 pixels high.
           %a#toggle_thumbnail_preview
             [preview]
           .activity_thumbnail#thumbnail_preview
             %img
       .field
-        = f.label :student_report_enabled, t("STUDENT_REPORT_ENABLED")
+        = f.label :time_to_complete,  'Estimated Completion Time (in minutes)'
+        = f.text_field :time_to_complete
+      .field
+        = f.label :related, 'Related Content'
+        = f.text_area :related, :class => 'wysiwyg'
+      .field
         = f.check_box :student_report_enabled
+        = f.label :student_report_enabled, t("STUDENT_REPORT_ENABLED")
         %br
           .hint
             Show a link to the student so they can see all their answers and see if they are correct
       .field
-        = f.label :layout, "Activity layout"
+        = f.label :layout, "Activity Layout"
         = f.select :layout, options_for_select(LightweightActivity::LAYOUT_OPTIONS, @activity.layout)
       .field{:class => ("disabled" unless @activity.layout == 1)}
-        = f.label :show_submit_button, 'Show Submit Button'
         = f.check_box :show_submit_button, :disabled => (@activity.layout != 1 ? true : false)
+        = f.label :show_submit_button, 'Show Submit Button'
         %br
           .hint
             Show a submit button at the bottom of a
             %em
               single page
-            activity. (This button won't do anything except help assure people their work has been saved -- which happens automatically.)
+            activity.
       - if current_user.is_admin
         .field
           = f.label :editor_mode, "Authoring Mode"
@@ -101,21 +103,22 @@
           This activity was not copied from another activity
       .field
         = f.label :notes,  'Notes'
-        .hint The notes area is for storing information for other authors, e.g. source material or usage restrictions, and is not intended to be displayed in the runtime.
-        %br
         = f.text_area :notes
-      .submit
-        = f.submit "Save", :id => 'save-top'
+        .hint The notes area is for storing information for other authors, e.g. source material or usage restrictions, and is not intended to be displayed in the runtime.
+      %footer
+        .submit
+          = f.submit "Save", :id => 'save-top', :class => 'btn-primary'
 #rightcol
   #menu
     #pages
       %h2 Activity Pages
       %ul.sortable-list#sort-pages
-        - @activity.pages.each do |p|
+        - @activity.pages.each.with_index(1) do |p, index|
           %li{ :id => dom_id_for(p, :item), :class => 'item' }
+            #{index}. 
             -if p.is_completion
               %i.fa.fa-flag-checkered
-            = truncate(p.name, :length => 25, :omission => "…")
+            = truncate(p.name, :length => 23, :omission => "…")
             %ul.menu
               %li.edit= link_to "Edit", edit_activity_page_path(@activity, p)
               %li.run= link_to "Preview", preview_activity_page_path(@activity, p), :target => 'new'
@@ -123,7 +126,7 @@
               %li.delete= link_to "Delete", activity_page_path(@activity, p), method: :delete, data: { confirm: (@activity.active_runs > 0) ? confirm_message : 'Are you sure?' }
               %li.drag_handle
                 &nbsp;
-        %li#add= link_to "Add Page", new_activity_page_path(@activity)
+        %li#add= link_to "Add Page", new_activity_page_path(@activity), :class => "btn-primary"
     #plugins
       =render partial: 'plugins/list', locals: {activity: @activity}
 
@@ -133,7 +136,6 @@
     $('#lightweight_activity_layout').on('change', function() {
       var $this = $(this);
       var selected = $this.find('option:selected').val();
-      console.log(selected);
       if (selected === '1') {
         $('#lightweight_activity_show_submit_button').removeAttr('disabled').parent().removeClass('disabled');
       } else {
