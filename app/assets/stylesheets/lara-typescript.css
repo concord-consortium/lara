@@ -2440,14 +2440,14 @@ select {
       .nav-pages .page-button.disabled svg {
         background: white;
         fill: var(--teal); }
-    .nav-pages .page-button.completionPage:hover {
+    .nav-pages .page-button.completion-page-button:hover {
       background: var(--lt-orange); }
-    .nav-pages .page-button.completionPage.current, .nav-pages .page-button.completionPage:active {
+    .nav-pages .page-button.completion-page-button.current, .nav-pages .page-button.completion-page-button:active {
       background-color: var(--orange);
       color: white; }
-      .nav-pages .page-button.completionPage.current svg, .nav-pages .page-button.completionPage:active svg {
+      .nav-pages .page-button.completion-page-button.current svg, .nav-pages .page-button.completion-page-button:active svg {
         fill: white; }
-    .nav-pages .page-button.completionPage svg {
+    .nav-pages .page-button.completion-page-button svg {
       fill: var(--orange); }
     .nav-pages .page-button svg {
       fill: var(--teal); }

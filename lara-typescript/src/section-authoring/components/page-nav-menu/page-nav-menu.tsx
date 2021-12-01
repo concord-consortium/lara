@@ -139,9 +139,9 @@ export const PageNavMenu: React.FC<IPageNavMenuProps> = ({
       pages.map((page: any, pageIndex: number) => {
         const pageNum = pageIndex + 1;
         const currentClass = currentPageIndex === pageIndex ? "current" : "";
-        const completionClass = page.is_completion ? "completion-page-button" : "";
+        const completionClass = page.isCompletion ? "completion-page-button" : "";
         const disabledClass = pageChangeInProgress ? "disabled" : "";
-        const buttonContent = page.is_completion
+        const buttonContent = page.isCompletion
                               ? <Completion className={`icon ${currentClass}`} width="28" height="28" />
                               : pageNum;
         const clickHandler = () => handleNavButtonClick(pageIndex);
