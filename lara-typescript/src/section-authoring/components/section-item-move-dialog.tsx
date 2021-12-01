@@ -52,7 +52,7 @@ export const SectionItemMoveDialog: React.FC = () => {
     const options: any = [{value: SectionColumns.PRIMARY}];
     if (selectedSectionId) {
       const section = getSections().find(s => s.id === selectedSectionId);
-      if (section?.layout !== "Full Width") {
+      if (section?.layout !== "full-width") {
         options.push({value: SectionColumns.SECONDARY});
       }
     }

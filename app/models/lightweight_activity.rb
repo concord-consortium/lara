@@ -141,7 +141,7 @@ class LightweightActivity < ActiveRecord::Base
                                         :show_submit_button,
                                         :runtime,
                                         :background_image ])
-    activity_json[:version] = 1
+    activity_json[:version] = 2
     activity_json[:theme_name] = self.theme ? self.theme.name : nil
     activity_json[:project] = self.project ? self.project.export : nil
     activity_json[:pages] = []

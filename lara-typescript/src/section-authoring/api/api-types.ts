@@ -4,12 +4,12 @@ export type ItemId = string;
 export type RelativePosition = "before" | "after";
 
 export enum SectionLayouts {
-  LAYOUT_FULL_WIDTH = "Full Width",
+  LAYOUT_FULL_WIDTH = "full-width",
   LAYOUT_60_40 = "60-40",
   LAYOUT_40_60 = "40-60",
   LAYOUT_70_30 = "70-30",
   LAYOUT_30_70 = "30-70",
-  LAYOUT_RESPONSIVE = "Responsive",
+  LAYOUT_RESPONSIVE = "responsive",
 }
 
 export enum SectionColumns {
