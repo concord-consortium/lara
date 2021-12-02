@@ -59,7 +59,15 @@ class Api::V1::InteractivePagesController < API::APIController
     authorize! :update, activity
     return error("Can't find activity #{params[:activity_id]}") unless activity
     activity.pages.create()
+    last_idx = activity.pages.length - 1
+    prev_last_idx = activity.pages.length - 2
+    if activity.pages[prev_last_idx].is_completion
+      activity.pages[prev_last_idx].position = last_idx
+      activity.pages[prev_last_idx].move_lower
+    end
+
     pages = activity.reload.pages.map do |page|
+      page.reload
       generate_page_json page
     end
     render :json => pages
