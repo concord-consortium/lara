@@ -6,7 +6,7 @@ import { Close } from "../../shared/components/icons/close-icon";
 import "./page-settings-dialog.scss";
 
 export interface IPageSettingsDialogProps {
-  title: string | undefined;
+  name: string | undefined;
   isHidden?: boolean;
   isCompletion?: boolean;
   hasArgBlock?: boolean;
@@ -24,7 +24,7 @@ export interface IPageSettingsDialogProps {
 }
 
 export const PageSettingsDialog: React.FC<IPageSettingsDialogProps> = ({
-  title,
+  name,
   isHidden = false,
   isCompletion = false,
   hasArgBlock = false,
@@ -34,8 +34,12 @@ export const PageSettingsDialog: React.FC<IPageSettingsDialogProps> = ({
   closeDialogFunction
   }: IPageSettingsDialogProps) => {
 
+  const [argBlockSettingEnabled, setargBlockSettingEnabled] = React.useState(false);
+  const [studentSidebarSettingEnabled, setstudentSidebarSettingEnabled] = React.useState(false);
+  const [teSidebarSettingEnabled, setTESidebarSettingEnabled] = React.useState(false);
+
   const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    title = event.target.value;
+    name = event.target.value;
   };
 
   const handleIsCompletionChange = () => {
@@ -60,7 +64,7 @@ export const PageSettingsDialog: React.FC<IPageSettingsDialogProps> = ({
 
   const handleUpdateSettings = () => {
     updateSettingsFunction(
-      title,
+      name,
       isCompletion,
       isHidden,
       hasArgBlock,
@@ -90,7 +94,7 @@ export const PageSettingsDialog: React.FC<IPageSettingsDialogProps> = ({
               type="text"
               id="pageTitle"
               name="pageTitle"
-              defaultValue={title}
+              defaultValue={name}
               onChange={handleTitleChange}
               placeholder="Enter a title"
             />
@@ -119,10 +123,10 @@ export const PageSettingsDialog: React.FC<IPageSettingsDialogProps> = ({
               onChange={handleIsCompletionChange}
             />
           </dd>
-          <dt className="input4">
+          <dt className={`input4 ${argBlockSettingEnabled ? "" : "disabled"}`}>
             <label htmlFor="hasArgBlock">Page has an argumentation block</label>
           </dt>
-          <dd className="input4">
+          <dd className={`input4 ${argBlockSettingEnabled ? "" : "disabled"}`}>
             <input
               type="checkbox"
               id="hasArgBlock"
@@ -131,10 +135,10 @@ export const PageSettingsDialog: React.FC<IPageSettingsDialogProps> = ({
               onChange={handleHasArgBlockChange}
             />
           </dd>
-          <dt className="input5">
+          <dt className={`input5 ${studentSidebarSettingEnabled ? "" : "disabled"}`}>
             <label htmlFor="hasStudentSidebar">Page has a student sidebar menu</label>
           </dt>
-          <dd className="input5">
+          <dd className={`input5 ${studentSidebarSettingEnabled ? "" : "disabled"}`}>
             <input
               type="checkbox"
               id="hasStudentSidebar"
@@ -143,10 +147,10 @@ export const PageSettingsDialog: React.FC<IPageSettingsDialogProps> = ({
               onChange={handleHasStudentSidebarChange}
             />
           </dd>
-          <dt className="input6">
+          <dt className={`input6 ${teSidebarSettingEnabled ? "" : "disabled"}`}>
             <label htmlFor="hasTESidebar">Page has a Teacher Edition sidebar menu</label>
           </dt>
-          <dd className="input6">
+          <dd className={`input6 ${teSidebarSettingEnabled ? "" : "disabled"}`}>
             <input
               type="checkbox"
               id="hasTESidebar"

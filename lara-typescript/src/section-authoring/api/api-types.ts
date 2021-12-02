@@ -213,7 +213,12 @@ export interface IPage {
   /**
    * Optional title for the page
    */
-  title?: string;
+  name?: string;
+
+  /**
+   * Is page hidden?
+   */
+  isHidden?: boolean;
 
   /**
    * Is page a completion page?
@@ -241,6 +246,7 @@ export interface IPortal {
 export type APIPagesGetF = () => Promise<IPage[]>;
 export type APIPageGetF = (id: PageId) => Promise<IPage | null>;
 export type APIPageCreateF = () => Promise<IPage>;
+export type APIPageUpdateF = (args: {pageId: PageId, changes: Partial<IPage>}) => Promise<IPage>;
 export type APIPageDeleteF = (id: PageId) => Promise<IPage[]>;
 export type APIPageCopyF = (args: {pageId: PageId, destIndex: number}) => Promise<IPage>;
 
@@ -258,16 +264,17 @@ export type APIGetPreviewOptionsF = (args: {pageId: PageId | null}) => Promise<R
  * The implementation providing the API has to conform to this provider API
  */
 export interface IAuthoringAPIProvider {
-  copySection: APISectionCopyF;
   getPages: APIPagesGetF;
   getPage: APIPageGetF;
   createPage: APIPageCreateF;
+  updatePage: APIPageUpdateF;
   deletePage: APIPageDeleteF;
   copyPage: APIPageCopyF;
 
   createSection: APISectionCreateF;
   updateSections: APISectionsUpdateF;
   updateSection: APISectionUpdateF;
+  copySection: APISectionCopyF;
 
   createPageItem: APIPageItemCreateF;
   deletePageItem: APIPageItemDeleteF;

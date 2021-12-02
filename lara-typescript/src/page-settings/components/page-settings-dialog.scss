@@ -44,12 +44,12 @@
     &:hover {
       &:after {
         color: var(--lt-teal);
-      }    
+      }
     }
     &:active {
       &:after {
         color: var(--teal);
-      }  
+      }
     }
   }
 
@@ -158,6 +158,10 @@
       grid-column-end: 1;
       grid-row-start: 7;
       grid-row-end: 7;
+    }
+    .disabled {
+      cursor: none;
+      pointer-events: none;
     }
   }
 }
