@@ -144,7 +144,12 @@ export const createPage = () => {
     name: `Page ${pageCounter}`,
     sections: []
   };
-  pages.push(newPage);
+  // we can assume the completion page is always the last element of the array before new page was added
+  if (pages[pages.length - 1].isCompletion) {
+    pages.splice(pages.length - 1, 0, newPage);
+  } else {
+    pages.push(newPage);
+  }
   updatePositions(pages);
   return Promise.resolve(newPage);
 };
