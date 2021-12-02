@@ -82,7 +82,8 @@ class Api::V1::InteractivePagesController < API::APIController
       @interactive_page.update_attributes({
         name: page_params['name'],
         is_completion: page_params['isCompletion'],
-        is_hidden: page_params['isHidden']
+        is_hidden: page_params['isHidden'],
+        position: page_params['position']
       })
     end
     @interactive_page.save!

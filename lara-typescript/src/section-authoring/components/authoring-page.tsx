@@ -169,7 +169,7 @@ export const AuthoringPage: React.FC<IPageProps> = ({
         <h2>Page: {displayTitle}</h2>
         <button onClick={pageSettingsClickHandler}><Cog height="16" width="16" /> Page Settings</button>
       </header>
-      {isCompletionPage
+      {isCompletion
         ? <CompletionPage />
         : <>
             <DragDropContext onDragEnd={onDragEnd}>
@@ -210,23 +210,23 @@ export const AuthoringPage: React.FC<IPageProps> = ({
                 )}
               </Droppable>
             </DragDropContext>
-            {showSettings &&
-              <PageSettingsDialog
-                title={pageTitle}
-                isCompletion={isCompletionPage}
-                isHidden={isHiddenPage}
-                hasArgBlock={pageHasArgBlock}
-                hasStudentSidebar={pageHasStudentSidebar}
-                hasTESidebar={pageHasTESidebar}
-                updateSettingsFunction={updateSettings}
-                closeDialogFunction={handleCloseDialog}
-              />
-            }
             <SectionMoveDialog />
             <SectionItemMoveDialog />
             <ItemEditDialog />
           </>
-      }
+        }
+        {showSettings &&
+          <PageSettingsDialog
+            name={name}
+            isCompletion={isCompletion}
+            isHidden={isHidden}
+            // hasArgBlock={pageHasArgBlock}
+            // hasStudentSidebar={pageHasStudentSidebar}
+            // hasTESidebar={pageHasTESidebar}
+            updateSettingsFunction={updateSettings}
+            closeDialogFunction={handleCloseDialog}
+          />
+        }
     </>
   );
 };
