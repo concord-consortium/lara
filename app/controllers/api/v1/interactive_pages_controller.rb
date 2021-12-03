@@ -91,8 +91,11 @@ class Api::V1::InteractivePagesController < API::APIController
         name: page_params['name'],
         is_completion: page_params['isCompletion'],
         is_hidden: page_params['isHidden'],
-        position: page_params['position']
       })
+
+      if page_params['isCompletion']
+        @interactive_page.move_to_bottom
+      end
     end
     @interactive_page.save!
     pages = activity.reload.pages.map do |page|
