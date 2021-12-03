@@ -140,14 +140,14 @@ select {
 }
 
 .activity-name {
-  color: var(--orange); 
+  color: var(--orange);
   font-size: 18pt;
-  grid-column: 2/8; 
+  grid-column: 2/8;
   justify-self: start;
 }
 
 .page-name {
-  color: black;  
+  color: black;
   font-size: 18pt;
   grid-column: 2/8;
   justify-self: start;
@@ -177,39 +177,38 @@ select {
   grid-column: span 10;
 }
 
-.sectionMenu { 
+.sectionMenu {
   background-color: var(--teal);
   color: white;
   display: flex;
   font-family: var(--font-family-default);
   font-size: 16px;
   justify-content: space-between;
-  padding: 5px;
-
+  align-items: center;
+  padding: 5px 5px 6px 5px;
   & > a { color: white; }
 
   label {
-    align-self: center;
     line-height: 1;
     margin-right: 5px;
     text-transform: none;
   }
 
   .menuStart {
-    align-self: center;
+    align-items: center;
     display: flex;
     max-width: 60%;
     overflow: hidden;
     text-overflow: ellipsis;
 
     h3 {
-      align-self: center;
       display: inline;
       margin: 0 10px;
       white-space: nowrap;
+      line-height: 1;
     }
     .sectionDragHandle {
-      align-self: center;
+      margin-top: 2px;
     }
     .toggleSecondaryColumnOption {
       align-items: center;
@@ -233,7 +232,7 @@ select {
 
         &:checked {
           background: white;
-    
+
           &:after {
             border: solid var(--teal);
             border-width: 0 3px 3px 0;
@@ -253,12 +252,12 @@ select {
         &:hover {
           &:after {
             color: var(--lt-teal);
-          }    
+          }
         }
         &:active {
           &:after {
             color: var(--teal);
-          }  
+          }
         }
       }
     }
