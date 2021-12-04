@@ -104,7 +104,7 @@ export const AuthoringPage: React.FC<IPageProps> = ({
   const [itemToEdit, setItemToEdit] = useState(initItemToEdit);
   const [showSettings, setShowSettings] = useState(isNew);
 
-  const { getItems, updatePage, moveSection } = usePageAPI();
+  const { getPages, getItems, updatePage, moveSection } = usePageAPI();
 
   const updateSettings = (
     updatedTitle: string | undefined,
@@ -121,6 +121,16 @@ export const AuthoringPage: React.FC<IPageProps> = ({
                  isCompletion: updatedIsCompletion,
                  isHidden: updatedIsHidden,
                });
+  };
+ /*
+  * Returns true if activity already has a completion page and it is not the completion page
+  */
+  const disableCompletionPageSetting = () => {
+    const pages = getPages.data;
+    // return !!pages?.find(p => !!p.isCompletion);
+    const isCompletionPage = pages?.find(p => p.isCompletion === true);
+    const hasCompletionPage = isCompletionPage != null;
+    return (hasCompletionPage && !isCompletion ? true : false);
   };
 
   /*
@@ -225,6 +235,7 @@ export const AuthoringPage: React.FC<IPageProps> = ({
             // hasTESidebar={pageHasTESidebar}
             updateSettingsFunction={updateSettings}
             closeDialogFunction={handleCloseDialog}
+            disableCompletionPageSetting={disableCompletionPageSetting()}
           />
         }
     </>

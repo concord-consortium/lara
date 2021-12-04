@@ -186,8 +186,8 @@ export const updatePage = (args: {pageId: PageId, changes: Partial<IPage>}) => {
     if (indx < pages.length - 1 && changes.isCompletion) {
       pages.push(pages.splice(indx, 1)[0]); // put the page at the end of the pages list
     }
-    const newIndx = pages.length - 1;
-    const nextPage = {... pages[newIndx], ...changes };
+    const newIndx = pages.findIndex(p => p.id === pageId); // we do this again because pages may have reordered
+    const nextPage = {...pages[newIndx], ...changes };
     pages[newIndx] = nextPage;
     setSectionPositions(nextPage);
     return Promise.resolve({... nextPage});

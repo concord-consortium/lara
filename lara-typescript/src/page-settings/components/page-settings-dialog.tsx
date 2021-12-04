@@ -12,6 +12,7 @@ export interface IPageSettingsDialogProps {
   hasArgBlock?: boolean;
   hasStudentSidebar?: boolean;
   hasTESidebar?: boolean;
+  disableCompletionPageSetting?: boolean;
   updateSettingsFunction: (
     updatedTitle: string | undefined,
     updatedIsCompletion: boolean,
@@ -30,6 +31,7 @@ export const PageSettingsDialog: React.FC<IPageSettingsDialogProps> = ({
   hasArgBlock = false,
   hasStudentSidebar = false,
   hasTESidebar = false,
+  disableCompletionPageSetting,
   updateSettingsFunction,
   closeDialogFunction
   }: IPageSettingsDialogProps) => {
@@ -111,10 +113,12 @@ export const PageSettingsDialog: React.FC<IPageSettingsDialogProps> = ({
               onChange={handleIsHiddenChange}
             />
           </dd>
-          <dt className="input3">
-            <label htmlFor="isCompletion">Page is a completion/summary page</label>
+          <dt className={`input3 ${disableCompletionPageSetting ? "disabled" : ""}`}>
+            <label htmlFor="isCompletion">
+              Page is a completion/summary page (An activity can only have one completion page)
+            </label>
           </dt>
-          <dd className="input3">
+          <dd className={`input3 ${disableCompletionPageSetting ? "disabled" : ""}`}>
             <input
               type="checkbox"
               id="isCompletion"
