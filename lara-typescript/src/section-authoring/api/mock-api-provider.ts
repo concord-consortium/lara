@@ -9,7 +9,7 @@ import {
 } from "./api-types";
 import { IManagedInteractive } from "../../page-item-authoring/managed-interactives";
 
-let pageCounter = 1;
+let pageCounter = 0;
 let sectionCounter = 1;
 let itemCounter = 1;
 let managedInteractiveCounter = 0;
@@ -17,7 +17,7 @@ let managedInteractiveCounter = 0;
 let pages: IPage[] = [
   {
     id: `${pageCounter++}`,
-    title: `Page ${pageCounter}`,
+    name: `Page ${pageCounter}`,
     sections: []
   }
 ];
@@ -123,7 +123,7 @@ export const updatePageItem: APIPageItemUpdateF = (args: {pageId: string, sectio
     };
     item = updatedItem;
     if (page) {
-      updatePage(page.id, page);
+      updatePage({pageId: page.id, changes: page});
     }
     return Promise.resolve(updatedItem);
   }
@@ -141,7 +141,7 @@ export const getPage: APIPageGetF = (id: PageId) => {
 export const createPage = () => {
   const newPage: IPage = {
     id: `${++pageCounter}`,
-    title: `Page ${pageCounter}`,
+    name: `Page ${pageCounter}`,
     sections: []
   };
   pages.push(newPage);
@@ -174,8 +174,9 @@ const copyPage = (args: {pageId: PageId, destIndex: number}) => {
   return Promise.reject("no source page in copy");
 };
 
-export const updatePage = (id: PageId, changes: Partial<IPage>) => {
-  const indx = pages.findIndex(p => p.id === id);
+export const updatePage = (args: {pageId: PageId, changes: Partial<IPage>}) => {
+  const {pageId, changes} = args;
+  const indx = pages.findIndex(p => p.id === pageId);
   if (indx > -1) {
     const nextPage = {... pages[indx], ...changes };
     pages[indx] = nextPage;
@@ -198,7 +199,7 @@ const createSection = (id: PageId) => {
 const updateSections = (nextPage: IPage) => {
   const existingPage = pages.find(p => p.id === nextPage.id);
   if (existingPage) {
-    updatePage(nextPage.id, nextPage);
+    updatePage({pageId: existingPage.id, changes: existingPage});
   }
   return Promise.resolve(nextPage);
 };
@@ -562,7 +563,7 @@ const copyPageItem = (args: {pageId: PageId, sectionItemId: ItemId}) => {
 };
 
 export const API: IAuthoringAPIProvider = {
-  getPages, getPage, createPage, deletePage, copyPage,
+  getPages, getPage, createPage, updatePage, deletePage, copyPage,
   createSection, updateSections, updateSection, copySection,
   createPageItem, updatePageItem, deletePageItem, copyPageItem,
   getAllEmbeddables, getLibraryInteractives, getPortals,
