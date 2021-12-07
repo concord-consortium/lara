@@ -90,13 +90,15 @@ export const getLaraAuthoringAPI =
     return sendToLara({url: createPageUrl, method: "POST"});
   };
 
-  const updatePage: APIPageUpdateF = (args: {pageId: PageId, changes: Partial<IPage>}) => {
+  const updatePage: APIPageUpdateF = async (args: {pageId: PageId, changes: Partial<IPage>}) => {
     const {pageId, changes} = args;
     const data = { id: pageId,
                    page: { id: pageId,
                            name: changes.name,
                            isCompletion: changes.isCompletion,
-                           isHidden: changes.isHidden } };
+                           isHidden: changes.isHidden,
+                         }
+                 };
     return sendToLara({url: updatePageUrl(pageId), method: "PUT", body: data});
   };
 
