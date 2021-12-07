@@ -13,6 +13,12 @@
 }
 .sequence_form {
   background: #f1f1f1;
+  border-radius: 10px;
+  overflow: hidden;
+
+  .new_lightweight_activity {
+    padding-top: 10px;
+  }
 
   header, footer {
     align-items: center;
