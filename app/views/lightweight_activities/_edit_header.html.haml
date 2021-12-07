@@ -5,9 +5,9 @@
     %button{ :id => "page-nav-home", :class => "page-button current", :onclick => "window.location='#{edit_activity_path(@activity)}'" }
       = svg_icon(asset_path "/assets/images/icons/page-nav/home.svg")
     - @activity.pages.each.with_index(1) do |p, index|
-      %button{ :id => dom_id_for(p, :item), :class => "page-button", :onclick => "window.location='#{edit_activity_page_path(@activity, p)}'" }
-        = index
-    %button{ :id => "page-nav-next", :class => "page-button", :onclick => "window.location='#{edit_activity_page_path(@activity, @activity.pages[0])}'" }
+      %button{ :id => dom_id_for(p, :item), :class => "page-button #{p.is_completion ? 'completion-page-button' : ''}", :onclick => "window.location='#{edit_activity_page_path(@activity, p)}'" }
+        = p.is_completion ? svg_icon(asset_path "/assets/images/icons/page-nav/completion.svg") : index
+    %button{ :id => "page-nav-next", :class => "page-button #{@activity.pages.count <= 0 ? 'disabled' : ''}", :onclick => "#{@activity.pages.count <= 0 ? '#' : 'window.location=\'' + edit_activity_page_path(@activity, @activity.pages[0]) + '\''}" }
       = svg_icon(asset_path "/assets/images/icons/page-nav/next.svg")
     %button{ :id => "page-nav-add", :class => "page-button", :onclick => "window.location='#{new_activity_page_path(@activity)}'" }
       = svg_icon(asset_path "/assets/images/icons/page-nav/add.svg")

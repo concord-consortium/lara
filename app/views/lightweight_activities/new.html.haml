@@ -25,7 +25,7 @@
       = f.text_field :name
     .field
       = f.label :runtime, "Runtime Environment"
-      = f.select :runtime, options_for_select(LightweightActivity::RUNTIME_OPTIONS, @activity.runtime), :disabled => @activity.latest_publication_portals.length > 0
+      = f.select :runtime, options_for_select(LightweightActivity::RUNTIME_OPTIONS, @activity.runtime)
       .hint
         Once the activity is published, you can't change this setting.
     .field
