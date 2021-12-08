@@ -52,10 +52,10 @@
       = f.label :description, "Index Page Text"
       = f.text_area :description, { :class => 'wysiwyg', :cols => 60, :rows => 10 }
     .field
-      = f.label :thumbnail_url, "Thumbnail URL"
+      = f.label :thumbnail_url, "Preview Image URL"
       = f.text_field :thumbnail_url, :class => "thumbnail_source", :id => "sequence_thumbnail_source"
       .thumbnail_info.hint
-        Thumbnail image should be 1460 pixels wide by 800 pixels high.
+        Preview image should be 1460 pixels wide by 800 pixels high.
         %a#toggle_thumbnail_preview
           [preview]
         .activity_thumbnail#thumbnail_preview

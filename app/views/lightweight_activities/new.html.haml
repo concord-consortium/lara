@@ -17,7 +17,6 @@
 .sequence_form
   = form_for @activity, :url => '/activities' do |f|
     = f.error_messages
-    =# f.hidden_field 'investigation_id', :value =>@activity.investigation.id # LightweightActivities currently don't belong_to Investigations
     - if defined?(session[:user_id])
       = f.hidden_field 'user_id', :value => session[:user_id]
     .field
@@ -49,7 +48,7 @@
       = f.label :description, 'Activity Description'
       = f.text_area :description, :class => 'wysiwyg'
     .field
-      = f.label :thumbnail_url, "Thumbnail URL"
+      = f.label :thumbnail_url, "Preview Image URL"
       = f.text_field :thumbnail_url, :class=>"thumbnail_source"
     .field
       = f.label :time_to_complete,  'Estimated Completion Time (in minutes)'
