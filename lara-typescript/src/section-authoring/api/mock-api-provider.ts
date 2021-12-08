@@ -144,7 +144,12 @@ export const createPage = () => {
     name: `Page ${pageCounter}`,
     sections: []
   };
-  pages.push(newPage);
+  // we can assume the completion page is always the last element of the array before new page was added
+  if (pages[pages.length - 1].isCompletion) {
+    pages.splice(pages.length - 1, 0, newPage);
+  } else {
+    pages.push(newPage);
+  }
   updatePositions(pages);
   return Promise.resolve(newPage);
 };
@@ -178,8 +183,12 @@ export const updatePage = (args: {pageId: PageId, changes: Partial<IPage>}) => {
   const {pageId, changes} = args;
   const indx = pages.findIndex(p => p.id === pageId);
   if (indx > -1) {
-    const nextPage = {... pages[indx], ...changes };
-    pages[indx] = nextPage;
+    if (indx < pages.length - 1 && changes.isCompletion) {
+      pages.push(pages.splice(indx, 1)[0]); // put the page at the end of the pages list
+    }
+    const newIndx = pages.findIndex(p => p.id === pageId); // we do this again because pages may have reordered
+    const nextPage = {...pages[newIndx], ...changes };
+    pages[newIndx] = nextPage;
     setSectionPositions(nextPage);
     return Promise.resolve({... nextPage});
   }

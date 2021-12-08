@@ -1501,27 +1501,27 @@ select {
   font-family: var(--font-family-default);
   font-size: 16px;
   justify-content: space-between;
-  padding: 5px; }
+  align-items: center;
+  padding: 5px 5px 6px 5px; }
   .sectionMenu > a {
     color: white; }
   .sectionMenu label {
-    align-self: center;
     line-height: 1;
     margin-right: 5px;
     text-transform: none; }
   .sectionMenu .menuStart {
-    align-self: center;
+    align-items: center;
     display: flex;
     max-width: 60%;
     overflow: hidden;
     text-overflow: ellipsis; }
     .sectionMenu .menuStart h3 {
-      align-self: center;
       display: inline;
       margin: 0 10px;
-      white-space: nowrap; }
+      white-space: nowrap;
+      line-height: 1; }
     .sectionMenu .menuStart .sectionDragHandle {
-      align-self: center; }
+      margin-top: 2px; }
     .sectionMenu .menuStart .toggleSecondaryColumnOption {
       align-items: center;
       cursor: pointer;
@@ -1718,6 +1718,169 @@ select {
   --lt-gray: hsl(0, 0%, 90%);
   --ltr-gray: hsl(0, 0%, 95%); }
 
+select {
+  border: solid 1.5px var(--med-gray);
+  border-radius: 4px;
+  padding: 5px 10px; }
+
+.pageCopyDialog dl {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 2fr;
+  grid-gap: 10px;
+  grid-auto-flow: dense;
+  margin: 0 0 20px;
+  padding: 0; }
+  .pageCopyDialog dl dt {
+    margin: 0;
+    padding: 0; }
+  .pageCopyDialog dl dd {
+    margin: 0;
+    padding: 0; }
+    .pageCopyDialog dl dd select {
+      overflow: hidden;
+      width: 100%; }
+  .pageCopyDialog dl dt.col1, .pageCopyDialog dl dd.col1 {
+    grid-column: 1; }
+  .pageCopyDialog dl dt.col2, .pageCopyDialog dl dd.col2 {
+    grid-column: 2; }
+
+@font-face {
+  font-family: 'Lato-Light';
+  font-style: normal;
+  font-weight: 100;
+  src: local("Lato Light"), local("Lato-Light"), url(//fonts.googleapis.com/css?family=Lato:100) format("woff"); }
+
+@font-face {
+  font-family: 'Lato-Regular';
+  font-style: normal;
+  font-weight: 400;
+  src: local("Lato Regular"), local("Lato-Regular"), url(//themes.googleusercontent.com/static/fonts/lato/v6/qIIYRU-oROkIk8vfvxw6QvesZW2xOQ-xsNqO47m55DA.woff) format("woff"); }
+
+@font-face {
+  font-family: 'Lato-Bold';
+  font-style: normal;
+  font-weight: 700;
+  src: local("Lato Bold"), local("Lato-Bold"), url(//themes.googleusercontent.com/static/fonts/lato/v6/qdgUG4U09HnJwhYI-uK18wLUuEpTyoUstqEm5AMlJo4.woff) format("woff"); }
+
+:root {
+  --font-family-bold: Lato-Bold, helvetica, verdana, sans-serif;
+  --font-family-default: Lato-Regular, helvetica, verdana, sans-serif;
+  --font-family-light: Lato-Light, helvetica, verdana, sans-serif;
+  --font-color-default: #313131;
+  --dark-teal: #016082;
+  --teal: #0592af;
+  --lt-teal: #93d5e4;
+  --ltr-teal: #cdebf2;
+  --ltst-teal: #e2f4f8;
+  --gold: #ffc320;
+  --lt-orange: #ffe6d0;
+  --orange: #ea6d2f;
+  --dark-gray: #3f3f3f;
+  --med-gray: #979797;
+  --lt-gray: hsl(0, 0%, 90%);
+  --ltr-gray: hsl(0, 0%, 95%); }
+
+.activity-nav {
+  align-items: center;
+  background-color: white;
+  color: var(--dark-gray);
+  display: flex;
+  font-size: 18px;
+  height: 64px;
+  justify-content: center;
+  width: 100%; }
+
+.nav-pages {
+  display: flex;
+  justify-content: center;
+  margin: 0 10px 0 10px;
+  padding: 0px;
+  width: 100%; }
+  .nav-pages .page-button {
+    align-items: center;
+    background-color: white;
+    border: none;
+    border-radius: 4px;
+    color: var(--dark-gray);
+    cursor: pointer;
+    display: flex;
+    fill: #0592af;
+    font-size: 18px;
+    font-weight: bold;
+    height: 44px;
+    justify-content: center;
+    margin: 0 5px 0 5px;
+    width: 44px; }
+    .nav-pages .page-button:hover {
+      background: var(--ltr-teal); }
+    .nav-pages .page-button:active {
+      background: var(--teal);
+      color: white; }
+      .nav-pages .page-button:active svg {
+        fill: white; }
+    .nav-pages .page-button.current {
+      background-color: var(--teal);
+      color: white;
+      fill: white;
+      pointer-events: none; }
+      .nav-pages .page-button.current svg {
+        fill: white; }
+    .nav-pages .page-button.disabled {
+      background: white;
+      cursor: auto;
+      opacity: .35;
+      outline: none; }
+      .nav-pages .page-button.disabled svg {
+        background: white;
+        fill: var(--teal); }
+    .nav-pages .page-button.completion-page-button:hover {
+      background: var(--lt-orange); }
+    .nav-pages .page-button.completion-page-button.current, .nav-pages .page-button.completion-page-button:active {
+      background-color: var(--orange);
+      color: white; }
+      .nav-pages .page-button.completion-page-button.current svg, .nav-pages .page-button.completion-page-button:active svg {
+        fill: white; }
+    .nav-pages .page-button.completion-page-button svg {
+      fill: var(--orange); }
+    .nav-pages .page-button svg {
+      fill: var(--teal); }
+
+@font-face {
+  font-family: 'Lato-Light';
+  font-style: normal;
+  font-weight: 100;
+  src: local("Lato Light"), local("Lato-Light"), url(//fonts.googleapis.com/css?family=Lato:100) format("woff"); }
+
+@font-face {
+  font-family: 'Lato-Regular';
+  font-style: normal;
+  font-weight: 400;
+  src: local("Lato Regular"), local("Lato-Regular"), url(//themes.googleusercontent.com/static/fonts/lato/v6/qIIYRU-oROkIk8vfvxw6QvesZW2xOQ-xsNqO47m55DA.woff) format("woff"); }
+
+@font-face {
+  font-family: 'Lato-Bold';
+  font-style: normal;
+  font-weight: 700;
+  src: local("Lato Bold"), local("Lato-Bold"), url(//themes.googleusercontent.com/static/fonts/lato/v6/qdgUG4U09HnJwhYI-uK18wLUuEpTyoUstqEm5AMlJo4.woff) format("woff"); }
+
+:root {
+  --font-family-bold: Lato-Bold, helvetica, verdana, sans-serif;
+  --font-family-default: Lato-Regular, helvetica, verdana, sans-serif;
+  --font-family-light: Lato-Light, helvetica, verdana, sans-serif;
+  --font-color-default: #313131;
+  --dark-teal: #016082;
+  --teal: #0592af;
+  --lt-teal: #93d5e4;
+  --ltr-teal: #cdebf2;
+  --ltst-teal: #e2f4f8;
+  --gold: #ffc320;
+  --lt-orange: #ffe6d0;
+  --orange: #ea6d2f;
+  --dark-gray: #3f3f3f;
+  --med-gray: #979797;
+  --lt-gray: hsl(0, 0%, 90%);
+  --ltr-gray: hsl(0, 0%, 95%); }
+
 .pageSettingsDialog input[type="text"] {
   border: solid 1.5px var(--med-gray);
   border-radius: 4px;
@@ -1844,6 +2007,9 @@ select {
     grid-column-end: 1;
     grid-row-start: 7;
     grid-row-end: 7; }
+  .pageSettingsDialog dl .disabled {
+    cursor: none;
+    pointer-events: none; }
 
 @font-face {
   font-family: 'Lato-Light';
@@ -2247,6 +2413,57 @@ dl.textBlockEditForm {
   --lt-gray: hsl(0, 0%, 90%);
   --ltr-gray: hsl(0, 0%, 95%); }
 
+.completion-page {
+  color: var(--dark-gray);
+  font-family: var(--font-family-default); }
+  .completion-page .completion-page-title {
+    font-size: x-large;
+    margin-bottom: 5px; }
+  .completion-page .completion-description-heading {
+    font-size: large;
+    margin: 5px 0; }
+  .completion-page ol {
+    margin: 0 10px; }
+  .completion-page p, .completion-page li {
+    font-size: small;
+    margin: 2px 20px; }
+
+@font-face {
+  font-family: 'Lato-Light';
+  font-style: normal;
+  font-weight: 100;
+  src: local("Lato Light"), local("Lato-Light"), url(//fonts.googleapis.com/css?family=Lato:100) format("woff"); }
+
+@font-face {
+  font-family: 'Lato-Regular';
+  font-style: normal;
+  font-weight: 400;
+  src: local("Lato Regular"), local("Lato-Regular"), url(//themes.googleusercontent.com/static/fonts/lato/v6/qIIYRU-oROkIk8vfvxw6QvesZW2xOQ-xsNqO47m55DA.woff) format("woff"); }
+
+@font-face {
+  font-family: 'Lato-Bold';
+  font-style: normal;
+  font-weight: 700;
+  src: local("Lato Bold"), local("Lato-Bold"), url(//themes.googleusercontent.com/static/fonts/lato/v6/qdgUG4U09HnJwhYI-uK18wLUuEpTyoUstqEm5AMlJo4.woff) format("woff"); }
+
+:root {
+  --font-family-bold: Lato-Bold, helvetica, verdana, sans-serif;
+  --font-family-default: Lato-Regular, helvetica, verdana, sans-serif;
+  --font-family-light: Lato-Light, helvetica, verdana, sans-serif;
+  --font-color-default: #313131;
+  --dark-teal: #016082;
+  --teal: #0592af;
+  --lt-teal: #93d5e4;
+  --ltr-teal: #cdebf2;
+  --ltst-teal: #e2f4f8;
+  --gold: #ffc320;
+  --lt-orange: #ffe6d0;
+  --orange: #ea6d2f;
+  --dark-gray: #3f3f3f;
+  --med-gray: #979797;
+  --lt-gray: hsl(0, 0%, 90%);
+  --ltr-gray: hsl(0, 0%, 95%); }
+
 .editPageHeader {
   background: transparent;
   color: var(--orange);
@@ -2326,167 +2543,4 @@ button.bigButton {
     align-self: center;
     fill: var(--dark-gray);
     margin: 0 3px 0 0; }
-
-@font-face {
-  font-family: 'Lato-Light';
-  font-style: normal;
-  font-weight: 100;
-  src: local("Lato Light"), local("Lato-Light"), url(//fonts.googleapis.com/css?family=Lato:100) format("woff"); }
-
-@font-face {
-  font-family: 'Lato-Regular';
-  font-style: normal;
-  font-weight: 400;
-  src: local("Lato Regular"), local("Lato-Regular"), url(//themes.googleusercontent.com/static/fonts/lato/v6/qIIYRU-oROkIk8vfvxw6QvesZW2xOQ-xsNqO47m55DA.woff) format("woff"); }
-
-@font-face {
-  font-family: 'Lato-Bold';
-  font-style: normal;
-  font-weight: 700;
-  src: local("Lato Bold"), local("Lato-Bold"), url(//themes.googleusercontent.com/static/fonts/lato/v6/qdgUG4U09HnJwhYI-uK18wLUuEpTyoUstqEm5AMlJo4.woff) format("woff"); }
-
-:root {
-  --font-family-bold: Lato-Bold, helvetica, verdana, sans-serif;
-  --font-family-default: Lato-Regular, helvetica, verdana, sans-serif;
-  --font-family-light: Lato-Light, helvetica, verdana, sans-serif;
-  --font-color-default: #313131;
-  --dark-teal: #016082;
-  --teal: #0592af;
-  --lt-teal: #93d5e4;
-  --ltr-teal: #cdebf2;
-  --ltst-teal: #e2f4f8;
-  --gold: #ffc320;
-  --lt-orange: #ffe6d0;
-  --orange: #ea6d2f;
-  --dark-gray: #3f3f3f;
-  --med-gray: #979797;
-  --lt-gray: hsl(0, 0%, 90%);
-  --ltr-gray: hsl(0, 0%, 95%); }
-
-select {
-  border: solid 1.5px var(--med-gray);
-  border-radius: 4px;
-  padding: 5px 10px; }
-
-.pageCopyDialog dl {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 2fr;
-  grid-gap: 10px;
-  grid-auto-flow: dense;
-  margin: 0 0 20px;
-  padding: 0; }
-  .pageCopyDialog dl dt {
-    margin: 0;
-    padding: 0; }
-  .pageCopyDialog dl dd {
-    margin: 0;
-    padding: 0; }
-    .pageCopyDialog dl dd select {
-      overflow: hidden;
-      width: 100%; }
-  .pageCopyDialog dl dt.col1, .pageCopyDialog dl dd.col1 {
-    grid-column: 1; }
-  .pageCopyDialog dl dt.col2, .pageCopyDialog dl dd.col2 {
-    grid-column: 2; }
-
-@font-face {
-  font-family: 'Lato-Light';
-  font-style: normal;
-  font-weight: 100;
-  src: local("Lato Light"), local("Lato-Light"), url(//fonts.googleapis.com/css?family=Lato:100) format("woff"); }
-
-@font-face {
-  font-family: 'Lato-Regular';
-  font-style: normal;
-  font-weight: 400;
-  src: local("Lato Regular"), local("Lato-Regular"), url(//themes.googleusercontent.com/static/fonts/lato/v6/qIIYRU-oROkIk8vfvxw6QvesZW2xOQ-xsNqO47m55DA.woff) format("woff"); }
-
-@font-face {
-  font-family: 'Lato-Bold';
-  font-style: normal;
-  font-weight: 700;
-  src: local("Lato Bold"), local("Lato-Bold"), url(//themes.googleusercontent.com/static/fonts/lato/v6/qdgUG4U09HnJwhYI-uK18wLUuEpTyoUstqEm5AMlJo4.woff) format("woff"); }
-
-:root {
-  --font-family-bold: Lato-Bold, helvetica, verdana, sans-serif;
-  --font-family-default: Lato-Regular, helvetica, verdana, sans-serif;
-  --font-family-light: Lato-Light, helvetica, verdana, sans-serif;
-  --font-color-default: #313131;
-  --dark-teal: #016082;
-  --teal: #0592af;
-  --lt-teal: #93d5e4;
-  --ltr-teal: #cdebf2;
-  --ltst-teal: #e2f4f8;
-  --gold: #ffc320;
-  --lt-orange: #ffe6d0;
-  --orange: #ea6d2f;
-  --dark-gray: #3f3f3f;
-  --med-gray: #979797;
-  --lt-gray: hsl(0, 0%, 90%);
-  --ltr-gray: hsl(0, 0%, 95%); }
-
-.activity-nav {
-  align-items: center;
-  background-color: white;
-  color: var(--dark-gray);
-  display: flex;
-  font-size: 18px;
-  height: 64px;
-  justify-content: center;
-  width: 100%; }
-
-.nav-pages {
-  display: flex;
-  justify-content: center;
-  margin: 0 10px 0 10px;
-  padding: 0px;
-  width: 100%; }
-  .nav-pages .page-button {
-    align-items: center;
-    background-color: white;
-    border: none;
-    border-radius: 4px;
-    color: var(--dark-gray);
-    cursor: pointer;
-    display: flex;
-    fill: #0592af;
-    font-size: 18px;
-    font-weight: bold;
-    height: 44px;
-    justify-content: center;
-    margin: 0 5px 0 5px;
-    width: 44px; }
-    .nav-pages .page-button:hover {
-      background: var(--ltr-teal); }
-    .nav-pages .page-button:active {
-      background: var(--teal);
-      color: white; }
-      .nav-pages .page-button:active svg {
-        fill: white; }
-    .nav-pages .page-button.current {
-      background-color: var(--teal);
-      color: white;
-      fill: white;
-      pointer-events: none; }
-      .nav-pages .page-button.current svg {
-        fill: white; }
-    .nav-pages .page-button.disabled {
-      background: white;
-      cursor: auto;
-      opacity: .35;
-      outline: none; }
-      .nav-pages .page-button.disabled svg {
-        background: white;
-        fill: var(--teal); }
-    .nav-pages .page-button.completion-page-button:hover {
-      background: var(--lt-orange); }
-    .nav-pages .page-button.completion-page-button.current, .nav-pages .page-button.completion-page-button:active {
-      background-color: var(--orange);
-      color: white; }
-      .nav-pages .page-button.completion-page-button.current svg, .nav-pages .page-button.completion-page-button:active svg {
-        fill: white; }
-    .nav-pages .page-button.completion-page-button svg {
-      fill: var(--orange); }
-    .nav-pages .page-button svg {
-      fill: var(--teal); }
 
