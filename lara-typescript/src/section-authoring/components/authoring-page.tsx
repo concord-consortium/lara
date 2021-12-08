@@ -174,10 +174,10 @@ export const AuthoringPage: React.FC<IPageProps> = ({
   return (
     <>
       <PageNavContainer />
-      <PreviewLinksContainer />
       <header className="editPageHeader">
         <h2>Page: {displayTitle}</h2>
         <button onClick={pageSettingsClickHandler}><Cog height="16" width="16" /> Page Settings</button>
+        <PreviewLinksContainer />
       </header>
       {isCompletion
         ? <CompletionPage />
