@@ -1,24 +1,37 @@
-%h1.title
-  %span.title
-    Edit activity
-  - if current_user.is_admin
-    %span.edit-in
-      = link_to "Edit in Standard Mode", "#{edit_activity_path(@activity)}?mode=standard"
-    %span.edit-in
-      = link_to "Edit in ITSI Mode", "#{edit_activity_path(@activity)}?mode=itsi"
-  - if (can? :export, @activity) && ENV['CONVERSION_SCRIPT_URL'].present?
-    %span.convert
-      = link_to "Convert", activity_player_conversion_url(@activity), :target => 'new'
+%nav.activity-nav
+  .nav-pages
+    %button{ :id => "page-nav-previous", :class => "page-button disabled" }
+      = svg_icon(asset_path "/assets/images/icons/page-nav/previous.svg")
+    %button{ :id => "page-nav-home", :class => "page-button current", :onclick => "window.location='#{edit_activity_path(@activity)}'" }
+      = svg_icon(asset_path "/assets/images/icons/page-nav/home.svg")
+    - @activity.pages.each.with_index(1) do |p, index|
+      %button{ :id => dom_id_for(p, :item), :class => "page-button #{p.is_completion ? 'completion-page-button' : ''}", :onclick => "window.location='#{edit_activity_page_path(@activity, p)}'" }
+        = p.is_completion ? svg_icon(asset_path "/assets/images/icons/page-nav/completion.svg") : index
+    %button{ :id => "page-nav-next", :class => "page-button #{@activity.pages.count <= 0 ? 'disabled' : ''}", :onclick => "#{@activity.pages.count <= 0 ? '#' : 'window.location=\'' + edit_activity_page_path(@activity, @activity.pages[0]) + '\''}" }
+      = svg_icon(asset_path "/assets/images/icons/page-nav/next.svg")
+    %button{ :id => "page-nav-add", :class => "page-button", :onclick => "window.location='#{new_activity_page_path(@activity)}'" }
+      = svg_icon(asset_path "/assets/images/icons/page-nav/add.svg")
+    %button{ :id => "page-nav-copy", :class => "page-button disabled" }
+      = svg_icon(asset_path "/assets/images/icons/page-nav/copy.svg")
+%header.edit-form-header
+  %h1 Edit Activity#{ @activity.name != "" ? ": " + @activity.name : "" }
   - if @editor_mode == LightweightActivity::ITSI_EDITOR_MODE
     %div{class: "buttons-menu"}
       %button{onclick: "window.open('#{itsi_preview_url(@activity)}', '_blank')"}
         Preview
-  - else    
+  - else
     #preview-menu
       %label{for: "preview-options-select"}
         %strong
           Preview in:
       = select_tag :preview_options_select, options_for_select(activity_preview_options(@activity)), {id: 'preview-options-select'}
+
+.edit-form-options
+  - if current_user.is_admin
+    = link_to "Edit in Standard Mode", "#{edit_activity_path(@activity)}?mode=standard"
+    = link_to "Edit in ITSI Mode", "#{edit_activity_path(@activity)}?mode=itsi"
+  - if (can? :export, @activity) && ENV['CONVERSION_SCRIPT_URL'].present?
+    = link_to "Convert", activity_player_conversion_url(@activity), :target => 'new'
 
 - if show_publication_details
   = render :partial => "publications/publication_details", :locals =>{ :publication => @activity}

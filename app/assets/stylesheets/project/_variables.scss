@@ -41,19 +41,43 @@ $mono:"Courier New",Courier,mono;
 
 // font variables
 // ----------------------------------------
-$lato-reg: "Lato-Regular", Helvetica, Arial, Verdana, sans-serif;
-$lato-bold: "Lato-Bold", Helvetica, Arial, Verdana, sans-serif;
-$lato-light: "Lato-Light", Helvetica, Arial, Verdana, sans-serif;
+@mixin font-import {
+  @font-face {
+    font-family: 'Lato-Light';
+    font-style: normal;
+    font-weight: 100;
+    src: local('Lato Light'), local('Lato-Light'), url(//fonts.googleapis.com/css?family=Lato:100) format('woff');
+  }
+
+  @font-face {
+    font-family: 'Lato-Regular';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Lato Regular'), local('Lato-Regular'), url(//themes.googleusercontent.com/static/fonts/lato/v6/qIIYRU-oROkIk8vfvxw6QvesZW2xOQ-xsNqO47m55DA.woff) format('woff');
+  }
+
+  @font-face {
+    font-family: 'Lato-Bold';
+    font-style: normal;
+    font-weight: 700;
+    src: local('Lato Bold'), local('Lato-Bold'), url(//themes.googleusercontent.com/static/fonts/lato/v6/qdgUG4U09HnJwhYI-uK18wLUuEpTyoUstqEm5AMlJo4.woff) format('woff');
+  }
+}
+@include font-import;
+
+$lato-reg: Lato-Regular, helvetica, verdana, sans-serif;
+$lato-bold: Lato-Bold, helvetica, verdana, sans-serif;
+$lato-light: Lato-Light, helvetica, verdana, sans-serif;
 
 // color
 // ----------------------------------------
 
-$drk-orange: #f3951d; 	// (243, 149, 29)
+$drk-orange: #ea6d2f; 	// (243, 149, 29)
 
-$lt-blue: #bddfdf;	 	// (189, 223, 223)
-$med-blue: #6fc5d8; 	// (111, 197, 216)
+$lt-blue: #cdebf2;	 	// (189, 223, 223)
+$med-blue: #0592af; 	// (111, 197, 216)
 
-$btn-blue: #40b2cb;
+$btn-blue: #93d5e4;
 $btn-blue2: $med-blue;
 
 $btn-orange: $drk-orange;
@@ -105,3 +129,22 @@ $silverchalice: #9d9d9d;
 $gray: #868686;
 $dovegrey: #6e6e6e;
 $mineshaft: #262626;
+
+:root {
+--font-family-bold: Lato-Bold, helvetica, verdana, sans-serif;
+--font-family-default: Lato-Regular, helvetica, verdana, sans-serif;
+--font-family-light: Lato-Light, helvetica, verdana, sans-serif;
+--font-color-default: #313131;
+--dark-teal: #016082;
+--teal: #0592af;
+--lt-teal: #93d5e4;
+--ltr-teal: #cdebf2;
+--ltst-teal: #e2f4f8;
+--gold: #ffc320;
+--lt-orange: #ffe6d0;
+--orange: #ea6d2f;
+--dark-gray: #3f3f3f;
+--med-gray: #979797;
+--lt-gray: hsl(0, 0%, 90%);
+--ltr-gray: hsl(0, 0%, 95%);
+}

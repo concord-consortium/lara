@@ -22,7 +22,9 @@
     </div>
   </div>
   <div id="wide_content" class="wide_content">
-    <p class="notice"><%= notice %></p>
+    <%- if notice -%>
+      <p class="notice"><%= notice %></p>
+    <%- end -%>
     <p class="alert"><%= alert %></p>
     <%= yield %>
   </div><!-- end #content -->

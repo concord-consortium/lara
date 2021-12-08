@@ -1,6 +1,6 @@
 #modal {
   .publication {
-    padding: 0px;
+    padding: 0;
 
     .header {
       height: auto;
@@ -34,14 +34,36 @@
     }
     .info {
       margin-top: 10px;
+
+      table {
+        width: 100%;
+  
+        thead {
+          background: var(--teal);
+          color: white;
+  
+          th {
+            font-weight: bold;
+            padding: 10px;
+            text-align: left;
+          }
+        }
+        tbody {
+  
+          tr {
+            border-bottom: solid 1px var(--med-gray);
+            &:nth-child(even) {
+              background: var(--ltr-gray);
+            }
+  
+            td {
+              padding: 10px;
+            }
+          }
+        }
+      }
     }
-    ul {
-      margin-left: 0;
-    }
-    li {
-      list-style: none;
-      line-height: 2;
-    }
+
     .published {
       border-radius: 10px 50px 50px 10px;
       -moz-border-radius: 10px 50px 50px 10px;
@@ -52,9 +74,6 @@
       margin-right: 10px;
     }
     .not_published {
-      color: #8db177;
-      padding: 2px;
-      font-weight: bold;
       padding-right: 15px;
     }
     .error {
@@ -72,12 +91,20 @@
 }
 .publication_details {
   background: #eee;
-  color: #770000;
+  border-radius: 10px;
   padding: 20px;
-  margin: 0 0 15px;
+  margin: 15px 0;
+
+  .summary {
+    margin-bottom: 10px;
+  }
 
   ul {
     margin-left: 3em;
+  }
+
+  a.btn-primary {
+    margin: 10px 0 0;
   }
 
   span.message {
@@ -89,7 +116,7 @@
     border-radius: 5px;
   }
   span.success-message {
-    background-color: #18a73b;
+    background-color: #2da343;
   }
   span.error-message {
     background-color: #f00;

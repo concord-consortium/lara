@@ -7,7 +7,7 @@
     = form_tag add_plugin_activity_path(@activity), :class => 'plugin-form' do
       = select_tag :approved_script_id, plugin_options("activity")
       = hidden_field_tag :component_label, first_plugin.component_label, {id: "component_label"}
-      = submit_tag 'Add', {id: 'add_plugin_button'}
+      = submit_tag 'Add', {id: 'add_plugin_button', :class => 'btn-primary'}
 
 - if activity.plugins.length > 0
   .wrapped_plugins

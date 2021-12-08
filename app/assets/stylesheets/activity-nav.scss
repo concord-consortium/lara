@@ -1,0 +1,132 @@
+@mixin font-import {
+  @font-face {
+    font-family: 'Lato-Light';
+    font-style: normal;
+    font-weight: 100;
+    src: local('Lato Light'), local('Lato-Light'), url(//fonts.googleapis.com/css?family=Lato:100) format('woff');
+  }
+
+  @font-face {
+    font-family: 'Lato-Regular';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Lato Regular'), local('Lato-Regular'), url(//themes.googleusercontent.com/static/fonts/lato/v6/qIIYRU-oROkIk8vfvxw6QvesZW2xOQ-xsNqO47m55DA.woff) format('woff');
+  }
+
+  @font-face {
+    font-family: 'Lato-Bold';
+    font-style: normal;
+    font-weight: 700;
+    src: local('Lato Bold'), local('Lato-Bold'), url(//themes.googleusercontent.com/static/fonts/lato/v6/qdgUG4U09HnJwhYI-uK18wLUuEpTyoUstqEm5AMlJo4.woff) format('woff');
+  }
+}
+@include font-import;
+
+:root {
+--font-family-bold: Lato-Bold, helvetica, verdana, sans-serif;
+--font-family-default: Lato-Regular, helvetica, verdana, sans-serif;
+--font-family-light: Lato-Light, helvetica, verdana, sans-serif;
+--font-color-default: #313131;
+--dark-teal: #016082;
+--teal: #0592af;
+--lt-teal: #93d5e4;
+--ltr-teal: #cdebf2;
+--ltst-teal: #e2f4f8;
+--gold: #ffc320;
+--lt-orange: #ffe6d0;
+--orange: #ea6d2f;
+--dark-gray: #3f3f3f;
+--med-gray: #979797;
+--lt-gray: hsl(0, 0%, 90%);
+--ltr-gray: hsl(0, 0%, 95%);
+}
+
+.activity-nav {
+  align-items: center;
+  background-color: white;
+  color: var(--dark-gray);
+  display: flex;
+  font-size: 18px;
+  height: 64px;
+  justify-content: center;
+  width: 100%;
+}
+.nav-pages {
+  display: flex;
+  justify-content: center;
+  margin: 0 10px 0 10px;
+  padding: 0px;
+  width: 100%;
+
+  .page-button {
+    align-items: center;
+    background-color: white;
+    border: none;
+    border-radius: 4px;
+    color: var(--dark-gray);
+    cursor: pointer;
+    display: flex;
+    fill: #0592af;
+    font-size: 18px;
+    font-weight: bold;
+    height: 44px;
+    justify-content: center;
+    margin: 0 5px 0 5px;
+    width: 44px;
+
+
+    &:hover {
+      background: var(--ltr-teal);
+    }
+    &:active {
+      background: var(--teal);
+      color: white;
+      svg {
+        fill: white;
+      }
+    }
+
+    &.current {
+      background-color: var(--teal);
+      color: white;
+      fill: white;
+      pointer-events: none;
+
+      svg {
+        fill: white;
+      }
+    }
+    &.disabled {
+      background: white;
+      cursor: auto;
+      opacity: .35;
+      outline: none;
+
+      svg {
+        background: white;
+        fill: var(--teal);
+      }
+    }
+
+    &.completion-page-button {
+      &:hover {
+        background: var(--lt-orange);
+      }
+      &.current, &:active {
+        background-color: var(--orange);
+        color: white;
+        svg {
+          fill: white;
+        }
+      }
+
+      svg {
+        fill: var(--orange);
+      }
+    }
+
+    svg {
+      fill: var(--teal);
+    }
+  }
+}
