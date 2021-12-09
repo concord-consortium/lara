@@ -210,8 +210,8 @@ class Api::V1::InteractivePagesController < API::APIController
     return error("Missing page_item[section_id] parameter") if section_id.nil?
     section = @interactive_page.sections.where(id: section_id).first
     return error("Invalid page_item[section_id] parameter") if section.nil?
-    embeddable_type = page_item_params["type"]
-    return error("Missing page_item[type] parameter") if embeddable_type.nil?
+    embeddable_type = page_item_params["embeddable"]
+    return error("Missing page_item[embeddable] parameter") if embeddable_type.nil?
     position = page_item_params["position"]
     position = position.to_i unless position.nil?
     column = page_item_params["column"] || PageItem::COLUMN_PRIMARY
