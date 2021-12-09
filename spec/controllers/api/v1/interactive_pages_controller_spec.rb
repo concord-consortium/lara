@@ -166,23 +166,23 @@ describe Api::V1::InteractivePagesController do
         expect(response.body).to include "Invalid page_item[section_id] parameter"
       end
 
-      it "fails with a missing type parameter" do
+      it "fails with a missing embeddable parameter" do
         xhr :post, "create_page_item", {id: page.id, page_item: {
           section_id: section.id,
           position: 1,
           section_position: 1,
           column: PageItem::COLUMN_PRIMARY
         }}
-        expect(response.body).to include "Missing page_item[type] parameter"
+        expect(response.body).to include "Missing page_item[embeddable] parameter"
         expect(response.status).to eq(500)
         expect(response.content_type).to eq("application/json")
-        expect(response.body).to include "Missing page_item[type] parameter"
+        expect(response.body).to include "Missing page_item[embeddable] parameter"
       end
 
       it "fails with an invalid type parameter" do
         xhr :post, "create_page_item", {id: page.id, page_item: {
           section_id: section.id,
-          type: "Invalid_1",
+          embeddable: "Invalid_1",
           position: 1,
           section_position: 1,
           column: PageItem::COLUMN_PRIMARY
@@ -195,21 +195,21 @@ describe Api::V1::InteractivePagesController do
       it "fails with an invalid library interactive parameter" do
         xhr :post, "create_page_item", {id: page.id, page_item: {
           section_id: section.id,
-          type: "LibraryInteractive_0",
+          embeddable: "LibraryInteractive_0",
           position: 1,
           section_position: 1,
           column: PageItem::COLUMN_PRIMARY
         }}
         expect(response.status).to eq(500)
         expect(response.content_type).to eq("application/json")
-        expect(response.body).to include "Invalid page_item[type] parameter"
+        expect(response.body).to include "Invalid page_item[embeddable] parameter"
       end
     end
 
     it "succeeds with valid LibraryInteractive parameters" do
       xhr :post, "create_page_item", {id: page.id, page_item: {
         section_id: section.id,
-        type: library_interactive1.serializeable_id,
+        embeddable: library_interactive1.serializeable_id,
         position: 1,
         section_position: 1,
         column: PageItem::COLUMN_PRIMARY
@@ -221,7 +221,7 @@ describe Api::V1::InteractivePagesController do
     it "succeeds with valid MWInteractive parameters" do
       xhr :post, "create_page_item", {id: page.id, page_item: {
         section_id: section.id,
-        type: "MwInteractive",
+        embeddable: "MwInteractive",
         position: 1,
         section_position: 1,
         column: PageItem::COLUMN_PRIMARY

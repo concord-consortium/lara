@@ -220,7 +220,7 @@ class Api::V1::InteractivePagesController < API::APIController
     case embeddable_type
     when /LibraryInteractive/
       library_interactive = LibraryInteractive.find_by_serializeable_id(embeddable_type)
-      return error("Invalid page_item[type] parameter") if library_interactive.nil?
+      return error("Invalid page_item[embeddable] parameter") if library_interactive.nil?
       embeddable = ManagedInteractive.create!(library_interactive_id: library_interactive.id)
     when /MwInteractive/
       embeddable = MwInteractive.create!
