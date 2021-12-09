@@ -126,8 +126,7 @@ export const SectionColumn: React.FC<ISectionColumnProps> = ({
         section_id: sectionId,
         embeddable: embeddable.serializeable_id,
         column,
-        position,
-        type: embeddable.type
+        position
       });
       handleToggleShowAddItem();
     }
