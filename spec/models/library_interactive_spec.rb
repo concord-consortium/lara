@@ -23,7 +23,8 @@ describe LibraryInteractive do
         show_delete_data_button: library_interactive.show_delete_data_button,
         thumbnail_url: library_interactive.thumbnail_url,
         customizable: library_interactive.customizable,
-        authorable: library_interactive.authorable
+        authorable: library_interactive.authorable,
+        report_item_url: library_interactive.report_item_url
        }
       expect(library_interactive.to_hash).to eq(expected)
     end

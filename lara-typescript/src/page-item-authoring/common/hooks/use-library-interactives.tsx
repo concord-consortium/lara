@@ -23,6 +23,7 @@ export interface ILibraryInteractive {
   updated_at: string;
   customizable: boolean;
   authorable: boolean;
+  report_item_url: string;
 }
 
 interface ILoadingState {
