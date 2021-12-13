@@ -24,11 +24,17 @@ export const PreviewLinks: React.FC<IPreviewLinksProps> =
     }
   };
 
+  const handlePreviewButtonClick = () => {
+    if (previewLink) {
+      window.open(previewLink, "_blank");
+    }
+  };
+
   const renderPreviewOptions = () => {
     if (previewLinks) {
       return (
-        <span className="links-list" >
-          <select onChange={handleLinkSelect}>
+        <>
+          <select id="preview-links-select" onChange={handleLinkSelect}>
             { Object.keys(previewLinks).map(label => {
               return (
                   <option key={label} value={previewLinks[label]} >
@@ -39,10 +45,10 @@ export const PreviewLinks: React.FC<IPreviewLinksProps> =
             }
           </select>
           { previewLink
-            ? <a href={previewLink} target="_blank"><ExternalLink/></a>
-            : <span className="disabled"><ExternalLink/></span>
+            ? <button onClick={handlePreviewButtonClick}><ExternalLink/></button>
+            : <button className="disabled"><ExternalLink/></button>
           }
-        </span>
+        </>
       );
     }
     return (
@@ -51,8 +57,8 @@ export const PreviewLinks: React.FC<IPreviewLinksProps> =
   };
 
   return (
-      <div className="preview-links">
-        <span>Preview in:</span>
+      <div id="preview-links">
+        <label htmlFor="preview-links-select">Preview in:</label>
         {renderPreviewOptions()}
       </div>
   );
