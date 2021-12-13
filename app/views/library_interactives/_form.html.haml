@@ -8,6 +8,12 @@
     = f.text_area :authoring_guidance, :rows => 5, :class => 'wysiwyg-minimal'
   = field_set_tag 'Base URL' do
     = f.text_area :base_url, size: "100x2"
+  = field_set_tag 'Report Item URL' do
+    = f.text_area :report_item_url, size: "100x2"
+    %div
+      This URL should point to an optional interactive used by the teacher report 
+      to provide a summary of each interactive answer to teachers. The value should 
+      be a partial URL relative to the iFrame interactive's URL.
   = field_set_tag 'Thumbnail URL' do
     = f.text_area :thumbnail_url, size: "100x2"
 

@@ -32,7 +32,8 @@ export const CustomizeMWInteractive: React.FC<Props> = (props) => {
     aspect_ratio_method,
     linked_interactive_id,
     linked_interactive_type,
-    linked_interactive_item_id
+    linked_interactive_item_id,
+    report_item_url
   } = interactive;
 
   const [aspectRatioValues, setAspectRatioValues] = useState<IAspectRatioChooserValues>({
@@ -42,6 +43,11 @@ export const CustomizeMWInteractive: React.FC<Props> = (props) => {
   });
   const [clickToPlay, setClickToPlay] = useState(click_to_play);
   const [enableLearnerState, setEnableLearnerState] = useState(enable_learner_state);
+  const [reportItemURL, setReportItemURL] = useState(report_item_url);
+
+  const handleChangeReportItemURL = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setReportItemURL(event.target.value);
+  };
 
   const renderClickToPlayOptions = () => {
     return <>
@@ -170,6 +176,22 @@ export const CustomizeMWInteractive: React.FC<Props> = (props) => {
           warning="Please do not select this unless your interactive contains a serializable data set"
         />
         {enableLearnerState ? renderInteractiveStateOptions() : undefined}
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Report Item URL</legend>
+      <div className="option_group">
+        <input
+          name={formField("report_item_url").name}
+          onChange={handleChangeReportItemURL}
+          defaultValue={reportItemURL}
+        />
+        <div className="warning">
+          This URL should point to an optional interactive used by the teacher report
+          to provide a summary of each interactive answer to teachers. The value should
+          be a partial URL relative to the iFrame interactive's URL.
+        </div>
       </div>
     </fieldset>
   </>;

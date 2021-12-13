@@ -43907,7 +43907,8 @@ var CustomizeMWInteractive = function (props) {
       aspect_ratio_method = interactive.aspect_ratio_method,
       linked_interactive_id = interactive.linked_interactive_id,
       linked_interactive_type = interactive.linked_interactive_type,
-      linked_interactive_item_id = interactive.linked_interactive_item_id;
+      linked_interactive_item_id = interactive.linked_interactive_item_id,
+      report_item_url = interactive.report_item_url;
 
   var _a = (0, react_1.useState)({
     width: native_width,
@@ -43924,6 +43925,14 @@ var CustomizeMWInteractive = function (props) {
   var _c = (0, react_1.useState)(enable_learner_state),
       enableLearnerState = _c[0],
       setEnableLearnerState = _c[1];
+
+  var _d = (0, react_1.useState)(report_item_url),
+      reportItemURL = _d[0],
+      setReportItemURL = _d[1];
+
+  var handleChangeReportItemURL = function (event) {
+    setReportItemURL(event.target.value);
+  };
 
   var renderClickToPlayOptions = function () {
     return React.createElement(React.Fragment, null, React.createElement("div", null, React.createElement(checkbox_1.Checkbox, {
@@ -43999,7 +44008,15 @@ var CustomizeMWInteractive = function (props) {
     onChange: setEnableLearnerState,
     label: "Enable save state",
     warning: "Please do not select this unless your interactive contains a serializable data set"
-  }), enableLearnerState ? renderInteractiveStateOptions() : undefined)));
+  }), enableLearnerState ? renderInteractiveStateOptions() : undefined)), React.createElement("fieldset", null, React.createElement("legend", null, "Report Item URL"), React.createElement("div", {
+    className: "option_group"
+  }, React.createElement("input", {
+    name: formField("report_item_url").name,
+    onChange: handleChangeReportItemURL,
+    defaultValue: reportItemURL
+  }), React.createElement("div", {
+    className: "warning"
+  }, "This URL should point to an optional interactive used by the teacher report to provide a summary of each interactive answer to teachers. The value should be a partial URL relative to the iFrame interactive's URL."))));
 };
 
 exports.CustomizeMWInteractive = CustomizeMWInteractive;

@@ -16,7 +16,8 @@ describe ManagedInteractive do
                                                  :enable_learner_state => true,
                                                  :show_delete_data_button => false,
                                                  :has_report_url => true,
-                                                 :no_snapshots => true
+                                                 :no_snapshots => true,
+                                                 :report_item_url => ""
                                                 )}
 
   let(:mw_interactive) { FactoryGirl.create(:mw_interactive) }
@@ -148,7 +149,7 @@ describe ManagedInteractive do
         aspect_ratio_method: managed_interactive.aspect_ratio_method,
         no_snapshots: managed_interactive.no_snapshots,
         linked_interactive_id: managed_interactive.linked_interactive_id,
-        linked_interactive_type: managed_interactive.linked_interactive_type,
+        linked_interactive_type: managed_interactive.linked_interactive_type
       })
     end
   end

@@ -8,7 +8,7 @@ class MwInteractive < ActiveRecord::Base
     :click_to_play_prompt, :image_url, :is_hidden, :linked_interactive_id, :linked_interactive_type,
     :full_window, :model_library_url, :authored_state, :no_snapshots,
     :show_delete_data_button, :show_in_featured_question_report, :is_full_width,
-    :aspect_ratio_method, :linked_interactive_item_id
+    :aspect_ratio_method, :linked_interactive_item_id, :report_item_url
 
   default_value_for :native_width, ASPECT_RATIO_DEFAULT_WIDTH
   default_value_for :native_height, ASPECT_RATIO_DEFAULT_HEIGHT
@@ -66,7 +66,8 @@ class MwInteractive < ActiveRecord::Base
       model_library_url: model_library_url,
       authored_state: authored_state,
       aspect_ratio_method: aspect_ratio_method,
-      no_snapshots: no_snapshots
+      no_snapshots: no_snapshots,
+      report_item_url: report_item_url
     }
   end
 
@@ -81,24 +82,27 @@ class MwInteractive < ActiveRecord::Base
   end
 
   def export
-    return self.as_json(only:[:name,
-                              :url,
-                              :native_width,
-                              :native_height,
-                              :enable_learner_state,
-                              :show_delete_data_button,
-                              :has_report_url,
-                              :click_to_play,
-                              :click_to_play_prompt,
-                              :full_window,
-                              :show_in_featured_question_report,
-                              :image_url,
-                              :is_hidden,
-                              :is_full_width,
-                              :model_library_url,
-                              :authored_state,
-                              :aspect_ratio_method,
-                              :no_snapshots])
+    return self.as_json(only:[
+      :name,
+      :url,
+      :native_width,
+      :native_height,
+      :enable_learner_state,
+      :show_delete_data_button,
+      :has_report_url,
+      :click_to_play,
+      :click_to_play_prompt,
+      :full_window,
+      :show_in_featured_question_report,
+      :image_url,
+      :is_hidden,
+      :is_full_width,
+      :model_library_url,
+      :authored_state,
+      :aspect_ratio_method,
+      :no_snapshots,
+      :report_item_url
+    ])
   end
 
   def self.import(import_hash)

@@ -97,20 +97,23 @@ export interface IReportInitInteractive<InteractiveState = {}, AuthoredState = {
   themeInfo: IThemeInfo;
 }
 
-export interface IAggregateInitInteractive<InteractiveState = {}, AuthoredState = {}> {
+export interface IReportItemInitInteractive<InteractiveState = {}, AuthoredState = {}> {
   version: 1;
-  mode: "aggregate";
+  mode: "reportItem";
   hostFeatures: IHostFeatures;
   authoredState: AuthoredState;
-  interactiveState: InteractiveState;
+  interactiveItemId: string;
+  view: "singleAnswer" | "multipleAnswer";
+  students: Record<string, {hasAnswer: boolean}>
 }
 
 export type IInitInteractive<InteractiveState = {}, AuthoredState = {}, GlobalInteractiveState = {}> =
   IRuntimeInitInteractive<InteractiveState, AuthoredState, GlobalInteractiveState> |
   IAuthoringInitInteractive<AuthoredState> |
-  IReportInitInteractive<InteractiveState, AuthoredState>;
+  IReportInitInteractive<InteractiveState, AuthoredState> |
+  IReportItemInitInteractive<InteractiveState, AuthoredState>;
 
-export type InitInteractiveMode = "runtime" | "authoring" | "report";
+export type InitInteractiveMode = "runtime" | "authoring" | "report" | "reportItem";
 
 // Custom Report Fields
 //
@@ -138,7 +141,6 @@ export interface ICustomReportFieldsInteractiveState {
 
 TODO:
 
-Aggregate Mode
 Full window header buttons
 
 */
@@ -191,6 +193,10 @@ export type IAuthoringServerMessage = "interactiveList" |
                                       "firebaseJWT"
                                       ;
 
+export type IReportItemClientMessage = "studentHTML";
+
+export type IReportItemServerMessage = "getStudentHTML";
+
 export type GlobalIFrameSaverClientMessage = "interactiveStateGlobal";
 export type GlobalIFrameSaverServerMessage = "loadInteractiveGlobal";
 
@@ -205,13 +211,15 @@ export type ClientMessage = DeprecatedRuntimeClientMessage |
                             IRuntimeClientMessage |
                             IAuthoringClientMessage |
                             GlobalIFrameSaverClientMessage |
-                            LoggerClientMessage;
+                            LoggerClientMessage |
+                            IReportItemClientMessage;
 
 export type ServerMessage = IframePhoneServerMessage |
                             DeprecatedRuntimeServerMessage |
                             IRuntimeServerMessage |
                             IAuthoringServerMessage |
-                            GlobalIFrameSaverServerMessage;
+                            GlobalIFrameSaverServerMessage |
+                            IReportItemServerMessage;
 
 // server messages
 
@@ -459,6 +467,16 @@ export interface IRemoveLinkedInteractiveStateListenerRequest {
 export interface ILinkedInteractiveStateResponse<LinkedInteractiveState> {
   listenerId: string;
   interactiveState: LinkedInteractiveState | undefined;
+}
+
+export interface IGetStudentHTML<InteractiveState = {}> extends IBaseRequestResponse {
+  studentId: string;
+  interactiveState: InteractiveState;
+}
+
+export interface IStudentHTML extends IBaseRequestResponse {
+  studentId: string;
+  html: string;
 }
 
 /**
