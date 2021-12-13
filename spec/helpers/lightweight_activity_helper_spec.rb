@@ -2,7 +2,7 @@ require "spec_helper"
 
 describe LightweightActivityHelper do
   let(:activity)     { FactoryGirl.create(:activity, id: 23, name: "Test Activity") }
-  let(:activity_player_activity)     { FactoryGirl.create(:activity, id: 23, name: "Test Activity", runtime: "Activity Player") }
+  let(:activity_player_activity) { FactoryGirl.create(:activity, id: 23, name: "Test Activity", runtime: "Activity Player") }
   let(:sequence)     { FactoryGirl.create(:sequence, id: 1, title: "Test Sequence", lightweight_activities: [activity])}
   let(:user)         { FactoryGirl.create(:user) }
   let(:sequence_run) { FactoryGirl.create(:sequence_run, sequence_id: sequence.id, user_id: user.id) }

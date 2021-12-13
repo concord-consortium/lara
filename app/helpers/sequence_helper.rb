@@ -16,12 +16,12 @@ module SequenceHelper
     end
     return view_sequence_url
   end
-end
 
-def activity_sequence_preview_url(activity, sequence_id)
-  if activity.runtime == "Activity Player"
-    @sequence.activity_player_sequence_url(request.base_url, preview: true, activity: activity.id)
-  else
-    preview_sequence_activity_path(activity, sequence_id: @sequence.id)
+  def activity_sequence_preview_url(activity)
+    if activity.runtime == "Activity Player"
+      @sequence.activity_player_sequence_url(request.base_url, preview: true, activity: activity.id)
+    else
+      preview_sequence_activity_path(activity, sequence_id: @sequence.id)
+    end
   end
 end
