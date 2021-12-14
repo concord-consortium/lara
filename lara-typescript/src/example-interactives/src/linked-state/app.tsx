@@ -57,5 +57,7 @@ export const AppComponent: React.FC<Props> = (props) => {
       return <ReportComponent initMessage={initMessage} />;
     case "runtime":
       return <RuntimeComponent initMessage={initMessage} />;
+    case "reportItem":
+      return <div>TODO</div>;
   }
 };

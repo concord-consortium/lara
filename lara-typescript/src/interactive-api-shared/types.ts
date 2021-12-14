@@ -104,7 +104,7 @@ export interface IReportItemInitInteractive<InteractiveState = {}, AuthoredState
   authoredState: AuthoredState;
   interactiveItemId: string;
   view: "singleAnswer" | "multipleAnswer";
-  students: Record<string, {hasAnswer: boolean}>
+  students: Record<string, {hasAnswer: boolean}>;
 }
 
 export type IInitInteractive<InteractiveState = {}, AuthoredState = {}, GlobalInteractiveState = {}> =

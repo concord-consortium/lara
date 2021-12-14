@@ -44380,6 +44380,8 @@ var AppComponent = function (props) {
             return React.createElement(report_1.ReportComponent, { initMessage: initMessage });
         case "runtime":
             return React.createElement(runtime_1.RuntimeComponent, { initMessage: initMessage });
+        case "reportItem":
+            return React.createElement("div", null, "TODO");
     }
 };
 exports.AppComponent = AppComponent;
