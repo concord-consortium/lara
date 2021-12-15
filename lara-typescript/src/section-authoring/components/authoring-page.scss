@@ -55,6 +55,23 @@
   }
 }
 
+.hiddenPageAlert {
+  align-items: center;
+  background: var(--ltr-gray);
+  color: var(--dark-teal);
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+  padding: 5px;
+
+  svg {
+    fill: var(--teal);
+    height: 20px;
+    margin-right: 10px;
+    width: 20px;
+  }
+}
+
 .editPageContainer {
   background: var(--ltr-gray);
   display: flex;
