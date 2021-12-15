@@ -1,0 +1,40 @@
+import * as React from "react";
+import { useRef, useState } from "react";
+import { IReportItemInitInteractive } from "../../../interactive-api-client";
+
+interface Props {
+  initMessage: IReportItemInitInteractive;
+}
+
+export const InitMessageInfoComponent: React.FC<Props> = (props) => {
+  const initMessage = useRef(props.initMessage);
+  const {students, interactiveItemId, view, authoredState} = initMessage.current;
+  const studentsIds = Object.keys(students);
+  const numAnswersAtInit = studentsIds.reduce<number>((acc, studentId) => {
+    return students[studentId].hasAnswer ? acc + 1 : acc;
+  }, 0);
+  const [studentAnswers, setStudentAnswers] = useState<Record<string, any>>({});
+  const numCurrentAnswers = Object.keys(studentAnswers).length;
+
+  return (
+    <div className="initMessageInfo">
+      <dt>View</dt>
+      <dd>{view}</dd>
+
+      <dt>Interactive Item Id</dt>
+      <dd>{interactiveItemId}</dd>
+
+      <dt>Number of Students in Init Message</dt>
+      <dd>{studentsIds.length}</dd>
+
+      <dt>Number of Answers In Init Message</dt>
+      <dd>{numAnswersAtInit}</dd>
+
+      <dt>Number of Answers Currently</dt>
+      <dd>{numCurrentAnswers}</dd>
+
+      <dt>Authored State</dt>
+      <dd><pre>{JSON.stringify(authoredState, null, 2)}</pre></dd>
+  </div>
+  );
+};
