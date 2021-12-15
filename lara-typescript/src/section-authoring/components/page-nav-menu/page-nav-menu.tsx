@@ -138,7 +138,7 @@ export const PageNavMenu: React.FC<IPageNavMenuProps> = ({
 
     return (
       pages.map((page: IPage, pageIndex: number, pageArray: IPage[]) => {
-        const hiddenPagesBefore = countHiddenPagesBefore(pageArray, pageIndex);
+        const hiddenPagesBefore = pageArray.filter((p, index) => p.isHidden && index < pageIndex ).length;
         const pageNum = pageIndex + 1;
         const pageLabel = pageNum - hiddenPagesBefore;
         const currentClass = currentPageIndex === pageIndex ? "current" : undefined;
@@ -192,16 +192,6 @@ export const PageNavMenu: React.FC<IPageNavMenuProps> = ({
         <Copy height="24" width="24" />
       </button>
     );
-  };
-
-  const countHiddenPagesBefore = (activityPages: IPage[], pageIndex: number) => {
-    let hiddenPageCount = 0;
-    activityPages.forEach((page: IPage, index: number) => {
-      if (index < pageIndex && page.isHidden) {
-        hiddenPageCount++;
-      }
-    });
-    return hiddenPageCount;
   };
 
   return (
