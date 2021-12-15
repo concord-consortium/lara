@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { IReportItemInitInteractive,
          addGetStudentHTMLListener,
          sendStudentHTML } from "../../../interactive-api-client";
+import { getClient } from "../../../interactive-api-client/client";
 import { MultipleAnswerSummaryComponent } from "./multiple-answer-summary";
 import { SingleAnswerSummaryComponent } from "./single-answer-summary";
 
@@ -51,6 +52,9 @@ export const ReportItemComponent: React.FC<Props> = (props) => {
       }
       sendStudentHTML({studentId, html});
     });
+
+    // tell the portal-report we are ready for messages
+    getClient().post("reportItemClientReady");
   }, []);
 
   return (

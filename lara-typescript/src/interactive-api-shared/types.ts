@@ -193,7 +193,8 @@ export type IAuthoringServerMessage = "interactiveList" |
                                       "firebaseJWT"
                                       ;
 
-export type IReportItemClientMessage = "studentHTML";
+export type IReportItemClientMessage = "studentHTML" |
+                                       "reportItemClientReady";
 
 export type IReportItemServerMessage = "getStudentHTML";
 
