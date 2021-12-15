@@ -32,7 +32,9 @@ import {
   IWriteAttachmentRequest,
   WriteAttachmentParams,
   ReadAttachmentParams,
-  GetAttachmentUrlParams
+  GetAttachmentUrlParams,
+  IGetStudentHTMLHandler,
+  IStudentHTML
 } from "./types";
 import { getClient } from "./client";
 import { v4 as uuidv4 } from "uuid";
@@ -176,6 +178,14 @@ export const addDecorateContentListener = (callback: ITextDecorationHandler) => 
 
 export const removeDecorateContentListener = () => {
   getClient().removeDecorateContentListener();
+};
+
+export const addGetStudentHTMLListener = (callback: IGetStudentHTMLHandler) => {
+  getClient().addGetStudentHTMLListener(callback);
+};
+
+export const removeGetStudentHTMLListener = () => {
+  getClient().removeGetStudentHTMLListener();
 };
 
 export const setSupportedFeatures = (features: ISupportedFeatures) => {
@@ -462,4 +472,8 @@ export const getAttachmentUrl = (params: GetAttachmentUrlParams) => {
     }, request.requestId);
     client.post("getAttachmentUrl", request);
   });
+};
+
+export const sendStudentHTML = (request: Omit<IStudentHTML, "requestId">) => {
+  getClient().post("studentHTML", request);
 };

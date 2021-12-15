@@ -3,7 +3,7 @@
 // to the same message and auto-removing listeners when a requestId is given.
 import * as iframePhone from "iframe-phone";
 import { ClientMessage, ICustomMessageHandler, ICustomMessagesHandledMap, IInitInteractive, ISupportedFeaturesRequest,
-        ServerMessage, ITextDecorationHandler, ITextDecorationInfo } from "./types";
+        ServerMessage, ITextDecorationHandler, ITextDecorationInfo, IGetStudentHTMLHandler } from "./types";
 import { postDecoratedContentEvent } from "../interactive-api-client";
 import { IEventListener } from "../plugin-api";
 import { inIframe } from "./in-frame";
@@ -168,6 +168,14 @@ export class Client {
 
   public removeDecorateContentListener() {
     return this.removeListener("decorateContent");
+  }
+
+  public addGetStudentHTMLListener(callback: IGetStudentHTMLHandler) {
+    this.addListener("getStudentHTML", callback);
+  }
+
+  public removeGetStudentHTMLListener() {
+    return this.removeListener("getStudentHTML");
   }
 
   public setSupportedFeatures = (request: ISupportedFeaturesRequest) => {

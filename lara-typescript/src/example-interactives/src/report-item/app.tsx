@@ -29,20 +29,6 @@ export const AppComponent: React.FC<Props> = (props) => {
     }
   }, [initMessage]);
 
-  /*
-
-  REMOVE?
-
-  useEffect(() => {
-    if (initMessage) {
-      setSupportedFeatures({
-        authoredState: true,
-        interactiveState: true
-      });
-    }
-  }, [initMessage]);
-  */
-
   if (!initMessage) {
     return (
       <div className="centered">

@@ -479,6 +479,8 @@ export interface IStudentHTML extends IBaseRequestResponse {
   html: string;
 }
 
+export type IGetStudentHTMLHandler = (message: IGetStudentHTML) => void;
+
 /**
  * Interface that can be used by interactives to export and consume datasets. For example:
  * - Vortex interactive is exporting its dataset in the interactive state
