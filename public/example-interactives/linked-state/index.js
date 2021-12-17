@@ -32591,6 +32591,8 @@ var AppComponent = function (props) {
             return React.createElement(report_1.ReportComponent, { initMessage: initMessage });
         case "runtime":
             return React.createElement(runtime_1.RuntimeComponent, { initMessage: initMessage });
+        case "reportItem":
+            return React.createElement("div", null, "The \"reportItem\" mode is not implemented in this example interactive");
     }
 };
 exports.AppComponent = AppComponent;

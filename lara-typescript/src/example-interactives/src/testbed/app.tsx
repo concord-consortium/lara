@@ -57,5 +57,7 @@ export const AppComponent: React.FC<Props> = (props) => {
       return <ReportComponent initMessage={initMessage} />;
     case "runtime":
       return <RuntimeComponent initMessage={initMessage} />;
+    case "reportItem":
+      return <div>The "reportItem" mode is not implemented in this example interactive</div>;
   }
 };

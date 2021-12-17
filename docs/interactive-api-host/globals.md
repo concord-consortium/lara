@@ -8,7 +8,6 @@
 
 * [IAddLinkedInteractiveStateListenerOptions](interfaces/iaddlinkedinteractivestatelisteneroptions.md)
 * [IAddLinkedInteractiveStateListenerRequest](interfaces/iaddlinkedinteractivestatelistenerrequest.md)
-* [IAggregateInitInteractive](interfaces/iaggregateinitinteractive.md)
 * [IAnswerMetadataWithAttachmentsInfo](interfaces/ianswermetadatawithattachmentsinfo.md)
 * [IAttachmentUrlRequest](interfaces/iattachmenturlrequest.md)
 * [IAttachmentUrlResponse](interfaces/iattachmenturlresponse.md)
@@ -41,6 +40,7 @@
 * [IGetLibraryInteractiveListOptions](interfaces/igetlibraryinteractivelistoptions.md)
 * [IGetLibraryInteractiveListRequest](interfaces/igetlibraryinteractivelistrequest.md)
 * [IGetLibraryInteractiveListResponse](interfaces/igetlibraryinteractivelistresponse.md)
+* [IGetStudentHTML](interfaces/igetstudenthtml.md)
 * [IHandleGetAttachmentUrlOptions](interfaces/ihandlegetattachmenturloptions.md)
 * [IHintRequest](interfaces/ihintrequest.md)
 * [IHostFeatureSupport](interfaces/ihostfeaturesupport.md)
@@ -59,6 +59,7 @@
 * [IReadableAttachmentInfo](interfaces/ireadableattachmentinfo.md)
 * [IRemoveLinkedInteractiveStateListenerRequest](interfaces/iremovelinkedinteractivestatelistenerrequest.md)
 * [IReportInitInteractive](interfaces/ireportinitinteractive.md)
+* [IReportItemInitInteractive](interfaces/ireportiteminitinteractive.md)
 * [IRuntimeCustomReportValues](interfaces/iruntimecustomreportvalues.md)
 * [IRuntimeInitInteractive](interfaces/iruntimeinitinteractive.md)
 * [IS3SignedUrlOptions](interfaces/is3signedurloptions.md)
@@ -68,6 +69,7 @@
 * [IShowLightbox](interfaces/ishowlightbox.md)
 * [ISignedReadUrlOptions](interfaces/isignedreadurloptions.md)
 * [ISignedWriteUrlOptions](interfaces/isignedwriteurloptions.md)
+* [IStudentHTML](interfaces/istudenthtml.md)
 * [ISupportedFeatures](interfaces/isupportedfeatures.md)
 * [ISupportedFeaturesRequest](interfaces/isupportedfeaturesrequest.md)
 * [ITextDecorationHandlerInfo](interfaces/itextdecorationhandlerinfo.md)
@@ -89,6 +91,8 @@
 * [ICustomMessageOptions](globals.md#icustommessageoptions)
 * [ICustomMessagesHandledMap](globals.md#icustommessageshandledmap)
 * [IInitInteractive](globals.md#iinitinteractive)
+* [IReportItemClientMessage](globals.md#ireportitemclientmessage)
+* [IReportItemServerMessage](globals.md#ireportitemservermessage)
 * [IRuntimeClientMessage](globals.md#iruntimeclientmessage)
 * [IRuntimeServerMessage](globals.md#iruntimeservermessage)
 * [IShowModal](globals.md#ishowmodal)
@@ -119,7 +123,7 @@
 
 ###  ClientMessage
 
-Ƭ **ClientMessage**: *[DeprecatedRuntimeClientMessage](globals.md#deprecatedruntimeclientmessage) | [IRuntimeClientMessage](globals.md#iruntimeclientmessage) | [IAuthoringClientMessage](globals.md#iauthoringclientmessage) | [GlobalIFrameSaverClientMessage](globals.md#globaliframesaverclientmessage) | [LoggerClientMessage](globals.md#loggerclientmessage)*
+Ƭ **ClientMessage**: *[DeprecatedRuntimeClientMessage](globals.md#deprecatedruntimeclientmessage) | [IRuntimeClientMessage](globals.md#iruntimeclientmessage) | [IAuthoringClientMessage](globals.md#iauthoringclientmessage) | [GlobalIFrameSaverClientMessage](globals.md#globaliframesaverclientmessage) | [LoggerClientMessage](globals.md#loggerclientmessage) | [IReportItemClientMessage](globals.md#ireportitemclientmessage)*
 
 ___
 
@@ -195,7 +199,19 @@ ___
 
 ###  IInitInteractive
 
-Ƭ **IInitInteractive**: *[IRuntimeInitInteractive](interfaces/iruntimeinitinteractive.md)‹InteractiveState, AuthoredState, GlobalInteractiveState› | [IAuthoringInitInteractive](interfaces/iauthoringinitinteractive.md)‹AuthoredState› | [IReportInitInteractive](interfaces/ireportinitinteractive.md)‹InteractiveState, AuthoredState›*
+Ƭ **IInitInteractive**: *[IRuntimeInitInteractive](interfaces/iruntimeinitinteractive.md)‹InteractiveState, AuthoredState, GlobalInteractiveState› | [IAuthoringInitInteractive](interfaces/iauthoringinitinteractive.md)‹AuthoredState› | [IReportInitInteractive](interfaces/ireportinitinteractive.md)‹InteractiveState, AuthoredState› | [IReportItemInitInteractive](interfaces/ireportiteminitinteractive.md)‹InteractiveState, AuthoredState›*
+
+___
+
+###  IReportItemClientMessage
+
+Ƭ **IReportItemClientMessage**: *"studentHTML"*
+
+___
+
+###  IReportItemServerMessage
+
+Ƭ **IReportItemServerMessage**: *"getStudentHTML"*
 
 ___
 
@@ -241,7 +257,7 @@ ___
 
 ###  InitInteractiveMode
 
-Ƭ **InitInteractiveMode**: *"runtime" | "authoring" | "report"*
+Ƭ **InitInteractiveMode**: *"runtime" | "authoring" | "report" | "reportItem"*
 
 ___
 
@@ -277,7 +293,7 @@ ___
 
 ###  ServerMessage
 
-Ƭ **ServerMessage**: *[IframePhoneServerMessage](globals.md#iframephoneservermessage) | [DeprecatedRuntimeServerMessage](globals.md#deprecatedruntimeservermessage) | [IRuntimeServerMessage](globals.md#iruntimeservermessage) | [IAuthoringServerMessage](globals.md#iauthoringservermessage) | [GlobalIFrameSaverServerMessage](globals.md#globaliframesaverservermessage)*
+Ƭ **ServerMessage**: *[IframePhoneServerMessage](globals.md#iframephoneservermessage) | [DeprecatedRuntimeServerMessage](globals.md#deprecatedruntimeservermessage) | [IRuntimeServerMessage](globals.md#iruntimeservermessage) | [IAuthoringServerMessage](globals.md#iauthoringservermessage) | [GlobalIFrameSaverServerMessage](globals.md#globaliframesaverservermessage) | [IReportItemServerMessage](globals.md#ireportitemservermessage)*
 
 ___
 
