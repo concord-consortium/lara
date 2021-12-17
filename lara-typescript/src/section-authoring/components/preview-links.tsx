@@ -12,12 +12,25 @@ export const PreviewLinks: React.FC<IPreviewLinksProps> =
   (props: IPreviewLinksProps) => {
 
   const { previewLinks } = props;
-  const [ previewLink, setPreviewLink] = useState<string|false>(false);
+  const [ previewLink, setPreviewLink ] = useState<string|false>(false);
+  const [ previewer, setPreviewer ] = useState<string|undefined>("");
+
+  const getKeyOfLink = (link: string) => {
+    if (previewLinks) {
+      return (Object.keys(previewLinks) as string[]).find(key => previewLinks[key] === link);
+    }
+  };
+  const getLinkFromKey = (key: string) => {
+    if (previewLinks) {
+      return (previewLinks[key]);
+    }
+  };
 
   const handleLinkSelect = (evt: React.ChangeEvent<HTMLSelectElement>) => {
     const value = evt.currentTarget.value;
     if (value && value.length > 0) {
       setPreviewLink(value);
+      setPreviewer(getKeyOfLink(value));
     }
     else {
       setPreviewLink(false);
@@ -25,8 +38,11 @@ export const PreviewLinks: React.FC<IPreviewLinksProps> =
   };
 
   const handlePreviewButtonClick = () => {
-    if (previewLink) {
-      window.open(previewLink, "_blank");
+    if (previewer) {
+      const pageToPreview = getLinkFromKey(previewer);
+      if (pageToPreview) {
+        window.open(pageToPreview, "_blank");
+      }
     }
   };
 
