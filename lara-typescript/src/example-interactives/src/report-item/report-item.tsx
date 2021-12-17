@@ -27,8 +27,10 @@ export const ReportItemComponent: React.FC<Props> = (props) => {
         // "tall" html
         html = `
           <style>
-            background-color: #f00;
-            color: #fff;
+            body {
+              background-color: #f00;
+              color: #fff;
+            }
           </style>
           <div>
             <p>
@@ -42,8 +44,10 @@ export const ReportItemComponent: React.FC<Props> = (props) => {
         // short html
         html = `
           <style>
-            background-color: #00f;
-            color: #fff;
+            body {
+              background-color: #00f;
+              color: #fff;
+            }
           </style>
           <div>
             <strong>Interactive State Size</strong>: ${json.length} /
