@@ -90,6 +90,7 @@
 * [ICustomMessageHandler](globals.md#icustommessagehandler)
 * [ICustomMessageOptions](globals.md#icustommessageoptions)
 * [ICustomMessagesHandledMap](globals.md#icustommessageshandledmap)
+* [IGetStudentHTMLHandler](globals.md#igetstudenthtmlhandler)
 * [IInitInteractive](globals.md#iinitinteractive)
 * [IReportItemClientMessage](globals.md#ireportitemclientmessage)
 * [IReportItemServerMessage](globals.md#ireportitemservermessage)
@@ -197,6 +198,22 @@ ___
 
 ___
 
+###  IGetStudentHTMLHandler
+
+Ƭ **IGetStudentHTMLHandler**: *function*
+
+#### Type declaration:
+
+▸ (`message`: [IGetStudentHTML](interfaces/igetstudenthtml.md)): *void*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`message` | [IGetStudentHTML](interfaces/igetstudenthtml.md) |
+
+___
+
 ###  IInitInteractive
 
 Ƭ **IInitInteractive**: *[IRuntimeInitInteractive](interfaces/iruntimeinitinteractive.md)‹InteractiveState, AuthoredState, GlobalInteractiveState› | [IAuthoringInitInteractive](interfaces/iauthoringinitinteractive.md)‹AuthoredState› | [IReportInitInteractive](interfaces/ireportinitinteractive.md)‹InteractiveState, AuthoredState› | [IReportItemInitInteractive](interfaces/ireportiteminitinteractive.md)‹InteractiveState, AuthoredState›*
@@ -205,7 +222,7 @@ ___
 
 ###  IReportItemClientMessage
 
-Ƭ **IReportItemClientMessage**: *"studentHTML"*
+Ƭ **IReportItemClientMessage**: *"studentHTML" | "reportItemClientReady"*
 
 ___
 

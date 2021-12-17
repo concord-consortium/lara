@@ -95,6 +95,7 @@
 * [ICustomMessageHandler](globals.md#icustommessagehandler)
 * [ICustomMessageOptions](globals.md#icustommessageoptions)
 * [ICustomMessagesHandledMap](globals.md#icustommessageshandledmap)
+* [IGetStudentHTMLHandler](globals.md#igetstudenthtmlhandler)
 * [IInitInteractive](globals.md#iinitinteractive)
 * [IReportItemClientMessage](globals.md#ireportitemclientmessage)
 * [IReportItemServerMessage](globals.md#ireportitemservermessage)
@@ -121,6 +122,7 @@
 * [addAuthoredStateListener](globals.md#const-addauthoredstatelistener)
 * [addCustomMessageListener](globals.md#const-addcustommessagelistener)
 * [addDecorateContentListener](globals.md#const-adddecoratecontentlistener)
+* [addGetStudentHTMLListener](globals.md#const-addgetstudenthtmllistener)
 * [addGlobalInteractiveStateListener](globals.md#const-addglobalinteractivestatelistener)
 * [addInteractiveStateListener](globals.md#const-addinteractivestatelistener)
 * [addLinkedInteractiveStateListener](globals.md#const-addlinkedinteractivestatelistener)
@@ -144,9 +146,11 @@
 * [removeAuthoredStateListener](globals.md#const-removeauthoredstatelistener)
 * [removeCustomMessageListener](globals.md#const-removecustommessagelistener)
 * [removeDecorateContentListener](globals.md#const-removedecoratecontentlistener)
+* [removeGetStudentHTMLListener](globals.md#const-removegetstudenthtmllistener)
 * [removeGlobalInteractiveStateListener](globals.md#const-removeglobalinteractivestatelistener)
 * [removeInteractiveStateListener](globals.md#const-removeinteractivestatelistener)
 * [removeLinkedInteractiveStateListener](globals.md#const-removelinkedinteractivestatelistener)
+* [sendStudentHTML](globals.md#const-sendstudenthtml)
 * [setAuthoredState](globals.md#const-setauthoredstate)
 * [setGlobalInteractiveState](globals.md#const-setglobalinteractivestate)
 * [setHeight](globals.md#const-setheight)
@@ -254,6 +258,22 @@ ___
 
 ___
 
+###  IGetStudentHTMLHandler
+
+Ƭ **IGetStudentHTMLHandler**: *function*
+
+#### Type declaration:
+
+▸ (`message`: [IGetStudentHTML](interfaces/igetstudenthtml.md)): *void*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`message` | [IGetStudentHTML](interfaces/igetstudenthtml.md) |
+
+___
+
 ###  IInitInteractive
 
 Ƭ **IInitInteractive**: *[IRuntimeInitInteractive](interfaces/iruntimeinitinteractive.md)‹InteractiveState, AuthoredState, GlobalInteractiveState› | [IAuthoringInitInteractive](interfaces/iauthoringinitinteractive.md)‹AuthoredState› | [IReportInitInteractive](interfaces/ireportinitinteractive.md)‹InteractiveState, AuthoredState› | [IReportItemInitInteractive](interfaces/ireportiteminitinteractive.md)‹InteractiveState, AuthoredState›*
@@ -262,7 +282,7 @@ ___
 
 ###  IReportItemClientMessage
 
-Ƭ **IReportItemClientMessage**: *"studentHTML"*
+Ƭ **IReportItemClientMessage**: *"studentHTML" | "reportItemClientReady"*
 
 ___
 
@@ -414,6 +434,20 @@ ___
 Name | Type |
 ------ | ------ |
 `callback` | [ITextDecorationHandler](globals.md#itextdecorationhandler) |
+
+**Returns:** *void*
+
+___
+
+### `Const` addGetStudentHTMLListener
+
+▸ **addGetStudentHTMLListener**(`callback`: [IGetStudentHTMLHandler](globals.md#igetstudenthtmlhandler)): *void*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`callback` | [IGetStudentHTMLHandler](globals.md#igetstudenthtmlhandler) |
 
 **Returns:** *void*
 
@@ -748,6 +782,14 @@ ___
 
 ___
 
+### `Const` removeGetStudentHTMLListener
+
+▸ **removeGetStudentHTMLListener**(): *void*
+
+**Returns:** *void*
+
+___
+
 ### `Const` removeGlobalInteractiveStateListener
 
 ▸ **removeGlobalInteractiveStateListener**‹**GlobalInteractiveState**›(`listener`: function): *void*
@@ -815,6 +857,20 @@ ___
 Name | Type |
 ------ | ------ |
 `intState` | InteractiveState &#124; null |
+
+**Returns:** *void*
+
+___
+
+### `Const` sendStudentHTML
+
+▸ **sendStudentHTML**(`request`: Omit‹[IStudentHTML](interfaces/istudenthtml.md), "requestId"›): *void*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`request` | Omit‹[IStudentHTML](interfaces/istudenthtml.md), "requestId"› |
 
 **Returns:** *void*
 

@@ -44909,7 +44909,7 @@ var __rest = (this && this.__rest) || function (s, e) {
     return t;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getAttachmentUrl = exports.readAttachment = exports.writeAttachment = exports.getLibraryInteractiveList = exports.getInteractiveSnapshot = exports.setLinkedInteractives = exports.getInteractiveList = exports.closeModal = exports.showModal = exports.removeLinkedInteractiveStateListener = exports.addLinkedInteractiveStateListener = exports.removeGlobalInteractiveStateListener = exports.addGlobalInteractiveStateListener = exports.removeAuthoredStateListener = exports.addAuthoredStateListener = exports.removeInteractiveStateListener = exports.addInteractiveStateListener = exports.log = exports.getFirebaseJwt = exports.getAuthInfo = exports.setNavigation = exports.setHint = exports.postDecoratedContentEvent = exports.setHeight = exports.setSupportedFeatures = exports.removeDecorateContentListener = exports.addDecorateContentListener = exports.removeCustomMessageListener = exports.addCustomMessageListener = exports.setGlobalInteractiveState = exports.getGlobalInteractiveState = exports.setAuthoredState = exports.getAuthoredState = exports.flushStateUpdates = exports.setInteractiveState = exports.setInteractiveStateTimeout = exports.getInteractiveState = exports.getMode = exports.getInitInteractiveMessage = void 0;
+exports.sendStudentHTML = exports.getAttachmentUrl = exports.readAttachment = exports.writeAttachment = exports.getLibraryInteractiveList = exports.getInteractiveSnapshot = exports.setLinkedInteractives = exports.getInteractiveList = exports.closeModal = exports.showModal = exports.removeLinkedInteractiveStateListener = exports.addLinkedInteractiveStateListener = exports.removeGlobalInteractiveStateListener = exports.addGlobalInteractiveStateListener = exports.removeAuthoredStateListener = exports.addAuthoredStateListener = exports.removeInteractiveStateListener = exports.addInteractiveStateListener = exports.log = exports.getFirebaseJwt = exports.getAuthInfo = exports.setNavigation = exports.setHint = exports.postDecoratedContentEvent = exports.setHeight = exports.setSupportedFeatures = exports.removeGetStudentHTMLListener = exports.addGetStudentHTMLListener = exports.removeDecorateContentListener = exports.addDecorateContentListener = exports.removeCustomMessageListener = exports.addCustomMessageListener = exports.setGlobalInteractiveState = exports.getGlobalInteractiveState = exports.setAuthoredState = exports.getAuthoredState = exports.flushStateUpdates = exports.setInteractiveState = exports.setInteractiveStateTimeout = exports.getInteractiveState = exports.getMode = exports.getInitInteractiveMessage = void 0;
 var client_1 = __webpack_require__(/*! ./client */ "./src/interactive-api-client/client.ts");
 var uuid_1 = __webpack_require__(/*! uuid */ "./node_modules/uuid/dist/esm-browser/index.js");
 var THROW_NOT_IMPLEMENTED_YET = function (method) {
@@ -45051,6 +45051,14 @@ var removeDecorateContentListener = function () {
     (0, client_1.getClient)().removeDecorateContentListener();
 };
 exports.removeDecorateContentListener = removeDecorateContentListener;
+var addGetStudentHTMLListener = function (callback) {
+    (0, client_1.getClient)().addGetStudentHTMLListener(callback);
+};
+exports.addGetStudentHTMLListener = addGetStudentHTMLListener;
+var removeGetStudentHTMLListener = function () {
+    (0, client_1.getClient)().removeGetStudentHTMLListener();
+};
+exports.removeGetStudentHTMLListener = removeGetStudentHTMLListener;
 var setSupportedFeatures = function (features) {
     var request = {
         apiVersion: 1,
@@ -45361,6 +45369,10 @@ var getAttachmentUrl = function (params) {
     });
 };
 exports.getAttachmentUrl = getAttachmentUrl;
+var sendStudentHTML = function (request) {
+    (0, client_1.getClient)().post("studentHTML", request);
+};
+exports.sendStudentHTML = sendStudentHTML;
 
 
 /***/ }),
@@ -45552,6 +45564,12 @@ var Client = /** @class */ (function () {
     };
     Client.prototype.removeDecorateContentListener = function () {
         return this.removeListener("decorateContent");
+    };
+    Client.prototype.addGetStudentHTMLListener = function (callback) {
+        this.addListener("getStudentHTML", callback);
+    };
+    Client.prototype.removeGetStudentHTMLListener = function () {
+        return this.removeListener("getStudentHTML");
     };
     Client.prototype.connect = function () {
         var _this = this;
@@ -46496,4 +46514,3 @@ Object.defineProperty(exports, "__esModule", { value: true });
 /***/ })
 
 /******/ });
-//# sourceMappingURL=index.js.map
