@@ -13,7 +13,7 @@ export const PreviewLinks: React.FC<IPreviewLinksProps> =
 
   const { previewLinks } = props;
   const [ previewLink, setPreviewLink ] = useState<string|false>(false);
-  const [ previewer, setPreviewer ] = useState<string|undefined>("");
+  const [ previewPageUrl, setPreviewPageUrl ] = useState<string|undefined>("");
 
   const getKeyOfLink = (link: string) => {
     if (previewLinks) {
@@ -30,7 +30,7 @@ export const PreviewLinks: React.FC<IPreviewLinksProps> =
     const value = evt.currentTarget.value;
     if (value && value.length > 0) {
       setPreviewLink(value);
-      setPreviewer(getKeyOfLink(value));
+      setPreviewPageUrl(getKeyOfLink(value));
     }
     else {
       setPreviewLink(false);
@@ -38,8 +38,8 @@ export const PreviewLinks: React.FC<IPreviewLinksProps> =
   };
 
   const handlePreviewButtonClick = () => {
-    if (previewer) {
-      const pageToPreview = getLinkFromKey(previewer);
+    if (previewPageUrl) {
+      const pageToPreview = getLinkFromKey(previewPageUrl);
       if (pageToPreview) {
         window.open(pageToPreview, "_blank");
       }
