@@ -13,6 +13,7 @@
     "publish:interactive-api-host:yalc": "npm run build && cd dist/interactive-api-host && npx yalc publish",
     "build": "npm-run-all lint:build clean build:webpack build:types build:docs",
     "build:webpack": "webpack --devtool false && npm run build:copy-to-rails",
+    "build:webpack:no-copy-to-rails": "webpack --devtool false",
     "build:types": "rollup -c",
     "build:docs": "npm-run-all build:docs:plugin-api build:docs:interactive-api-client build:docs:interactive-api-host",
     "build:docs:plugin-api": "typedoc --readme src/plugin-api/README.md --out ../docs/lara-plugin-api src/plugin-api/index.ts",
