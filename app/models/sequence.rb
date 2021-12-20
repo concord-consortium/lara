@@ -186,7 +186,7 @@ class Sequence < ActiveRecord::Base
     data
   end
 
-  def activity_player_sequence_url(host, preview: false, mode: nil)
+  def activity_player_sequence_url(host, preview: false, mode: nil, activity: nil)
     sequence_api_url = "#{host}#{Rails.application.routes.url_helpers.api_v1_sequence_path(self)}.json"
     uri = URI.parse(ENV["ACTIVITY_PLAYER_URL"])
     query = Rack::Utils.parse_query(uri.query)
@@ -196,6 +196,9 @@ class Sequence < ActiveRecord::Base
     end
     if mode
       query["mode"] = mode
+    end
+    if activity
+      query["sequenceActivity"] = activity
     end
     uri.query = Rack::Utils.build_query(query)
     return uri.to_s

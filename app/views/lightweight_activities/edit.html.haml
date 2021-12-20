@@ -118,7 +118,7 @@
             = truncate(p.name, :length => 25, :omission => "…")
             %ul.menu
               %li.edit= link_to "Edit", edit_activity_page_path(@activity, p)
-              %li.run= link_to "Preview", preview_activity_page_path(@activity, p), :target => 'new'
+              %li.run= link_to "Preview", activity_preview_url(@activity, p), :target => 'new'
               - confirm_message = "Are you sure you want to delete this page from the activity? You will lose data from #{pluralize(@activity.active_runs, "learner")} that #{"has".pluralize(@activity.active_runs)} attempted this activity."
               %li.delete= link_to "Delete", activity_page_path(@activity, p), method: :delete, data: { confirm: (@activity.active_runs > 0) ? confirm_message : 'Are you sure?' }
               %li.drag_handle
