@@ -11,7 +11,7 @@ module Embeddable::Answer
       delegate :give_prediction_feedback, :to => :question
       delegate :prediction_feedback,      :to => :question
       delegate :show_in_runtime?,         :to => :question
-      delegate :is_full_width,            :to  => :question
+      delegate :is_half_width,            :to  => :question
 
       def self.by_run(r)
         where(:run_id => r.id)

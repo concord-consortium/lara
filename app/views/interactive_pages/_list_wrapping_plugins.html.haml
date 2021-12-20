@@ -1,6 +1,6 @@
 - wrapping_plugins.each do |e|
   - css_class = "hidden"
-  - css_class += e.respond_to?(:is_full_width) && e.is_full_width ? " full-width-item" : ""
+  - css_class += e.respond_to?(:is_half_width) && !e.is_half_width ? " full-width-item" : ""
   .question{ class: css_class, id: e.embeddable_dom_id }
     .embeddable-container
       - partial_name = "#{e.class.name.underscore.pluralize}/lightweight"

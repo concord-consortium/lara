@@ -13,7 +13,7 @@ module Embeddable
     ]
 
     attr_accessible :action_type, :name, :prompt, :custom_action_label, :is_hidden,
-      :show_in_featured_question_report, :interactive, :hint, :is_full_width
+      :show_in_featured_question_report, :interactive, :hint, :is_half_width
 
     has_many :page_items, :as => :embeddable, :dependent => :destroy
     has_many :sections, through: :page_items
@@ -80,7 +80,7 @@ module Embeddable
         prompt: prompt,
         custom_action_label: custom_action_label,
         is_hidden: is_hidden,
-        is_full_width: is_full_width,
+        is_half_width: is_half_width,
         hint: hint,
         show_in_featured_question_report: show_in_featured_question_report
       }
@@ -97,7 +97,7 @@ module Embeddable
         :prompt,
         :custom_action_label,
         :is_hidden,
-        :is_full_width,
+        :is_half_width,
         :hint,
         :show_in_featured_question_report
       ])

@@ -993,7 +993,12 @@
 .itemsContainer {
   background: var(--ltst-teal);
   border-radius: 4px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
   padding: 10px; }
+  .itemsContainer > .addItem {
+    width: 100%; }
 
 .sectionItem {
   background-color: white;
@@ -1428,6 +1433,8 @@ select {
   margin: 10px; }
   .edit-page-grid-container.section-full-width {
     grid-template-columns: 1fr; }
+    .edit-page-grid-container.section-full-width .sectionItem.halfWidth {
+      width: calc(50% - 6px); }
   .edit-page-grid-container.section-30-70 {
     grid-template-columns: 3fr 7fr; }
   .edit-page-grid-container.section-70-30 {

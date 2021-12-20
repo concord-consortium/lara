@@ -13,7 +13,7 @@ export interface ITextBlockEditFormProps {
 export const TextBlockEditForm: React.FC<ITextBlockEditFormProps> = ({
   pageItem
   }: ITextBlockEditFormProps) => {
-  const { content, name, isCallout, isFullWidth } = pageItem?.data as ITextBlockData;
+  const { content, name, isCallout, isHalfWidth } = pageItem?.data as ITextBlockData;
   const editorRef = useRef<any>(null);
   const initEditor = (e: any, editor: any) => {
     editorRef.current = editor;
@@ -103,13 +103,13 @@ export const TextBlockEditForm: React.FC<ITextBlockEditFormProps> = ({
       </dd>
       <dd className="inputNote row3">Displayed within a shaded box.</dd>
       <dt className="row4">
-        <label htmlFor="is-full-width">Full Width</label>
+        <label htmlFor="is-half-width">Half Width</label>
       </dt>
       <dd className="row4">
         <input
-          defaultChecked={isFullWidth}
-          id="is-full-width"
-          name="is_full_width"
+          defaultChecked={isHalfWidth}
+          id="is-half-width"
+          name="is_half_width"
           type="checkbox"
           />
       </dd>

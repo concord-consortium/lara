@@ -1,6 +1,6 @@
 import { current } from "immer";
 import { stringify } from "uuid";
-import { camelToSnakeCaseKeys } from "../../shared/convert-keys";
+import { camelToSnakeCaseKeys, snakeToCamelCaseKeys } from "../../shared/convert-keys";
 import {
   IAuthoringAPIProvider,
   IPage, PageId, ISection, ICreatePageItem, ItemId,
@@ -79,7 +79,12 @@ export const getLaraAuthoringAPI =
   };
 
   const getPages: APIPagesGetF = () => {
-    return sendToLara({url: getPagesUrl});
+    if (activityId) {
+      return sendToLara({url: getPagesUrl}).then(data => {
+        return Promise.resolve(data.map((page: any) => snakeToCamelCaseKeys(page)));
+      });
+    }
+    return Promise.reject("No activity ID specified.");
   };
 
   const getPage: APIPageGetF = (id: PageId) => {

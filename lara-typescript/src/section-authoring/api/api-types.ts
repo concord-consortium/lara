@@ -48,7 +48,7 @@ export interface ITextBlockData {
   content?: string;
   name?: string;
   isCallout?: boolean;
-  isFullWidth?: boolean;
+  isHalfWidth?: boolean;
 }
 
 export interface ILibraryInteractive {
@@ -115,7 +115,7 @@ export interface IManagedInteractiveData {
   inheritNativeWidth: boolean;
   interactiveItemId: string;
   isHidden: boolean;
-  isFullWidth: boolean;
+  isHalfWidth: boolean;
   libraryInteractiveId: number;
   linkedInteractiveId: number;
   linkedInteractiveType: string;
@@ -142,7 +142,7 @@ export interface IMWInteractiveData {
   imageUrl: string;
   interactiveItemId: string;
   isHidden: boolean;
-  isFullWidth: boolean;
+  isHalfWidth: boolean;
   modelLibraryUrl: string;
   linkedInteractiveId: number;
   linkedInteractiveType: string;

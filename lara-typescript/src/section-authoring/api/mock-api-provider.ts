@@ -77,7 +77,7 @@ const makeNewEmbeddable = (attributes: ICreatePageItem) => {
           url_fragment: "",
           authored_state: "",
           is_hidden: false,
-          is_full_width: true,
+          is_half_width: false,
           aspect_ratio: 1,
           enable_learner_state: false,
           linked_interactive_type: "",

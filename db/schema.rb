@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20211122211340) do
+ActiveRecord::Schema.define(:version => 20211216173613) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "kind"
@@ -175,7 +175,7 @@ ActiveRecord::Schema.define(:version => 20211122211340) do
     t.text     "prediction_feedback"
     t.boolean  "is_hidden",                        :default => false
     t.text     "hint"
-    t.boolean  "is_full_width",                    :default => false
+    t.boolean  "is_half_width",                    :default => true
     t.boolean  "show_in_featured_question_report", :default => true
     t.integer  "interactive_id"
     t.string   "interactive_type"
@@ -203,7 +203,7 @@ ActiveRecord::Schema.define(:version => 20211122211340) do
     t.integer  "interactive_id"
     t.string   "interactive_type"
     t.text     "hint"
-    t.boolean  "is_full_width",                    :default => false
+    t.boolean  "is_half_width",                    :default => true
     t.boolean  "show_in_featured_question_report", :default => true
   end
 
@@ -248,7 +248,7 @@ ActiveRecord::Schema.define(:version => 20211122211340) do
     t.string   "layout",                           :default => "vertical"
     t.boolean  "is_hidden",                        :default => false
     t.text     "hint"
-    t.boolean  "is_full_width",                    :default => false
+    t.boolean  "is_half_width",                    :default => true
     t.boolean  "show_in_featured_question_report", :default => true
   end
 
@@ -277,17 +277,17 @@ ActiveRecord::Schema.define(:version => 20211122211340) do
     t.string   "default_text"
     t.boolean  "is_hidden",                        :default => false
     t.text     "hint"
-    t.boolean  "is_full_width",                    :default => false
+    t.boolean  "is_half_width",                    :default => true
     t.boolean  "show_in_featured_question_report", :default => true
   end
 
   create_table "embeddable_plugins", :force => true do |t|
     t.datetime "created_at",                         :null => false
     t.datetime "updated_at",                         :null => false
-    t.boolean  "is_hidden",       :default => false
-    t.boolean  "is_full_width",   :default => false
     t.integer  "embeddable_id"
     t.string   "embeddable_type"
+    t.boolean  "is_hidden",       :default => false
+    t.boolean  "is_half_width",   :default => true
   end
 
   create_table "embeddable_xhtmls", :force => true do |t|
@@ -296,7 +296,7 @@ ActiveRecord::Schema.define(:version => 20211122211340) do
     t.datetime "created_at",                       :null => false
     t.datetime "updated_at",                       :null => false
     t.boolean  "is_hidden",     :default => false
-    t.boolean  "is_full_width", :default => false
+    t.boolean  "is_half_width", :default => true
     t.boolean  "is_callout",    :default => true
   end
 
@@ -318,7 +318,7 @@ ActiveRecord::Schema.define(:version => 20211122211340) do
     t.boolean  "show_lightbox", :default => true
     t.string   "credit_url"
     t.boolean  "is_hidden",     :default => false
-    t.boolean  "is_full_width", :default => true
+    t.boolean  "is_half_width", :default => false
   end
 
   create_table "imports", :force => true do |t|
@@ -489,7 +489,7 @@ ActiveRecord::Schema.define(:version => 20211122211340) do
     t.boolean  "inherit_image_url",                :default => true
     t.string   "custom_image_url"
     t.integer  "linked_interactive_id"
-    t.boolean  "is_full_width",                    :default => true
+    t.boolean  "is_half_width",                    :default => false
     t.boolean  "show_in_featured_question_report", :default => true
     t.datetime "created_at",                                          :null => false
     t.datetime "updated_at",                                          :null => false
@@ -523,7 +523,7 @@ ActiveRecord::Schema.define(:version => 20211122211340) do
     t.boolean  "no_snapshots",                     :default => false
     t.string   "click_to_play_prompt"
     t.boolean  "show_delete_data_button",          :default => true
-    t.boolean  "is_full_width",                    :default => true
+    t.boolean  "is_half_width",                    :default => false
     t.boolean  "show_in_featured_question_report", :default => true
     t.string   "aspect_ratio_method",              :default => "DEFAULT"
     t.string   "linked_interactive_type"
@@ -764,7 +764,7 @@ ActiveRecord::Schema.define(:version => 20211122211340) do
     t.integer  "width",         :default => 556,   :null => false
     t.integer  "height",        :default => 240,   :null => false
     t.boolean  "is_hidden",     :default => false
-    t.boolean  "is_full_width", :default => true
+    t.boolean  "is_half_width", :default => false
   end
 
   create_table "video_sources", :force => true do |t|

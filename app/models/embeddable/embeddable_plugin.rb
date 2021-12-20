@@ -8,7 +8,7 @@ module Embeddable
     end
 
     attr_accessible :plugin, :approved_script_id, :description, :author_data,
-    :is_full_width, :is_hidden, :component_label
+    :is_half_width, :is_hidden, :component_label
 
     has_one :plugin, as: :plugin_scope, autosave: true
 
@@ -57,7 +57,7 @@ module Embeddable
       {
         plugin: self.plugin.to_hash,
         is_hidden: self.is_hidden,
-        is_full_width: self.is_full_width
+        is_half_width: self.is_half_width
       }
     end
 

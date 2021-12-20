@@ -1,7 +1,7 @@
 class ImageInteractive < ActiveRecord::Base
   include Embeddable
 
-  attr_accessible :url, :caption, :credit, :show_lightbox, :credit_url, :is_hidden, :is_full_width
+  attr_accessible :url, :caption, :credit, :show_lightbox, :credit_url, :is_hidden, :is_half_width
 
   has_one :page_item, :as => :embeddable, :dependent => :destroy
   # PageItem is a join model; if this is deleted, that instance should go too
@@ -27,7 +27,7 @@ class ImageInteractive < ActiveRecord::Base
       credit: credit,
       credit_url: credit_url,
       is_hidden: is_hidden,
-      is_full_width: is_full_width
+      is_half_width: is_half_width
     }
   end
 
@@ -46,7 +46,7 @@ class ImageInteractive < ActiveRecord::Base
                               :url,
                               :credit,
                               :credit_url,
-                              :is_full_width,
+                              :is_half_width,
                               :is_hidden])
   end
 

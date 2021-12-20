@@ -3,13 +3,13 @@ require File.expand_path('../../../spec_helper', __FILE__)
 describe Embeddable::EmbeddablePlugin do
   it_behaves_like "attached to embeddable"
 
-  let (:is_full_width) {true}
+  let (:is_half_width) {false}
   let (:is_hidden) {true}
   let (:plugin) { FactoryGirl.create(:plugin) }
   let (:params) do
     {
       is_hidden: is_hidden,
-      is_full_width: is_full_width,
+      is_half_width: is_half_width,
       plugin: plugin
     }
   end
@@ -39,7 +39,7 @@ describe Embeddable::EmbeddablePlugin do
           }
         },
         is_hidden: true,
-        is_full_width: true
+        is_half_width: false
       }
       expect(embeddable_plugin.to_hash).to eq(expected)
     end
@@ -52,9 +52,9 @@ describe Embeddable::EmbeddablePlugin do
       emb.is_hidden = true
       expect(hash_data[:is_hidden]).to eq true
     end
-    it 'preserves is_full_width' do
-      emb.is_full_width = true
-      expect(hash_data[:is_full_width]).to eq true
+    it 'preserves is_half_width' do
+      emb.is_half_width = false
+      expect(hash_data[:is_half_width]).to eq false
     end
   end
 
@@ -62,7 +62,7 @@ describe Embeddable::EmbeddablePlugin do
     it 'returns a new instance with copied attributes' do
       expect(embeddable_plugin.duplicate).to be_a_new(Embeddable::EmbeddablePlugin)
       .with({
-        is_full_width: is_full_width,
+        is_half_width: is_half_width,
         is_hidden: is_hidden
       })
     end

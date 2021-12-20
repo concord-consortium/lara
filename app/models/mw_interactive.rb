@@ -7,7 +7,7 @@ class MwInteractive < ActiveRecord::Base
     :enable_learner_state, :has_report_url, :click_to_play,
     :click_to_play_prompt, :image_url, :is_hidden, :linked_interactive_id, :linked_interactive_type,
     :full_window, :model_library_url, :authored_state, :no_snapshots,
-    :show_delete_data_button, :show_in_featured_question_report, :is_full_width,
+    :show_delete_data_button, :show_in_featured_question_report, :is_half_width,
     :aspect_ratio_method, :linked_interactive_item_id
 
   default_value_for :native_width, ASPECT_RATIO_DEFAULT_WIDTH
@@ -61,7 +61,7 @@ class MwInteractive < ActiveRecord::Base
       full_window: full_window,
       image_url: image_url,
       is_hidden: is_hidden,
-      is_full_width: is_full_width,
+      is_half_width: is_half_width,
       show_in_featured_question_report: show_in_featured_question_report,
       model_library_url: model_library_url,
       authored_state: authored_state,
@@ -94,7 +94,7 @@ class MwInteractive < ActiveRecord::Base
                               :show_in_featured_question_report,
                               :image_url,
                               :is_hidden,
-                              :is_full_width,
+                              :is_half_width,
                               :model_library_url,
                               :authored_state,
                               :aspect_ratio_method,

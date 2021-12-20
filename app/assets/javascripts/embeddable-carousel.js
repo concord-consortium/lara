@@ -120,7 +120,7 @@ EmbeddableCarousel.prototype.tallestQuestion = function() {
 };
 
 /** Return true if we are in full-width layout */
-EmbeddableCarousel.prototype.isFullWidth = function() {
+EmbeddableCarousel.prototype.isHalfWidth = function() {
     return $('.content-mod').hasClass('l-full-width');
 };
 
@@ -136,7 +136,7 @@ EmbeddableCarousel.prototype.calculateHeight = function() {
     var available = Math.max($(window).height() - offset.top, 330); // make sure height is at least 330 pixels
     if (this.isResponsive()) {
         this.bestHeight = this.tallestQuestion() + 30;
-    } else if (this.isFullWidth()) {
+    } else if (this.isHalfWidth()) {
         this.bestHeight = Math.max(this.tallestQuestion(), available) + 30;
     } else {
         this.bestHeight = Math.max(interactiveHeight, this.tallestQuestion());
@@ -147,7 +147,7 @@ EmbeddableCarousel.prototype.calculateHeight = function() {
 
 /** Calculates the proper width for the carousel container. */
 EmbeddableCarousel.prototype.calculateWidth = function() {
-    if (this.isFullWidth()) {
+    if (this.isHalfWidth()) {
         this.bestWidth = 936;
         return;
     }
