@@ -107,8 +107,11 @@ select {
   &.section-60-40 {
     grid-template-columns: 6fr 4fr;
   }
-  &.section-responsive {
+  &.section-responsive-2-columns {
     grid-template-columns: 325px 1fr;
+  }
+  &.section-responsive-full-width {
+    grid-template-columns: 1fr;
   }
   &.col-2 {
     margin-left: 0;
