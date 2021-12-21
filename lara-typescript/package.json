@@ -145,7 +145,6 @@
     "@concord-consortium/token-service": "^2.1.0",
     "@tinymce/tinymce-react": "^3.12.7",
     "@types/react-query": "^1.2.9",
-    "camelcase-keys": "^7.0.1",
     "classnames": "^2.3.1",
     "deep-freeze": "0.0.1",
     "dompurify": "^2.3.0",
@@ -157,7 +156,6 @@
     "react-query": "^3.21.0",
     "react-select": "^3.2.0",
     "react-tabs": "^3.2.2",
-    "snakecase-keys": "^5.1.2",
     "use-immer": "^0.6.0",
     "uuid": "^8.3.2"
   }
