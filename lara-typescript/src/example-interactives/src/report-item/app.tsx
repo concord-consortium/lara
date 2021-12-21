@@ -15,11 +15,11 @@ export const AppComponent: React.FC<Props> = (props) => {
   // TODO: this should really be moved into a client hook file so it can be reused
   useEffect(() => {
     if (initMessage) {
-      const body = document.getElementsByTagName("BODY")[0];
+      const body = document.body;
+      const html = document.documentElement;
       const updateHeight = () => {
-        if (body && body.clientHeight) {
-          setHeight(body.clientHeight);
-        }
+        setHeight(Math.max(body.scrollHeight, body.offsetHeight,
+                           html.clientHeight, html.scrollHeight, html.offsetHeight));
       };
       const observer = new ResizeObserver(() => updateHeight());
       if (body) {

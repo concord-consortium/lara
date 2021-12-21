@@ -22,38 +22,18 @@ export const ReportItemComponent: React.FC<Props> = (props) => {
       const json = JSON.stringify(interactiveState);
       setStudentAnswers(prev => ({...prev, [studentId]: interactiveState}));
 
-      let html: string;
-      if (view === "singleAnswer") {
-        // "tall" html
-        html = `
-          <style>
-            body {
-              background-color: #f00;
-              color: #fff;
-            }
-          </style>
-          <div>
-            <p>
-              <strong>Interactive State Size</strong>: ${json.length}
-            </p>
-            <p>
-              <strong>First 100 Bytes:</strong>: ${json.substr(0, 100)}
-            </p>
-          </div>`;
-      } else {
-        // short html
-        html = `
-          <style>
-            body {
-              background-color: #00f;
-              color: #fff;
-            }
-          </style>
-          <div>
-            <strong>Interactive State Size</strong>: ${json.length} /
-            <strong>First 20 Bytes:</strong>: ${json.substr(0, 20)}
-          </div>`;
-      }
+      const html = `
+        <div class="tall">
+          <h1>TALL REPORT HERE...</h1>
+          <p>
+          <strong>Interactive State Size</strong>: ${json.length}
+        </div>
+        <div class="wide">
+          <h1>WIDE REPORT HERE...</h1>
+          <p>
+          <strong>Interactive State Size</strong>: ${json.length}
+        </div>
+      `;
       sendStudentHTML({studentId, html});
     });
 
