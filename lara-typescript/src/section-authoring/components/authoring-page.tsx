@@ -12,6 +12,7 @@ import { DragDropContext, Droppable, Draggable, DropResult } from "react-beautif
 import { CompletionPage } from "./completion-page/completion-page";
 import { Add } from "../../shared/components/icons/add-icon";
 import { Cog } from "../../shared/components/icons/cog-icon";
+import { HiddenIcon } from "../../shared/components/icons/hidden-icon";
 
 import "./authoring-page.scss";
 import { UserInterfaceContext} from "../containers/user-interface-provider";
@@ -180,6 +181,11 @@ export const AuthoringPage: React.FC<IPageProps> = ({
         <button onClick={pageSettingsClickHandler}><Cog height="16" width="16" /> Page Settings</button>
         <PreviewLinksContainer />
       </header>
+      {isHidden &&
+        <div className="hiddenPageAlert">
+          <HiddenIcon height="20" width="20" /> This page is hidden and will not appear in runtime.
+        </div>
+      }
       {isCompletion
         ? <CompletionPage />
         : <>

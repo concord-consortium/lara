@@ -6,7 +6,6 @@ const kDefaultWidth = "1em";
 export interface ICompletionProps {
   height?: string;
   width?: string;
-  className: string;
 }
 
 export const Completion = (props: ICompletionProps) => {
