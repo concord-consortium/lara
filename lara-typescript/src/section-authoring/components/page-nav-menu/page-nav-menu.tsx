@@ -4,6 +4,7 @@ import { PageCopyDialog } from "./page-copy-dialog";
 import { Previous } from "../../../shared/components/icons/previous-icon";
 import { Home } from "../../../shared/components/icons/home-icon";
 import { Next } from "../../../shared/components/icons/next-icon";
+import { HiddenIcon } from "../../../shared/components/icons/hidden-icon";
 import { Completion } from "../../../shared/components/icons/completion-icon";
 import { Add } from "../../../shared/components/icons/add-icon";
 import { Copy } from "../../../shared/components/icons/copy-icon";
@@ -136,23 +137,31 @@ export const PageNavMenu: React.FC<IPageNavMenuProps> = ({
     }
 
     return (
-      pages.map((page: any, pageIndex: number) => {
+      pages.map((page: IPage, pageIndex: number, pageArray: IPage[]) => {
+        const hiddenPagesBefore = pageArray.filter((p, index) => p.isHidden && index < pageIndex ).length;
         const pageNum = pageIndex + 1;
-        const currentClass = currentPageIndex === pageIndex ? "current" : "";
-        const completionClass = page.isCompletion ? "completion-page-button" : "";
-        const disabledClass = pageChangeInProgress ? "disabled" : "";
-        const buttonContent = page.isCompletion
-                              ? <Completion className={`icon ${currentClass}`} width="28" height="28" />
-                              : pageNum;
+        const pageLabel = pageNum - hiddenPagesBefore;
+        const currentClass = currentPageIndex === pageIndex ? "current" : undefined;
+        const pageButtonClasses = classNames("page-button", {
+          "completion-page-button": page.isCompletion,
+          "current": currentClass,
+          "disabled": pageChangeInProgress,
+          "hidden-page-button": page.isHidden
+        });
+        const buttonContent = page.isHidden
+                              ? <HiddenIcon width="28" height="28" />
+                              : page.isCompletion
+                                ? <Completion width="28" height="28" />
+                                : pageLabel;
         const clickHandler = () => handleNavButtonClick(pageIndex);
 
         return (
           pageNum >= minPage && pageNum <= maxPage
             ? <button
-                className={`page-button ${currentClass} ${completionClass} ${disabledClass}`}
+                className={pageButtonClasses}
                 onClick={clickHandler}
                 key={`page ${pageNum}`}
-                data-cy={`${page.is_completion ? "nav-pages-completion-page-button" : "nav-pages-button"}`}
+                data-cy={`${page.isCompletion ? "nav-pages-completion-page-button" : "nav-pages-button"}`}
                 aria-label={`Page ${pageNum}`}
               >
                 {buttonContent}

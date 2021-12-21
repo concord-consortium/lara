@@ -1913,6 +1913,7 @@ select {
   cursor: pointer;
   height: 20px;
   line-height: 1;
+  margin: 0 0 5px;
   padding: 0;
   position: relative;
   width: 20px;
@@ -2520,6 +2521,20 @@ dl.textBlockEditForm {
     line-height: 1.2;
     margin: 0;
     padding: 0; }
+
+.hiddenPageAlert {
+  align-items: center;
+  background: var(--ltr-gray);
+  color: var(--dark-teal);
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+  padding: 5px; }
+  .hiddenPageAlert svg {
+    fill: var(--teal);
+    height: 20px;
+    margin-right: 10px;
+    width: 20px; }
 
 .editPageContainer {
   background: var(--ltr-gray);
