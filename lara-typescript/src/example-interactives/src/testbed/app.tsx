@@ -1,8 +1,6 @@
 import * as React from "react";
-const { useEffect } = React;
-import ResizeObserver from "resize-observer-polyfill";
 
-import { useInitMessage, setSupportedFeatures, setHeight } from "../../../interactive-api-client";
+import { useInitMessage, setSupportedFeatures, setHeight, useAutoSetHeight, useSetSupportedFeatures } from "../../../interactive-api-client";
 import { AuthoringComponent } from "./authoring";
 import { ReportComponent } from "./report";
 import { RuntimeComponent } from "./runtime";
@@ -14,31 +12,11 @@ interface Props {
 export const AppComponent: React.FC<Props> = (props) => {
   const initMessage = useInitMessage<{}, IAuthoredState>();
 
-  // TODO: this should really be moved into a client hook file so it can be reused
-  useEffect(() => {
-    if (initMessage) {
-      const body = document.getElementsByTagName("BODY")[0];
-      const updateHeight = () => {
-        if (body && body.clientHeight) {
-          setHeight(body.clientHeight);
-        }
-      };
-      const observer = new ResizeObserver(() => updateHeight());
-      if (body) {
-        observer.observe(body);
-      }
-      return () => observer.disconnect();
-    }
-  }, [initMessage]);
-
-  useEffect(() => {
-    if (initMessage) {
-      setSupportedFeatures({
-        authoredState: true,
-        interactiveState: true
-      });
-    }
-  }, [initMessage]);
+  useAutoSetHeight();
+  useSetSupportedFeatures({
+    authoredState: true,
+    interactiveState: true
+  });
 
   if (!initMessage) {
     return (

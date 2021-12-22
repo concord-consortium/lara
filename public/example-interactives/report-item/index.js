@@ -32548,28 +32548,11 @@ module.exports = g;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppComponent = void 0;
 var React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-var useEffect = React.useEffect;
-var resize_observer_polyfill_1 = __webpack_require__(/*! resize-observer-polyfill */ "./node_modules/resize-observer-polyfill/dist/ResizeObserver.es.js");
 var interactive_api_client_1 = __webpack_require__(/*! ../../../interactive-api-client */ "./src/interactive-api-client/index.ts");
 var report_item_1 = __webpack_require__(/*! ./report-item */ "./src/example-interactives/src/report-item/report-item.tsx");
 var AppComponent = function (props) {
     var initMessage = (0, interactive_api_client_1.useInitMessage)();
-    // TODO: this should really be moved into a client hook file so it can be reused
-    useEffect(function () {
-        if (initMessage) {
-            var body_1 = document.getElementsByTagName("BODY")[0];
-            var updateHeight_1 = function () {
-                if (body_1 && body_1.clientHeight) {
-                    (0, interactive_api_client_1.setHeight)(body_1.clientHeight);
-                }
-            };
-            var observer_1 = new resize_observer_polyfill_1.default(function () { return updateHeight_1(); });
-            if (body_1) {
-                observer_1.observe(body_1);
-            }
-            return function () { return observer_1.disconnect(); };
-        }
-    }, [initMessage]);
+    (0, interactive_api_client_1.useAutoSetHeight)();
     if (!initMessage) {
         return (React.createElement("div", { className: "centered" },
             React.createElement("div", { className: "progress" }, "Loading...")));
@@ -32713,15 +32696,7 @@ var ReportItemComponent = function (props) {
                 var _a;
                 return (__assign(__assign({}, prev), (_a = {}, _a[studentId] = interactiveState, _a)));
             });
-            var html;
-            if (view === "singleAnswer") {
-                // "tall" html
-                html = "\n          <style>\n            body {\n              background-color: #f00;\n              color: #fff;\n            }\n          </style>\n          <div>\n            <p>\n              <strong>Interactive State Size</strong>: " + json.length + "\n            </p>\n            <p>\n              <strong>First 100 Bytes:</strong>: " + json.substr(0, 100) + "\n            </p>\n          </div>";
-            }
-            else {
-                // short html
-                html = "\n          <style>\n            body {\n              background-color: #00f;\n              color: #fff;\n            }\n          </style>\n          <div>\n            <strong>Interactive State Size</strong>: " + json.length + " /\n            <strong>First 20 Bytes:</strong>: " + json.substr(0, 20) + "\n          </div>";
-            }
+            var html = "\n        <div class=\"tall\">\n          <h1>TALL REPORT HERE...</h1>\n          <p>\n          <strong>Interactive State Size</strong>: " + json.length + "\n        </div>\n        <div class=\"wide\">\n          <h1>WIDE REPORT HERE...</h1>\n          <p>\n          <strong>Interactive State Size</strong>: " + json.length + "\n        </div>\n      ";
             (0, interactive_api_client_1.sendStudentHTML)({ studentId: studentId, html: html });
         });
         // tell the portal-report we are ready for messages
@@ -33569,8 +33544,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.useDecorateContent = exports.useCustomMessages = exports.useInitMessage = exports.useGlobalInteractiveState = exports.useAuthoredState = exports.useInteractiveState = void 0;
+exports.useSetSupportedFeatures = exports.useAutoSetHeight = exports.useDecorateContent = exports.useCustomMessages = exports.useInitMessage = exports.useGlobalInteractiveState = exports.useAuthoredState = exports.useInteractiveState = void 0;
 var react_1 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+var resize_observer_polyfill_1 = __webpack_require__(/*! resize-observer-polyfill */ "./node_modules/resize-observer-polyfill/dist/ResizeObserver.es.js");
 var client = __webpack_require__(/*! ./api */ "./src/interactive-api-client/api.ts");
 var handleUpdate = function (newStateOrUpdateFunc, prevState) {
     if (typeof newStateOrUpdateFunc === "function") {
@@ -33692,6 +33668,34 @@ var useDecorateContent = function (callback) {
     }, []);
 };
 exports.useDecorateContent = useDecorateContent;
+var useAutoSetHeight = function () {
+    var initMessage = (0, exports.useInitMessage)();
+    (0, react_1.useEffect)(function () {
+        if (initMessage) {
+            var body_1 = document.body;
+            var html_1 = document.documentElement;
+            var updateHeight_1 = function () {
+                var height = Math.max(body_1.scrollHeight, body_1.offsetHeight, html_1.clientHeight, html_1.scrollHeight, html_1.offsetHeight);
+                client.setHeight(height);
+            };
+            var observer_1 = new resize_observer_polyfill_1.default(function () { return updateHeight_1(); });
+            if (body_1) {
+                observer_1.observe(body_1);
+            }
+            return function () { return observer_1.disconnect(); };
+        }
+    }, [initMessage]);
+};
+exports.useAutoSetHeight = useAutoSetHeight;
+var useSetSupportedFeatures = function (features) {
+    var initMessage = (0, exports.useInitMessage)();
+    (0, react_1.useEffect)(function () {
+        if (initMessage) {
+            client.setSupportedFeatures(features);
+        }
+    }, [initMessage]);
+};
+exports.useSetSupportedFeatures = useSetSupportedFeatures;
 
 
 /***/ }),

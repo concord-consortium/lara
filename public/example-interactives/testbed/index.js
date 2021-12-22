@@ -44337,38 +44337,17 @@ exports.renderHTML = renderHTML;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppComponent = void 0;
 var React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-var useEffect = React.useEffect;
-var resize_observer_polyfill_1 = __webpack_require__(/*! resize-observer-polyfill */ "./node_modules/resize-observer-polyfill/dist/ResizeObserver.es.js");
 var interactive_api_client_1 = __webpack_require__(/*! ../../../interactive-api-client */ "./src/interactive-api-client/index.ts");
 var authoring_1 = __webpack_require__(/*! ./authoring */ "./src/example-interactives/src/testbed/authoring.tsx");
 var report_1 = __webpack_require__(/*! ./report */ "./src/example-interactives/src/testbed/report.tsx");
 var runtime_1 = __webpack_require__(/*! ./runtime */ "./src/example-interactives/src/testbed/runtime.tsx");
 var AppComponent = function (props) {
     var initMessage = (0, interactive_api_client_1.useInitMessage)();
-    // TODO: this should really be moved into a client hook file so it can be reused
-    useEffect(function () {
-        if (initMessage) {
-            var body_1 = document.getElementsByTagName("BODY")[0];
-            var updateHeight_1 = function () {
-                if (body_1 && body_1.clientHeight) {
-                    (0, interactive_api_client_1.setHeight)(body_1.clientHeight);
-                }
-            };
-            var observer_1 = new resize_observer_polyfill_1.default(function () { return updateHeight_1(); });
-            if (body_1) {
-                observer_1.observe(body_1);
-            }
-            return function () { return observer_1.disconnect(); };
-        }
-    }, [initMessage]);
-    useEffect(function () {
-        if (initMessage) {
-            (0, interactive_api_client_1.setSupportedFeatures)({
-                authoredState: true,
-                interactiveState: true
-            });
-        }
-    }, [initMessage]);
+    (0, interactive_api_client_1.useAutoSetHeight)();
+    (0, interactive_api_client_1.useSetSupportedFeatures)({
+        authoredState: true,
+        interactiveState: true
+    });
     if (!initMessage) {
         return (React.createElement("div", { className: "centered" },
             React.createElement("div", { className: "progress" }, "Loading...")));
@@ -45651,8 +45630,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.useDecorateContent = exports.useCustomMessages = exports.useInitMessage = exports.useGlobalInteractiveState = exports.useAuthoredState = exports.useInteractiveState = void 0;
+exports.useSetSupportedFeatures = exports.useAutoSetHeight = exports.useDecorateContent = exports.useCustomMessages = exports.useInitMessage = exports.useGlobalInteractiveState = exports.useAuthoredState = exports.useInteractiveState = void 0;
 var react_1 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+var resize_observer_polyfill_1 = __webpack_require__(/*! resize-observer-polyfill */ "./node_modules/resize-observer-polyfill/dist/ResizeObserver.es.js");
 var client = __webpack_require__(/*! ./api */ "./src/interactive-api-client/api.ts");
 var handleUpdate = function (newStateOrUpdateFunc, prevState) {
     if (typeof newStateOrUpdateFunc === "function") {
@@ -45774,6 +45754,34 @@ var useDecorateContent = function (callback) {
     }, []);
 };
 exports.useDecorateContent = useDecorateContent;
+var useAutoSetHeight = function () {
+    var initMessage = (0, exports.useInitMessage)();
+    (0, react_1.useEffect)(function () {
+        if (initMessage) {
+            var body_1 = document.body;
+            var html_1 = document.documentElement;
+            var updateHeight_1 = function () {
+                var height = Math.max(body_1.scrollHeight, body_1.offsetHeight, html_1.clientHeight, html_1.scrollHeight, html_1.offsetHeight);
+                client.setHeight(height);
+            };
+            var observer_1 = new resize_observer_polyfill_1.default(function () { return updateHeight_1(); });
+            if (body_1) {
+                observer_1.observe(body_1);
+            }
+            return function () { return observer_1.disconnect(); };
+        }
+    }, [initMessage]);
+};
+exports.useAutoSetHeight = useAutoSetHeight;
+var useSetSupportedFeatures = function (features) {
+    var initMessage = (0, exports.useInitMessage)();
+    (0, react_1.useEffect)(function () {
+        if (initMessage) {
+            client.setSupportedFeatures(features);
+        }
+    }, [initMessage]);
+};
+exports.useSetSupportedFeatures = useSetSupportedFeatures;
 
 
 /***/ }),

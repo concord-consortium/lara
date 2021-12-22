@@ -161,11 +161,13 @@
 * [setSupportedFeatures](globals.md#const-setsupportedfeatures)
 * [showModal](globals.md#const-showmodal)
 * [useAuthoredState](globals.md#const-useauthoredstate)
+* [useAutoSetHeight](globals.md#const-useautosetheight)
 * [useCustomMessages](globals.md#const-usecustommessages)
 * [useDecorateContent](globals.md#const-usedecoratecontent)
 * [useGlobalInteractiveState](globals.md#const-useglobalinteractivestate)
 * [useInitMessage](globals.md#const-useinitmessage)
 * [useInteractiveState](globals.md#const-useinteractivestate)
+* [useSetSupportedFeatures](globals.md#const-usesetsupportedfeatures)
 * [writeAttachment](globals.md#const-writeattachment)
 
 ## Type aliases
@@ -1082,6 +1084,14 @@ ___
 
 ___
 
+### `Const` useAutoSetHeight
+
+▸ **useAutoSetHeight**(): *void*
+
+**Returns:** *void*
+
+___
+
 ### `Const` useCustomMessages
 
 ▸ **useCustomMessages**(`callback`: [ICustomMessageHandler](globals.md#icustommessagehandler), `handles?`: [ICustomMessagesHandledMap](globals.md#icustommessageshandledmap)): *void*
@@ -1156,6 +1166,20 @@ ___
 * **interactiveState**: *null | InteractiveState*
 
 * **setInteractiveState**: *handleSetInteractiveState* = handleSetInteractiveState
+
+___
+
+### `Const` useSetSupportedFeatures
+
+▸ **useSetSupportedFeatures**(`features`: ISupportedFeatures): *void*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`features` | ISupportedFeatures |
+
+**Returns:** *void*
 
 ___
 
