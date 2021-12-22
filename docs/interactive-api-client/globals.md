@@ -43,7 +43,7 @@
 * [IGetLibraryInteractiveListOptions](interfaces/igetlibraryinteractivelistoptions.md)
 * [IGetLibraryInteractiveListRequest](interfaces/igetlibraryinteractivelistrequest.md)
 * [IGetLibraryInteractiveListResponse](interfaces/igetlibraryinteractivelistresponse.md)
-* [IGetStudentHTML](interfaces/igetstudenthtml.md)
+* [IGetReportItemAnswer](interfaces/igetreportitemanswer.md)
 * [IHintRequest](interfaces/ihintrequest.md)
 * [IHostFeatureSupport](interfaces/ihostfeaturesupport.md)
 * [IHostFeatures](interfaces/ihostfeatures.md)
@@ -60,6 +60,7 @@
 * [IPortalClaims](interfaces/iportalclaims.md)
 * [IRemoveLinkedInteractiveStateListenerRequest](interfaces/iremovelinkedinteractivestatelistenerrequest.md)
 * [IReportInitInteractive](interfaces/ireportinitinteractive.md)
+* [IReportItemAnswer](interfaces/ireportitemanswer.md)
 * [IReportItemInitInteractive](interfaces/ireportiteminitinteractive.md)
 * [IRuntimeCustomReportValues](interfaces/iruntimecustomreportvalues.md)
 * [IRuntimeImageQuestionMetadata](interfaces/iruntimeimagequestionmetadata.md)
@@ -72,7 +73,6 @@
 * [IShowAlert](interfaces/ishowalert.md)
 * [IShowDialog](interfaces/ishowdialog.md)
 * [IShowLightbox](interfaces/ishowlightbox.md)
-* [IStudentHTML](interfaces/istudenthtml.md)
 * [ISupportedFeatures](interfaces/isupportedfeatures.md)
 * [ISupportedFeaturesRequest](interfaces/isupportedfeaturesrequest.md)
 * [ITextDecorationHandlerInfo](interfaces/itextdecorationhandlerinfo.md)
@@ -95,7 +95,7 @@
 * [ICustomMessageHandler](globals.md#icustommessagehandler)
 * [ICustomMessageOptions](globals.md#icustommessageoptions)
 * [ICustomMessagesHandledMap](globals.md#icustommessageshandledmap)
-* [IGetStudentHTMLHandler](globals.md#igetstudenthtmlhandler)
+* [IGetReportItemAnswerHandler](globals.md#igetreportitemanswerhandler)
 * [IInitInteractive](globals.md#iinitinteractive)
 * [IReportItemClientMessage](globals.md#ireportitemclientmessage)
 * [IReportItemServerMessage](globals.md#ireportitemservermessage)
@@ -122,7 +122,7 @@
 * [addAuthoredStateListener](globals.md#const-addauthoredstatelistener)
 * [addCustomMessageListener](globals.md#const-addcustommessagelistener)
 * [addDecorateContentListener](globals.md#const-adddecoratecontentlistener)
-* [addGetStudentHTMLListener](globals.md#const-addgetstudenthtmllistener)
+* [addGetReportItemAnswerListener](globals.md#const-addgetreportitemanswerlistener)
 * [addGlobalInteractiveStateListener](globals.md#const-addglobalinteractivestatelistener)
 * [addInteractiveStateListener](globals.md#const-addinteractivestatelistener)
 * [addLinkedInteractiveStateListener](globals.md#const-addlinkedinteractivestatelistener)
@@ -146,11 +146,11 @@
 * [removeAuthoredStateListener](globals.md#const-removeauthoredstatelistener)
 * [removeCustomMessageListener](globals.md#const-removecustommessagelistener)
 * [removeDecorateContentListener](globals.md#const-removedecoratecontentlistener)
-* [removeGetStudentHTMLListener](globals.md#const-removegetstudenthtmllistener)
+* [removeGetReportItemAnswerListener](globals.md#const-removegetreportitemanswerlistener)
 * [removeGlobalInteractiveStateListener](globals.md#const-removeglobalinteractivestatelistener)
 * [removeInteractiveStateListener](globals.md#const-removeinteractivestatelistener)
 * [removeLinkedInteractiveStateListener](globals.md#const-removelinkedinteractivestatelistener)
-* [sendStudentHTML](globals.md#const-sendstudenthtml)
+* [sendReportItemAnswer](globals.md#const-sendreportitemanswer)
 * [setAuthoredState](globals.md#const-setauthoredstate)
 * [setGlobalInteractiveState](globals.md#const-setglobalinteractivestate)
 * [setHeight](globals.md#const-setheight)
@@ -260,19 +260,19 @@ ___
 
 ___
 
-###  IGetStudentHTMLHandler
+###  IGetReportItemAnswerHandler
 
-Ƭ **IGetStudentHTMLHandler**: *function*
+Ƭ **IGetReportItemAnswerHandler**: *function*
 
 #### Type declaration:
 
-▸ (`message`: [IGetStudentHTML](interfaces/igetstudenthtml.md)): *void*
+▸ (`message`: [IGetReportItemAnswer](interfaces/igetreportitemanswer.md)): *void*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
-`message` | [IGetStudentHTML](interfaces/igetstudenthtml.md) |
+`message` | [IGetReportItemAnswer](interfaces/igetreportitemanswer.md) |
 
 ___
 
@@ -284,13 +284,13 @@ ___
 
 ###  IReportItemClientMessage
 
-Ƭ **IReportItemClientMessage**: *"studentHTML" | "reportItemClientReady"*
+Ƭ **IReportItemClientMessage**: *"reportItemAnswer" | "reportItemClientReady"*
 
 ___
 
 ###  IReportItemServerMessage
 
-Ƭ **IReportItemServerMessage**: *"getStudentHTML"*
+Ƭ **IReportItemServerMessage**: *"getReportItemAnswer"*
 
 ___
 
@@ -441,15 +441,15 @@ Name | Type |
 
 ___
 
-### `Const` addGetStudentHTMLListener
+### `Const` addGetReportItemAnswerListener
 
-▸ **addGetStudentHTMLListener**(`callback`: [IGetStudentHTMLHandler](globals.md#igetstudenthtmlhandler)): *void*
+▸ **addGetReportItemAnswerListener**(`callback`: [IGetReportItemAnswerHandler](globals.md#igetreportitemanswerhandler)): *void*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
-`callback` | [IGetStudentHTMLHandler](globals.md#igetstudenthtmlhandler) |
+`callback` | [IGetReportItemAnswerHandler](globals.md#igetreportitemanswerhandler) |
 
 **Returns:** *void*
 
@@ -784,9 +784,9 @@ ___
 
 ___
 
-### `Const` removeGetStudentHTMLListener
+### `Const` removeGetReportItemAnswerListener
 
-▸ **removeGetStudentHTMLListener**(): *void*
+▸ **removeGetReportItemAnswerListener**(): *void*
 
 **Returns:** *void*
 
@@ -864,15 +864,15 @@ Name | Type |
 
 ___
 
-### `Const` sendStudentHTML
+### `Const` sendReportItemAnswer
 
-▸ **sendStudentHTML**(`request`: Omit‹[IStudentHTML](interfaces/istudenthtml.md), "requestId"›): *void*
+▸ **sendReportItemAnswer**(`request`: Omit‹[IReportItemAnswer](interfaces/ireportitemanswer.md), "requestId"›): *void*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
-`request` | Omit‹[IStudentHTML](interfaces/istudenthtml.md), "requestId"› |
+`request` | Omit‹[IReportItemAnswer](interfaces/ireportitemanswer.md), "requestId"› |
 
 **Returns:** *void*
 

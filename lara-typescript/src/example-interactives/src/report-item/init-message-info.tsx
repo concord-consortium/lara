@@ -8,13 +8,13 @@ interface Props {
 
 export const InitMessageInfoComponent: React.FC<Props> = (props) => {
   const initMessage = useRef(props.initMessage);
-  const {students, interactiveItemId, view, authoredState} = initMessage.current;
-  const studentsIds = Object.keys(students);
-  const numAnswersAtInit = studentsIds.reduce<number>((acc, studentId) => {
-    return students[studentId].hasAnswer ? acc + 1 : acc;
+  const {users, interactiveItemId, view} = initMessage.current;
+  const userIds = Object.keys(users);
+  const numAnswersAtInit = userIds.reduce<number>((acc, studentId) => {
+    return users[studentId].hasAnswer ? acc + 1 : acc;
   }, 0);
-  const [studentAnswers, setStudentAnswers] = useState<Record<string, any>>({});
-  const numCurrentAnswers = Object.keys(studentAnswers).length;
+  const [userAnswers, setUserAnswers] = useState<Record<string, any>>({});
+  const numCurrentAnswers = Object.keys(userAnswers).length;
 
   return (
     <div className="initMessageInfo">
@@ -24,17 +24,14 @@ export const InitMessageInfoComponent: React.FC<Props> = (props) => {
       <dt>Interactive Item Id</dt>
       <dd>{interactiveItemId}</dd>
 
-      <dt>Number of Students in Init Message</dt>
-      <dd>{studentsIds.length}</dd>
+      <dt>Number of Users in Init Message</dt>
+      <dd>{userIds.length}</dd>
 
       <dt>Number of Answers In Init Message</dt>
       <dd>{numAnswersAtInit}</dd>
 
       <dt>Number of Answers Currently</dt>
       <dd>{numCurrentAnswers}</dd>
-
-      <dt>Authored State</dt>
-      <dd><pre>{JSON.stringify(authoredState, null, 2)}</pre></dd>
   </div>
   );
 };

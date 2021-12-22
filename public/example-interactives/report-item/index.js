@@ -32606,27 +32606,24 @@ var React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 var react_1 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 var InitMessageInfoComponent = function (props) {
     var initMessage = (0, react_1.useRef)(props.initMessage);
-    var _a = initMessage.current, students = _a.students, interactiveItemId = _a.interactiveItemId, view = _a.view, authoredState = _a.authoredState;
-    var studentsIds = Object.keys(students);
-    var numAnswersAtInit = studentsIds.reduce(function (acc, studentId) {
-        return students[studentId].hasAnswer ? acc + 1 : acc;
+    var _a = initMessage.current, users = _a.users, interactiveItemId = _a.interactiveItemId, view = _a.view;
+    var userIds = Object.keys(users);
+    var numAnswersAtInit = userIds.reduce(function (acc, studentId) {
+        return users[studentId].hasAnswer ? acc + 1 : acc;
     }, 0);
-    var _b = (0, react_1.useState)({}), studentAnswers = _b[0], setStudentAnswers = _b[1];
-    var numCurrentAnswers = Object.keys(studentAnswers).length;
+    var _b = (0, react_1.useState)({}), userAnswers = _b[0], setUserAnswers = _b[1];
+    var numCurrentAnswers = Object.keys(userAnswers).length;
     return (React.createElement("div", { className: "initMessageInfo" },
         React.createElement("dt", null, "View"),
         React.createElement("dd", null, view),
         React.createElement("dt", null, "Interactive Item Id"),
         React.createElement("dd", null, interactiveItemId),
-        React.createElement("dt", null, "Number of Students in Init Message"),
-        React.createElement("dd", null, studentsIds.length),
+        React.createElement("dt", null, "Number of Users in Init Message"),
+        React.createElement("dd", null, userIds.length),
         React.createElement("dt", null, "Number of Answers In Init Message"),
         React.createElement("dd", null, numAnswersAtInit),
         React.createElement("dt", null, "Number of Answers Currently"),
-        React.createElement("dd", null, numCurrentAnswers),
-        React.createElement("dt", null, "Authored State"),
-        React.createElement("dd", null,
-            React.createElement("pre", null, JSON.stringify(authoredState, null, 2)))));
+        React.createElement("dd", null, numCurrentAnswers)));
 };
 exports.InitMessageInfoComponent = InitMessageInfoComponent;
 
@@ -32686,18 +32683,23 @@ var multiple_answer_summary_1 = __webpack_require__(/*! ./multiple-answer-summar
 var single_answer_summary_1 = __webpack_require__(/*! ./single-answer-summary */ "./src/example-interactives/src/report-item/single-answer-summary.tsx");
 var ReportItemComponent = function (props) {
     var initMessage = props.initMessage;
-    var students = initMessage.students, view = initMessage.view;
-    var _a = (0, react_1.useState)({}), studentAnswers = _a[0], setStudentAnswers = _a[1];
+    var users = initMessage.users, view = initMessage.view;
+    var _a = (0, react_1.useState)({}), userAnswers = _a[0], setUserAnswers = _a[1];
     (0, react_1.useEffect)(function () {
-        (0, interactive_api_client_1.addGetStudentHTMLListener)(function (request) {
-            var studentId = request.studentId, interactiveState = request.interactiveState;
-            var json = JSON.stringify(interactiveState);
-            setStudentAnswers(function (prev) {
+        (0, interactive_api_client_1.addGetReportItemAnswerListener)(function (request) {
+            var type = request.type, platformUserId = request.platformUserId, interactiveState = request.interactiveState, authoredState = request.authoredState;
+            var interactiveStateSize = JSON.stringify(interactiveState).length;
+            var authoredStateSize = JSON.stringify(authoredState).length;
+            setUserAnswers(function (prev) {
                 var _a;
-                return (__assign(__assign({}, prev), (_a = {}, _a[studentId] = interactiveState, _a)));
+                return (__assign(__assign({}, prev), (_a = {}, _a[platformUserId] = interactiveState, _a)));
             });
-            var html = "\n        <div class=\"tall\">\n          <h1>TALL REPORT HERE...</h1>\n          <p>\n          <strong>Interactive State Size</strong>: " + json.length + "\n        </div>\n        <div class=\"wide\">\n          <h1>WIDE REPORT HERE...</h1>\n          <p>\n          <strong>Interactive State Size</strong>: " + json.length + "\n        </div>\n      ";
-            (0, interactive_api_client_1.sendStudentHTML)({ studentId: studentId, html: html });
+            switch (type) {
+                case "html":
+                    var html = "\n            <div class=\"tall\">\n              <h1>TALL REPORT HERE...</h1>\n              <p>\n                <strong>Interactive State Size</strong>: " + interactiveStateSize + "\n              </p>\n              <p>\n                <strong>Authored State Size</strong>: " + authoredStateSize + "\n              </p>\n            </div>\n            <div class=\"wide\">\n              <h1>WIDE REPORT HERE...</h1>\n              <p>\n                <strong>Interactive State Size</strong>: " + interactiveStateSize + "\n              </p>\n              <p>\n                <strong>Authored State Size</strong>: " + authoredStateSize + "\n              </p>\n            </div>\n          ";
+                    (0, interactive_api_client_1.sendReportItemAnswer)({ type: "html", platformUserId: platformUserId, html: html });
+                    break;
+            }
         });
         // tell the portal-report we are ready for messages
         (0, client_1.getClient)().post("reportItemClientReady");
@@ -32802,7 +32804,7 @@ var __rest = (this && this.__rest) || function (s, e) {
     return t;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.sendStudentHTML = exports.getAttachmentUrl = exports.readAttachment = exports.writeAttachment = exports.getLibraryInteractiveList = exports.getInteractiveSnapshot = exports.setLinkedInteractives = exports.getInteractiveList = exports.closeModal = exports.showModal = exports.removeLinkedInteractiveStateListener = exports.addLinkedInteractiveStateListener = exports.removeGlobalInteractiveStateListener = exports.addGlobalInteractiveStateListener = exports.removeAuthoredStateListener = exports.addAuthoredStateListener = exports.removeInteractiveStateListener = exports.addInteractiveStateListener = exports.log = exports.getFirebaseJwt = exports.getAuthInfo = exports.setNavigation = exports.setHint = exports.postDecoratedContentEvent = exports.setHeight = exports.setSupportedFeatures = exports.removeGetStudentHTMLListener = exports.addGetStudentHTMLListener = exports.removeDecorateContentListener = exports.addDecorateContentListener = exports.removeCustomMessageListener = exports.addCustomMessageListener = exports.setGlobalInteractiveState = exports.getGlobalInteractiveState = exports.setAuthoredState = exports.getAuthoredState = exports.flushStateUpdates = exports.setInteractiveState = exports.setInteractiveStateTimeout = exports.getInteractiveState = exports.getMode = exports.getInitInteractiveMessage = void 0;
+exports.sendReportItemAnswer = exports.getAttachmentUrl = exports.readAttachment = exports.writeAttachment = exports.getLibraryInteractiveList = exports.getInteractiveSnapshot = exports.setLinkedInteractives = exports.getInteractiveList = exports.closeModal = exports.showModal = exports.removeLinkedInteractiveStateListener = exports.addLinkedInteractiveStateListener = exports.removeGlobalInteractiveStateListener = exports.addGlobalInteractiveStateListener = exports.removeAuthoredStateListener = exports.addAuthoredStateListener = exports.removeInteractiveStateListener = exports.addInteractiveStateListener = exports.log = exports.getFirebaseJwt = exports.getAuthInfo = exports.setNavigation = exports.setHint = exports.postDecoratedContentEvent = exports.setHeight = exports.setSupportedFeatures = exports.removeGetReportItemAnswerListener = exports.addGetReportItemAnswerListener = exports.removeDecorateContentListener = exports.addDecorateContentListener = exports.removeCustomMessageListener = exports.addCustomMessageListener = exports.setGlobalInteractiveState = exports.getGlobalInteractiveState = exports.setAuthoredState = exports.getAuthoredState = exports.flushStateUpdates = exports.setInteractiveState = exports.setInteractiveStateTimeout = exports.getInteractiveState = exports.getMode = exports.getInitInteractiveMessage = void 0;
 var client_1 = __webpack_require__(/*! ./client */ "./src/interactive-api-client/client.ts");
 var uuid_1 = __webpack_require__(/*! uuid */ "./node_modules/uuid/dist/esm-browser/index.js");
 var THROW_NOT_IMPLEMENTED_YET = function (method) {
@@ -32944,14 +32946,14 @@ var removeDecorateContentListener = function () {
     (0, client_1.getClient)().removeDecorateContentListener();
 };
 exports.removeDecorateContentListener = removeDecorateContentListener;
-var addGetStudentHTMLListener = function (callback) {
-    (0, client_1.getClient)().addGetStudentHTMLListener(callback);
+var addGetReportItemAnswerListener = function (callback) {
+    (0, client_1.getClient)().addGetReportItemAnswerListener(callback);
 };
-exports.addGetStudentHTMLListener = addGetStudentHTMLListener;
-var removeGetStudentHTMLListener = function () {
-    (0, client_1.getClient)().removeGetStudentHTMLListener();
+exports.addGetReportItemAnswerListener = addGetReportItemAnswerListener;
+var removeGetReportItemAnswerListener = function () {
+    (0, client_1.getClient)().removeGetReportItemAnswerListener();
 };
-exports.removeGetStudentHTMLListener = removeGetStudentHTMLListener;
+exports.removeGetReportItemAnswerListener = removeGetReportItemAnswerListener;
 var setSupportedFeatures = function (features) {
     var request = {
         apiVersion: 1,
@@ -33262,10 +33264,10 @@ var getAttachmentUrl = function (params) {
     });
 };
 exports.getAttachmentUrl = getAttachmentUrl;
-var sendStudentHTML = function (request) {
-    (0, client_1.getClient)().post("studentHTML", request);
+var sendReportItemAnswer = function (request) {
+    (0, client_1.getClient)().post("reportItemAnswer", request);
 };
-exports.sendStudentHTML = sendStudentHTML;
+exports.sendReportItemAnswer = sendReportItemAnswer;
 
 
 /***/ }),
@@ -33458,11 +33460,11 @@ var Client = /** @class */ (function () {
     Client.prototype.removeDecorateContentListener = function () {
         return this.removeListener("decorateContent");
     };
-    Client.prototype.addGetStudentHTMLListener = function (callback) {
-        this.addListener("getStudentHTML", callback);
+    Client.prototype.addGetReportItemAnswerListener = function (callback) {
+        this.addListener("getReportItemAnswer", callback);
     };
-    Client.prototype.removeGetStudentHTMLListener = function () {
-        return this.removeListener("getStudentHTML");
+    Client.prototype.removeGetReportItemAnswerListener = function () {
+        return this.removeListener("getReportItemAnswer");
     };
     Client.prototype.connect = function () {
         var _this = this;
@@ -33471,7 +33473,12 @@ var Client = /** @class */ (function () {
             _this.managedState.initMessage = newInitMessage;
             // parseJSONIfString is used below quite a few times, as LARA and report are not consistent about format.
             // Sometimes they send string (report page), sometimes already parsed JSON (authoring, runtime).
-            _this.managedState.authoredState = parseJSONIfString(newInitMessage.authoredState);
+            if (newInitMessage.mode === "reportItem") {
+                _this.managedState.authoredState = {};
+            }
+            else {
+                _this.managedState.authoredState = parseJSONIfString(newInitMessage.authoredState);
+            }
             if (newInitMessage.mode === "runtime" || newInitMessage.mode === "report") {
                 _this.managedState.interactiveState = parseJSONIfString(newInitMessage.interactiveState);
                 // Don't consider initial state to be dirty, as user would see warnings while trying to leave page even

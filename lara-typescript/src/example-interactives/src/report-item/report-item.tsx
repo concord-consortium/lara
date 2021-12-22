@@ -1,8 +1,8 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
 import { IReportItemInitInteractive,
-         addGetStudentHTMLListener,
-         sendStudentHTML } from "../../../interactive-api-client";
+         addGetReportItemAnswerListener,
+         sendReportItemAnswer } from "../../../interactive-api-client";
 import { getClient } from "../../../interactive-api-client/client";
 import { MultipleAnswerSummaryComponent } from "./multiple-answer-summary";
 import { SingleAnswerSummaryComponent } from "./single-answer-summary";
@@ -13,28 +13,43 @@ interface Props {
 
 export const ReportItemComponent: React.FC<Props> = (props) => {
   const {initMessage} = props;
-  const {students, view} = initMessage;
-  const [studentAnswers, setStudentAnswers] = useState<Record<string, any>>({});
+  const {users, view} = initMessage;
+  const [userAnswers, setUserAnswers] = useState<Record<string, any>>({});
 
   useEffect(() => {
-    addGetStudentHTMLListener((request) => {
-      const {studentId, interactiveState} = request;
-      const json = JSON.stringify(interactiveState);
-      setStudentAnswers(prev => ({...prev, [studentId]: interactiveState}));
+    addGetReportItemAnswerListener((request) => {
+      debugger;
+      const {type, platformUserId, interactiveState, authoredState} = request;
+      const interactiveStateSize = JSON.stringify(interactiveState).length;
+      const authoredStateSize = JSON.stringify(authoredState).length;
 
-      const html = `
-        <div class="tall">
-          <h1>TALL REPORT HERE...</h1>
-          <p>
-          <strong>Interactive State Size</strong>: ${json.length}
-        </div>
-        <div class="wide">
-          <h1>WIDE REPORT HERE...</h1>
-          <p>
-          <strong>Interactive State Size</strong>: ${json.length}
-        </div>
-      `;
-      sendStudentHTML({studentId, html});
+      setUserAnswers(prev => ({...prev, [platformUserId]: interactiveState}));
+
+      switch (type) {
+        case "html":
+          const html = `
+            <div class="tall">
+              <h1>TALL REPORT HERE...</h1>
+              <p>
+                <strong>Interactive State Size</strong>: ${interactiveStateSize}
+              </p>
+              <p>
+                <strong>Authored State Size</strong>: ${authoredStateSize}
+              </p>
+            </div>
+            <div class="wide">
+              <h1>WIDE REPORT HERE...</h1>
+              <p>
+                <strong>Interactive State Size</strong>: ${interactiveStateSize}
+              </p>
+              <p>
+                <strong>Authored State Size</strong>: ${authoredStateSize}
+              </p>
+            </div>
+          `;
+          sendReportItemAnswer({type: "html", platformUserId, html});
+          break;
+      }
     });
 
     // tell the portal-report we are ready for messages

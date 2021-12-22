@@ -3,7 +3,7 @@
 // to the same message and auto-removing listeners when a requestId is given.
 import * as iframePhone from "iframe-phone";
 import { ClientMessage, ICustomMessageHandler, ICustomMessagesHandledMap, IInitInteractive, ISupportedFeaturesRequest,
-        ServerMessage, ITextDecorationHandler, ITextDecorationInfo, IGetStudentHTMLHandler } from "./types";
+        ServerMessage, ITextDecorationHandler, ITextDecorationInfo, IGetReportItemAnswerHandler } from "./types";
 import { postDecoratedContentEvent } from "../interactive-api-client";
 import { IEventListener } from "../plugin-api";
 import { inIframe } from "./in-frame";
@@ -170,12 +170,12 @@ export class Client {
     return this.removeListener("decorateContent");
   }
 
-  public addGetStudentHTMLListener(callback: IGetStudentHTMLHandler) {
-    this.addListener("getStudentHTML", callback);
+  public addGetReportItemAnswerListener(callback: IGetReportItemAnswerHandler) {
+    this.addListener("getReportItemAnswer", callback);
   }
 
-  public removeGetStudentHTMLListener() {
-    return this.removeListener("getStudentHTML");
+  public removeGetReportItemAnswerListener() {
+    return this.removeListener("getReportItemAnswer");
   }
 
   public setSupportedFeatures = (request: ISupportedFeaturesRequest) => {
@@ -196,7 +196,11 @@ export class Client {
 
       // parseJSONIfString is used below quite a few times, as LARA and report are not consistent about format.
       // Sometimes they send string (report page), sometimes already parsed JSON (authoring, runtime).
-      this.managedState.authoredState = parseJSONIfString(newInitMessage.authoredState);
+      if (newInitMessage.mode === "reportItem") {
+        this.managedState.authoredState = {};
+      } else {
+        this.managedState.authoredState = parseJSONIfString(newInitMessage.authoredState);
+      }
       if (newInitMessage.mode === "runtime" || newInitMessage.mode === "report") {
         this.managedState.interactiveState = parseJSONIfString(newInitMessage.interactiveState);
         // Don't consider initial state to be dirty, as user would see warnings while trying to leave page even

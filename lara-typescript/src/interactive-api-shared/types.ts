@@ -101,10 +101,9 @@ export interface IReportItemInitInteractive<InteractiveState = {}, AuthoredState
   version: 1;
   mode: "reportItem";
   hostFeatures: IHostFeatures;
-  authoredState: AuthoredState;
   interactiveItemId: string;
   view: "singleAnswer" | "multipleAnswer";
-  students: Record<string, {hasAnswer: boolean}>;
+  users: Record<string, {hasAnswer: boolean}>;
 }
 
 export type IInitInteractive<InteractiveState = {}, AuthoredState = {}, GlobalInteractiveState = {}> =
@@ -193,10 +192,10 @@ export type IAuthoringServerMessage = "interactiveList" |
                                       "firebaseJWT"
                                       ;
 
-export type IReportItemClientMessage = "studentHTML" |
+export type IReportItemClientMessage = "reportItemAnswer" |
                                        "reportItemClientReady";
 
-export type IReportItemServerMessage = "getStudentHTML";
+export type IReportItemServerMessage = "getReportItemAnswer";
 
 export type GlobalIFrameSaverClientMessage = "interactiveStateGlobal";
 export type GlobalIFrameSaverServerMessage = "loadInteractiveGlobal";
@@ -470,17 +469,20 @@ export interface ILinkedInteractiveStateResponse<LinkedInteractiveState> {
   interactiveState: LinkedInteractiveState | undefined;
 }
 
-export interface IGetStudentHTML<InteractiveState = {}> extends IBaseRequestResponse {
-  studentId: string;
+export interface IGetReportItemAnswer<InteractiveState = {}, AuthoredState = {}> extends IBaseRequestResponse {
+  type: "html";
+  platformUserId: string;
   interactiveState: InteractiveState;
+  authoredState: AuthoredState;
 }
 
-export interface IStudentHTML extends IBaseRequestResponse {
-  studentId: string;
+export interface IReportItemAnswer extends IBaseRequestResponse {
+  type: "html";
+  platformUserId: string;
   html: string;
 }
 
-export type IGetStudentHTMLHandler = (message: IGetStudentHTML) => void;
+export type IGetReportItemAnswerHandler = (message: IGetReportItemAnswer) => void;
 
 /**
  * Interface that can be used by interactives to export and consume datasets. For example:

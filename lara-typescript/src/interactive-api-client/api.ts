@@ -33,8 +33,8 @@ import {
   WriteAttachmentParams,
   ReadAttachmentParams,
   GetAttachmentUrlParams,
-  IGetStudentHTMLHandler,
-  IStudentHTML
+  IGetReportItemAnswerHandler,
+  IReportItemAnswer
 } from "./types";
 import { getClient } from "./client";
 import { v4 as uuidv4 } from "uuid";
@@ -180,12 +180,12 @@ export const removeDecorateContentListener = () => {
   getClient().removeDecorateContentListener();
 };
 
-export const addGetStudentHTMLListener = (callback: IGetStudentHTMLHandler) => {
-  getClient().addGetStudentHTMLListener(callback);
+export const addGetReportItemAnswerListener = (callback: IGetReportItemAnswerHandler) => {
+  getClient().addGetReportItemAnswerListener(callback);
 };
 
-export const removeGetStudentHTMLListener = () => {
-  getClient().removeGetStudentHTMLListener();
+export const removeGetReportItemAnswerListener = () => {
+  getClient().removeGetReportItemAnswerListener();
 };
 
 export const setSupportedFeatures = (features: ISupportedFeatures) => {
@@ -474,6 +474,6 @@ export const getAttachmentUrl = (params: GetAttachmentUrlParams) => {
   });
 };
 
-export const sendStudentHTML = (request: Omit<IStudentHTML, "requestId">) => {
-  getClient().post("studentHTML", request);
+export const sendReportItemAnswer = (request: Omit<IReportItemAnswer, "requestId">) => {
+  getClient().post("reportItemAnswer", request);
 };

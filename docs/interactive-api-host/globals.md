@@ -40,7 +40,7 @@
 * [IGetLibraryInteractiveListOptions](interfaces/igetlibraryinteractivelistoptions.md)
 * [IGetLibraryInteractiveListRequest](interfaces/igetlibraryinteractivelistrequest.md)
 * [IGetLibraryInteractiveListResponse](interfaces/igetlibraryinteractivelistresponse.md)
-* [IGetStudentHTML](interfaces/igetstudenthtml.md)
+* [IGetReportItemAnswer](interfaces/igetreportitemanswer.md)
 * [IHandleGetAttachmentUrlOptions](interfaces/ihandlegetattachmenturloptions.md)
 * [IHintRequest](interfaces/ihintrequest.md)
 * [IHostFeatureSupport](interfaces/ihostfeaturesupport.md)
@@ -59,6 +59,7 @@
 * [IReadableAttachmentInfo](interfaces/ireadableattachmentinfo.md)
 * [IRemoveLinkedInteractiveStateListenerRequest](interfaces/iremovelinkedinteractivestatelistenerrequest.md)
 * [IReportInitInteractive](interfaces/ireportinitinteractive.md)
+* [IReportItemAnswer](interfaces/ireportitemanswer.md)
 * [IReportItemInitInteractive](interfaces/ireportiteminitinteractive.md)
 * [IRuntimeCustomReportValues](interfaces/iruntimecustomreportvalues.md)
 * [IRuntimeInitInteractive](interfaces/iruntimeinitinteractive.md)
@@ -69,7 +70,6 @@
 * [IShowLightbox](interfaces/ishowlightbox.md)
 * [ISignedReadUrlOptions](interfaces/isignedreadurloptions.md)
 * [ISignedWriteUrlOptions](interfaces/isignedwriteurloptions.md)
-* [IStudentHTML](interfaces/istudenthtml.md)
 * [ISupportedFeatures](interfaces/isupportedfeatures.md)
 * [ISupportedFeaturesRequest](interfaces/isupportedfeaturesrequest.md)
 * [ITextDecorationHandlerInfo](interfaces/itextdecorationhandlerinfo.md)
@@ -90,7 +90,7 @@
 * [ICustomMessageHandler](globals.md#icustommessagehandler)
 * [ICustomMessageOptions](globals.md#icustommessageoptions)
 * [ICustomMessagesHandledMap](globals.md#icustommessageshandledmap)
-* [IGetStudentHTMLHandler](globals.md#igetstudenthtmlhandler)
+* [IGetReportItemAnswerHandler](globals.md#igetreportitemanswerhandler)
 * [IInitInteractive](globals.md#iinitinteractive)
 * [IReportItemClientMessage](globals.md#ireportitemclientmessage)
 * [IReportItemServerMessage](globals.md#ireportitemservermessage)
@@ -198,19 +198,19 @@ ___
 
 ___
 
-###  IGetStudentHTMLHandler
+###  IGetReportItemAnswerHandler
 
-Ƭ **IGetStudentHTMLHandler**: *function*
+Ƭ **IGetReportItemAnswerHandler**: *function*
 
 #### Type declaration:
 
-▸ (`message`: [IGetStudentHTML](interfaces/igetstudenthtml.md)): *void*
+▸ (`message`: [IGetReportItemAnswer](interfaces/igetreportitemanswer.md)): *void*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
-`message` | [IGetStudentHTML](interfaces/igetstudenthtml.md) |
+`message` | [IGetReportItemAnswer](interfaces/igetreportitemanswer.md) |
 
 ___
 
@@ -222,13 +222,13 @@ ___
 
 ###  IReportItemClientMessage
 
-Ƭ **IReportItemClientMessage**: *"studentHTML" | "reportItemClientReady"*
+Ƭ **IReportItemClientMessage**: *"reportItemAnswer" | "reportItemClientReady"*
 
 ___
 
 ###  IReportItemServerMessage
 
-Ƭ **IReportItemServerMessage**: *"getStudentHTML"*
+Ƭ **IReportItemServerMessage**: *"getReportItemAnswer"*
 
 ___
 

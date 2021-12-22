@@ -16,21 +16,14 @@
 
 ### Properties
 
-* [authoredState](ireportiteminitinteractive.md#authoredstate)
 * [hostFeatures](ireportiteminitinteractive.md#hostfeatures)
 * [interactiveItemId](ireportiteminitinteractive.md#interactiveitemid)
 * [mode](ireportiteminitinteractive.md#mode)
-* [students](ireportiteminitinteractive.md#students)
+* [users](ireportiteminitinteractive.md#users)
 * [version](ireportiteminitinteractive.md#version)
 * [view](ireportiteminitinteractive.md#view)
 
 ## Properties
-
-###  authoredState
-
-• **authoredState**: *AuthoredState*
-
-___
 
 ###  hostFeatures
 
@@ -50,9 +43,9 @@ ___
 
 ___
 
-###  students
+###  users
 
-• **students**: *Record‹string, object›*
+• **users**: *Record‹string, object›*
 
 ___
 
