@@ -18,7 +18,6 @@ export const ReportItemComponent: React.FC<Props> = (props) => {
 
   useEffect(() => {
     addGetReportItemAnswerListener((request) => {
-      debugger;
       const {type, platformUserId, interactiveState, authoredState} = request;
       const interactiveStateSize = JSON.stringify(interactiveState).length;
       const authoredStateSize = JSON.stringify(authoredState).length;
