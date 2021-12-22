@@ -1470,6 +1470,8 @@ select {
         width: calc(91.5vw - 20px);
         max-width: 1060px;
         min-width: 700px; }
+        .edit-page-grid-container.section-responsive-full-width .section-responsive-fluid .edit-items-container .itemsContainer .sectionItem.halfWidth {
+          width: calc(50% - 6px); }
   .edit-page-grid-container.col-2 {
     margin-left: 0; }
 
