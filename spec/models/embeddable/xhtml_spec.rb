@@ -29,7 +29,7 @@ describe Embeddable::Xhtml do
         name: xhtml.name,
         content: xhtml.content,
         is_hidden: xhtml.is_hidden,
-        is_full_width: xhtml.is_full_width,
+        is_half_width: xhtml.is_half_width,
         is_callout: xhtml.is_callout
       }
       expect(xhtml.to_hash).to eq(expected)

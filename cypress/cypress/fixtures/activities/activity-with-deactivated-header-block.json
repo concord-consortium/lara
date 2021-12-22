@@ -32,7 +32,7 @@
         "default_text": "",
         "give_prediction_feedback": false,
         "hint": "",
-        "is_full_width": false,
+        "is_half_width": true,
         "is_hidden": false,
         "is_prediction": false,
         "name": "",
@@ -46,7 +46,7 @@
     }, {
       "embeddable": {
         "content": "\u003Cp\u003EGalaxies birth vastness is bearable only through encyclopaedia galactica shores of the cosmic ocean? Flatland dream of the mind's eye Euclid descended from astronomers a mote of dust suspended in a sunbeam realm of the galaxies. Something incredible is waiting to be known are creatures of the cosmos with pretty stories for which there's little good evidence something incredible is waiting to be known tendrils of gossamer clouds intelligent beings.\u003C/p\u003E",
-        "is_full_width": true,
+        "is_half_width": false,
         "is_hidden": false,
         "name": "",
         "type": "Embeddable::Xhtml",
@@ -63,7 +63,7 @@
         "full_window": false,
         "has_report_url": false,
         "image_url": null,
-        "is_full_width": true,
+        "is_half_width": false,
         "is_hidden": false,
         "model_library_url": null,
         "name": "",

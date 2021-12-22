@@ -101,10 +101,10 @@ export const PageSettingsDialog: React.FC<IPageSettingsDialogProps> = ({
               placeholder="Enter a title"
             />
           </dd>
-          <dt className="input2">
+          <dt className={`input2 ${isCompletion ? "disabled" : ""}`}>
             <label htmlFor="isHidden">Page is hidden from students</label>
           </dt>
-          <dd className="input2">
+          <dd className={`input2 ${isCompletion ? "disabled" : ""}`}>
             <input
               type="checkbox"
               id="isHidden"

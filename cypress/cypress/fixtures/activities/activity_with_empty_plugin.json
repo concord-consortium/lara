@@ -33,7 +33,7 @@
                 "default_text": null,
                 "give_prediction_feedback": false,
                 "hint": null,
-                "is_full_width": false,
+                "is_half_width": true,
                 "is_hidden": false,
                 "is_prediction": false,
                 "name": null,
@@ -48,7 +48,7 @@
               "embeddable": {
                 "plugin": {},
                 "is_hidden": false,
-                "is_full_width": false,
+                "is_half_width": true,
                 "type": "Embeddable::EmbeddablePlugin",
                 "ref_id": "54-Embeddable::EmbeddablePlugin",
                 "embeddable_ref_id": "86-MwInteractive"

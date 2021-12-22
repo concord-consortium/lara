@@ -5,13 +5,14 @@ import { PageNavContainer } from "../containers/page-nav-container";
 import { PageSettingsDialog } from "../../page-settings/components/page-settings-dialog";
 import { AuthoringSection } from "./authoring-section";
 import { SectionMoveDialog } from "./section-move-dialog";
-import { ICreatePageItem, IPage, ISection, ISectionItem, ISectionItemType, SectionColumns } from "../api/api-types";
+import { ICreatePageItem, IPage, ISection, ISectionItem, ISectionItemType, SectionColumns, SectionLayouts } from "../api/api-types";
 import { SectionItemMoveDialog } from "./section-item-move-dialog";
 import { ItemEditDialog } from "./item-edit-dialog";
 import { DragDropContext, Droppable, Draggable, DropResult } from "react-beautiful-dnd";
 import { CompletionPage } from "./completion-page/completion-page";
 import { Add } from "../../shared/components/icons/add-icon";
 import { Cog } from "../../shared/components/icons/cog-icon";
+import { HiddenIcon } from "../../shared/components/icons/hidden-icon";
 
 import "./authoring-page.scss";
 import { UserInterfaceContext} from "../containers/user-interface-provider";
@@ -122,6 +123,7 @@ export const AuthoringPage: React.FC<IPageProps> = ({
                  isHidden: updatedIsHidden,
                });
   };
+
  /*
   * Returns true if activity already has a completion page and it is not the completion page
   */
@@ -155,7 +157,7 @@ export const AuthoringPage: React.FC<IPageProps> = ({
     }
   };
 
-  const handleEditItemInit = (itemId: string) => {
+  const handleEditItemInit = (itemId: string, layout: string) => {
     const items = getItems();
     const item = items[items.length - 1];
     if (item) {
@@ -179,6 +181,11 @@ export const AuthoringPage: React.FC<IPageProps> = ({
         <button onClick={pageSettingsClickHandler}><Cog height="16" width="16" /> Page Settings</button>
         <PreviewLinksContainer />
       </header>
+      {isHidden &&
+        <div className="hiddenPageAlert">
+          <HiddenIcon height="20" width="20" /> This page is hidden and will not appear in runtime.
+        </div>
+      }
       {isCompletion
         ? <CompletionPage />
         : <>

@@ -51,7 +51,7 @@ describe VideoInteractive do
         width: video_interactive.width,
         height: video_interactive.height,
         is_hidden: video_interactive.is_hidden,
-        is_full_width: video_interactive.is_full_width
+        is_half_width: video_interactive.is_half_width
       }
       expect(video_interactive.to_hash).to eq(expected)
     end

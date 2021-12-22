@@ -94,6 +94,10 @@ select {
 
   &.section-full-width {
     grid-template-columns: 1fr;
+
+    .sectionItem.halfWidth {
+      width: calc(50% - 6px);
+    }
   }
   &.section-30-70 {
     grid-template-columns: 3fr 7fr;

@@ -13,7 +13,7 @@ export interface ITextBlockPreviewProps {
 export const TextBlockPreview: React.FC<ITextBlockPreviewProps> = ({
   pageItem
   }: ITextBlockPreviewProps) => {
-  const { content, isCallout, isFullWidth, name } = pageItem.data as ITextBlockData;
+  const { content, isCallout, isHalfWidth, name } = pageItem.data as ITextBlockData;
 
   const processContent = () => {
     return content ? parse(DOMPurify.sanitize(content)) : "";
@@ -21,7 +21,7 @@ export const TextBlockPreview: React.FC<ITextBlockPreviewProps> = ({
 
   const wrapperClasses = classNames("textBlock", {
     callout: isCallout,
-    fullWidth: isFullWidth
+    halfWidth: isHalfWidth
   });
 
   return (

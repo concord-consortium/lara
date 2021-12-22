@@ -12,7 +12,7 @@ shared_examples "attached to embeddable form" do
       assign(:embeddable, test_embeddable)
       render
       expect(rendered).to have_field("embeddable_embeddable_plugin[author_data]")
-      expect(rendered).to have_field("embeddable_embeddable_plugin[is_full_width]")
+      expect(rendered).to have_field("embeddable_embeddable_plugin[is_half_width]")
     end
   end
 end

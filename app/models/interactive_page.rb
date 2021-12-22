@@ -374,7 +374,7 @@ class InteractivePage < ActiveRecord::Base
       helper = LaraSerializationHelper.new if helper.nil?
       intro_embeddable_hash = {
                          "content": intro_text,
-                         "is_full_width": true,
+                         "is_half_width": false,
                          "is_hidden": false,
                          "name": "",
                          "type": "Embeddable::Xhtml"

@@ -993,7 +993,12 @@
 .itemsContainer {
   background: var(--ltst-teal);
   border-radius: 4px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
   padding: 10px; }
+  .itemsContainer > .addItem {
+    width: 100%; }
 
 .sectionItem {
   background-color: white;
@@ -1428,6 +1433,8 @@ select {
   margin: 10px; }
   .edit-page-grid-container.section-full-width {
     grid-template-columns: 1fr; }
+    .edit-page-grid-container.section-full-width .sectionItem.halfWidth {
+      width: calc(50% - 6px); }
   .edit-page-grid-container.section-30-70 {
     grid-template-columns: 3fr 7fr; }
   .edit-page-grid-container.section-70-30 {
@@ -1913,6 +1920,7 @@ select {
   cursor: pointer;
   height: 20px;
   line-height: 1;
+  margin: 0 0 5px;
   padding: 0;
   position: relative;
   width: 20px;
@@ -2520,6 +2528,20 @@ dl.textBlockEditForm {
     line-height: 1.2;
     margin: 0;
     padding: 0; }
+
+.hiddenPageAlert {
+  align-items: center;
+  background: var(--ltr-gray);
+  color: var(--dark-teal);
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+  padding: 5px; }
+  .hiddenPageAlert svg {
+    fill: var(--teal);
+    height: 20px;
+    margin-right: 10px;
+    width: 20px; }
 
 .editPageContainer {
   background: var(--ltr-gray);

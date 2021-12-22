@@ -3,7 +3,14 @@
 .itemsContainer {
   background: var(--ltst-teal);
   border-radius: 4px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
   padding: 10px;
+
+  > .addItem {
+    width: 100%;
+  }
 }
 .sectionItem {
   background-color: white;

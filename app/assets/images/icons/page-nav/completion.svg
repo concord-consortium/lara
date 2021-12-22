@@ -1,5 +1,5 @@
     <svg
-      aria-hidden={true}
+      aria-hidden="true"
       className="icon"
       focusable="false"
       role="img"

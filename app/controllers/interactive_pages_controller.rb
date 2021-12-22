@@ -122,7 +122,7 @@ class InteractivePagesController < ApplicationController
       e.save!
     end
     if params[:section] == 'header_block'
-      e.is_full_width = true
+      e.is_half_width = false
       e.save
     end
     @page.add_embeddable(e, nil, params[:section])
