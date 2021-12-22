@@ -18,7 +18,8 @@ const layoutClassNames = {
   [SectionLayouts.LAYOUT_40_60]: ["section-40", "section-60"],
   [SectionLayouts.LAYOUT_70_30]: ["section-70", "section-30"],
   [SectionLayouts.LAYOUT_30_70]: ["section-30", "section-70"],
-  [SectionLayouts.LAYOUT_RESPONSIVE]: ["section-responsive-static", "section-responsive-fluid"]
+  [SectionLayouts.LAYOUT_RESPONSIVE_2_COLUMN]: ["section-responsive-static", "section-responsive-fluid"],
+  [SectionLayouts.LAYOUT_RESPONSIVE_FULL_WIDTH]: ["section-responsive-fluid"]
 };
 
 const classNameForItem = (_layout: SectionLayouts, itemIndex: number) => {
@@ -131,7 +132,8 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
   };
 
   const getColumnItems = (column: SectionColumns) => {
-    if (layout === SectionLayouts.LAYOUT_FULL_WIDTH) return items;
+    if (layout === SectionLayouts.LAYOUT_FULL_WIDTH ||
+        layout === SectionLayouts.LAYOUT_RESPONSIVE_FULL_WIDTH) return items;
     return items.filter(i => i.column === column);
   };
 
@@ -141,12 +143,13 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
     // if our layout is responsive, 30_70 or 40_60 and index is >0 → SectionColumns.primary
     // if our layout is 70_30 or 60_40 and index is 0 -> SectionColumns.primary
     // if our layout is 70_30 or 60_40 and index is >0 -> SectionColumns.secondary
-    if (layout === SectionLayouts.LAYOUT_FULL_WIDTH) {
+    if (layout === SectionLayouts.LAYOUT_FULL_WIDTH ||
+        layout === SectionLayouts.LAYOUT_RESPONSIVE_FULL_WIDTH) {
       return SectionColumns.PRIMARY;
     }
     if (layout === SectionLayouts.LAYOUT_30_70 ||
         layout === SectionLayouts.LAYOUT_40_60 ||
-        layout === SectionLayouts.LAYOUT_RESPONSIVE) {
+        layout === SectionLayouts.LAYOUT_RESPONSIVE_2_COLUMN) {
           if (columnNumber === 0) {
             return SectionColumns.SECONDARY;
           } else {
@@ -193,7 +196,8 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
     return `edit-page-grid-container sectionContainer ${layoutClass}`;
   };
 
-  const toggleSecondaryColumnDisabled = layout === SectionLayouts.LAYOUT_FULL_WIDTH;
+  const toggleSecondaryColumnDisabled = layout === SectionLayouts.LAYOUT_FULL_WIDTH ||
+                                        layout === SectionLayouts.LAYOUT_RESPONSIVE_FULL_WIDTH;
   const toggleSecondaryColumnOptionClass = classNames("toggleSecondaryColumnOption", {
     disabled: toggleSecondaryColumnDisabled
   });
@@ -254,7 +258,7 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
         sectionId={id}
         />
       }
-      {layout !== "full-width" &&
+      {(layout !== "full-width" && layout !== "responsive-full-width") &&
         <SectionColumn
           addItem={addItem}
           addPageItem={addPageItem}
