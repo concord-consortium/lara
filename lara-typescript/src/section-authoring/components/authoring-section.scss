@@ -116,6 +116,7 @@ select {
         .itemsContainer {
           width: calc(91.5vw - 345px);
           max-width: calc(100% - 20px);
+          min-width: 515px;
         }
       }
     }
@@ -129,7 +130,8 @@ select {
         flex-direction: column;
         .itemsContainer {
           width: calc(91.5vw - 20px);
-          max-width: fit-content;
+          max-width:1060px;
+          min-width: 700px;
         }
       }
     }
