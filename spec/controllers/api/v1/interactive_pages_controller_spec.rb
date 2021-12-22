@@ -309,8 +309,8 @@ describe Api::V1::InteractivePagesController do
 
   describe "#update_page_item" do
     let(:section) { FactoryGirl.create(:section, :interactive_page => page, :layout => Section::LAYOUT_FULL_WIDTH) }
-    let(:data) { { name: "Text Block 1", content: "Some text.", is_callout: false, is_full_width: false, is_hidden: false } }
-    let(:new_data) { { name: "Text Block 1v2", content: "I changed my mind.", is_callout: true, is_full_width: true, is_hidden: true } }
+    let(:data) { { name: "Text Block 1", content: "Some text.", is_callout: false, is_half_width: true, is_hidden: false } }
+    let(:new_data) { { name: "Text Block 1v2", content: "I changed my mind.", is_callout: true, is_half_width: false, is_hidden: true } }
     let(:embeddable) { FactoryGirl.create(:xhtml, data)}
     let(:embeddable_type) { "Embeddable::Xhtml" }
     let(:page_item) { FactoryGirl.create(:page_item, { section: section, column: PageItem::COLUMN_PRIMARY, position: 1, embeddable: embeddable })}
@@ -397,7 +397,7 @@ describe Api::V1::InteractivePagesController do
             name: new_data[:name],
             content: new_data[:content],
             is_hidden: new_data[:is_hidden],
-            is_full_width: new_data[:is_full_width],
+            is_half_width: new_data[:is_half_width],
             is_callout: new_data[:is_callout]
           }
         }.to_json

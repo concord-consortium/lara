@@ -33,7 +33,7 @@ export interface IManagedInteractive {
   url_fragment: string;
   authored_state: string;
   is_hidden: boolean;
-  is_full_width: boolean;
+  is_half_width: boolean;
   aspect_ratio: number;
   enable_learner_state: boolean;
   linked_interactive_id: number;
@@ -60,7 +60,7 @@ export interface IManagedInteractive {
 
 export const ManagedInteractiveAuthoring: React.FC<Props> = (props) => {
   const { libraryInteractive, managedInteractive, defaultClickToPlayPrompt, authoringApiUrls, onUpdate } = props;
-  const { name, is_full_width } = managedInteractive;
+  const { name, is_half_width } = managedInteractive;
   const libraryInteractiveIdRef = useRef<HTMLInputElement|null>(null);
   const libraryInteractiveAuthoredStateRef = useRef<HTMLTextAreaElement|null>(null);
   const linkedInteractivesRef = useRef<HTMLTextAreaElement|null>(null);
@@ -89,10 +89,10 @@ export const ManagedInteractiveAuthoring: React.FC<Props> = (props) => {
 
       <fieldset>
         <Checkbox
-          id="is_full_width"
-          name="is_full_width"
-          defaultChecked={is_full_width}
-          label="Full width? (Full width layout only)"
+          id="is_half_width"
+          name="is_half_width"
+          defaultChecked={is_half_width}
+          label="Half width (Full width layout only)"
         />
       </fieldset>
     </>;

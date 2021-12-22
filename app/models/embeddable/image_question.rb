@@ -2,7 +2,7 @@ class Embeddable::ImageQuestion < ActiveRecord::Base
   include Embeddable
   include AttachedToInteractive
 
-  attr_accessible :name, :prompt, :hint, :bg_source, :bg_url, :drawing_prompt, :is_full_width,
+  attr_accessible :name, :prompt, :hint, :bg_source, :bg_url, :drawing_prompt, :is_half_width,
     :is_prediction, :show_in_featured_question_report, :give_prediction_feedback, :prediction_feedback, :is_hidden
 
   has_many :page_items, :as => :embeddable, :dependent => :destroy
@@ -33,7 +33,7 @@ class Embeddable::ImageQuestion < ActiveRecord::Base
       give_prediction_feedback: give_prediction_feedback,
       prediction_feedback: prediction_feedback,
       is_hidden: is_hidden,
-      is_full_width: is_full_width,
+      is_half_width: is_half_width,
       hint: hint
     }
   end
@@ -76,7 +76,7 @@ class Embeddable::ImageQuestion < ActiveRecord::Base
                               :give_prediction_feedback,
                               :prediction_feedback,
                               :is_hidden,
-                              :is_full_width,
+                              :is_half_width,
                               :hint])
   end
 

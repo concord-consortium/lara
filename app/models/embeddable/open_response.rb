@@ -4,7 +4,7 @@ module Embeddable
 
 
     attr_accessible :name, :prompt, :hint, :is_prediction, :show_in_featured_question_report, :give_prediction_feedback, :prediction_feedback,
-      :default_text, :is_hidden, :is_full_width
+      :default_text, :is_hidden, :is_half_width
 
     # PageItem instances are join models, so if the embeddable is gone the join should go too.
     has_many :page_items, :as => :embeddable, :dependent => :destroy
@@ -31,7 +31,7 @@ module Embeddable
         prediction_feedback: prediction_feedback,
         default_text: default_text,
         is_hidden: is_hidden,
-        is_full_width: is_full_width,
+        is_half_width: is_half_width,
         hint: hint
       }
     end
@@ -82,7 +82,7 @@ module Embeddable
                                 :prediction_feedback,
                                 :default_text,
                                 :is_hidden,
-                                :is_full_width,
+                                :is_half_width,
                                 :hint])
     end
 

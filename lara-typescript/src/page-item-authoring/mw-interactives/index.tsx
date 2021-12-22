@@ -31,7 +31,7 @@ export interface IMWInteractive {
   show_in_featured_question_report: boolean;
   image_url: string;
   is_hidden: boolean;
-  is_full_width: boolean;
+  is_half_width: boolean;
   model_library_url: string;
   authored_state: string;
   aspect_ratio: number;
@@ -56,7 +56,7 @@ export const MWInteractiveAuthoring: React.FC<Props> = (props) => {
   const handleUrlBlur = (e: React.ChangeEvent<HTMLTextAreaElement>) => setAuthoringUrl(e.target.value);
 
   const renderRequiredFields = () => {
-    const { name, url, is_full_width, no_snapshots } = interactive;
+    const { name, url, is_half_width, no_snapshots } = interactive;
 
     return <>
       <fieldset>
@@ -82,10 +82,10 @@ export const MWInteractiveAuthoring: React.FC<Props> = (props) => {
       <fieldset>
         <legend>Options</legend>
         <Checkbox
-          id="is_full_width"
-          name="is_full_width"
-          defaultChecked={is_full_width}
-          label="Full width? (Full width layout only)"
+          id="is_half_width"
+          name="is_half_width"
+          defaultChecked={is_half_width}
+          label="Half width (Full width layout only)"
         />
         <br />
         <Checkbox

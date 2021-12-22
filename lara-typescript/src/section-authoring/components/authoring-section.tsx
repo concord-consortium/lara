@@ -57,7 +57,7 @@ export interface ISectionProps extends ISection {
   /**
    * Function to initiate editing of an item
    */
-  editItemFunction?: (itemId: string) => void;
+  editItemFunction?: (itemId: string, layout: string) => void;
 
 }
 
@@ -184,7 +184,7 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
 
   const handleEditItem = (itemId: string) => {
     if (editItemFunction) {
-      editItemFunction(itemId);
+      editItemFunction(itemId, layout);
     }
   };
 

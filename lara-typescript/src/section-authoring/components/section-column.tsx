@@ -1,5 +1,6 @@
 import * as React from "react";
 import { useState } from "react";
+import classNames from "classnames";
 import { SectionItem, ISectionItemProps} from "./section-item";
 import { absorbClickThen } from "../../shared/absorb-click";
 import { ICreatePageItem, ISection, ISectionItem, ItemId, SectionColumns } from "../api/api-types";
@@ -116,6 +117,7 @@ export const SectionColumn: React.FC<ISectionColumnProps> = ({
   };
 
   const handleToggleShowAddItem = () => setShowAddItem((prev) => !prev);
+
   const handleShowAddItem = absorbClickThen(handleToggleShowAddItem);
 
   const handleAddItem = (itemId: string) => {
@@ -149,6 +151,9 @@ export const SectionColumn: React.FC<ISectionColumnProps> = ({
                   { items
                     && items.length > 0
                     && items.map((item, index) => {
+                    const sectionItemClasses = classNames("sectionItem", {
+                       halfWidth: item.data.isHalfWidth
+                    });
                     return (
                       <Draggable
                         key={`col-${columnNumber}-item-${index}`}
@@ -157,7 +162,7 @@ export const SectionColumn: React.FC<ISectionColumnProps> = ({
                       >
                         {(draggableProvidedColOne) => (
                           <div
-                            className="sectionItem"
+                            className={sectionItemClasses}
                             key={`col-${columnNumber}-item-inner-${index}`}
                             {...draggableProvidedColOne.draggableProps}
                             {...draggableProvidedColOne.dragHandleProps}
@@ -175,9 +180,11 @@ export const SectionColumn: React.FC<ISectionColumnProps> = ({
                     );
                   })}
                   { droppableProvided.placeholder }
-                  <button className="smallButton" onClick={showItemPicker}>
-                    <Add height="16" width="16" /> <span className="lineAdjust">Add Item</span>
-                  </button>
+                  <div className="addItem">
+                    <button className="smallButton" onClick={showItemPicker}>
+                      <Add height="16" width="16" /> <span className="lineAdjust">Add Item</span>
+                    </button>
+                  </div>
                 </div>
               </div>
           )}
