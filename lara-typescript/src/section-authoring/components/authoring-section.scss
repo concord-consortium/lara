@@ -109,9 +109,30 @@ select {
   }
   &.section-responsive-2-columns {
     grid-template-columns: 325px 1fr;
+    .section-responsive-fluid {
+      .edit-items-container {
+        display: flex;
+        flex-direction: column;
+        .itemsContainer {
+          width: calc(91.5vw - 345px);
+          max-width: calc(100% - 20px);
+        }
+      }
+    }
   }
   &.section-responsive-full-width {
-    grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column;
+    .section-responsive-fluid {
+      .edit-items-container {
+        display: flex;
+        flex-direction: column;
+        .itemsContainer {
+          width: calc(91.5vw - 20px);
+          max-width: fit-content;
+        }
+      }
+    }
   }
   &.col-2 {
     margin-left: 0;

@@ -196,7 +196,8 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
     return `edit-page-grid-container sectionContainer ${layoutClass}`;
   };
 
-  const toggleSecondaryColumnDisabled = layout === SectionLayouts.LAYOUT_FULL_WIDTH;
+  const toggleSecondaryColumnDisabled = layout === SectionLayouts.LAYOUT_FULL_WIDTH ||
+                                        layout === SectionLayouts.LAYOUT_RESPONSIVE_FULL_WIDTH;
   const toggleSecondaryColumnOptionClass = classNames("toggleSecondaryColumnOption", {
     disabled: toggleSecondaryColumnDisabled
   });
