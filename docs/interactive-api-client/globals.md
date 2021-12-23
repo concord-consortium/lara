@@ -4,6 +4,10 @@
 
 ## Index
 
+### Classes
+
+* [Client](classes/client.md)
+
 ### Interfaces
 
 * [IAddLinkedInteractiveStateListenerOptions](interfaces/iaddlinkedinteractivestatelisteneroptions.md)
@@ -131,6 +135,7 @@
 * [getAttachmentUrl](globals.md#const-getattachmenturl)
 * [getAuthInfo](globals.md#const-getauthinfo)
 * [getAuthoredState](globals.md#const-getauthoredstate)
+* [getClient](globals.md#const-getclient)
 * [getFirebaseJwt](globals.md#const-getfirebasejwt)
 * [getGlobalInteractiveState](globals.md#const-getglobalinteractivestate)
 * [getInitInteractiveMessage](globals.md#const-getinitinteractivemessage)
@@ -167,7 +172,6 @@
 * [useGlobalInteractiveState](globals.md#const-useglobalinteractivestate)
 * [useInitMessage](globals.md#const-useinitmessage)
 * [useInteractiveState](globals.md#const-useinteractivestate)
-* [useSetSupportedFeatures](globals.md#const-usesetsupportedfeatures)
 * [writeAttachment](globals.md#const-writeattachment)
 
 ## Type aliases
@@ -586,6 +590,14 @@ ___
 ▪ **AuthoredState**
 
 **Returns:** *AuthoredState | null*
+
+___
+
+### `Const` getClient
+
+▸ **getClient**(): *[Client](classes/client.md)‹›*
+
+**Returns:** *[Client](classes/client.md)‹›*
 
 ___
 
@@ -1166,20 +1178,6 @@ ___
 * **interactiveState**: *null | InteractiveState*
 
 * **setInteractiveState**: *handleSetInteractiveState* = handleSetInteractiveState
-
-___
-
-### `Const` useSetSupportedFeatures
-
-▸ **useSetSupportedFeatures**(`features`: ISupportedFeatures): *void*
-
-**Parameters:**
-
-Name | Type |
------- | ------ |
-`features` | ISupportedFeatures |
-
-**Returns:** *void*
 
 ___
 

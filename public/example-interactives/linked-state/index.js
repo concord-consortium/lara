@@ -32556,10 +32556,14 @@ var runtime_1 = __webpack_require__(/*! ./runtime */ "./src/example-interactives
 var AppComponent = function (props) {
     var initMessage = (0, interactive_api_client_1.useInitMessage)();
     (0, interactive_api_client_1.useAutoSetHeight)();
-    (0, interactive_api_client_1.useSetSupportedFeatures)({
-        authoredState: true,
-        interactiveState: true
-    });
+    useEffect(function () {
+        if (initMessage) {
+            (0, interactive_api_client_1.setSupportedFeatures)({
+                authoredState: true,
+                interactiveState: true
+            });
+        }
+    }, [initMessage]);
     if (!initMessage) {
         return (React.createElement("div", { className: "centered" },
             React.createElement("div", { className: "progress" }, "Loading...")));
@@ -33504,7 +33508,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.useSetSupportedFeatures = exports.useAutoSetHeight = exports.useDecorateContent = exports.useCustomMessages = exports.useInitMessage = exports.useGlobalInteractiveState = exports.useAuthoredState = exports.useInteractiveState = void 0;
+exports.useAutoSetHeight = exports.useDecorateContent = exports.useCustomMessages = exports.useInitMessage = exports.useGlobalInteractiveState = exports.useAuthoredState = exports.useInteractiveState = void 0;
 var react_1 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 var resize_observer_polyfill_1 = __webpack_require__(/*! resize-observer-polyfill */ "./node_modules/resize-observer-polyfill/dist/ResizeObserver.es.js");
 var client = __webpack_require__(/*! ./api */ "./src/interactive-api-client/api.ts");
@@ -33647,15 +33651,6 @@ var useAutoSetHeight = function () {
     }, [initMessage]);
 };
 exports.useAutoSetHeight = useAutoSetHeight;
-var useSetSupportedFeatures = function (features) {
-    var initMessage = (0, exports.useInitMessage)();
-    (0, react_1.useEffect)(function () {
-        if (initMessage) {
-            client.setSupportedFeatures(features);
-        }
-    }, [initMessage]);
-};
-exports.useSetSupportedFeatures = useSetSupportedFeatures;
 
 
 /***/ }),
@@ -33710,6 +33705,7 @@ __exportStar(__webpack_require__(/*! ./metadata-types */ "./src/interactive-api-
 __exportStar(__webpack_require__(/*! ./in-frame */ "./src/interactive-api-client/in-frame.ts"), exports);
 __exportStar(__webpack_require__(/*! ./api */ "./src/interactive-api-client/api.ts"), exports);
 __exportStar(__webpack_require__(/*! ./hooks */ "./src/interactive-api-client/hooks.ts"), exports);
+__exportStar(__webpack_require__(/*! ./client */ "./src/interactive-api-client/client.ts"), exports);
 
 
 /***/ }),

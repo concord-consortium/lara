@@ -1,7 +1,7 @@
 import * as React from "react";
 const { useEffect } = React;
 
-import { useInitMessage, setSupportedFeatures, useAutoSetHeight, useSetSupportedFeatures } from "../../../interactive-api-client";
+import { useInitMessage, setSupportedFeatures, useAutoSetHeight } from "../../../interactive-api-client";
 import { AuthoringComponent } from "./authoring";
 import { ReportComponent } from "./report";
 import { RuntimeComponent } from "./runtime";
@@ -14,10 +14,15 @@ export const AppComponent: React.FC<Props> = (props) => {
   const initMessage = useInitMessage<{}, IAuthoredState>();
 
   useAutoSetHeight();
-  useSetSupportedFeatures({
-    authoredState: true,
-    interactiveState: true
-  });
+
+  useEffect(() => {
+    if (initMessage) {
+      setSupportedFeatures({
+        authoredState: true,
+        interactiveState: true
+      });
+    }
+  }, [initMessage]);
 
   if (!initMessage) {
     return (

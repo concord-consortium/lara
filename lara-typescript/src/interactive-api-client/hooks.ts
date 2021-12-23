@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import ResizeObserver from "resize-observer-polyfill";
-import { ISupportedFeatures } from "@concord-consortium/interactive-api-host";
 
 import { ICustomMessageHandler, ICustomMessagesHandledMap, IInitInteractive, ITextDecorationHandler } from "./types";
 import * as client from "./api";
@@ -156,16 +155,6 @@ export const useAutoSetHeight = () => {
         observer.observe(body);
       }
       return () => observer.disconnect();
-    }
-  }, [initMessage]);
-};
-
-export const useSetSupportedFeatures = (features: ISupportedFeatures) => {
-  const initMessage = useInitMessage();
-
-  useEffect(() => {
-    if (initMessage) {
-      client.setSupportedFeatures(features);
     }
   }, [initMessage]);
 };
