@@ -161,6 +161,8 @@ export const deletePage = (id: PageId) => {
 
 const copyPage = (args: {pageId: PageId, destIndex: number}) => {
   const {pageId, destIndex} = args;
+  console.log(destIndex);
+  let newDestIndex;
   const page = pages.find(p => p.id === pageId);
   if (page) {
     const nextPage = {...page};
@@ -172,8 +174,14 @@ const copyPage = (args: {pageId: PageId, destIndex: number}) => {
       });
       return { ...s, items };
     });
-    pages.splice(destIndex, 0, nextPage);
+    if (destIndex === -1 || destIndex === 0) {
+      newDestIndex = destIndex + 1;
+    } else {
+      newDestIndex = destIndex;
+    }
+    pages.splice(newDestIndex, 0, nextPage);
     updatePositions(pages);
+    console.log(pages);
     return Promise.resolve(nextPage);
   }
   return Promise.reject("no source page in copy");
