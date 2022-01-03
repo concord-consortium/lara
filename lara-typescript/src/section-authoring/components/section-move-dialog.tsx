@@ -2,12 +2,12 @@ import * as React from "react";
 import { Modal, ModalButtons } from "../../shared/components/modal/modal";
 import { Close } from "../../shared/components/icons/close-icon";
 import { Move } from "../../shared/components/icons/move-icon";
-
-import "./section-move-dialog.scss";
 import { usePageAPI } from "../hooks/use-api-provider";
 import { UserInterfaceContext } from "../containers/user-interface-provider";
 import { ISectionDestination } from "../util/move-utils";
 import { useDestinationChooser } from "../hooks/use-destination-chooser";
+
+import "./section-move-dialog.scss";
 
 export const SectionMoveDialog: React.FC = () => {
   const { userInterface: { movingSectionId }, actions: { setMovingSectionId }} = React.useContext(UserInterfaceContext);
@@ -68,8 +68,8 @@ export const SectionMoveDialog: React.FC = () => {
             <dd className="col1">
               <select value={selectedPageId} name="page" onChange={handlePageChange}>
                 <option >Select ...</option>
-                { pagesForPicking.map( (id, index) => (
-                    <option key={id} value={id}>{index + 1}</option>
+                { pagesForPicking.map( (p: any, index: number) => (
+                    !p.isCompletion && <option key={p.id} value={p.id}>{index + 1}{p.isHidden && ` (hidden)`}</option>
                   ))
                 }
 
