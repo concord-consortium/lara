@@ -22,27 +22,29 @@ export const CustomizableOption: React.FC<Props> = (props) => {
       <div className="customizable-option">
         <input
           type="radio"
+          id={inheritName}
           name={inheritName}
           value="1"
           checked={inherit}
           onChange={handleChange}
         />
-        <span className="radio-label">
+        <label htmlFor={inheritName} className="radioLabel">
           Use default: <strong>{defaultLabel}</strong>
-        </span>
+        </label>
       </div>
       <div className="customizable-option">
         <input
           type="radio"
+          id={inheritName}
           name={inheritName}
           value="0"
           checked={!inherit}
           onChange={handleChange}
         />
-        <span className="radio-label">
+        <label htmlFor={inheritName} className="radioLabel">
           Customize
-        </span>
-        {!inherit ? children : undefined}
+        </label>
+        {!inherit && children}
       </div>
     </>
   );
