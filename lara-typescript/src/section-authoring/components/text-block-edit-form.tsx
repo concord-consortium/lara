@@ -113,7 +113,7 @@ export const TextBlockEditForm: React.FC<ITextBlockEditFormProps> = ({
           type="checkbox"
           />
       </dd>
-      <dd className="inputNote row4">In full width layout only.</dd>
+      <dd className="inputNote row4">In full-width layout only.</dd>
     </dl>
     </>
   );
