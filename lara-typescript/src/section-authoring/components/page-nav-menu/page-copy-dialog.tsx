@@ -13,7 +13,7 @@ export interface IPageCopyDialogProps {
   pages: IPage[];
   currentPageIndex: number | null;
   selectedPosition?: string;
-  selectedOtherPageId?: string;
+  selectedOtherPagePosition?: number;
   copyPageFunction: (destIndex: number) => void;
   closeDialogFunction: () => void;
 }
@@ -23,11 +23,11 @@ export const PageCopyDialog: React.FC<IPageCopyDialogProps> = ({
   pages,
   currentPageIndex,
   selectedPosition: initSelectedPosition = "after",
-  selectedOtherPageId: initSelectedOtherPageId = pageId,
+  selectedOtherPagePosition: initSelectedOtherPagePosition = 1,
   copyPageFunction,
   closeDialogFunction
   }: IPageCopyDialogProps) => {
-  const [selectedOtherPageId, setSelectedOtherPageId] = useState(initSelectedOtherPageId);
+  const [selectedOtherPagePosition, setSelectedOtherPagePosition] = useState(initSelectedOtherPagePosition);
   const [selectedPosition, setSelectedPosition] = useState(initSelectedPosition);
 
   const handlePositionChange = (change: React.ChangeEvent<HTMLSelectElement>) => {
@@ -35,7 +35,7 @@ export const PageCopyDialog: React.FC<IPageCopyDialogProps> = ({
   };
 
   const handleOtherPageChange = (change: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedOtherPageId(change.target.value);
+    setSelectedOtherPagePosition(parseInt(change.target.value, 10));
   };
 
   const handleCloseDialog = () => {
@@ -44,7 +44,7 @@ export const PageCopyDialog: React.FC<IPageCopyDialogProps> = ({
 
   const handleCopyPage = () => {
     if (currentPageIndex != null && currentPageIndex > -1) {
-      let destIndex = pages.findIndex(p => p.id === selectedOtherPageId);
+      let destIndex = selectedOtherPagePosition;
       if (selectedPosition === RelativeLocation.After) {
         destIndex++;
       }
@@ -55,7 +55,7 @@ export const PageCopyDialog: React.FC<IPageCopyDialogProps> = ({
 
   const pageOptions = () => {
     return pages.map((p, index) => {
-      return <option key={`page-${index}`} value={p.id}>{index + 1}</option>;
+      return <option key={`page-${index}`} value={p.position}>{p.position}</option>;
     });
   };
 
