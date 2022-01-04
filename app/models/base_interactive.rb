@@ -90,7 +90,8 @@ module BaseInteractive
       width: native_width,
       height: native_height,
       question_number: index_in_activity,
-      authored_state: parsed_authored_state
+      authored_state: parsed_authored_state,
+      report_item_url: report_item_url
     }
 
     if type === "multiple_choice"
