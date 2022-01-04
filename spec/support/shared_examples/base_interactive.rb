@@ -113,7 +113,9 @@ shared_examples "a base interactive" do |model_factory|
         height: interactive.native_height,
         display_in_iframe: interactive.reportable_in_iframe?,
         show_in_featured_question_report: interactive.show_in_featured_question_report,
-        question_number: interactive.index_in_activity
+        question_number: interactive.index_in_activity,
+        report_item_url: interactive.report_item_url
+
       )
     end
 
