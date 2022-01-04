@@ -1,4 +1,5 @@
 import * as React from "react";
+import { IPage } from "../api/api-types";
 import { Modal, ModalButtons } from "../../shared/components/modal/modal";
 import { Close } from "../../shared/components/icons/close-icon";
 import { Move } from "../../shared/components/icons/move-icon";
@@ -68,7 +69,7 @@ export const SectionMoveDialog: React.FC = () => {
             <dd className="col1">
               <select value={selectedPageId} name="page" onChange={handlePageChange}>
                 <option >Select ...</option>
-                { pagesForPicking.map( (p: any, index: number) => (
+                { pagesForPicking.map( (p: Partial<IPage>, index: number) => (
                     !p.isCompletion && <option key={p.id} value={p.id}>{index + 1}{p.isHidden && ` (hidden)`}</option>
                   ))
                 }
