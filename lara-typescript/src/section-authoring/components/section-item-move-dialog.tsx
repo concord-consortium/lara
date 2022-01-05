@@ -1,15 +1,15 @@
 import * as React from "react";
 import { useState } from "react";
-import { ISectionItem, ISection, SectionColumns, PageId } from "../api/api-types";
+import { ISectionItem, ISection, SectionColumns, IPage, PageId } from "../api/api-types";
 import { Modal, ModalButtons } from "../../shared/components/modal/modal";
 import { Close } from "../../shared/components/icons/close-icon";
 import { Move } from "../../shared/components/icons/move-icon";
 import { usePageAPI } from "../hooks/use-api-provider";
 import { UserInterfaceContext } from "../containers/user-interface-provider";
-
-import "./section-item-move-dialog.scss";
 import { RelativeLocation } from "../util/move-utils";
 import { useDestinationChooser } from "../hooks/use-destination-chooser";
+
+import "./section-item-move-dialog.scss";
 
 export const SectionItemMoveDialog: React.FC = () => {
   const { moveItem, getSections  } = usePageAPI();
@@ -98,8 +98,8 @@ export const SectionItemMoveDialog: React.FC = () => {
             <dd className="col1">
               <select value={selectedPageId} name="page" onChange={handlePageChange}>
                 <option value="">Select ...</option>
-                { pagesForPicking.map( (id, index) => (
-                    <option key={id} value={id}>{index + 1}</option>
+                { pagesForPicking.map( (p: Partial<IPage>, index: number) => (
+                    !p.isCompletion && <option key={p.id} value={p.id}>{index + 1}{p.isHidden && ` (hidden)`}</option>
                   ))
                 }
               </select>

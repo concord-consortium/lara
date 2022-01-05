@@ -58,23 +58,17 @@ export const AspectRatioChooser: React.FC<Props> = (props) => {
   };
 
   const renderInputs = () => {
-    const inputStyle: React.CSSProperties = {
-      display: "flex",
-      flexDirection: "row",
-      flexWrap: "wrap",
-      marginRight: "0.5em",
-    };
     return (
-      <div style={inputStyle}>
+      <>
         <FormattedField value={width} label="Width" onChange={handleChangeWidth} />
         <FormattedField value={height} label="Height" onChange={handleChangeHeight} />
-      </div>
+      </>
     );
   };
 
   return (
-    <div style={{display: "flex", flexDirection: "row", padding: "0.5em", alignItems: "baseline"}}>
-      <select defaultValue={mode} style={{margin: "0.2em"}} onChange={handleSelectChange}>
+    <div className="customizable-option-setting">
+      <select defaultValue={mode} onChange={handleSelectChange}>
       {Object.keys(availableAspectRatios).map((key: AspectRatioMode) => {
         const value = availableAspectRatios[key];
         return <option key={key} value={key} label={value}>{value}</option>;
