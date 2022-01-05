@@ -92,7 +92,8 @@ export const ManagedInteractiveAuthoring: React.FC<Props> = (props) => {
           id="is_half_width"
           name="is_half_width"
           defaultChecked={is_half_width}
-          label="Half width (Full width layout only)"
+          label="Half Width"
+          inputNote="In full-width layout only."
         />
       </fieldset>
     </>;

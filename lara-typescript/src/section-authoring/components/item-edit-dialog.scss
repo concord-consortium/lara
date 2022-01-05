@@ -13,8 +13,14 @@
 
       &.checkboxLabel {
         display: flex;
+        flex-wrap: wrap;
         font-size: 14px;
         margin: 0;
+
+        .inputNote {
+          margin-left: 25px;
+          width: 100%;
+        }
       }
       &.radioLabel {
         display: inline;

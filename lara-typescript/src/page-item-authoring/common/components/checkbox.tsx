@@ -7,12 +7,13 @@ interface Props {
   checked?: boolean;
   defaultChecked?: boolean;
   label: string;
+  inputNote?: string;
   warning?: string;
   onChange?: (name: string, checked: boolean) => void;
 }
 
 export const Checkbox: React.FC<Props> = (props) => {
-  const {checkboxRef, id, name, checked, defaultChecked, label, warning, onChange} = props;
+  const {checkboxRef, id, name, checked, defaultChecked, label, inputNote, warning, onChange} = props;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (onChange) {
@@ -45,7 +46,7 @@ export const Checkbox: React.FC<Props> = (props) => {
           checked={checked}
           defaultChecked={defaultChecked}
           onChange={handleChange}
-        /> {label}
+        /> {label} {inputNote && <span className="inputNote">{inputNote}</span>}
       </label>
       {renderWarning()}
     </>

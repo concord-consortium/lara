@@ -2371,8 +2371,12 @@ dl.textBlockEditForm {
     margin-bottom: 5px; }
     .itemEditDialog fieldset label.checkboxLabel {
       display: flex;
+      flex-wrap: wrap;
       font-size: 14px;
       margin: 0; }
+      .itemEditDialog fieldset label.checkboxLabel .inputNote {
+        margin-left: 25px;
+        width: 100%; }
     .itemEditDialog fieldset label.radioLabel {
       display: inline;
       margin: 0 0 0 5px; }
