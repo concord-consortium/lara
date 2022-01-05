@@ -22,7 +22,7 @@ export const changeLayout = (args: IChangeLayoutSignature) => {
 
   const previousLayout = section.layout;
   section.layout = layout;
-  if (layout === SectionLayouts.LAYOUT_FULL_WIDTH) {
+  if (layout === SectionLayouts.LAYOUT_FULL_WIDTH || layout === SectionLayouts.LAYOUT_RESPONSIVE_FULL_WIDTH) {
     // All items get placed in secondary column.
     // Items from the former primary column are listed first.
     const primaryItems = section.items?.filter(i => i.column === SectionColumns.PRIMARY);
@@ -46,7 +46,8 @@ export const changeLayout = (args: IChangeLayoutSignature) => {
         return a.position - b.position;
       }
     });
-  } else if (previousLayout === SectionLayouts.LAYOUT_FULL_WIDTH) {
+  } else if (previousLayout === SectionLayouts.LAYOUT_FULL_WIDTH ||
+              previousLayout === SectionLayouts.LAYOUT_RESPONSIVE_FULL_WIDTH) {
     // All items get placed in secondary column.
     section.items?.forEach((item: ISectionItem) => {
       item.column = SectionColumns.SECONDARY;

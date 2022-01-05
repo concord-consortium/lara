@@ -61,13 +61,13 @@ const setUp4060Page = () => {
   return page;
 };
 
-const setUpResponsivePage = () => {
+const setUp2ColumnResponsivePage = () => {
   const page = {
     id: "page-1",
     sections: [
       {
         id: "section-1",
-        layout: SectionLayouts.LAYOUT_RESPONSIVE,
+        layout: SectionLayouts.LAYOUT_RESPONSIVE_2_COLUMN,
         items: [
           {
             id: "item-1",
@@ -112,7 +112,7 @@ describe("changeLayout", () => {
   });
 
   it ("it will maintain primary and secondary column values per item when switching from responsive layout to any other non full-width layout", () => {
-    const page = setUpResponsivePage();
+    const page = setUp2ColumnResponsivePage();
     const sectionId = "section-1";
     const items = page.sections[0].items;
     const newLayout = SectionLayouts.LAYOUT_60_40;
@@ -139,7 +139,7 @@ describe("changeLayout", () => {
     expect(items[1].column).toEqual(SectionColumns.SECONDARY);
     expect(items[2].column).toEqual(SectionColumns.PRIMARY);
 
-    newLayout = SectionLayouts.LAYOUT_RESPONSIVE;
+    newLayout = SectionLayouts.LAYOUT_RESPONSIVE_2_COLUMN;
     expect(changeLayout({ id: sectionId, layout: newLayout, page })).toBeTruthy();
     expect(items[0].column).toEqual(SectionColumns.SECONDARY);
     expect(items[1].column).toEqual(SectionColumns.SECONDARY);
