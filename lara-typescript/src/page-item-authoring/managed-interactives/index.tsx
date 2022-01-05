@@ -77,6 +77,9 @@ export const ManagedInteractiveAuthoring: React.FC<Props> = (props) => {
     }
 
     return <>
+      <div className="interactiveItemID">
+        InteractiveID: {managedInteractive.interactive_item_id}
+      </div>
       <fieldset>
         <label htmlFor="name">Name</label>
         <input

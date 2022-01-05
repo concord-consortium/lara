@@ -2369,6 +2369,9 @@ dl.textBlockEditForm {
   .itemEditDialog fieldset label {
     display: block;
     margin-bottom: 5px; }
+    .itemEditDialog fieldset label[for="name"] {
+      font-size: 14px;
+      font-weight: bolder; }
     .itemEditDialog fieldset label.checkboxLabel {
       display: flex;
       font-size: 14px;
@@ -2379,13 +2382,9 @@ dl.textBlockEditForm {
     .itemEditDialog fieldset label input[type="checkbox"] {
       margin-right: 5px; }
   .itemEditDialog fieldset legend {
-    border-top: solid 1.5px var(--lt-gray);
-    display: block;
     font-size: 16px;
     font-weight: 700;
-    margin-bottom: 10px;
-    padding-top: 15px;
-    width: 100%; }
+    margin-bottom: 10px; }
   .itemEditDialog fieldset .customizable-label {
     font-weight: bold;
     margin: 10px 0 5px 0; }
@@ -2449,6 +2448,16 @@ dl.textBlockEditForm {
   color: var(--med-gray);
   font-size: 14px;
   font-style: italic; }
+
+.itemEditDialog .react-tabs legend {
+  border-top: solid 1.5px var(--lt-gray);
+  display: block;
+  padding-top: 15px;
+  width: 100%; }
+
+.itemEditDialog .react-tabs div fieldset:first-child legend {
+  border-top: none;
+  padding-top: 0; }
 
 @font-face {
   font-family: 'Lato-Light';
