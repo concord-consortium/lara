@@ -2363,6 +2363,7 @@ dl.textBlockEditForm {
 
 .itemEditDialog fieldset {
   border: none;
+  margin-top: 20px;
   margin-bottom: 10px;
   padding: 0; }
   .itemEditDialog fieldset label {
@@ -2372,12 +2373,33 @@ dl.textBlockEditForm {
       display: flex;
       font-size: 14px;
       margin: 0; }
+    .itemEditDialog fieldset label.radioLabel {
+      display: inline;
+      margin: 0 0 0 5px; }
     .itemEditDialog fieldset label input[type="checkbox"] {
       margin-right: 5px; }
   .itemEditDialog fieldset legend {
+    border-top: solid 1.5px var(--lt-gray);
+    display: block;
     font-size: 16px;
     font-weight: 700;
-    margin-bottom: 10px; }
+    margin-bottom: 10px;
+    padding-top: 15px;
+    width: 100%; }
+  .itemEditDialog fieldset .customizable-label {
+    font-weight: bold;
+    margin: 10px 0 5px 0; }
+  .itemEditDialog fieldset .customizable-option .customizable-option-setting {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding: 5px; }
+    .itemEditDialog fieldset .customizable-option .customizable-option-setting input + label {
+      margin: 0 0 0 5px; }
+    .itemEditDialog fieldset .customizable-option .customizable-option-setting .default-click-to-play-prompt,
+    .itemEditDialog fieldset .customizable-option .customizable-option-setting input#custom-click-to-play-prompt {
+      width: 100%; }
 
 .itemEditDialog input, .itemEditDialog textarea {
   border: solid 1.5px var(--med-gray);

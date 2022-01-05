@@ -145,21 +145,24 @@ export const CustomizeManagedInteractive: React.FC<Props> = (props) => {
   const renderClickToPlayOptions = () => {
     const defaultPrompt = libraryInteractive.click_to_play_prompt || defaultClickToPlayPrompt;
     return <>
-      <CustomizableOption
-        label="Click To Play Prompt"
-        inheritName="inherit_click_to_play_prompt"
-        customName="custom_click_to_play_prompt"
-        inherit={inheritClickToPlayPrompt}
-        defaultLabel={`"${defaultPrompt}"`}
-        onChange={setInheritClickToPlayPrompt}
-      >
+      <div className="customizable-option-setting">
+        <strong>Default Prompt Text</strong>
+        <span className="default-click-to-play-prompt">{defaultPrompt}</span>
+      </div>
+      <div className="customizable-option-setting">
+        <label htmlFor="custom-click-to-play-prompt">
+          <strong>
+            Custom Prompt Text
+          </strong>
+        </label>
         <input
           type="text"
+          id="custom-click-to-play-prompt"
           name="custom_click_to_play_prompt"
           value={customClickToPlayPrompt}
           onChange={handleChangeCustomClickToPlayPrompt}
         />
-      </CustomizableOption>
+      </div>
 
       <CustomizableOption
         label="Full Window"
@@ -177,19 +180,23 @@ export const CustomizeManagedInteractive: React.FC<Props> = (props) => {
       </CustomizableOption>
 
       <CustomizableOption
-        label="Image Url"
+        label="Image URL"
         inheritName="inherit_image_url"
         customName="custom_image_url"
         inherit={inheritImageUrl}
-        defaultLabel={libraryInteractive.image_url ? libraryInteractive.image_url : "No default image url"}
+        defaultLabel={libraryInteractive.image_url ? libraryInteractive.image_url : "No default image URL"}
         onChange={setInheritImageUrl}
       >
-        <input
-          type="text"
-          name="custom_image_url"
-          value={customImageUrl}
-          onChange={handleChangeCustomImageUrl}
-        />
+        <div className="customizable-option-setting">
+          <label htmlFor="custom_image_url">Custom Image URL</label>
+          <input
+            type="text"
+            id="custom_image_url"
+            name="custom_image_url"
+            value={customImageUrl}
+            onChange={handleChangeCustomImageUrl}
+          />
+        </div>
       </CustomizableOption>
     </>;
   };
@@ -227,76 +234,89 @@ export const CustomizeManagedInteractive: React.FC<Props> = (props) => {
       />
       <input
         type="radio"
+        id="inherit-aspect-ratio-method"
         name="inherit_aspect_ratio_method"
         value="true"
         defaultChecked={inheritAspectRatio}
         onChange={handleChangeCustomizeAspectRatio}
       />
-      <span className="radio-label">Use default: </span>
-      <strong>
-        {availableAspectRatios[libraryInteractive.aspect_ratio_method as AspectRatioMode]}
-        {libraryInteractive.aspect_ratio_method === "MANUAL"
-          ? ` (width: ${libraryInteractive.native_width}, height: ${libraryInteractive.native_height})`
-          : undefined}
-      </strong>
+      <label htmlFor="inherit-aspect-ratio-method" className="radioLabel">
+        Use default:
+        <strong>
+          {availableAspectRatios[libraryInteractive.aspect_ratio_method as AspectRatioMode]}
+          {libraryInteractive.aspect_ratio_method === "MANUAL"
+            ? ` (width: ${libraryInteractive.native_width}, height: ${libraryInteractive.native_height})`
+            : undefined}
+        </strong>
+      </label>
       <div className="customizable-option">
         <input
           type="radio"
+          id="inherit-aspect-ratio-method"
           name="inherit_aspect_ratio_method"
           value="false"
           defaultChecked={!inheritAspectRatio}
           onChange={handleChangeCustomizeAspectRatio}
         />
-        <span className="radio-label">Customize</span>
-        {!inheritAspectRatio
-          ? <AspectRatioChooser
+        <label htmlFor="inherit-aspect-ratio-method" className="radioLabel">
+          Customize
+          {!inheritAspectRatio &&
+            <AspectRatioChooser
               width={customAspectRatioValues.width}
               height={customAspectRatioValues.height}
               mode={customAspectRatioValues.mode}
               onChange={handleAspectRatioChange}
             />
-          : undefined}
+          }
+        </label>
       </div>
     </fieldset>
 
     <fieldset>
-      <legend>Click to Play Options</legend>
+      <legend>Click to Play</legend>
       <div className="option_group">
-        <div className="customizable-label">Enable Click To Play</div>
         <div className="customizable-option">
           <input
             type="radio"
+            id="inherit-click-to-play"
             name="inherit_click_to_play"
             value="true"
             defaultChecked={inheritClickToPlay}
             onChange={handleChangeClickToPlay}
           />
-          <span className="radio-label">
+          <label htmlFor="inherit-click-to-play" className="radioLabel">
             Use default: <strong>{libraryInteractive.click_to_play ? "Enabled" : "Disabled"}</strong>
-          </span>
+          </label>
         </div>
         <div className="customizable-option">
           <input
             type="radio"
+            id="inherit-click-to-play"
             name="inherit_click_to_play"
             value="false"
             defaultChecked={!inheritClickToPlay}
             onChange={handleChangeClickToPlay}
           />
-          <span className="radio-label">Customize</span>
-          {!inheritClickToPlay
-            ? <>
-                <input
-                  type="checkbox"
-                  name="custom_click_to_play"
-                  value="true"
-                  defaultChecked={customClickToPlay}
-                  onChange={handleChangeCustomClickToPlay}
-                /> Enabled
-              </>
-            : undefined}
+          <label htmlFor="inherit-click-to-play" className="radioLabel">
+            Customize
+          </label>
+          {!inheritClickToPlay &&
+            <div className="customizable-option-setting">
+              <input
+                id="custom-click-to-play"
+                type="checkbox"
+                name="custom_click_to_play"
+                value="true"
+                defaultChecked={customClickToPlay}
+                onChange={handleChangeCustomClickToPlay}
+              />
+              <label htmlFor="custom-click-to-play">
+                Enabled
+              </label>
+            </div>
+          }
+          {clickToPlayEnabled && renderClickToPlayOptions()}
         </div>
-        {clickToPlayEnabled ? renderClickToPlayOptions() : undefined}
       </div>
     </fieldset>
   </>;
