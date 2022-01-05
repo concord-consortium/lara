@@ -124,19 +124,19 @@ export const CustomizeMWInteractive: React.FC<Props> = (props) => {
       </fieldset>
 
       <fieldset>
-      <legend>Report Item URL</legend>
-      <input
-        type="text"
-        name={formField("report_item_url").name}
-        onChange={handleChangeReportItemURL}
-        defaultValue={reportItemURL}
-      />
-      <div className="warning">
-        This URL should point to an optional interactive used by the teacher report
-        to provide a summary of each interactive answer to teachers. The value should
-        be a partial URL relative to the iFrame interactive's URL.
-      </div>
-    </fieldset>
+        <legend>Report Item URL</legend>
+        <input
+          type="text"
+          name={formField("report_item_url").name}
+          onChange={handleChangeReportItemURL}
+          defaultValue={reportItemURL}
+        />
+        <div className="warning">
+          This URL should point to an optional interactive used by the teacher report
+          to provide a summary of each interactive answer to teachers. The value should
+          be a partial URL relative to the iFrame interactive's URL.
+        </div>
+      </fieldset>
     </>;
   };
 
