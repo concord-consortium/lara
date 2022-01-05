@@ -78,16 +78,10 @@ export const SectionColumn: React.FC<ISectionColumnProps> = ({
 
   const updateItemPositions = (sectionItems: ISectionItem[], sourceIndex: number, destinationIndex: number) => {
     const itemToMove = sectionItems[sourceIndex];
-    const otherItem = sectionItems[destinationIndex];
-    itemToMove.position = otherItem.position;
     sectionItems.splice(sourceIndex, 1);
     sectionItems.splice(destinationIndex, 0, itemToMove);
-    let itemsCount = 0;
     sectionItems.forEach((i, index) => {
-      itemsCount++;
-      if (index > destinationIndex) {
-        i.position = itemsCount;
-      }
+      i.position = index + 1;
     });
     return [...sectionItems];
   };
