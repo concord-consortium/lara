@@ -1,6 +1,6 @@
 import { current } from "immer";
 import * as React from "react";
-import { PageId } from "../api/api-types";
+import { IPage, PageId } from "../api/api-types";
 
 import { usePageAPI } from "../hooks/use-api-provider";
 import { RelativeLocation } from "../util/move-utils";
@@ -13,8 +13,6 @@ export const useDestinationChooser = () => {
   const [selectedPosition, setSelectedPosition] = React.useState(RelativeLocation.After);
   const [validPage, setValidPage] = React.useState(false);
   const [validSection, setValidSection] = React.useState(false);
-
-  const pagesForPicking = getPages.data ? getPages.data.map(p => p.id) : [];
 
   React.useEffect( () => {
     if (getPages.data) {
@@ -39,6 +37,19 @@ export const useDestinationChooser = () => {
       setValidSection(true);
     }
   }, [selectedSectionId]);
+
+  const setPagesForPicking = (pageData: IPage[]) => {
+    const pages = pageData.map((p: IPage) => {
+      return {
+        id: p.id,
+        isCompletion: p.isCompletion,
+        isHidden: p.isHidden
+      };
+    });
+    return pages;
+  };
+
+  const pagesForPicking = getPages.data ? setPagesForPicking(getPages.data) : [];
 
   const handlePageChange = (change: React.ChangeEvent<HTMLSelectElement>) => {
     const pageId = change.target.value;
