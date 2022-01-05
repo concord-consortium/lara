@@ -43972,7 +43972,14 @@ var CustomizeMWInteractive = function (props) {
       defaultValue: "" + (linked_interactive_item_id || "")
     }), React.createElement("div", {
       className: "warning"
-    }, React.createElement("em", null, "Warning"), ": Please do not link to another interactive unless the interactive knows how to load prior work.")));
+    }, React.createElement("em", null, "Warning"), ": Please do not link to another interactive unless the interactive knows how to load prior work.")), React.createElement("fieldset", null, React.createElement("legend", null, "Report Item URL"), React.createElement("input", {
+      type: "text",
+      name: formField("report_item_url").name,
+      onChange: handleChangeReportItemURL,
+      defaultValue: reportItemURL
+    }), React.createElement("div", {
+      className: "warning"
+    }, "This URL should point to an optional interactive used by the teacher report to provide a summary of each interactive answer to teachers. The value should be a partial URL relative to the iFrame interactive's URL.")));
   }; // this generates a form element that renders inside the rails popup form
 
 
@@ -44008,15 +44015,7 @@ var CustomizeMWInteractive = function (props) {
     onChange: setEnableLearnerState,
     label: "Enable save state",
     warning: "Please do not select this unless your interactive contains a serializable data set"
-  }), enableLearnerState ? renderInteractiveStateOptions() : undefined)), React.createElement("fieldset", null, React.createElement("legend", null, "Report Item URL"), React.createElement("div", {
-    className: "option_group"
-  }, React.createElement("input", {
-    name: formField("report_item_url").name,
-    onChange: handleChangeReportItemURL,
-    defaultValue: reportItemURL
-  }), React.createElement("div", {
-    className: "warning"
-  }, "This URL should point to an optional interactive used by the teacher report to provide a summary of each interactive answer to teachers. The value should be a partial URL relative to the iFrame interactive's URL."))));
+  }), enableLearnerState ? renderInteractiveStateOptions() : undefined)));
 };
 
 exports.CustomizeMWInteractive = CustomizeMWInteractive;
