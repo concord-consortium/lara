@@ -1,6 +1,7 @@
 import * as React from "react";
 import { useState } from "react";
 import { usePageAPI } from "../hooks/use-api-provider";
+import { useTitle } from "../hooks/use-title";
 import { PageNavContainer } from "../containers/page-nav-container";
 import { PageSettingsDialog } from "../../page-settings/components/page-settings-dialog";
 import { AuthoringSection } from "./authoring-section";
@@ -13,10 +14,10 @@ import { CompletionPage } from "./completion-page/completion-page";
 import { Add } from "../../shared/components/icons/add-icon";
 import { Cog } from "../../shared/components/icons/cog-icon";
 import { HiddenIcon } from "../../shared/components/icons/hidden-icon";
-
-import "./authoring-page.scss";
 import { UserInterfaceContext} from "../containers/user-interface-provider";
 import { PreviewLinksContainer } from "../containers/preview-links-container";
+
+import "./authoring-page.scss";
 
 export interface IPageProps extends IPage {
 
@@ -172,7 +173,7 @@ export const AuthoringPage: React.FC<IPageProps> = ({
 
   const pageSettingsClickHandler = () => { setShowSettings(true); };
   const displayTitle = name && name !== "" ? name : <em>(title not set)</em>;
-
+  useTitle("Edit " + name);
   return (
     <>
       <PageNavContainer />
