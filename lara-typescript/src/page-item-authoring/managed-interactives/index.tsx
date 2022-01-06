@@ -16,6 +16,7 @@ import "react-tabs/style/react-tabs.css";
 interface Props {
   managedInteractive: IManagedInteractive;
   libraryInteractive?: ILibraryInteractive;
+  interactive_item_id: string;
   defaultClickToPlayPrompt: string;
   authoringApiUrls: AuthoringApiUrls;
   onUpdate?: (updates: Partial<IManagedInteractive>) => void;
@@ -59,7 +60,14 @@ export interface IManagedInteractive {
 }
 
 export const ManagedInteractiveAuthoring: React.FC<Props> = (props) => {
-  const { libraryInteractive, managedInteractive, defaultClickToPlayPrompt, authoringApiUrls, onUpdate } = props;
+  const {
+    libraryInteractive,
+    managedInteractive,
+    interactive_item_id,
+    defaultClickToPlayPrompt,
+    authoringApiUrls,
+    onUpdate
+  } = props;
   const { name, is_half_width } = managedInteractive;
   const libraryInteractiveIdRef = useRef<HTMLInputElement|null>(null);
   const libraryInteractiveAuthoredStateRef = useRef<HTMLTextAreaElement|null>(null);
@@ -77,6 +85,9 @@ export const ManagedInteractiveAuthoring: React.FC<Props> = (props) => {
     }
 
     return <>
+      <div className="interactiveItemID">
+        InteractiveID: {interactive_item_id}
+      </div>
       <fieldset>
         <label htmlFor="name">Name</label>
         <input
@@ -111,7 +122,7 @@ export const ManagedInteractiveAuthoring: React.FC<Props> = (props) => {
         ? libraryInteractive.aspect_ratio_method
         : managedInteractive.custom_aspect_ratio_method,
       authored_state: managedInteractive.authored_state,
-      interactive_item_id: managedInteractive.interactive_item_id,
+      interactive_item_id,
       linked_interactives: managedInteractive.linked_interactives
     };
 

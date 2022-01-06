@@ -156,6 +156,7 @@ export const ItemEditDialog: React.FC<IItemEditDialogProps> = ({
         return <ManagedInteractiveAuthoring
                 managedInteractive={managedInteractive}
                 libraryInteractive={libraryInteractive}
+                interactive_item_id={`interactive_${itemToEdit.id}`}
                 defaultClickToPlayPrompt={"Click to Play"}
                 authoringApiUrls={authoringApiUrls}
                 onUpdate={handleManagedInteractiveData}
@@ -165,6 +166,7 @@ export const ItemEditDialog: React.FC<IItemEditDialogProps> = ({
         const interactive = camelToSnakeCaseKeys(itemToEdit.data);
         return <MWInteractiveAuthoring
                 interactive={interactive}
+                interactive_item_id={`interactive_${itemToEdit.id}`}
                 defaultClickToPlayPrompt={"Click to Play"}
                 authoringApiUrls={authoringApiUrls}
                />;

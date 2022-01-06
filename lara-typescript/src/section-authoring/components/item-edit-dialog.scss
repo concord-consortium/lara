@@ -11,6 +11,11 @@
       display: block;
       margin-bottom: 5px;
 
+      &[for="name"] {
+        font-size: 14px;
+        font-weight: bolder;
+      }
+
       &.checkboxLabel {
         display: flex;
         flex-wrap: wrap;
@@ -32,13 +37,9 @@
       }
     }
     legend {
-      border-top: solid 1.5px var(--lt-gray);
-      display: block;
       font-size: 16px;
       font-weight: 700;
       margin-bottom: 10px;
-      padding-top: 15px;
-      width: 100%;
     }
 
     .customizable-label {
@@ -125,5 +126,20 @@
     color: var(--med-gray);
     font-size: 14px;
     font-style: italic;
+  }
+
+  .react-tabs {
+    legend {
+      border-top: solid 1.5px var(--lt-gray);
+      display: block;
+      padding-top: 15px;
+      width: 100%;
+    }
+    div fieldset:first-child {
+      legend {
+        border-top: none;
+        padding-top: 0;
+      }
+    }
   }
 }
