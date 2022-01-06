@@ -41,7 +41,7 @@ export const PreviewLinks: React.FC<IPreviewLinksProps> =
     if (previewer) {
       const pageToPreview = getLinkFromKey(previewer);
       if (pageToPreview) {
-        window.open(pageToPreview, "_blank");
+        window.open(pageToPreview + "&author-preview=true", "_blank");
       }
     }
   };
