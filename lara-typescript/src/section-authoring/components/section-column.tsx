@@ -115,7 +115,8 @@ export const SectionColumn: React.FC<ISectionColumnProps> = ({
   const handleShowAddItem = absorbClickThen(handleToggleShowAddItem);
 
   const handleAddItem = (itemId: string) => {
-    const position = items.length + 1;
+    const lastItemPosition = items.length > 0 ? items[items.length - 1].position : undefined;
+    const position = lastItemPosition ? lastItemPosition + 1 : 1;
     const embeddable = embeddables?.find(e => e.id === itemId);
     if (embeddable) {
       addPageItem?.({
