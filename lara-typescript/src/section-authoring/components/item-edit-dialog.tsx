@@ -123,6 +123,12 @@ export const ItemEditDialog: React.FC<IItemEditDialogProps> = ({
     };
   };
 
+  const interactiveFromItemToEdit = (itemToEdit: ISectionItem) => {
+    const interactive = camelToSnakeCaseKeys(itemToEdit.data);
+    interactive.interactive_item_id = `interactive_${itemToEdit.id}`;
+    return interactive;
+  };
+
   const modalButtons = [
     {
       classes: "cancel",
@@ -147,7 +153,7 @@ export const ItemEditDialog: React.FC<IItemEditDialogProps> = ({
         return <TextBlockEditForm pageItem={itemToEdit} />;
         break;
       case "ManagedInteractive":
-        const managedInteractive = camelToSnakeCaseKeys(itemToEdit.data);
+        const managedInteractive = interactiveFromItemToEdit(itemToEdit);
         const libraryInteractive = camelToSnakeCaseKeys(
                                      libraryInteractives?.find(
                                        li => li.id === itemToEdit.data.libraryInteractiveId
@@ -162,7 +168,7 @@ export const ItemEditDialog: React.FC<IItemEditDialogProps> = ({
                />;
         break;
       case "MwInteractive":
-        const interactive = camelToSnakeCaseKeys(itemToEdit.data);
+        const interactive = interactiveFromItemToEdit(itemToEdit);
         return <MWInteractiveAuthoring
                 interactive={interactive}
                 defaultClickToPlayPrompt={"Click to Play"}

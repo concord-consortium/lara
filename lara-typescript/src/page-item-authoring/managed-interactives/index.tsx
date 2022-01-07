@@ -59,7 +59,13 @@ export interface IManagedInteractive {
 }
 
 export const ManagedInteractiveAuthoring: React.FC<Props> = (props) => {
-  const { libraryInteractive, managedInteractive, defaultClickToPlayPrompt, authoringApiUrls, onUpdate } = props;
+  const {
+    libraryInteractive,
+    managedInteractive,
+    defaultClickToPlayPrompt,
+    authoringApiUrls,
+    onUpdate
+  } = props;
   const { name, is_half_width } = managedInteractive;
   const libraryInteractiveIdRef = useRef<HTMLInputElement|null>(null);
   const libraryInteractiveAuthoredStateRef = useRef<HTMLTextAreaElement|null>(null);
@@ -77,6 +83,9 @@ export const ManagedInteractiveAuthoring: React.FC<Props> = (props) => {
     }
 
     return <>
+      <div className="interactiveItemID">
+        InteractiveID: {managedInteractive.interactive_item_id}
+      </div>
       <fieldset>
         <label htmlFor="name">Name</label>
         <input

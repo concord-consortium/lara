@@ -168,6 +168,9 @@ export const MWInteractiveAuthoring: React.FC<Props> = (props) => {
 
   // this generates a form element that renders inside the rails popup form
   return <>
+    <div className="interactiveItemID">
+      InteractiveID: {interactive.interactive_item_id}
+    </div>
     <fieldset>
       <legend>Iframe Interactive</legend>
       <input
