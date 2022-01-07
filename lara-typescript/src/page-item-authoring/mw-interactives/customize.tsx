@@ -122,6 +122,21 @@ export const CustomizeMWInteractive: React.FC<Props> = (props) => {
           unless the interactive knows how to load prior work.
         </div>
       </fieldset>
+
+      <fieldset>
+        <legend>Report Item URL</legend>
+        <input
+          type="text"
+          name={formField("report_item_url").name}
+          onChange={handleChangeReportItemURL}
+          defaultValue={reportItemURL}
+        />
+        <div className="warning">
+          This URL should point to an optional interactive used by the teacher report
+          to provide a summary of each interactive answer to teachers. The value should
+          be a partial URL relative to the iFrame interactive's URL.
+        </div>
+      </fieldset>
     </>;
   };
 
@@ -176,22 +191,6 @@ export const CustomizeMWInteractive: React.FC<Props> = (props) => {
           warning="Please do not select this unless your interactive contains a serializable data set"
         />
         {enableLearnerState ? renderInteractiveStateOptions() : undefined}
-      </div>
-    </fieldset>
-
-    <fieldset>
-      <legend>Report Item URL</legend>
-      <div className="option_group">
-        <input
-          name={formField("report_item_url").name}
-          onChange={handleChangeReportItemURL}
-          defaultValue={reportItemURL}
-        />
-        <div className="warning">
-          This URL should point to an optional interactive used by the teacher report
-          to provide a summary of each interactive answer to teachers. The value should
-          be a partial URL relative to the iFrame interactive's URL.
-        </div>
       </div>
     </fieldset>
   </>;
