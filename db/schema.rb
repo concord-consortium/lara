@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20211216173613) do
+ActiveRecord::Schema.define(:version => 20220107171753) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "kind"
@@ -296,7 +296,7 @@ ActiveRecord::Schema.define(:version => 20211216173613) do
     t.datetime "created_at",                       :null => false
     t.datetime "updated_at",                       :null => false
     t.boolean  "is_hidden",     :default => false
-    t.boolean  "is_half_width", :default => true
+    t.boolean  "is_half_width", :default => false
     t.boolean  "is_callout",    :default => true
   end
 
