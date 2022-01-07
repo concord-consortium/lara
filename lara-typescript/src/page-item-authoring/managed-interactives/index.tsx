@@ -16,7 +16,6 @@ import "react-tabs/style/react-tabs.css";
 interface Props {
   managedInteractive: IManagedInteractive;
   libraryInteractive?: ILibraryInteractive;
-  interactive_item_id: string;
   defaultClickToPlayPrompt: string;
   authoringApiUrls: AuthoringApiUrls;
   onUpdate?: (updates: Partial<IManagedInteractive>) => void;
@@ -63,7 +62,6 @@ export const ManagedInteractiveAuthoring: React.FC<Props> = (props) => {
   const {
     libraryInteractive,
     managedInteractive,
-    interactive_item_id,
     defaultClickToPlayPrompt,
     authoringApiUrls,
     onUpdate
@@ -86,7 +84,7 @@ export const ManagedInteractiveAuthoring: React.FC<Props> = (props) => {
 
     return <>
       <div className="interactiveItemID">
-        InteractiveID: {interactive_item_id}
+        InteractiveID: {managedInteractive.interactive_item_id}
       </div>
       <fieldset>
         <label htmlFor="name">Name</label>
@@ -122,7 +120,7 @@ export const ManagedInteractiveAuthoring: React.FC<Props> = (props) => {
         ? libraryInteractive.aspect_ratio_method
         : managedInteractive.custom_aspect_ratio_method,
       authored_state: managedInteractive.authored_state,
-      interactive_item_id,
+      interactive_item_id: managedInteractive.interactive_item_id,
       linked_interactives: managedInteractive.linked_interactives
     };
 

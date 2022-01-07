@@ -11,7 +11,6 @@ import { AuthoringApiUrls } from "./common/types";
 interface IRenderManagedInteractiveAuthoringProps {
   managedInteractive: IManagedInteractive;
   libraryInteractive?: ILibraryInteractive;
-  interactive_item_id: string;
   defaultClickToPlayPrompt: string;
   authoringApiUrls: AuthoringApiUrls;
 }
@@ -20,7 +19,6 @@ const renderManagedInteractiveAuthoring = (root: HTMLElement, props: IRenderMana
     <ManagedInteractiveAuthoring
       managedInteractive={props.managedInteractive}
       libraryInteractive={props.libraryInteractive}
-      interactive_item_id={props.interactive_item_id}
       defaultClickToPlayPrompt={props.defaultClickToPlayPrompt}
       authoringApiUrls={props.authoringApiUrls}
     />, root);
@@ -28,7 +26,6 @@ const renderManagedInteractiveAuthoring = (root: HTMLElement, props: IRenderMana
 
 interface IRenderMWInteractiveAuthoringProps {
   interactive: IMWInteractive;
-  interactive_item_id: string;
   defaultClickToPlayPrompt: string;
   authoringApiUrls: AuthoringApiUrls;
 }
@@ -36,7 +33,6 @@ const renderMWInteractiveAuthoring = (root: HTMLElement, props: IRenderMWInterac
   return ReactDOM.render(
     <MWInteractiveAuthoring
       interactive={props.interactive}
-      interactive_item_id={props.interactive_item_id}
       defaultClickToPlayPrompt={props.defaultClickToPlayPrompt}
       authoringApiUrls={props.authoringApiUrls}
     />, root);

@@ -13,7 +13,6 @@ import { valueContainerCSS } from "react-select/src/components/containers";
 
 interface Props {
   interactive: IMWInteractive;
-  interactive_item_id: string;
   defaultClickToPlayPrompt: string;
   authoringApiUrls: AuthoringApiUrls;
 }
@@ -46,7 +45,7 @@ export interface IMWInteractive {
 }
 
 export const MWInteractiveAuthoring: React.FC<Props> = (props) => {
-  const { interactive, interactive_item_id, defaultClickToPlayPrompt, authoringApiUrls } = props;
+  const { interactive, defaultClickToPlayPrompt, authoringApiUrls } = props;
   const interactiveAuthoredStateRef = useRef<HTMLInputElement|null>(null);
   const linkedInteractivesRef = useRef<HTMLInputElement|null>(null);
   const enableLearnerStateRef = useRef<HTMLInputElement|null>(null);
@@ -121,7 +120,7 @@ export const MWInteractiveAuthoring: React.FC<Props> = (props) => {
       aspect_ratio: interactive.aspect_ratio,
       aspect_ratio_method: interactive.aspect_ratio_method,
       authored_state: interactive.authored_state,
-      interactive_item_id,
+      interactive_item_id: interactive.interactive_item_id,
       linked_interactives: interactive.linked_interactives
     };
 
@@ -170,7 +169,7 @@ export const MWInteractiveAuthoring: React.FC<Props> = (props) => {
   // this generates a form element that renders inside the rails popup form
   return <>
     <div className="interactiveItemID">
-      InteractiveID: {interactive_item_id}
+      InteractiveID: {interactive.interactive_item_id}
     </div>
     <fieldset>
       <legend>Iframe Interactive</legend>
