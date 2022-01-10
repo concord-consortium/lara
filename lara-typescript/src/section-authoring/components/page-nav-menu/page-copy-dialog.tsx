@@ -5,7 +5,6 @@ import { Add } from "../../../shared/components/icons/add-icon";
 import { Close } from "../../../shared/components/icons/close-icon";
 import { IPage } from "../../api/api-types";
 import { RelativeLocation } from "../../util/move-utils";
-import { useDestinationChooser } from "../../hooks/use-destination-chooser";
 
 import "./page-copy-dialog.scss";
 
@@ -30,7 +29,6 @@ export const PageCopyDialog: React.FC<IPageCopyDialogProps> = ({
   }: IPageCopyDialogProps) => {
   const [selectedOtherPagePosition, setSelectedOtherPagePosition] = useState(initSelectedOtherPagePosition);
   const [selectedPosition, setSelectedPosition] = useState(initSelectedPosition);
-  const { pagesForPicking } = useDestinationChooser();
 
   const handlePositionChange = (change: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedPosition(change.target.value);
@@ -50,6 +48,7 @@ export const PageCopyDialog: React.FC<IPageCopyDialogProps> = ({
       if (selectedPosition === RelativeLocation.After) {
         destIndex++;
       }
+      console.log("destIndex:", destIndex);
       copyPageFunction(destIndex);
     }
     closeDialogFunction();
@@ -81,10 +80,11 @@ export const PageCopyDialog: React.FC<IPageCopyDialogProps> = ({
           <dd className="col2">
             <select name="otherItem" onChange={handleOtherPageChange}>
               <option value="">Select ...</option>
-              { pagesForPicking.map( (p: Partial<IPage>, index: number) => (
+                {pageOptions()}
+              {/* { pagesForPicking.map( (p: Partial<IPage>, index: number) => (
                   !p.isCompletion && <option key={p.id} value={p.id}>{index + 1}{p.isHidden && ` (hidden)`}</option>
                 ))
-              }
+              } */}
             </select>
           </dd>
         </dl>
