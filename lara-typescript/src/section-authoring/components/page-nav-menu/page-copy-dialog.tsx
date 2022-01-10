@@ -54,8 +54,9 @@ export const PageCopyDialog: React.FC<IPageCopyDialogProps> = ({
   };
 
   const pageOptions = () => {
-    return pages.map((p, index) => {
-      return <option key={`page-${index}`} value={p.position}>{p.position}</option>;
+    const optionPages = pages.filter(p => !p.isCompletion);
+    return optionPages.map((p, index) => {
+      return <option key={`page-${index}`} value={p.position}>{p.position}{p.isHidden && ` (hidden)`}</option>;
     });
   };
 
@@ -80,10 +81,6 @@ export const PageCopyDialog: React.FC<IPageCopyDialogProps> = ({
             <select name="otherItem" onChange={handleOtherPageChange}>
               <option value="">Select ...</option>
                 {pageOptions()}
-              {/* { pagesForPicking.map( (p: Partial<IPage>, index: number) => (
-                  !p.isCompletion && <option key={p.id} value={p.id}>{index + 1}{p.isHidden && ` (hidden)`}</option>
-                ))
-              } */}
             </select>
           </dd>
         </dl>
