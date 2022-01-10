@@ -48,7 +48,6 @@ export const PageCopyDialog: React.FC<IPageCopyDialogProps> = ({
       if (selectedPosition === RelativeLocation.After) {
         destIndex++;
       }
-      console.log("destIndex:", destIndex);
       copyPageFunction(destIndex);
     }
     closeDialogFunction();
