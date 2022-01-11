@@ -112,7 +112,7 @@ gem "chosen-rails", "~> 1.0"
 gem "safe_yaml", "~> 1.0"
 gem "will_paginate", "~> 3.0"
 gem "useragent", "~> 0.10"
-gem "ribbons-rails", "~> 0.0", {:git=>"git://github.com/concord-consortium/ribbons-rails.git"}
+gem "ribbons-rails", "~> 0.0", {:git=>"https://github.com/concord-consortium/ribbons-rails.git"}
 gem "spreadsheet", "~> 1.0"
 gem "nokogiri", ">= 1.8.5"
 gem "rack-cors","~> 0.4.1", :require => 'rack/cors'
