@@ -66,7 +66,8 @@ class MwInteractive < ActiveRecord::Base
       model_library_url: model_library_url,
       authored_state: authored_state,
       aspect_ratio_method: aspect_ratio_method,
-      no_snapshots: no_snapshots
+      no_snapshots: no_snapshots,
+      linked_interactive_item_id: linked_interactive_item_id
     }
   end
 

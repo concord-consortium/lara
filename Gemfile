@@ -36,7 +36,7 @@ group :development do
   gem "webrick", "~> 1.3"
   gem "capistrano", "~> 2.15"
   gem "aws-sdk", "~> 1.66"
-  gem "capistrano-autoscaling", "~> 0.0", {:git=>"git://github.com/concord-consortium/capistrano-autoscaling.git", :branch=>"concord"}
+  gem "capistrano-autoscaling", "~> 0.0", {:git=>"https://github.com/concord-consortium/capistrano-autoscaling.git", :branch=>"concord"}
   gem "capistrano-cowboy", "~> 0.1"
   gem "lol_dba", "~> 1.6", {:require=>false}
   gem "brakeman", "~> 2.4", {:require=>false}
@@ -95,7 +95,7 @@ gem "omniauth", "~> 1.3.2"
 gem "omniauth-oauth2", "~> 1.1", {:git=>"https://github.com/intridea/omniauth-oauth2.git"}
 gem "default_value_for", "~> 2.0"
 gem "tinymce-rails", "~> 4.7"
-gem "yaml_db", "~> 0.2", {:git=>"git://github.com/lostapathy/yaml_db.git"}
+gem "yaml_db", "~> 0.2", {:git=>"https://github.com/lostapathy/yaml_db.git"}
 gem "aws-ses", git: "https://github.com/zebitex/aws-ses.git", ref: "78-sigv4-problem"
 gem "uuidtools", "~> 2.1"
 gem "httparty", "~> 0.12"
@@ -112,7 +112,7 @@ gem "chosen-rails", "~> 1.0"
 gem "safe_yaml", "~> 1.0"
 gem "will_paginate", "~> 3.0"
 gem "useragent", "~> 0.10"
-gem "ribbons-rails", "~> 0.0", {:git=>"git://github.com/concord-consortium/ribbons-rails.git"}
+gem "ribbons-rails", "~> 0.0", {:git=>"https://github.com/concord-consortium/ribbons-rails.git"}
 gem "spreadsheet", "~> 1.0"
 gem "nokogiri", ">= 1.8.5"
 gem "rack-cors","~> 0.4.1", :require => 'rack/cors'
