@@ -36,7 +36,7 @@ group :development do
   gem "webrick", "~> 1.3"
   gem "capistrano", "~> 2.15"
   gem "aws-sdk", "~> 1.66"
-  gem "capistrano-autoscaling", "~> 0.0", {:git=>"git://github.com/concord-consortium/capistrano-autoscaling.git", :branch=>"concord"}
+  gem "capistrano-autoscaling", "~> 0.0", {:git=>"https://github.com/concord-consortium/capistrano-autoscaling.git", :branch=>"concord"}
   gem "capistrano-cowboy", "~> 0.1"
   gem "lol_dba", "~> 1.6", {:require=>false}
   gem "brakeman", "~> 2.4", {:require=>false}
