@@ -371,6 +371,7 @@ export interface IAttachmentUrlRequest extends IBaseRequestResponse {
   interactiveId?: string;
   contentType?: string; // defaults to text/plain
   expiresIn?: number; // seconds
+  platformUserId?: string;
 }
 export interface IWriteAttachmentRequest extends IAttachmentUrlRequest {
   content: any;

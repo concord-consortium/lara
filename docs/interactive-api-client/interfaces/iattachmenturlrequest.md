@@ -19,6 +19,7 @@
 * [interactiveId](iattachmenturlrequest.md#optional-interactiveid)
 * [name](iattachmenturlrequest.md#name)
 * [operation](iattachmenturlrequest.md#operation)
+* [platformUserId](iattachmenturlrequest.md#optional-platformuserid)
 * [requestId](iattachmenturlrequest.md#requestid)
 
 ## Properties
@@ -50,6 +51,12 @@ ___
 ###  operation
 
 • **operation**: *"read" | "write"*
+
+___
+
+### `Optional` platformUserId
+
+• **platformUserId**? : *undefined | string*
 
 ___
 
