@@ -81,7 +81,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = "./src/example-interactives/src/linked-state/index.tsx");
+/******/ 	return __webpack_require__(__webpack_require__.s = "./src/example-interactives/src/report-item/index.tsx");
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -32536,10 +32536,10 @@ module.exports = g;
 
 /***/ }),
 
-/***/ "./src/example-interactives/src/linked-state/app.tsx":
-/*!***********************************************************!*\
-  !*** ./src/example-interactives/src/linked-state/app.tsx ***!
-  \***********************************************************/
+/***/ "./src/example-interactives/src/report-item/app.tsx":
+/*!**********************************************************!*\
+  !*** ./src/example-interactives/src/report-item/app.tsx ***!
+  \**********************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -32548,81 +32548,35 @@ module.exports = g;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppComponent = void 0;
 var React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-var useEffect = React.useEffect;
 var interactive_api_client_1 = __webpack_require__(/*! ../../../interactive-api-client */ "./src/interactive-api-client/index.ts");
-var authoring_1 = __webpack_require__(/*! ./authoring */ "./src/example-interactives/src/linked-state/authoring.tsx");
-var report_1 = __webpack_require__(/*! ./report */ "./src/example-interactives/src/linked-state/report.tsx");
-var runtime_1 = __webpack_require__(/*! ./runtime */ "./src/example-interactives/src/linked-state/runtime.tsx");
+var report_item_1 = __webpack_require__(/*! ./report-item */ "./src/example-interactives/src/report-item/report-item.tsx");
 var AppComponent = function (props) {
     var initMessage = (0, interactive_api_client_1.useInitMessage)();
     (0, interactive_api_client_1.useAutoSetHeight)();
-    useEffect(function () {
-        if (initMessage) {
-            (0, interactive_api_client_1.setSupportedFeatures)({
-                authoredState: true,
-                interactiveState: true
-            });
-        }
-    }, [initMessage]);
     if (!initMessage) {
         return (React.createElement("div", { className: "centered" },
             React.createElement("div", { className: "progress" }, "Loading...")));
     }
-    switch (initMessage.mode) {
-        case "authoring":
-            return React.createElement(authoring_1.AuthoringComponent, { initMessage: initMessage });
-        case "report":
-            return React.createElement(report_1.ReportComponent, { initMessage: initMessage });
-        case "runtime":
-            return React.createElement(runtime_1.RuntimeComponent, { initMessage: initMessage });
-        case "reportItem":
-            return React.createElement("div", null, "The \"reportItem\" mode is not implemented in this example interactive");
+    if (initMessage.mode !== "reportItem") {
+        return (React.createElement("div", null,
+            React.createElement("h1", null, "Oops!"),
+            React.createElement("p", null, "\u00AF\\_(\u30C4)_/\u00AF"),
+            React.createElement("p", null,
+                "This interactive is only available in 'reportItem' mode but '",
+                initMessage.mode,
+                "' was given.")));
     }
+    return React.createElement(report_item_1.ReportItemComponent, { initMessage: initMessage });
 };
 exports.AppComponent = AppComponent;
 
 
 /***/ }),
 
-/***/ "./src/example-interactives/src/linked-state/authoring.tsx":
-/*!*****************************************************************!*\
-  !*** ./src/example-interactives/src/linked-state/authoring.tsx ***!
-  \*****************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.AuthoringComponent = void 0;
-var React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-var AuthoringComponent = function (_a) {
-    var initMessage = _a.initMessage;
-    return (React.createElement("div", { className: "padded" },
-        React.createElement("div", { className: "padded" },
-            React.createElement("strong", null, "NOTE: there is nothing to author for this interactive.  To use it do the following:"),
-            React.createElement("ol", null,
-                React.createElement("li", null, "Create two interactives using this interactive's url."),
-                React.createElement("li", null, "In the \"Advanced Options\" tab enable saving state in both interactives."),
-                React.createElement("li", null,
-                    "In ",
-                    React.createElement("strong", null, "second"),
-                    " of the two interactives fill in the \"Link Saved Work From\" input to use the first interactive's id (available at the top of this edit popup)."),
-                React.createElement("li", null, "Exit authoring mode and in runtime/preview mode use the textarea to set the interactive state of the first interactive."),
-                React.createElement("li", null, "Go to the second interactive and then look to see if the linked state was updated."))),
-        React.createElement("fieldset", null,
-            React.createElement("legend", null, "Authoring Init Message"),
-            React.createElement("div", { className: "padded monospace pre" }, JSON.stringify(initMessage, null, 2)))));
-};
-exports.AuthoringComponent = AuthoringComponent;
-
-
-/***/ }),
-
-/***/ "./src/example-interactives/src/linked-state/index.tsx":
-/*!*************************************************************!*\
-  !*** ./src/example-interactives/src/linked-state/index.tsx ***!
-  \*************************************************************/
+/***/ "./src/example-interactives/src/report-item/index.tsx":
+/*!************************************************************!*\
+  !*** ./src/example-interactives/src/report-item/index.tsx ***!
+  \************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -32631,64 +32585,153 @@ exports.AuthoringComponent = AuthoringComponent;
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 var ReactDOM = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
-var app_1 = __webpack_require__(/*! ./app */ "./src/example-interactives/src/linked-state/app.tsx");
+var app_1 = __webpack_require__(/*! ./app */ "./src/example-interactives/src/report-item/app.tsx");
 ReactDOM.render(React.createElement(app_1.AppComponent, null), document.getElementById("app"));
 
 
 /***/ }),
 
-/***/ "./src/example-interactives/src/linked-state/report.tsx":
-/*!**************************************************************!*\
-  !*** ./src/example-interactives/src/linked-state/report.tsx ***!
-  \**************************************************************/
+/***/ "./src/example-interactives/src/report-item/init-message-info.tsx":
+/*!************************************************************************!*\
+  !*** ./src/example-interactives/src/report-item/init-message-info.tsx ***!
+  \************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ReportComponent = void 0;
+exports.InitMessageInfoComponent = void 0;
 var React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-var ReportComponent = function (_a) {
-    var initMessage = _a.initMessage;
-    return (React.createElement("div", { className: "padded" },
-        React.createElement("fieldset", null,
-            React.createElement("legend", null, "Report Init Message"),
-            React.createElement("div", { className: "padded monospace pre" }, JSON.stringify(initMessage, null, 2)))));
+var react_1 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+var InitMessageInfoComponent = function (props) {
+    var initMessage = (0, react_1.useRef)(props.initMessage);
+    var _a = initMessage.current, users = _a.users, interactiveItemId = _a.interactiveItemId, view = _a.view;
+    var userIds = Object.keys(users);
+    var numAnswersAtInit = userIds.reduce(function (acc, studentId) {
+        return users[studentId].hasAnswer ? acc + 1 : acc;
+    }, 0);
+    var _b = (0, react_1.useState)({}), userAnswers = _b[0], setUserAnswers = _b[1];
+    var numCurrentAnswers = Object.keys(userAnswers).length;
+    return (React.createElement("div", { className: "initMessageInfo" },
+        React.createElement("dt", null, "View"),
+        React.createElement("dd", null, view),
+        React.createElement("dt", null, "Interactive Item Id"),
+        React.createElement("dd", null, interactiveItemId),
+        React.createElement("dt", null, "Number of Users in Init Message"),
+        React.createElement("dd", null, userIds.length),
+        React.createElement("dt", null, "Number of Answers In Init Message"),
+        React.createElement("dd", null, numAnswersAtInit),
+        React.createElement("dt", null, "Number of Answers Currently"),
+        React.createElement("dd", null, numCurrentAnswers)));
 };
-exports.ReportComponent = ReportComponent;
+exports.InitMessageInfoComponent = InitMessageInfoComponent;
 
 
 /***/ }),
 
-/***/ "./src/example-interactives/src/linked-state/runtime.tsx":
-/*!***************************************************************!*\
-  !*** ./src/example-interactives/src/linked-state/runtime.tsx ***!
-  \***************************************************************/
+/***/ "./src/example-interactives/src/report-item/multiple-answer-summary.tsx":
+/*!******************************************************************************!*\
+  !*** ./src/example-interactives/src/report-item/multiple-answer-summary.tsx ***!
+  \******************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.RuntimeComponent = void 0;
+exports.MultipleAnswerSummaryComponent = void 0;
 var React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-var interactive_api_client_1 = __webpack_require__(/*! ../../../interactive-api-client */ "./src/interactive-api-client/index.ts");
-var RuntimeComponent = function (_a) {
-    var initMessage = _a.initMessage;
-    var _b = (0, interactive_api_client_1.useInteractiveState)(), interactiveState = _b.interactiveState, setInteractiveState = _b.setInteractiveState;
-    var handleInteractiveStateValueChange = function (event) {
-        setInteractiveState(event.target.value);
-    };
-    return (React.createElement("div", { className: "padded" },
-        React.createElement("fieldset", null,
-            React.createElement("legend", null, "Runtime Init Message"),
-            React.createElement("div", { className: "padded monospace pre" }, JSON.stringify(initMessage, null, 2))),
-        React.createElement("fieldset", null,
-            React.createElement("legend", null, "Interactive State"),
-            React.createElement("textarea", { className: "textarea", value: interactiveState || "", onChange: handleInteractiveStateValueChange }))));
+var init_message_info_1 = __webpack_require__(/*! ./init-message-info */ "./src/example-interactives/src/report-item/init-message-info.tsx");
+var MultipleAnswerSummaryComponent = function (props) {
+    return (React.createElement("div", null,
+        React.createElement("strong", null, "Multiple Answer Summary"),
+        React.createElement(init_message_info_1.InitMessageInfoComponent, { initMessage: props.initMessage })));
 };
-exports.RuntimeComponent = RuntimeComponent;
+exports.MultipleAnswerSummaryComponent = MultipleAnswerSummaryComponent;
+
+
+/***/ }),
+
+/***/ "./src/example-interactives/src/report-item/report-item.tsx":
+/*!******************************************************************!*\
+  !*** ./src/example-interactives/src/report-item/report-item.tsx ***!
+  \******************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.ReportItemComponent = void 0;
+var React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+var react_1 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+var interactive_api_client_1 = __webpack_require__(/*! ../../../interactive-api-client */ "./src/interactive-api-client/index.ts");
+var client_1 = __webpack_require__(/*! ../../../interactive-api-client/client */ "./src/interactive-api-client/client.ts");
+var multiple_answer_summary_1 = __webpack_require__(/*! ./multiple-answer-summary */ "./src/example-interactives/src/report-item/multiple-answer-summary.tsx");
+var single_answer_summary_1 = __webpack_require__(/*! ./single-answer-summary */ "./src/example-interactives/src/report-item/single-answer-summary.tsx");
+var ReportItemComponent = function (props) {
+    var initMessage = props.initMessage;
+    var users = initMessage.users, view = initMessage.view;
+    var _a = (0, react_1.useState)({}), userAnswers = _a[0], setUserAnswers = _a[1];
+    (0, react_1.useEffect)(function () {
+        (0, interactive_api_client_1.addGetReportItemAnswerListener)(function (request) {
+            var type = request.type, platformUserId = request.platformUserId, interactiveState = request.interactiveState, authoredState = request.authoredState;
+            var interactiveStateSize = JSON.stringify(interactiveState).length;
+            var authoredStateSize = JSON.stringify(authoredState).length;
+            setUserAnswers(function (prev) {
+                var _a;
+                return (__assign(__assign({}, prev), (_a = {}, _a[platformUserId] = interactiveState, _a)));
+            });
+            switch (type) {
+                case "html":
+                    var html = "\n            <div class=\"tall\">\n              <h1>TALL REPORT HERE...</h1>\n              <p>\n                <strong>Interactive State Size</strong>: " + interactiveStateSize + "\n              </p>\n              <p>\n                <strong>Authored State Size</strong>: " + authoredStateSize + "\n              </p>\n            </div>\n            <div class=\"wide\">\n              <h1>WIDE REPORT HERE...</h1>\n              <p>\n                <strong>Interactive State Size</strong>: " + interactiveStateSize + "\n              </p>\n              <p>\n                <strong>Authored State Size</strong>: " + authoredStateSize + "\n              </p>\n            </div>\n          ";
+                    (0, interactive_api_client_1.sendReportItemAnswer)({ type: "html", platformUserId: platformUserId, html: html });
+                    break;
+            }
+        });
+        // tell the portal-report we are ready for messages
+        (0, client_1.getClient)().post("reportItemClientReady");
+    }, []);
+    return (React.createElement("div", { className: "reportItem " + view }, view === "singleAnswer"
+        ? React.createElement(single_answer_summary_1.SingleAnswerSummaryComponent, { initMessage: initMessage })
+        : React.createElement(multiple_answer_summary_1.MultipleAnswerSummaryComponent, { initMessage: initMessage })));
+};
+exports.ReportItemComponent = ReportItemComponent;
+
+
+/***/ }),
+
+/***/ "./src/example-interactives/src/report-item/single-answer-summary.tsx":
+/*!****************************************************************************!*\
+  !*** ./src/example-interactives/src/report-item/single-answer-summary.tsx ***!
+  \****************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.SingleAnswerSummaryComponent = void 0;
+var React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+var init_message_info_1 = __webpack_require__(/*! ./init-message-info */ "./src/example-interactives/src/report-item/init-message-info.tsx");
+var SingleAnswerSummaryComponent = function (props) {
+    return (React.createElement("div", null,
+        React.createElement("strong", null, "Single Answer Summary"),
+        React.createElement(init_message_info_1.InitMessageInfoComponent, { initMessage: props.initMessage })));
+};
+exports.SingleAnswerSummaryComponent = SingleAnswerSummaryComponent;
 
 
 /***/ }),

@@ -44337,31 +44337,15 @@ exports.renderHTML = renderHTML;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppComponent = void 0;
 var React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-var useEffect = React.useEffect;
-var resize_observer_polyfill_1 = __webpack_require__(/*! resize-observer-polyfill */ "./node_modules/resize-observer-polyfill/dist/ResizeObserver.es.js");
+var react_1 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 var interactive_api_client_1 = __webpack_require__(/*! ../../../interactive-api-client */ "./src/interactive-api-client/index.ts");
 var authoring_1 = __webpack_require__(/*! ./authoring */ "./src/example-interactives/src/testbed/authoring.tsx");
 var report_1 = __webpack_require__(/*! ./report */ "./src/example-interactives/src/testbed/report.tsx");
 var runtime_1 = __webpack_require__(/*! ./runtime */ "./src/example-interactives/src/testbed/runtime.tsx");
 var AppComponent = function (props) {
     var initMessage = (0, interactive_api_client_1.useInitMessage)();
-    // TODO: this should really be moved into a client hook file so it can be reused
-    useEffect(function () {
-        if (initMessage) {
-            var body_1 = document.getElementsByTagName("BODY")[0];
-            var updateHeight_1 = function () {
-                if (body_1 && body_1.clientHeight) {
-                    (0, interactive_api_client_1.setHeight)(body_1.clientHeight);
-                }
-            };
-            var observer_1 = new resize_observer_polyfill_1.default(function () { return updateHeight_1(); });
-            if (body_1) {
-                observer_1.observe(body_1);
-            }
-            return function () { return observer_1.disconnect(); };
-        }
-    }, [initMessage]);
-    useEffect(function () {
+    (0, interactive_api_client_1.useAutoSetHeight)();
+    (0, react_1.useEffect)(function () {
         if (initMessage) {
             (0, interactive_api_client_1.setSupportedFeatures)({
                 authoredState: true,
@@ -44909,7 +44893,7 @@ var __rest = (this && this.__rest) || function (s, e) {
     return t;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getAttachmentUrl = exports.readAttachment = exports.writeAttachment = exports.getLibraryInteractiveList = exports.getInteractiveSnapshot = exports.setLinkedInteractives = exports.getInteractiveList = exports.closeModal = exports.showModal = exports.removeLinkedInteractiveStateListener = exports.addLinkedInteractiveStateListener = exports.removeGlobalInteractiveStateListener = exports.addGlobalInteractiveStateListener = exports.removeAuthoredStateListener = exports.addAuthoredStateListener = exports.removeInteractiveStateListener = exports.addInteractiveStateListener = exports.log = exports.getFirebaseJwt = exports.getAuthInfo = exports.setNavigation = exports.setHint = exports.postDecoratedContentEvent = exports.setHeight = exports.setSupportedFeatures = exports.removeDecorateContentListener = exports.addDecorateContentListener = exports.removeCustomMessageListener = exports.addCustomMessageListener = exports.setGlobalInteractiveState = exports.getGlobalInteractiveState = exports.setAuthoredState = exports.getAuthoredState = exports.flushStateUpdates = exports.setInteractiveState = exports.setInteractiveStateTimeout = exports.getInteractiveState = exports.getMode = exports.getInitInteractiveMessage = void 0;
+exports.sendReportItemAnswer = exports.getAttachmentUrl = exports.readAttachment = exports.writeAttachment = exports.getLibraryInteractiveList = exports.getInteractiveSnapshot = exports.setLinkedInteractives = exports.getInteractiveList = exports.closeModal = exports.showModal = exports.removeLinkedInteractiveStateListener = exports.addLinkedInteractiveStateListener = exports.removeGlobalInteractiveStateListener = exports.addGlobalInteractiveStateListener = exports.removeAuthoredStateListener = exports.addAuthoredStateListener = exports.removeInteractiveStateListener = exports.addInteractiveStateListener = exports.log = exports.getFirebaseJwt = exports.getAuthInfo = exports.setNavigation = exports.setHint = exports.postDecoratedContentEvent = exports.setHeight = exports.setSupportedFeatures = exports.removeGetReportItemAnswerListener = exports.addGetReportItemAnswerListener = exports.removeDecorateContentListener = exports.addDecorateContentListener = exports.removeCustomMessageListener = exports.addCustomMessageListener = exports.setGlobalInteractiveState = exports.getGlobalInteractiveState = exports.setAuthoredState = exports.getAuthoredState = exports.flushStateUpdates = exports.setInteractiveState = exports.setInteractiveStateTimeout = exports.getInteractiveState = exports.getMode = exports.getInitInteractiveMessage = void 0;
 var client_1 = __webpack_require__(/*! ./client */ "./src/interactive-api-client/client.ts");
 var uuid_1 = __webpack_require__(/*! uuid */ "./node_modules/uuid/dist/esm-browser/index.js");
 var THROW_NOT_IMPLEMENTED_YET = function (method) {
@@ -45051,6 +45035,14 @@ var removeDecorateContentListener = function () {
     (0, client_1.getClient)().removeDecorateContentListener();
 };
 exports.removeDecorateContentListener = removeDecorateContentListener;
+var addGetReportItemAnswerListener = function (callback) {
+    (0, client_1.getClient)().addGetReportItemAnswerListener(callback);
+};
+exports.addGetReportItemAnswerListener = addGetReportItemAnswerListener;
+var removeGetReportItemAnswerListener = function () {
+    (0, client_1.getClient)().removeGetReportItemAnswerListener();
+};
+exports.removeGetReportItemAnswerListener = removeGetReportItemAnswerListener;
 var setSupportedFeatures = function (features) {
     var request = {
         apiVersion: 1,
@@ -45361,6 +45353,10 @@ var getAttachmentUrl = function (params) {
     });
 };
 exports.getAttachmentUrl = getAttachmentUrl;
+var sendReportItemAnswer = function (request) {
+    (0, client_1.getClient)().post("reportItemAnswer", request);
+};
+exports.sendReportItemAnswer = sendReportItemAnswer;
 
 
 /***/ }),
@@ -45553,6 +45549,12 @@ var Client = /** @class */ (function () {
     Client.prototype.removeDecorateContentListener = function () {
         return this.removeListener("decorateContent");
     };
+    Client.prototype.addGetReportItemAnswerListener = function (callback) {
+        this.addListener("getReportItemAnswer", callback);
+    };
+    Client.prototype.removeGetReportItemAnswerListener = function () {
+        return this.removeListener("getReportItemAnswer");
+    };
     Client.prototype.connect = function () {
         var _this = this;
         this.phone = iframePhone.getIFrameEndpoint();
@@ -45560,7 +45562,12 @@ var Client = /** @class */ (function () {
             _this.managedState.initMessage = newInitMessage;
             // parseJSONIfString is used below quite a few times, as LARA and report are not consistent about format.
             // Sometimes they send string (report page), sometimes already parsed JSON (authoring, runtime).
-            _this.managedState.authoredState = parseJSONIfString(newInitMessage.authoredState);
+            if (newInitMessage.mode === "reportItem") {
+                _this.managedState.authoredState = {};
+            }
+            else {
+                _this.managedState.authoredState = parseJSONIfString(newInitMessage.authoredState);
+            }
             if (newInitMessage.mode === "runtime" || newInitMessage.mode === "report") {
                 _this.managedState.interactiveState = parseJSONIfString(newInitMessage.interactiveState);
                 // Don't consider initial state to be dirty, as user would see warnings while trying to leave page even
@@ -45633,8 +45640,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.useDecorateContent = exports.useCustomMessages = exports.useInitMessage = exports.useGlobalInteractiveState = exports.useAuthoredState = exports.useInteractiveState = void 0;
+exports.useAutoSetHeight = exports.useDecorateContent = exports.useCustomMessages = exports.useInitMessage = exports.useGlobalInteractiveState = exports.useAuthoredState = exports.useInteractiveState = void 0;
 var react_1 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+var resize_observer_polyfill_1 = __webpack_require__(/*! resize-observer-polyfill */ "./node_modules/resize-observer-polyfill/dist/ResizeObserver.es.js");
 var client = __webpack_require__(/*! ./api */ "./src/interactive-api-client/api.ts");
 var handleUpdate = function (newStateOrUpdateFunc, prevState) {
     if (typeof newStateOrUpdateFunc === "function") {
@@ -45756,6 +45764,25 @@ var useDecorateContent = function (callback) {
     }, []);
 };
 exports.useDecorateContent = useDecorateContent;
+var useAutoSetHeight = function () {
+    var initMessage = (0, exports.useInitMessage)();
+    (0, react_1.useEffect)(function () {
+        if (initMessage) {
+            var body_1 = document.body;
+            var html_1 = document.documentElement;
+            var updateHeight_1 = function () {
+                var height = Math.max(body_1.scrollHeight, body_1.offsetHeight, html_1.clientHeight, html_1.scrollHeight, html_1.offsetHeight);
+                client.setHeight(height);
+            };
+            var observer_1 = new resize_observer_polyfill_1.default(function () { return updateHeight_1(); });
+            if (body_1) {
+                observer_1.observe(body_1);
+            }
+            return function () { return observer_1.disconnect(); };
+        }
+    }, [initMessage]);
+};
+exports.useAutoSetHeight = useAutoSetHeight;
 
 
 /***/ }),
@@ -45810,6 +45837,7 @@ __exportStar(__webpack_require__(/*! ./metadata-types */ "./src/interactive-api-
 __exportStar(__webpack_require__(/*! ./in-frame */ "./src/interactive-api-client/in-frame.ts"), exports);
 __exportStar(__webpack_require__(/*! ./api */ "./src/interactive-api-client/api.ts"), exports);
 __exportStar(__webpack_require__(/*! ./hooks */ "./src/interactive-api-client/hooks.ts"), exports);
+__exportStar(__webpack_require__(/*! ./client */ "./src/interactive-api-client/client.ts"), exports);
 
 
 /***/ }),

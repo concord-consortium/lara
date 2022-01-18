@@ -19,6 +19,7 @@
 * [name](iwriteattachmentrequest.md#name)
 * [operation](iwriteattachmentrequest.md#operation)
 * [options](iwriteattachmentrequest.md#optional-options)
+* [platformUserId](iwriteattachmentrequest.md#optional-platformuserid)
 * [requestId](iwriteattachmentrequest.md#requestid)
 
 ## Properties
@@ -72,6 +73,14 @@ ___
 ### `Optional` options
 
 • **options**? : *RequestInit*
+
+___
+
+### `Optional` platformUserId
+
+• **platformUserId**? : *undefined | string*
+
+*Inherited from [IAttachmentUrlRequest](iattachmenturlrequest.md).[platformUserId](iattachmenturlrequest.md#optional-platformuserid)*
 
 ___
 
