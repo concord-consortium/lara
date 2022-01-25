@@ -1,5 +1,5 @@
 import { useDecorateContent, ITextDecorationHandlerInfo } from "../../interactive-api-client";
-import { renderHTML } from "./render-html";
+import { renderHTML } from "../../shared/render-html";
 import { addEventListeners, removeEventListeners, IDecorateReactOptions } from "@concord-consortium/text-decorator";
 import { useEffect, useState } from "react";
 import { IEventListeners } from "../../plugin-api";

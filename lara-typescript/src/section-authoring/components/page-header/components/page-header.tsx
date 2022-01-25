@@ -3,6 +3,7 @@ import { APIContainer } from "../../../containers/api-container";
 import { Logo } from "./logo";
 import { AccountOwner, IUser } from "./account-owner";
 import { PageHeaderMenu, IHeaderMenuLink } from "./page-header-menu";
+import { renderHTML } from "../../../../shared/render-html";
 
 import "./page-header.scss";
 
@@ -38,7 +39,7 @@ export const PageHeader: React.FC<IPageHeaderProps> = ({
           <div className="header-center">
             <div className="title-container" onClick={handleTitleClick}>
               <div className="activity-title">
-                {resourceName}
+                {renderHTML(resourceName)}
               </div>
             </div>
           </div>
