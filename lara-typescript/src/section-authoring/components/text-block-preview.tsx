@@ -5,6 +5,7 @@ import classNames from "classnames";
 import { ISectionItem, ITextBlockData } from "../api/api-types";
 
 import "./text-block-preview.scss";
+import { renderHTML } from "../../shared/render-html";
 
 export interface ITextBlockPreviewProps {
   pageItem: ISectionItem;
@@ -14,10 +15,6 @@ export const TextBlockPreview: React.FC<ITextBlockPreviewProps> = ({
   pageItem
   }: ITextBlockPreviewProps) => {
   const { content, isCallout, isHalfWidth, name } = pageItem.data as ITextBlockData;
-
-  const processContent = () => {
-    return content ? parse(DOMPurify.sanitize(content)) : "";
-  };
 
   const wrapperClasses = classNames("textBlock", {
     callout: isCallout,
@@ -30,7 +27,7 @@ export const TextBlockPreview: React.FC<ITextBlockPreviewProps> = ({
         {name}
       </div>}
       <div className="textBlockContent">
-        {processContent()}
+        {content && renderHTML(content)}
       </div>
     </div>
   );

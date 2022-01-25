@@ -3,7 +3,7 @@ import { APIContainer } from "../../../containers/api-container";
 import { Logo } from "./logo";
 import { AccountOwner, IUser } from "./account-owner";
 import { PageHeaderMenu, IHeaderMenuLink } from "./page-header-menu";
-import { renderHTML } from "../../../../example-interactives/src/render-html";
+import { renderHTML } from "../../../../shared/render-html";
 
 import "./page-header.scss";
 

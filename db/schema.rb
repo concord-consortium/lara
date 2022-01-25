@@ -403,6 +403,7 @@ ActiveRecord::Schema.define(:version => 20220107171753) do
     t.string   "export_hash"
     t.boolean  "customizable",            :default => false
     t.boolean  "authorable",              :default => false
+    t.text     "report_item_url"
   end
 
   add_index "library_interactives", ["export_hash"], :name => "library_interactives_export_hash_idx"
@@ -527,6 +528,7 @@ ActiveRecord::Schema.define(:version => 20220107171753) do
     t.boolean  "show_in_featured_question_report", :default => true
     t.string   "aspect_ratio_method",              :default => "DEFAULT"
     t.string   "linked_interactive_type"
+    t.text     "report_item_url"
   end
 
   add_index "mw_interactives", ["linked_interactive_id"], :name => "index_mw_interactives_on_linked_interactive_id"
@@ -642,6 +644,7 @@ ActiveRecord::Schema.define(:version => 20220107171753) do
     t.string   "platform_id"
     t.string   "platform_user_id"
     t.string   "resource_link_id"
+    t.integer  "status",               :default => 0
   end
 
   add_index "runs", ["activity_id"], :name => "index_runs_on_activity_id"
@@ -650,6 +653,8 @@ ActiveRecord::Schema.define(:version => 20220107171753) do
   add_index "runs", ["remote_endpoint"], :name => "index_runs_on_remote_endpoint"
   add_index "runs", ["sequence_id"], :name => "index_runs_on_sequence_id"
   add_index "runs", ["sequence_run_id"], :name => "index_runs_on_sequence_run_id"
+  add_index "runs", ["status"], :name => "index_runs_on_status"
+  add_index "runs", ["updated_at"], :name => "index_runs_on_updated_at"
   add_index "runs", ["user_id", "activity_id"], :name => "index_runs_on_user_id_and_activity_id"
   add_index "runs", ["user_id", "remote_id", "remote_endpoint"], :name => "runs_user_remote_endpt_idx"
   add_index "runs", ["user_id"], :name => "index_runs_on_user_id"
