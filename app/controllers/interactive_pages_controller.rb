@@ -50,6 +50,12 @@ class InteractivePagesController < ApplicationController
     @page = InteractivePage.new(:lightweight_activity => @activity)
     authorize! :create, @page
     @page.save!
+    last_idx = @activity.pages.length - 1
+    prev_last_idx = @activity.pages.length - 2
+    if @activity.pages[prev_last_idx].is_completion
+      @activity.pages[prev_last_idx].position = last_idx
+      @activity.pages[prev_last_idx].move_lower
+    end
     update_activity_changed_by
     flash[:notice] = "A new page was added to #{@activity.name}"
     redirect_to edit_activity_page_path(@activity, @page)
