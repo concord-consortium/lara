@@ -106,7 +106,7 @@ export const InteractiveIframe: React.FC<Props> = (props) => {
       headers: {
         "Content-type": "application/json"
       },
-      body: JSON.stringify({opts})
+      body: JSON.stringify(opts)
     })
     .then(response => response.json())
     .then((data: {token: string}) => {
