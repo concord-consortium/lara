@@ -133,7 +133,8 @@ class ManagedInteractive < ActiveRecord::Base
       inherit_click_to_play_prompt: inherit_click_to_play_prompt,
       custom_click_to_play_prompt: custom_click_to_play_prompt,
       inherit_image_url: inherit_image_url,
-      custom_image_url: custom_image_url
+      custom_image_url: custom_image_url,
+      linked_interactives: linked_interactives_list
     }
   end
 
@@ -172,8 +173,9 @@ class ManagedInteractive < ActiveRecord::Base
   end
 
   def duplicate
+    new_interactive_hash = self.to_hash.except!(:linked_interactives)
     # Generate a new object with those values
-    ManagedInteractive.new(self.to_hash)
+    ManagedInteractive.new(new_interactive_hash)
     # N.B. the duplicate hasn't been saved yet
   end
 

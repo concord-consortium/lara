@@ -392,14 +392,14 @@ class Api::V1::InteractivePagesController < API::APIController
   private
 
   def generate_item_json(page_item)
+    embeddable = page_item.embeddable
     {
       id: page_item.id.to_s,
       column: page_item.column,
       position: page_item.position,
       type: page_item.embeddable_type,
-      data: page_item.embeddable.to_hash
-      # using `to_interactive` here broke
-      # editing/saving by sending incorrect data back
+      data: embeddable.to_hash, # using `to_interactive` here broke editing/saving by sending incorrect data back
+      authoringApiUrls: embeddable.respond_to?(:authoring_api_urls) ? embeddable.authoring_api_urls(request.protocol, request.host_with_port) : {}
     }
   end
 
@@ -439,4 +439,5 @@ class Api::V1::InteractivePagesController < API::APIController
       render :json => { :success => false, :message => "Could not find interactive page ##{params['id']}"}
     end
   end
+
 end

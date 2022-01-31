@@ -67,7 +67,8 @@ class MwInteractive < ActiveRecord::Base
       authored_state: authored_state,
       aspect_ratio_method: aspect_ratio_method,
       no_snapshots: no_snapshots,
-      linked_interactive_item_id: linked_interactive_item_id
+      linked_interactive_item_id: linked_interactive_item_id,
+      linked_interactives: linked_interactives_list
     }
   end
 
@@ -76,8 +77,9 @@ class MwInteractive < ActiveRecord::Base
   end
 
   def duplicate
+    new_interactive_hash = self.to_hash.except!(:linked_interactives)
     # Generate a new object with those values
-    MwInteractive.new(self.to_hash)
+    MwInteractive.new(new_interactive_hash)
     # N.B. the duplicate hasn't been saved yet
   end
 

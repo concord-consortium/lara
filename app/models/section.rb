@@ -81,6 +81,7 @@ class Section < ActiveRecord::Base
   def duplicate(helper=nil)
     helper = LaraDuplicationHelper.new if helper.nil?
     new_section = Section.new(to_hash)
+    new_section.position = new_section.position + 1
 
     Section.transaction do
       new_section.save!(validate: false)
