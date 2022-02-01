@@ -15,7 +15,13 @@
     .textBlockContent {
       background: #f4f4f4;
       margin: 0;
+      overflow: hidden;
       padding: 5px 20px 20px 20px;
+
+      img {
+        height: auto;
+        max-width: 100%;
+      }
     }
   }
 
