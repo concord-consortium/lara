@@ -110,6 +110,8 @@ class ManagedInteractive < ActiveRecord::Base
     "iframe interactive"
   end
 
+  # to_hash is used by the export and duplicate methods here, and the create_page_item, update_page_item, 
+  # and generate_item_json methods in controllers/api/v1/interactive_pages_controller.rb
   def to_hash
     # Deliberately ignoring user (will be set in duplicate)
     {
@@ -144,6 +146,20 @@ class ManagedInteractive < ActiveRecord::Base
     hash[:linked_interactives] = linked_interactives_list
     hash
   end
+
+  # to_interactive is used by the to_authoring_preview_hash method above. 
+  # 
+  # It differs from to_hash by including:
+  # id, url, native_width, native_height, enable_learner_state, show_delete_data_button, has_report_url, 
+  # click_to_play, click_to_play_prompt, full_window, image_url, aspect_ratio, aspect_ratio_method, 
+  # no_snapshots, linked_interactive_id, linked_interactive_type
+  # 
+  # It also differs from to_hash by not including: 
+  # library_interactive_id, url_fragment, inherit_aspect_ratio_method, custom_aspect_ratio_method, 
+  # inherit_native_width, custom_native_width, inherit_native_height, custom_native_height, 
+  # inherit_click_to_play, custom_click_to_play, inherit_full_window, custom_full_window, 
+  # inherit_click_to_play_prompt, custom_click_to_play_prompt, inherit_image_url, custom_image_url, 
+  # linked_interactives
 
   def to_interactive
     # NOTE: model_library_url is missing as there is no analog
@@ -180,7 +196,7 @@ class ManagedInteractive < ActiveRecord::Base
   end
 
   def export
-    hash = to_hash()
+    hash = to_hash().except!(:linked_interactives)
     hash.delete(:library_interactive_id)
     hash[:library_interactive] = library_interactive ? {
       data: library_interactive.to_hash()
