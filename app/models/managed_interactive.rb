@@ -147,7 +147,8 @@ class ManagedInteractive < ActiveRecord::Base
     hash
   end
 
-  # to_interactive is used by the to_authoring_preview_hash method above. 
+  # to_interactive is used by the to_authoring_preview_hash method above. The to_authoring_preview_method 
+  # is deprecated. It is not used in LARA 2 and we plan to remove it when LARA 2 is moved to production.
   # 
   # It differs from to_hash by including:
   # id, url, native_width, native_height, enable_learner_state, show_delete_data_button, has_report_url, 
@@ -189,6 +190,8 @@ class ManagedInteractive < ActiveRecord::Base
   end
 
   def duplicate
+    # Remove linked_interactives from the hash since it can't be mapped to a database column like the other 
+    # properties in the hash can, and so causes an error when we try to create the duplicate interactive.
     new_interactive_hash = self.to_hash.except!(:linked_interactives)
     # Generate a new object with those values
     ManagedInteractive.new(new_interactive_hash)
@@ -196,6 +199,8 @@ class ManagedInteractive < ActiveRecord::Base
   end
 
   def export
+    # Remove linked_interactives from the hash since it can't be mapped to a database column like the other 
+    # properties in the hash can, and so would cause an error on import.
     hash = to_hash().except!(:linked_interactives)
     hash.delete(:library_interactive_id)
     hash[:library_interactive] = library_interactive ? {

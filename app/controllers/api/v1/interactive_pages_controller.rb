@@ -155,7 +155,7 @@ class Api::V1::InteractivePagesController < API::APIController
 
     item = @interactive_page.page_items.find { |i| i.id == item_id.to_i }
     duplicate = item.duplicate
-    render json:  generate_item_json(duplicate)
+    render json: generate_item_json(duplicate)
   end
 
   def update_section

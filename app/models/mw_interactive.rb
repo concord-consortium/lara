@@ -77,6 +77,8 @@ class MwInteractive < ActiveRecord::Base
   end
 
   def duplicate
+    # Remove linked_interactives from the hash since it can't be mapped to a database column like the other 
+    # properties in the hash can, and so causes an error when we try to create the duplicate interactive.
     new_interactive_hash = self.to_hash.except!(:linked_interactives)
     # Generate a new object with those values
     MwInteractive.new(new_interactive_hash)
