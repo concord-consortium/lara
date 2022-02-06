@@ -118,8 +118,9 @@ class Section < ActiveRecord::Base
           embed.primary_linked_items.each do |pli|
             primary = helper.get_copy(embed)
             secondary = helper.get_copy(pli.secondary.embeddable)
-            if primary && secondary
-              lpi = LinkedPageItem.new(primary_id: primary.page_item.id, secondary_id: secondary.page_item.id, label: pli.label)
+            secondary_page_item = secondary.page_item ? secondary.page_item : pli.secondary.embeddable.page_item
+            if primary && secondary_page_item
+              lpi = LinkedPageItem.new(primary_id: primary.page_item.id, secondary_id: secondary_page_item.id, label: pli.label)
               lpi.save!(validate: false)
             end
           end
