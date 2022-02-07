@@ -23,12 +23,6 @@
             %i.fa.fa-print
             %span.text
               Report
-      - if(@project && @project.help.present?)
-        %li.am-help
-          = link_to help_project_path(@project),:title => "Help",:"data-remote" => "true",:"data-trigger-save" => "false" do
-            %i.fa.fa-question-circle
-            %span.text
-              Help
       %li.am-close
         = link_to "#", :title => "Close", :onclick => 'window.close();' do
           %i.fa.fa-times

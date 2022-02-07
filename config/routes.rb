@@ -12,7 +12,6 @@ LightweightStandalone::Application.routes.draw do
   resources :projects do
     member do
       get :about
-      get :help
       get :contact_us
     end
   end
