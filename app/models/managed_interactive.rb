@@ -199,8 +199,8 @@ class ManagedInteractive < ActiveRecord::Base
   end
 
   def export
-    # Remove linked_interactives from the hash since it can't be mapped to a database column like the other 
-    # properties in the hash can, and so would cause an error on import.
+    # Remove linked_interactives from the hash so we don't export linked embeddables. The export method 
+    # in LaraSerializationHelper provides special handling for this value. See comment there for more.
     hash = to_hash().except!(:linked_interactives)
     hash.delete(:library_interactive_id)
     hash[:library_interactive] = library_interactive ? {
