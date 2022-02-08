@@ -42,7 +42,8 @@ describe MwInteractive do
         show_in_featured_question_report: interactive.show_in_featured_question_report,
         aspect_ratio_method: interactive.aspect_ratio_method,
         no_snapshots: interactive.no_snapshots,
-        linked_interactive_item_id: interactive.linked_interactive_item_id
+        linked_interactive_item_id: interactive.linked_interactive_item_id,
+        linked_interactives: []
       }
       hash = interactive.to_hash
       expect(hash).to eq(expected)

@@ -70,13 +70,13 @@ export const InteractiveIframe: React.FC<Props> = (props) => {
 
   const handleGetInteractiveList = (request: LaraInteractiveApi.IGetInteractiveListRequest, url: string) => {
     const {requestId, scope, supportsSnapshots} = request;
+    const urlWithParams = `${url}?scope=${scope}&amp;supportsSnapshots=${supportsSnapshots}`;
 
-    return fetch(url, {
+    return fetch(urlWithParams, {
       method: "GET",
       headers: {
         "Content-type": "application/json"
-      },
-      body: JSON.stringify({scope, supportsSnapshots})
+      }
     })
     .then(response => response.json())
     .then((data: {interactives: IInteractiveListResponseItem[]}) => {

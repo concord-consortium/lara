@@ -30,8 +30,14 @@ export const ItemEditDialog: React.FC<IItemEditDialogProps> = ({
   const libraryInteractives = getLibraryInteractives.data?.libraryInteractives;
 
   useEffect(() => {
-    handleUpdateItem();
+    if (Object.keys(itemData).length > 0) {
+      handleUpdateItem();
+    }
   }, [itemData]);
+
+  useEffect(() => {
+    setItemData({});
+  }, [editingItemId]);
 
   const handleUpdateTextBlockData = (updates: ITextBlockData) => {
     setItemData(updates);
@@ -114,13 +120,7 @@ export const ItemEditDialog: React.FC<IItemEditDialogProps> = ({
 
   const handleCloseDialog = () => {
     setEditingItemId(false);
-  };
-
-  // for now, this is just a placeholder in case it's needed in the future
-  const constructAuthoringApiUrls = () => {
-    return {
-
-    };
+    setItemData({});
   };
 
   const interactiveFromItemToEdit = (itemToEdit: ISectionItem) => {
@@ -147,7 +147,7 @@ export const ItemEditDialog: React.FC<IItemEditDialogProps> = ({
   ];
 
   const getEditForm = (itemToEdit: ISectionItem) => {
-    const authoringApiUrls = constructAuthoringApiUrls();
+    const authoringApiUrls = itemToEdit.authoringApiUrls ? itemToEdit.authoringApiUrls : {};
     switch (itemToEdit.type) {
       case "Embeddable::Xhtml":
         return <TextBlockEditForm pageItem={itemToEdit} />;

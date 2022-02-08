@@ -17,6 +17,12 @@ export enum SectionColumns {
   PRIMARY =  "primary",
   SECONDARY =  "secondary"
 }
+
+interface AuthoringApiUrls {
+  get_interactive_list?: string;
+  set_linked_interactives?: string;
+}
+
 export interface ISectionItem {
   column: SectionColumns;
   data?: any;
@@ -24,6 +30,7 @@ export interface ISectionItem {
   position?: number;
   section_id?: string;
   type?: string;
+  authoringApiUrls?: AuthoringApiUrls;
 }
 
 export interface ISectionItemType {
