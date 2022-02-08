@@ -6,11 +6,16 @@ FactoryGirl.define do
   factory :project do
     about "MyText"
     footer "MyText"
-    help "MyText"
     logo_ap "MyString"
     logo_lara "MyString"
     project_key { generate(:project_key) }
     title "MyString"
     url "MyString"
+    copyright "MyString"
+    copyright_image_url "MyString"
+    collaborators "MyString"
+    funders_image_url "MyString"
+    collaborators_image_url "MyString"
+    contact_email "MyString"
   end
 end
