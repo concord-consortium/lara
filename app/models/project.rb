@@ -2,7 +2,8 @@ class Project < ActiveRecord::Base
   DefaultName = 'Default Project'
   DefaultKey = 'default-project'
 
-  attr_accessible :footer, :logo_lara, :logo_ap, :title, :url, :theme_id, :about, :help, :project_key
+  attr_accessible :footer, :logo_lara, :logo_ap, :title, :url, :theme_id, :about, :project_key, :copyright, 
+  :copyright_image_url, :collaborators, :funders_image_url, :collaborators_image_url, :contact_email
   validates :project_key, uniqueness: true
   has_many :sequences
   has_many :lightweight_activities
@@ -57,12 +58,17 @@ class Project < ActiveRecord::Base
   def export
     project_json = self.as_json(only: [:about,
                                        :footer,
-                                       :help,
                                        :logo_ap,
                                        :logo_lara,
                                        :project_key,
                                        :title,
-                                       :url])
+                                       :url,
+                                       :copyright, 
+                                       :copyright_image_url,
+                                       :collaborators,
+                                       :funders_image_url,
+                                       :collaborators_image_url,
+                                       :contact_email])
     return project_json
   end
 
@@ -71,12 +77,17 @@ class Project < ActiveRecord::Base
     if existing_project.blank?
       new_project = Project.new(about: project_data[:about],
                                 footer: project_data[:footer],
-                                help: project_data[:help],
                                 logo_ap: project_data[:logo_ap],
                                 logo_lara: project_data[:logo_lara],
                                 project_key: project_data[:project_key],
                                 title: project_data[:title],
-                                url: project_data[:url])
+                                url: project_data[:url],
+                                copyright: project_data[:copyright], 
+                                copyright_image_url: project_data[:copyright_image_url],
+                                collaborators: project_data[:collaborators],
+                                funders_image_url: project_data[:funders_image_url],
+                                collaborators_image_url: project_data[:collaborators_image_url],
+                                contact_email: project_data[:contact_email])
       new_project.save
       return new_project
     else
