@@ -3,32 +3,10 @@
     = render :partial => 'shared/session'
 = content_for :title do
   Projects
-= content_for :nav do
-  .breadcrumbs
-    %ul
-      %li= link_to "Home", root_path
-      %li / All Projects
 
-.action_menu#activity-actions
-  .action_menu_header
-    .action_menu_header_left
-    .action_menu_header_right.index
-      %ul#new-menu
-        - if can? :create, Project
-          %li#add= link_to 'create new project', new_project_path
+#projectList
 
-#official_listing_heading
-  %h1 Projects
-%ul.quiet_list.official_listing
-  - @projects.each do |project|
-    %li{ :id => dom_id_for(project, :item), :class => 'item' }
-      %div.action_menu
-        %div.action_menu_header_left
-          = link_to project.title, edit_project_path(project), :class => 'container_link'
-        %div.action_menu_header_right.themes
-          %ul.menu
-            %li.edit= link_to "Edit", edit_project_path(project) if can? :update, project
-            %li.delete= link_to 'Delete', project_path(project), method: :delete, data: { confirm: 'Are you sure?' } if can? :update, project
-      %div.tiny
-        links to
-        = link_to project.url, project.url
+:javascript
+  $(document).ready( function() {
+    LARA.Projects.renderProjectList(document.getElementById("projectList"));
+  });

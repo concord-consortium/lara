@@ -3,15 +3,10 @@
     = render :partial => 'shared/session'
 = content_for :title do
   New Project
-= content_for :nav do
-  .breadcrumbs
-    %ul
-      %li= link_to "Home", root_path
-      %li 
-        \/
-        = link_to 'All Projects', projects_path
-      %li / New Project
 
-%h1.title New Project
+#projectEditForm
 
-=render :partial => 'form'
+:javascript
+  $(document).ready( function() {
+    LARA.Projects.renderProjectSettingsForm(document.getElementById("projectEditForm"), {});
+  });
