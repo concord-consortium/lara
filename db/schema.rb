@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20211208201753) do
+ActiveRecord::Schema.define(:version => 20220209211536) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "kind"
@@ -602,13 +602,18 @@ ActiveRecord::Schema.define(:version => 20211208201753) do
     t.string   "logo_lara"
     t.string   "url"
     t.text     "footer"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.datetime "created_at",              :null => false
+    t.datetime "updated_at",              :null => false
     t.integer  "theme_id"
     t.text     "about"
-    t.text     "help"
     t.string   "logo_ap"
     t.string   "project_key"
+    t.text     "copyright"
+    t.string   "copyright_image_url"
+    t.text     "collaborators"
+    t.string   "funders_image_url"
+    t.string   "collaborators_image_url"
+    t.string   "contact_email"
   end
 
   add_index "projects", ["project_key"], :name => "index_projects_on_project_key", :unique => true

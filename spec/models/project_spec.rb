@@ -29,8 +29,13 @@ describe Project do
     it "exports project data" do
       project_params = {
         about: "Some text about the project.",
+        collaborators: "This is some text about collaborators.",
+        collaborators_image_url: "https://static.concord.org/images/collaborators-logos.png",
+        contact_email: "test.project@concord.org",
+        copyright: "This is some text about copyright.",
+        copyright_image_url: "https://static.concord.org/images/cc-license-1.png",
         footer: "Copyright information and such.",
-        help: "Help text for the project.",
+        funders_image_url: "https://static.concord.org/images/funder-logos.png",
         logo_ap: "https://static.concord.org/projects/logos/ap/project-1.png",
         logo_lara: "https://static.concord.org/projects/logos/lara/project-1.png",
         project_key: "test-project-1",

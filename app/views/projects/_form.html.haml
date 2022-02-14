@@ -13,36 +13,84 @@
     %br
     = f.text_field :title
   .field
-    = f.label :project_key
+    = f.label :project_key, "Project Key"
     %br
     = f.text_field :project_key
+    %br
+    .hint
+      The project key is used across sites to synchronise project information. It must be a unique value.
   .field
-    = f.label :logo_lara, "Logo URL for LARA runtime"
+    = f.label :logo_lara, "LARA Runtime Logo URL"
     %br
     = f.text_field :logo_lara
+    %br
+    .hint
+      Logo image should be 228 pixels wide by 70 pixels high. If left blank, the Concord Consortium logo will be used by default.
   .field
-    = f.label :logo_ap, "Logo URL for Activity Player"
+    = f.label :logo_ap, "Activity Player Logo URL"
     %br
     = f.text_field :logo_ap
+    %br
+    .hint
+      Logo image should be 250 pixels wide by 78 pixels high. If left blank, the Concord Consortium logo will be used by default.
   .field
-    = f.label :url, "URL"
+    = f.label :url, "Project Page URL"
     %br
     = f.text_field :url
+    %br
+    .hint
+      When logo image is clicked, this is URL will launch in a new browser tab.
   .field
-    = f.label :footer
+    = f.label :theme, "LARA Runtime Default Theme"
+    %br
+    = f.select :theme_id, options_from_collection_for_select(Theme.all, 'id', 'name', @project.theme_id), { :include_blank => "None (use site default)" }
+    %br
+    .hint
+      When LARA Runtime is the selected Runtime Environment, activities will use this theme by default. Themes can be changed in the activity settings.
+  .field
+    = f.label :footer, "LARA Runtime Footer"
     %br
     = f.text_area :footer, { :class => 'wysiwyg', :cols => 80, :rows => 10 }
   .field
-    = f.label :about
+    = f.label :about, "About Text"
     %br
     = f.text_area :about, { :class => 'wysiwyg', :cols => 80, :rows => 10 }
+  %h2 Activity Player Footer
   .field
-    = f.label :help
+    = f.label :copyright, "Copyright/Attribution Text"
     %br
-    = f.text_area :help, { :class => 'wysiwyg', :cols => 80, :rows => 10 }
+    = f.text_area :copyright, { :class => 'wysiwyg', :cols => 80, :rows => 10 }
   .field
-    = f.label :theme, "Default theme"
+    = f.label :copyright_image_url, "Copyright Image URL"
     %br
-    = f.select :theme_id, options_from_collection_for_select(Theme.all, 'id', 'name', @project.theme_id), { :include_blank => "None (use site default)" }
+    = f.text_field :copyright_image_url
+    %br
+    .hint
+      Image is displayed at top left of copyright text. Image file should be 240 pixels wide by 84 pixels high. If left blank, no image will be displayed.
+  .field
+    = f.label :collaborators, "Funding Source(s) and Collaborators Text"
+    %br
+    = f.text_area :collaborators, { :class => 'wysiwyg', :cols => 80, :rows => 10 }
+  .field
+    = f.label :funders_image_url, "Funding Source Image URL"
+    %br
+    = f.text_field :funders_image_url
+    %br
+    .hint
+      If multiple funding sources, please create a single image with all logos. Image is displayed at top left of funder(s)/collaborator(s) text. Image should be 240 pixels wide by 100 pixels high, or 100 pixels wide by 100 pixels high. If left blank, no image will be displayed.
+  .field
+    = f.label :collaborators_image_url, "Collaborator(s) Image URL"
+    %br
+    = f.text_field :collaborators_image_url
+    %br
+    .hint
+      If multiple collaborators, please create a single image with all logos. Image should be a maximum of 1800 pixels wide by 100 pixels high. If left blank, no image will be displayed.
+  .field
+    = f.label :contact_email, "Project Contact Email"
+    %br
+    = f.text_field :contact_email
+    %br
+    .hint
+      Provide a valid email address for users to contact your project team. When this is provided, your contact email will be displayed in the footer.
   .actions
-    = f.submit
+    = f.submit "Save"
