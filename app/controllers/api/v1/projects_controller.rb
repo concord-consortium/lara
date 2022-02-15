@@ -6,14 +6,14 @@ class Api::V1::ProjectsController < API::APIController
   def index
     @projects = Project.all
     authorize! :manage, @projects
-    render json: @projects
+    render json: {projects: @projects}
   end
 
   # GET /api/v1/projects/1.json
   def show
     @project = Project.find(params[:id])
     authorize! :manage, @project
-    render json: @project
+    render json: {project: @project}
   end
 
   # POST /api/v1/projects
@@ -42,6 +42,7 @@ class Api::V1::ProjectsController < API::APIController
   # DELETE /api/v1/delete_project/1.json
   def destroy
     @project = Project.find(params[:id])
+    authorize! :delete, @project
     if @project.destroy
       render json: {success: true}, status: 200
     else

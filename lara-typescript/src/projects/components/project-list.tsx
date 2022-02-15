@@ -2,11 +2,12 @@ import * as React from "react";
 import { useEffect, useState} from "react";
 import { ProjectListItem } from "./project-list-item";
 import { IProject } from "../types";
+import { snakeToCamelCaseKeys } from "../../shared/convert-keys";
 
 import "./project-list.scss";
 
 export const ProjectList: React.FC = () => {
-  const [projects, setProjects] = useState<IProject[]>([]);
+  const [projects, setProjects] = useState<IProject[]|null>(null);
   const [projectsUpdated, setProjectsUpdated] = useState(false);
   const [alertMessage, setAlertMessage] = useState<string|undefined>(undefined);
 
@@ -21,54 +22,54 @@ export const ProjectList: React.FC = () => {
     }
   }, [projectsUpdated]);
 
-  const getProjects = () => {
+  const getProjects = async () => {
     const apiUrl = `/api/v1/projects`;
-    fetch(apiUrl, {
+    const data = await fetch(apiUrl, {
       method: "GET",
       headers: {"Content-Type": "application/json"},
       credentials: "include"
     })
     .then(response => response.json())
-    .then(data => {
-      setProjects(data);
-    })
     .catch(error => {
-      setAlertMessage(error);
+       setAlertMessage(error);
     });
+
+    setProjects(
+      data.projects.map((p: any) => snakeToCamelCaseKeys(p))
+    );
   };
 
   const handleCreateNewButtonClick = () => {
     window.location.href = "/projects/new";
   };
 
-  const handleDeleteRequest = (projectId: number) => {
+  const handleDeleteRequest = async (projectId: number) => {
     if (confirm("Are you sure you want to delete this project?")) {
       const apiUrl = `/api/v1/delete_project/${projectId}`;
-      fetch(apiUrl, {
+      const data = await fetch(apiUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json"},
         credentials: "include",
         body: JSON.stringify({id: projectId})
       })
       .then(response => response.json())
-      .then(data => {
-        window.scrollTo(0, 0);
-        if (data.success) {
-          setAlertMessage("Project deleted.");
-          const alertTimer = setTimeout(() => setAlertMessage(undefined), 5000);
-          clearTimeout(alertTimer);
-          setProjectsUpdated(true);
-        }
-      })
       .catch(error => {
         window.scrollTo(0, 0);
         setAlertMessage(error);
       });
+
+      if (data.success) {
+        window.scrollTo(0, 0);
+        setAlertMessage("Project deleted.");
+        const alertTimer = setTimeout(() => setAlertMessage(undefined), 5000);
+        clearTimeout(alertTimer);
+        setProjectsUpdated(true);
+      }
     }
   };
 
   return (
-    <div className="projectList">
+    <div className="projectListContainer">
       <nav>
         <div className="breadcrumbs">
           <ul>
@@ -84,8 +85,8 @@ export const ProjectList: React.FC = () => {
       </div>
       <h1 className="title">Projects</h1>
       {alertMessage && <div className="alertMessage">{alertMessage}</div>}
-      <ul>
-        {projects.map((project, index) => (
+      <ul className="projectList">
+        {projects && projects.map((project, index) => (
           <ProjectListItem
             key={`project-${index}`}
             id={project.id}

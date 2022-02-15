@@ -76,7 +76,7 @@
       "node"
     ],
     "moduleNameMapper": {
-      "\\.(css|sass)$": "identity-obj-proxy"
+      "\\.(css|sass|scss)$": "identity-obj-proxy"
     }
   },
   "homepage": "https://github.com/concord-consortium/lara/tree/master/lara-typescript#readme",

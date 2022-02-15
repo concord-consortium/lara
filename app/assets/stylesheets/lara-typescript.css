@@ -3192,10 +3192,10 @@ button.bigButton {
   --error-bg: #fee;
   --error-fg: #ad2d23; }
 
-.projectList h1.title {
+.projectListContainer h1.title {
   clear: none; }
 
-.projectList .alertMessage {
+.projectListContainer .alertMessage {
   animation: pulse .3s 3 ease-in-out;
   background: var(--lt-green);
   clear: both;
@@ -3203,7 +3203,7 @@ button.bigButton {
   margin-bottom: 10px;
   padding: 10px;
   width: calc(100% - 20px); }
-  .projectList .alertMessage .error {
+  .projectListContainer .alertMessage .error {
     background: var(--orange);
     color: var(--dark-gray); }
 
@@ -3215,7 +3215,7 @@ button.bigButton {
   100% {
     opacity: .7; } }
 
-.projectList ul {
+.projectListContainer ul {
   margin: 0;
   padding: 0; }
 

@@ -31,11 +31,13 @@ export const ProjectListItem: React.FC<IProjectListItemProps> = ({
       <div className="projectListItem__title" onClick={handleEditButtonClick}>{title}</div>
       <menu>
         <ul>
-          <li><button className="textButton" onClick={handleEditButtonClick}>Edit</button></li>
-          <li><button className="textButton" onClick={handleDeleteButtonClick}>Delete</button></li>
+          <li><button className="textButton editButton" onClick={handleEditButtonClick}>Edit</button></li>
+          <li><button className="textButton deleteButton" onClick={handleDeleteButtonClick}>Delete</button></li>
         </ul>
       </menu>
-      <div className="projectListItem__link">Links to <a href="{url}" target="_blank">{url}</a></div>
+      <div className="projectListItem__link">
+        Links to <a className="projectLink" href="{url}" target="_blank">{url}</a>
+      </div>
     </li>
   );
 };

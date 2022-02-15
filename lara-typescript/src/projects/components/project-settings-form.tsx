@@ -8,7 +8,7 @@ import "@concord-consortium/slate-editor/build/index.css";
 import "./project-settings-form.scss";
 
 export interface IProjectSettingsFormProps {
-  id: number;
+  id: number | null;
 }
 
 export const ProjectSettingsForm: React.FC<IProjectSettingsFormProps> = ({id}: IProjectSettingsFormProps) => {
@@ -59,42 +59,40 @@ export const ProjectSettingsForm: React.FC<IProjectSettingsFormProps> = ({id}: I
     setCopyrightValue(htmlToSlate(project.copyright || ""));
   }, [projectLoaded]);
 
-  const getProject = () => {
+  const getProject = async () => {
     const apiUrl = `/api/v1/projects/${id}`;
-    fetch(apiUrl, {
+    const data = await fetch(apiUrl, {
       method: "GET",
       headers: {"Content-Type": "application/json"},
       credentials: "include"
     })
     .then(response => response.json())
-    .then(data => {
-      // remove protected attributes
-      delete data.created_at;
-      delete data.updated_at;
-      setProject(snakeToCamelCaseKeys(data));
-      setProjectLoaded(true);
-      setPageTitle(`Edit ${data.title}`);
-    })
     .catch(error => {
       setAlertMessage(error);
     });
+
+    // remove protected attributes
+    delete data.project.created_at;
+    delete data.project.updated_at;
+    setProject(snakeToCamelCaseKeys(data.project));
+    setProjectLoaded(true);
+    setPageTitle(`Edit ${data.project.title}`);
   };
 
-  const getThemes = () => {
+  const getThemes = async () => {
     const apiUrl = "/api/v1/themes";
-    fetch(apiUrl, {
+    const data = await fetch(apiUrl, {
       method: "GET",
       headers: {"Content-Type": "application/json"},
       credentials: "include"
     })
     .then(response => response.json())
-    .then(data => {
-      const themes = data.map((t: any) => ({id: t.id, name: t.name}));
-      setThemeList(themes);
-    })
     .catch(error => {
       setAlertMessage(error);
     });
+
+    const themes = data.themes.map((t: any) => ({id: t.id, name: t.name}));
+    setThemeList(themes);
   };
 
   const generateProjectKey = (title: string) => {
@@ -104,9 +102,10 @@ export const ProjectSettingsForm: React.FC<IProjectSettingsFormProps> = ({id}: I
     }
   };
 
-  const handleTitleBlur = () => {
-    if (project.projectKey === "") {
-      const projectKey = generateProjectKey(project.title);
+  const handleTitleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    const title = e.target.value;
+    if (project.projectKey === "" && title !== "") {
+      const projectKey = generateProjectKey(e.target.value);
       setProject({...project, projectKey});
     }
   };
@@ -151,34 +150,33 @@ export const ProjectSettingsForm: React.FC<IProjectSettingsFormProps> = ({id}: I
   const handleCollaboratorsChange = handleSlateRteChange("collaborators", setCollaboratorsValue);
   const handleCopyrightChange = handleSlateRteChange("copyright", setCopyrightValue);
 
-  const handleSaveProject = () => {
+  const handleSaveProject = async () => {
     const apiUrl = id ? `/api/v1/projects/${id}` : `/api/v1/projects`;
     const projectData = camelToSnakeCaseKeys(project);
 
-    fetch(apiUrl, {
+    const data = await fetch(apiUrl, {
       method: "POST",
       headers: { "Content-Type": "application/json"},
       credentials: "include",
       body: JSON.stringify({project: projectData})
     })
     .then(response => response.json())
-    .then(data => {
-      window.scrollTo(0, 0);
-      if (data.success) {
-        setProjectSaved(true);
-        if (isNewProject) {
-          window.location.href = "/projects?newProjectCreated=1";
-        } else {
-          setAlertMessage("Project saved.");
-          const alertTimer = setTimeout(() => setAlertMessage(undefined), 5000);
-          clearTimeout(alertTimer);
-        }
-      }
-    })
     .catch((error) => {
       window.scrollTo(0, 0);
       setAlertMessage(error);
     });
+
+    if (data.success) {
+      setProjectSaved(true);
+      if (isNewProject) {
+        window.location.assign("/projects?newProjectCreated=1");
+      } else {
+        setAlertMessage("Project saved.");
+        const alertTimer = setTimeout(() => setAlertMessage(undefined), 5000);
+        clearTimeout(alertTimer);
+      }
+    }
+    window.scrollTo(0, 0);
   };
 
   if (isNewProject && projectSaved) {
@@ -226,7 +224,7 @@ export const ProjectSettingsForm: React.FC<IProjectSettingsFormProps> = ({id}: I
           The project key is used across sites to synchronise project information. It must be a unique value.
         </dd>
         <dt>
-          <label htmlFor="project-title">LARA Runtime Logo URL</label>
+          <label htmlFor="project-logo-lara">LARA Runtime Logo URL</label>
         </dt>
         <dd className="hasNote">
           <input
@@ -287,7 +285,7 @@ export const ProjectSettingsForm: React.FC<IProjectSettingsFormProps> = ({id}: I
       <h2>Activity Player Footer</h2>
       <dl>
         <dt>
-          <label htmlFor="project-copyright">Copyright/Attribution Text</label>
+          <label>Copyright/Attribution Text</label>
         </dt>
         <dd>
           <div className="slateContainer">
@@ -295,7 +293,7 @@ export const ProjectSettingsForm: React.FC<IProjectSettingsFormProps> = ({id}: I
           </div>
         </dd>
         <dt>
-          <label htmlFor="project-logo-ap">Copyright Image URL</label>
+          <label htmlFor="project-copyright-image-url">Copyright Image URL</label>
         </dt>
         <dd className="hasNote">
           <input
@@ -310,7 +308,7 @@ export const ProjectSettingsForm: React.FC<IProjectSettingsFormProps> = ({id}: I
           pixels high. If left blank, no image will be displayed.
         </dd>
         <dt>
-          <label htmlFor="project-collaborators">Funding Source(s) and Collaborator(s) Text</label>
+          <label>Funding Source(s) and Collaborator(s) Text</label>
         </dt>
         <dd>
           <div className="slateContainer">
@@ -318,7 +316,7 @@ export const ProjectSettingsForm: React.FC<IProjectSettingsFormProps> = ({id}: I
           </div>
         </dd>
         <dt>
-          <label htmlFor="project-logo-ap">Funding Source(s) Image URL</label>
+          <label htmlFor="project-funders-image-url">Funding Source(s) Image URL</label>
         </dt>
         <dd className="hasNote">
           <input
@@ -349,7 +347,7 @@ export const ProjectSettingsForm: React.FC<IProjectSettingsFormProps> = ({id}: I
           maximum of 1800 pixels wide by 100 pixels high. If left blank, no image will be displayed.
         </dd>
         <dt>
-          <label htmlFor="project-about">About Text</label>
+          <label>About Text</label>
         </dt>
         <dd>
           <div className="slateContainer">
@@ -376,10 +374,17 @@ export const ProjectSettingsForm: React.FC<IProjectSettingsFormProps> = ({id}: I
           <label htmlFor="project-theme-id">LARA Runtime Default Theme</label>
         </dt>
         <dd className="hasNote">
-          <select id="project-theme-id" name="project[theme_id]" onChange={handleThemeChange}>
-            <option value="" selected={typeof project.themeId === "undefined"}>None (use default)</option>
+          <select
+            id="project-theme-id"
+            name="project[theme_id]"
+            value={project.themeId}
+            defaultValue={project.themeId}
+            onChange={handleThemeChange}
+          >
             {themeList.map(theme => (
-              <option key={`theme-${id}`} value={theme.id} selected={project.themeId === theme.id}>{theme.name}</option>
+              <option key={`theme-${theme.id}`} value={theme.id}>
+                {theme.name}
+              </option>
             ))}
           </select>
         </dd>
@@ -388,7 +393,7 @@ export const ProjectSettingsForm: React.FC<IProjectSettingsFormProps> = ({id}: I
           default. Themes can be changed in the activity settings.
         </dd>
       </dl>
-      <button onClick={handleSaveProject}>Save</button>
+      <button id="save-button" onClick={handleSaveProject}>Save</button>
     </div>
   );
 };
