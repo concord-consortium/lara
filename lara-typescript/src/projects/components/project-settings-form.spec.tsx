@@ -1,7 +1,6 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import * as fetch from "jest-fetch-mock";
-import { waitFor } from "@testing-library/react";
 import { ProjectSettingsForm } from "./project-settings-form";
 import { act } from "react-dom/test-utils";
 import { fireEvent } from "@testing-library/dom";
@@ -40,19 +39,7 @@ describe("ProjectSettingsForm", () => {
     fetch.resetMocks();
     container = document.createElement("div");
     document.body.appendChild(container);
-
-    // global.fetch = jest.fn(() =>
-    //   Promise.resolve({
-    //     json: () => Promise.resolve({
-    //       project,
-    //       themes,
-    //       success: true
-    //     })
-    //   })
-    // ) as jest.Mock<any>;
-
     global.scrollTo = jest.fn(() => true) as jest.Mock<any>;
-
     delete (global as any).location;
     (global as any).location = Object.defineProperties(
       {},
