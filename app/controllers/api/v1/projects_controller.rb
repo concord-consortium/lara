@@ -1,6 +1,6 @@
 class Api::V1::ProjectsController < API::APIController
 
-  skip_before_filter :verify_authenticity_token, only: [:create, :destroy, :update]
+  skip_before_filter :verify_authenticity_token
 
   # GET /api/v1/projects
   def index

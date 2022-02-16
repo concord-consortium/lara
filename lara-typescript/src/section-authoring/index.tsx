@@ -2,7 +2,6 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { AuthoringSection, ISectionProps } from "./components/authoring-section";
 import { IPreviewLinksProps, PreviewLinks } from "./components/preview-links";
-import { IProjectSettingsFormProps, ProjectSettingsForm } from "../projects/components/project-settings-form";
 import { QueryBoundPage, IQueryBoundPage } from "./components/query-bound-page";
 
 const renderAuthoringSection = (root: HTMLElement, props: ISectionProps) => {
@@ -18,13 +17,8 @@ const renderPreviewLinks = (root: HTMLElement, props: IPreviewLinksProps) => {
   return ReactDOM.render(<PreviewLinks {...props} />, root);
 };
 
-const renderProjectSettingsForm = (root: HTMLElement, props: IProjectSettingsFormProps) => {
-  return ReactDOM.render(<ProjectSettingsForm {...props} />, root);
-};
-
 export {
   renderAuthoringSection,
   renderAuthoringPage,
-  renderPreviewLinks,
-  renderProjectSettingsForm
+  renderPreviewLinks
 };
