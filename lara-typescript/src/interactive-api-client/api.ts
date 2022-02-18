@@ -204,7 +204,7 @@ export const postDecoratedContentEvent = (msg: IDecoratedContentEvent) => {
   getClient().post("decoratedContentEvent", msg);
 };
 
-/*
+/**
  * Providing empty string or null disables hint.
  */
 export const setHint = (hint: string | null) => {
@@ -298,6 +298,12 @@ export const removeGlobalInteractiveStateListener = <GlobalInteractiveState>(lis
 
 // Mapping between external listener and internal listener, so it's possible to remove linkedInteractiveState listeners.
 const _linkedInteractiveStateListeners = new Map();
+/**
+ * The listener should be called immediately after it is added with any state of the linked
+ * interactive that the host currently knows about. This first call might not happen
+ * synchronously it could be slightly delayed. And then the listener should be called again
+ * whenever the state of the linked interactive changes.
+ */
 export const addLinkedInteractiveStateListener = <LinkedInteractiveState>(
   listener: (linkedIntState: LinkedInteractiveState | undefined) => void,
   options: IAddLinkedInteractiveStateListenerOptions
