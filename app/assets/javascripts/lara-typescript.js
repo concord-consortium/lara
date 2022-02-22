@@ -41489,7 +41489,7 @@ var IFrameSaver = function () {
       url: this.interactiveRunStateUrl,
       data: data,
       success: function (response) {
-        runSuccess(); // State has been saved. Show "Undo all my work" button.
+        runSuccess(); // State has been saved. Show "Clear & start over" button.
 
         _this.$deleteButton.show();
 
@@ -41866,7 +41866,7 @@ var IFrameSaver = function () {
             _this.post("loadInteractive", interactive); // Lab logging needs to be re-enabled after interactive is (re)loaded.
 
 
-            LoggerUtils.enableLabLogging(_this.$iframe[0]); // State is available. Show "Undo all my work" button.
+            LoggerUtils.enableLabLogging(_this.$iframe[0]); // State is available. Show "Clear & start over" button.
 
             _this.$deleteButton.show();
           }
@@ -43956,7 +43956,7 @@ var CustomizeMWInteractive = function (props) {
     return React.createElement(React.Fragment, null, React.createElement("div", null, React.createElement(checkbox_1.Checkbox, {
       name: formField("show_delete_data_button").name,
       defaultChecked: show_delete_data_button,
-      label: "Show \"Undo all my work\" button"
+      label: "Show \"Clear & start over\" button"
     })), React.createElement("div", null, React.createElement(checkbox_1.Checkbox, {
       name: formField("has_report_url").name,
       defaultChecked: has_report_url,

@@ -55,7 +55,7 @@ describe("IFrameSaver", () => {
               data-linked-interactives='{"1":{"label":"one"}}'
           >
           </div>
-          <button class="delete_interactive_data">Undo all my work</button>
+          <button class="delete_interactive_data">Clear & start over</button>
         </div>
       </div>
 

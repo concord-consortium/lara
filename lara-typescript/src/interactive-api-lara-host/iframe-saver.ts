@@ -223,7 +223,7 @@ export class IFrameSaver {
       data,
       success: response => {
         runSuccess();
-        // State has been saved. Show "Undo all my work" button.
+        // State has been saved. Show "Clear & start over" button.
         this.$deleteButton.show();
         this.saveIndicator.showSaved("Saved Interactive");
       },
@@ -486,7 +486,7 @@ export class IFrameSaver {
             this.post("loadInteractive", interactive);
             // Lab logging needs to be re-enabled after interactive is (re)loaded.
             LoggerUtils.enableLabLogging(this.$iframe[0]);
-            // State is available. Show "Undo all my work" button.
+            // State is available. Show "Clear & start over" button.
             this.$deleteButton.show();
           }
         }

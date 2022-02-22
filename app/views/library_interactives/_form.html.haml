@@ -26,7 +26,7 @@
         Please do not select this unless your interactive contains a serializable data set.
       .indent{:id => "enable_learner_state_indent_#{@library_interactive.id}"}
         = f.check_box :show_delete_data_button, :id => "show_delete_data_button_#{@library_interactive.id}"
-        = f.label :show_delete_data_button, 'Show "Undo all my work" button'
+        = f.label :show_delete_data_button, 'Show "Clear & start over" button'
         %br
         = f.check_box :has_report_url, :id => "has_report_url_#{@library_interactive.id}"
         = f.label :has_report_url, 'This interactive has a report URL'
