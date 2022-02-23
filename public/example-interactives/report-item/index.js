@@ -33489,7 +33489,7 @@ var postDecoratedContentEvent = function (msg) {
     (0, client_1.getClient)().post("decoratedContentEvent", msg);
 };
 exports.postDecoratedContentEvent = postDecoratedContentEvent;
-/*
+/**
  * Providing empty string or null disables hint.
  */
 var setHint = function (hint) {
@@ -33588,6 +33588,12 @@ var removeGlobalInteractiveStateListener = function (listener) {
 exports.removeGlobalInteractiveStateListener = removeGlobalInteractiveStateListener;
 // Mapping between external listener and internal listener, so it's possible to remove linkedInteractiveState listeners.
 var _linkedInteractiveStateListeners = new Map();
+/**
+ * The listener should be called immediately after it is added with any state of the linked
+ * interactive that the host currently knows about. This first call might not happen
+ * synchronously it could be slightly delayed. And then the listener should be called again
+ * whenever the state of the linked interactive changes.
+ */
 var addLinkedInteractiveStateListener = function (listener, options) {
     var client = (0, client_1.getClient)();
     var listenerId = (0, uuid_1.v4)();
