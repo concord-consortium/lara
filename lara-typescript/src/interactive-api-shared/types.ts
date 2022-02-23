@@ -44,6 +44,7 @@ export interface IRuntimeInitInteractive<InteractiveState = {}, AuthoredState = 
   version: 1;
   error: any;
   mode: "runtime";
+  view?: string;
   hostFeatures: IHostFeatures;
   authoredState: AuthoredState | null;
   globalInteractiveState: GlobalInteractiveState | null;
@@ -81,6 +82,7 @@ export interface IAuthoringInitInteractive<AuthoredState = {}> {
   version: 1;
   error: null;
   mode: "authoring";
+  view?: string;
   hostFeatures: IHostFeatures;
   authoredState: AuthoredState | null;
   themeInfo: IThemeInfo;
@@ -91,6 +93,7 @@ export interface IAuthoringInitInteractive<AuthoredState = {}> {
 export interface IReportInitInteractive<InteractiveState = {}, AuthoredState = {}> {
   version: 1;
   mode: "report";
+  view?: string;
   hostFeatures: IHostFeatures;
   authoredState: AuthoredState;
   interactiveState: InteractiveState;

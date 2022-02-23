@@ -22,6 +22,7 @@
 * [mode](iauthoringinitinteractive.md#mode)
 * [themeInfo](iauthoringinitinteractive.md#themeinfo)
 * [version](iauthoringinitinteractive.md#version)
+* [view](iauthoringinitinteractive.md#optional-view)
 
 ## Properties
 
@@ -70,3 +71,9 @@ ___
 ###  version
 
 • **version**: *1*
+
+___
+
+### `Optional` view
+
+• **view**? : *undefined | string*
