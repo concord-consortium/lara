@@ -511,6 +511,11 @@ ___
 
 ▸ **addLinkedInteractiveStateListener**‹**LinkedInteractiveState**›(`listener`: function, `options`: [IAddLinkedInteractiveStateListenerOptions](interfaces/iaddlinkedinteractivestatelisteneroptions.md)): *void*
 
+The listener should be called immediately after it is added with any state of the linked
+interactive that the host currently knows about. This first call might not happen
+synchronously it could be slightly delayed. And then the listener should be called again
+whenever the state of the linked interactive changes.
+
 **Type parameters:**
 
 ▪ **LinkedInteractiveState**
@@ -975,6 +980,8 @@ ___
 ### `Const` setHint
 
 ▸ **setHint**(`hint`: string | null): *void*
+
+Providing empty string or null disables hint.
 
 **Parameters:**
 
