@@ -11,9 +11,13 @@ class Api::V1::ProjectsController < API::APIController
 
   # GET /api/v1/projects/1.json
   def show
-    @project = Project.find(params[:id])
-    authorize! :manage, @project
-    render json: {project: @project}
+    begin
+      @project = Project.find(params[:id])
+      authorize! :manage, @project
+      render json: {project: @project}, status: 200
+    rescue ActiveRecord::RecordNotFound
+      render json: {error: "Project not found"}, status: 404
+    end
   end
 
   # POST /api/v1/projects
