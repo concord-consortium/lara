@@ -232,4 +232,4 @@ ___
 
 ### `Optional` view
 
-• **view**? : *undefined | string*
+• **view**? : *undefined | "standalone"*
