@@ -44,7 +44,6 @@
 * [themeInfo](iruntimeinitinteractive.md#themeinfo)
 * [updatedAt](iruntimeinitinteractive.md#optional-updatedat)
 * [version](iruntimeinitinteractive.md#version)
-* [view](iruntimeinitinteractive.md#optional-view)
 
 ## Properties
 
@@ -227,9 +226,3 @@ ___
 ###  version
 
 • **version**: *1*
-
-___
-
-### `Optional` view
-
-• **view**? : *undefined | "standalone"*
