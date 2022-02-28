@@ -89,7 +89,7 @@ export const CustomizeMWInteractive: React.FC<Props> = (props) => {
         <Checkbox
           name={formField("show_delete_data_button").name}
           defaultChecked={show_delete_data_button}
-          label={`Show "Undo all my work" button`}
+          label={`Show "Clear & start over" button`}
         />
       </div>
 
