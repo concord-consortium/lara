@@ -22,6 +22,7 @@
 * [mode](ireportinitinteractive.md#mode)
 * [themeInfo](ireportinitinteractive.md#themeinfo)
 * [version](ireportinitinteractive.md#version)
+* [view](ireportinitinteractive.md#optional-view)
 
 ## Properties
 
@@ -58,3 +59,9 @@ ___
 ###  version
 
 • **version**: *1*
+
+___
+
+### `Optional` view
+
+• **view**? : *undefined | "standalone"*

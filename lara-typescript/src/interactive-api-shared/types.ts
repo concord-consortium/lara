@@ -91,6 +91,7 @@ export interface IAuthoringInitInteractive<AuthoredState = {}> {
 export interface IReportInitInteractive<InteractiveState = {}, AuthoredState = {}> {
   version: 1;
   mode: "report";
+  view?: "standalone";
   hostFeatures: IHostFeatures;
   authoredState: AuthoredState;
   interactiveState: InteractiveState;
