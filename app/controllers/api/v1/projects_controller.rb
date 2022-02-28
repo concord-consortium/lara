@@ -23,7 +23,7 @@ class Api::V1::ProjectsController < API::APIController
   # POST /api/v1/projects
   def create
     @project = Project.new(params[:project])
-    authorize! :update, @project
+    authorize! :create, @project
     if @project.save
       render json: {success: true, project: @project}, status: :created
     else
