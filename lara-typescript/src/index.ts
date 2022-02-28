@@ -5,6 +5,7 @@ import * as InteractiveAPI from "./interactive-api-lara-host";
 import * as Plugins from "./plugins";
 import * as Events from "./events";
 import * as PageItemAuthoring from "./page-item-authoring";
+import * as Projects from "./projects";
 
 export interface LaraGlobalType {
   PluginAPI_V3: typeof PluginAPI;
@@ -17,7 +18,8 @@ export {
   InteractiveAPI,
   Plugins,
   Events,
-  PageItemAuthoring
+  PageItemAuthoring,
+  Projects
 };
 
 // Note that LARA namespace is defined for the first time by V2 API. Once V2 is removed, this code should also be
@@ -28,6 +30,7 @@ export {
 (window as any).LARA.Events = Events;
 (window as any).LARA.InteractiveAPI = InteractiveAPI;
 (window as any).LARA.PageItemAuthoring = PageItemAuthoring;
+(window as any).LARA.Projects = Projects;
 
 // for clients that don't require LARA to be a global on window
 export function initializeLara(): LaraGlobalType {

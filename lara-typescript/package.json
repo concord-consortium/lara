@@ -75,7 +75,7 @@
       "node"
     ],
     "moduleNameMapper": {
-      "\\.(css|sass)$": "identity-obj-proxy"
+      "\\.(css|sass|scss)$": "identity-obj-proxy"
     }
   },
   "homepage": "https://github.com/concord-consortium/lara/tree/master/lara-typescript#readme",
@@ -134,6 +134,7 @@
     "@aws-sdk/client-s3": "^3.30.0",
     "@aws-sdk/s3-request-presigner": "^3.30.0",
     "@concord-consortium/interactive-api-host": "^0.5.0",
+    "@concord-consortium/slate-editor": "^0.7.3",
     "@concord-consortium/text-decorator": "^1.0.2",
     "@concord-consortium/token-service": "^2.1.0",
     "deep-freeze": "0.0.1",
