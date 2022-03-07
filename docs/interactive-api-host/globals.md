@@ -37,6 +37,7 @@
 * [IGetInteractiveSnapshotOptions](interfaces/igetinteractivesnapshotoptions.md)
 * [IGetInteractiveSnapshotRequest](interfaces/igetinteractivesnapshotrequest.md)
 * [IGetInteractiveSnapshotResponse](interfaces/igetinteractivesnapshotresponse.md)
+* [IGetInteractiveState](interfaces/igetinteractivestate.md)
 * [IGetLibraryInteractiveListOptions](interfaces/igetlibraryinteractivelistoptions.md)
 * [IGetLibraryInteractiveListRequest](interfaces/igetlibraryinteractivelistrequest.md)
 * [IGetLibraryInteractiveListResponse](interfaces/igetlibraryinteractivelistresponse.md)
@@ -103,6 +104,7 @@
 * [InteractiveItemId](globals.md#interactiveitemid)
 * [LoggerClientMessage](globals.md#loggerclientmessage)
 * [ModalType](globals.md#modaltype)
+* [OnUnloadFunction](globals.md#onunloadfunction)
 * [ReadAttachmentParams](globals.md#readattachmentparams)
 * [S3Operation](globals.md#s3operation)
 * [ServerMessage](globals.md#servermessage)
@@ -293,6 +295,22 @@ ___
 ###  ModalType
 
 Ƭ **ModalType**: *"alert" | "lightbox" | "dialog"*
+
+___
+
+###  OnUnloadFunction
+
+Ƭ **OnUnloadFunction**: *function*
+
+#### Type declaration:
+
+▸ (`options`: [IGetInteractiveState](interfaces/igetinteractivestate.md)): *Promise‹InteractiveState›*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`options` | [IGetInteractiveState](interfaces/igetinteractivestate.md) |
 
 ___
 

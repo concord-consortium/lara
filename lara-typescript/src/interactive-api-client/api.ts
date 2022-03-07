@@ -34,7 +34,8 @@ import {
   ReadAttachmentParams,
   GetAttachmentUrlParams,
   IGetReportItemAnswerHandler,
-  IReportItemAnswer
+  IReportItemAnswer,
+  OnUnloadFunction
 } from "./types";
 import { getClient } from "./client";
 import { v4 as uuidv4 } from "uuid";
@@ -482,4 +483,8 @@ export const getAttachmentUrl = (params: GetAttachmentUrlParams) => {
 
 export const sendReportItemAnswer = (request: Omit<IReportItemAnswer, "requestId">) => {
   getClient().post("reportItemAnswer", request);
+};
+
+export const setOnUnload = (onUnload?: OnUnloadFunction) => {
+  getClient().setOnUnload(onUnload);
 };

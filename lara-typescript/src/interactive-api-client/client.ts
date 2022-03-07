@@ -3,9 +3,9 @@
 // to the same message and auto-removing listeners when a requestId is given.
 import * as iframePhone from "iframe-phone";
 import { ClientMessage, ICustomMessageHandler, ICustomMessagesHandledMap, IInitInteractive, ISupportedFeaturesRequest,
-        ServerMessage, ITextDecorationHandler, ITextDecorationInfo, IGetReportItemAnswerHandler } from "./types";
+         ServerMessage, ITextDecorationHandler, ITextDecorationInfo, IGetReportItemAnswerHandler,
+         IGetInteractiveState, OnUnloadFunction } from "./types";
 import { postDecoratedContentEvent } from "../interactive-api-client";
-import { IEventListener } from "../plugin-api";
 import { inIframe } from "./in-frame";
 import { ManagedState } from "./managed-state";
 
@@ -46,6 +46,8 @@ export class Client {
   private customMessagesHandled: ICustomMessagesHandledMap;
   private listeners: IListenerMap = {};
   private requestId = 1;
+
+  private onUnload: OnUnloadFunction | undefined = undefined;
 
   constructor() {
     if (!inIframe()) {
@@ -188,6 +190,10 @@ export class Client {
     this.post("supportedFeatures", newRequest);
   }
 
+  public setOnUnload = (onUnload?: OnUnloadFunction) => {
+    this.onUnload = onUnload;
+  }
+
   private connect() {
     this.phone = iframePhone.getIFrameEndpoint();
 
@@ -212,7 +218,15 @@ export class Client {
       }
     });
 
-    this.addListener("getInteractiveState", () => {
+    this.addListener("getInteractiveState", async (options?: IGetInteractiveState) => {
+      if (options?.unloading && this.onUnload) {
+        // call the interactive's registered onUnload function
+        // and if it returns a value use that as the final interactive state
+        const finalState = await this.onUnload(options);
+        if (finalState) {
+          this.managedState.interactiveState = finalState;
+        }
+      }
       this.post("interactiveState", this.managedState.interactiveState);
       this.managedState.interactiveStateDirty = false;
     });

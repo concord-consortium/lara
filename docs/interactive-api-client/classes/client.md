@@ -29,6 +29,7 @@
 * [removeDecorateContentListener](client.md#removedecoratecontentlistener)
 * [removeGetReportItemAnswerListener](client.md#removegetreportitemanswerlistener)
 * [removeListener](client.md#removelistener)
+* [setOnUnload](client.md#setonunload)
 * [setSupportedFeatures](client.md#setsupportedfeatures)
 
 ## Constructors
@@ -172,6 +173,20 @@ Name | Type |
 `callback?` | iframePhone.ListenerCallback |
 
 **Returns:** *boolean*
+
+___
+
+###  setOnUnload
+
+▸ **setOnUnload**(`onUnload?`: [OnUnloadFunction](../globals.md#onunloadfunction)): *void*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`onUnload?` | [OnUnloadFunction](../globals.md#onunloadfunction) |
+
+**Returns:** *void*
 
 ___
 

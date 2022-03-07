@@ -12470,525 +12470,6 @@ module.exports = {
 
 /***/ }),
 
-/***/ "./node_modules/iframe-phone/lib/iframe-endpoint.js":
-/*!**********************************************************!*\
-  !*** ./node_modules/iframe-phone/lib/iframe-endpoint.js ***!
-  \**********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-var structuredClone = __webpack_require__(/*! ./structured-clone */ "./node_modules/iframe-phone/lib/structured-clone.js");
-var HELLO_INTERVAL_LENGTH = 200;
-var HELLO_TIMEOUT_LENGTH = 60000;
-
-function IFrameEndpoint() {
-  var listeners = {};
-  var isInitialized = false;
-  var connected = false;
-  var postMessageQueue = [];
-  var helloInterval;
-
-  function postToParent(message) {
-    // See http://dev.opera.com/articles/view/window-postmessage-messagechannel/#crossdoc
-    //     https://github.com/Modernizr/Modernizr/issues/388
-    //     http://jsfiddle.net/ryanseddon/uZTgD/2/
-    if (structuredClone.supported()) {
-      window.parent.postMessage(message, '*');
-    } else {
-      window.parent.postMessage(JSON.stringify(message), '*');
-    }
-  }
-
-  function post(type, content) {
-    var message;
-    // Message object can be constructed from 'type' and 'content' arguments or it can be passed
-    // as the first argument.
-    if (arguments.length === 1 && typeof type === 'object' && typeof type.type === 'string') {
-      message = type;
-    } else {
-      message = {
-        type: type,
-        content: content
-      };
-    }
-    if (connected) {
-      postToParent(message);
-    } else {
-      postMessageQueue.push(message);
-    }
-  }
-
-  function postHello() {
-    postToParent({
-      type: 'hello'
-    });
-  }
-
-  function addListener(type, fn) {
-    listeners[type] = fn;
-  }
-
-  function removeListener(type) {
-    delete listeners[type];
-  }
-
-  function removeAllListeners() {
-    listeners = {};
-  }
-
-  function getListenerNames() {
-    return Object.keys(listeners);
-  }
-
-  function messageListener(message) {
-    // Anyone can send us a message. Only pay attention to messages from parent.
-    if (message.source !== window.parent) return;
-    var messageData = message.data;
-    if (typeof messageData === 'string') messageData = JSON.parse(messageData);
-
-    if (!connected && messageData.type === 'hello') {
-      connected = true;
-      stopPostingHello();
-      while (postMessageQueue.length > 0) {
-        post(postMessageQueue.shift());
-      }
-    }
-
-    if (connected && listeners[messageData.type]) {
-      listeners[messageData.type](messageData.content);
-    }
-  }
-
-  function disconnect() {
-    connected = false;
-    stopPostingHello();
-    removeAllListeners();
-    window.removeEventListener('message', messageListener);
-  }
-
-  /**
-    Initialize communication with the parent frame. This should not be called until the app's custom
-    listeners are registered (via our 'addListener' public method) because, once we open the
-    communication, the parent window may send any messages it may have queued. Messages for which
-    we don't have handlers will be silently ignored.
-  */
-  function initialize() {
-    if (isInitialized) {
-      return;
-    }
-    isInitialized = true;
-    if (window.parent === window) return;
-
-    // We kick off communication with the parent window by sending a "hello" message. Then we wait
-    // for a handshake (another "hello" message) from the parent window.
-    startPostingHello();
-    window.addEventListener('message', messageListener, false);
-  }
-
-  function startPostingHello() {
-    if (helloInterval) {
-      stopPostingHello();
-    }
-    helloInterval = window.setInterval(postHello, HELLO_INTERVAL_LENGTH);
-    window.setTimeout(stopPostingHello, HELLO_TIMEOUT_LENGTH);
-    // Post the first msg immediately.
-    postHello();
-  }
-
-  function stopPostingHello() {
-    window.clearInterval(helloInterval);
-    helloInterval = null;
-  }
-
-  // Public API.
-  return {
-    initialize: initialize,
-    getListenerNames: getListenerNames,
-    addListener: addListener,
-    removeListener: removeListener,
-    removeAllListeners: removeAllListeners,
-    disconnect: disconnect,
-    post: post
-  };
-}
-
-var instance = null;
-
-// IFrameEndpoint is a singleton, as iframe can't have multiple parents anyway.
-module.exports = function getIFrameEndpoint() {
-  if (!instance) {
-    instance = new IFrameEndpoint();
-  }
-  return instance;
-};
-
-
-/***/ }),
-
-/***/ "./node_modules/iframe-phone/lib/iframe-phone-rpc-endpoint.js":
-/*!********************************************************************!*\
-  !*** ./node_modules/iframe-phone/lib/iframe-phone-rpc-endpoint.js ***!
-  \********************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-var ParentEndpoint = __webpack_require__(/*! ./parent-endpoint */ "./node_modules/iframe-phone/lib/parent-endpoint.js");
-var getIFrameEndpoint = __webpack_require__(/*! ./iframe-endpoint */ "./node_modules/iframe-phone/lib/iframe-endpoint.js");
-
-// Not a real UUID as there's an RFC for that (needed for proper distributed computing).
-// But in this fairly parochial situation, we just need to be fairly sure to avoid repeats.
-function getPseudoUUID() {
-  var chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
-  var len = chars.length;
-  var ret = [];
-
-  for (var i = 0; i < 10; i++) {
-    ret.push(chars[Math.floor(Math.random() * len)]);
-  }
-  return ret.join('');
-}
-
-module.exports = function IframePhoneRpcEndpoint(handler, namespace, targetWindow, targetOrigin, phone) {
-  var pendingCallbacks = Object.create({});
-
-  // if it's a non-null object, rather than a function, 'handler' is really an options object
-  if (handler && typeof handler === 'object') {
-    namespace = handler.namespace;
-    targetWindow = handler.targetWindow;
-    targetOrigin = handler.targetOrigin;
-    phone = handler.phone;
-    handler = handler.handler;
-  }
-
-  if (!phone) {
-    if (targetWindow === window.parent) {
-      phone = getIFrameEndpoint();
-      phone.initialize();
-    } else {
-      phone = new ParentEndpoint(targetWindow, targetOrigin);
-    }
-  }
-
-  phone.addListener(namespace, function (message) {
-    var callbackObj;
-
-    if (message.messageType === 'call' && typeof this.handler === 'function') {
-      this.handler.call(undefined, message.value, function (returnValue) {
-        phone.post(namespace, {
-          messageType: 'returnValue',
-          uuid: message.uuid,
-          value: returnValue
-        });
-      });
-    } else if (message.messageType === 'returnValue') {
-      callbackObj = pendingCallbacks[message.uuid];
-
-      if (callbackObj) {
-        window.clearTimeout(callbackObj.timeout);
-        if (callbackObj.callback) {
-          callbackObj.callback.call(undefined, message.value);
-        }
-        pendingCallbacks[message.uuid] = null;
-      }
-    }
-  }.bind(this));
-
-  function call(message, callback) {
-    var uuid = getPseudoUUID();
-
-    pendingCallbacks[uuid] = {
-      callback: callback,
-      timeout: window.setTimeout(function () {
-        if (callback) {
-          callback(undefined, new Error("IframePhone timed out waiting for reply"));
-        }
-      }, 2000)
-    };
-
-    phone.post(namespace, {
-      messageType: 'call',
-      uuid: uuid,
-      value: message
-    });
-  }
-
-  function disconnect() {
-    phone.disconnect();
-  }
-
-  this.handler = handler;
-  this.call = call.bind(this);
-  this.disconnect = disconnect.bind(this);
-};
-
-
-/***/ }),
-
-/***/ "./node_modules/iframe-phone/lib/parent-endpoint.js":
-/*!**********************************************************!*\
-  !*** ./node_modules/iframe-phone/lib/parent-endpoint.js ***!
-  \**********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-var structuredClone = __webpack_require__(/*! ./structured-clone */ "./node_modules/iframe-phone/lib/structured-clone.js");
-
-/**
-  Call as:
-    new ParentEndpoint(targetWindow, targetOrigin, afterConnectedCallback)
-      targetWindow is a WindowProxy object. (Messages will be sent to it)
-
-      targetOrigin is the origin of the targetWindow. (Messages will be restricted to this origin)
-
-      afterConnectedCallback is an optional callback function to be called when the connection is
-        established.
-
-  OR (less secure):
-    new ParentEndpoint(targetIframe, afterConnectedCallback)
-
-      targetIframe is a DOM object (HTMLIframeElement); messages will be sent to its contentWindow.
-
-      afterConnectedCallback is an optional callback function
-
-    In this latter case, targetOrigin will be inferred from the value of the src attribute of the
-    provided DOM object at the time of the constructor invocation. This is less secure because the
-    iframe might have been navigated to an unexpected domain before constructor invocation.
-
-  Note that it is important to specify the expected origin of the iframe's content to safeguard
-  against sending messages to an unexpected domain. This might happen if our iframe is navigated to
-  a third-party URL unexpectedly. Furthermore, having a reference to Window object (as in the first
-  form of the constructor) does not protect against sending a message to the wrong domain. The
-  window object is actualy a WindowProxy which transparently proxies the Window object of the
-  underlying iframe, so that when the iframe is navigated, the "same" WindowProxy now references a
-  completely differeent Window object, possibly controlled by a hostile domain.
-
-  See http://www.esdiscuss.org/topic/a-dom-use-case-that-can-t-be-emulated-with-direct-proxies for
-  more about this weird behavior of WindowProxies (the type returned by <iframe>.contentWindow).
-*/
-
-module.exports = function ParentEndpoint(targetWindowOrIframeEl, targetOrigin, afterConnectedCallback) {
-  var postMessageQueue = [];
-  var connected = false;
-  var handlers = {};
-  var targetWindowIsIframeElement;
-
-  function getIframeOrigin(iframe) {
-    return iframe.src.match(/(.*?\/\/.*?)\//)[1];
-  }
-
-  function post(type, content) {
-    var message;
-    // Message object can be constructed from 'type' and 'content' arguments or it can be passed
-    // as the first argument.
-    if (arguments.length === 1 && typeof type === 'object' && typeof type.type === 'string') {
-      message = type;
-    } else {
-      message = {
-        type: type,
-        content: content
-      };
-    }
-    if (connected) {
-      var tWindow = getTargetWindow();
-      // if we are laready connected ... send the message
-      // See http://dev.opera.com/articles/view/window-postmessage-messagechannel/#crossdoc
-      //     https://github.com/Modernizr/Modernizr/issues/388
-      //     http://jsfiddle.net/ryanseddon/uZTgD/2/
-      if (structuredClone.supported()) {
-        tWindow.postMessage(message, targetOrigin);
-      } else {
-        tWindow.postMessage(JSON.stringify(message), targetOrigin);
-      }
-    } else {
-      // else queue up the messages to send after connection complete.
-      postMessageQueue.push(message);
-    }
-  }
-
-  function addListener(messageName, func) {
-    handlers[messageName] = func;
-  }
-
-  function removeListener(messageName) {
-    delete handlers[messageName];
-  }
-
-  function removeAllListeners() {
-    handlers = {};
-  }
-
-  // Note that this function can't be used when IFrame element hasn't been added to DOM yet
-  // (.contentWindow would be null). At the moment risk is purely theoretical, as the parent endpoint
-  // only listens for an incoming 'hello' message and the first time we call this function
-  // is in #receiveMessage handler (so iframe had to be initialized before, as it could send 'hello').
-  // It would become important when we decide to refactor the way how communication is initialized.
-  function getTargetWindow() {
-    if (targetWindowIsIframeElement) {
-      var tWindow = targetWindowOrIframeEl.contentWindow;
-      if (!tWindow) {
-        throw "IFrame element needs to be added to DOM before communication " +
-              "can be started (.contentWindow is not available)";
-      }
-      return tWindow;
-    }
-    return targetWindowOrIframeEl;
-  }
-
-  function receiveMessage(message) {
-    var messageData;
-    if (message.source === getTargetWindow() && (targetOrigin === '*' || message.origin === targetOrigin)) {
-      messageData = message.data;
-      if (typeof messageData === 'string') {
-        messageData = JSON.parse(messageData);
-      }
-      if (handlers[messageData.type]) {
-        handlers[messageData.type](messageData.content);
-      } else {
-        console.log("cant handle type: " + messageData.type);
-      }
-    }
-  }
-
-  function disconnect() {
-    connected = false;
-    removeAllListeners();
-    window.removeEventListener('message', receiveMessage);
-  }
-
-  // handle the case that targetWindowOrIframeEl is actually an <iframe> rather than a Window(Proxy) object
-  // Note that if it *is* a WindowProxy, this probe will throw a SecurityException, but in that case
-  // we also don't need to do anything
-  try {
-    targetWindowIsIframeElement = targetWindowOrIframeEl.constructor === HTMLIFrameElement;
-  } catch (e) {
-    targetWindowIsIframeElement = false;
-  }
-
-  if (targetWindowIsIframeElement) {
-    // Infer the origin ONLY if the user did not supply an explicit origin, i.e., if the second
-    // argument is empty or is actually a callback (meaning it is supposed to be the
-    // afterConnectionCallback)
-    if (!targetOrigin || targetOrigin.constructor === Function) {
-      afterConnectedCallback = targetOrigin;
-      targetOrigin = getIframeOrigin(targetWindowOrIframeEl);
-    }
-  }
-
-  // Handle pages served through file:// protocol. Behaviour varies in different browsers. Safari sets origin
-  // to 'file://' and everything works fine, but Chrome and Safari set message.origin to null.
-  // Also, https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage says:
-  //  > Lastly, posting a message to a page at a file: URL currently requires that the targetOrigin argument be "*".
-  //  > file:// cannot be used as a security restriction; this restriction may be modified in the future.
-  // So, using '*' seems like the only possible solution.
-  if (targetOrigin === 'file://') {
-    targetOrigin = '*';
-  }
-
-  // when we receive 'hello':
-  addListener('hello', function () {
-    connected = true;
-
-    // send hello response
-    post({
-      type: 'hello',
-      // `origin` property isn't used by IframeEndpoint anymore (>= 1.2.0), but it's being sent to be
-      // backward compatible with old IframeEndpoint versions (< v1.2.0).
-      origin: window.location.href.match(/(.*?\/\/.*?)\//)[1]
-    });
-
-    // give the user a chance to do things now that we are connected
-    // note that is will happen before any queued messages
-    if (afterConnectedCallback && typeof afterConnectedCallback === "function") {
-      afterConnectedCallback();
-    }
-
-    // Now send any messages that have been queued up ...
-    while (postMessageQueue.length > 0) {
-      post(postMessageQueue.shift());
-    }
-  });
-
-  window.addEventListener('message', receiveMessage, false);
-
-  // Public API.
-  return {
-    post: post,
-    addListener: addListener,
-    removeListener: removeListener,
-    removeAllListeners: removeAllListeners,
-    disconnect: disconnect,
-    getTargetWindow: getTargetWindow,
-    targetOrigin: targetOrigin
-  };
-};
-
-
-/***/ }),
-
-/***/ "./node_modules/iframe-phone/lib/structured-clone.js":
-/*!***********************************************************!*\
-  !*** ./node_modules/iframe-phone/lib/structured-clone.js ***!
-  \***********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-var featureSupported = {
-  'structuredClones': 0
-};
-
-(function () {
-  var result = 0;
-
-  if (!!window.postMessage) {
-    try {
-      // Spec states you can't transmit DOM nodes and it will throw an error
-      // postMessage implementations that support cloned data will throw.
-      window.postMessage(document.createElement("a"), "*");
-    } catch (e) {
-      // BBOS6 throws but doesn't pass through the correct exception
-      // so check error message
-      result = (e.DATA_CLONE_ERR || e.message === "Cannot post cyclic structures.") ? 1 : 0;
-      featureSupported = {
-        'structuredClones': result
-      };
-    }
-  }
-}());
-
-exports.supported = function supported() {
-  return featureSupported && featureSupported.structuredClones > 0;
-};
-
-
-/***/ }),
-
-/***/ "./node_modules/iframe-phone/main.js":
-/*!*******************************************!*\
-  !*** ./node_modules/iframe-phone/main.js ***!
-  \*******************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = {
-  /**
-   * Allows to communicate with an iframe.
-   */
-  ParentEndpoint:  __webpack_require__(/*! ./lib/parent-endpoint */ "./node_modules/iframe-phone/lib/parent-endpoint.js"),
-  /**
-   * Allows to communicate with a parent page.
-   * IFrameEndpoint is a singleton, as iframe can't have multiple parents anyway.
-   */
-  getIFrameEndpoint: __webpack_require__(/*! ./lib/iframe-endpoint */ "./node_modules/iframe-phone/lib/iframe-endpoint.js"),
-  structuredClone: __webpack_require__(/*! ./lib/structured-clone */ "./node_modules/iframe-phone/lib/structured-clone.js"),
-
-  // TODO: May be misnamed
-  IframePhoneRpcEndpoint: __webpack_require__(/*! ./lib/iframe-phone-rpc-endpoint */ "./node_modules/iframe-phone/lib/iframe-phone-rpc-endpoint.js")
-
-};
-
-
-/***/ }),
-
 /***/ "./node_modules/inline-style-parser/index.js":
 /*!***************************************************!*\
   !*** ./node_modules/inline-style-parser/index.js ***!
@@ -45412,7 +44893,7 @@ var __rest = (this && this.__rest) || function (s, e) {
     return t;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.sendReportItemAnswer = exports.getAttachmentUrl = exports.readAttachment = exports.writeAttachment = exports.getLibraryInteractiveList = exports.getInteractiveSnapshot = exports.setLinkedInteractives = exports.getInteractiveList = exports.closeModal = exports.showModal = exports.removeLinkedInteractiveStateListener = exports.addLinkedInteractiveStateListener = exports.removeGlobalInteractiveStateListener = exports.addGlobalInteractiveStateListener = exports.removeAuthoredStateListener = exports.addAuthoredStateListener = exports.removeInteractiveStateListener = exports.addInteractiveStateListener = exports.log = exports.getFirebaseJwt = exports.getAuthInfo = exports.setNavigation = exports.setHint = exports.postDecoratedContentEvent = exports.setHeight = exports.setSupportedFeatures = exports.removeGetReportItemAnswerListener = exports.addGetReportItemAnswerListener = exports.removeDecorateContentListener = exports.addDecorateContentListener = exports.removeCustomMessageListener = exports.addCustomMessageListener = exports.setGlobalInteractiveState = exports.getGlobalInteractiveState = exports.setAuthoredState = exports.getAuthoredState = exports.flushStateUpdates = exports.setInteractiveState = exports.setInteractiveStateTimeout = exports.getInteractiveState = exports.getMode = exports.getInitInteractiveMessage = void 0;
+exports.setOnUnload = exports.sendReportItemAnswer = exports.getAttachmentUrl = exports.readAttachment = exports.writeAttachment = exports.getLibraryInteractiveList = exports.getInteractiveSnapshot = exports.setLinkedInteractives = exports.getInteractiveList = exports.closeModal = exports.showModal = exports.removeLinkedInteractiveStateListener = exports.addLinkedInteractiveStateListener = exports.removeGlobalInteractiveStateListener = exports.addGlobalInteractiveStateListener = exports.removeAuthoredStateListener = exports.addAuthoredStateListener = exports.removeInteractiveStateListener = exports.addInteractiveStateListener = exports.log = exports.getFirebaseJwt = exports.getAuthInfo = exports.setNavigation = exports.setHint = exports.postDecoratedContentEvent = exports.setHeight = exports.setSupportedFeatures = exports.removeGetReportItemAnswerListener = exports.addGetReportItemAnswerListener = exports.removeDecorateContentListener = exports.addDecorateContentListener = exports.removeCustomMessageListener = exports.addCustomMessageListener = exports.setGlobalInteractiveState = exports.getGlobalInteractiveState = exports.setAuthoredState = exports.getAuthoredState = exports.flushStateUpdates = exports.setInteractiveState = exports.setInteractiveStateTimeout = exports.getInteractiveState = exports.getMode = exports.getInitInteractiveMessage = void 0;
 var client_1 = __webpack_require__(/*! ./client */ "./src/interactive-api-client/client.ts");
 var uuid_1 = __webpack_require__(/*! uuid */ "./node_modules/uuid/dist/esm-browser/index.js");
 var THROW_NOT_IMPLEMENTED_YET = function (method) {
@@ -45882,6 +45363,10 @@ var sendReportItemAnswer = function (request) {
     (0, client_1.getClient)().post("reportItemAnswer", request);
 };
 exports.sendReportItemAnswer = sendReportItemAnswer;
+var setOnUnload = function (onUnload) {
+    (0, client_1.getClient)().setOnUnload(onUnload);
+};
+exports.setOnUnload = setOnUnload;
 
 
 /***/ }),
@@ -45906,6 +45391,42 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
 var __rest = (this && this.__rest) || function (s, e) {
     var t = {};
     for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
@@ -45922,7 +45443,7 @@ exports.Client = exports.getClient = void 0;
 // iframe phone uses 1 listener per message type so we multiplex over 1 listener in this code
 // to allow callbacks to optionally be tied to a requestId.  This allows us to have multiple listeners
 // to the same message and auto-removing listeners when a requestId is given.
-var iframePhone = __webpack_require__(/*! iframe-phone */ "./node_modules/iframe-phone/main.js");
+var iframePhone = __webpack_require__(/*! iframe-phone */ "./src/interactive-api-client/node_modules/iframe-phone/main.js");
 var interactive_api_client_1 = __webpack_require__(/*! ../interactive-api-client */ "./src/interactive-api-client/index.ts");
 var in_frame_1 = __webpack_require__(/*! ./in-frame */ "./src/interactive-api-client/in-frame.ts");
 var managed_state_1 = __webpack_require__(/*! ./managed-state */ "./src/interactive-api-client/managed-state.ts");
@@ -45954,6 +45475,7 @@ var Client = /** @class */ (function () {
         this.managedState = new managed_state_1.ManagedState();
         this.listeners = {};
         this.requestId = 1;
+        this.onUnload = undefined;
         this.setSupportedFeatures = function (request) {
             var newRequest = request;
             if (_this.customMessagesHandled) {
@@ -45962,6 +45484,9 @@ var Client = /** @class */ (function () {
                 newRequest = __assign({ features: features }, others);
             }
             _this.post("supportedFeatures", newRequest);
+        };
+        this.setOnUnload = function (onUnload) {
+            _this.onUnload = onUnload;
         };
         if (!(0, in_frame_1.inIframe)()) {
             // tslint:disable-next-line:no-console
@@ -46103,10 +45628,26 @@ var Client = /** @class */ (function () {
                 _this.managedState.globalInteractiveState = parseJSONIfString(newInitMessage.globalInteractiveState);
             }
         });
-        this.addListener("getInteractiveState", function () {
-            _this.post("interactiveState", _this.managedState.interactiveState);
-            _this.managedState.interactiveStateDirty = false;
-        });
+        this.addListener("getInteractiveState", function (options) { return __awaiter(_this, void 0, void 0, function () {
+            var finalState;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        if (!((options === null || options === void 0 ? void 0 : options.unloading) && this.onUnload)) return [3 /*break*/, 2];
+                        return [4 /*yield*/, this.onUnload(options)];
+                    case 1:
+                        finalState = _a.sent();
+                        if (finalState) {
+                            this.managedState.interactiveState = finalState;
+                        }
+                        _a.label = 2;
+                    case 2:
+                        this.post("interactiveState", this.managedState.interactiveState);
+                        this.managedState.interactiveStateDirty = false;
+                        return [2 /*return*/];
+                }
+            });
+        }); });
         this.addListener("loadInteractiveGlobal", function (globalState) {
             _this.managedState.globalInteractiveState = parseJSONIfString(globalState);
         });
@@ -46486,6 +46027,525 @@ exports.ManagedState = ManagedState;
 // and interactive_run_state.rb files that process this data passed from interactives and send
 // to report service and portal.
 Object.defineProperty(exports, "__esModule", { value: true });
+
+
+/***/ }),
+
+/***/ "./src/interactive-api-client/node_modules/iframe-phone/lib/iframe-endpoint.js":
+/*!*************************************************************************************!*\
+  !*** ./src/interactive-api-client/node_modules/iframe-phone/lib/iframe-endpoint.js ***!
+  \*************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var structuredClone = __webpack_require__(/*! ./structured-clone */ "./src/interactive-api-client/node_modules/iframe-phone/lib/structured-clone.js");
+var HELLO_INTERVAL_LENGTH = 200;
+var HELLO_TIMEOUT_LENGTH = 60000;
+
+function IFrameEndpoint() {
+  var listeners = {};
+  var isInitialized = false;
+  var connected = false;
+  var postMessageQueue = [];
+  var helloInterval;
+
+  function postToParent(message) {
+    // See http://dev.opera.com/articles/view/window-postmessage-messagechannel/#crossdoc
+    //     https://github.com/Modernizr/Modernizr/issues/388
+    //     http://jsfiddle.net/ryanseddon/uZTgD/2/
+    if (structuredClone.supported()) {
+      window.parent.postMessage(message, '*');
+    } else {
+      window.parent.postMessage(JSON.stringify(message), '*');
+    }
+  }
+
+  function post(type, content) {
+    var message;
+    // Message object can be constructed from 'type' and 'content' arguments or it can be passed
+    // as the first argument.
+    if (arguments.length === 1 && typeof type === 'object' && typeof type.type === 'string') {
+      message = type;
+    } else {
+      message = {
+        type: type,
+        content: content
+      };
+    }
+    if (connected) {
+      postToParent(message);
+    } else {
+      postMessageQueue.push(message);
+    }
+  }
+
+  function postHello() {
+    postToParent({
+      type: 'hello'
+    });
+  }
+
+  function addListener(type, fn) {
+    listeners[type] = fn;
+  }
+
+  function removeListener(type) {
+    delete listeners[type];
+  }
+
+  function removeAllListeners() {
+    listeners = {};
+  }
+
+  function getListenerNames() {
+    return Object.keys(listeners);
+  }
+
+  function messageListener(message) {
+    // Anyone can send us a message. Only pay attention to messages from parent.
+    if (message.source !== window.parent) return;
+    var messageData = message.data;
+    if (typeof messageData === 'string') messageData = JSON.parse(messageData);
+
+    if (!connected && messageData.type === 'hello') {
+      connected = true;
+      stopPostingHello();
+      while (postMessageQueue.length > 0) {
+        post(postMessageQueue.shift());
+      }
+    }
+
+    if (connected && listeners[messageData.type]) {
+      listeners[messageData.type](messageData.content);
+    }
+  }
+
+  function disconnect() {
+    connected = false;
+    stopPostingHello();
+    removeAllListeners();
+    window.removeEventListener('message', messageListener);
+  }
+
+  /**
+    Initialize communication with the parent frame. This should not be called until the app's custom
+    listeners are registered (via our 'addListener' public method) because, once we open the
+    communication, the parent window may send any messages it may have queued. Messages for which
+    we don't have handlers will be silently ignored.
+  */
+  function initialize() {
+    if (isInitialized) {
+      return;
+    }
+    isInitialized = true;
+    if (window.parent === window) return;
+
+    // We kick off communication with the parent window by sending a "hello" message. Then we wait
+    // for a handshake (another "hello" message) from the parent window.
+    startPostingHello();
+    window.addEventListener('message', messageListener, false);
+  }
+
+  function startPostingHello() {
+    if (helloInterval) {
+      stopPostingHello();
+    }
+    helloInterval = window.setInterval(postHello, HELLO_INTERVAL_LENGTH);
+    window.setTimeout(stopPostingHello, HELLO_TIMEOUT_LENGTH);
+    // Post the first msg immediately.
+    postHello();
+  }
+
+  function stopPostingHello() {
+    window.clearInterval(helloInterval);
+    helloInterval = null;
+  }
+
+  // Public API.
+  return {
+    initialize: initialize,
+    getListenerNames: getListenerNames,
+    addListener: addListener,
+    removeListener: removeListener,
+    removeAllListeners: removeAllListeners,
+    disconnect: disconnect,
+    post: post
+  };
+}
+
+var instance = null;
+
+// IFrameEndpoint is a singleton, as iframe can't have multiple parents anyway.
+module.exports = function getIFrameEndpoint() {
+  if (!instance) {
+    instance = new IFrameEndpoint();
+  }
+  return instance;
+};
+
+
+/***/ }),
+
+/***/ "./src/interactive-api-client/node_modules/iframe-phone/lib/iframe-phone-rpc-endpoint.js":
+/*!***********************************************************************************************!*\
+  !*** ./src/interactive-api-client/node_modules/iframe-phone/lib/iframe-phone-rpc-endpoint.js ***!
+  \***********************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var ParentEndpoint = __webpack_require__(/*! ./parent-endpoint */ "./src/interactive-api-client/node_modules/iframe-phone/lib/parent-endpoint.js");
+var getIFrameEndpoint = __webpack_require__(/*! ./iframe-endpoint */ "./src/interactive-api-client/node_modules/iframe-phone/lib/iframe-endpoint.js");
+
+// Not a real UUID as there's an RFC for that (needed for proper distributed computing).
+// But in this fairly parochial situation, we just need to be fairly sure to avoid repeats.
+function getPseudoUUID() {
+  var chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
+  var len = chars.length;
+  var ret = [];
+
+  for (var i = 0; i < 10; i++) {
+    ret.push(chars[Math.floor(Math.random() * len)]);
+  }
+  return ret.join('');
+}
+
+module.exports = function IframePhoneRpcEndpoint(handler, namespace, targetWindow, targetOrigin, phone) {
+  var pendingCallbacks = Object.create({});
+
+  // if it's a non-null object, rather than a function, 'handler' is really an options object
+  if (handler && typeof handler === 'object') {
+    namespace = handler.namespace;
+    targetWindow = handler.targetWindow;
+    targetOrigin = handler.targetOrigin;
+    phone = handler.phone;
+    handler = handler.handler;
+  }
+
+  if (!phone) {
+    if (targetWindow === window.parent) {
+      phone = getIFrameEndpoint();
+      phone.initialize();
+    } else {
+      phone = new ParentEndpoint(targetWindow, targetOrigin);
+    }
+  }
+
+  phone.addListener(namespace, function (message) {
+    var callbackObj;
+
+    if (message.messageType === 'call' && typeof this.handler === 'function') {
+      this.handler.call(undefined, message.value, function (returnValue) {
+        phone.post(namespace, {
+          messageType: 'returnValue',
+          uuid: message.uuid,
+          value: returnValue
+        });
+      });
+    } else if (message.messageType === 'returnValue') {
+      callbackObj = pendingCallbacks[message.uuid];
+
+      if (callbackObj) {
+        window.clearTimeout(callbackObj.timeout);
+        if (callbackObj.callback) {
+          callbackObj.callback.call(undefined, message.value);
+        }
+        pendingCallbacks[message.uuid] = null;
+      }
+    }
+  }.bind(this));
+
+  function call(message, callback) {
+    var uuid = getPseudoUUID();
+
+    pendingCallbacks[uuid] = {
+      callback: callback,
+      timeout: window.setTimeout(function () {
+        if (callback) {
+          callback(undefined, new Error("IframePhone timed out waiting for reply"));
+        }
+      }, 2000)
+    };
+
+    phone.post(namespace, {
+      messageType: 'call',
+      uuid: uuid,
+      value: message
+    });
+  }
+
+  function disconnect() {
+    phone.disconnect();
+  }
+
+  this.handler = handler;
+  this.call = call.bind(this);
+  this.disconnect = disconnect.bind(this);
+};
+
+
+/***/ }),
+
+/***/ "./src/interactive-api-client/node_modules/iframe-phone/lib/parent-endpoint.js":
+/*!*************************************************************************************!*\
+  !*** ./src/interactive-api-client/node_modules/iframe-phone/lib/parent-endpoint.js ***!
+  \*************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var structuredClone = __webpack_require__(/*! ./structured-clone */ "./src/interactive-api-client/node_modules/iframe-phone/lib/structured-clone.js");
+
+/**
+  Call as:
+    new ParentEndpoint(targetWindow, targetOrigin, afterConnectedCallback)
+      targetWindow is a WindowProxy object. (Messages will be sent to it)
+
+      targetOrigin is the origin of the targetWindow. (Messages will be restricted to this origin)
+
+      afterConnectedCallback is an optional callback function to be called when the connection is
+        established.
+
+  OR (less secure):
+    new ParentEndpoint(targetIframe, afterConnectedCallback)
+
+      targetIframe is a DOM object (HTMLIframeElement); messages will be sent to its contentWindow.
+
+      afterConnectedCallback is an optional callback function
+
+    In this latter case, targetOrigin will be inferred from the value of the src attribute of the
+    provided DOM object at the time of the constructor invocation. This is less secure because the
+    iframe might have been navigated to an unexpected domain before constructor invocation.
+
+  Note that it is important to specify the expected origin of the iframe's content to safeguard
+  against sending messages to an unexpected domain. This might happen if our iframe is navigated to
+  a third-party URL unexpectedly. Furthermore, having a reference to Window object (as in the first
+  form of the constructor) does not protect against sending a message to the wrong domain. The
+  window object is actualy a WindowProxy which transparently proxies the Window object of the
+  underlying iframe, so that when the iframe is navigated, the "same" WindowProxy now references a
+  completely differeent Window object, possibly controlled by a hostile domain.
+
+  See http://www.esdiscuss.org/topic/a-dom-use-case-that-can-t-be-emulated-with-direct-proxies for
+  more about this weird behavior of WindowProxies (the type returned by <iframe>.contentWindow).
+*/
+
+module.exports = function ParentEndpoint(targetWindowOrIframeEl, targetOrigin, afterConnectedCallback) {
+  var postMessageQueue = [];
+  var connected = false;
+  var handlers = {};
+  var targetWindowIsIframeElement;
+
+  function getIframeOrigin(iframe) {
+    return iframe.src.match(/(.*?\/\/.*?)\//)[1];
+  }
+
+  function post(type, content) {
+    var message;
+    // Message object can be constructed from 'type' and 'content' arguments or it can be passed
+    // as the first argument.
+    if (arguments.length === 1 && typeof type === 'object' && typeof type.type === 'string') {
+      message = type;
+    } else {
+      message = {
+        type: type,
+        content: content
+      };
+    }
+    if (connected) {
+      var tWindow = getTargetWindow();
+      // if we are laready connected ... send the message
+      // See http://dev.opera.com/articles/view/window-postmessage-messagechannel/#crossdoc
+      //     https://github.com/Modernizr/Modernizr/issues/388
+      //     http://jsfiddle.net/ryanseddon/uZTgD/2/
+      if (structuredClone.supported()) {
+        tWindow.postMessage(message, targetOrigin);
+      } else {
+        tWindow.postMessage(JSON.stringify(message), targetOrigin);
+      }
+    } else {
+      // else queue up the messages to send after connection complete.
+      postMessageQueue.push(message);
+    }
+  }
+
+  function addListener(messageName, func) {
+    handlers[messageName] = func;
+  }
+
+  function removeListener(messageName) {
+    delete handlers[messageName];
+  }
+
+  function removeAllListeners() {
+    handlers = {};
+  }
+
+  // Note that this function can't be used when IFrame element hasn't been added to DOM yet
+  // (.contentWindow would be null). At the moment risk is purely theoretical, as the parent endpoint
+  // only listens for an incoming 'hello' message and the first time we call this function
+  // is in #receiveMessage handler (so iframe had to be initialized before, as it could send 'hello').
+  // It would become important when we decide to refactor the way how communication is initialized.
+  function getTargetWindow() {
+    if (targetWindowIsIframeElement) {
+      var tWindow = targetWindowOrIframeEl.contentWindow;
+      if (!tWindow) {
+        throw "IFrame element needs to be added to DOM before communication " +
+              "can be started (.contentWindow is not available)";
+      }
+      return tWindow;
+    }
+    return targetWindowOrIframeEl;
+  }
+
+  function receiveMessage(message) {
+    var messageData;
+    if (message.source === getTargetWindow() && (targetOrigin === '*' || message.origin === targetOrigin)) {
+      messageData = message.data;
+      if (typeof messageData === 'string') {
+        messageData = JSON.parse(messageData);
+      }
+      if (handlers[messageData.type]) {
+        handlers[messageData.type](messageData.content);
+      } else {
+        console.log("cant handle type: " + messageData.type);
+      }
+    }
+  }
+
+  function disconnect() {
+    connected = false;
+    removeAllListeners();
+    window.removeEventListener('message', receiveMessage);
+  }
+
+  // handle the case that targetWindowOrIframeEl is actually an <iframe> rather than a Window(Proxy) object
+  // Note that if it *is* a WindowProxy, this probe will throw a SecurityException, but in that case
+  // we also don't need to do anything
+  try {
+    targetWindowIsIframeElement = targetWindowOrIframeEl.constructor === HTMLIFrameElement;
+  } catch (e) {
+    targetWindowIsIframeElement = false;
+  }
+
+  if (targetWindowIsIframeElement) {
+    // Infer the origin ONLY if the user did not supply an explicit origin, i.e., if the second
+    // argument is empty or is actually a callback (meaning it is supposed to be the
+    // afterConnectionCallback)
+    if (!targetOrigin || targetOrigin.constructor === Function) {
+      afterConnectedCallback = targetOrigin;
+      targetOrigin = getIframeOrigin(targetWindowOrIframeEl);
+    }
+  }
+
+  // Handle pages served through file:// protocol. Behaviour varies in different browsers. Safari sets origin
+  // to 'file://' and everything works fine, but Chrome and Safari set message.origin to null.
+  // Also, https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage says:
+  //  > Lastly, posting a message to a page at a file: URL currently requires that the targetOrigin argument be "*".
+  //  > file:// cannot be used as a security restriction; this restriction may be modified in the future.
+  // So, using '*' seems like the only possible solution.
+  if (targetOrigin === 'file://') {
+    targetOrigin = '*';
+  }
+
+  // when we receive 'hello':
+  addListener('hello', function () {
+    connected = true;
+
+    // send hello response
+    post({
+      type: 'hello',
+      // `origin` property isn't used by IframeEndpoint anymore (>= 1.2.0), but it's being sent to be
+      // backward compatible with old IframeEndpoint versions (< v1.2.0).
+      origin: window.location.href.match(/(.*?\/\/.*?)\//)[1]
+    });
+
+    // give the user a chance to do things now that we are connected
+    // note that is will happen before any queued messages
+    if (afterConnectedCallback && typeof afterConnectedCallback === "function") {
+      afterConnectedCallback();
+    }
+
+    // Now send any messages that have been queued up ...
+    while (postMessageQueue.length > 0) {
+      post(postMessageQueue.shift());
+    }
+  });
+
+  window.addEventListener('message', receiveMessage, false);
+
+  // Public API.
+  return {
+    post: post,
+    addListener: addListener,
+    removeListener: removeListener,
+    removeAllListeners: removeAllListeners,
+    disconnect: disconnect,
+    getTargetWindow: getTargetWindow,
+    targetOrigin: targetOrigin
+  };
+};
+
+
+/***/ }),
+
+/***/ "./src/interactive-api-client/node_modules/iframe-phone/lib/structured-clone.js":
+/*!**************************************************************************************!*\
+  !*** ./src/interactive-api-client/node_modules/iframe-phone/lib/structured-clone.js ***!
+  \**************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+var featureSupported = {
+  'structuredClones': 0
+};
+
+(function () {
+  var result = 0;
+
+  if (!!window.postMessage) {
+    try {
+      // Spec states you can't transmit DOM nodes and it will throw an error
+      // postMessage implementations that support cloned data will throw.
+      window.postMessage(document.createElement("a"), "*");
+    } catch (e) {
+      // BBOS6 throws but doesn't pass through the correct exception
+      // so check error message
+      result = (e.DATA_CLONE_ERR || e.message === "Cannot post cyclic structures.") ? 1 : 0;
+      featureSupported = {
+        'structuredClones': result
+      };
+    }
+  }
+}());
+
+exports.supported = function supported() {
+  return featureSupported && featureSupported.structuredClones > 0;
+};
+
+
+/***/ }),
+
+/***/ "./src/interactive-api-client/node_modules/iframe-phone/main.js":
+/*!**********************************************************************!*\
+  !*** ./src/interactive-api-client/node_modules/iframe-phone/main.js ***!
+  \**********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = {
+  /**
+   * Allows to communicate with an iframe.
+   */
+  ParentEndpoint:  __webpack_require__(/*! ./lib/parent-endpoint */ "./src/interactive-api-client/node_modules/iframe-phone/lib/parent-endpoint.js"),
+  /**
+   * Allows to communicate with a parent page.
+   * IFrameEndpoint is a singleton, as iframe can't have multiple parents anyway.
+   */
+  getIFrameEndpoint: __webpack_require__(/*! ./lib/iframe-endpoint */ "./src/interactive-api-client/node_modules/iframe-phone/lib/iframe-endpoint.js"),
+  structuredClone: __webpack_require__(/*! ./lib/structured-clone */ "./src/interactive-api-client/node_modules/iframe-phone/lib/structured-clone.js"),
+
+  // TODO: May be misnamed
+  IframePhoneRpcEndpoint: __webpack_require__(/*! ./lib/iframe-phone-rpc-endpoint */ "./src/interactive-api-client/node_modules/iframe-phone/lib/iframe-phone-rpc-endpoint.js")
+
+};
 
 
 /***/ }),
