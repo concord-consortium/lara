@@ -509,3 +509,8 @@ export interface IDataset {
 export interface IInteractiveStateWithDataset {
   dataset?: IDataset | null;
 }
+
+export interface IGetInteractiveState {
+  unloading?: boolean;  // set to true to tell the interactive it is getting the final state
+}
+export type OnUnloadFunction<InteractiveState = {}> = (options: IGetInteractiveState) => Promise<InteractiveState>;

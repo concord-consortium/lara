@@ -44,6 +44,7 @@
 * [IGetInteractiveSnapshotOptions](interfaces/igetinteractivesnapshotoptions.md)
 * [IGetInteractiveSnapshotRequest](interfaces/igetinteractivesnapshotrequest.md)
 * [IGetInteractiveSnapshotResponse](interfaces/igetinteractivesnapshotresponse.md)
+* [IGetInteractiveState](interfaces/igetinteractivestate.md)
 * [IGetLibraryInteractiveListOptions](interfaces/igetlibraryinteractivelistoptions.md)
 * [IGetLibraryInteractiveListRequest](interfaces/igetlibraryinteractivelistrequest.md)
 * [IGetLibraryInteractiveListResponse](interfaces/igetlibraryinteractivelistresponse.md)
@@ -113,6 +114,7 @@
 * [InteractiveItemId](globals.md#interactiveitemid)
 * [LoggerClientMessage](globals.md#loggerclientmessage)
 * [ModalType](globals.md#modaltype)
+* [OnUnloadFunction](globals.md#onunloadfunction)
 * [ReadAttachmentParams](globals.md#readattachmentparams)
 * [ServerMessage](globals.md#servermessage)
 * [WriteAttachmentParams](globals.md#writeattachmentparams)
@@ -163,6 +165,7 @@
 * [setInteractiveState](globals.md#const-setinteractivestate)
 * [setLinkedInteractives](globals.md#const-setlinkedinteractives)
 * [setNavigation](globals.md#const-setnavigation)
+* [setOnUnload](globals.md#const-setonunload)
 * [setSupportedFeatures](globals.md#const-setsupportedfeatures)
 * [showModal](globals.md#const-showmodal)
 * [useAuthoredState](globals.md#const-useauthoredstate)
@@ -365,6 +368,22 @@ ___
 ###  ModalType
 
 Ƭ **ModalType**: *"alert" | "lightbox" | "dialog"*
+
+___
+
+###  OnUnloadFunction
+
+Ƭ **OnUnloadFunction**: *function*
+
+#### Type declaration:
+
+▸ (`options`: [IGetInteractiveState](interfaces/igetinteractivestate.md)): *Promise‹InteractiveState›*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`options` | [IGetInteractiveState](interfaces/igetinteractivestate.md) |
 
 ___
 
@@ -1050,6 +1069,20 @@ ___
 Name | Type |
 ------ | ------ |
 `options` | [INavigationOptions](interfaces/inavigationoptions.md) |
+
+**Returns:** *void*
+
+___
+
+### `Const` setOnUnload
+
+▸ **setOnUnload**(`onUnload?`: [OnUnloadFunction](globals.md#onunloadfunction)): *void*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`onUnload?` | [OnUnloadFunction](globals.md#onunloadfunction) |
 
 **Returns:** *void*
 
