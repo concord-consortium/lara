@@ -25,6 +25,7 @@
 * [interactiveState](iinteractivestateprops.md#interactivestate)
 * [interactiveStateUrl](iinteractivestateprops.md#optional-interactivestateurl)
 * [linkedState](iinteractivestateprops.md#optional-linkedstate)
+* [metadata](iinteractivestateprops.md#optional-metadata)
 * [pageName](iinteractivestateprops.md#optional-pagename)
 * [pageNumber](iinteractivestateprops.md#optional-pagenumber)
 * [updatedAt](iinteractivestateprops.md#optional-updatedat)
@@ -88,6 +89,12 @@ ___
 ### `Optional` linkedState
 
 • **linkedState**? : *undefined | object*
+
+___
+
+### `Optional` metadata
+
+• **metadata**? : *[IMetadata](../globals.md#imetadata)*
 
 ___
 

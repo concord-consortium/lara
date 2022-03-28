@@ -19,6 +19,7 @@
 * [authoredState](ireportinitinteractive.md#authoredstate)
 * [hostFeatures](ireportinitinteractive.md#hostfeatures)
 * [interactiveState](ireportinitinteractive.md#interactivestate)
+* [metadata](ireportinitinteractive.md#metadata)
 * [mode](ireportinitinteractive.md#mode)
 * [themeInfo](ireportinitinteractive.md#themeinfo)
 * [version](ireportinitinteractive.md#version)
@@ -41,6 +42,12 @@ ___
 ###  interactiveState
 
 • **interactiveState**: *InteractiveState*
+
+___
+
+###  metadata
+
+• **metadata**: *[IMetadata](../globals.md#imetadata)*
 
 ___
 

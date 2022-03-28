@@ -18,6 +18,7 @@
 
 * [hostFeatures](ireportiteminitinteractive.md#hostfeatures)
 * [interactiveItemId](ireportiteminitinteractive.md#interactiveitemid)
+* [metadata](ireportiteminitinteractive.md#metadata)
 * [mode](ireportiteminitinteractive.md#mode)
 * [users](ireportiteminitinteractive.md#users)
 * [version](ireportiteminitinteractive.md#version)
@@ -34,6 +35,12 @@ ___
 ###  interactiveItemId
 
 • **interactiveItemId**: *string*
+
+___
+
+###  metadata
+
+• **metadata**: *[IMetadata](../globals.md#imetadata)*
 
 ___
 

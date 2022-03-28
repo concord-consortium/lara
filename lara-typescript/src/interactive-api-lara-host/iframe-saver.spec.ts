@@ -1,6 +1,6 @@
 import { mockIFramePhone, MockedIframePhoneManager, setAutoConnect } from "./mock-iframe-phone";
 import { IFrameSaver } from "./iframe-saver";
-import { IAttachmentUrlRequest } from "@concord-consortium/interactive-api-host";
+import { IAttachmentUrlRequest } from "../interactive-api-host";
 
 const parentEl = document.createElement("iframe");
 
@@ -8,7 +8,7 @@ jest.mock("iframe-phone", () => mockIFramePhone(parentEl));
 
 const mockInitializeAttachmentsManager = jest.fn();
 const mockHandleGetAttachmentUrl = jest.fn();
-jest.mock("@concord-consortium/interactive-api-host", () => ({
+jest.mock("../interactive-api-host", () => ({
   initializeAttachmentsManager: (options: any) => mockInitializeAttachmentsManager(options),
   handleGetAttachmentUrl: (options: any) => mockHandleGetAttachmentUrl(options)
 }));
@@ -133,7 +133,7 @@ describe("IFrameSaver", () => {
         $.ajax = jest.fn().mockImplementation((params: any) => {
           params.success({
             raw_data: JSON.stringify({interactiveState: 321}),
-            metadata: JSON.stringify({metadata: 321}),
+            metadata: JSON.stringify({metadata: 456}),
             created_at: "2017",
             updated_at: "2018",
             activity_name: "test act",
@@ -186,13 +186,16 @@ describe("IFrameSaver", () => {
               colorA: "red",
               colorB: "green"
             }
+          },
+          metadata: {
+            metadata: 456,
           }
         });
       });
 
       it("should parse interactive state and metadata", () => {
         expect((saver as any).savedState).toEqual({ interactiveState: 321 });
-        expect((saver as any).metadata).toEqual({ metadata: 321 });
+        expect((saver as any).metadata).toEqual({ metadata: 456 });
       });
     });
 

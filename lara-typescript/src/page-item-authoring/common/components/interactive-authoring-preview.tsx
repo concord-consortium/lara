@@ -66,7 +66,8 @@ export const InteractiveAuthoringPreview: React.FC<Props> = ({interactive, user}
         colorA: "red",
         colorB: "green"
       }
-    }
+    },
+    metadata: {}
   };
 
   return (

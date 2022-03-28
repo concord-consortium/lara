@@ -7,9 +7,8 @@ import {
   handleGetAttachmentUrl, ClientMessage, IAnswerMetadataWithAttachmentsInfo, IAttachmentUrlRequest, IGetAuthInfoRequest,
   IGetAuthInfoResponse, IGetFirebaseJwtRequest, IGetFirebaseJwtResponse, IGetInteractiveSnapshotRequest,
   IGetInteractiveSnapshotResponse, IHintRequest, IInitInteractive, IInteractiveStateProps, ILinkedInteractive,
-  INavigationOptions, initializeAttachmentsManager, ISupportedFeaturesRequest, ServerMessage
-} from "@concord-consortium/interactive-api-host";
-import { EnvironmentName } from "@concord-consortium/token-service";
+  INavigationOptions, initializeAttachmentsManager, ISupportedFeaturesRequest, ServerMessage, IMetadata
+} from "../interactive-api-host";
 
 // Shutterbug is imported globally and used by the old LARA JS code.
 const Shutterbug = (window as any).Shutterbug;
@@ -545,7 +544,8 @@ export class IFrameSaver {
           colorA: "red",
           colorB: "green"
         }
-      }
+      },
+      metadata: this.metadata as IMetadata
     };
 
     // Perhaps it would be nicer to keep `interactiveStateProps` in some separate property instead of mixing
