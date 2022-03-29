@@ -32852,6 +32852,8 @@ var RuntimeComponent = function (_a) {
     var initMessage = _a.initMessage;
     var _b = (0, react_1.useState)(false), uploading = _b[0], setUploading = _b[1];
     var _c = (0, react_1.useState)({}), attachments = _c[0], setAttachments = _c[1];
+    // for now this is the best way to know in authoring runtime mode
+    var inAuthoringRuntimeMode = !initMessage.hostFeatures.getFirebaseJwt;
     (0, react_1.useEffect)(function () {
         var _a;
         var initialAttachments = {};
@@ -32983,10 +32985,12 @@ var RuntimeComponent = function (_a) {
         }
     };
     return (React.createElement("div", { className: "padded" },
-        React.createElement("h1", null, "Attachments Example Interactve"),
+        React.createElement("h1", null, "Attachments Example Interactive"),
         React.createElement("fieldset", null,
             React.createElement("legend", null, "Audio Attachments"),
-            React.createElement("input", { type: "file", title: "Upload Audio File", accept: "audio/*", onChange: handleUploadAttachment }),
+            inAuthoringRuntimeMode
+                ? React.createElement("p", null, "When this interactive is used by a student an upload button will be visible here.")
+                : React.createElement("input", { type: "file", title: "Upload Audio File", accept: "audio/*", onChange: handleUploadAttachment }),
             uploading ? React.createElement("p", null, "Uploading...") : null,
             renderAttachmentUrls()),
         React.createElement("fieldset", null,

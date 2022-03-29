@@ -16,6 +16,9 @@ export const RuntimeComponent: React.FC<Props> = ({initMessage}) => {
   const [uploading, setUploading] = useState<boolean>(false);
   const [attachments, setAttachments] = useState<AttachmentMap>({});
 
+  // for now this is the best way to know in authoring runtime mode
+  const inAuthoringRuntimeMode = !initMessage.hostFeatures.getFirebaseJwt;
+
   useEffect(() => {
     const initialAttachments: AttachmentMap = {};
     if (initMessage.metadata?.attachments) {
@@ -92,11 +95,15 @@ export const RuntimeComponent: React.FC<Props> = ({initMessage}) => {
 
   return (
     <div className="padded">
-      <h1>Attachments Example Interactve</h1>
+      <h1>Attachments Example Interactive</h1>
 
       <fieldset>
         <legend>Audio Attachments</legend>
-        <input type="file" title="Upload Audio File" accept="audio/*" onChange={handleUploadAttachment} />
+
+        {inAuthoringRuntimeMode
+          ? <p>When this interactive is used by a student an upload button will be visible here.</p>
+          : <input type="file" title="Upload Audio File" accept="audio/*" onChange={handleUploadAttachment} />
+        }
 
         {uploading ? <p>Uploading...</p> : null}
 
