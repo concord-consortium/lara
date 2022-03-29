@@ -7,8 +7,9 @@ import {
   handleGetAttachmentUrl, ClientMessage, IAnswerMetadataWithAttachmentsInfo, IAttachmentUrlRequest, IGetAuthInfoRequest,
   IGetAuthInfoResponse, IGetFirebaseJwtRequest, IGetFirebaseJwtResponse, IGetInteractiveSnapshotRequest,
   IGetInteractiveSnapshotResponse, IHintRequest, IInitInteractive, IInteractiveStateProps, ILinkedInteractive,
-  INavigationOptions, initializeAttachmentsManager, ISupportedFeaturesRequest, ServerMessage, IMetadata
+  INavigationOptions, initializeAttachmentsManager, ISupportedFeaturesRequest, ServerMessage
 } from "../interactive-api-host";
+import { answerMetadataToAttachmentInfoMap } from "../interactive-api-host/attachments-api/helpers";
 
 // Shutterbug is imported globally and used by the old LARA JS code.
 const Shutterbug = (window as any).Shutterbug;
@@ -545,7 +546,7 @@ export class IFrameSaver {
           colorB: "green"
         }
       },
-      metadata: this.metadata as IMetadata
+      attachments: answerMetadataToAttachmentInfoMap(this.metadata)
     };
 
     // Perhaps it would be nicer to keep `interactiveStateProps` in some separate property instead of mixing

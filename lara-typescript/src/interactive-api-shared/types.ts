@@ -6,8 +6,10 @@ export { IPortalClaims, IJwtClaims, IJwtResponse } from "../shared/types";
 // Discussion about naming of these interfaces:
 // https://github.com/concord-consortium/lara/pull/550#issuecomment-639021815
 
-// for now make it an open object - we may want to specify the properties later
-export type IMetadata = Record<string, any>;
+export interface IAttachmentInfo {
+  contentType?: string;
+}
+export type AttachmentInfoMap = Record<string, IAttachmentInfo>;
 
 export interface IInteractiveStateProps<InteractiveState = {}> {
   interactiveState: InteractiveState | null;
@@ -25,7 +27,7 @@ export interface IInteractiveStateProps<InteractiveState = {}> {
   pageName?: string;
   activityName?: string;
   externalReportUrl?: string;
-  metadata?: IMetadata;
+  attachments?: AttachmentInfoMap;
 }
 
 export interface IHostFeatureSupport extends Record<string, unknown> {
@@ -66,7 +68,7 @@ export interface IRuntimeInitInteractive<InteractiveState = {}, AuthoredState = 
   };
   linkedInteractives: ILinkedInteractive[];
   themeInfo: IThemeInfo;
-  metadata: IMetadata;
+  attachments?: AttachmentInfoMap;
 }
 
 export interface IThemeInfo {
@@ -101,7 +103,7 @@ export interface IReportInitInteractive<InteractiveState = {}, AuthoredState = {
   authoredState: AuthoredState;
   interactiveState: InteractiveState;
   themeInfo: IThemeInfo;
-  metadata: IMetadata;
+  attachments?: AttachmentInfoMap;
 }
 
 export interface IReportItemInitInteractive<InteractiveState = {}, AuthoredState = {}> {
@@ -111,7 +113,7 @@ export interface IReportItemInitInteractive<InteractiveState = {}, AuthoredState
   interactiveItemId: string;
   view: "singleAnswer" | "multipleAnswer";
   users: Record<string, {hasAnswer: boolean}>;
-  metadata: IMetadata;
+  attachments?: AttachmentInfoMap;
 }
 
 export type IInitInteractive<InteractiveState = {}, AuthoredState = {}, GlobalInteractiveState = {}> =

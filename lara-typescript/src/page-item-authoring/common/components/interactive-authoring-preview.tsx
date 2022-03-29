@@ -67,7 +67,7 @@ export const InteractiveAuthoringPreview: React.FC<Props> = ({interactive, user}
         colorB: "green"
       }
     },
-    metadata: {}
+    attachments: {}
   };
 
   return (

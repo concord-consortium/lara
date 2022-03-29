@@ -18,6 +18,7 @@
 
 * [activityName](iinteractivestateprops.md#optional-activityname)
 * [allLinkedStates](iinteractivestateprops.md#optional-alllinkedstates)
+* [attachments](iinteractivestateprops.md#optional-attachments)
 * [createdAt](iinteractivestateprops.md#optional-createdat)
 * [externalReportUrl](iinteractivestateprops.md#optional-externalreporturl)
 * [hasLinkedInteractive](iinteractivestateprops.md#optional-haslinkedinteractive)
@@ -25,7 +26,6 @@
 * [interactiveState](iinteractivestateprops.md#interactivestate)
 * [interactiveStateUrl](iinteractivestateprops.md#optional-interactivestateurl)
 * [linkedState](iinteractivestateprops.md#optional-linkedstate)
-* [metadata](iinteractivestateprops.md#optional-metadata)
 * [pageName](iinteractivestateprops.md#optional-pagename)
 * [pageNumber](iinteractivestateprops.md#optional-pagenumber)
 * [updatedAt](iinteractivestateprops.md#optional-updatedat)
@@ -41,6 +41,12 @@ ___
 ### `Optional` allLinkedStates
 
 • **allLinkedStates**? : *[IInteractiveStateProps](iinteractivestateprops.md)[]*
+
+___
+
+### `Optional` attachments
+
+• **attachments**? : *[AttachmentInfoMap](../globals.md#attachmentinfomap)*
 
 ___
 
@@ -89,12 +95,6 @@ ___
 ### `Optional` linkedState
 
 • **linkedState**? : *undefined | object*
-
-___
-
-### `Optional` metadata
-
-• **metadata**? : *[IMetadata](../globals.md#imetadata)*
 
 ___
 

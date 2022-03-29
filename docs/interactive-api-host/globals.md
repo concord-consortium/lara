@@ -9,6 +9,7 @@
 * [IAddLinkedInteractiveStateListenerOptions](interfaces/iaddlinkedinteractivestatelisteneroptions.md)
 * [IAddLinkedInteractiveStateListenerRequest](interfaces/iaddlinkedinteractivestatelistenerrequest.md)
 * [IAnswerMetadataWithAttachmentsInfo](interfaces/ianswermetadatawithattachmentsinfo.md)
+* [IAttachmentInfo](interfaces/iattachmentinfo.md)
 * [IAttachmentUrlRequest](interfaces/iattachmenturlrequest.md)
 * [IAttachmentUrlResponse](interfaces/iattachmenturlresponse.md)
 * [IAttachmentsFolder](interfaces/iattachmentsfolder.md)
@@ -80,6 +81,7 @@
 
 ### Type aliases
 
+* [AttachmentInfoMap](globals.md#attachmentinfomap)
 * [ClientMessage](globals.md#clientmessage)
 * [DeprecatedRuntimeClientMessage](globals.md#deprecatedruntimeclientmessage)
 * [DeprecatedRuntimeServerMessage](globals.md#deprecatedruntimeservermessage)
@@ -93,7 +95,6 @@
 * [ICustomMessagesHandledMap](globals.md#icustommessageshandledmap)
 * [IGetReportItemAnswerHandler](globals.md#igetreportitemanswerhandler)
 * [IInitInteractive](globals.md#iinitinteractive)
-* [IMetadata](globals.md#imetadata)
 * [IReportItemClientMessage](globals.md#ireportitemclientmessage)
 * [IReportItemServerMessage](globals.md#ireportitemservermessage)
 * [IRuntimeClientMessage](globals.md#iruntimeclientmessage)
@@ -124,6 +125,12 @@
 * [setAttachmentsManagerTimeout](globals.md#const-setattachmentsmanagertimeout)
 
 ## Type aliases
+
+###  AttachmentInfoMap
+
+Ƭ **AttachmentInfoMap**: *Record‹string, [IAttachmentInfo](interfaces/iattachmentinfo.md)›*
+
+___
 
 ###  ClientMessage
 
@@ -220,12 +227,6 @@ ___
 ###  IInitInteractive
 
 Ƭ **IInitInteractive**: *[IRuntimeInitInteractive](interfaces/iruntimeinitinteractive.md)‹InteractiveState, AuthoredState, GlobalInteractiveState› | [IAuthoringInitInteractive](interfaces/iauthoringinitinteractive.md)‹AuthoredState› | [IReportInitInteractive](interfaces/ireportinitinteractive.md)‹InteractiveState, AuthoredState› | [IReportItemInitInteractive](interfaces/ireportiteminitinteractive.md)‹InteractiveState, AuthoredState›*
-
-___
-
-###  IMetadata
-
-Ƭ **IMetadata**: *Record‹string, any›*
 
 ___
 

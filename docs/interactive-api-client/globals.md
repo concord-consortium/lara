@@ -12,6 +12,7 @@
 
 * [IAddLinkedInteractiveStateListenerOptions](interfaces/iaddlinkedinteractivestatelisteneroptions.md)
 * [IAddLinkedInteractiveStateListenerRequest](interfaces/iaddlinkedinteractivestatelistenerrequest.md)
+* [IAttachmentInfo](interfaces/iattachmentinfo.md)
 * [IAttachmentUrlRequest](interfaces/iattachmenturlrequest.md)
 * [IAttachmentUrlResponse](interfaces/iattachmenturlresponse.md)
 * [IAuthInfo](interfaces/iauthinfo.md)
@@ -87,6 +88,7 @@
 
 ### Type aliases
 
+* [AttachmentInfoMap](globals.md#attachmentinfomap)
 * [ChoiceId](globals.md#choiceid)
 * [ClientMessage](globals.md#clientmessage)
 * [DeprecatedRuntimeClientMessage](globals.md#deprecatedruntimeclientmessage)
@@ -102,7 +104,6 @@
 * [ICustomMessagesHandledMap](globals.md#icustommessageshandledmap)
 * [IGetReportItemAnswerHandler](globals.md#igetreportitemanswerhandler)
 * [IInitInteractive](globals.md#iinitinteractive)
-* [IMetadata](globals.md#imetadata)
 * [IReportItemClientMessage](globals.md#ireportitemclientmessage)
 * [IReportItemServerMessage](globals.md#ireportitemservermessage)
 * [IRuntimeClientMessage](globals.md#iruntimeclientmessage)
@@ -179,6 +180,12 @@
 * [writeAttachment](globals.md#const-writeattachment)
 
 ## Type aliases
+
+###  AttachmentInfoMap
+
+Ƭ **AttachmentInfoMap**: *Record‹string, [IAttachmentInfo](interfaces/iattachmentinfo.md)›*
+
+___
 
 ###  ChoiceId
 
@@ -287,12 +294,6 @@ ___
 ###  IInitInteractive
 
 Ƭ **IInitInteractive**: *[IRuntimeInitInteractive](interfaces/iruntimeinitinteractive.md)‹InteractiveState, AuthoredState, GlobalInteractiveState› | [IAuthoringInitInteractive](interfaces/iauthoringinitinteractive.md)‹AuthoredState› | [IReportInitInteractive](interfaces/ireportinitinteractive.md)‹InteractiveState, AuthoredState› | [IReportItemInitInteractive](interfaces/ireportiteminitinteractive.md)‹InteractiveState, AuthoredState›*
-
-___
-
-###  IMetadata
-
-Ƭ **IMetadata**: *Record‹string, any›*
 
 ___
 

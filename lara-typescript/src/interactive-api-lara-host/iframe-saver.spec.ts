@@ -21,6 +21,27 @@ const mockSaveIndicator = () => {
   }))();
 };
 
+const mockMetadata = {
+  attachments: {
+    "test.txt": {
+      folder: {
+        id: "1",
+        ownerId: "user-1"
+      },
+      publicPath: "1/1",
+      contentType: "text/plain"
+    },
+    "test.mp3": {
+      folder: {
+        id: "1",
+        ownerId: "user-1"
+      },
+      publicPath: "1/2",
+      contentType: "audio/mp3"
+    }
+  }
+};
+
 const getSaver = () => {
   (window as any).SaveIndicator = mockSaveIndicator();
   (window as any).SaveIndicator.instance = mockSaveIndicator;
@@ -133,7 +154,7 @@ describe("IFrameSaver", () => {
         $.ajax = jest.fn().mockImplementation((params: any) => {
           params.success({
             raw_data: JSON.stringify({interactiveState: 321}),
-            metadata: JSON.stringify({metadata: 456}),
+            metadata: JSON.stringify(mockMetadata),
             created_at: "2017",
             updated_at: "2018",
             activity_name: "test act",
@@ -187,15 +208,20 @@ describe("IFrameSaver", () => {
               colorB: "green"
             }
           },
-          metadata: {
-            metadata: 456,
-          }
+          attachments: {
+            "test.mp3": {
+              contentType: "audio/mp3",
+            },
+            "test.txt": {
+              contentType: "text/plain",
+            },
+          },
         });
       });
 
       it("should parse interactive state and metadata", () => {
         expect((saver as any).savedState).toEqual({ interactiveState: 321 });
-        expect((saver as any).metadata).toEqual({ metadata: 456 });
+        expect((saver as any).metadata).toEqual(mockMetadata);
       });
     });
 
@@ -236,7 +262,8 @@ describe("IFrameSaver", () => {
               colorA: "red",
               colorB: "green"
             }
-          }
+          },
+          attachments: {}
         });
       });
     });

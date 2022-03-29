@@ -1,28 +1,28 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
-import { getAttachmentUrl, IRuntimeInitInteractive, writeAttachment, WriteAttachmentParams } from "../../../interactive-api-client";
+import { getAttachmentUrl, IRuntimeInitInteractive, writeAttachment, WriteAttachmentParams, IAttachmentInfo } from "../../../interactive-api-client";
 
 interface Props {
   initMessage: IRuntimeInitInteractive<any, {}>;
 }
 
-interface AttachmentInfo {
+interface UserAttachmentInfo extends IAttachmentInfo {
   url?: string;
   err?: any;
 }
-type AttachmentMap = Record<string, AttachmentInfo>;
+type UserAttachmentMap = Record<string, UserAttachmentInfo>;
 
 export const RuntimeComponent: React.FC<Props> = ({initMessage}) => {
   const [uploading, setUploading] = useState<boolean>(false);
-  const [attachments, setAttachments] = useState<AttachmentMap>({});
+  const [attachments, setAttachments] = useState<UserAttachmentMap>({});
 
   // for now this is the best way to know in authoring runtime mode
   const inAuthoringRuntimeMode = !initMessage.hostFeatures.getFirebaseJwt;
 
   useEffect(() => {
-    const initialAttachments: AttachmentMap = {};
-    if (initMessage.metadata?.attachments) {
-      Object.keys(initMessage.metadata.attachments).forEach(key => initialAttachments[key] = {});
+    const initialAttachments: UserAttachmentMap = {};
+    if (initMessage.attachments) {
+      Object.keys(initMessage.attachments).forEach(key => initialAttachments[key] = {});
     }
     setAttachments(initialAttachments);
   }, [initMessage]);

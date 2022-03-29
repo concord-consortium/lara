@@ -32855,10 +32855,9 @@ var RuntimeComponent = function (_a) {
     // for now this is the best way to know in authoring runtime mode
     var inAuthoringRuntimeMode = !initMessage.hostFeatures.getFirebaseJwt;
     (0, react_1.useEffect)(function () {
-        var _a;
         var initialAttachments = {};
-        if ((_a = initMessage.metadata) === null || _a === void 0 ? void 0 : _a.attachments) {
-            Object.keys(initMessage.metadata.attachments).forEach(function (key) { return initialAttachments[key] = {}; });
+        if (initMessage.attachments) {
+            Object.keys(initMessage.attachments).forEach(function (key) { return initialAttachments[key] = {}; });
         }
         setAttachments(initialAttachments);
     }, [initMessage]);

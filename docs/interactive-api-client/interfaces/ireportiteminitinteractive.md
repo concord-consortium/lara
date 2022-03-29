@@ -16,15 +16,21 @@
 
 ### Properties
 
+* [attachments](ireportiteminitinteractive.md#optional-attachments)
 * [hostFeatures](ireportiteminitinteractive.md#hostfeatures)
 * [interactiveItemId](ireportiteminitinteractive.md#interactiveitemid)
-* [metadata](ireportiteminitinteractive.md#metadata)
 * [mode](ireportiteminitinteractive.md#mode)
 * [users](ireportiteminitinteractive.md#users)
 * [version](ireportiteminitinteractive.md#version)
 * [view](ireportiteminitinteractive.md#view)
 
 ## Properties
+
+### `Optional` attachments
+
+• **attachments**? : *[AttachmentInfoMap](../globals.md#attachmentinfomap)*
+
+___
 
 ###  hostFeatures
 
@@ -35,12 +41,6 @@ ___
 ###  interactiveItemId
 
 • **interactiveItemId**: *string*
-
-___
-
-###  metadata
-
-• **metadata**: *[IMetadata](../globals.md#imetadata)*
 
 ___
 

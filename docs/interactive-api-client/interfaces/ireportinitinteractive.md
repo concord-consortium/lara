@@ -16,16 +16,22 @@
 
 ### Properties
 
+* [attachments](ireportinitinteractive.md#optional-attachments)
 * [authoredState](ireportinitinteractive.md#authoredstate)
 * [hostFeatures](ireportinitinteractive.md#hostfeatures)
 * [interactiveState](ireportinitinteractive.md#interactivestate)
-* [metadata](ireportinitinteractive.md#metadata)
 * [mode](ireportinitinteractive.md#mode)
 * [themeInfo](ireportinitinteractive.md#themeinfo)
 * [version](ireportinitinteractive.md#version)
 * [view](ireportinitinteractive.md#optional-view)
 
 ## Properties
+
+### `Optional` attachments
+
+• **attachments**? : *[AttachmentInfoMap](../globals.md#attachmentinfomap)*
+
+___
 
 ###  authoredState
 
@@ -42,12 +48,6 @@ ___
 ###  interactiveState
 
 • **interactiveState**: *InteractiveState*
-
-___
-
-###  metadata
-
-• **metadata**: *[IMetadata](../globals.md#imetadata)*
 
 ___
 
