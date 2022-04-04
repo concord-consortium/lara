@@ -1,8 +1,10 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
+import * as semver from "semver";
 import { IReportItemInitInteractive,
          addGetReportItemAnswerListener,
-         sendReportItemAnswer } from "../../../interactive-api-client";
+         sendReportItemAnswer,
+         IReportItemAnswerItem} from "../../../interactive-api-client";
 import { getClient } from "../../../interactive-api-client/client";
 import { MultipleAnswerSummaryComponent } from "./multiple-answer-summary";
 import { SingleAnswerSummaryComponent } from "./single-answer-summary";
@@ -18,36 +20,46 @@ export const ReportItemComponent: React.FC<Props> = (props) => {
 
   useEffect(() => {
     addGetReportItemAnswerListener((request) => {
-      const {type, platformUserId, interactiveState, authoredState} = request;
-      const interactiveStateSize = JSON.stringify(interactiveState).length;
-      const authoredStateSize = JSON.stringify(authoredState).length;
+      const {version, platformUserId, interactiveState, authoredState} = request;
 
-      setUserAnswers(prev => ({...prev, [platformUserId]: interactiveState}));
+      if (!version) {
+        // for hosts sending older, unversioned requests
+        // tslint:disable-next-line:no-console
+        console.error("Example Report Item Interactive: Missing version in getReportItemAnswer request.");
+      }
+      else if (semver.satisfies(version, "2.x")) {
+        const interactiveStateSize = JSON.stringify(interactiveState).length;
+        const authoredStateSize = JSON.stringify(authoredState).length;
 
-      switch (type) {
-        case "html":
-          const html = `
-            <div class="tall">
-              <h1>TALL REPORT HERE...</h1>
-              <p>
-                <strong>Interactive State Size</strong>: ${interactiveStateSize}
-              </p>
-              <p>
-                <strong>Authored State Size</strong>: ${authoredStateSize}
-              </p>
-            </div>
-            <div class="wide">
-              <h1>WIDE REPORT HERE...</h1>
-              <p>
-                <strong>Interactive State Size</strong>: ${interactiveStateSize}
-              </p>
-              <p>
-                <strong>Authored State Size</strong>: ${authoredStateSize}
-              </p>
-            </div>
-          `;
-          sendReportItemAnswer({type: "html", platformUserId, html});
-          break;
+        setUserAnswers(prev => ({...prev, [platformUserId]: interactiveState}));
+
+        const html = `
+          <div class="tall">
+            <h1>TALL REPORT HERE...</h1>
+            <p>
+              <strong>Interactive State Size</strong>: ${interactiveStateSize}
+            </p>
+            <p>
+              <strong>Authored State Size</strong>: ${authoredStateSize}
+            </p>
+          </div>
+          <div class="wide">
+            <h1>WIDE REPORT HERE...</h1>
+            <p>
+              <strong>Interactive State Size</strong>: ${interactiveStateSize}
+            </p>
+            <p>
+              <strong>Authored State Size</strong>: ${authoredStateSize}
+            </p>
+          </div>
+        `;
+
+        const items: IReportItemAnswerItem[] = [{type: "html", html}];
+
+        sendReportItemAnswer({version, platformUserId, items});
+      } else {
+        // tslint:disable-next-line:no-console
+        console.error("Example Report Item Interactive: Unsupported version in getReportItemAnswer request:", version);
       }
     });
 

@@ -481,16 +481,40 @@ export interface ILinkedInteractiveStateResponse<LinkedInteractiveState> {
 }
 
 export interface IGetReportItemAnswer<InteractiveState = {}, AuthoredState = {}> extends IBaseRequestResponse {
-  type: "html";
+  version: "2.0.0";
   platformUserId: string;
   interactiveState: InteractiveState;
   authoredState: AuthoredState;
 }
 
-export interface IReportItemAnswer extends IBaseRequestResponse {
+export interface IReportItemAnswerItemAttachment {
+  type: "attachment";
+  name: string;
+  label?: string;
+}
+export interface IReportItemAnswerItemAnswerText {
+  type: "answerText";
+}
+export interface IReportItemAnswerItemHtml {
   type: "html";
-  platformUserId: string;
   html: string;
+}
+export interface IReportItemAnswerItemLinks {
+  type: "links";
+  hideViewInline?: boolean;
+  hideViewInNewTab?: boolean;
+}
+
+export type IReportItemAnswerItem =
+  IReportItemAnswerItemAttachment |
+  IReportItemAnswerItemAnswerText |
+  IReportItemAnswerItemHtml |
+  IReportItemAnswerItemLinks;
+
+export interface IReportItemAnswer extends IBaseRequestResponse {
+  version: "2.0.0";
+  platformUserId: string;
+  items: IReportItemAnswerItem[];
 }
 
 export type IGetReportItemAnswerHandler = (message: IGetReportItemAnswer) => void;

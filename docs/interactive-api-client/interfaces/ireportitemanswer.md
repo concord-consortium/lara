@@ -12,16 +12,16 @@
 
 ### Properties
 
-* [html](ireportitemanswer.md#html)
+* [items](ireportitemanswer.md#items)
 * [platformUserId](ireportitemanswer.md#platformuserid)
 * [requestId](ireportitemanswer.md#requestid)
-* [type](ireportitemanswer.md#type)
+* [version](ireportitemanswer.md#version)
 
 ## Properties
 
-###  html
+###  items
 
-• **html**: *string*
+• **items**: *[IReportItemAnswerItem](../globals.md#ireportitemansweritem)[]*
 
 ___
 
@@ -39,6 +39,6 @@ ___
 
 ___
 
-###  type
+###  version
 
-• **type**: *"html"*
+• **version**: *"2.0.0"*
