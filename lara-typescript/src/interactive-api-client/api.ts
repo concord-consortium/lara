@@ -181,7 +181,8 @@ export const removeDecorateContentListener = () => {
   getClient().removeDecorateContentListener();
 };
 
-export const addGetReportItemAnswerListener = (callback: IGetReportItemAnswerHandler) => {
+// tslint:disable-next-line:max-line-length
+export const addGetReportItemAnswerListener = <InteractiveState, AuthoredState>(callback: IGetReportItemAnswerHandler<InteractiveState, AuthoredState>) => {
   getClient().addGetReportItemAnswerListener(callback);
 };
 

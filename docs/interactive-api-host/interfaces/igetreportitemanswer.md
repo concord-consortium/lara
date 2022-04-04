@@ -22,7 +22,7 @@
 * [interactiveState](igetreportitemanswer.md#interactivestate)
 * [platformUserId](igetreportitemanswer.md#platformuserid)
 * [requestId](igetreportitemanswer.md#requestid)
-* [type](igetreportitemanswer.md#type)
+* [version](igetreportitemanswer.md#version)
 
 ## Properties
 
@@ -52,6 +52,6 @@ ___
 
 ___
 
-###  type
+###  version
 
-• **type**: *"html"*
+• **version**: *"2.0.0"*

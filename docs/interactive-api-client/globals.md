@@ -67,6 +67,10 @@
 * [IRemoveLinkedInteractiveStateListenerRequest](interfaces/iremovelinkedinteractivestatelistenerrequest.md)
 * [IReportInitInteractive](interfaces/ireportinitinteractive.md)
 * [IReportItemAnswer](interfaces/ireportitemanswer.md)
+* [IReportItemAnswerItemAnswerText](interfaces/ireportitemansweritemanswertext.md)
+* [IReportItemAnswerItemAttachment](interfaces/ireportitemansweritemattachment.md)
+* [IReportItemAnswerItemHtml](interfaces/ireportitemansweritemhtml.md)
+* [IReportItemAnswerItemLinks](interfaces/ireportitemansweritemlinks.md)
 * [IReportItemInitInteractive](interfaces/ireportiteminitinteractive.md)
 * [IRuntimeCustomReportValues](interfaces/iruntimecustomreportvalues.md)
 * [IRuntimeImageQuestionMetadata](interfaces/iruntimeimagequestionmetadata.md)
@@ -104,6 +108,7 @@
 * [ICustomMessagesHandledMap](globals.md#icustommessageshandledmap)
 * [IGetReportItemAnswerHandler](globals.md#igetreportitemanswerhandler)
 * [IInitInteractive](globals.md#iinitinteractive)
+* [IReportItemAnswerItem](globals.md#ireportitemansweritem)
 * [IReportItemClientMessage](globals.md#ireportitemclientmessage)
 * [IReportItemServerMessage](globals.md#ireportitemservermessage)
 * [IRuntimeClientMessage](globals.md#iruntimeclientmessage)
@@ -281,19 +286,25 @@ ___
 
 #### Type declaration:
 
-▸ (`message`: [IGetReportItemAnswer](interfaces/igetreportitemanswer.md)): *void*
+▸ (`message`: [IGetReportItemAnswer](interfaces/igetreportitemanswer.md)‹InteractiveState, AuthoredState›): *void*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
-`message` | [IGetReportItemAnswer](interfaces/igetreportitemanswer.md) |
+`message` | [IGetReportItemAnswer](interfaces/igetreportitemanswer.md)‹InteractiveState, AuthoredState› |
 
 ___
 
 ###  IInitInteractive
 
 Ƭ **IInitInteractive**: *[IRuntimeInitInteractive](interfaces/iruntimeinitinteractive.md)‹InteractiveState, AuthoredState, GlobalInteractiveState› | [IAuthoringInitInteractive](interfaces/iauthoringinitinteractive.md)‹AuthoredState› | [IReportInitInteractive](interfaces/ireportinitinteractive.md)‹InteractiveState, AuthoredState› | [IReportItemInitInteractive](interfaces/ireportiteminitinteractive.md)‹InteractiveState, AuthoredState›*
+
+___
+
+###  IReportItemAnswerItem
+
+Ƭ **IReportItemAnswerItem**: *[IReportItemAnswerItemAttachment](interfaces/ireportitemansweritemattachment.md) | [IReportItemAnswerItemAnswerText](interfaces/ireportitemansweritemanswertext.md) | [IReportItemAnswerItemHtml](interfaces/ireportitemansweritemhtml.md) | [IReportItemAnswerItemLinks](interfaces/ireportitemansweritemlinks.md)*
 
 ___
 
@@ -474,13 +485,19 @@ ___
 
 ### `Const` addGetReportItemAnswerListener
 
-▸ **addGetReportItemAnswerListener**(`callback`: [IGetReportItemAnswerHandler](globals.md#igetreportitemanswerhandler)): *void*
+▸ **addGetReportItemAnswerListener**‹**InteractiveState**, **AuthoredState**›(`callback`: [IGetReportItemAnswerHandler](globals.md#igetreportitemanswerhandler)‹InteractiveState, AuthoredState›): *void*
+
+**Type parameters:**
+
+▪ **InteractiveState**
+
+▪ **AuthoredState**
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
-`callback` | [IGetReportItemAnswerHandler](globals.md#igetreportitemanswerhandler) |
+`callback` | [IGetReportItemAnswerHandler](globals.md#igetreportitemanswerhandler)‹InteractiveState, AuthoredState› |
 
 **Returns:** *void*
 
