@@ -9,6 +9,7 @@
 * [IAddLinkedInteractiveStateListenerOptions](interfaces/iaddlinkedinteractivestatelisteneroptions.md)
 * [IAddLinkedInteractiveStateListenerRequest](interfaces/iaddlinkedinteractivestatelistenerrequest.md)
 * [IAnswerMetadataWithAttachmentsInfo](interfaces/ianswermetadatawithattachmentsinfo.md)
+* [IAttachmentInfo](interfaces/iattachmentinfo.md)
 * [IAttachmentUrlRequest](interfaces/iattachmenturlrequest.md)
 * [IAttachmentUrlResponse](interfaces/iattachmenturlresponse.md)
 * [IAttachmentsFolder](interfaces/iattachmentsfolder.md)
@@ -80,6 +81,7 @@
 
 ### Type aliases
 
+* [AttachmentInfoMap](globals.md#attachmentinfomap)
 * [ClientMessage](globals.md#clientmessage)
 * [DeprecatedRuntimeClientMessage](globals.md#deprecatedruntimeclientmessage)
 * [DeprecatedRuntimeServerMessage](globals.md#deprecatedruntimeservermessage)
@@ -123,6 +125,12 @@
 * [setAttachmentsManagerTimeout](globals.md#const-setattachmentsmanagertimeout)
 
 ## Type aliases
+
+###  AttachmentInfoMap
+
+Ƭ **AttachmentInfoMap**: *Record‹string, [IAttachmentInfo](interfaces/iattachmentinfo.md)›*
+
+___
 
 ###  ClientMessage
 

@@ -18,6 +18,7 @@
 
 * [activityName](iinteractivestateprops.md#optional-activityname)
 * [allLinkedStates](iinteractivestateprops.md#optional-alllinkedstates)
+* [attachments](iinteractivestateprops.md#optional-attachments)
 * [createdAt](iinteractivestateprops.md#optional-createdat)
 * [externalReportUrl](iinteractivestateprops.md#optional-externalreporturl)
 * [hasLinkedInteractive](iinteractivestateprops.md#optional-haslinkedinteractive)
@@ -40,6 +41,12 @@ ___
 ### `Optional` allLinkedStates
 
 • **allLinkedStates**? : *[IInteractiveStateProps](iinteractivestateprops.md)[]*
+
+___
+
+### `Optional` attachments
+
+• **attachments**? : *[AttachmentInfoMap](../globals.md#attachmentinfomap)*
 
 ___
 

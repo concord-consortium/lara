@@ -265,6 +265,7 @@ module.exports = (env, argv) => {
   //   and no externals should be used
   exampleInteractive("testbed"),
   exampleInteractive("linked-state"),
-  exampleInteractive("report-item")
+  exampleInteractive("report-item"),
+  exampleInteractive("attachments")
   ];
 };

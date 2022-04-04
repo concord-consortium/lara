@@ -59,7 +59,7 @@ export const handleGetAttachmentUrl =
       if (!folder) {
         folder = await attachmentsMgr.createFolder(options.writeOptions?.interactiveId);
       }
-      const urlOptions: ISignedWriteUrlOptions = { ContentType: contentType, expiresIn };
+      const urlOptions: ISignedWriteUrlOptions = { expiresIn, ContentType: contentType };
       const [writeUrl, attachmentInfo] = await attachmentsMgr.getSignedWriteUrl(folder, name, urlOptions);
       response.url = writeUrl;
       // public path changes with sessionId

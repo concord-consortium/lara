@@ -22,6 +22,7 @@
 
 * [activityName](iruntimeinitinteractive.md#optional-activityname)
 * [allLinkedStates](iruntimeinitinteractive.md#optional-alllinkedstates)
+* [attachments](iruntimeinitinteractive.md#optional-attachments)
 * [authInfo](iruntimeinitinteractive.md#authinfo)
 * [authoredState](iruntimeinitinteractive.md#authoredstate)
 * [classInfoUrl](iruntimeinitinteractive.md#classinfourl)
@@ -60,6 +61,14 @@ ___
 • **allLinkedStates**? : *[IInteractiveStateProps](iinteractivestateprops.md)[]*
 
 *Inherited from [IInteractiveStateProps](iinteractivestateprops.md).[allLinkedStates](iinteractivestateprops.md#optional-alllinkedstates)*
+
+___
+
+### `Optional` attachments
+
+• **attachments**? : *[AttachmentInfoMap](../globals.md#attachmentinfomap)*
+
+*Overrides [IInteractiveStateProps](iinteractivestateprops.md).[attachments](iinteractivestateprops.md#optional-attachments)*
 
 ___
 

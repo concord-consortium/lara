@@ -16,6 +16,7 @@
 
 ### Properties
 
+* [attachments](ireportiteminitinteractive.md#optional-attachments)
 * [hostFeatures](ireportiteminitinteractive.md#hostfeatures)
 * [interactiveItemId](ireportiteminitinteractive.md#interactiveitemid)
 * [mode](ireportiteminitinteractive.md#mode)
@@ -24,6 +25,12 @@
 * [view](ireportiteminitinteractive.md#view)
 
 ## Properties
+
+### `Optional` attachments
+
+• **attachments**? : *[AttachmentInfoMap](../globals.md#attachmentinfomap)*
+
+___
 
 ###  hostFeatures
 

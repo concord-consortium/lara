@@ -10,10 +10,17 @@
 
 ### Properties
 
+* [contentType](ireadableattachmentinfo.md#contenttype)
 * [folder](ireadableattachmentinfo.md#folder)
 * [publicPath](ireadableattachmentinfo.md#publicpath)
 
 ## Properties
+
+###  contentType
+
+• **contentType**: *string*
+
+___
 
 ###  folder
 

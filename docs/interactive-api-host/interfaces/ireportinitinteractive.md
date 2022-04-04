@@ -16,6 +16,7 @@
 
 ### Properties
 
+* [attachments](ireportinitinteractive.md#optional-attachments)
 * [authoredState](ireportinitinteractive.md#authoredstate)
 * [hostFeatures](ireportinitinteractive.md#hostfeatures)
 * [interactiveState](ireportinitinteractive.md#interactivestate)
@@ -25,6 +26,12 @@
 * [view](ireportinitinteractive.md#optional-view)
 
 ## Properties
+
+### `Optional` attachments
+
+• **attachments**? : *[AttachmentInfoMap](../globals.md#attachmentinfomap)*
+
+___
 
 ###  authoredState
 

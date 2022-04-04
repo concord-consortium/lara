@@ -24,6 +24,7 @@ export interface IAttachmentsFolder {
 export interface IReadableAttachmentInfo {
   publicPath: string;
   folder: IAttachmentsFolder;
+  contentType: string;
 }
 
 export interface IAnswerMetadataWithAttachmentsInfo {
