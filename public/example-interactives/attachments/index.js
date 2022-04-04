@@ -32836,13 +32836,6 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __asyncValues = (this && this.__asyncValues) || function (o) {
-    if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
-    var m = o[Symbol.asyncIterator], i;
-    return m ? m.call(o) : (o = typeof __values === "function" ? __values(o) : o[Symbol.iterator](), i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () { return this; }, i);
-    function verb(n) { i[n] = o[n] && function (v) { return new Promise(function (resolve, reject) { v = o[n](v), settle(resolve, reject, v.done, v.value); }); }; }
-    function settle(resolve, reject, d, v) { Promise.resolve(v).then(function(v) { resolve({ value: v, done: d }); }, reject); }
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.RuntimeComponent = void 0;
 var React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
@@ -32861,76 +32854,13 @@ var RuntimeComponent = function (_a) {
         }
         setAttachments(initialAttachments);
     }, [initMessage]);
-    (0, react_1.useEffect)(function () {
-        var getUrls = function () { return __awaiter(void 0, void 0, void 0, function () {
-            var names, names_1, names_1_1, name_1, attachment, url_1, err_1, e_1_1;
-            var e_1, _a;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
-                    case 0:
-                        names = Object.keys(attachments);
-                        _b.label = 1;
-                    case 1:
-                        _b.trys.push([1, 9, 10, 15]);
-                        names_1 = __asyncValues(names);
-                        _b.label = 2;
-                    case 2: return [4 /*yield*/, names_1.next()];
-                    case 3:
-                        if (!(names_1_1 = _b.sent(), !names_1_1.done)) return [3 /*break*/, 8];
-                        name_1 = names_1_1.value;
-                        attachment = attachments[name_1];
-                        if (!!attachment.url) return [3 /*break*/, 7];
-                        _b.label = 4;
-                    case 4:
-                        _b.trys.push([4, 6, , 7]);
-                        return [4 /*yield*/, (0, interactive_api_client_1.getAttachmentUrl)({ name: name_1 })];
-                    case 5:
-                        url_1 = _b.sent();
-                        setAttachments(function (map) {
-                            var _a;
-                            return (__assign(__assign({}, map), (_a = {}, _a[name_1] = { url: url_1 }, _a)));
-                        });
-                        return [3 /*break*/, 7];
-                    case 6:
-                        err_1 = _b.sent();
-                        // tslint:disable-next-line:no-console
-                        console.error("Unable to get attachment url: " + err_1);
-                        setAttachments(function (map) {
-                            var _a;
-                            return (__assign(__assign({}, map), (_a = {}, _a[name_1] = { err: err_1 }, _a)));
-                        });
-                        return [3 /*break*/, 7];
-                    case 7: return [3 /*break*/, 2];
-                    case 8: return [3 /*break*/, 15];
-                    case 9:
-                        e_1_1 = _b.sent();
-                        e_1 = { error: e_1_1 };
-                        return [3 /*break*/, 15];
-                    case 10:
-                        _b.trys.push([10, , 13, 14]);
-                        if (!(names_1_1 && !names_1_1.done && (_a = names_1.return))) return [3 /*break*/, 12];
-                        return [4 /*yield*/, _a.call(names_1)];
-                    case 11:
-                        _b.sent();
-                        _b.label = 12;
-                    case 12: return [3 /*break*/, 14];
-                    case 13:
-                        if (e_1) throw e_1.error;
-                        return [7 /*endfinally*/];
-                    case 14: return [7 /*endfinally*/];
-                    case 15: return [2 /*return*/];
-                }
-            });
-        }); };
-        getUrls().catch(alert);
-    }, [attachments]);
     var handleUploadAttachment = function (e) {
         var _a;
         var file = (_a = e.target.files) === null || _a === void 0 ? void 0 : _a[0];
         if (file) {
             var reader_1 = new FileReader();
             reader_1.onload = function () { return __awaiter(void 0, void 0, void 0, function () {
-                var params, response, err_2;
+                var params, response, err_1;
                 return __generator(this, function (_a) {
                     switch (_a.label) {
                         case 0:
@@ -32954,11 +32884,11 @@ var RuntimeComponent = function (_a) {
                             }
                             return [3 /*break*/, 5];
                         case 3:
-                            err_2 = _a.sent();
-                            alert("Unable to save attachment: " + err_2);
+                            err_1 = _a.sent();
+                            alert("Unable to save attachment: " + err_1);
                             setAttachments(function (map) {
                                 var _a;
-                                return (__assign(__assign({}, map), (_a = {}, _a[file.name] = { err: err_2 }, _a)));
+                                return (__assign(__assign({}, map), (_a = {}, _a[file.name] = { err: err_1 }, _a)));
                             });
                             return [3 /*break*/, 5];
                         case 4:
@@ -32971,16 +32901,70 @@ var RuntimeComponent = function (_a) {
             reader_1.readAsArrayBuffer(file);
         }
     };
+    var loadAttachment = function (name) { return __awaiter(void 0, void 0, void 0, function () {
+        var attachment, url_1, err_2;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    attachment = attachments[name];
+                    if (!!attachment.url) return [3 /*break*/, 4];
+                    setAttachments(function (map) {
+                        var _a;
+                        return (__assign(__assign({}, map), (_a = {}, _a[name] = { loading: true }, _a)));
+                    });
+                    _a.label = 1;
+                case 1:
+                    _a.trys.push([1, 3, , 4]);
+                    return [4 /*yield*/, (0, interactive_api_client_1.getAttachmentUrl)({ name: name })];
+                case 2:
+                    url_1 = _a.sent();
+                    setAttachments(function (map) {
+                        var _a;
+                        return (__assign(__assign({}, map), (_a = {}, _a[name] = { url: url_1, loading: false }, _a)));
+                    });
+                    return [3 /*break*/, 4];
+                case 3:
+                    err_2 = _a.sent();
+                    // tslint:disable-next-line:no-console
+                    console.error("Unable to get attachment url: " + err_2);
+                    setAttachments(function (map) {
+                        var _a;
+                        return (__assign(__assign({}, map), (_a = {}, _a[name] = { err: err_2 }, _a)));
+                    });
+                    return [3 /*break*/, 4];
+                case 4: return [2 /*return*/];
+            }
+        });
+    }); };
+    var renderAttachmentUrl = function (name) {
+        var _a = attachments[name], url = _a.url, err = _a.err, loading = _a.loading;
+        var content;
+        var handleLoadAttachment = function () { return loadAttachment(name); };
+        var clickHereStyle = {
+            cursor: "pointer",
+            textDecoration: "underline",
+        };
+        if (loading) {
+            content = React.createElement("span", null, "Loading...");
+        }
+        else if (url) {
+            content = React.createElement("audio", { controls: true, src: url });
+        }
+        else if (err) {
+            content = React.createElement("span", { style: clickHereStyle, onClick: handleLoadAttachment }, err.toString());
+        }
+        else {
+            content = React.createElement("span", { style: clickHereStyle, onClick: handleLoadAttachment }, "Click to here to load...");
+        }
+        return React.createElement("li", { key: name },
+            React.createElement("span", { style: { fontWeight: "bold" } }, name),
+            ": ",
+            content);
+    };
     var renderAttachmentUrls = function () {
         var names = Object.keys(attachments);
         if (names.length > 0) {
-            return (React.createElement("ul", null, names.map(function (name) {
-                var _a = attachments[name], url = _a.url, err = _a.err;
-                return (React.createElement("li", { key: name },
-                    name,
-                    ": ",
-                    url ? React.createElement("audio", { controls: true, src: url }) : ((err === null || err === void 0 ? void 0 : err.toString()) || "Loading...")));
-            })));
+            return (React.createElement("ul", null, names.map(function (name) { return renderAttachmentUrl(name); })));
         }
     };
     return (React.createElement("div", { className: "padded" },

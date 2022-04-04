@@ -9,6 +9,7 @@ interface Props {
 interface UserAttachmentInfo extends IAttachmentInfo {
   url?: string;
   err?: any;
+  loading?: boolean;
 }
 type UserAttachmentMap = Record<string, UserAttachmentInfo>;
 
@@ -26,27 +27,6 @@ export const RuntimeComponent: React.FC<Props> = ({initMessage}) => {
     }
     setAttachments(initialAttachments);
   }, [initMessage]);
-
-  useEffect(() => {
-    const getUrls = async () => {
-      const names = Object.keys(attachments);
-      for await (const name of names) {
-        const attachment = attachments[name];
-        if (!attachment.url) {
-          try {
-            const url = await getAttachmentUrl({name});
-            setAttachments(map => ({...map, [name]: {url}}));
-          } catch (err) {
-            // tslint:disable-next-line:no-console
-            console.error(`Unable to get attachment url: ${err}`);
-            setAttachments(map => ({...map, [name]: {err}}));
-          }
-        }
-      }
-    };
-
-    getUrls().catch(alert);
-  }, [attachments]);
 
   const handleUploadAttachment = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -75,19 +55,50 @@ export const RuntimeComponent: React.FC<Props> = ({initMessage}) => {
     }
   };
 
+  const loadAttachment = async (name: string) => {
+    const attachment = attachments[name];
+    if (!attachment.url) {
+      setAttachments(map => ({...map, [name]: {loading: true}}));
+      try {
+        const url = await getAttachmentUrl({name});
+        setAttachments(map => ({...map, [name]: {url, loading: false}}));
+      } catch (err) {
+        // tslint:disable-next-line:no-console
+        console.error(`Unable to get attachment url: ${err}`);
+        setAttachments(map => ({...map, [name]: {err}}));
+      }
+    }
+  };
+
+  const renderAttachmentUrl = (name: string) => {
+    const {url, err, loading} = attachments[name];
+    let content: JSX.Element;
+
+    const handleLoadAttachment = () => loadAttachment(name);
+    const clickHereStyle: React.CSSProperties = {
+      cursor: "pointer",
+      textDecoration: "underline",
+    };
+
+    if (loading) {
+      content = <span>Loading...</span>;
+    } else if (url) {
+      content = <audio controls={true} src={url} />;
+    } else if (err) {
+      content = <span style={clickHereStyle} onClick={handleLoadAttachment}>{err.toString()}</span>;
+    } else {
+      content = <span style={clickHereStyle} onClick={handleLoadAttachment}>Click to here to load...</span>;
+    }
+
+    return <li key={name}><span style={{fontWeight: "bold"}}>{name}</span>: {content}</li>;
+  };
+
   const renderAttachmentUrls = () => {
     const names = Object.keys(attachments);
     if (names.length > 0) {
       return (
         <ul>
-          {names.map(name => {
-            const {url, err} = attachments[name];
-            return (
-              <li key={name}>
-                {name}: {url ? <audio controls={true} src={url} /> : (err?.toString() || "Loading...")}
-              </li>
-            );
-          })}
+          {names.map(name => renderAttachmentUrl(name))}
         </ul>
       );
     }
