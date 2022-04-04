@@ -83,12 +83,11 @@ export class AttachmentsManager {
   }
 
   public getSignedReadUrl(attachmentInfo: IReadableAttachmentInfo, options?: ISignedReadUrlOptions) {
-    const { publicPath, folder, contentType } = attachmentInfo;
+    const { publicPath, folder } = attachmentInfo;
     const { expiresIn = kDefaultReadExpirationSec } = options || {};
     return this.getSignedUrl(folder, "getObject", {
       Key: publicPath,
-      expiresIn,
-      ContentType: contentType
+      expiresIn
     });
   }
 
