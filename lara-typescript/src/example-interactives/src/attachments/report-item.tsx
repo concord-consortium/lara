@@ -13,12 +13,16 @@ interface Props {
   initMessage: IReportItemInitInteractive;
 }
 
+// not used here, but could be used if this used as an example for other interactives
+interface IInteractiveState {}
+interface IAuthoredState {}
+
 export const ReportItemComponent: React.FC<Props> = (props) => {
   const {initMessage} = props;
   const {view} = initMessage;
 
   useEffect(() => {
-    addGetReportItemAnswerListener((request) => {
+    addGetReportItemAnswerListener<IInteractiveState, IAuthoredState>((request) => {
       const {version, platformUserId} = request;
 
       if (!version) {

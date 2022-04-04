@@ -32903,6 +32903,7 @@ var removeDecorateContentListener = function () {
     (0, client_1.getClient)().removeDecorateContentListener();
 };
 exports.removeDecorateContentListener = removeDecorateContentListener;
+// tslint:disable-next-line:max-line-length
 var addGetReportItemAnswerListener = function (callback) {
     (0, client_1.getClient)().addGetReportItemAnswerListener(callback);
 };

@@ -286,13 +286,13 @@ ___
 
 #### Type declaration:
 
-▸ (`message`: [IGetReportItemAnswer](interfaces/igetreportitemanswer.md)): *void*
+▸ (`message`: [IGetReportItemAnswer](interfaces/igetreportitemanswer.md)‹InteractiveState, AuthoredState›): *void*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
-`message` | [IGetReportItemAnswer](interfaces/igetreportitemanswer.md) |
+`message` | [IGetReportItemAnswer](interfaces/igetreportitemanswer.md)‹InteractiveState, AuthoredState› |
 
 ___
 
@@ -485,13 +485,19 @@ ___
 
 ### `Const` addGetReportItemAnswerListener
 
-▸ **addGetReportItemAnswerListener**(`callback`: [IGetReportItemAnswerHandler](globals.md#igetreportitemanswerhandler)): *void*
+▸ **addGetReportItemAnswerListener**‹**InteractiveState**, **AuthoredState**›(`callback`: [IGetReportItemAnswerHandler](globals.md#igetreportitemanswerhandler)‹InteractiveState, AuthoredState›): *void*
+
+**Type parameters:**
+
+▪ **InteractiveState**
+
+▪ **AuthoredState**
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
-`callback` | [IGetReportItemAnswerHandler](globals.md#igetreportitemanswerhandler) |
+`callback` | [IGetReportItemAnswerHandler](globals.md#igetreportitemanswerhandler)‹InteractiveState, AuthoredState› |
 
 **Returns:** *void*
 

@@ -517,7 +517,8 @@ export interface IReportItemAnswer extends IBaseRequestResponse {
   items: IReportItemAnswerItem[];
 }
 
-export type IGetReportItemAnswerHandler = (message: IGetReportItemAnswer) => void;
+export type IGetReportItemAnswerHandler<InteractiveState = {}, AuthoredState = {}> =
+  (message: IGetReportItemAnswer<InteractiveState, AuthoredState>) => void;
 
 /**
  * Interface that can be used by interactives to export and consume datasets. For example:

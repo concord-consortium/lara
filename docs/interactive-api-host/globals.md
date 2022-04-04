@@ -219,13 +219,13 @@ ___
 
 #### Type declaration:
 
-▸ (`message`: [IGetReportItemAnswer](interfaces/igetreportitemanswer.md)): *void*
+▸ (`message`: [IGetReportItemAnswer](interfaces/igetreportitemanswer.md)‹InteractiveState, AuthoredState›): *void*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
-`message` | [IGetReportItemAnswer](interfaces/igetreportitemanswer.md) |
+`message` | [IGetReportItemAnswer](interfaces/igetreportitemanswer.md)‹InteractiveState, AuthoredState› |
 
 ___
 
