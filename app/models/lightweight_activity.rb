@@ -19,7 +19,8 @@ class LightweightActivity < ActiveRecord::Base
   attr_accessible :name, :user_id, :pages, :related, :description,
                   :time_to_complete, :is_locked, :notes, :thumbnail_url, :theme_id, :project_id,
                   :portal_run_count, :layout, :editor_mode, :publication_hash, :copied_from_id,
-                  :student_report_enabled, :show_submit_button, :runtime, :project, :background_image
+                  :student_report_enabled, :show_submit_button, :runtime, :project, :background_image,
+                  :glossary_id
 
   belongs_to :user # Author
   belongs_to :changed_by, :class_name => 'User'
@@ -39,6 +40,7 @@ class LightweightActivity < ActiveRecord::Base
   has_many :runs, :foreign_key => 'activity_id', :dependent => :destroy
   belongs_to :theme
   belongs_to :project
+  belongs_to :glossary
 
   has_many :imports, as: :import_item
 
@@ -152,6 +154,7 @@ class LightweightActivity < ActiveRecord::Base
     self.plugins.each do |p|
       activity_json[:plugins] << p.export
     end
+    # TODO: add special code to push glossary plugin onto plugin list if glossary is set
     activity_json[:type] = "LightweightActivity"
     activity_json[:export_site] = "Lightweight Activities Runtime and Authoring"
     if self.runtime == "Activity Player"
