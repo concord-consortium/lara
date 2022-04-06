@@ -35883,68 +35883,6 @@ ReactDOM.render(React.createElement(app_1.AppComponent, null), document.getEleme
 
 /***/ }),
 
-/***/ "./src/example-interactives/src/attachments/init-message-info.tsx":
-/*!************************************************************************!*\
-  !*** ./src/example-interactives/src/attachments/init-message-info.tsx ***!
-  \************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.InitMessageInfoComponent = void 0;
-var React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-var react_1 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-var InitMessageInfoComponent = function (props) {
-    var initMessage = (0, react_1.useRef)(props.initMessage);
-    var _a = initMessage.current, users = _a.users, interactiveItemId = _a.interactiveItemId, view = _a.view;
-    var userIds = Object.keys(users);
-    var numAnswersAtInit = userIds.reduce(function (acc, studentId) {
-        return users[studentId].hasAnswer ? acc + 1 : acc;
-    }, 0);
-    var _b = (0, react_1.useState)({}), userAnswers = _b[0], setUserAnswers = _b[1];
-    var numCurrentAnswers = Object.keys(userAnswers).length;
-    return (React.createElement("div", { className: "initMessageInfo" },
-        React.createElement("dt", null, "View"),
-        React.createElement("dd", null, view),
-        React.createElement("dt", null, "Interactive Item Id"),
-        React.createElement("dd", null, interactiveItemId),
-        React.createElement("dt", null, "Number of Users in Init Message"),
-        React.createElement("dd", null, userIds.length),
-        React.createElement("dt", null, "Number of Answers In Init Message"),
-        React.createElement("dd", null, numAnswersAtInit),
-        React.createElement("dt", null, "Number of Answers Currently"),
-        React.createElement("dd", null, numCurrentAnswers)));
-};
-exports.InitMessageInfoComponent = InitMessageInfoComponent;
-
-
-/***/ }),
-
-/***/ "./src/example-interactives/src/attachments/multiple-answer-summary.tsx":
-/*!******************************************************************************!*\
-  !*** ./src/example-interactives/src/attachments/multiple-answer-summary.tsx ***!
-  \******************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.MultipleAnswerSummaryComponent = void 0;
-var React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-var init_message_info_1 = __webpack_require__(/*! ./init-message-info */ "./src/example-interactives/src/attachments/init-message-info.tsx");
-var MultipleAnswerSummaryComponent = function (props) {
-    return (React.createElement("div", null,
-        React.createElement("strong", null, "Multiple Answer Summary"),
-        React.createElement(init_message_info_1.InitMessageInfoComponent, { initMessage: props.initMessage })));
-};
-exports.MultipleAnswerSummaryComponent = MultipleAnswerSummaryComponent;
-
-
-/***/ }),
-
 /***/ "./src/example-interactives/src/attachments/report-item.tsx":
 /*!******************************************************************!*\
   !*** ./src/example-interactives/src/attachments/report-item.tsx ***!
@@ -35961,8 +35899,6 @@ var react_1 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 var semver = __webpack_require__(/*! semver */ "./node_modules/semver/index.js");
 var interactive_api_client_1 = __webpack_require__(/*! ../../../interactive-api-client */ "./src/interactive-api-client/index.ts");
 var client_1 = __webpack_require__(/*! ../../../interactive-api-client/client */ "./src/interactive-api-client/client.ts");
-var multiple_answer_summary_1 = __webpack_require__(/*! ./multiple-answer-summary */ "./src/example-interactives/src/attachments/multiple-answer-summary.tsx");
-var single_answer_summary_1 = __webpack_require__(/*! ./single-answer-summary */ "./src/example-interactives/src/attachments/single-answer-summary.tsx");
 var ReportItemComponent = function (props) {
     var initMessage = props.initMessage;
     var view = initMessage.view;
@@ -35991,9 +35927,10 @@ var ReportItemComponent = function (props) {
         // tell the portal-report we are ready for messages
         (0, client_1.getClient)().post("reportItemClientReady");
     }, []);
-    return (React.createElement("div", { className: "reportItem " + view }, view === "singleAnswer"
-        ? React.createElement(single_answer_summary_1.SingleAnswerSummaryComponent, { initMessage: initMessage })
-        : React.createElement(multiple_answer_summary_1.MultipleAnswerSummaryComponent, { initMessage: initMessage })));
+    var uploadedAttachments = Object.keys(initMessage.attachments || {}).length > 0;
+    return (React.createElement("div", { className: "reportItem " + view },
+        "Uploaded attachments: ",
+        uploadedAttachments ? "Yes" : "No"));
 };
 exports.ReportItemComponent = ReportItemComponent;
 
@@ -36089,6 +36026,7 @@ var RuntimeComponent = function (_a) {
     var initMessage = _a.initMessage;
     var _b = (0, react_1.useState)(false), uploading = _b[0], setUploading = _b[1];
     var _c = (0, react_1.useState)({}), attachments = _c[0], setAttachments = _c[1];
+    var setInteractiveState = (0, interactive_api_client_1.useInteractiveState)().setInteractiveState;
     // for now this is the best way to know in authoring runtime mode
     var inAuthoringRuntimeMode = !initMessage.hostFeatures.getFirebaseJwt;
     (0, react_1.useEffect)(function () {
@@ -36125,6 +36063,8 @@ var RuntimeComponent = function (_a) {
                                     var _a;
                                     return (__assign(__assign({}, map), (_a = {}, _a[file.name] = {}, _a)));
                                 });
+                                // to show the attachment in the report
+                                setInteractiveState({ uploadedAttachments: true });
                             }
                             return [3 /*break*/, 5];
                         case 3:
@@ -36225,29 +36165,6 @@ var RuntimeComponent = function (_a) {
             React.createElement("div", { className: "padded monospace pre" }, JSON.stringify(initMessage, null, 2)))));
 };
 exports.RuntimeComponent = RuntimeComponent;
-
-
-/***/ }),
-
-/***/ "./src/example-interactives/src/attachments/single-answer-summary.tsx":
-/*!****************************************************************************!*\
-  !*** ./src/example-interactives/src/attachments/single-answer-summary.tsx ***!
-  \****************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.SingleAnswerSummaryComponent = void 0;
-var React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-var init_message_info_1 = __webpack_require__(/*! ./init-message-info */ "./src/example-interactives/src/attachments/init-message-info.tsx");
-var SingleAnswerSummaryComponent = function (props) {
-    return (React.createElement("div", null,
-        React.createElement("strong", null, "Single Answer Summary"),
-        React.createElement(init_message_info_1.InitMessageInfoComponent, { initMessage: props.initMessage })));
-};
-exports.SingleAnswerSummaryComponent = SingleAnswerSummaryComponent;
 
 
 /***/ }),

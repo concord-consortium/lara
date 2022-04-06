@@ -6,16 +6,11 @@ import { IReportItemInitInteractive,
          sendReportItemAnswer,
          IReportItemAnswerItem} from "../../../interactive-api-client";
 import { getClient } from "../../../interactive-api-client/client";
-import { MultipleAnswerSummaryComponent } from "./multiple-answer-summary";
-import { SingleAnswerSummaryComponent } from "./single-answer-summary";
+import { IAuthoredState, IInteractiveState } from "./types";
 
 interface Props {
   initMessage: IReportItemInitInteractive;
 }
-
-// not used here, but could be used if this used as an example for other interactives
-interface IInteractiveState {}
-interface IAuthoredState {}
 
 export const ReportItemComponent: React.FC<Props> = (props) => {
   const {initMessage} = props;
@@ -52,12 +47,11 @@ export const ReportItemComponent: React.FC<Props> = (props) => {
     getClient().post("reportItemClientReady");
   }, []);
 
+  const uploadedAttachments = Object.keys(initMessage.attachments || {}).length > 0;
+
   return (
     <div className={`reportItem ${view}`}>
-      {view === "singleAnswer"
-        ? <SingleAnswerSummaryComponent initMessage={initMessage} />
-        : <MultipleAnswerSummaryComponent initMessage={initMessage} />
-      }
+      Uploaded attachments: {uploadedAttachments ? "Yes" : "No"}
     </div>
   );
 };

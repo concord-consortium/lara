@@ -1,6 +1,8 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
-import { getAttachmentUrl, IRuntimeInitInteractive, writeAttachment, WriteAttachmentParams, IAttachmentInfo } from "../../../interactive-api-client";
+import { getAttachmentUrl, IRuntimeInitInteractive, writeAttachment,
+         WriteAttachmentParams, IAttachmentInfo, useInteractiveState } from "../../../interactive-api-client";
+import { IInteractiveState } from "./types";
 
 interface Props {
   initMessage: IRuntimeInitInteractive<any, {}>;
@@ -16,6 +18,7 @@ type UserAttachmentMap = Record<string, UserAttachmentInfo>;
 export const RuntimeComponent: React.FC<Props> = ({initMessage}) => {
   const [uploading, setUploading] = useState<boolean>(false);
   const [attachments, setAttachments] = useState<UserAttachmentMap>({});
+  const {setInteractiveState} = useInteractiveState<IInteractiveState>();
 
   // for now this is the best way to know in authoring runtime mode
   const inAuthoringRuntimeMode = !initMessage.hostFeatures.getFirebaseJwt;
@@ -43,6 +46,9 @@ export const RuntimeComponent: React.FC<Props> = ({initMessage}) => {
           const response = await writeAttachment(params);
           if (response.ok) {
             setAttachments(map => ({...map, [file.name]: {}}));
+
+            // to show the attachment in the report
+            setInteractiveState({uploadedAttachments: true});
           }
         } catch (err) {
           alert(`Unable to save attachment: ${err}`);
