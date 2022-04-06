@@ -5,14 +5,14 @@ import { useInitMessage, setSupportedFeatures, useAutoSetHeight } from "../../..
 import { AuthoringComponent } from "./authoring";
 import { ReportComponent } from "./report";
 import { RuntimeComponent } from "./runtime";
-import { IAuthoredState } from "../types";
+import { IAuthoredState, IInteractiveState } from "./types";
 import { ReportItemComponent } from "./report-item";
 
 interface Props {
 }
 
 export const AppComponent: React.FC<Props> = (props) => {
-  const initMessage = useInitMessage<{}, IAuthoredState>();
+  const initMessage = useInitMessage<IInteractiveState, IAuthoredState>();
 
   useAutoSetHeight();
 
