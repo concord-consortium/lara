@@ -1,0 +1,39 @@
+:javascript
+  // toggle enabled/disabled fields based on runtime environment
+  $(function() {
+    var $glossary_id = $("#lightweight_activity_glossary_id")
+    var $theme_id = $("#lightweight_activity_theme_id")
+    var $runtime = $('#lightweight_activity_runtime')
+    var $view_edit_glossary = $('#view_edit_glossary')
+
+    function toggleFields(isLara) {
+      $glossary_id.attr("disabled", isLara);
+      $theme_id.attr("disabled", !isLara)
+      $view_edit_glossary.attr("disabled", isLara || !$glossary_id.val());
+
+      // reset the dropdowns to "None"
+      if (isLara) {
+        $glossary_id.val(null)
+      } else {
+        $theme_id.val(null)
+      }
+    }
+
+    $runtime.on('change', function(e) {
+      var isLara = e.target.value === "LARA";
+      toggleFields(isLara)
+    })
+
+    $glossary_id.on('change', function(e) {
+      var isNone = !e.target.value;
+      $view_edit_glossary.attr("disabled", isNone);
+    })
+
+    $view_edit_glossary.on('click', function (e) {
+      e.preventDefault()
+      e.stopPropagation()
+      alert("TODO AFTER AVAILABLE: jump to view/edit glossary" + $glossary_id.val());
+    })
+
+    toggleFields($runtime.val() === "LARA")
+  });

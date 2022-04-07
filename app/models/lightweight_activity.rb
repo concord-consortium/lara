@@ -169,8 +169,8 @@ class LightweightActivity < ActiveRecord::Base
           glossaryResourceId: "this-is-a-fake-glossary-resource-id",
           s3Url: Rails.application.routes.url_helpers.api_v1_glossary_url(self.glossary_id, host: host, json_only: true)
         }),
-        approved_script_label: "fakeglossary",
-        component_label: "fakeglossary",
+        approved_script_label: "glossary",
+        component_label: "glossary",
         approved_script: approved_glossary_script.to_hash
       }
       activity_json[:plugins] << fake_glossary_plugin

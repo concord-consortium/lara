@@ -243,12 +243,12 @@ describe LightweightActivity do
         end
 
         it "drops the existing glossary plugin" do
-          expect(activity.plugins[0].component_label).to eq("glossary")
-          expect(activity.plugins[1].component_label).to eq("notaglossary")
+          expect(activity.plugins[0].id).to eq(plugins[0].id)
+          expect(activity.plugins[1].id).to eq(plugins[1].id)
 
           expect(export[:plugins].length).to eq(activity.plugins.count)
-          expect(export[:plugins][0][:component_label]).to eq("notaglossary")
-          expect(export[:plugins][1][:component_label]).to eq("fakeglossary")
+          expect(export[:plugins][0][:id]).to eq(plugins[1].id)
+          expect(export[:plugins][1][:id]).to eq(0)
         end
       end
     end
