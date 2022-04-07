@@ -9,7 +9,7 @@ class Api::V1::SequencesController < API::APIController
   # GET /api/v1/sequences/1.json
   def show
     sequence = Sequence.find(params[:id])
-    sequence_json = sequence.export
+    sequence_json = sequence.export(request.host_with_port)
     render json: sequence_json
   end
 

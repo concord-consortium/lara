@@ -129,7 +129,7 @@ class LightweightActivity < ActiveRecord::Base
     new_activity
   end
 
-  def export
+  def export(host)
     activity_json = self.as_json(only: [:id,
                                         :name,
                                         :related,
@@ -154,7 +154,28 @@ class LightweightActivity < ActiveRecord::Base
     self.plugins.each do |p|
       activity_json[:plugins] << p.export
     end
-    # TODO: add special code to push glossary plugin onto plugin list if glossary is set
+
+    # if the activity has a glossary model assiged to it, add the fake glossary plugin to the list of plugins
+    # replacing any existing glossary plugins and using the existing glossary plugin's approved script
+    if self.glossary_id && approved_glossary_script = ApprovedScript.find_by_label("glossary")
+      # remove any existing glossary script
+      activity_json[:plugins].delete_if { |plugin| plugin[:component_label] == "glossary" }
+
+      fake_glossary_plugin = {
+        id: 0,
+        description: nil,
+        author_data: JSON.generate({
+          version:"1.0",
+          glossaryResourceId: "this-is-a-fake-glossary-resource-id",
+          s3Url: Rails.application.routes.url_helpers.api_v1_glossary_url(self.glossary_id, host: host, json_only: true)
+        }),
+        approved_script_label: "fakeglossary",
+        component_label: "fakeglossary",
+        approved_script: approved_glossary_script.to_hash
+      }
+      activity_json[:plugins] << fake_glossary_plugin
+    end
+
     activity_json[:type] = "LightweightActivity"
     activity_json[:export_site] = "Lightweight Activities Runtime and Authoring"
     if self.runtime == "Activity Player"

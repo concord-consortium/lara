@@ -92,7 +92,7 @@ class Sequence < ActiveRecord::Base
     new_sequence
   end
 
-  def export
+  def export(host)
     sequence_json = self.as_json(only: [:title,
                                         :description,
                                         :abstract,
@@ -106,7 +106,7 @@ class Sequence < ActiveRecord::Base
     sequence_json[:project] = self.project ? self.project.export : nil
     sequence_json[:activities] = []
     self.lightweight_activities.each_with_index do |a,i|
-      activity_hash = a.export
+      activity_hash = a.export(host)
       activity_hash[:position] = i+1
       sequence_json[:activities] << activity_hash
     end
