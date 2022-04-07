@@ -4,10 +4,17 @@ class Glossary < ActiveRecord::Base
   belongs_to :user
   has_many :lightweight_activities
 
-  def to_json()
-    result = self.as_json(only: [:id, :name, :user_id ])
-    result["json"] = JSON.parse(json)
-    result
+  def export
+    {
+      id: self.id,
+      name: self.name,
+      user_id: self.user_id,
+      json: JSON.parse(json, symbolize_names: true)
+    }
+  end
+
+  def export_json_only
+    JSON.parse(json, symbolize_names: true)
   end
 
 end

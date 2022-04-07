@@ -174,6 +174,8 @@ LightweightStandalone::Application.routes.draw do
         end
       end
 
+      resources :glossaries, :controller => 'glossaries', only: [:show]
+
       match 'import' => 'import#import', :via => 'post'
 
       match 'question_trackers/find_by_activity/:activity_id' =>  "question_trackers#find_by_activity", via: ['get'], defaults: { format: 'json' }
@@ -216,7 +218,7 @@ LightweightStandalone::Application.routes.draw do
       match 'update_page/:id' => 'interactive_pages#update_page', :as => 'update_page', :via => 'put'
       match 'copy_page/:id' => 'interactive_pages#copy_page', :as => 'copy_page', :via => 'post'
       match 'get_preview_url/:id' => 'interactive_pages#get_preview_url', :as => 'get_preview_url', :via => 'get'
-      
+
       match 'plugin_learner_states/:plugin_id/:run_id' =>
         'plugin_learner_states#load', as: 'show_plugin_learner_state', via: 'get'
       match 'plugin_plugin_learner_state/:plugin_id/:run_id' =>
