@@ -59,7 +59,7 @@ describe Api::V1::GlossariesController do
       )
     end
 
-    it "when user is anonymous, shows an activity's full json" do
+    it "when user is anonymous, shows an glossary's full json" do
       get :show, :id => glossary.id, :format => :json
 
       expect(response.status).to eq(200)
@@ -72,7 +72,7 @@ describe Api::V1::GlossariesController do
       }.as_json)
     end
 
-    it "when user is anonymous, shows an activity's json contents" do
+    it "when user is anonymous, shows an glossary's json contents" do
       get :show, :id => glossary.id, :format => :json, :json_only => true
 
       expect(response.status).to eq(200)
