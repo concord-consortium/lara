@@ -647,7 +647,9 @@ ul.quiet_list {
   }
 }
 form.edit_lightweight_activity,
-form.new_lightweight_activity {
+form.new_lightweight_activity,
+form.new_glossary,
+form.edit_glossary {
   fieldset {
     clear: left;
      margin-top: 20px;

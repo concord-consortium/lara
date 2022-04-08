@@ -13,6 +13,9 @@
       - if can? :create, Sequence
         %a{ :href => new_sequence_path }
           %button=t("NEW_SEQUENCE_BUTTON")
+      - if can? :create, Glossary
+        %a{ :href => new_glossary_path }
+          %button=t("NEW_GLOSSARY_BUTTON")
       - if can? :import, [LightweightActivity, Sequence]
         %a{ :href => import_status_path, 'data-remote'=>"true" }
           %button=t("IMPORT")
@@ -25,31 +28,28 @@
       %li#collection_filter= collection_filter_tag @filter
   -if @activities || @sequences
     %div.bottom-header
-      %strong 
-        Jump to:
+      %strong=t("JUMP_TO")
       -if @activities
-        %a{ :href => "#activity_listing_head" }
-          Activities
+        %a{ :href => "#activity_listing_head" }=t("ACTIVITIES")
       -if @sequences
-        %a{ :href => "#sequence_listing_head" }
-          Sequences
+        %a{ :href => "#sequence_listing_head" }=t("SEQUENCES")
       
 
 
 -if @activities
   #activity_listing_head
-    %h1 Activities
+    %h1=t("ACTIVITIES")
   %ul.quiet_list.activities
     - @activities.each do |activity|
       =render :partial => "lightweight_activities/index_item", :locals => {:activity => activity}
   .activities-link
-    = link_to "See all activities", activities_path
+    = link_to t("SEE_ALL_ACTIVITIES"), activities_path
 
 -if @sequences
   #sequence_listing_head
-    %h1 Sequences
+    %h1=t("SEQUENCES")
   %ul.quiet_list.sequences
     - @sequences.each do |sequence|
       =render :partial => "sequences/index_item", :locals => {:sequence => sequence}
   .sequences-link
-    = link_to "See all sequences", sequences_path
+    = link_to t("SEE_ALL_SEQUENCES"), sequences_path

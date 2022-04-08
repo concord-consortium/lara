@@ -24,7 +24,9 @@ class Ability
       can :create, Plugin
       can :create, PageItem
       can :create, LinkedPageItem
+      can :create, Glossary
       can :manage, Sequence, :user_id => user.id
+      can :manage, Glossary, :user_id => user.id
       can :manage, LightweightActivity, :user_id => user.id
       can :manage, InteractivePage, :lightweight_activity => { :user_id => user.id }
       can :manage, Plugin do |plugin|

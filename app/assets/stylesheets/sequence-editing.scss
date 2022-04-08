@@ -16,7 +16,7 @@
   border-radius: 10px;
   overflow: hidden;
 
-  .new_lightweight_activity {
+  .new_lightweight_activity, .new_glossary {
     padding-top: 10px;
   }
 
@@ -68,6 +68,7 @@
       font-family: var(--font-family-default);
 
       &#lightweight_activity_name,
+      &#glossary_name,
       &#lightweight_activity_background_image,
       &#lightweight_activity_thumbnail_url,
       &#sequence_title,

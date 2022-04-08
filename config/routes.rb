@@ -34,6 +34,8 @@ LightweightStandalone::Application.routes.draw do
     resources :image_questions
   end
 
+  resources :glossaries
+
   resources :sequences, :constraints => { :id => /\d+/ } do
     member do
       post :add_activity

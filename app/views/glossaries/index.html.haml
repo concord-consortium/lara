@@ -1,0 +1,31 @@
+= content_for :session do
+  #session
+    = render :partial => 'shared/session'
+= content_for :title do
+  Glossaries
+= content_for :nav do
+  .breadcrumbs
+    %ul
+      %li= link_to "Home", root_path
+      %li / All Glossaries
+
+.action_menu#activity-actions
+  .action_menu_header
+    .action_menu_header_left
+    .action_menu_header_right.index
+      %ul#new-menu
+        - if can? :create, Glossary
+          %li#add= link_to 'create new glossary', new_glossary_path
+
+#official_listing_heading
+  %h1 Glossaries
+%ul.quiet_list.official_listing
+  - @glossaries.each do |glossary|
+    %li{ :id => dom_id_for(glossary, :item), :class => 'item' }
+      %div.action_menu
+        %div.action_menu_header_left
+          = link_to glossary.name, edit_glossary_path(glossary), :class => 'container_link'
+        %div.action_menu_header_right.themes
+          %ul.menu
+            %li.edit= link_to "Edit", edit_glossary_path(glossary) if can? :update, glossary
+            %li.delete= link_to 'Delete', glossary_path(glossary), method: :delete, data: { confirm: 'Are you sure?' } if can? :update, glossary
