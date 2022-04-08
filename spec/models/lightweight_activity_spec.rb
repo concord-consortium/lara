@@ -248,7 +248,7 @@ describe LightweightActivity do
 
           expect(export[:plugins].length).to eq(activity.plugins.count)
           expect(export[:plugins][0][:id]).to eq(plugins[1].id)
-          expect(export[:plugins][1][:id]).to eq(0)
+          expect(export[:plugins][1][:id]).to eq(activity.fake_glossary_plugin_id())
         end
       end
     end

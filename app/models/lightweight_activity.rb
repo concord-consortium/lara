@@ -129,6 +129,10 @@ class LightweightActivity < ActiveRecord::Base
     new_activity
   end
 
+  def fake_glossary_plugin_id
+    self.glossary_id * 1_000_000_000 + self.id
+  end
+
   def export(host)
     activity_json = self.as_json(only: [:id,
                                         :name,
@@ -162,7 +166,7 @@ class LightweightActivity < ActiveRecord::Base
       activity_json[:plugins].delete_if { |plugin| plugin[:component_label] == "glossary" }
 
       fake_glossary_plugin = {
-        id: 0,
+        id: fake_glossary_plugin_id(),
         description: nil,
         author_data: JSON.generate({
           version:"1.0",
