@@ -10,7 +10,7 @@
   <%= csrf_meta_tags %>
   <%= yield :external_scripts %>
 </head>
-<%- @body_class = request.original_fullpath.split('/').join(' ') -%>
+<%- @body_class = request.original_fullpath == "/" ? "homepage" : request.original_fullpath.split('/').join(' ') -%>
 <%- if @run_key -%>
   <body class="right <%= @body_class %>" data-session-key="<%= @run_key %>">
 <%- else -%>

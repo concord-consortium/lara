@@ -126,6 +126,12 @@ button, .btn-primary, span.edit_trigger {
   padding:10px 0;
   clear: both;
 }
+.homepage {
+  .content {
+    overflow: initial;
+  }
+}
+
 .content {
   background: white;
   height: auto;
@@ -1233,6 +1239,45 @@ body.admin.edit {
     height: 16px;
     padding: 0 0 0 15px;
     text-transform: uppercase;
+  }
+}
+
+div#sticky-header {
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background-color: white;
+  padding: 10px 0;
+  border-bottom: 1px solid #0592af;
+  .top-header {
+    display: flex;
+    justify-content: space-between;
+    .buttons-menu {
+      flex-grow: 1;
+      align-items: center;
+      float: initial;
+      button {
+        margin-left: 0px;
+        margin-right: 15px;
+      }
+    }
+    #new-menu {
+      flex-grow: 1;
+      margin: 0;
+      width: initial;
+    }
+  }
+  .bottom-header {
+    text-align: center;
+    margin: 10px 0px;
+    strong {
+      color: #ea6d2f;
+    }
+    a {
+      margin-left: 20px;
+    }
   }
 }
 

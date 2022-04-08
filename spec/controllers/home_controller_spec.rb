@@ -29,6 +29,14 @@ describe HomeController do
       get :home
     end
 
+    context "with rendered views" do
+      render_views
+      it 'sets body class to homepage' do
+        get :home
+        expect(response.body).to match /<body class="right homepage">/
+      end
+    end
+
     describe "The activities listing" do
       subject { assigns(:activities) }
 
