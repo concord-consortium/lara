@@ -42,8 +42,7 @@ describe Api::V1::GlossariesController do
     })
   }
   let(:glossary)      {
-    glossary = FactoryGirl.create(:glossary)
-    glossary.user = author
+    glossary = FactoryGirl.create(:glossary, user: author)
     glossary.json = stringifed_json
     glossary.save!
     glossary

@@ -4,7 +4,7 @@
       #error_explanation
         %h2
           = pluralize(@glossary.errors.count, "error")
-          prohibited this project from being saved:
+          prohibited this glossary from being saved:
         %ul
           - @glossary.errors.full_messages.each do |msg|
             %li= msg
