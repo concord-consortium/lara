@@ -42,6 +42,7 @@ RSpec.describe Glossary do
         }
       }
     })
+    glossary.save!
     glossary
   }
 
@@ -128,5 +129,40 @@ RSpec.describe Glossary do
         }
       }
     })
+  end
+
+  describe "self.by_author" do
+    it "should return an empty array if the user is nil" do
+      expect(Glossary.by_author(nil)).to eq([])
+    end
+
+    it "should return an array of glossaries by the user if the user is not nil" do
+      expect(Glossary.by_author(author)).to eq([glossary])
+    end
+
+    describe "with a different user" do
+      let(:other_author) { FactoryGirl.create(:author) }
+
+      it "should return an array of glossaries by the user if the user is not nil" do
+        expect(Glossary.by_author(other_author)).to eq([])
+      end
+    end
+
+    describe "with multiple glossaries" do
+      let(:glossary1)      {
+        glossary = FactoryGirl.create(:glossary, user: author, name: "ZZZ")
+        glossary.save!
+        glossary
+      }
+      let(:glossary2)      {
+        glossary = FactoryGirl.create(:glossary, user: author, name: "AAA")
+        glossary.save!
+        glossary
+      }
+
+      it "returns the list in alpha order" do
+        expect(Glossary.by_author(author)).to eq([glossary2, glossary1])
+      end
+    end
   end
 end

@@ -71,6 +71,12 @@
         = f.label :time_to_complete,  'Estimated Completion Time (in minutes)'
         = f.text_field :time_to_complete
       .field
+        = f.label :glossary_id, 'Glossary'
+        = f.select :glossary_id, options_from_collection_for_select(Glossary.by_author(current_user), 'id', 'name', @activity.glossary_id), { :include_blank => "None" }
+        %button#view_edit_glossary{style: "margin-top: 0; margin-left: 20px;"} View/Edit
+        .hint
+          Select a glossary from the list to add to this activity. Only glossaries you have authored will show in this list. If you do not wish to associate a glossary with this activity, select "None."
+      .field
         = f.label :related, 'Related Content'
         = f.text_area :related, :class => 'wysiwyg'
       .field
@@ -115,7 +121,7 @@
       %ul.sortable-list#sort-pages
         - @activity.pages.each.with_index(1) do |p, index|
           %li{ :id => dom_id_for(p, :item), :class => 'item' }
-            #{index}. 
+            #{index}.
             -if p.is_completion
               %i.fa.fa-flag-checkered
             = truncate(p.name, :length => 23, :omission => "…")
@@ -127,8 +133,6 @@
               %li.drag_handle
                 &nbsp;
         %li#add= link_to "Add Page", new_activity_page_path(@activity), :class => "btn-primary"
-    #plugins
-      =render partial: 'plugins/list', locals: {activity: @activity}
 
 :javascript
   $(function() {
@@ -143,3 +147,5 @@
       }
     })
   });
+
+= render :partial => 'enable_disable_runtime_fields'

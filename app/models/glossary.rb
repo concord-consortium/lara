@@ -17,4 +17,12 @@ class Glossary < ActiveRecord::Base
     JSON.parse(json, symbolize_names: true)
   end
 
+  def self.by_author(user)
+    if user
+      self.where(user_id: user.id).order(:name)
+    else
+      []
+    end
+  end
+
 end
