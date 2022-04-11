@@ -51,7 +51,7 @@ describe ImportController do
 
     end
 
-     context "sequence" do
+    context "sequence" do
 
       valid_sequence_import_json = File.new(Rails.root + 'spec/import_examples/valid_sequence_import.json')
       let(:params1) do
@@ -74,6 +74,38 @@ describe ImportController do
         xhr :post, "import", params1
         expect(response.content_type).to eq("text/javascript")
         expect(response.body).to eq("window.location.href = '/sequences/#{Sequence.last.id}/edit';")
+      end
+
+      it "response status 500 error if import fails" do
+        xhr :post, "import", params2
+        response.status == 500
+        expect(response.body).to eq("{\"error\":\"Import failed: unknown type\"}")
+      end
+    end
+
+    context "glossary" do
+
+      valid_glossary_import_json = File.new(Rails.root + 'spec/import_examples/valid_glossary_import.json')
+      let(:params1) do
+            {
+               import:{
+                 import:ActionDispatch::Http::UploadedFile.new(tempfile: valid_glossary_import_json, filename: File.basename(valid_glossary_import_json), content_type: "application/json")
+               }
+            }
+      end
+      invalid_glossary_import_json = File.new(Rails.root + 'spec/import_examples/invalid_glossary_import.json')
+      let(:params2) do
+            {
+               import:{
+                 import:ActionDispatch::Http::UploadedFile.new(tempfile: invalid_glossary_import_json, filename: File.basename(invalid_glossary_import_json), content_type: "application/json")
+               }
+            }
+      end
+
+      it "can import a glossary from a valid glossary json and redirect to edit page" do
+        xhr :post, "import", params1
+        expect(response.content_type).to eq("text/javascript")
+        expect(response.body).to eq("window.location.href = '/glossaries/#{Glossary.last.id}/edit';")
       end
 
       it "response status 500 error if import fails" do

@@ -17,15 +17,14 @@
         - if can? :create, Glossary
           %li#add= link_to 'create new glossary', new_glossary_path
 
-#official_listing_heading
+#official_listing_heading.pagination_heading
   %h1 Glossaries
-%ul.quiet_list.official_listing
-  - @glossaries.each do |glossary|
-    %li{ :id => dom_id_for(glossary, :item), :class => 'item' }
-      %div.action_menu
-        %div.action_menu_header_left
-          = link_to glossary.name, edit_glossary_path(glossary), :class => 'container_link'
-        %div.action_menu_header_right.themes
-          %ul.menu
-            %li.edit= link_to "Edit", edit_glossary_path(glossary) if can? :update, glossary
-            %li.delete= link_to 'Delete', glossary_path(glossary), method: :delete, data: { confirm: 'Are you sure?' } if can? :update, glossary
+  = page_entries_info @glossaries, :model => "Glossaries"
+  = t(:COLLECTION_SORT_ORDER)
+  .pagination_info
+    = will_paginate @glossaries
+  %ul.quiet_list.official_listing
+    - @glossaries.each do |glossary|
+      = render :partial => "index_item", :locals => {:glossary => glossary}
+  .pagination_info
+    = will_paginate @glossaries

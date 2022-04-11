@@ -53,3 +53,12 @@
       =render :partial => "sequences/index_item", :locals => {:sequence => sequence}
   .sequences-link
     = link_to t("SEE_ALL_SEQUENCES"), sequences_path
+
+-if @glossaries
+  #glossary_listing_head
+    %h1=t("GLOSSARIES")
+  %ul.quiet_list.glossaries
+    - @glossaries.each do |glossary|
+      =render :partial => "glossaries/index_item", :locals => {:glossary => glossary}
+  .glossaries-link
+    = link_to t("SEE_ALL_GLOSSARIES"), glossaries_path

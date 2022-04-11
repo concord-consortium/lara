@@ -1249,7 +1249,7 @@ div#sticky-header {
   flex-direction: column;
   position: sticky;
   top: 0;
-  z-index: 1;
+  /* z-index: 1; disabled for now to fix header overlaying import modal issue */ 
   background-color: white;
   padding: 10px 0;
   border-bottom: 1px solid #0592af;
@@ -1309,7 +1309,7 @@ ul#new-menu {
 }
 
 #activity_listing_head, #sequence_listing_head, #official_listing_heading, #community_listing_heading, #glossary_listing_head {
-  float: left;
+  /* float: left; disabled for now to fix index layout issue */
   margin: 10px 0;
 }
 
@@ -1323,7 +1323,12 @@ ul#new-menu {
   }
 }
 
-.import_activity_sequence, .export {
+.export {
+  padding: 0;
+  /* position: relative; disabled for now to fix sticky header overlay issue */
+}
+
+.import_activity_sequence {
     padding: 0;
     position: relative;
     .header {

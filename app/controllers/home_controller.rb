@@ -13,6 +13,8 @@ class HomeController < ApplicationController
     @filter.klass = Sequence
     # TODO: Add 'oficial' to the criteron?
     @sequences  = @filter.collection.includes(:user,:lightweight_activities).first(10)
+    @filter.klass = Glossary
+    @glossaries  = @filter.collection.includes(:user).first(10)
   end
   def bad_browser
     render "/home/bad_browser"

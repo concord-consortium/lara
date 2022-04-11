@@ -6,6 +6,8 @@ describe Import do
   let (:invalid_activity_import_json) { File.read(Rails.root + 'spec/import_examples/invalid_lightweight_activity_import.json') }
   let (:valid_sequence_import_json) { File.read(Rails.root + 'spec/import_examples/valid_sequence_import.json') }
   let (:invalid_sequence_import_json) { File.read(Rails.root + 'spec/import_examples/invalid_sequence_import.json') }
+  let (:valid_glossary_import_json) { File.read(Rails.root + 'spec/import_examples/valid_glossary_import.json') }
+  let (:invalid_glossary_import_json) { File.read(Rails.root + 'spec/import_examples/invalid_glossary_import.json') }
 
   describe '#import' do
     context "lightweight activity" do
@@ -33,6 +35,21 @@ describe Import do
 
       it "returns error if input is incorrect" do
         result = Import.import(invalid_sequence_import_json, user)
+        expect(result[:success]).to eq(false)
+        expect(result[:error]).to be_a(String)
+      end
+    end
+
+    context "glossary" do
+      it "can import a glossary from a valid glossary json" do
+        result = Import.import(valid_glossary_import_json, user)
+        expect(result[:success]).to eq(true)
+        expect(result[:import_item]).to be_a(Glossary)
+        expect(result[:type]).to eq("Glossary")
+      end
+
+      it "returns error if input is incorrect" do
+        result = Import.import(invalid_glossary_import_json, user)
         expect(result[:success]).to eq(false)
         expect(result[:error]).to be_a(String)
       end

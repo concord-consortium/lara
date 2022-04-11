@@ -34,7 +34,12 @@ LightweightStandalone::Application.routes.draw do
     resources :image_questions
   end
 
-  resources :glossaries
+  resources :glossaries do
+    member do
+      get :duplicate
+      get :export
+    end
+  end
 
   resources :sequences, :constraints => { :id => /\d+/ } do
     member do

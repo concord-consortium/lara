@@ -2,15 +2,8 @@ class GlossariesController < ApplicationController
   load_and_authorize_resource
 
   def index
-    if current_user
-      if current_user.admin?
-        @glossaries = Glossary.all(order: :name)
-      else 
-        @glossaries = current_user.glossaries
-      end
-    else 
-      @glossaries = []
-    end
+    @filter  = CollectionFilter.new(current_user, Glossary, params[:filter] || {})
+    @glossaries = @filter.collection.includes(:user).paginate(:page => params['page'], :per_page => 20)
   end
 
   def new
@@ -38,6 +31,24 @@ class GlossariesController < ApplicationController
   def destroy
     @glossary.destroy
     redirect_to glossaries_url
+  end
+
+  def duplicate
+    authorize! :duplicate, @glossary
+    @new_glossary = @glossary.duplicate(current_user)
+
+    if @new_glossary.save
+      redirect_to edit_glossary_path(@new_glossary)
+    else
+      flash[:warning] = "Copy failed"
+      redirect_to glossaries_path
+    end
+  end
+
+  def export
+    authorize! :export, @glossary
+    glossary_json = @glossary.to_export_hash.to_json
+    send_data glossary_json, type: :json, disposition: "attachment", filename: "#{@glossary.name}_version_1.json"
   end
 
 end

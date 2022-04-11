@@ -16,6 +16,8 @@ class Import < ActiveRecord::Base
         @import_item = LightweightActivity.import(json_object, user, imported_activity_url)
       elsif json_object[:type] == "Sequence"
         @import_item = Sequence.import(json_object, user, imported_activity_url)
+      elsif json_object[:type] == "Glossary"
+        @import_item = Glossary.import(json_object, user)
       else
         return {success: false, error: "Import failed: unknown type"}
       end

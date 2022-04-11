@@ -23,9 +23,13 @@ describe HomeController do
   end
 
   describe '#home' do
+    let(:user) { FactoryGirl.create(:user) }
+
     before(:each) do
       make_collection_with_rand_modication_time(:public_activity,15)
       make_collection_with_rand_modication_time(:sequence,15,:publication_status => 'public')
+      make_collection_with_rand_modication_time(:glossary,15,:user => user)
+      sign_in user # sign in so user sees their own glossaries
       get :home
     end
 
@@ -65,6 +69,22 @@ describe HomeController do
       end
 
       it "'s sequences are displayed with the newest first" do
+        expect(subject).to be_ordered_by "updated_at_desc"
+      end
+    end
+
+    describe "The glossaries listing" do
+      subject { assigns(:glossaries) }
+
+      it 'glossaries are of the correct type' do
+        subject.each { |s| expect(s).to be_a_kind_of(Glossary) }
+      end
+
+      it 'displays at most 10 glossaries' do
+        expect(subject.length).to eq(10) # truncated from 15
+      end
+
+      it "'s glossaries are displayed with the newest first" do
         expect(subject).to be_ordered_by "updated_at_desc"
       end
     end
