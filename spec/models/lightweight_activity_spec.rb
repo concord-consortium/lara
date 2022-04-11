@@ -233,9 +233,7 @@ describe LightweightActivity do
 
       describe "for activities that use the glossary model" do
         let(:glossary) {
-          glossary = FactoryGirl.create(:glossary)
-          glossary.user = author
-          glossary
+          glossary = FactoryGirl.create(:glossary, user: author)
         }
 
         it "has a glossary model" do
