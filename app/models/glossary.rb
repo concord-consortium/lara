@@ -1,5 +1,7 @@
 class Glossary < ActiveRecord::Base
   attr_accessible :name, :json, :user_id
+  validates :name, presence: true
+  validates :user_id, presence: true
 
   belongs_to :user
   has_many :lightweight_activities

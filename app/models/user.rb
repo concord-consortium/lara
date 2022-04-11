@@ -11,6 +11,7 @@ class User < ActiveRecord::Base
   has_many :sequences
   has_many :runs
   has_many :imports
+  has_many :glossaries, order: :name
 
   # Setup accessible (or protected) attributes for your model
   attr_accessible :email, :password, :password_confirmation, :remember_me,

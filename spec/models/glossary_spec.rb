@@ -3,8 +3,7 @@ require 'spec_helper'
 RSpec.describe Glossary do
   let(:author)        { FactoryGirl.create(:author) }
   let(:glossary)      {
-    glossary = FactoryGirl.create(:glossary)
-    glossary.user = author
+    glossary = FactoryGirl.create(:glossary, user: author)
     glossary.json = JSON.generate({
       askForUserDefinition: true,
       autoShowMediaInPopup: true,
