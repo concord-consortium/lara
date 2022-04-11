@@ -4,23 +4,37 @@
 = content_for :title do
   Lightweight Activities Runtime and Authoring
 
-%ul#new-menu
-  %li#search
-    %form
-      %input{:type => "text", :name => "search", :placeholder => "Search..."}
-      %input{:type => "submit", :value => "Search"}
-  %li#desc-toggle= toggle_all 'descriptions'
-  %li#collection_filter= collection_filter_tag @filter
-.buttons-menu
-  - if can? :create, LightweightActivity
-    %a{ :href => new_activity_path }
-      %button=t("NEW_ACTIVITY_BUTTON")
-  - if can? :create, Sequence
-    %a{ :href => new_sequence_path }
-      %button=t("NEW_SEQUENCE_BUTTON")
-  - if can? :import, [LightweightActivity, Sequence]
-    %a{ :href => import_status_path, 'data-remote'=>"true" }
-      %button=t("IMPORT")
+%div#sticky-header
+  %div.top-header
+    .buttons-menu
+      - if can? :create, LightweightActivity
+        %a{ :href => new_activity_path }
+          %button=t("NEW_ACTIVITY_BUTTON")
+      - if can? :create, Sequence
+        %a{ :href => new_sequence_path }
+          %button=t("NEW_SEQUENCE_BUTTON")
+      - if can? :import, [LightweightActivity, Sequence]
+        %a{ :href => import_status_path, 'data-remote'=>"true" }
+          %button=t("IMPORT")
+    %ul#new-menu
+      %li#search
+        %form
+          %input{:type => "text", :name => "search", :placeholder => "Search..."}
+          %input{:type => "submit", :value => "Search"}
+      %li#desc-toggle= toggle_all 'descriptions'
+      %li#collection_filter= collection_filter_tag @filter
+  -if @activities || @sequences
+    %div.bottom-header
+      %strong 
+        Jump to:
+      -if @activities
+        %a{ :href => "#activity_listing_head" }
+          Activities
+      -if @sequences
+        %a{ :href => "#sequence_listing_head" }
+          Sequences
+      
+
 
 -if @activities
   #activity_listing_head
