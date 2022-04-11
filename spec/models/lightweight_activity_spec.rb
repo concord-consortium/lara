@@ -3,7 +3,8 @@ require 'spec_helper'
 describe LightweightActivity do
   let(:thumbnail_url) { "http://fake.url.com/image" }
   let(:author)        { FactoryGirl.create(:author) }
-  let(:act_opts)      { {thumbnail_url: thumbnail_url} }
+  let(:glossary)      { nil }
+  let(:act_opts)      { {thumbnail_url: thumbnail_url, glossary: glossary} }
   let(:activity)      {
     activity = FactoryGirl.create(:activity, act_opts)
     activity.user = author
@@ -195,10 +196,15 @@ describe LightweightActivity do
   end
 
   describe '#export' do
-    let(:export) { activity.export }
-    let(:approved_script) { FactoryGirl.create(:approved_script) }
+    let(:host) { 'http://example.com' }
+    let(:export) { activity.export(host) }
+    let(:approved_script1) { FactoryGirl.create(:approved_script, label: "glossary") }
+    let(:approved_script2) { FactoryGirl.create(:approved_script, label: "notaglossary") }
     let(:plugins) do
-      FactoryGirl.create_list(:plugin, 2, approved_script: approved_script)
+      [
+        FactoryGirl.create(:plugin, approved_script: approved_script1, component_label: "glossary"),
+        FactoryGirl.create(:plugin, approved_script: approved_script2, component_label: "notaglossary")
+      ]
     end
 
     before :each do
@@ -219,9 +225,30 @@ describe LightweightActivity do
       end
 
       describe "for activity player activities" do
-        let(:export) { activity_player_activity.export }
+        let(:export) { activity_player_activity.export(host) }
         it 'does include the fixed width layout option' do
           expect(export).to include(:fixed_width_layout)
+        end
+      end
+
+      describe "for activities that use the glossary model" do
+        let(:glossary) {
+          glossary = FactoryGirl.create(:glossary)
+          glossary.user = author
+          glossary
+        }
+
+        it "has a glossary model" do
+          expect(activity.glossary).to eq(glossary)
+        end
+
+        it "drops the existing glossary plugin" do
+          expect(activity.plugins[0].component_label).to eq("glossary")
+          expect(activity.plugins[1].component_label).to eq("notaglossary")
+
+          expect(export[:plugins].length).to eq(activity.plugins.count)
+          expect(export[:plugins][0][:component_label]).to eq("notaglossary")
+          expect(export[:plugins][1][:component_label]).to eq("fakeglossary")
         end
       end
     end

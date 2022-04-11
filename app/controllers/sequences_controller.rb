@@ -185,7 +185,7 @@ class SequencesController < ApplicationController
 
   def export
     authorize! :export, @sequence
-    sequence_json = @sequence.export
+    sequence_json = @sequence.export(request.host_with_port)
     send_data sequence_json, type: :json, disposition: "attachment", filename: "#{@sequence.name}_version_1.json"
   end
 

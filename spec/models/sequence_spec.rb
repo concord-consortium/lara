@@ -264,13 +264,14 @@ describe Sequence do
 
   describe '#export' do
     let(:sequence_opts) { {} }
+    let(:host) { 'http://test.host' }
     it 'returns json of a sequence' do
-      sequence_json = JSON.parse(sequence.export)
+      sequence_json = JSON.parse(sequence.export(host))
       expect(sequence_json['activities'].length).to eq(sequence.activities.count)
     end
 
     it 'does not include the fixed width layout option' do
-      sequence_json = JSON.parse(sequence.export)
+      sequence_json = JSON.parse(sequence.export(host))
       expect(sequence_json).not_to include('fixed_width_layout')
     end
 
@@ -284,7 +285,7 @@ describe Sequence do
       }
 
       it 'does include the fixed width layout option' do
-        sequence_json = JSON.parse(activity_player_sequence.export)
+        sequence_json = JSON.parse(activity_player_sequence.export(host))
         expect(sequence_json).to include('fixed_width_layout')
       end
     end
@@ -296,9 +297,10 @@ describe Sequence do
     let(:title)         { "title" }
     let(:sequence_opts) { {logo: logo, thumbnail_url: thumbnail_url, title: title} }
     let(:owner)         { FactoryGirl.create(:user) }
+    let(:host)          { 'http://test.host' }
 
     it 'returns json of a sequence' do
-      data = JSON.parse(sequence.export, :symbolize_names => true)
+      data = JSON.parse(sequence.export(host), :symbolize_names => true)
       imported = Sequence.import(data, owner)
       expect(imported.thumbnail_url).to eq(thumbnail_url)
       expect(imported.logo).to eq(logo)

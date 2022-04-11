@@ -243,7 +243,7 @@ class LightweightActivitiesController < ApplicationController
 
   def export
     authorize! :export, @activity
-    lightweight_activity_json = @activity.export.to_json
+    lightweight_activity_json = @activity.export(request.host_with_port).to_json
     send_data lightweight_activity_json, type: :json, disposition: "attachment", filename: "#{@activity.name}_version_1.json"
   end
 
