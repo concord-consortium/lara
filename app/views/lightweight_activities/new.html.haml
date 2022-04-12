@@ -23,6 +23,12 @@
       = f.label :name, 'Activity Name'
       = f.text_field :name
     .field
+      = f.label :glossary_id, 'Glossary'
+      = f.select :glossary_id, options_from_collection_for_select(Glossary.by_author(current_user), 'id', 'name', @activity.glossary_id), { :include_blank => "None" }
+      %button#view_edit_glossary{style: "margin-top: 0; margin-left: 20px;"} View/Edit
+      .hint
+        Select a glossary from the list to add to this activity. Only glossaries you have authored will show in this list. If you do not wish to associate a glossary with this activity, select "None."
+    .field
       = f.label :runtime, "Runtime Environment"
       = f.select :runtime, options_for_select(LightweightActivity::RUNTIME_OPTIONS, @activity.runtime)
       .hint
@@ -53,12 +59,6 @@
     .field
       = f.label :time_to_complete,  'Estimated Completion Time (in minutes)'
       = f.text_field :time_to_complete
-    .field
-      = f.label :glossary_id, 'Glossary'
-      = f.select :glossary_id, options_from_collection_for_select(Glossary.by_author(current_user), 'id', 'name', @activity.glossary_id), { :include_blank => "None" }
-      %button#view_edit_glossary{style: "margin-top: 0; margin-left: 20px;"} View/Edit
-      .hint
-        Select a glossary from the list to add to this activity. Only glossaries you have authored will show in this list. If you do not wish to associate a glossary with this activity, select "None."
     .field
       = f.label :related, 'Related Content'
       = f.text_area :related, :class => 'wysiwyg'
