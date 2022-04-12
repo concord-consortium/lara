@@ -7,11 +7,22 @@
   .breadcrumbs
     %ul
       %li= link_to "Home", root_path
-      %li 
+      %li
         \/
         = link_to 'All Glossaries', glossaries_path
       %li= "/ Edit #{@glossary.name}"
 
 %h1.title= "Edit #{@glossary.name}"
 
-=render :partial => 'form'
+.sequence_form
+  = form_for(@glossary) do |f|
+    .field
+      = f.label :name
+      = f.text_field :name, autofocus: true
+    .field
+      = f.label :json, "JSON (only for demo - will be replaced with React-based editor)"
+      = f.text_area :json, style: "width: 100%"
+    %footer
+      .submit
+        = f.submit "Save", :id => 'save-top', :class => 'btn-primary'
+
