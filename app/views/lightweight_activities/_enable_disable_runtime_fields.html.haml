@@ -30,6 +30,8 @@
     })
 
     $view_edit_glossary.on('click', function (e) {
+      // -1 is a placeholder for the glossary id in the url generated when the page is served
+      // and is replaced at runtime below with the current selected glossary id from the select
       var edit_url = "#{edit_glossary_path(-1)}"
       e.preventDefault()
       e.stopPropagation()

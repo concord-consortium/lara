@@ -1,5 +1,5 @@
 class Glossary < ActiveRecord::Base
-  attr_accessible :name, :json, :user_id, :type
+  attr_accessible :name, :json, :user_id
   validates :name, presence: true
   validates :user_id, presence: true
 
