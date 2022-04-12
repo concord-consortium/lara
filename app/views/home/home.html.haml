@@ -33,7 +33,8 @@
         %a{ :href => "#activity_listing_head" }=t("ACTIVITIES")
       -if @sequences
         %a{ :href => "#sequence_listing_head" }=t("SEQUENCES")
-      
+      -if @glossaries
+        %a{ :href => "#glossary_listing_head" }=t("GLOSSARIES")
 
 
 -if @activities
