@@ -1,0 +1,23 @@
+%li{ :id => dom_id_for(glossary, :item), :class => 'item' }
+  %div.action_menu
+    %div.action_menu_header_left
+      = glossary.id.to_s + '.'
+      = glossary.name
+    %div.action_menu_header_right
+      %ul.menu
+        - if can? :export, glossary
+          %li.copy= link_to "Export", export_glossary_path(glossary)
+        - if can? :duplicate, glossary
+          %li.copy= link_to "Copy", duplicate_glossary_path(glossary)
+        - if can? :update, glossary
+          %li.edit= link_to "Edit", edit_glossary_path(glossary)
+        - if can? :update, glossary
+          %li.delete= link_to 'Delete', glossary_path(glossary), method: :delete, data: { confirm: 'Are you sure?' }
+
+  %div{:id => dom_id_for(glossary, :details), :class => 'tiny'}
+    = pluralize(glossary.lightweight_activities.length, 'activity')
+    - if glossary.user && glossary.user.email.present?
+      %p.author
+        = "by #{glossary.user.email}"
+    %p.updated
+      = "last updated at #{glossary.updated_at.to_formatted_s(:long)}"

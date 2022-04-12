@@ -38,6 +38,8 @@ class Ability
       # and duplicate unlocked activities and sequences
       can :duplicate, LightweightActivity, :is_locked => false, :publication_status => ['public', 'hidden']
       can :duplicate, Sequence, :publication_status => ['public', 'hidden']
+      can :duplicate, Glossary
+      
       # other users cannot export an activity or sequence
       cannot :export, LightweightActivity
       cannot :export, Sequence

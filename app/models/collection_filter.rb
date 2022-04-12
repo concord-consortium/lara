@@ -17,7 +17,7 @@ class CollectionFilter
 
   def collection
     if @search
-      results = @klass.search(@search)
+      results = @klass.search(@search, @user)
     elsif @my && @user
       results = @klass.my(@user)
     elsif @user

@@ -2,8 +2,10 @@ require 'spec_helper'
 
 RSpec.describe Glossary do
   let(:author)        { FactoryGirl.create(:author) }
+  let(:author2)        { FactoryGirl.create(:author) }
+
   let(:glossary)      {
-    glossary = FactoryGirl.create(:glossary, user: author)
+    glossary = FactoryGirl.create(:glossary, name: "Glossary 1", user: author)
     glossary.json = JSON.generate({
       askForUserDefinition: true,
       autoShowMediaInPopup: true,
@@ -44,6 +46,7 @@ RSpec.describe Glossary do
     glossary.save!
     glossary
   }
+  let(:glossary2) { FactoryGirl.create(:glossary, name: "Glossary 2", user: author2) }
 
   it "should export itself" do
     expect(glossary.export).to eq({
@@ -164,4 +167,102 @@ RSpec.describe Glossary do
       end
     end
   end
+
+  it "should support #to_hash" do
+    expect(glossary.to_hash).to eq({
+      id: glossary.id,
+      name: glossary.name,
+      user_id: glossary.user_id,
+      json: glossary.json
+    })
+  end
+
+  it "should support #to_export_hash" do
+    expect(glossary.to_export_hash).to eq({
+      id: glossary.id,
+      name: glossary.name,
+      user_id: glossary.user_id,
+      json: glossary.json,
+      type: "Glossary"
+    })
+  end
+
+  it "should support #duplicate" do
+    expect(glossary.duplicate(author2).to_hash).to eq({
+      id: nil,
+      name: "Copy of #{glossary.name}",
+      user_id: author2.id,
+      json: glossary.json
+    })
+  end
+
+  it "should support #self.import" do
+    imported_glossary = Glossary.import(glossary.to_export_hash, author2)
+    expect(imported_glossary.id).not_to eq(glossary.id)
+    expect(imported_glossary.user).to eq(author2)
+  end
+
+  it "should support #self.extract_from_hash" do
+    expect(Glossary.extract_from_hash(glossary.to_export_hash)).to eq({
+      name: glossary.name,
+      json: glossary.json
+    })
+  end
+
+  describe "homepage index methods" do
+    describe "as an author" do
+      it "should support self.my" do
+        expect(Glossary.my(author)).to eq([glossary])
+      end
+
+      it "should support self.can_see" do
+        expect(Glossary.can_see(author)).to eq([glossary])
+      end
+
+      it "should support self.visible" do
+        expect(Glossary.visible(author)).to eq([glossary])
+      end
+
+      it "should support self.search" do
+        expect(Glossary.search("Glossary", author)).to eq([glossary])
+      end
+    end
+
+    describe "as an admin" do
+      let(:admin) {FactoryGirl.create(:admin)}
+
+      before(:each) do
+        # make sure both glosaaries are visible in a query
+        glossary
+        glossary2
+      end
+
+      it "should support self.my" do
+        expect(Glossary.my(admin)).to eq([])
+      end
+
+      it "should support self.can_see" do
+        expect(Glossary.can_see(admin)).to eq([glossary, glossary2])
+      end
+
+      it "should support self.visible" do
+        expect(Glossary.visible(admin)).to eq([glossary, glossary2])
+      end
+
+      it "should support self.search" do
+        expect(Glossary.search("Glossary", admin)).to eq([glossary, glossary2])
+      end
+    end
+  end
+
+  describe "scopes" do
+    it "should support public" do
+      expect(Glossary.public).to eq ([])
+    end
+
+    it "should support newest" do
+      expect(Glossary.newest).to eq ([glossary2, glossary])
+    end
+  end
+
 end

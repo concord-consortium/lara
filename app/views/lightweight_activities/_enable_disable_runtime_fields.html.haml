@@ -30,9 +30,10 @@
     })
 
     $view_edit_glossary.on('click', function (e) {
+      var edit_url = "#{edit_glossary_path(-1)}"
       e.preventDefault()
       e.stopPropagation()
-      alert("TODO AFTER AVAILABLE: jump to view/edit glossary" + $glossary_id.val());
+      window.open(edit_url.replace("-1", $glossary_id.val()), "_blank")
     })
 
     toggleFields($runtime.val() === "LARA")
