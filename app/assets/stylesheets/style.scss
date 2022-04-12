@@ -1304,7 +1304,11 @@ ul#new-menu {
     }
 }
 
-#activity_listing_head, #sequence_listing_head, #official_listing_heading, #community_listing_heading {
+#activity_listing_head, #sequence_listing_head, #glossary_listing_head {
+  scroll-margin-top: 100px;
+}
+
+#activity_listing_head, #sequence_listing_head, #official_listing_heading, #community_listing_heading, #glossary_listing_head {
   float: left;
   margin: 10px 0;
 }
