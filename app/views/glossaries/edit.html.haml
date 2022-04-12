@@ -14,15 +14,39 @@
 
 %h1.title= "Edit #{@glossary.name}"
 
-.sequence_form
-  = form_for(@glossary) do |f|
-    .field
-      = f.label :name
-      = f.text_field :name, autofocus: true
-    .field
-      = f.label :json, "JSON (only for demo - will be replaced with React-based editor)"
-      = f.text_area :json, style: "width: 100%"
-    %footer
-      .submit
-        = f.submit "Save", :id => 'save-top', :class => 'btn-primary'
+#glossary_authoring_form
 
+:javascript
+  $(document).ready(function() {
+    // signal the plugin to use the new glossary model authoring
+    LARA.GlossaryModelAuthoring = {
+      apiUrl: #{api_v1_glossary_url(@glossary).to_json},
+      containerId: "glossary_authoring_form",
+      initialData: {
+        name: #{@glossary.name.to_json},
+        json: #{@glossary.export_json_only}
+      }
+    }
+    var glossaryPluginUrl = "#{@approved_glossary_script ? @approved_glossary_script.url : ""}"
+    var container = document.getElementById(LARA.GlossaryModelAuthoring.containerId)
+
+    if (glossaryPluginUrl.length > 0) {
+      var loadingMessage = "" // loading message is empty to avoid flash of content before plugin renders
+      container.innerHTML = loadingMessage
+
+      // this avoids a console.error for existing glossary plugins - it is unused in the actual authoring plugin
+      LARA.Plugins.setNextPluginLabel("glossary-model-authoring");
+
+      var scriptElement = document.createElement("script");
+      scriptElement.src = glossaryPluginUrl;
+      document.body.appendChild(scriptElement);
+
+      setTimeout(function() {
+        if (container.innerHTML === loadingMessage) {
+          container.innerHTML = "The glossary authoring plugin did not load. Please contact the system administrator.";
+        }
+      }, 5000);
+    } else {
+      container.innerHTML = "No approved glossary script found.  Please contact the system administrator."
+    }
+  });
