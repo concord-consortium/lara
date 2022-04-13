@@ -1249,7 +1249,7 @@ div#sticky-header {
   flex-direction: column;
   position: sticky;
   top: 0;
-  /* z-index: 1; disabled for now to fix header overlaying import modal issue */
+  z-index: 1;
   background-color: white;
   padding: 10px 0;
   border-bottom: 1px solid #0592af;
@@ -1325,7 +1325,7 @@ ul#new-menu {
 
 li.export {
   padding: 0;
-  /* position: relative; disabled for now to fix sticky header overlay issue */
+  position: relative;
 }
 
 .import_activity_sequence, .export {
