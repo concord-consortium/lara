@@ -152,7 +152,7 @@ describe GlossariesController do
   describe "duplicate" do
     it "duplicates the requested glossary" do
       expect {
-        post :duplicate, {:id => glossary.id}
+        get :duplicate, {:id => glossary.id}
       }.to change(Glossary, :count).by(1)
       expect(assigns(:new_glossary).id).not_to eq(glossary.id)
     end
@@ -165,7 +165,7 @@ describe GlossariesController do
 
   describe "export" do
     it "exports the requested glossary" do
-      post :export, {:id => glossary.id}
+      get :export, {:id => glossary.id}
       expect(response).to be_success
       json_response = JSON.parse(response.body)
       expect(json_response["type"]).to eq("Glossary")

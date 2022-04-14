@@ -232,7 +232,7 @@ RSpec.describe Glossary do
       let(:admin) {FactoryGirl.create(:admin)}
 
       before(:each) do
-        # make sure both glosaaries are visible in a query
+        # make sure both glossaries are visible in a query
         glossary
         glossary2
       end
