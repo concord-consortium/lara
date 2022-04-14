@@ -22,6 +22,7 @@ class GlossariesController < ApplicationController
   end
 
   def edit
+    @approved_glossary_script = Glossary.get_glossary_approved_script()
   end
 
   def update

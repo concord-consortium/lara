@@ -181,7 +181,7 @@ LightweightStandalone::Application.routes.draw do
         end
       end
 
-      resources :glossaries, :controller => 'glossaries', only: [:show]
+      resources :glossaries, :controller => 'glossaries', only: [:show, :update]
 
       match 'import' => 'import#import', :via => 'post'
 

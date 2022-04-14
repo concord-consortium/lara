@@ -161,7 +161,7 @@ class LightweightActivity < ActiveRecord::Base
 
     # if the activity has a glossary model assiged to it, add the fake glossary plugin to the list of plugins
     # replacing any existing glossary plugins and using the existing glossary plugin's approved script
-    if self.glossary_id && approved_glossary_script = ApprovedScript.find_by_label("glossary")
+    if self.glossary_id && approved_glossary_script = Glossary.get_glossary_approved_script()
       # remove any existing glossary script
       activity_json[:plugins].delete_if { |plugin| plugin[:component_label] == "glossary" }
 
