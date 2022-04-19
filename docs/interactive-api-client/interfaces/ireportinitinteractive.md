@@ -20,6 +20,7 @@
 * [authoredState](ireportinitinteractive.md#authoredstate)
 * [hostFeatures](ireportinitinteractive.md#hostfeatures)
 * [interactiveState](ireportinitinteractive.md#interactivestate)
+* [linkedInteractives](ireportinitinteractive.md#linkedinteractives)
 * [mode](ireportinitinteractive.md#mode)
 * [themeInfo](ireportinitinteractive.md#themeinfo)
 * [version](ireportinitinteractive.md#version)
@@ -48,6 +49,12 @@ ___
 ###  interactiveState
 
 • **interactiveState**: *InteractiveState*
+
+___
+
+###  linkedInteractives
+
+• **linkedInteractives**: *[ILinkedInteractive](ilinkedinteractive.md)[]*
 
 ___
 

@@ -104,6 +104,7 @@ export interface IReportInitInteractive<InteractiveState = {}, AuthoredState = {
   interactiveState: InteractiveState;
   themeInfo: IThemeInfo;
   attachments?: AttachmentInfoMap;
+  linkedInteractives: ILinkedInteractive[];
 }
 
 export interface IReportItemInitInteractive<InteractiveState = {}, AuthoredState = {}> {
