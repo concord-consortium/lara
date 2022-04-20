@@ -627,12 +627,13 @@ ul.quiet_list {
       width: 20%;
     }
     .tiny {
+      font-size: 11px;
       clear: both;
       display: block;
       margin-top: 23px;
     }
     .author, .updated, .published {
-      font-size: 0.8em;
+      font-size: 11px;
     }
     .active-runs {
       color: red;
