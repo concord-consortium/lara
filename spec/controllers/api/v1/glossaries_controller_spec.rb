@@ -63,6 +63,7 @@ describe Api::V1::GlossariesController do
         id: glossary.id,
         name: glossary.name,
         user_id: glossary.user_id,
+        can_edit: false,
         json: JSON.parse(stringifed_json)
       }.as_json)
     end

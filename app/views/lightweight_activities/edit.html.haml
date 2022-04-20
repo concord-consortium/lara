@@ -25,17 +25,17 @@
       .field
         = f.label :name, 'Activity Name'
         = f.text_field :name
-      .field
-        = f.label :glossary_id, 'Glossary'
-        = f.select :glossary_id, options_from_collection_for_select(Glossary.by_author(current_user), 'id', 'name', @activity.glossary_id), { :include_blank => "None" }
-        %button#view_edit_glossary{style: "margin-top: 0; margin-left: 20px;"} View/Edit
-        .hint
-          Select a glossary from the list to add to this activity. Only glossaries you have authored will show in this list. If you do not wish to associate a glossary with this activity, select "None."
       .field{:class => ("disabled" if @activity.latest_publication_portals.length > 0)}
         = f.label :runtime, "Runtime Environment"
         = f.select :runtime, options_for_select(LightweightActivity::RUNTIME_OPTIONS, @activity.runtime), :disabled => @activity.latest_publication_portals.length > 0
         .hint
           Once the activity is published, you can't change this setting.
+      .field
+        = f.label :glossary_id, 'Glossary'
+        = f.select :glossary_id, glossary_options_for_select(@activity, current_user), { :include_blank => "None" }
+        %button#view_edit_glossary{style: "margin-top: 0; margin-left: 20px;"} View or Edit
+        .hint
+          Select a glossary from the list to add to this activity. If you do not wish to associate a glossary with this activity, select "None."
       .field{:class => ("disabled" if @activity.runtime != 'Activity Player')}
         = f.label :fixed_width_layout, 'Activity Player Fixed Width Layout'
         = f.select :fixed_width_layout, options_for_select(LightweightActivity::FIXED_WIDTH_LAYOUT_OPTIONS, @activity.fixed_width_layout)

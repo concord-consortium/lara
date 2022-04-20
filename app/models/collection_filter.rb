@@ -22,6 +22,9 @@ class CollectionFilter
       results = @klass.my(@user)
     elsif @user
       results = @klass.visible(@user)
+    elsif @klass.respond_to?(:public_for_user)
+      # used by glossary model to filter out glossaries when the user isn't an author or admin
+      results = @klass.public_for_user(@user)
     else
       results = @klass.public
     end

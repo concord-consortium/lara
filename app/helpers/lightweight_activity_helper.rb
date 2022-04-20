@@ -109,4 +109,19 @@ module LightweightActivityHelper
     end
     return view_activity_url
   end
+
+  def glossary_options_for_select(activity, user)
+    grouped_options_for_select([
+      ['My Glossaries', glossary_options(Glossary.by_author(user))],
+      ['Other Glossaries', glossary_options(Glossary.by_others(user))]
+    ], activity.glossary_id)
+  end
+
+  def glossary_options(glossaries)
+    if glossaries.length == 0
+      [["None", nil]]
+    else
+      glossaries.map {|g| ["#{g.name} (#{g.user.email})", g.id] }
+    end
+  end
 end
