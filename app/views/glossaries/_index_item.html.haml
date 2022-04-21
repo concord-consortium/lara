@@ -12,10 +12,10 @@
         - if can? :update, glossary
           %li.edit= link_to "Edit", edit_glossary_path(glossary)
         - if can? :update, glossary
-          %li.delete= link_to 'Delete', glossary_path(glossary), method: :delete, data: { confirm: 'Are you sure?' }
+          %li.delete= link_to 'Delete', glossary_path(glossary), method: :delete, data: { confirm: "Are you sure you want to delete this glossary? It is currently being used in #{pluralize(glossary.lightweight_activities.length, 'activity')}. You will not be able to undo this action." }
 
   %div{:id => dom_id_for(glossary, :details), :class => 'tiny'}
-    = pluralize(glossary.lightweight_activities.length, 'activity')
+    = "Used in #{pluralize(glossary.lightweight_activities.length, 'activity')}"
     - if glossary.user && glossary.user.email.present?
       %p.author
         = "by #{glossary.user.email}"
