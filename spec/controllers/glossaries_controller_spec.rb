@@ -13,8 +13,10 @@ describe GlossariesController do
   before(:each) do
     # We're testing access control in spec/models/user_spec.rb, so for this
     # suite we use a user with global permissions
-    @user = current_user
-    sign_in @user
+    if current_user
+      @user = current_user
+      sign_in @user
+    end
     glossary
     glossary2
     glossary3
@@ -24,18 +26,21 @@ describe GlossariesController do
     describe "as an admin" do
       it "assigns all glossaries as @glossaries" do
         get :index
-        expect(assigns(:glossaries)).to include(glossary)
-        expect(assigns(:glossaries)).to include(glossary2)
-        expect(assigns(:glossaries)).to include(glossary3)
+        expect(assigns(:glossaries)).to eq([glossary, glossary2, glossary3])
       end
     end
     describe "as an author" do
       let (:current_user) { author1 }
-      it "assigns glossaries owned by that author as @glossaries" do
+      it "assigns all glossaries as @glossaries" do
         get :index
-        expect(assigns(:glossaries)).not_to include(glossary)
-        expect(assigns(:glossaries)).to include(glossary2)
-        expect(assigns(:glossaries)).not_to include(glossary3)
+        expect(assigns(:glossaries)).to eq([glossary, glossary2, glossary3])
+      end
+    end
+    describe "as an anonyous user" do
+      let (:current_user) { nil }
+      it "assigns [] as @glossaries" do
+        get :index
+        expect(assigns(:glossaries)).to eq([])
       end
     end
   end

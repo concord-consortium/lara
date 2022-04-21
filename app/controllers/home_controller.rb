@@ -16,6 +16,7 @@ class HomeController < ApplicationController
     @filter.klass = Glossary
     @glossaries  = @filter.collection.includes(:user).first(10)
   end
+
   def bad_browser
     render "/home/bad_browser"
   end

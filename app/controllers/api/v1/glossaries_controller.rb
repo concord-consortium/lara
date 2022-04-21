@@ -5,7 +5,7 @@ class Api::V1::GlossariesController < API::APIController
     if params[:json_only]
       render json: glossary.export_json_only.to_json
     else
-      render json: glossary.export.to_json
+      render json: glossary.export(current_user).to_json
     end
   end
 

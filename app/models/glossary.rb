@@ -6,14 +6,16 @@ class Glossary < ActiveRecord::Base
   belongs_to :user
   has_many :lightweight_activities
 
-  scope :public, where("1 = 0") # There are no public glossaries, this is used by the CollectionFilter
+  # scope :public, self.scoped # all glossaries are public
+  scope :none, where("1 = 0") # used to return "my glossaries" to no user
   scope :newest, order("updated_at DESC")
 
-  def export
+  def export(user)
     {
       id: self.id,
       name: self.name,
       user_id: self.user_id,
+      can_edit: self.can_edit(user),
       json: self.export_json_only
     }
   end
@@ -48,6 +50,14 @@ class Glossary < ActiveRecord::Base
     new_glossary
   end
 
+  def can_edit(user)
+    if user.nil?
+      false
+    else
+      user.id == self.user_id || user.admin?
+    end
+  end
+
   def self.import(glossary_json_object, new_owner)
     imported_glossary = Glossary.new(self.extract_from_hash(glossary_json_object))
     imported_glossary.user = new_owner
@@ -71,9 +81,18 @@ class Glossary < ActiveRecord::Base
   # helper used in lightweight activity edit to list the glossaries that can be assigned to an activity
   def self.by_author(user)
     if user
-      self.where(user_id: user.id).order(:name)
+      self.where(user_id: user.id).eager_load(:user).order(:name)
     else
-      self.public # this defaults to an empty relation
+      self.none
+    end
+  end
+
+  # helper used in lightweight activity edit to list the glossaries that can be assigned to an activity
+  def self.by_others(user)
+    if user
+      self.where("user_id != ?", user.id).eager_load(:user).order(:name)
+    else
+      self.scoped.eager_load(:user).order(:name)
     end
   end
 
@@ -85,11 +104,8 @@ class Glossary < ActiveRecord::Base
   end
 
   def self.can_see(user)
-    if user.admin?
-      self.scoped # admins can see all glossaries
-    else
-      self.my(user)
-    end
+    # all users can see all glossaries
+    self.scoped
   end
 
   def self.visible(user)
@@ -98,5 +114,13 @@ class Glossary < ActiveRecord::Base
 
   def self.search(query, user)
     self.can_see(user).where("name LIKE ?", "%#{query}%")
+  end
+
+  def self.public_for_user(user)
+    if user && (user.admin? || user.author?)
+      self.scoped
+    else
+      self.none
+    end
   end
 end

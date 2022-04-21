@@ -39,7 +39,10 @@ class Ability
       can :duplicate, LightweightActivity, :is_locked => false, :publication_status => ['public', 'hidden']
       can :duplicate, Sequence, :publication_status => ['public', 'hidden']
       can :duplicate, Glossary
-      
+
+      # any authors can see the glossaries
+      can :read, Glossary
+
       # other users cannot export an activity or sequence
       cannot :export, LightweightActivity
       cannot :export, Sequence
