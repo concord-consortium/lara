@@ -2,7 +2,7 @@
   #session
     = render :partial => 'shared/session'
 = content_for :title do
-  = "Edit #{@glossary.name}"
+  = "#{@can_edit ? "Edit" : "View"} #{@glossary.name}"
 = content_for :nav do
   .breadcrumbs
     %ul
@@ -10,7 +10,7 @@
       %li
         \/
         = link_to 'All Glossaries', glossaries_path
-      %li= "/ Edit #{@glossary.name}"
+      %li= "/ #{@can_edit ? "Edit" : "View"} #{@glossary.name}"
 
 #glossary_authoring_form
 
@@ -22,7 +22,8 @@
       containerId: "glossary_authoring_form",
       initialData: {
         name: #{@glossary.name.to_json},
-        json: #{@glossary.export_json_only.to_json}
+        json: #{@glossary.export_json_only.to_json},
+        canEdit: #{@can_edit}
       }
     }
     var glossaryPluginUrl = "#{@approved_glossary_script ? @approved_glossary_script.url : ""}"

@@ -1,5 +1,5 @@
 class GlossariesController < ApplicationController
-  load_and_authorize_resource
+  before_filter :set_glossary, :except => [:index, :new, :create]
 
   def index
     @filter  = CollectionFilter.new(current_user, Glossary, params[:filter] || {})
@@ -7,10 +7,12 @@ class GlossariesController < ApplicationController
   end
 
   def new
+    authorize! :create, Glossary
     @glossary = Glossary.new()
   end
 
   def create
+    authorize! :create, Glossary
     @glossary = Glossary.new(params[:glossary])
     @glossary.user = current_user
 
@@ -22,14 +24,18 @@ class GlossariesController < ApplicationController
   end
 
   def edit
+    @can_edit = @glossary.can_edit(current_user)
+    # any user can see the edit form as it has a special readonly view
     @approved_glossary_script = Glossary.get_glossary_approved_script()
   end
 
   def update
+    authorize! :update, @glossary
     simple_update(@glossary)
   end
 
   def destroy
+    authorize! :destroy, @glossary
     @glossary.destroy
     redirect_to glossaries_url
   end
@@ -50,6 +56,12 @@ class GlossariesController < ApplicationController
     authorize! :export, @glossary
     glossary_json = @glossary.to_export_hash.to_json
     send_data glossary_json, type: :json, disposition: "attachment", filename: "#{@glossary.name}_version_1.json"
+  end
+
+  private
+
+  def set_glossary
+    @glossary = Glossary.find(params[:id])
   end
 
 end
