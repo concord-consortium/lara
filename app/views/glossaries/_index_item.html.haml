@@ -9,8 +9,7 @@
           %li.copy= link_to "Export", export_glossary_path(glossary)
         - if can? :duplicate, glossary
           %li.copy= link_to "Copy", duplicate_glossary_path(glossary)
-        - if can? :update, glossary
-          %li.edit= link_to "Edit", edit_glossary_path(glossary)
+        %li.edit= link_to glossary.can_edit(current_user) ? "Edit" : "View", edit_glossary_path(glossary)
         - if can? :update, glossary
           %li.delete= link_to 'Delete', glossary_path(glossary), method: :delete, data: { confirm: "Are you sure you want to delete this glossary? It is currently being used in #{pluralize(glossary.lightweight_activities.length, 'activity')}. You will not be able to undo this action." }
 

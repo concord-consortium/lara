@@ -50,6 +50,7 @@ class Ability
     if user.can_export?
       can :export, LightweightActivity
       can :export, Sequence
+      can :export, Glossary
     end
     # Everyone (author and regular user) can update activities they own.
     can :update, LightweightActivity, :user_id => user.id
