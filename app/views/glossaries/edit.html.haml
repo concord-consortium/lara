@@ -12,8 +12,6 @@
         = link_to 'All Glossaries', glossaries_path
       %li= "/ Edit #{@glossary.name}"
 
-%h1.title= "Edit #{@glossary.name}"
-
 #glossary_authoring_form
 
 :javascript
@@ -24,7 +22,7 @@
       containerId: "glossary_authoring_form",
       initialData: {
         name: #{@glossary.name.to_json},
-        json: #{@glossary.export_json_only}
+        json: #{@glossary.export_json_only.to_json}
       }
     }
     var glossaryPluginUrl = "#{@approved_glossary_script ? @approved_glossary_script.url : ""}"
