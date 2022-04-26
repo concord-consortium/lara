@@ -1,4 +1,6 @@
 class Api::V1::GlossariesController < API::APIController
+  skip_before_filter :verify_authenticity_token, :only => :update
+
   # GET /api/v1/glossaries/1.json
   def show
     glossary = Glossary.find(params[:id])
