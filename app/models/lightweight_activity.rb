@@ -125,6 +125,7 @@ class LightweightActivity < ActiveRecord::Base
       self.plugins.each do |p|
         new_activity.plugins.push(p.duplicate)
       end
+      new_activity.glossary_id = self.glossary_id
     end
     new_activity
   end
