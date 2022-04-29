@@ -256,6 +256,7 @@ describe LightweightActivity do
     let(:owner)     { FactoryGirl.create(:user) }
     let(:edit_mode) { LightweightActivity::STANDARD_EDITOR_MODE }
     let(:layout)    { LightweightActivity::LAYOUT_MULTI_PAGE    }
+    let(:glossary)  { FactoryGirl.create(:glossary, user: author) }
 
     let(:approved_script) { FactoryGirl.create(:approved_script) }
     let(:plugins) do
@@ -277,6 +278,8 @@ describe LightweightActivity do
       expect(dup.layout).to eq(activity.layout)
       expect(dup.editor_mode).to eq(activity.editor_mode)
       expect(dup.name).to match /^Copy of #{activity.name[0..30]}/
+      expect(activity.glossary_id).to eq(glossary.id)
+      expect(dup.glossary_id).to eq(activity.glossary_id)
     end
 
     describe 'describe copying the activities plugins' do
