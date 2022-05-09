@@ -1,0 +1,24 @@
+= content_for :title do
+  = "Settings"
+= content_for :nav do
+  .breadcrumbs
+    %ul
+      %li= link_to "Home", root_path
+      %li Settings
+
+#official_listing_heading
+  %h1 Settings
+
+= form_for(:settings, {:url => settings_path(@setting), :method => 'post'}) do |f|
+  %table.settings-table
+    %tr
+      %td
+        = f.label :glossary_approved_script_id, "Glossary Approved Script", {style: "font-weight: bold;"}
+      %td
+        = f.select :glossary_approved_script_id, options_from_collection_for_select(@glossary_approved_scripts, 'id', 'option_value', @glossary_approved_script_id), { :include_blank => "Not set (use first one found)" }
+    %tr
+      %td
+      %td This setting controls which glossary approved script is used to render the glossary model editing and runtime.
+
+  %p{style: "margin-top: 20px;"}
+    = f.submit "Save Settings"

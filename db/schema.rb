@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20220406135335) do
+ActiveRecord::Schema.define(:version => 20220509142509) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "kind"
@@ -729,6 +729,15 @@ ActiveRecord::Schema.define(:version => 20220406135335) do
   add_index "sequences", ["theme_id"], :name => "index_sequences_on_theme_id"
   add_index "sequences", ["updated_at"], :name => "sequences_updated_at_idx"
   add_index "sequences", ["user_id"], :name => "index_sequences_on_user_id"
+
+  create_table "settings", :force => true do |t|
+    t.string   "key"
+    t.text     "value"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "settings", ["key"], :name => "index_settings_on_key"
 
   create_table "themes", :force => true do |t|
     t.string   "name"

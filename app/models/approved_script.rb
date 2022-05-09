@@ -64,4 +64,8 @@ class ApprovedScript < ActiveRecord::Base
       authoring_metadata: authoring_metadata
     }
   end
+
+  def option_value
+    "##{self.id}: #{self.json_url}"
+  end
 end
