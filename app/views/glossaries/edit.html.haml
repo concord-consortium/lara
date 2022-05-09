@@ -1,3 +1,4 @@
+- firebase_jwt_url = api_v1_get_firebase_jwt_url({firebase_app: '_FIREBASE_APP_'})
 = content_for :session do
   #session
     = render :partial => 'shared/session'
@@ -21,9 +22,13 @@
       apiUrl: #{api_v1_glossary_url(@glossary).to_json},
       containerId: "glossary_authoring_form",
       initialData: {
+        id: #{@glossary.id.to_json},
         name: #{@glossary.name.to_json},
         json: #{@glossary.export_json_only.to_json},
         canEdit: #{@can_edit}
+      },
+      getFirebaseJwtUrl: function (appName) {
+        return '#{escape_javascript(firebase_jwt_url)}'.replace("_FIREBASE_APP_", appName)
       }
     }
     var glossaryPluginUrl = "#{@approved_glossary_script ? @approved_glossary_script.url : ""}"
