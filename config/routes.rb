@@ -82,6 +82,9 @@ LightweightStandalone::Application.routes.draw do
     resources :users
   end
 
+  get :settings, to: 'settings#view'
+  post :settings, to: 'settings#update'
+
   devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }
 
   resources :sections, :controller => 'sections', :constraints => { :id => /\d+/ }

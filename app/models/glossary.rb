@@ -73,9 +73,11 @@ class Glossary < ActiveRecord::Base
   end
 
   def self.get_glossary_approved_script()
-    # for now we just return the first approved script named glossary, this should be
-    # changed before the final delivery to add an admin setting for the approved glossary script
-    ApprovedScript.find_by_label("glossary")
+    # if no glossary is selected in the settings, return the first one found
+    approved_script_id = Setting.get("glossary_approved_script_id")
+    selected_glossary = ApprovedScript.find_by_id(approved_script_id) if approved_script_id
+    default_glossary = ApprovedScript.find_by_label("glossary") unless selected_glossary
+    selected_glossary || default_glossary
   end
 
   # helper used in lightweight activity edit to list the glossaries that can be assigned to an activity

@@ -24,7 +24,7 @@
     %li{ :id => dom_id_for(approved_script, :item), :class => 'item' }
       %div.action_menu
         %div.action_menu_header_left
-          = link_to approved_script.label, edit_approved_script_path(approved_script), :class => 'container_link'
+          = link_to "#{approved_script.label} (##{approved_script.id})", edit_approved_script_path(approved_script), :class => 'container_link'
         %div.action_menu_header_right.themes
           %ul.menu
             %li.edit= link_to "Edit", edit_approved_script_path(approved_script) if can? :update, approved_script

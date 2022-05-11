@@ -24,7 +24,7 @@
     %li{ :id => dom_id_for(library_interactive, :item), :class => 'item' }
       %div.action_menu
         %div.action_menu_header_left
-          = link_to library_interactive.name, edit_library_interactive_path(library_interactive), :class => 'container_link'
+          = link_to "#{library_interactive.name} (##{library_interactive.id})", edit_library_interactive_path(library_interactive), :class => 'container_link'
         %div.action_menu_header_right.themes
           %ul.menu
             %li.edit= link_to "Edit", edit_library_interactive_path(library_interactive) if can? :update, library_interactive

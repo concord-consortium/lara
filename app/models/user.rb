@@ -170,6 +170,9 @@ class User < ActiveRecord::Base
     if can? :manage, LibraryInteractive
       links.push({text: "Library Interactives", path: Rails.application.routes.url_helpers.library_interactives_path})
     end
+    if can? :manage, Setting
+      links.push({text: "Settings", path: Rails.application.routes.url_helpers.settings_path})
+    end
 
     return links
   end

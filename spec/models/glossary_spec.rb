@@ -330,4 +330,33 @@ RSpec.describe Glossary do
     end
   end
 
+  describe "self.get_glossary_approved_script" do
+    it "should return nil with no glossary approved script" do
+      expect(Glossary.get_glossary_approved_script).to eq nil
+    end
+
+    describe "with glossary approved scripts" do
+      let(:approved_script1) { FactoryGirl.create(:approved_script, label: "glossary") }
+      let(:approved_script2) { FactoryGirl.create(:approved_script, label: "glossary") }
+
+      before :each do
+        approved_script1
+        approved_script2
+      end
+
+      it "should return the first glossary approved script if no setting is set" do
+        expect(Glossary.get_glossary_approved_script).to eq approved_script1
+      end
+
+      describe "with glossary approved script setting" do
+        let(:glossary_setting) { FactoryGirl.create(:setting, key: "glossary_approved_script_id", value: "#{approved_script2.id}") }
+
+        it "should return the glossary approved in the settings" do
+          glossary_setting
+          expect(Glossary.get_glossary_approved_script).to eq approved_script2
+        end
+      end
+    end
+  end
+
 end
