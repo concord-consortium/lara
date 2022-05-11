@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20220509142509) do
+ActiveRecord::Schema.define(:version => 20220511144104) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "kind"
@@ -311,10 +311,10 @@ ActiveRecord::Schema.define(:version => 20220509142509) do
 
   create_table "glossaries", :force => true do |t|
     t.string   "name"
-    t.text     "json"
+    t.text     "json",       :limit => 16777215
     t.integer  "user_id"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",                     :null => false
+    t.datetime "updated_at",                     :null => false
   end
 
   create_table "image_interactives", :force => true do |t|
