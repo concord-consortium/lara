@@ -66,6 +66,6 @@ class ApprovedScript < ActiveRecord::Base
   end
 
   def option_value
-    "##{self.id}: #{self.json_url}"
+    "#{self.json_url} (##{self.id})"
   end
 end
