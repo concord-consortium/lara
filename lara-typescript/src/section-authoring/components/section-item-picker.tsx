@@ -30,11 +30,26 @@ export const SectionItemPicker: React.FC<IProps> = (props) => {
   const quickAddItems = api.getAllEmbeddables.data?.allEmbeddables.filter(e => e.isQuickAddItem);
   const { onClose, onAdd } = props;
   const modalIsVisible = true;
-  const [itemSelected, setItemSelected] = useState(false);
-  const [currentSelectedItem, setCurrentSelectedItem] = useState<ISectionItemType|undefined>();
+  const [currentSelectedItem, setCurrentSelectedItem]
+    = useState<ISectionItemType|null>(null);
   const [allItemsList, setAllItemsList] = useState(allItems?.allEmbeddables || []);
   const [isSearching, setIsSearching] = useState(false);
   const [modalVisibility, setModalVisibility] = useState(modalIsVisible);
+  const itemSelected = currentSelectedItem !== null;
+
+  // Escape key deselects the current item:
+  const deselect = (event: KeyboardEvent) => {
+    if (event.key === "Escape") {
+      setCurrentSelectedItem(null);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("keydown", deselect, false);
+    return () => {
+      document.removeEventListener("keydown", deselect, false);
+    };
+  }, []);
 
   useEffect(() => {
     sortItems("alpha-asc");
@@ -71,7 +86,7 @@ export const SectionItemPicker: React.FC<IProps> = (props) => {
   const setItemClasses = (isSelectedItem: boolean) => {
     const classes = classNames("assessmentItemOption", {
       selected: isSelectedItem,
-      disabled: !isSelectedItem && currentSelectedItem !== undefined
+      disabled: false
     });
     return classes;
   };
@@ -79,11 +94,10 @@ export const SectionItemPicker: React.FC<IProps> = (props) => {
   const handleListSort = (event: React.ChangeEvent<HTMLSelectElement>) => sortItems(event.target.value);
 
   const handleItemClick = (item: ISectionItemType) => {
-    setItemSelected(!itemSelected);
     if (currentSelectedItem !== item) {
       setCurrentSelectedItem(item);
     } else {
-      setCurrentSelectedItem(undefined);
+      setCurrentSelectedItem(null);
     }
   };
 
@@ -134,12 +148,11 @@ export const SectionItemPicker: React.FC<IProps> = (props) => {
         {allItemsList.map((item, index) => {
           const isSelectedItem = currentSelectedItem === item;
           const itemClass = setItemClasses(isSelectedItem);
-          const itemDisabled = itemSelected && !isSelectedItem ? true : false;
           return (
             <li key={`ai-${index}`}>
               <SectionItemButton
                 item={item}
-                disabled={itemDisabled}
+                disabled={false}
                 className={itemClass}
                 onClick={handleItemClick}
               />
@@ -152,7 +165,12 @@ export const SectionItemPicker: React.FC<IProps> = (props) => {
 
   const buttonClasses = itemSelected ? "enabled add" : "disabled add";
   const modalButtons = [
-    {classes: buttonClasses, clickHandler: handleAddButtonClick, disabled: !itemSelected, svg: <Add height="16" width="16"/>, text: "Add Item"}
+    {
+        classes: buttonClasses,
+        clickHandler: handleAddButtonClick,
+        disabled: false,
+        svg: <Add height="16" width="16"/>,
+        text: "Add Item"}
   ];
 
   return (
@@ -168,7 +186,7 @@ export const SectionItemPicker: React.FC<IProps> = (props) => {
             {quickAddItems?.map((item, index) => {
               const isSelectedItem = currentSelectedItem === item;
               const itemClass = setItemClasses(isSelectedItem);
-              const itemDisabled = itemSelected && !isSelectedItem ? true : false;
+              const itemDisabled = false;
               return (
                 <li key={`qai-${index}`}>
                   <SectionItemButton
