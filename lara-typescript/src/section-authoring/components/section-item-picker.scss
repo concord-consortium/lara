@@ -143,9 +143,17 @@ input, select {
       text-align: left;
       width: 100%;
 
-      &.selected, &:hover {
+      &.selected {
         background: var(--teal) !important;
         color: white;
+      }
+      &:hover {
+        background: var(--lt-teal) !important;
+        color: white;
+        &.selected {
+          background: var(--teal) !important;
+          color: white;
+        }
       }
 
       &.disabled:hover {
