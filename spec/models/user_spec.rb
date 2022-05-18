@@ -39,7 +39,7 @@ describe User do
       let (:pages) { FactoryGirl.create(:page) }
       let(:self_activity) { stub_model(LightweightActivity, :user_id => user.id) }
       let (:other_activity) { stub_model(
-                                         LightweightActivity, 
+                                         LightweightActivity,
                                          :user_id => 15,
                                          :pages => [pages],
                                          :publication_status => 'public'
@@ -50,6 +50,14 @@ describe User do
       it { is_expected.to be_able_to(:create, Sequence) }
       it { is_expected.to be_able_to(:create, LightweightActivity) }
       it { is_expected.to be_able_to(:create, InteractivePage) }
+      # Can export all activities and sequences
+      it { is_expected.to be_able_to(:export, self_sequence) }
+      it { is_expected.to be_able_to(:export, other_sequence) }
+      it { is_expected.to be_able_to(:export, self_activity) }
+      it { is_expected.to be_able_to(:export, other_activity) }
+      # Can import all activities and sequences
+      it { is_expected.to be_able_to(:import, Sequence) }
+      it { is_expected.to be_able_to(:import, LightweightActivity) }
       # Can edit activities, etc. which they own
       it { is_expected.to be_able_to(:update, self_sequence) }
       it { is_expected.not_to be_able_to(:update, other_sequence) }
@@ -62,13 +70,6 @@ describe User do
       it { is_expected.not_to be_able_to(:update, locked_activity) }
       it { is_expected.to be_able_to(:read, other_activity.pages.first) }
       it { is_expected.not_to be_able_to(:duplicate, locked_activity) }
-    end
-
-    context 'when the user can export activities' do
-      let(:user) { FactoryGirl.build(:can_export) }
-      let(:self_activity) { stub_model(LightweightActivity, :user_id => user.id) }
-      it { is_expected.to be_able_to(:export, Sequence) }
-      it { is_expected.to be_able_to(:export, LightweightActivity) }
     end
 
     context 'when is a user' do
@@ -252,7 +253,7 @@ describe User do
             expect(user.api_key).to be_nil
           end
         end
-  
+
         describe "when the user has an api_key" do
           let(:existing_api_key) { "fake_key"}
           it "the api_key should be deleted" do

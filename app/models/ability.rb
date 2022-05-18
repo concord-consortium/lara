@@ -18,7 +18,7 @@ class Ability
       can :manage, LibraryInteractive
       can :manage, Setting
     elsif user.author?
-      # Authors can create new items and manage those they created
+      # Authors can create new items
       can :create, Sequence
       can :create, LightweightActivity
       can :create, InteractivePage
@@ -26,6 +26,17 @@ class Ability
       can :create, PageItem
       can :create, LinkedPageItem
       can :create, Glossary
+      # any authors can see the glossaries
+      can :read, Glossary
+      # authors can export all glossaries, activities, sequences
+      can :export, Glossary
+      can :export, LightweightActivity
+      can :export, Sequence
+      # authors can import all glossaries, activities, sequences
+      can :import, Glossary
+      can :import, LightweightActivity
+      can :import, Sequence
+      # authors can manage items they created
       can :manage, Sequence, :user_id => user.id
       can :manage, Glossary, :user_id => user.id
       can :manage, LightweightActivity, :user_id => user.id
@@ -41,17 +52,7 @@ class Ability
       can :duplicate, Sequence, :publication_status => ['public', 'hidden']
       can :duplicate, Glossary
 
-      # any authors can see the glossaries
-      can :read, Glossary
 
-      # other users cannot export an activity or sequence
-      cannot :export, LightweightActivity
-      cannot :export, Sequence
-    end
-    if user.can_export?
-      can :export, LightweightActivity
-      can :export, Sequence
-      can :export, Glossary
     end
     # Everyone (author and regular user) can update activities they own.
     can :update, LightweightActivity, :user_id => user.id
