@@ -225,8 +225,43 @@ class Api::V1::InteractivePagesController < API::APIController
       embeddable = MwInteractive.create!
     when /Embeddable::Xhtml/
       embeddable = Embeddable::Xhtml.create!
+    when /Plugin_(\d+)::windowShade/
+      # Parse the embeddable_type string to get the approved_script id
+      # as well as the plugin_type
+      # For windowshade items we need to create a new embeddable of type
+      # Embeddable::Plugin and then associate it with the plugin.
+      # 1. Create a plugin with the instance of the approved_script
+      # 2. Create a Embeddable::EmbeddablePlugin
+      # Example: "Plugin_10::windowShade"
+      regex = /Plugin_(\d+)::windowShade/
+      script_id = embeddable_type.match(regex)[1]
+      author_data = { tipType: "windowShade" }.to_json
+      # I am following the convention I saw in interactive_pages_controller.rb
+      embeddable = Embeddable::EmbeddablePlugin.create!
+      embeddable.approved_script_id = script_id
+      embeddable.author_data = author_data
+      embeddable.save!
+      plugin = embeddable.plugin
+      puts <<-EOS
+      ==============================================================
+        script_id: #{script_id}
+        embeddable_type: #{embeddable_type}
+        plugin:
+        #{plugin.inspect}
+        embeddable:
+        #{embeddable.inspect}
+        embeddable_pliugin:
+        #{embeddable.plugin.inspect}
+        approved_script:
+        #{embeddable.plugin.approved_script.name}
+        #{embeddable.plugin.approved_script.label}
+        #{embeddable.approved_script.id}
+
+      ==============================================================
+EOS
+
     else
-      return error("Only library interactive embeddables, iFrame interactives, and text blocks are currently supported")
+      return error("Unknown embbeddable_type: #{embeddable_type}\nOnly library interactive embeddables, iFrame interactives, and text blocks are currently supported")
     end
 
     @interactive_page.add_embeddable(embeddable, position, section.id, column)
@@ -241,6 +276,11 @@ class Api::V1::InteractivePagesController < API::APIController
       type: pi.embeddable_type,
       data: pi.embeddable.to_hash # using pi.embeddable.to_interactive here broke editing/saving by sending unnecessary/incorrect data back
     }
+    puts "================================================================"
+    puts "================================================================"
+    puts "================================================================"
+    puts JSON.pretty_generate(result)
+    puts "================================================================"
     render json: result.to_json
   end
 
@@ -330,15 +370,38 @@ class Api::V1::InteractivePagesController < API::APIController
     }
   end
 
+  private
+  def get_teacher_edition_plugins
+    required_version = [3]
+    required_label = ["teacherEditionTips"]
+    ApprovedScript.where(:version => required_version, :label => required_label)
+  end
+
+  private
+  def map_plugin_to_hash(plugin)
+    {
+      id: plugin.id,
+      name: plugin.name,
+      label: plugin.label,
+      description: plugin.description,
+      version: plugin.version,
+      authoring_metadata: JSON.parse(plugin.authoring_metadata)
+    }
+  end
+
+  public
   def get_library_interactives_list
     library_interactives = LibraryInteractive
       .select("library_interactives.*, CONCAT('LibraryInteractive_', library_interactives.id) as serializeable_id, count(managed_interactives.id) as use_count, UNIX_TIMESTAMP(library_interactives.created_at) as date_added")
       .joins("LEFT JOIN managed_interactives ON managed_interactives.linked_interactive_id = library_interactives.id")
       .group('library_interactives.id')
 
+    plugins = get_teacher_edition_plugins.map { |plugin| map_plugin_to_hash(plugin) }
+
     render :json => {
       success: true,
-      library_interactives: library_interactives
+      library_interactives: library_interactives,
+      plugins: plugins
     }
   end
 
@@ -393,6 +456,19 @@ class Api::V1::InteractivePagesController < API::APIController
 
   def generate_item_json(page_item)
     embeddable = page_item.embeddable
+    if(embeddable.nil?)
+      puts <<-EOF
+
+      ========================================================
+        WARNING: page_item #{page_item.id} has no embeddable.
+      ========================================================
+        #{page_item.inspect}
+      ========================================================
+
+
+
+      EOF
+    end
     {
       id: page_item.id.to_s,
       column: page_item.column,

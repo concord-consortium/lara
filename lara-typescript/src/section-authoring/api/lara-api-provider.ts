@@ -1,5 +1,3 @@
-import { current } from "immer";
-import { stringify } from "uuid";
 import { camelToSnakeCaseKeys, snakeToCamelCaseKeys } from "../../shared/convert-keys";
 import {
   IAuthoringAPIProvider,
@@ -15,8 +13,10 @@ import {
   APISectionCopyF,
   SectionId,
   APIPageItemCopyF,
-  APIPageCopyF
+  APIPageCopyF,
+  ISectionItemType
 } from "./api-types";
+import { IPluginType } from "./plugin-types";
 
 const APIBase = "/api/v1";
 
@@ -52,6 +52,7 @@ export const getLaraAuthoringAPI =
   const copyPageItemUrl = (pageId: PageId) => `${prefix}/copy_page_item/${pageId}.json`;
   const getPreviewUrl = (pageId: PageId) => `${prefix}/get_preview_url/${pageId}.json`;
   const libraryInteractivesUrl = `${prefix}/get_library_interactives_list.json`;
+  const pageLevelPluginsUrl = `${prefix}/get_page_level_plugins_list.json`;
   const portalsURL = `${prefix}/get_portal_list.json`;
 
   interface ISendToLaraParams {
@@ -185,12 +186,41 @@ export const getLaraAuthoringAPI =
     });
   };
 
+  const getPageLevelPlugins = () => {
+    return sendToLara({url: pageLevelPluginsUrl})
+      .then( (json: any) => {
+        const plugins = json.page_level_plugins.map((p: IPluginType) => ({...p} as IPluginType));
+        return plugins.filter((p: IPluginType) => p.authoring_metadata.scope === "embeddable");
+    });
+  };
+
+  const mapPluginToEmbeddable = (plugin: IPluginType): ISectionItemType[]  => {
+    const { authoring_metadata } = plugin;
+    const { components } = authoring_metadata;
+    const embeddables = [];
+    for (const component of components) {
+      const { label, name, scope } = component;
+      if (scope === "embeddable") {
+        embeddables.push({
+          name,
+          id: `Plugin::${label}`,
+          serializeable_id: `Plugin_${plugin.id}::${label}`, // TODO?
+          type: `Plugin::${plugin.label}`,
+          useCount: 0,
+          dateAdded: 0,
+          isQuickAddItem: true
+        });
+      }
+    }
+    return embeddables;
+  };
+
   const getAllEmbeddables = () => {
     return sendToLara({url: libraryInteractivesUrl})
       // tslint:disable-next-line
       .then( (json: any) => {
         const result = {
-          allEmbeddables: json.library_interactives.map((li: ILibraryInteractive) => ({...li}))
+          allEmbeddables: json.library_interactives.map((li: ILibraryInteractive) => ({...li})),
         };
         result.allEmbeddables.push({
           id: "MwInteractive",
@@ -210,6 +240,10 @@ export const getLaraAuthoringAPI =
           dateAdded: 0,
           isQuickAddItem: true
         });
+        const plugins = (json.plugins as IPluginType[]);
+        for (const plugin of plugins) {
+          result.allEmbeddables = result.allEmbeddables.concat(mapPluginToEmbeddable(plugin));
+        }
         return result;
       });
   };

@@ -1,3 +1,5 @@
+import { IPluginType } from "./plugin-types";
+
 export type SectionId = string;
 export type PageId = string;
 export type ItemId = string;
@@ -41,6 +43,11 @@ export interface ISectionItemType {
   useCount: number;
   dateAdded: number;
   isQuickAddItem?: boolean;
+}
+
+export interface ISectionItemPlugin extends ISectionItemType {
+  type: "plugin";
+  components: IPluginType [];
 }
 
 export interface ICreatePageItem {
@@ -269,7 +276,7 @@ export type APIPageItemUpdateF = (args: {pageId: PageId, sectionItem: ISectionIt
 export type APIPageItemCopyF = (args: {pageId: PageId, sectionItemId: ItemId}) => Promise<ISectionItem>;
 export type APIGetPreviewOptionsF = (args: {pageId: PageId | null}) => Promise<Record<string, string>|null>;
 /**
- * The implementation providing the API has to conform to this provider API
+ * The implementation providing the API must conform to this provider API
  */
 export interface IAuthoringAPIProvider {
   getPages: APIPagesGetF;

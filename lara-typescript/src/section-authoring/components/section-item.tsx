@@ -107,10 +107,17 @@ export const SectionItem: React.FC<ISectionItemProps> = ({
         return <ManagedInteractivePreview pageItem={pageItem} />;
       case "MwInteractive":
         return <MWInteractivePreview pageItem={pageItem} />;
+        break;
+      // case "Embeddable::EmbeddablePlugin":
+      //   return <PluginPreview pageItem={pageItem} />;
+      //   break
       default:
+        console.group("Unknown item type: ", pageItem?.type);
+        console.log(pageItem);
+        console.groupEnd();
         return (
           <div className="previewNotSupported">
-            <span>Authoring mode preview not supported.</span>
+            <span>Authoring mode preview not supported for "{pageItem?.type}"</span>
           </div>
         );
     }
