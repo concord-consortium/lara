@@ -44823,27 +44823,6 @@ module.exports = g;
 
 /***/ }),
 
-/***/ "./src/example-interactives/src/render-html.ts":
-/*!*****************************************************!*\
-  !*** ./src/example-interactives/src/render-html.ts ***!
-  \*****************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.renderHTML = void 0;
-var DOMPurify = __webpack_require__(/*! dompurify */ "./node_modules/dompurify/dist/purify.js");
-var html_react_parser_1 = __webpack_require__(/*! html-react-parser */ "./node_modules/html-react-parser/index.mjs");
-function renderHTML(html) {
-    return (0, html_react_parser_1.default)(DOMPurify.sanitize(html || ""));
-}
-exports.renderHTML = renderHTML;
-
-
-/***/ }),
-
 /***/ "./src/example-interactives/src/testbed/app.tsx":
 /*!******************************************************!*\
   !*** ./src/example-interactives/src/testbed/app.tsx ***!
@@ -45332,7 +45311,7 @@ exports.RuntimeComponent = RuntimeComponent;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.useGlossaryDecoration = void 0;
 var interactive_api_client_1 = __webpack_require__(/*! ../../interactive-api-client */ "./src/interactive-api-client/index.ts");
-var render_html_1 = __webpack_require__(/*! ./render-html */ "./src/example-interactives/src/render-html.ts");
+var render_html_1 = __webpack_require__(/*! ../../shared/render-html */ "./src/shared/render-html.ts");
 var text_decorator_1 = __webpack_require__(/*! @concord-consortium/text-decorator */ "./node_modules/@concord-consortium/text-decorator/dist/text-decorator.js");
 var react_1 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 var kClassName = "text-decorate";
@@ -46489,6 +46468,27 @@ __exportStar(__webpack_require__(/*! ../interactive-api-shared/types */ "./src/i
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+
+
+/***/ }),
+
+/***/ "./src/shared/render-html.ts":
+/*!***********************************!*\
+  !*** ./src/shared/render-html.ts ***!
+  \***********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.renderHTML = void 0;
+var DOMPurify = __webpack_require__(/*! dompurify */ "./node_modules/dompurify/dist/purify.js");
+var html_react_parser_1 = __webpack_require__(/*! html-react-parser */ "./node_modules/html-react-parser/index.mjs");
+function renderHTML(html) {
+    return (0, html_react_parser_1.default)(DOMPurify.sanitize(html || ""));
+}
+exports.renderHTML = renderHTML;
 
 
 /***/ })
