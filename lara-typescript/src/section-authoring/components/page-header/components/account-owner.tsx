@@ -5,7 +5,6 @@ import "./account-owner.scss";
 
 export interface IUser {
   api_key: string;
-  can_export: boolean;
   created_at: string;
   email: string;
   first_name: string;

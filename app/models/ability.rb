@@ -28,9 +28,9 @@ class Ability
       can :create, Glossary
       # any authors can see the glossaries
       can :read, Glossary
-      # authors can export all glossaries, activities, sequences
+      # Authors can see the export buttons for all glossaries, activities, sequences
       can :export, Glossary
-      can :export, LightweightActivity
+      can :export, LightweightActivity, :is_locked => false, :publication_status => ['public', 'hidden']
       can :export, Sequence
       # authors can import all glossaries, activities, sequences
       can :import, Glossary
