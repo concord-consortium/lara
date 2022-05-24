@@ -1078,15 +1078,20 @@
   .modalContainer .modalBody {
     background: transparent;
     border: none;
-    display: block;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
     font-family: var(--font-family-default);
-    margin: 20px 0 20px 50%;
-    min-height: 450px;
     overflow: auto;
     padding: 0;
     position: relative;
-    transform: translate(-50%, 0);
-    width: 600px; }
+    min-height: 450px;
+    min-width: 600px;
+    max-width: 90vw;
+    max-height: 90vh; }
     .modalContainer .modalBody header {
       background: var(--teal);
       color: white;
@@ -1329,9 +1334,15 @@ input, select {
       padding: 0 10px;
       text-align: left;
       width: 100%; }
-      #itemPickerList ul li button.selected, #itemPickerList ul li button:hover {
+      #itemPickerList ul li button.selected {
         background: var(--teal) !important;
         color: white; }
+      #itemPickerList ul li button:hover {
+        background: var(--lt-teal) !important;
+        color: white; }
+        #itemPickerList ul li button:hover.selected {
+          background: var(--teal) !important;
+          color: white; }
       #itemPickerList ul li button.disabled:hover {
         background: transparent !important;
         color: var(--teal); }
@@ -2689,3 +2700,5 @@ button.bigButton {
     fill: var(--dark-gray);
     margin: 0 3px 0 0; }
 
+
+/*# sourceMappingURL=lara-typescript.css.map*/
