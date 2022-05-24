@@ -1,0 +1,5 @@
+# If you find some rubocop rules to be oppressive
+# Change them here:
+# Defaults can be found   
+Metrics/MethodLength:
+  Max: 20
