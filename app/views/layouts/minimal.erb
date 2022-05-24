@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title><%= yield :title %></title>
+  <link href='//fonts.googleapis.com/css?family=Lato:400,500,700' rel='stylesheet' type='text/css'>
+  <%= stylesheet_link_tag    "application", :media => "all" %>
+  <%= render partial: 'shared/rollbar' %>
+  <%= include_gon %>
+  <%= javascript_include_tag "application" %>
+  <%= csrf_meta_tags %>
+  <%= yield :external_scripts %>
+</head>
+<%- @body_class = request.original_fullpath == "/" ? "homepage" : request.original_fullpath.split('/').join(' ') -%>
+<%- if @run_key -%>
+  <body class="right <%= @body_class %>" data-session-key="<%= @run_key %>">
+<%- else -%>
+  <body class="right <%= @body_class %>">
+<%- end -%>
+<script type="text/javascript">
+  // NOTE: this must be called after the <body> tag is created and before it is closed
+  if (window.iframed_site_manager && window.iframed_site_manager.init) {
+    window.iframed_site_manager.init();
+  }
+</script>
+<div id="content" class="content">
+  <%- if notice -%>
+    <p class="notice"><%= notice %></p>
+  <%- end -%>
+  <p class="alert"><%= alert %></p>
+  <%= yield %>
+</div><!-- end #content -->
+
+
+<div id="overlay"></div>
+<%= render :partial => 'shared/modal' %>
+<%= render :partial => 'shared/analytics' %>
+<%= yield :extra_javascript %>
+<script>
+$(document).ready(function() {
+  var params = {
+    currentUser: <%= current_user.to_json.html_safe %>,
+    logOutURL: "<%= current_user ? destroy_user_session_path : '' %>",
+    host: window.location.origin,
+    resourceName: "<%= resource_name %>",
+    userLinks: <%= current_user ? current_user.user_links.to_json.html_safe : [] %>
+  }; 
+  var container = $("#header")[0];
+  LARA.PageHeader.renderPageHeader(container, params);
+});
+</script>
+</body>
+</html>

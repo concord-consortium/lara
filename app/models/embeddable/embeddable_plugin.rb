@@ -55,6 +55,7 @@ module Embeddable
 
     def to_hash
       {
+        embeddable_id: self.id,
         plugin: self.plugin.to_hash,
         is_hidden: self.is_hidden,
         is_half_width: self.is_half_width

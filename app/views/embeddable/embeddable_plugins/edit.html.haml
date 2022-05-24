@@ -1,4 +1,5 @@
 - if @embeddable.plugin.version == 3 && (@embeddable.plugin.component && @embeddable.plugin.component.guiAuthoring)
-  = render :partial => 'plugins/author',locals: {plugin: @embeddable.plugin, wrapped_embeddable: @embeddable.embeddable }
+
+  = render :layout => false, :partial => 'plugins/author',locals: {plugin: @embeddable.plugin, wrapped_embeddable: @embeddable.embeddable }
 - else
   = render :partial => 'form'

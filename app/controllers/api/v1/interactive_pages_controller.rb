@@ -89,7 +89,7 @@ class Api::V1::InteractivePagesController < API::APIController
       @interactive_page.update_attributes({
         name: page_params['name'],
         is_completion: page_params['isCompletion'],
-        is_hidden: page_params['isHidden'],
+        is_hidden: page_params['isHidden']
       })
 
       if page_params['isCompletion']
@@ -220,6 +220,7 @@ class Api::V1::InteractivePagesController < API::APIController
     when /LibraryInteractive/
       library_interactive = LibraryInteractive.find_by_serializeable_id(embeddable_type)
       return error("Invalid page_item[embeddable] parameter") if library_interactive.nil?
+
       embeddable = ManagedInteractive.create!(library_interactive_id: library_interactive.id)
     when /MwInteractive/
       embeddable = MwInteractive.create!
@@ -233,13 +234,17 @@ class Api::V1::InteractivePagesController < API::APIController
       # 1. Create a plugin with the instance of the approved_script
       # 2. Create a Embeddable::EmbeddablePlugin
       # Example: "Plugin_10::windowShade"
+      # IMPORTANT: 'windowShade' as the component_label is critical.
+      tip_type = 'windowShade'
       regex = /Plugin_(\d+)::windowShade/
       script_id = embeddable_type.match(regex)[1]
-      author_data = { tipType: "windowShade" }.to_json
+      author_data = { tipType: tip_type }.to_json
       # I am following the convention I saw in interactive_pages_controller.rb
       embeddable = Embeddable::EmbeddablePlugin.create!
       embeddable.approved_script_id = script_id
       embeddable.author_data = author_data
+      embeddable.component_label = tip_type
+      embeddable.is_half_width = false
       embeddable.save!
       plugin = embeddable.plugin
       puts <<-EOS
@@ -276,11 +281,7 @@ EOS
       type: pi.embeddable_type,
       data: pi.embeddable.to_hash # using pi.embeddable.to_interactive here broke editing/saving by sending unnecessary/incorrect data back
     }
-    puts "================================================================"
-    puts "================================================================"
-    puts "================================================================"
-    puts JSON.pretty_generate(result)
-    puts "================================================================"
+
     render json: result.to_json
   end
 
@@ -456,18 +457,14 @@ EOS
 
   def generate_item_json(page_item)
     embeddable = page_item.embeddable
-    if(embeddable.nil?)
-      puts <<-EOF
-
+    if (embeddable.nil?)
+      Rails.logger.warn <<-NO_EMBEDDABLE_MSG
       ========================================================
         WARNING: page_item #{page_item.id} has no embeddable.
-      ========================================================
         #{page_item.inspect}
       ========================================================
-
-
-
-      EOF
+      NO_EMBEDDABLE_MSG
+      return { error: "WARNING: page_item #{page_item.id} has no embeddable" }
     end
     {
       id: page_item.id.to_s,
