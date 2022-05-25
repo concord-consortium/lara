@@ -1,6 +1,5 @@
 import * as React from "react";
-import { useRef, useState } from "react";
-
+import { useEffect, useRef, useState } from "react";
 import { InteractiveIframe } from "./interactive-iframe";
 import { IInitInteractive } from "../../../interactive-api-client";
 
@@ -23,9 +22,10 @@ export interface IPreviewUser {
 interface Props {
   interactive: IPreviewInteractive;
   user?: IPreviewUser;
+  resetCount?: number;
 }
 
-export const InteractiveAuthoringPreview: React.FC<Props> = ({interactive, user}) => {
+export const InteractiveAuthoringPreview: React.FC<Props> = ({interactive, user, resetCount}) => {
   const iframe = useRef<HTMLIFrameElement|null>(null);
   const [authoredState, setAuthoredState] = useState<object|null>(
     typeof interactive.authored_state === "string"
@@ -35,6 +35,14 @@ export const InteractiveAuthoringPreview: React.FC<Props> = ({interactive, user}
   const linkedInteractives = typeof interactive.linked_interactives === "string"
     ? JSON.parse(interactive.linked_interactives || "{}")
     : interactive.linked_interactives;
+
+  useEffect(() => {
+    setAuthoredState(
+      typeof interactive.authored_state === "string"
+        ? JSON.parse(interactive.authored_state || "{}")
+        : interactive.authored_state
+    );
+  }, [interactive]);
 
   const initMsg: IInitInteractive = {
     version: 1,
@@ -78,6 +86,7 @@ export const InteractiveAuthoringPreview: React.FC<Props> = ({interactive, user}
         initMsg={initMsg}
         authoredAspectRatioMethod={interactive.aspect_ratio_method}
         authoredAspectRatio={interactive.aspect_ratio}
+        resetCount={resetCount}
       />
     </div>
   );

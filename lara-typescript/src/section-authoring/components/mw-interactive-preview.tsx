@@ -7,10 +7,12 @@ import "./mw-interactive-preview.scss";
 
 export interface IMWInteractivePreviewProps {
   pageItem: ISectionItem;
+  resetCount?: number;
 }
 
 export const MWInteractivePreview: React.FC<IMWInteractivePreviewProps> = ({
-  pageItem
+  pageItem,
+  resetCount
   }: IMWInteractivePreviewProps) => {
   const {
     aspectRatio, aspectRatioMethod, authoredState, id, interactiveItemId,
@@ -35,7 +37,7 @@ export const MWInteractivePreview: React.FC<IMWInteractivePreviewProps> = ({
   return (
     <div className={wrapperClasses}>
       <div className="mwInteractiveContent">
-        <InteractiveAuthoringPreview interactive={interactive} />
+        <InteractiveAuthoringPreview interactive={interactive} resetCount={resetCount} />
       </div>
     </div>
   );

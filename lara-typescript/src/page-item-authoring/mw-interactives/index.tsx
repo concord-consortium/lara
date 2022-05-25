@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { Tabs, TabList, Tab, TabPanel} from "react-tabs";
 import { InteractiveAuthoring } from "../common/components/interactive-authoring";
 import { CustomizeMWInteractive } from "./customize";
@@ -8,13 +8,16 @@ import { useCurrentUser } from "../common/hooks/use-current-user";
 import { AuthoredState } from "../common/components/authored-state";
 import { AuthoringApiUrls } from "../common/types";
 import { ILinkedInteractive, ISetLinkedInteractives } from "../../interactive-api-client";
-import "react-tabs/style/react-tabs.css";
+import { debounce } from "ts-debounce";
 import { valueContainerCSS } from "react-select/src/components/containers";
+
+import "react-tabs/style/react-tabs.css";
 
 interface Props {
   interactive: IMWInteractive;
   defaultClickToPlayPrompt: string;
   authoringApiUrls: AuthoringApiUrls;
+  handleUpdateItemPreview?: (updates: Record<string, any>) => void;
 }
 
 export interface IMWInteractive {
@@ -45,7 +48,12 @@ export interface IMWInteractive {
 }
 
 export const MWInteractiveAuthoring: React.FC<Props> = (props) => {
-  const { interactive, defaultClickToPlayPrompt, authoringApiUrls } = props;
+  const {
+    interactive,
+    defaultClickToPlayPrompt,
+    authoringApiUrls,
+    handleUpdateItemPreview
+  } = props;
   const interactiveAuthoredStateRef = useRef<HTMLInputElement|null>(null);
   const linkedInteractivesRef = useRef<HTMLInputElement|null>(null);
   const enableLearnerStateRef = useRef<HTMLInputElement|null>(null);
@@ -53,7 +61,21 @@ export const MWInteractiveAuthoring: React.FC<Props> = (props) => {
   const [authoringUrl, setAuthoringUrl] = useState(interactive.url);
   const user = useCurrentUser();
 
-  const handleUrlBlur = (e: React.ChangeEvent<HTMLTextAreaElement>) => setAuthoringUrl(e.target.value);
+  const _updatePreview = (e: React.ChangeEvent<HTMLTextAreaElement>, interactiveUrl: string) => {
+    if (handleUpdateItemPreview !== undefined) {
+      const updates = typeof authoredState === "string" ? authoredState : JSON.stringify(authoredState);
+      handleUpdateItemPreview({authoredState: updates, url: interactiveUrl});
+    }
+  };
+
+  const updatePreview = useCallback(debounce(_updatePreview, 500), []);
+
+  const handleUrlChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    e.persist();
+    const interactiveUrl = e.target.value;
+    setAuthoringUrl(interactiveUrl);
+    updatePreview(e, interactiveUrl);
+  };
 
   const renderRequiredFields = () => {
     const { name, url, is_half_width, no_snapshots } = interactive;
@@ -75,7 +97,7 @@ export const MWInteractiveAuthoring: React.FC<Props> = (props) => {
           id="url"
           name="url"
           defaultValue={url || ""}
-          onBlur={handleUrlBlur}
+          onChange={handleUrlChange}
         />
       </fieldset>
 
@@ -100,52 +122,37 @@ export const MWInteractiveAuthoring: React.FC<Props> = (props) => {
   };
 
   const renderTabs = () => {
-    const handleAuthoredStateChange = (newAuthoredState: string | object) => {
-      if (interactiveAuthoredStateRef.current) {
-        const jsonValue = interactiveAuthoredStateRef.current.value = typeof newAuthoredState === "string"
-          ? newAuthoredState
-          : JSON.stringify(newAuthoredState);
-        setAuthoredState(jsonValue);
-      }
-    };
 
-    const handleLinkedInteractivesChange = (newLinkedInteractives: ISetLinkedInteractives) => {
-      if (linkedInteractivesRef.current) {
-        linkedInteractivesRef.current.value = JSON.stringify(newLinkedInteractives);
-      }
-    };
+    //  const handleAuthoredStateChange = (newAuthoredState: string | object) => {
+    //    if (interactiveAuthoredStateRef.current) {
+    //      const jsonValue = interactiveAuthoredStateRef.current.value = typeof newAuthoredState === "string"
+    //        ? newAuthoredState
+    //        : JSON.stringify(newAuthoredState);
+    //      setAuthoredState(jsonValue);
+    //    }
+    //  };
 
-    const authoredInteractive = {
-      url: authoringUrl || "",
-      aspect_ratio: interactive.aspect_ratio,
-      aspect_ratio_method: interactive.aspect_ratio_method,
-      authored_state: interactive.authored_state,
-      interactive_item_id: interactive.interactive_item_id,
-      linked_interactives: interactive.linked_interactives
-    };
+    // const handleLinkedInteractivesChange = (newLinkedInteractives: ISetLinkedInteractives) => {
+    //   if (linkedInteractivesRef.current) {
+    //     linkedInteractivesRef.current.value = JSON.stringify(newLinkedInteractives);
+    //   }
+    // };
 
-    const hasAuthoringUrl = authoringUrl && authoringUrl.trim().length > 0;
+    //  const authoredInteractive = {
+    //    url: authoringUrl || "",
+    //    aspect_ratio: interactive.aspect_ratio,
+    //    aspect_ratio_method: interactive.aspect_ratio_method,
+    //    authored_state: interactive.authored_state,
+    //    interactive_item_id: interactive.interactive_item_id,
+    //    linked_interactives: interactive.linked_interactives
+    //  };
 
     return (
       <Tabs>
         <TabList>
-          <Tab>Authoring</Tab>
           <Tab>Advanced Options</Tab>
           {user?.isAdmin ? <Tab>Authored State (Admin Only)</Tab> : undefined}
         </TabList>
-        <TabPanel forceRender={true}>
-          {hasAuthoringUrl
-            ?
-              <InteractiveAuthoring
-                interactive={authoredInteractive}
-                onAuthoredStateChange={handleAuthoredStateChange}
-                onLinkedInteractivesChange={handleLinkedInteractivesChange}
-                allowReset={false}
-                authoringApiUrls={authoringApiUrls}
-              />
-            : <div>Please enter a URL above and then move the focus out of the URL field.</div>
-          }
-        </TabPanel>
         <TabPanel forceRender={true}>
           <CustomizeMWInteractive
             defaultClickToPlayPrompt={defaultClickToPlayPrompt}

@@ -19,6 +19,7 @@ export interface IModalButtonsProps {
 
 export interface IModalProps {
   children: JSX.Element;
+  className?: string;
   closeFunction?: (e: React.MouseEvent<HTMLElement> | MouseEvent) => void;
   title?: string;
   visibility: boolean;
@@ -27,6 +28,7 @@ export interface IModalProps {
 
 export const Modal: React.FC<IModalProps> = ({
   children,
+  className,
   closeFunction,
   title,
   visibility: initVisibility = true,
@@ -52,10 +54,12 @@ export const Modal: React.FC<IModalProps> = ({
     return null;
   }
 
+  const modalClasses = `modalContainer ${className}`;
+
   return (
     <>
       <div className="modalOverlay" onClick={closeButtonClickHandler}/>
-      <div id="modal" className="modalContainer">
+      <div id="modal" className={modalClasses}>
         <div className="modalBody">
           <header>
             <h1>{title}</h1>

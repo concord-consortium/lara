@@ -8,10 +8,12 @@ import "./managed-interactive-preview.scss";
 
 export interface IManagedInteractivePreviewProps {
   pageItem: ISectionItem;
+  resetCount?: number;
 }
 
 export const ManagedInteractivePreview: React.FC<IManagedInteractivePreviewProps> = ({
-  pageItem
+  pageItem,
+  resetCount
   }: IManagedInteractivePreviewProps) => {
   const {
     aspectRatio, authoredState, customAspectRatioMethod, id, interactiveItemId,
@@ -43,7 +45,7 @@ export const ManagedInteractivePreview: React.FC<IManagedInteractivePreviewProps
   return (
     <div className={wrapperClasses}>
       <div className="managedInteractiveContent">
-        <InteractiveAuthoringPreview interactive={interactive} />
+        <InteractiveAuthoringPreview interactive={interactive} resetCount={resetCount} />
       </div>
     </div>
   );

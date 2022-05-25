@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useEffect, useRef, useState } from "react";
 import { usePageAPI } from "../hooks/use-api-provider";
 import { GripLines } from "../../shared/components/icons/grip-lines";
 import { UserInterfaceContext } from "../containers/user-interface-provider";
@@ -58,6 +59,21 @@ export const SectionItem: React.FC<ISectionItemProps> = ({
   const pageItem = pageItems.find(pi => pi.id === id);
   const { userInterface: {movingItemId}, actions: {setMovingItemId}} = React.useContext(UserInterfaceContext);
   const { userInterface: {editingItemId}, actions: {setEditingItemId}} = React.useContext(UserInterfaceContext);
+  const [isBeingUpdated, setIsBeingUpdated] = useState<boolean>(false);
+  const resetCount = useRef<number>(0);
+  const prevEditingItemId = useRef<string>("");
+
+  useEffect(() => {
+    if (editingItemId === id) {
+      setIsBeingUpdated(true);
+    } else if (isBeingUpdated && prevEditingItemId.current === id) {
+      resetCount.current = resetCount.current + 1;
+      setIsBeingUpdated(false);
+    }
+    if (editingItemId) {
+      prevEditingItemId.current = editingItemId;
+    }
+  }, [editingItemId]);
 
   const renderTitle = () => (
     <>
@@ -89,13 +105,10 @@ export const SectionItem: React.FC<ISectionItemProps> = ({
     switch (pageItem?.type) {
       case "Embeddable::Xhtml":
         return <TextBlockPreview pageItem={pageItem} />;
-        break;
       case "ManagedInteractive":
-        return <ManagedInteractivePreview pageItem={pageItem} />;
-        break;
+        return <ManagedInteractivePreview pageItem={pageItem} resetCount={resetCount.current} />;
       case "MwInteractive":
-        return <MWInteractivePreview pageItem={pageItem} />;
-        break;
+        return <MWInteractivePreview pageItem={pageItem} resetCount={resetCount.current} />;
       default:
         return (
           <div className="previewNotSupported">
