@@ -1,4 +1,4 @@
-import { IPluginType } from "./plugin-types";
+import { IPluginAuthoringMetaDataComponent, IPluginType } from "./plugin-types";
 
 export type SectionId = string;
 export type PageId = string;
@@ -47,7 +47,7 @@ export interface ISectionItemType {
 
 export interface ISectionItemPlugin extends ISectionItemType {
   type: "plugin";
-  components: IPluginType [];
+  components: IPluginAuthoringMetaDataComponent [];
 }
 
 export interface ICreatePageItem {

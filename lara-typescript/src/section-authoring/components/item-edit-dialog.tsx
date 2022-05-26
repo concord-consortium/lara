@@ -5,11 +5,11 @@ import { Modal, ModalButtons } from "../../shared/components/modal/modal";
 import { TextBlockEditForm } from "./text-block-edit-form";
 import { IManagedInteractive, ManagedInteractiveAuthoring } from "../../page-item-authoring/managed-interactives";
 import { IMWInteractive, MWInteractiveAuthoring} from "../../page-item-authoring/mw-interactives";
+import { PluginAuthoring } from "./plugin-authoring";
 import { Save } from "../../shared/components/icons/save-icon";
 import { Close } from "../../shared/components/icons/close-icon";
 import { usePageAPI } from "../hooks/use-api-provider";
 import { UserInterfaceContext } from "../containers/user-interface-provider";
-import { BucketLifecycleConfiguration } from "@aws-sdk/client-s3";
 import { camelToSnakeCaseKeys } from "../../shared/convert-keys";
 import { TextBlockPreview } from "./text-block-preview";
 import { ManagedInteractivePreview } from "./managed-interactive-preview";
@@ -200,6 +200,12 @@ export const ItemEditDialog: React.FC<IItemEditDialogProps> = ({
                 authoringApiUrls={authoringApiUrls}
                 handleUpdateItemPreview={handleUpdateItemPreview}
                />;
+        break;
+      case "Embeddable::EmbeddablePlugin":
+        return <PluginAuthoring
+          pageItem={itemToEdit}
+          authoringApiUrls={authoringApiUrls}
+          />;
         break;
       default:
         return "Editing not supported.";

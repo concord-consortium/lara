@@ -186,14 +186,6 @@ export const getLaraAuthoringAPI =
     });
   };
 
-  const getPageLevelPlugins = () => {
-    return sendToLara({url: pageLevelPluginsUrl})
-      .then( (json: any) => {
-        const plugins = json.page_level_plugins.map((p: IPluginType) => ({...p} as IPluginType));
-        return plugins.filter((p: IPluginType) => p.authoring_metadata.scope === "embeddable");
-    });
-  };
-
   const mapPluginToEmbeddable = (plugin: IPluginType): ISectionItemType[]  => {
     const { authoring_metadata } = plugin;
     const { components } = authoring_metadata;

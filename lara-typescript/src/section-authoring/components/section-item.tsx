@@ -4,6 +4,7 @@ import { usePageAPI } from "../hooks/use-api-provider";
 import { GripLines } from "../../shared/components/icons/grip-lines";
 import { UserInterfaceContext } from "../containers/user-interface-provider";
 import { TextBlockPreview } from "./text-block-preview";
+import { PluginPreview } from "./plugin-preview";
 import { ManagedInteractivePreview } from "./managed-interactive-preview";
 import { MWInteractivePreview } from "./mw-interactive-preview";
 
@@ -108,13 +109,10 @@ export const SectionItem: React.FC<ISectionItemProps> = ({
       case "MwInteractive":
         return <MWInteractivePreview pageItem={pageItem} />;
         break;
-      // case "Embeddable::EmbeddablePlugin":
-      //   return <PluginPreview pageItem={pageItem} />;
-      //   break
+      case "Embeddable::EmbeddablePlugin":
+        return <PluginPreview pageItem={pageItem} />;
+        break;
       default:
-        console.group("Unknown item type: ", pageItem?.type);
-        console.log(pageItem);
-        console.groupEnd();
         return (
           <div className="previewNotSupported">
             <span>Authoring mode preview not supported for "{pageItem?.type}"</span>
