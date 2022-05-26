@@ -123,36 +123,52 @@ export const MWInteractiveAuthoring: React.FC<Props> = (props) => {
 
   const renderTabs = () => {
 
-    //  const handleAuthoredStateChange = (newAuthoredState: string | object) => {
-    //    if (interactiveAuthoredStateRef.current) {
-    //      const jsonValue = interactiveAuthoredStateRef.current.value = typeof newAuthoredState === "string"
-    //        ? newAuthoredState
-    //        : JSON.stringify(newAuthoredState);
-    //      setAuthoredState(jsonValue);
-    //    }
-    //  };
+    const handleAuthoredStateChange = (newAuthoredState: string | object) => {
+      if (interactiveAuthoredStateRef.current) {
+        const jsonValue = interactiveAuthoredStateRef.current.value = typeof newAuthoredState === "string"
+          ? newAuthoredState
+          : JSON.stringify(newAuthoredState);
+        setAuthoredState(jsonValue);
+      }
+    };
 
-    // const handleLinkedInteractivesChange = (newLinkedInteractives: ISetLinkedInteractives) => {
-    //   if (linkedInteractivesRef.current) {
-    //     linkedInteractivesRef.current.value = JSON.stringify(newLinkedInteractives);
-    //   }
-    // };
+    const handleLinkedInteractivesChange = (newLinkedInteractives: ISetLinkedInteractives) => {
+      if (linkedInteractivesRef.current) {
+        linkedInteractivesRef.current.value = JSON.stringify(newLinkedInteractives);
+      }
+    };
 
-    //  const authoredInteractive = {
-    //    url: authoringUrl || "",
-    //    aspect_ratio: interactive.aspect_ratio,
-    //    aspect_ratio_method: interactive.aspect_ratio_method,
-    //    authored_state: interactive.authored_state,
-    //    interactive_item_id: interactive.interactive_item_id,
-    //    linked_interactives: interactive.linked_interactives
-    //  };
+    const authoredInteractive = {
+      url: authoringUrl || "",
+      aspect_ratio: interactive.aspect_ratio,
+      aspect_ratio_method: interactive.aspect_ratio_method,
+      authored_state: interactive.authored_state,
+      interactive_item_id: interactive.interactive_item_id,
+      linked_interactives: interactive.linked_interactives
+    };
+
+    const hasAuthoringUrl = authoringUrl && authoringUrl.trim().length > 0;
 
     return (
       <Tabs>
         <TabList>
+          <Tab>Authoring</Tab>
           <Tab>Advanced Options</Tab>
           {user?.isAdmin ? <Tab>Authored State (Admin Only)</Tab> : undefined}
         </TabList>
+        <TabPanel forceRender={true}>
+          {hasAuthoringUrl
+            ?
+              <InteractiveAuthoring
+                interactive={authoredInteractive}
+                onAuthoredStateChange={handleAuthoredStateChange}
+                onLinkedInteractivesChange={handleLinkedInteractivesChange}
+                allowReset={false}
+                authoringApiUrls={authoringApiUrls}
+              />
+            : <div>Please enter a URL above and then move the focus out of the URL field.</div>
+          }
+        </TabPanel>
         <TabPanel forceRender={true}>
           <CustomizeMWInteractive
             defaultClickToPlayPrompt={defaultClickToPlayPrompt}
