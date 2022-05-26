@@ -24,7 +24,6 @@ export const PageHeaderStory = Template.bind({});
 PageHeaderStory.args = {
   user: {
     api_key: "abc123",
-    can_export: false,
     created_at: "2021-11-19 12:24PM",
     email: "lara.author@concord.org",
     first_name: "Lara",

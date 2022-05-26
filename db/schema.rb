@@ -772,7 +772,6 @@ ActiveRecord::Schema.define(:version => 20220511144104) do
     t.boolean  "is_admin",                              :default => false
     t.boolean  "is_author",                             :default => false
     t.text     "api_key"
-    t.boolean  "can_export",                            :default => false
     t.string   "first_name",             :limit => 100
     t.string   "last_name",              :limit => 100
   end

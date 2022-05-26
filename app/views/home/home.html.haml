@@ -16,7 +16,7 @@
       - if can? :create, Glossary
         %a{ :href => new_glossary_path }
           %button=t("NEW_GLOSSARY_BUTTON")
-      - if can? :import, [LightweightActivity, Sequence, Glossary]
+      - if can? :import, LightweightActivity, Sequence, Glossary
         %a{ :href => import_status_path, 'data-remote'=>"true" }
           %button=t("IMPORT")
     %ul#new-menu

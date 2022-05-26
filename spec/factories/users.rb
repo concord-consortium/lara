@@ -31,15 +31,5 @@ FactoryGirl.define do
     password_confirmation 'author..'
     is_admin false
     is_author true
-    can_export false
-  end
-
-  factory :can_export, :class => User do
-    email { generate(:email) }
-    password 'exporter..'
-    password_confirmation 'exporter..'
-    is_admin false
-    is_author false
-    can_export true
   end
 end
