@@ -61,7 +61,7 @@ export const MWInteractiveAuthoring: React.FC<Props> = (props) => {
   const [authoringUrl, setAuthoringUrl] = useState(interactive.url);
   const user = useCurrentUser();
 
-  const _updatePreview = (e: React.ChangeEvent<HTMLTextAreaElement>, interactiveUrl: string) => {
+  const _updatePreview = (interactiveUrl: string) => {
     if (handleUpdateItemPreview !== undefined) {
       const updates = typeof authoredState === "string" ? authoredState : JSON.stringify(authoredState);
       handleUpdateItemPreview({authoredState: updates, url: interactiveUrl});
@@ -71,10 +71,9 @@ export const MWInteractiveAuthoring: React.FC<Props> = (props) => {
   const updatePreview = useCallback(debounce(_updatePreview, 500), []);
 
   const handleUrlChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    e.persist();
     const interactiveUrl = e.target.value;
     setAuthoringUrl(interactiveUrl);
-    updatePreview(e, interactiveUrl);
+    updatePreview(interactiveUrl);
   };
 
   const renderRequiredFields = () => {
