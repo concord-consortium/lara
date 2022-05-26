@@ -60,14 +60,12 @@ export const SectionItem: React.FC<ISectionItemProps> = ({
   const { userInterface: {movingItemId}, actions: {setMovingItemId}} = React.useContext(UserInterfaceContext);
   const { userInterface: {editingItemId}, actions: {setEditingItemId}} = React.useContext(UserInterfaceContext);
   const [isBeingUpdated, setIsBeingUpdated] = useState<boolean>(false);
-  const resetCount = useRef<number>(0);
   const prevEditingItemId = useRef<string>("");
 
   useEffect(() => {
     if (editingItemId === id) {
       setIsBeingUpdated(true);
     } else if (isBeingUpdated && prevEditingItemId.current === id) {
-      resetCount.current = resetCount.current + 1;
       setIsBeingUpdated(false);
     }
     if (editingItemId) {
@@ -106,9 +104,9 @@ export const SectionItem: React.FC<ISectionItemProps> = ({
       case "Embeddable::Xhtml":
         return <TextBlockPreview pageItem={pageItem} />;
       case "ManagedInteractive":
-        return <ManagedInteractivePreview pageItem={pageItem} resetCount={resetCount.current} />;
+        return <ManagedInteractivePreview pageItem={pageItem} />;
       case "MwInteractive":
-        return <MWInteractivePreview pageItem={pageItem} resetCount={resetCount.current} />;
+        return <MWInteractivePreview pageItem={pageItem} />;
       default:
         return (
           <div className="previewNotSupported">

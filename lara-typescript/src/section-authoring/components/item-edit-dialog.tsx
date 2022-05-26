@@ -31,7 +31,6 @@ export const ItemEditDialog: React.FC<IItemEditDialogProps> = ({
   const [previewPageItem, setPreviewPageItem] = useState<ISectionItem>();
   const [modalVisibility, setModalVisibility] = useState(true);
   const [itemData, setItemData] = useState({});
-  const previewResetCount = useRef(0);
   const libraryInteractives = getLibraryInteractives.data?.libraryInteractives;
 
   useEffect(() => {
@@ -76,11 +75,9 @@ export const ItemEditDialog: React.FC<IItemEditDialogProps> = ({
     if (previewPageItem) {
       const data = {...previewPageItem.data, ...updates};
       setPreviewPageItem({...previewPageItem, data});
-      previewResetCount.current = previewResetCount.current + 1;
     } else if (pageItem) {
       const data = {...pageItem.data, ...updates};
       setPreviewPageItem({...pageItem, data});
-      previewResetCount.current = previewResetCount.current + 1;
     }
   };
 
@@ -145,7 +142,6 @@ export const ItemEditDialog: React.FC<IItemEditDialogProps> = ({
     setEditingItemId(false);
     setItemData({});
     setPreviewPageItem(undefined);
-    previewResetCount.current = 0;
   };
 
   const interactiveFromItemToEdit = (itemToEdit: ISectionItem) => {
@@ -224,7 +220,6 @@ export const ItemEditDialog: React.FC<IItemEditDialogProps> = ({
           return <>
             <ManagedInteractivePreview
               pageItem={previewPageItem}
-              resetCount={previewResetCount.current}
             />
             {previewNote}
           </>;
@@ -232,7 +227,6 @@ export const ItemEditDialog: React.FC<IItemEditDialogProps> = ({
           return <>
             <MWInteractivePreview
               pageItem={previewPageItem}
-              resetCount={previewResetCount.current}
             />
             {previewNote}
           </>;

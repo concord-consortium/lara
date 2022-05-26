@@ -22,10 +22,9 @@ export interface IPreviewUser {
 interface Props {
   interactive: IPreviewInteractive;
   user?: IPreviewUser;
-  resetCount?: number;
 }
 
-export const InteractiveAuthoringPreview: React.FC<Props> = ({interactive, user, resetCount}) => {
+export const InteractiveAuthoringPreview: React.FC<Props> = ({interactive, user}) => {
   const iframe = useRef<HTMLIFrameElement|null>(null);
   const [authoredState, setAuthoredState] = useState<object|null>(
     typeof interactive.authored_state === "string"
@@ -35,6 +34,7 @@ export const InteractiveAuthoringPreview: React.FC<Props> = ({interactive, user,
   const linkedInteractives = typeof interactive.linked_interactives === "string"
     ? JSON.parse(interactive.linked_interactives || "{}")
     : interactive.linked_interactives;
+  const resetCount = useRef(0);
 
   useEffect(() => {
     setAuthoredState(
@@ -42,6 +42,7 @@ export const InteractiveAuthoringPreview: React.FC<Props> = ({interactive, user,
         ? JSON.parse(interactive.authored_state || "{}")
         : interactive.authored_state
     );
+    resetCount.current = resetCount.current + 1;
   }, [interactive]);
 
   const initMsg: IInitInteractive = {
@@ -86,7 +87,7 @@ export const InteractiveAuthoringPreview: React.FC<Props> = ({interactive, user,
         initMsg={initMsg}
         authoredAspectRatioMethod={interactive.aspect_ratio_method}
         authoredAspectRatio={interactive.aspect_ratio}
-        resetCount={resetCount}
+        resetCount={resetCount.current}
       />
     </div>
   );
