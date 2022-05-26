@@ -149,6 +149,9 @@ export const SectionColumn: React.FC<ISectionColumnProps> = ({
                     const sectionItemClasses = classNames("sectionItem", {
                        halfWidth: item.data.isHalfWidth
                     });
+                    if (item.data.name === "Teacher Edition: Question Wrapper") {
+                      return;
+                    }
                     return (
                       <Draggable
                         key={`col-${columnNumber}-item-${index}`}
@@ -166,6 +169,8 @@ export const SectionColumn: React.FC<ISectionColumnProps> = ({
                             <SectionItem
                               {...item}
                               key={item.id}
+                              sectionColumn={column}
+                              sectionId={sectionId}
                               copyFunction={copyPageItem}
                               deleteFunction={deletePageItem}
                             />

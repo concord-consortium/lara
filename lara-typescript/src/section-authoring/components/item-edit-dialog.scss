@@ -41,22 +41,31 @@
 
   #itemEditForm {
     height: calc(100% - 60px);
+    max-width: 425px;
     overflow: auto;
     padding: 10px 15px 30px 10px;
     position: relative;
-    width: 425px;
     &.noPreview {
-      width: unset;
+      max-width: 100%;
+      width: 100%;
+    }
+    @media screen and (max-width: 800px) {
+      width: 100%;
     }
 
     .actionButtons {
       background: #fff;
       bottom: 20px;
       left: 1px;
+      max-width: 405px;
       padding: 5px;
       position: fixed;
-      width: 420px;
+      width: calc(100% - 11px);
       z-index: 5;
+
+      @media screen and (max-width: 800px) {
+        max-width: 100%;
+      }
     }
   }
   fieldset {
@@ -205,6 +214,10 @@
     background: var(--ltst-teal);
     padding: 10px;
     width: calc(100% - 425px);
+
+    @media screen and (max-width: 800px) {
+      display: none;
+    }
 
     h2 {
       font-size: 16px;

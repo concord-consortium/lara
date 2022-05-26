@@ -13,10 +13,11 @@ export interface IManagedInteractivePreviewProps {
 export const ManagedInteractivePreview: React.FC<IManagedInteractivePreviewProps> = ({
   pageItem
   }: IManagedInteractivePreviewProps) => {
+
   const {
     aspectRatio, authoredState, customAspectRatioMethod, id, interactiveItemId,
     isHalfWidth, name, libraryInteractiveId, linkedInteractives, urlFragment
-   } = pageItem.data as IManagedInteractiveData;
+  } = pageItem.data as IManagedInteractiveData;
   const { getLibraryInteractives } = usePageAPI();
 
   if (!authoredState) {
@@ -43,7 +44,7 @@ export const ManagedInteractivePreview: React.FC<IManagedInteractivePreviewProps
   return (
     <div className={wrapperClasses}>
       <div className="managedInteractiveContent">
-        <InteractiveAuthoringPreview interactive={interactive} />
+        {libraryInteractive && <InteractiveAuthoringPreview interactive={interactive} />}
       </div>
     </div>
   );

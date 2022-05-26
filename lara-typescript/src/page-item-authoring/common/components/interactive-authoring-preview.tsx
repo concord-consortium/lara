@@ -25,24 +25,21 @@ interface Props {
 }
 
 export const InteractiveAuthoringPreview: React.FC<Props> = ({interactive, user}) => {
-  const iframe = useRef<HTMLIFrameElement|null>(null);
-  const [authoredState, setAuthoredState] = useState<object|null>(
-    typeof interactive.authored_state === "string"
-      ? JSON.parse(interactive.authored_state || "{}")
-      : interactive.authored_state
-  );
+  const authoredState = typeof interactive.authored_state === "string"
+    ? interactive.authored_state
+    : JSON.stringify(interactive.authored_state || "{}");
+  const [prevAuthoredState, setPrevAuthoredState] = useState<string|null>(authoredState);
   const linkedInteractives = typeof interactive.linked_interactives === "string"
     ? JSON.parse(interactive.linked_interactives || "{}")
     : interactive.linked_interactives;
   const resetCount = useRef(0);
 
   useEffect(() => {
-    setAuthoredState(
-      typeof interactive.authored_state === "string"
-        ? JSON.parse(interactive.authored_state || "{}")
-        : interactive.authored_state
-    );
-    resetCount.current = resetCount.current + 1;
+    if (authoredState !== prevAuthoredState) {
+      // re-render preview to show changes
+      setPrevAuthoredState(authoredState);
+      resetCount.current = resetCount.current + 1;
+    }
   }, [interactive]);
 
   const initMsg: IInitInteractive = {
@@ -80,15 +77,17 @@ export const InteractiveAuthoringPreview: React.FC<Props> = ({interactive, user}
 
   return (
     <div className="authoring-interactive-preview">
-      <InteractiveIframe
-        src={interactive.url || ""}
-        width="100%"
-        initialAuthoredState={authoredState}
-        initMsg={initMsg}
-        authoredAspectRatioMethod={interactive.aspect_ratio_method}
-        authoredAspectRatio={interactive.aspect_ratio}
-        resetCount={resetCount.current}
-      />
+      { interactive &&
+        <InteractiveIframe
+          src={interactive.url}
+          width="100%"
+          initialAuthoredState={authoredState ? JSON.parse(authoredState) : null}
+          initMsg={initMsg}
+          authoredAspectRatioMethod={interactive.aspect_ratio_method}
+          authoredAspectRatio={interactive.aspect_ratio}
+          resetCount={resetCount.current}
+        />
+      }
     </div>
   );
 };

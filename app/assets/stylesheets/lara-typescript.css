@@ -837,6 +837,106 @@
   --lt-gray: hsl(0, 0%, 90%);
   --ltr-gray: hsl(0, 0%, 95%); }
 
+.availablePlugins {
+  background: var(--ltr-gray);
+  padding: 0 20px 20px; }
+  .availablePlugins select {
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 310px; }
+  .availablePlugins button {
+    margin-left: 10px; }
+
+.pluginsList {
+  background: var(--ltr-gray);
+  padding: 0 20px 10px; }
+  .pluginsList h5 {
+    font-size: 12px;
+    font-weight: bold; }
+  .pluginsList ul {
+    list-style: none;
+    margin: 0;
+    padding: 0; }
+    .pluginsList ul li {
+      align-items: center;
+      display: flex;
+      font-size: 12px;
+      margin: 0;
+      padding: 5px 0; }
+      .pluginsList ul li button {
+        background: transparent;
+        border: none;
+        color: var(--teal);
+        font-size: 12px;
+        margin: 0 0 0 10px;
+        padding: 2px 5px; }
+        .pluginsList ul li button:focus {
+          background: var(--ltr-gray);
+          outline: none; }
+        .pluginsList ul li button:active {
+          background: var(--ltr-gray);
+          color: var(--gold); }
+        .pluginsList ul li button:hover {
+          background: var(--ltr-gray);
+          color: var(--orange); }
+  .pluginsList .pluginName {
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap; }
+
+.section-responsive-static .availablePlugins select {
+  width: 185px; }
+
+.section-responsive-static .pluginsList {
+  background: var(--ltr-gray); }
+  .section-responsive-static .pluginsList .pluginName {
+    width: 145px; }
+
+.section-30 .availablePlugins select {
+  width: 190px; }
+
+.section-30 .pluginsList .pluginName {
+  width: 150px; }
+
+@font-face {
+  font-family: 'Lato-Light';
+  font-style: normal;
+  font-weight: 100;
+  src: local("Lato Light"), local("Lato-Light"), url(//fonts.googleapis.com/css?family=Lato:100) format("woff"); }
+
+@font-face {
+  font-family: 'Lato-Regular';
+  font-style: normal;
+  font-weight: 400;
+  src: local("Lato Regular"), local("Lato-Regular"), url(//themes.googleusercontent.com/static/fonts/lato/v6/qIIYRU-oROkIk8vfvxw6QvesZW2xOQ-xsNqO47m55DA.woff) format("woff"); }
+
+@font-face {
+  font-family: 'Lato-Bold';
+  font-style: normal;
+  font-weight: 700;
+  src: local("Lato Bold"), local("Lato-Bold"), url(//themes.googleusercontent.com/static/fonts/lato/v6/qdgUG4U09HnJwhYI-uK18wLUuEpTyoUstqEm5AMlJo4.woff) format("woff"); }
+
+:root {
+  --font-family-bold: Lato-Bold, helvetica, verdana, sans-serif;
+  --font-family-default: Lato-Regular, helvetica, verdana, sans-serif;
+  --font-family-light: Lato-Light, helvetica, verdana, sans-serif;
+  --font-color-default: #313131;
+  --dark-teal: #016082;
+  --teal: #0592af;
+  --lt-teal: #93d5e4;
+  --ltr-teal: #cdebf2;
+  --ltst-teal: #e2f4f8;
+  --gold: #ffc320;
+  --lt-orange: #ffe6d0;
+  --orange: #ea6d2f;
+  --dark-gray: #3f3f3f;
+  --med-gray: #979797;
+  --lt-gray: hsl(0, 0%, 90%);
+  --ltr-gray: hsl(0, 0%, 95%); }
+
 .sectionItemContainer {
   font-size: 12px; }
   .sectionItemContainer .sectionItemMenu {
@@ -2397,20 +2497,28 @@ dl.textBlockEditForm {
   overflow: hidden; }
   #itemEditDialog #itemEditForm {
     height: calc(100% - 60px);
+    max-width: 425px;
     overflow: auto;
     padding: 10px 15px 30px 10px;
-    position: relative;
-    width: 425px; }
+    position: relative; }
     #itemEditDialog #itemEditForm.noPreview {
-      width: unset; }
+      max-width: 100%;
+      width: 100%; }
+    @media screen and (max-width: 800px) {
+      #itemEditDialog #itemEditForm {
+        width: 100%; } }
     #itemEditDialog #itemEditForm .actionButtons {
       background: #fff;
       bottom: 20px;
       left: 1px;
+      max-width: 405px;
       padding: 5px;
       position: fixed;
-      width: 420px;
+      width: calc(100% - 11px);
       z-index: 5; }
+      @media screen and (max-width: 800px) {
+        #itemEditDialog #itemEditForm .actionButtons {
+          max-width: 100%; } }
   #itemEditDialog fieldset {
     border: none;
     margin-top: 20px;
@@ -2509,6 +2617,9 @@ dl.textBlockEditForm {
     background: var(--ltst-teal);
     padding: 10px;
     width: calc(100% - 425px); }
+    @media screen and (max-width: 800px) {
+      #itemEditDialog .itemEditPreview {
+        display: none; } }
     #itemEditDialog .itemEditPreview h2 {
       font-size: 16px;
       font-weight: 700;

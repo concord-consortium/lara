@@ -1,0 +1,98 @@
+@import "../../vars.scss";
+
+.availablePlugins {
+  background: var(--ltr-gray);
+  padding: 0 20px 20px;
+
+  select {
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 310px;
+  }
+
+  button {
+    margin-left: 10px;
+  }
+}
+
+.pluginsList {
+  background: var(--ltr-gray);
+  padding: 0 20px 10px;
+
+  h5 {
+    font-size: 12px;
+    font-weight: bold;
+  }
+
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    li {
+      align-items: center;
+      display: flex;
+      font-size: 12px;
+      margin: 0;
+      padding: 5px 0;
+
+      button {
+        background: transparent;
+        border: none;
+        color: var(--teal);
+        font-size: 12px;
+        margin: 0 0 0 10px;
+        padding: 2px 5px;
+
+        &:focus {
+          background: var(--ltr-gray);
+          outline: none;
+        }
+        &:active {
+          background: var(--ltr-gray);
+          color: var(--gold);
+        }
+        &:hover {
+          background: var(--ltr-gray);
+          color: var(--orange);
+        }
+      }
+    }
+  }
+  .pluginName {
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+.section-responsive-static {
+  .availablePlugins {
+    select {
+      width: 185px;
+    }
+  }
+  .pluginsList {
+    background: var(--ltr-gray);
+
+    .pluginName {
+      width: 145px;      
+    }
+  }
+}
+
+.section-30 {
+  .availablePlugins {
+    select {
+      width: 190px;
+    }
+  }
+  .pluginsList {
+    .pluginName {
+      width: 150px;
+    }
+  }
+}

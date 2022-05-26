@@ -4,7 +4,7 @@ import { ISectionItem, ITextBlockData } from "../api/api-types";
 import { Modal, ModalButtons } from "../../shared/components/modal/modal";
 import { TextBlockEditForm } from "./text-block-edit-form";
 import { IManagedInteractive, ManagedInteractiveAuthoring } from "../../page-item-authoring/managed-interactives";
-import { IMWInteractive, MWInteractiveAuthoring} from "../../page-item-authoring/mw-interactives";
+import { IMWInteractive, MWInteractiveAuthoring } from "../../page-item-authoring/mw-interactives";
 import { PluginAuthoring } from "./plugin-authoring";
 import { Save } from "../../shared/components/icons/save-icon";
 import { Close } from "../../shared/components/icons/close-icon";
@@ -14,9 +14,9 @@ import { camelToSnakeCaseKeys } from "../../shared/convert-keys";
 import { TextBlockPreview } from "./text-block-preview";
 import { ManagedInteractivePreview } from "./managed-interactive-preview";
 import { MWInteractivePreview } from "./mw-interactive-preview";
+import classNames from "classnames";
 
 import "./item-edit-dialog.scss";
-import classNames from "classnames";
 
 export interface IItemEditDialogProps {
   errorMessage?: string;
@@ -26,9 +26,11 @@ export const ItemEditDialog: React.FC<IItemEditDialogProps> = ({
   errorMessage
   }: IItemEditDialogProps) => {
   const { userInterface: {editingItemId}, actions: {setEditingItemId}} = React.useContext(UserInterfaceContext);
+  const { userInterface: {wrappedItemId}, actions: {setWrappedItemId}} = React.useContext(UserInterfaceContext);
   const { getItems, updatePageItem, getLibraryInteractives } = usePageAPI();
   const pageItems = getItems();
   const pageItem = pageItems.find(pi => pi.id === editingItemId);
+  const wrappedItem = pageItems.find(pi => pi.id === wrappedItemId);
   const [previewPageItem, setPreviewPageItem] = useState<ISectionItem>();
   const [modalVisibility, setModalVisibility] = useState(true);
   const [itemData, setItemData] = useState({});
@@ -145,6 +147,7 @@ export const ItemEditDialog: React.FC<IItemEditDialogProps> = ({
 
   const handleCloseDialog = () => {
     setEditingItemId(false);
+    setWrappedItemId(false);
     setItemData({});
     setPreviewPageItem(undefined);
   };
@@ -187,7 +190,6 @@ export const ItemEditDialog: React.FC<IItemEditDialogProps> = ({
                  pageItem={itemToEdit}
                  handleUpdateItemPreview={handleUpdateItemPreview}
                />;
-        break;
       case "ManagedInteractive":
         const managedInteractive = interactiveFromItemToEdit(itemToEdit);
         const libraryInteractive = camelToSnakeCaseKeys(
@@ -203,7 +205,6 @@ export const ItemEditDialog: React.FC<IItemEditDialogProps> = ({
                 onUpdate={handleManagedInteractiveData}
                 handleUpdateItemPreview={handleUpdateItemPreview}
                />;
-        break;
       case "MwInteractive":
         const interactive = interactiveFromItemToEdit(itemToEdit);
         return <MWInteractiveAuthoring
@@ -212,14 +213,13 @@ export const ItemEditDialog: React.FC<IItemEditDialogProps> = ({
                 authoringApiUrls={authoringApiUrls}
                 handleUpdateItemPreview={handleUpdateItemPreview}
                />;
-        break;
       case "Embeddable::EmbeddablePlugin":
         return <PluginAuthoring
           pageItem={itemToEdit}
           authoringApiUrls={authoringApiUrls}
           onUpdate={handlePluginData}
+          wrappedItem={wrappedItem}
           />;
-        break;
       default:
         return "Editing not supported.";
     }
