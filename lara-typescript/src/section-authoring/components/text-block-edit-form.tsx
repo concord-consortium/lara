@@ -1,17 +1,19 @@
 import * as React from "react";
-import { useRef } from "react";
+import { useCallback, useRef } from "react";
 import { Editor } from "@tinymce/tinymce-react";
 import { ISectionItem, ITextBlockData } from "../api/api-types";
 import { usePageAPI } from "../hooks/use-api-provider";
+import { debounce } from "ts-debounce";
 
 import "./text-block-edit-form.scss";
 
 export interface ITextBlockEditFormProps {
   pageItem: ISectionItem;
+  handleUpdateItemPreview?: (updates: Record<string, any>) => void;
 }
 
 export const TextBlockEditForm: React.FC<ITextBlockEditFormProps> = ({
-  pageItem
+  pageItem, handleUpdateItemPreview
   }: ITextBlockEditFormProps) => {
   const { content, name, isCallout, isHalfWidth } = pageItem?.data as ITextBlockData;
   const editorRef = useRef<any>(null);
@@ -19,14 +21,38 @@ export const TextBlockEditForm: React.FC<ITextBlockEditFormProps> = ({
     editorRef.current = editor;
   };
   const contentRef = useRef<HTMLTextAreaElement|null>(null);
+  const updates = useRef<Partial<ISectionItem>>({});
   const api = usePageAPI();
   const pathToTinyMCE = api.pathToTinyMCE;
   const pathToTinyMCECSS = api.pathToTinyMCECSS;
 
+  const _updatePreview = (update: any) => {
+    if (handleUpdateItemPreview) {
+      updates.current = {...updates.current, ...update};
+      handleUpdateItemPreview(updates.current);
+    }
+  };
+
+  const updatePreview = useCallback(debounce(_updatePreview, 500), []);
+
+  const handleChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const nameValue = e.target.value;
+    const update = {name: nameValue};
+    updatePreview(update);
+  };
+
   const handleChangeContent = () => {
     if (contentRef.current) {
       contentRef.current.value = editorRef.current.getContent();
+      const update = {content: contentRef.current.value};
+      updatePreview(update);
     }
+  };
+
+  const handleIsCalloutChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const isCalloutValue = e.target.checked;
+    const update = {isCallout: isCalloutValue};
+    updatePreview(update);
   };
 
   return (
@@ -47,6 +73,7 @@ export const TextBlockEditForm: React.FC<ITextBlockEditFormProps> = ({
           defaultValue={name}
           id="name"
           name="name"
+          onChange={handleChangeTitle}
         />
       </dd>
       <dt className="row2">
@@ -99,6 +126,7 @@ export const TextBlockEditForm: React.FC<ITextBlockEditFormProps> = ({
           id="is-callout"
           name="is_callout"
           type="checkbox"
+          onChange={handleIsCalloutChange}
         />
       </dd>
       <dd className="inputNote row3">Displayed within a shaded box.</dd>

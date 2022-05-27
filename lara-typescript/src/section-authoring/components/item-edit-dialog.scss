@@ -1,6 +1,61 @@
 @import "../../vars.scss";
 
-.itemEditDialog {
+// Override some default modal styles
+.modalContainer {
+  &.itemEditDialog {
+    height: 80%;
+    overflow: hidden;
+
+    .modalBody {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      width: 80%;
+
+      header {
+        width: calc(100% - 20px);
+      }
+      section {
+        height: calc(100% - 56px);
+        padding: 0;
+
+        &#modalContent {
+          div:first-child {
+            height: 100%;
+  
+            div {
+              height: auto;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+#itemEditDialog {
+  display: flex;
+  gap: 0;
+  height: 100% !important;
+  overflow: hidden;
+
+  #itemEditForm {
+    height: calc(100% - 60px);
+    overflow: auto;
+    padding: 10px 15px 30px 10px;
+    position: relative;
+    width: 425px;
+
+    .actionButtons {
+      background: #fff;
+      bottom: 20px;
+      left: 1px;
+      padding: 5px;
+      position: fixed;
+      width: 420px;
+      z-index: 5;
+    }
+  }
   fieldset {
     border: none;
     margin-top: 20px;
@@ -140,6 +195,21 @@
         border-top: none;
         padding-top: 0;
       }
+    }
+  }
+
+  .itemEditPreview {
+    background: var(--ltst-teal);
+    padding: 10px;
+    width: calc(100% - 425px);
+
+    h2 {
+      font-size: 16px;
+      font-weight: 700;
+      margin: 0 0 5px;
+    }
+    .previewNote {
+      font-style: italic;
     }
   }
 }

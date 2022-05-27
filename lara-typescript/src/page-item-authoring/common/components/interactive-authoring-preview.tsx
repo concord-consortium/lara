@@ -1,6 +1,5 @@
 import * as React from "react";
-import { useRef, useState } from "react";
-
+import { useEffect, useRef, useState } from "react";
 import { InteractiveIframe } from "./interactive-iframe";
 import { IInitInteractive } from "../../../interactive-api-client";
 
@@ -35,6 +34,16 @@ export const InteractiveAuthoringPreview: React.FC<Props> = ({interactive, user}
   const linkedInteractives = typeof interactive.linked_interactives === "string"
     ? JSON.parse(interactive.linked_interactives || "{}")
     : interactive.linked_interactives;
+  const resetCount = useRef(0);
+
+  useEffect(() => {
+    setAuthoredState(
+      typeof interactive.authored_state === "string"
+        ? JSON.parse(interactive.authored_state || "{}")
+        : interactive.authored_state
+    );
+    resetCount.current = resetCount.current + 1;
+  }, [interactive]);
 
   const initMsg: IInitInteractive = {
     version: 1,
@@ -78,6 +87,7 @@ export const InteractiveAuthoringPreview: React.FC<Props> = ({interactive, user}
         initMsg={initMsg}
         authoredAspectRatioMethod={interactive.aspect_ratio_method}
         authoredAspectRatio={interactive.aspect_ratio}
+        resetCount={resetCount.current}
       />
     </div>
   );
