@@ -246,24 +246,6 @@ class Api::V1::InteractivePagesController < API::APIController
       embeddable.component_label = tip_type
       embeddable.is_half_width = false
       embeddable.save!
-      plugin = embeddable.plugin
-      puts <<-EOS
-      ==============================================================
-        script_id: #{script_id}
-        embeddable_type: #{embeddable_type}
-        plugin:
-        #{plugin.inspect}
-        embeddable:
-        #{embeddable.inspect}
-        embeddable_pliugin:
-        #{embeddable.plugin.inspect}
-        approved_script:
-        #{embeddable.plugin.approved_script.name}
-        #{embeddable.plugin.approved_script.label}
-        #{embeddable.approved_script.id}
-
-      ==============================================================
-EOS
 
     else
       return error("Unknown embbeddable_type: #{embeddable_type}\nOnly library interactive embeddables, iFrame interactives, and text blocks are currently supported")
