@@ -3,5 +3,5 @@
 # Defaults can be found   
 Metrics/MethodLength:
   Max: 20
-convention:Style/StringLiterals:
+Style/StringLiterals:
   Enabled: false
