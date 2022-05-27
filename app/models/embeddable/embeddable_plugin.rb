@@ -53,6 +53,18 @@ module Embeddable
       :plugin
     end
 
+    def authoring_api_urls(protocol, host)
+      {
+        update_plugin_author_data: Rails.application.routes.url_helpers.api_v1_update_plugin_author_data_url(
+          {
+            plugin_id: plugin.id,
+            protocol: protocol,
+            host: host
+          }
+        )
+      }
+    end
+
     def to_hash
       {
         embeddable_id: self.id,
