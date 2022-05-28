@@ -1078,20 +1078,15 @@
   .modalContainer .modalBody {
     background: transparent;
     border: none;
-    display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap;
-    justify-content: center;
-    align-items: center;
-    align-content: center;
+    display: block;
     font-family: var(--font-family-default);
+    margin: 20px 0 20px 50%;
+    min-height: 450px;
     overflow: auto;
     padding: 0;
     position: relative;
-    min-height: 450px;
-    min-width: 600px;
-    max-width: 90vw;
-    max-height: 90vh; }
+    transform: translate(-50%, 0);
+    width: 600px; }
     .modalContainer .modalBody header {
       background: var(--teal);
       color: white;
@@ -2700,5 +2695,3 @@ button.bigButton {
     fill: var(--dark-gray);
     margin: 0 3px 0 0; }
 
-
-/*# sourceMappingURL=lara-typescript.css.map*/
