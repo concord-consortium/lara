@@ -8,7 +8,7 @@ module Embeddable
     end
 
     attr_accessible :plugin, :approved_script_id, :description, :author_data,
-    :is_half_width, :is_hidden, :component_label
+    :is_half_width, :is_hidden, :component_label, :name, :label, :url
 
     has_one :plugin, as: :plugin_scope, autosave: true
 
@@ -53,6 +53,17 @@ module Embeddable
       :plugin
     end
 
+    def update_attributes(attributes)
+      # NP 2022-05-27: We need to clear-out some delageted read-only
+      # attributes that should not be updated. You would think this would
+      # be handled by `attr_accessible`, however because of uniformity
+      # in how we update embeddables, we choose to do this manually here.
+      attributes.delete(:name)
+      attributes.delete(:url)
+      attributes.delete(:label)
+      super
+    end
+
     def authoring_api_urls(protocol, host)
       {
         update_plugin_author_data: Rails.application.routes.url_helpers.api_v1_update_plugin_author_data_url(
@@ -73,6 +84,21 @@ module Embeddable
         is_half_width: self.is_half_width
       }
     end
+
+    # NP 2022-05-27: For uniformity with other embeddables
+    # Flatten out the plugin content for editing
+    def to_editing_hash
+      {
+        is_hidden: is_hidden,
+        is_half_width: is_half_width,
+        name: name,
+        label: label,
+        url: url,
+        component_label: component_label,
+        author_data: author_data
+      }
+    end
+
 
     # NP: 2018-11-06 probably not needed at the moment...
     def portal_hash

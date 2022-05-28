@@ -307,17 +307,7 @@ class Api::V1::InteractivePagesController < API::APIController
       end
     end
     @interactive_page.reload
-
-    embeddable.reload
-    pi = embeddable.p_item
-    result = {
-      id: pi.id.to_s,
-      column: pi.column,
-      position: pi.position,
-      type: pi.embeddable_type,
-      data: pi.embeddable.to_hash # using pi.embeddable.to_interactive here broke editing/saving by sending unnecessary/incorrect data back
-    }
-    render json: result.to_json
+    render json: embeddable_to_edit_hash(embeddable).to_json
   end
 
   def delete_page_item
@@ -436,26 +426,12 @@ class Api::V1::InteractivePagesController < API::APIController
   end
 
   private
-
   def generate_item_json(page_item)
     embeddable = page_item.embeddable
     if (embeddable.nil?)
-      Rails.logger.warn <<-NO_EMBEDDABLE_MSG
-      ========================================================
-        WARNING: page_item #{page_item.id} has no embeddable.
-        #{page_item.inspect}
-      ========================================================
-      NO_EMBEDDABLE_MSG
       return { error: "WARNING: page_item #{page_item.id} has no embeddable" }
     end
-    {
-      id: page_item.id.to_s,
-      column: page_item.column,
-      position: page_item.position,
-      type: page_item.embeddable_type,
-      data: embeddable.to_hash, # using `to_interactive` here broke editing/saving by sending incorrect data back
-      authoringApiUrls: embeddable.respond_to?(:authoring_api_urls) ? embeddable.authoring_api_urls(request.protocol, request.host_with_port) : {}
-    }
+    embeddable_to_edit_hash(embeddable)
   end
 
   def generate_section_json(section)
@@ -495,4 +471,25 @@ class Api::V1::InteractivePagesController < API::APIController
     end
   end
 
+  def embeddable_to_edit_hash(embeddable)
+    embeddable.reload
+    pi = embeddable.p_item
+    e = pi.embeddable
+    # EM & NP ~2021: using pi.embeddable.to_interactive here broke editing/saving
+    #   by sending unnecessary/incorrect data back
+    data_hash = e.to_hash
+
+    # NP 2022-05-27: we need to allow embeddables to customize their editing
+    #   hash
+    data_hash = e.to_editing_hash if e.respond_to?(:to_editing_hash)
+
+    {
+      id: pi.id.to_s,
+      column: pi.column,
+      position: pi.position,
+      type: pi.embeddable_type,
+      data: data_hash,
+      authoringApiUrls: embeddable.respond_to?(:authoring_api_urls) ? embeddable.authoring_api_urls(request.protocol, request.host_with_port) : {}
+    }
+  end
 end
