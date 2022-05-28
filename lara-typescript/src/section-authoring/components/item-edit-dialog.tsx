@@ -63,6 +63,10 @@ export const ItemEditDialog: React.FC<IItemEditDialogProps> = ({
     setItemData(newData);
   };
 
+  const handlePluginData = (authorData: string) => {
+    setItemData({authorData});
+  };
+
   const handleUpdateItem = () => {
     if (pageItem && itemData !== {}) {
       pageItem.data = {...pageItem.data, ...itemData};
@@ -150,7 +154,7 @@ export const ItemEditDialog: React.FC<IItemEditDialogProps> = ({
     return interactive;
   };
 
-  const modalButtons = [
+  const standardModalButtons = [
     {
       classes: "cancel",
       clickHandler: handleCancelUpdateItem,
@@ -167,6 +171,13 @@ export const ItemEditDialog: React.FC<IItemEditDialogProps> = ({
     }
   ];
 
+  let modalButtons = standardModalButtons;
+  if (pageItem && pageItem.type === "Embeddable::EmbeddablePlugin") {
+    // The authoring form of plugins supply their own buttons,
+    // So we remove the standard buttons from the modal.
+    const pluginModalButtons: any[] = [];
+    modalButtons = pluginModalButtons;
+  }
   const getEditForm = (itemToEdit: ISectionItem) => {
     const authoringApiUrls = itemToEdit.authoringApiUrls ? itemToEdit.authoringApiUrls : {};
     switch (itemToEdit.type) {
@@ -205,6 +216,7 @@ export const ItemEditDialog: React.FC<IItemEditDialogProps> = ({
         return <PluginAuthoring
           pageItem={itemToEdit}
           authoringApiUrls={authoringApiUrls}
+          onUpdate={handlePluginData}
           />;
         break;
       default:
