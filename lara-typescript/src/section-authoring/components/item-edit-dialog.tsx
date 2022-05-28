@@ -16,6 +16,7 @@ import { ManagedInteractivePreview } from "./managed-interactive-preview";
 import { MWInteractivePreview } from "./mw-interactive-preview";
 
 import "./item-edit-dialog.scss";
+import classNames from "classnames";
 
 export interface IItemEditDialogProps {
   errorMessage?: string;
@@ -224,6 +225,12 @@ export const ItemEditDialog: React.FC<IItemEditDialogProps> = ({
     }
   };
 
+  const supportsPreview = () => {
+    return pageItem && pageItem.type === "Embeddable::Xhtml" ||
+           pageItem && pageItem.type === "ManagedInteractive" ||
+           pageItem && pageItem.type === "MwInteractive";
+  };
+
   const getPreview = () => {
     const previewNote = <p className="previewNote">
       This preview does not yet reflect all features and settings available in the edit form.
@@ -255,6 +262,7 @@ export const ItemEditDialog: React.FC<IItemEditDialogProps> = ({
   };
 
   if (pageItem) {
+    const formClassName = classNames({noPreview: !supportsPreview()});
     return (
       <Modal
         title="Edit"
@@ -268,16 +276,18 @@ export const ItemEditDialog: React.FC<IItemEditDialogProps> = ({
               {errorMessage}
             </div>
           }
-          <form id="itemEditForm" onSubmit={handleSubmit}>
+          <form id="itemEditForm" onSubmit={handleSubmit} className={formClassName}>
             {getEditForm(pageItem)}
             <ModalButtons buttons={modalButtons} />
           </form>
-          <div className="itemEditPreview">
-            <h2>Preview</h2>
-            <div className="itemEditPreviewContent">
-              {getPreview()}
-            </div>
-          </div>
+            {supportsPreview() &&
+              <div className="itemEditPreview">
+                <h2>Preview</h2>
+                  <div className="itemEditPreviewContent">
+                  {getPreview()}
+                </div>
+              </div>
+            }
         </div>
       </Modal>
     );
