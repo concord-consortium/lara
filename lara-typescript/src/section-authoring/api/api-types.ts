@@ -172,6 +172,21 @@ export interface IMWInteractiveData {
   url: string;
 }
 
+type IApprovedScript = any;
+export interface IEmbeddablePluginData {
+  plugin: {
+    approved_script: IApprovedScript;
+    approved_script_label: "teacherEditionTips";
+    author_data: string;
+    component_label: "windowShade";
+    description: string;
+    id: number;
+  };
+  embeddable_id: number;
+  is_half_width: boolean;
+  is_hidden: boolean;
+}
+
 export interface ISection {
   /**
    * Can the smaller side collapse?
