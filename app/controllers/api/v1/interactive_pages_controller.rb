@@ -489,7 +489,7 @@ class Api::V1::InteractivePagesController < API::APIController
       position: pi.position,
       type: pi.embeddable_type,
       data: data_hash,
-      authoringApiUrls: embeddable.respond_to?(:authoring_api_urls) ? embeddable.authoring_api_urls(request.protocol, request.host_with_port) : {}
+      authoring_api_urls: embeddable.respond_to?(:authoring_api_urls) ? embeddable.authoring_api_urls(request.protocol, request.host_with_port) : {}
     }
   end
 end
