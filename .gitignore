@@ -11,7 +11,7 @@
 /db/*.sqlite3
 # and dumped .yml files
 /db/data.yml
-
+/db/backups/
 # Ignore all logfiles and tempfiles.
 /log/*.log
 /log/*.tmp

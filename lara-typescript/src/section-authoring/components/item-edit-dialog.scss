@@ -45,6 +45,9 @@
     padding: 10px 15px 30px 10px;
     position: relative;
     width: 425px;
+    &.noPreview {
+      width: unset;
+    }
 
     .actionButtons {
       background: #fff;

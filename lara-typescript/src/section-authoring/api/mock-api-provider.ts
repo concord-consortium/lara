@@ -5,7 +5,8 @@ import {
   APIPageGetF, APIPagesGetF, APIPageItemUpdateF,
   IAuthoringAPIProvider, ISection, ICreatePageItem, ISectionItem, SectionColumns,
   ISectionItemType, APIPageItemDeleteF, ItemId, SectionId, SectionLayouts, ILibraryInteractive,
-  IPortal
+  IPortal,
+  ISectionItemPlugin
 } from "./api-types";
 import { IManagedInteractive } from "../../page-item-authoring/managed-interactives";
 
@@ -307,7 +308,7 @@ const deletePageItem: APIPageItemDeleteF = (args: {pageId: PageId, pageItemId: I
 };
 
 const getAllEmbeddables = () => {
-  const allEmbeddables: ISectionItemType[] = [
+  const allEmbeddables: Array<ISectionItemType|ISectionItemPlugin> = [
     {
       id: "1",
       serializeable_id: "LibraryInteractive_1",
@@ -390,6 +391,22 @@ const getAllEmbeddables = () => {
       useCount: 500,
       dateAdded: 1630440491,
       isQuickAddItem: true
+    },
+    {
+      id: "11",
+      serializeable_id: "Plugin::TeacherEditionWindowShade_11",
+      name: "Window Shade",
+      type: "plugin",
+      useCount: 5,
+      dateAdded: 1630440491,
+      isQuickAddItem: true,
+      components: [{
+        label: "Teacher Tips",
+        name: "Activity",
+        scope: "embeddable",
+        guiAuthoring: true,
+        guiPreview: true
+      }]
     }
   ];
   return Promise.resolve({allEmbeddables});

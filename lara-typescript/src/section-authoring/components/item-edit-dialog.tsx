@@ -5,17 +5,18 @@ import { Modal, ModalButtons } from "../../shared/components/modal/modal";
 import { TextBlockEditForm } from "./text-block-edit-form";
 import { IManagedInteractive, ManagedInteractiveAuthoring } from "../../page-item-authoring/managed-interactives";
 import { IMWInteractive, MWInteractiveAuthoring} from "../../page-item-authoring/mw-interactives";
+import { PluginAuthoring } from "./plugin-authoring";
 import { Save } from "../../shared/components/icons/save-icon";
 import { Close } from "../../shared/components/icons/close-icon";
 import { usePageAPI } from "../hooks/use-api-provider";
 import { UserInterfaceContext } from "../containers/user-interface-provider";
-import { BucketLifecycleConfiguration } from "@aws-sdk/client-s3";
 import { camelToSnakeCaseKeys } from "../../shared/convert-keys";
 import { TextBlockPreview } from "./text-block-preview";
 import { ManagedInteractivePreview } from "./managed-interactive-preview";
 import { MWInteractivePreview } from "./mw-interactive-preview";
 
 import "./item-edit-dialog.scss";
+import classNames from "classnames";
 
 export interface IItemEditDialogProps {
   errorMessage?: string;
@@ -61,6 +62,10 @@ export const ItemEditDialog: React.FC<IItemEditDialogProps> = ({
   const handleMwInteractiveData = (updates: Partial<IMWInteractive>) => {
     const newData = {...itemData, ...updates};
     setItemData(newData);
+  };
+
+  const handlePluginData = (authorData: string) => {
+    setItemData({authorData});
   };
 
   const handleUpdateItem = () => {
@@ -150,7 +155,7 @@ export const ItemEditDialog: React.FC<IItemEditDialogProps> = ({
     return interactive;
   };
 
-  const modalButtons = [
+  const standardModalButtons = [
     {
       classes: "cancel",
       clickHandler: handleCancelUpdateItem,
@@ -167,6 +172,13 @@ export const ItemEditDialog: React.FC<IItemEditDialogProps> = ({
     }
   ];
 
+  let modalButtons = standardModalButtons;
+  if (pageItem && pageItem.type === "Embeddable::EmbeddablePlugin") {
+    // The authoring form of plugins supply their own buttons,
+    // So we remove the standard buttons from the modal.
+    const pluginModalButtons: any[] = [];
+    modalButtons = pluginModalButtons;
+  }
   const getEditForm = (itemToEdit: ISectionItem) => {
     const authoringApiUrls = itemToEdit.authoringApiUrls ? itemToEdit.authoringApiUrls : {};
     switch (itemToEdit.type) {
@@ -201,9 +213,22 @@ export const ItemEditDialog: React.FC<IItemEditDialogProps> = ({
                 handleUpdateItemPreview={handleUpdateItemPreview}
                />;
         break;
+      case "Embeddable::EmbeddablePlugin":
+        return <PluginAuthoring
+          pageItem={itemToEdit}
+          authoringApiUrls={authoringApiUrls}
+          onUpdate={handlePluginData}
+          />;
+        break;
       default:
         return "Editing not supported.";
     }
+  };
+
+  const supportsPreview = () => {
+    return pageItem && pageItem.type === "Embeddable::Xhtml" ||
+           pageItem && pageItem.type === "ManagedInteractive" ||
+           pageItem && pageItem.type === "MwInteractive";
   };
 
   const getPreview = () => {
@@ -237,6 +262,7 @@ export const ItemEditDialog: React.FC<IItemEditDialogProps> = ({
   };
 
   if (pageItem) {
+    const formClassName = classNames({noPreview: !supportsPreview()});
     return (
       <Modal
         title="Edit"
@@ -250,16 +276,18 @@ export const ItemEditDialog: React.FC<IItemEditDialogProps> = ({
               {errorMessage}
             </div>
           }
-          <form id="itemEditForm" onSubmit={handleSubmit}>
+          <form id="itemEditForm" onSubmit={handleSubmit} className={formClassName}>
             {getEditForm(pageItem)}
             <ModalButtons buttons={modalButtons} />
           </form>
-          <div className="itemEditPreview">
-            <h2>Preview</h2>
-            <div className="itemEditPreviewContent">
-              {getPreview()}
-            </div>
-          </div>
+            {supportsPreview() &&
+              <div className="itemEditPreview">
+                <h2>Preview</h2>
+                  <div className="itemEditPreviewContent">
+                  {getPreview()}
+                </div>
+              </div>
+            }
         </div>
       </Modal>
     );

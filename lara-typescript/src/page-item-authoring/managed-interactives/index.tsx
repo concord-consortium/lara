@@ -10,7 +10,6 @@ import { AuthoredState } from "../common/components/authored-state";
 import { AuthoringApiUrls } from "../common/types";
 import { ILinkedInteractive, ISetLinkedInteractives } from "../../interactive-api-client";
 import { debounce } from "ts-debounce";
-import { saveAuthoredPluginState } from "../../plugins/plugin-context";
 
 import "react-tabs/style/react-tabs.css";
 

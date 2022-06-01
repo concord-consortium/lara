@@ -2,4 +2,5 @@
 export interface AuthoringApiUrls {
   get_interactive_list?: string;
   set_linked_interactives?: string;
+  update_plugin_author_data?: string;
 }

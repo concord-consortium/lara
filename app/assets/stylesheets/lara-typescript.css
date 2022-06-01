@@ -1329,9 +1329,15 @@ input, select {
       padding: 0 10px;
       text-align: left;
       width: 100%; }
-      #itemPickerList ul li button.selected, #itemPickerList ul li button:hover {
+      #itemPickerList ul li button.selected {
         background: var(--teal) !important;
         color: white; }
+      #itemPickerList ul li button:hover {
+        background: var(--lt-teal) !important;
+        color: white; }
+        #itemPickerList ul li button:hover.selected {
+          background: var(--teal) !important;
+          color: white; }
       #itemPickerList ul li button.disabled:hover {
         background: transparent !important;
         color: var(--teal); }
@@ -2395,6 +2401,8 @@ dl.textBlockEditForm {
     padding: 10px 15px 30px 10px;
     position: relative;
     width: 425px; }
+    #itemEditDialog #itemEditForm.noPreview {
+      width: unset; }
     #itemEditDialog #itemEditForm .actionButtons {
       background: #fff;
       bottom: 20px;
