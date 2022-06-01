@@ -32596,11 +32596,18 @@ exports.AppComponent = AppComponent;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthoringComponent = void 0;
 var React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+var interactive_api_client_1 = __webpack_require__(/*! ../../../interactive-api-client */ "./src/interactive-api-client/index.ts");
 var AuthoringComponent = function (_a) {
     var initMessage = _a.initMessage;
+    var _b = (0, interactive_api_client_1.useAuthoredState)(), authoredState = _b.authoredState, setAuthoredState = _b.setAuthoredState;
+    var handleChangeSaveTimeout = function (e) {
+        setAuthoredState({
+            onUnloadTimeout: parseInt(e.target.value, 10) || 0
+        });
+    };
     return (React.createElement("div", { className: "padded" },
         React.createElement("div", { className: "padded" },
-            React.createElement("strong", null, "NOTE: there is nothing to author for this interactive.  To use it do the following:"),
+            React.createElement("strong", null, "NOTE: there is nothing required to author for this interactive but there are optional authoring options. To use it do the following:"),
             React.createElement("ol", null,
                 React.createElement("li", null, "Create two interactives using this interactive's url."),
                 React.createElement("li", null, "In the \"Advanced Options\" tab enable saving state in both interactives."),
@@ -32610,6 +32617,13 @@ var AuthoringComponent = function (_a) {
                     " of the two interactives fill in the \"Link Saved Work From\" input to use the first interactive's id (available at the top of this edit popup)."),
                 React.createElement("li", null, "Exit authoring mode and in runtime/preview mode use the textarea to set the interactive state of the first interactive."),
                 React.createElement("li", null, "Go to the second interactive and then look to see if the linked state was updated."))),
+        React.createElement("div", { className: "padded" },
+            React.createElement("fieldset", null,
+                React.createElement("legend", null, "Optional Authoring Options"),
+                React.createElement("label", null,
+                    "OnUnload Save Timeout:\u00A0",
+                    React.createElement("input", { type: "number", value: (authoredState === null || authoredState === void 0 ? void 0 : authoredState.onUnloadTimeout) || 0, onChange: handleChangeSaveTimeout })),
+                React.createElement("small", { className: "padded" }, "Set to 0 to disable, or a positive number of seconds to wait for save on a page change."))),
         React.createElement("fieldset", null,
             React.createElement("legend", null, "Authoring Init Message"),
             React.createElement("div", { className: "padded monospace pre" }, JSON.stringify(initMessage, null, 2)))));
@@ -32673,13 +32687,35 @@ exports.ReportComponent = ReportComponent;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.RuntimeComponent = void 0;
 var React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+var react_1 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 var interactive_api_client_1 = __webpack_require__(/*! ../../../interactive-api-client */ "./src/interactive-api-client/index.ts");
 var RuntimeComponent = function (_a) {
     var initMessage = _a.initMessage;
     var _b = (0, interactive_api_client_1.useInteractiveState)(), interactiveState = _b.interactiveState, setInteractiveState = _b.setInteractiveState;
+    var authoredState = (0, interactive_api_client_1.useAuthoredState)().authoredState;
+    var saveTimeoutRef = React.useRef(0);
     var handleInteractiveStateValueChange = function (event) {
         setInteractiveState(event.target.value);
     };
+    (0, react_1.useEffect)(function () {
+        if (authoredState === null || authoredState === void 0 ? void 0 : authoredState.onUnloadTimeout) {
+            (0, interactive_api_client_1.setOnUnload)(function (options) {
+                return new Promise(function (resolve) {
+                    if (options.unloading) {
+                        if (authoredState === null || authoredState === void 0 ? void 0 : authoredState.onUnloadTimeout) {
+                            clearTimeout(saveTimeoutRef.current);
+                            saveTimeoutRef.current = window.setTimeout(function () {
+                                resolve(interactiveState);
+                            }, authoredState.onUnloadTimeout);
+                        }
+                        else {
+                            resolve(interactiveState);
+                        }
+                    }
+                });
+            });
+        }
+    }, [interactiveState, authoredState]);
     return (React.createElement("div", { className: "padded" },
         React.createElement("fieldset", null,
             React.createElement("legend", null, "Runtime Init Message"),
