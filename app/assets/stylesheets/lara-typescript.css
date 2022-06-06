@@ -1091,6 +1091,7 @@
       background: var(--teal);
       color: white;
       display: flex;
+      height: 16px;
       padding: 10px; }
       .modalContainer .modalBody header h1 {
         clear: none;
@@ -2371,107 +2372,149 @@ dl.textBlockEditForm {
   --lt-gray: hsl(0, 0%, 90%);
   --ltr-gray: hsl(0, 0%, 95%); }
 
-.itemEditDialog fieldset {
-  border: none;
-  margin-top: 20px;
-  margin-bottom: 10px;
-  padding: 0; }
-  .itemEditDialog fieldset label {
-    display: block;
-    margin-bottom: 5px; }
-    .itemEditDialog fieldset label[for="name"] {
-      font-size: 14px;
-      font-weight: bolder; }
-    .itemEditDialog fieldset label.checkboxLabel {
-      display: flex;
-      flex-wrap: wrap;
-      font-size: 14px;
-      margin: 0; }
-      .itemEditDialog fieldset label.checkboxLabel .inputNote {
-        margin-left: 25px;
-        width: 100%; }
-    .itemEditDialog fieldset label.radioLabel {
-      display: inline;
-      margin: 0 0 0 5px; }
-    .itemEditDialog fieldset label input[type="checkbox"] {
-      margin-right: 5px; }
-  .itemEditDialog fieldset legend {
-    font-size: 16px;
-    font-weight: 700;
-    margin-bottom: 10px; }
-  .itemEditDialog fieldset .customizable-label {
-    font-weight: bold;
-    margin: 10px 0 5px 0; }
-  .itemEditDialog fieldset .customizable-option .customizable-option-setting {
-    align-items: center;
+.modalContainer.itemEditDialog {
+  height: 80%;
+  overflow: hidden; }
+  .modalContainer.itemEditDialog .modalBody {
     display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    padding: 5px; }
-    .itemEditDialog fieldset .customizable-option .customizable-option-setting input + label {
-      margin: 0 0 0 5px; }
-    .itemEditDialog fieldset .customizable-option .customizable-option-setting .default-click-to-play-prompt,
-    .itemEditDialog fieldset .customizable-option .customizable-option-setting input#custom-click-to-play-prompt {
-      width: 100%; }
+    flex-direction: column;
+    height: 100%;
+    width: 80%; }
+    .modalContainer.itemEditDialog .modalBody header {
+      width: calc(100% - 20px); }
+    .modalContainer.itemEditDialog .modalBody section {
+      height: calc(100% - 56px);
+      padding: 0; }
+      .modalContainer.itemEditDialog .modalBody section#modalContent div:first-child {
+        height: 100%; }
+        .modalContainer.itemEditDialog .modalBody section#modalContent div:first-child div {
+          height: auto; }
 
-.itemEditDialog input, .itemEditDialog textarea {
-  border: solid 1.5px var(--med-gray);
-  border-radius: 4px;
-  padding: 5px 10px;
-  width: calc(100% - 22px); }
-
-.itemEditDialog input[type="radio"], .itemEditDialog input[type="checkbox"] {
-  width: auto; }
-
-.itemEditDialog textarea {
-  height: 200px; }
-
-.itemEditDialog input[type="checkbox"] {
-  border: solid 1.5px var(--med-gray);
-  border-radius: 5px;
-  cursor: pointer;
-  height: 20px;
-  line-height: 1;
-  margin: 0;
-  padding: 0;
-  position: relative;
-  width: 20px;
-  -webkit-appearance: none; }
-  .itemEditDialog input[type="checkbox"]:checked {
-    background: var(--teal); }
-    .itemEditDialog input[type="checkbox"]:checked:after {
-      border: solid white;
-      border-width: 0 3px 3px 0;
-      color: white;
-      content: " ";
+#itemEditDialog {
+  display: flex;
+  gap: 0;
+  height: 100% !important;
+  overflow: hidden; }
+  #itemEditDialog #itemEditForm {
+    height: calc(100% - 60px);
+    overflow: auto;
+    padding: 10px 15px 30px 10px;
+    position: relative;
+    width: 425px; }
+    #itemEditDialog #itemEditForm.noPreview {
+      width: unset; }
+    #itemEditDialog #itemEditForm .actionButtons {
+      background: #fff;
+      bottom: 20px;
+      left: 1px;
+      padding: 5px;
+      position: fixed;
+      width: 420px;
+      z-index: 5; }
+  #itemEditDialog fieldset {
+    border: none;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    padding: 0; }
+    #itemEditDialog fieldset label {
       display: block;
-      height: 10px;
-      left: 5px;
-      position: absolute;
-      top: 0;
-      width: 5px;
-      -webkit-transform: rotate(40deg);
-      -ms-transform: rotate(40deg);
-      transform: rotate(40deg); }
-  .itemEditDialog input[type="checkbox"]:hover:after {
-    color: var(--lt-teal); }
-  .itemEditDialog input[type="checkbox"]:active:after {
-    color: var(--teal); }
-
-.itemEditDialog .inputNote {
-  color: var(--med-gray);
-  font-size: 14px;
-  font-style: italic; }
-
-.itemEditDialog .react-tabs legend {
-  border-top: solid 1.5px var(--lt-gray);
-  display: block;
-  padding-top: 15px;
-  width: 100%; }
-
-.itemEditDialog .react-tabs div fieldset:first-child legend {
-  border-top: none;
-  padding-top: 0; }
+      margin-bottom: 5px; }
+      #itemEditDialog fieldset label[for="name"] {
+        font-size: 14px;
+        font-weight: bolder; }
+      #itemEditDialog fieldset label.checkboxLabel {
+        display: flex;
+        flex-wrap: wrap;
+        font-size: 14px;
+        margin: 0; }
+        #itemEditDialog fieldset label.checkboxLabel .inputNote {
+          margin-left: 25px;
+          width: 100%; }
+      #itemEditDialog fieldset label.radioLabel {
+        display: inline;
+        margin: 0 0 0 5px; }
+      #itemEditDialog fieldset label input[type="checkbox"] {
+        margin-right: 5px; }
+    #itemEditDialog fieldset legend {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 10px; }
+    #itemEditDialog fieldset .customizable-label {
+      font-weight: bold;
+      margin: 10px 0 5px 0; }
+    #itemEditDialog fieldset .customizable-option .customizable-option-setting {
+      align-items: center;
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      padding: 5px; }
+      #itemEditDialog fieldset .customizable-option .customizable-option-setting input + label {
+        margin: 0 0 0 5px; }
+      #itemEditDialog fieldset .customizable-option .customizable-option-setting .default-click-to-play-prompt,
+      #itemEditDialog fieldset .customizable-option .customizable-option-setting input#custom-click-to-play-prompt {
+        width: 100%; }
+  #itemEditDialog input, #itemEditDialog textarea {
+    border: solid 1.5px var(--med-gray);
+    border-radius: 4px;
+    padding: 5px 10px;
+    width: calc(100% - 22px); }
+  #itemEditDialog input[type="radio"], #itemEditDialog input[type="checkbox"] {
+    width: auto; }
+  #itemEditDialog textarea {
+    height: 200px; }
+  #itemEditDialog input[type="checkbox"] {
+    border: solid 1.5px var(--med-gray);
+    border-radius: 5px;
+    cursor: pointer;
+    height: 20px;
+    line-height: 1;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    width: 20px;
+    -webkit-appearance: none; }
+    #itemEditDialog input[type="checkbox"]:checked {
+      background: var(--teal); }
+      #itemEditDialog input[type="checkbox"]:checked:after {
+        border: solid white;
+        border-width: 0 3px 3px 0;
+        color: white;
+        content: " ";
+        display: block;
+        height: 10px;
+        left: 5px;
+        position: absolute;
+        top: 0;
+        width: 5px;
+        -webkit-transform: rotate(40deg);
+        -ms-transform: rotate(40deg);
+        transform: rotate(40deg); }
+    #itemEditDialog input[type="checkbox"]:hover:after {
+      color: var(--lt-teal); }
+    #itemEditDialog input[type="checkbox"]:active:after {
+      color: var(--teal); }
+  #itemEditDialog .inputNote {
+    color: var(--med-gray);
+    font-size: 14px;
+    font-style: italic; }
+  #itemEditDialog .react-tabs legend {
+    border-top: solid 1.5px var(--lt-gray);
+    display: block;
+    padding-top: 15px;
+    width: 100%; }
+  #itemEditDialog .react-tabs div fieldset:first-child legend {
+    border-top: none;
+    padding-top: 0; }
+  #itemEditDialog .itemEditPreview {
+    background: var(--ltst-teal);
+    padding: 10px;
+    width: calc(100% - 425px); }
+    #itemEditDialog .itemEditPreview h2 {
+      font-size: 16px;
+      font-weight: 700;
+      margin: 0 0 5px; }
+    #itemEditDialog .itemEditPreview .previewNote {
+      font-style: italic; }
 
 @font-face {
   font-family: 'Lato-Light';

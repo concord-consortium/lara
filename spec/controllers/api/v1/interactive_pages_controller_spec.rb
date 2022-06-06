@@ -267,10 +267,10 @@ describe Api::V1::InteractivePagesController do
             image_url: library_interactive1.image_url, 
             name: library_interactive1.name, 
             native_height: library_interactive1.native_height, 
-            native_width: library_interactive1.native_width, 
+            native_width: library_interactive1.native_width,
             no_snapshots: library_interactive1.no_snapshots, 
             serializeable_id: library_interactive1.serializeable_id,
-            show_delete_data_button: library_interactive1.show_delete_data_button, 
+            show_delete_data_button: library_interactive1.show_delete_data_button,
             thumbnail_url: library_interactive1.thumbnail_url, 
             updated_at: library_interactive1.updated_at,
             use_count: 1
@@ -302,7 +302,9 @@ describe Api::V1::InteractivePagesController do
             updated_at: library_interactive2.updated_at,
             use_count: 0
           }
-        ]
+        ],
+        # TODO: Add some page-level plugins to test...
+        plugins: []
       }.to_json)
     end
   end
@@ -399,7 +401,8 @@ describe Api::V1::InteractivePagesController do
             is_hidden: new_data[:is_hidden],
             is_half_width: new_data[:is_half_width],
             is_callout: new_data[:is_callout]
-          }
+          },
+          authoring_api_urls: {}
         }.to_json
       )
     end

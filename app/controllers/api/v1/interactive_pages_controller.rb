@@ -89,7 +89,7 @@ class Api::V1::InteractivePagesController < API::APIController
       @interactive_page.update_attributes({
         name: page_params['name'],
         is_completion: page_params['isCompletion'],
-        is_hidden: page_params['isHidden'],
+        is_hidden: page_params['isHidden']
       })
 
       if page_params['isCompletion']
@@ -220,13 +220,35 @@ class Api::V1::InteractivePagesController < API::APIController
     when /LibraryInteractive/
       library_interactive = LibraryInteractive.find_by_serializeable_id(embeddable_type)
       return error("Invalid page_item[embeddable] parameter") if library_interactive.nil?
+
       embeddable = ManagedInteractive.create!(library_interactive_id: library_interactive.id)
     when /MwInteractive/
       embeddable = MwInteractive.create!
     when /Embeddable::Xhtml/
       embeddable = Embeddable::Xhtml.create!
+    when /Plugin_(\d+)::windowShade/
+      # Parse the embeddable_type string to get the approved_script id
+      # as well as the plugin_type
+      # For windowshade items we need to create a new embeddable of type
+      # Embeddable::Plugin and then associate it with the plugin.
+      # 1. Create a plugin with the instance of the approved_script
+      # 2. Create a Embeddable::EmbeddablePlugin
+      # Example: "Plugin_10::windowShade"
+      # IMPORTANT: 'windowShade' as the component_label is critical.
+      tip_type = 'windowShade'
+      regex = /Plugin_(\d+)::windowShade/
+      script_id = embeddable_type.match(regex)[1]
+      author_data = { tipType: tip_type }.to_json
+      # I am following the convention I saw in interactive_pages_controller.rb
+      embeddable = Embeddable::EmbeddablePlugin.create!
+      embeddable.approved_script_id = script_id
+      embeddable.author_data = author_data
+      embeddable.component_label = tip_type
+      embeddable.is_half_width = false
+      embeddable.save!
+
     else
-      return error("Only library interactive embeddables, iFrame interactives, and text blocks are currently supported")
+      return error("Unknown embbeddable_type: #{embeddable_type}\nOnly library interactive embeddables, iFrame interactives, and text blocks are currently supported")
     end
 
     @interactive_page.add_embeddable(embeddable, position, section.id, column)
@@ -241,6 +263,7 @@ class Api::V1::InteractivePagesController < API::APIController
       type: pi.embeddable_type,
       data: pi.embeddable.to_hash # using pi.embeddable.to_interactive here broke editing/saving by sending unnecessary/incorrect data back
     }
+
     render json: result.to_json
   end
 
@@ -284,17 +307,7 @@ class Api::V1::InteractivePagesController < API::APIController
       end
     end
     @interactive_page.reload
-
-    embeddable.reload
-    pi = embeddable.p_item
-    result = {
-      id: pi.id.to_s,
-      column: pi.column,
-      position: pi.position,
-      type: pi.embeddable_type,
-      data: pi.embeddable.to_hash # using pi.embeddable.to_interactive here broke editing/saving by sending unnecessary/incorrect data back
-    }
-    render json: result.to_json
+    render json: embeddable_to_edit_hash(embeddable).to_json
   end
 
   def delete_page_item
@@ -330,15 +343,38 @@ class Api::V1::InteractivePagesController < API::APIController
     }
   end
 
+  private
+  def get_teacher_edition_plugins
+    required_version = [3]
+    required_label = ["teacherEditionTips"]
+    ApprovedScript.where(:version => required_version, :label => required_label)
+  end
+
+  private
+  def map_plugin_to_hash(plugin)
+    {
+      id: plugin.id,
+      name: plugin.name,
+      label: plugin.label,
+      description: plugin.description,
+      version: plugin.version,
+      authoring_metadata: JSON.parse(plugin.authoring_metadata)
+    }
+  end
+
+  public
   def get_library_interactives_list
     library_interactives = LibraryInteractive
       .select("library_interactives.*, CONCAT('LibraryInteractive_', library_interactives.id) as serializeable_id, count(managed_interactives.id) as use_count, UNIX_TIMESTAMP(library_interactives.created_at) as date_added")
       .joins("LEFT JOIN managed_interactives ON managed_interactives.linked_interactive_id = library_interactives.id")
       .group('library_interactives.id')
 
+    plugins = get_teacher_edition_plugins.map { |plugin| map_plugin_to_hash(plugin) }
+
     render :json => {
       success: true,
-      library_interactives: library_interactives
+      library_interactives: library_interactives,
+      plugins: plugins
     }
   end
 
@@ -390,17 +426,12 @@ class Api::V1::InteractivePagesController < API::APIController
   end
 
   private
-
   def generate_item_json(page_item)
     embeddable = page_item.embeddable
-    {
-      id: page_item.id.to_s,
-      column: page_item.column,
-      position: page_item.position,
-      type: page_item.embeddable_type,
-      data: embeddable.to_hash, # using `to_interactive` here broke editing/saving by sending incorrect data back
-      authoringApiUrls: embeddable.respond_to?(:authoring_api_urls) ? embeddable.authoring_api_urls(request.protocol, request.host_with_port) : {}
-    }
+    if (embeddable.nil?)
+      return { error: "WARNING: page_item #{page_item.id} has no embeddable" }
+    end
+    embeddable_to_edit_hash(embeddable)
   end
 
   def generate_section_json(section)
@@ -440,4 +471,25 @@ class Api::V1::InteractivePagesController < API::APIController
     end
   end
 
+  def embeddable_to_edit_hash(embeddable)
+    embeddable.reload
+    pi = embeddable.p_item
+    e = pi.embeddable
+    # EM & NP ~2021: using pi.embeddable.to_interactive here broke editing/saving
+    #   by sending unnecessary/incorrect data back
+    data_hash = e.to_hash
+
+    # NP 2022-05-27: we need to allow embeddables to customize their editing
+    #   hash
+    data_hash = e.to_editing_hash if e.respond_to?(:to_editing_hash)
+
+    {
+      id: pi.id.to_s,
+      column: pi.column,
+      position: pi.position,
+      type: pi.embeddable_type,
+      data: data_hash,
+      authoring_api_urls: embeddable.respond_to?(:authoring_api_urls) ? embeddable.authoring_api_urls(request.protocol, request.host_with_port) : {}
+    }
+  end
 end

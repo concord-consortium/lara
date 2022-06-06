@@ -156,6 +156,7 @@
     "react-query": "^3.21.0",
     "react-select": "^3.2.0",
     "react-tabs": "^3.2.2",
+    "ts-debounce": "^4.0.0",
     "use-immer": "^0.6.0",
     "uuid": "^8.3.2"
   }

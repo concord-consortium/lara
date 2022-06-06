@@ -1,3 +1,5 @@
+import { IPluginAuthoringMetaDataComponent, IPluginType } from "./plugin-types";
+
 export type SectionId = string;
 export type PageId = string;
 export type ItemId = string;
@@ -41,6 +43,11 @@ export interface ISectionItemType {
   useCount: number;
   dateAdded: number;
   isQuickAddItem?: boolean;
+}
+
+export interface ISectionItemPlugin extends ISectionItemType {
+  type: "plugin";
+  components: IPluginAuthoringMetaDataComponent [];
 }
 
 export interface ICreatePageItem {
@@ -165,6 +172,21 @@ export interface IMWInteractiveData {
   url: string;
 }
 
+type IApprovedScript = any;
+export interface IEmbeddablePluginData {
+  plugin: {
+    approved_script: IApprovedScript;
+    approved_script_label: "teacherEditionTips";
+    author_data: string;
+    component_label: "windowShade";
+    description: string;
+    id: number;
+  };
+  embeddable_id: number;
+  is_half_width: boolean;
+  is_hidden: boolean;
+}
+
 export interface ISection {
   /**
    * Can the smaller side collapse?
@@ -269,7 +291,7 @@ export type APIPageItemUpdateF = (args: {pageId: PageId, sectionItem: ISectionIt
 export type APIPageItemCopyF = (args: {pageId: PageId, sectionItemId: ItemId}) => Promise<ISectionItem>;
 export type APIGetPreviewOptionsF = (args: {pageId: PageId | null}) => Promise<Record<string, string>|null>;
 /**
- * The implementation providing the API has to conform to this provider API
+ * The implementation providing the API must conform to this provider API
  */
 export interface IAuthoringAPIProvider {
   getPages: APIPagesGetF;

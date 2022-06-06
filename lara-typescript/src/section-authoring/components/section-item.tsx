@@ -1,8 +1,10 @@
 import * as React from "react";
+import { useEffect, useRef, useState } from "react";
 import { usePageAPI } from "../hooks/use-api-provider";
 import { GripLines } from "../../shared/components/icons/grip-lines";
 import { UserInterfaceContext } from "../containers/user-interface-provider";
 import { TextBlockPreview } from "./text-block-preview";
+import { PluginPreview } from "./plugin-preview";
 import { ManagedInteractivePreview } from "./managed-interactive-preview";
 import { MWInteractivePreview } from "./mw-interactive-preview";
 
@@ -58,6 +60,19 @@ export const SectionItem: React.FC<ISectionItemProps> = ({
   const pageItem = pageItems.find(pi => pi.id === id);
   const { userInterface: {movingItemId}, actions: {setMovingItemId}} = React.useContext(UserInterfaceContext);
   const { userInterface: {editingItemId}, actions: {setEditingItemId}} = React.useContext(UserInterfaceContext);
+  const [isBeingUpdated, setIsBeingUpdated] = useState<boolean>(false);
+  const prevEditingItemId = useRef<string>("");
+
+  useEffect(() => {
+    if (editingItemId === id) {
+      setIsBeingUpdated(true);
+    } else if (isBeingUpdated && prevEditingItemId.current === id) {
+      setIsBeingUpdated(false);
+    }
+    if (editingItemId) {
+      prevEditingItemId.current = editingItemId;
+    }
+  }, [editingItemId]);
 
   const renderTitle = () => (
     <>
@@ -89,17 +104,18 @@ export const SectionItem: React.FC<ISectionItemProps> = ({
     switch (pageItem?.type) {
       case "Embeddable::Xhtml":
         return <TextBlockPreview pageItem={pageItem} />;
-        break;
       case "ManagedInteractive":
         return <ManagedInteractivePreview pageItem={pageItem} />;
-        break;
       case "MwInteractive":
         return <MWInteractivePreview pageItem={pageItem} />;
+        break;
+      case "Embeddable::EmbeddablePlugin":
+        return <PluginPreview pageItem={pageItem} />;
         break;
       default:
         return (
           <div className="previewNotSupported">
-            <span>Authoring mode preview not supported.</span>
+            <span>Authoring mode preview not supported for "{pageItem?.type}"</span>
           </div>
         );
     }

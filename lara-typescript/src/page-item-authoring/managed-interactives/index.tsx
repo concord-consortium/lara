@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState, useRef } from "react";
+import { useCallback, useState, useRef } from "react";
 import { Tabs, TabList, Tab, TabPanel} from "react-tabs";
 import { ILibraryInteractive } from "../common/hooks/use-library-interactives";
 import { InteractiveAuthoring } from "../common/components/interactive-authoring";
@@ -9,7 +9,7 @@ import { useCurrentUser } from "../common/hooks/use-current-user";
 import { AuthoredState } from "../common/components/authored-state";
 import { AuthoringApiUrls } from "../common/types";
 import { ILinkedInteractive, ISetLinkedInteractives } from "../../interactive-api-client";
-import { saveAuthoredPluginState } from "../../plugins/plugin-context";
+import { debounce } from "ts-debounce";
 
 import "react-tabs/style/react-tabs.css";
 
@@ -19,6 +19,7 @@ interface Props {
   defaultClickToPlayPrompt: string;
   authoringApiUrls: AuthoringApiUrls;
   onUpdate?: (updates: Partial<IManagedInteractive>) => void;
+  handleUpdateItemPreview?: (updates: Record<string, any>) => void;
 }
 
 interface ISelectOption {
@@ -64,7 +65,8 @@ export const ManagedInteractiveAuthoring: React.FC<Props> = (props) => {
     managedInteractive,
     defaultClickToPlayPrompt,
     authoringApiUrls,
-    onUpdate
+    onUpdate,
+    handleUpdateItemPreview
   } = props;
   const { name, is_half_width } = managedInteractive;
   const libraryInteractiveIdRef = useRef<HTMLInputElement|null>(null);
@@ -76,6 +78,14 @@ export const ManagedInteractiveAuthoring: React.FC<Props> = (props) => {
   const handleUrlFragmentBlur = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setUrlFragment(e.target.value);
   };
+
+  const _updatePreview = (updates: any) => {
+    if (handleUpdateItemPreview !== undefined) {
+      handleUpdateItemPreview({authoredState: updates});
+    }
+  };
+
+  const updatePreview = useCallback(debounce(_updatePreview, 500), []);
 
   const renderRequiredFields = () => {
     if (!libraryInteractive) {
@@ -129,6 +139,9 @@ export const ManagedInteractiveAuthoring: React.FC<Props> = (props) => {
         libraryInteractiveAuthoredStateRef.current.value = typeof newAuthoredState === "string"
           ? newAuthoredState
           : JSON.stringify(newAuthoredState);
+        if (handleUpdateItemPreview !== undefined) {
+          updatePreview(libraryInteractiveAuthoredStateRef.current.value);
+        }
       }
     };
 
