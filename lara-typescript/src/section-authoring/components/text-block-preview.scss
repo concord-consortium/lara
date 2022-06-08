@@ -1,5 +1,6 @@
 @import "../../vars.scss";
 .textBlock {
+  font-family: var(--font-family-default);
   font-size: 16px;
 
   &.callout {
@@ -32,5 +33,9 @@
     font-family: var(--font-family-bold);
     font-weight: bold;
     margin: 10px 10px 0;
+  }
+
+  b, strong {
+    font-family: var(--font-family-bold);
   }
 }
