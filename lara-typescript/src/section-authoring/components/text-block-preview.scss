@@ -22,6 +22,10 @@
         height: auto;
         max-width: 100%;
       }
+
+      b, strong {
+        font-family: var(--font-family-bold) !important;
+      }
     }
   }
 
@@ -36,6 +40,6 @@
   }
 
   b, strong {
-    font-family: var(--font-family-bold);
+    font-family: var(--font-family-bold) !important;
   }
 }
