@@ -709,6 +709,8 @@
     .textBlock.callout .textBlockContent img {
       height: auto;
       max-width: 100%; }
+    .textBlock.callout .textBlockContent b, .textBlock.callout .textBlockContent strong {
+      font-family: var(--font-family-bold) !important; }
   .textBlock p {
     margin: 0 10px 20px; }
   .textBlock .textBlockName {
@@ -716,6 +718,8 @@
     font-family: var(--font-family-bold);
     font-weight: bold;
     margin: 10px 10px 0; }
+  .textBlock b, .textBlock strong {
+    font-family: var(--font-family-bold) !important; }
 
 @font-face {
   font-family: 'Lato-Light';
