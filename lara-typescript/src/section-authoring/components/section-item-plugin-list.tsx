@@ -21,8 +21,10 @@ export const SectionItemPluginList: React.FC<ISectionItemPluginListProps> = ({
   const availablePlugins = useGetAvailablePlugins();
   const pageItemPlugins = useGetPageItemPlugins(sectionItemId);
   const pageItemEmbeddableMetaData = useGetPageItemEmbeddableMetaData(sectionItemId);
-  const { userInterface: {editingItemId}, actions: {setEditingItemId}} = React.useContext(UserInterfaceContext);
-  const { userInterface: {wrappedItemId}, actions: {setWrappedItemId}} = React.useContext(UserInterfaceContext);
+  const {
+    userInterface: {editingItemId, wrappedItemId},
+    actions: {setEditingItemId, setWrappedItemId}
+  } = React.useContext(UserInterfaceContext);
   const api = usePageAPI();
   const [selectedPluginType, setSelectedPluginType] = React.useState<string>("");
 

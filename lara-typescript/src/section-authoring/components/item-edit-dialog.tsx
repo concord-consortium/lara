@@ -25,8 +25,10 @@ export interface IItemEditDialogProps {
 export const ItemEditDialog: React.FC<IItemEditDialogProps> = ({
   errorMessage
   }: IItemEditDialogProps) => {
-  const { userInterface: {editingItemId}, actions: {setEditingItemId}} = React.useContext(UserInterfaceContext);
-  const { userInterface: {wrappedItemId}, actions: {setWrappedItemId}} = React.useContext(UserInterfaceContext);
+  const {
+    userInterface: {editingItemId, wrappedItemId},
+    actions: {setEditingItemId, setWrappedItemId}
+  } = React.useContext(UserInterfaceContext);
   const { getItems, updatePageItem, getLibraryInteractives } = usePageAPI();
   const pageItems = getItems();
   const pageItem = pageItems.find(pi => pi.id === editingItemId);

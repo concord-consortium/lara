@@ -66,8 +66,10 @@ export const SectionItem: React.FC<ISectionItemProps> = ({
   const api = usePageAPI();
   const pageItems = api.getItems();
   const pageItem = pageItems.find(pi => pi.id === id);
-  const { userInterface: {movingItemId}, actions: {setMovingItemId}} = React.useContext(UserInterfaceContext);
-  const { userInterface: {editingItemId}, actions: {setEditingItemId}} = React.useContext(UserInterfaceContext);
+  const {
+    userInterface: {editingItemId, movingItemId},
+    actions: {setEditingItemId, setMovingItemId}
+  } = React.useContext(UserInterfaceContext);
   const [isBeingUpdated, setIsBeingUpdated] = useState<boolean>(false);
   const prevEditingItemId = useRef<string>("");
   let supportsPlugins = false;

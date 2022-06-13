@@ -18,8 +18,10 @@ export const SectionItemPlugin: React.FC<ISectionItemPluginProps> = ({
   }: ISectionItemPluginProps) => {
   const { name, sectionItemId } = plugin;
   const api = usePageAPI();
-  const { userInterface: {editingItemId}, actions: {setEditingItemId}} = React.useContext(UserInterfaceContext);
-  const { userInterface: {wrappedItemId}, actions: {setWrappedItemId}} = React.useContext(UserInterfaceContext);
+  const {
+    userInterface: {editingItemId, wrappedItemId},
+    actions: {setEditingItemId, setWrappedItemId}
+  } = React.useContext(UserInterfaceContext);
 
   const handleEdit = () => {
     setEditingItemId(sectionItemId.toString());
