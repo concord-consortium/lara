@@ -60,24 +60,6 @@ export const PluginPreview: React.FC<IPluginPreviewProps> = ({
           offlineMode: false,
           container: containerDiv.current!,
           wrappedEmbeddable: null,
-          /**** TODO: Handle Wrapped Embeddable for other plugin types
-           #{!wrapped_embeddable ? 'null' : "{
-            container: wrappedDiv,
-            laraJson: #{wrapped_embeddable_lara_json},
-            interactiveStateUrl: null,
-            interactiveAvailable: #{!click_to_play}
-          }"},
-            if ($('#wrapped_embeddable').length > 0) {
-            const interactiveContainer = $('#wrapped_embeddable').find('.interactive-container')[0];
-            renderInteractiveAuthoringPreview(interactiveContainer, {
-            interactive: #{wrapped_embeddable
-                && defined?(wrapped_embeddable.to_authoring_preview_hash)
-                ? wrapped_embeddable.to_authoring_preview_hash().to_json
-                : 'null'},
-            user: #{userInfo.to_json}
-          });
-        }
-          **/
           firebaseJwtUrl,
           portalJwtUrl
         };

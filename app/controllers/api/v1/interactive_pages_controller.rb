@@ -2,6 +2,7 @@ class Api::V1::InteractivePagesController < API::APIController
   layout false
   before_filter :set_interactive_page, except: [
     :get_library_interactives_list,
+    :get_wrapping_plugins_list,
     :get_portal_list,
     :get_pages,
     :create_page
@@ -215,7 +216,7 @@ class Api::V1::InteractivePagesController < API::APIController
     position = position.to_i unless position.nil?
     column = page_item_params["column"] || PageItem::COLUMN_PRIMARY
 
-    # currently we only support library interactives and text blocks, this will change later
+    # currently we only support library interactives, iframe interactives, and text blocks, this will change later
     case embeddable_type
     when /LibraryInteractive/
       library_interactive = LibraryInteractive.find_by_serializeable_id(embeddable_type)
@@ -246,7 +247,27 @@ class Api::V1::InteractivePagesController < API::APIController
       embeddable.component_label = tip_type
       embeddable.is_half_width = false
       embeddable.save!
-
+    when /Plugin_(\d+)::questionWrapper/
+      # Parse the embeddable_type string to get the approved_script id
+      # as well as the plugin_type
+      # For question wrapper items we need to create a new embeddable of type
+      # Embeddable::Plugin and then associate it with the plugin.
+      # 1. Create a plugin with the instance of the approved_script
+      # 2. Create a Embeddable::EmbeddablePlugin
+      # Example: "Plugin_10::questionWrapper"
+      # IMPORTANT: 'questionWrapper' as the component_label is critical.
+      tip_type = 'questionWrapper'
+      regex = /Plugin_(\d+)::questionWrapper/
+      script_id = embeddable_type.match(regex)[1]
+      author_data = { tipType: tip_type }.to_json
+      embeddable = Embeddable::EmbeddablePlugin.create!
+      embeddable.approved_script_id = script_id
+      embeddable.author_data = author_data
+      embeddable.component_label = tip_type
+      embeddable.embeddable_id = page_item_params["wrapped_embeddable_id"]
+      embeddable.embeddable_type = page_item_params["wrapped_embeddable_type"]
+      embeddable.is_half_width = false
+      embeddable.save!
     else
       return error("Unknown embbeddable_type: #{embeddable_type}\nOnly library interactive embeddables, iFrame interactives, and text blocks are currently supported")
     end
@@ -319,7 +340,7 @@ class Api::V1::InteractivePagesController < API::APIController
 
     # The page_item must be in the current page:
     @interactive_page.page_items.each do |page_item|
-      if page_item.id.to_s == page_item_id
+      if page_item.id.to_s == page_item_id.to_s
         changed = true
         page_item.destroy
       end
@@ -340,6 +361,28 @@ class Api::V1::InteractivePagesController < API::APIController
     render :json => {
       success: true,
       portals: portals
+    }
+  end
+
+  def get_wrapping_plugins_list
+    plugins = []
+    available_plugins = ApprovedScript.authoring_menu_items("embeddable-decoration")
+    available_plugins.each do |plugin|
+      component_label = plugin.component_label
+      component_name = plugin.component_name
+      id = plugin.approved_script_id
+      name = plugin.name
+      plugins.push({
+        :component_label => component_label,
+        :component_name => component_name,
+        :id => id,
+        :name => name
+      })
+    end
+
+    render :json => {
+      success: true,
+      plugins: plugins
     }
   end
 
@@ -407,6 +450,7 @@ class Api::V1::InteractivePagesController < API::APIController
           i = pi.embeddable
           {
             id: "interactive_#{pi.id}",
+            embeddableId: pi.embeddable_id,
             pageId: @interactive_page.id,
             name: i.name,
             section: pi.section != nil ? pi.section.title : Section::DEFAULT_SECTION_TITLE,

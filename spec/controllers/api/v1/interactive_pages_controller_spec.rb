@@ -99,11 +99,11 @@ describe Api::V1::InteractivePagesController do
         expect(response.body).to eql({
           success: true,
           interactives: [
-            {id: interactive2.interactive_item_id, pageId: page.id, name: interactive2.name, section: Section::HEADER_BLOCK, url: interactive2.url, thumbnailUrl: nil, supportsSnapshots: false},
-            {id: interactive5.interactive_item_id, pageId: page.id, name: interactive5.name, section: Section::HEADER_BLOCK, url: "http://bar.com/test2", thumbnailUrl: "http://thumbnail.url", supportsSnapshots: false},
-            {id: interactive1.interactive_item_id, pageId: page.id, name: interactive1.name, section: Section::INTERACTIVE_BOX, url: interactive1.url, thumbnailUrl: nil, supportsSnapshots: true},
-            {id: interactive4.interactive_item_id, pageId: page.id, name: interactive4.name, section: Section::INTERACTIVE_BOX, url: "http://foo.com/test1", thumbnailUrl: nil, supportsSnapshots: true},
-            {id: interactive3.interactive_item_id, pageId: page.id, name: interactive3.name, section: Section::DEFAULT_SECTION_TITLE, url: interactive3.url, thumbnailUrl: nil, supportsSnapshots: true}
+            {id: interactive2.interactive_item_id, embeddableId: interactive2.id, pageId: page.id, name: interactive2.name, section: Section::HEADER_BLOCK, url: interactive2.url, thumbnailUrl: nil, supportsSnapshots: false},
+            {id: interactive5.interactive_item_id, embeddableId: interactive5.id, pageId: page.id, name: interactive5.name, section: Section::HEADER_BLOCK, url: "http://bar.com/test2", thumbnailUrl: "http://thumbnail.url", supportsSnapshots: false},
+            {id: interactive1.interactive_item_id, embeddableId: interactive1.id, pageId: page.id, name: interactive1.name, section: Section::INTERACTIVE_BOX, url: interactive1.url, thumbnailUrl: nil, supportsSnapshots: true},
+            {id: interactive4.interactive_item_id, embeddableId: interactive4.id, pageId: page.id, name: interactive4.name, section: Section::INTERACTIVE_BOX, url: "http://foo.com/test1", thumbnailUrl: nil, supportsSnapshots: true},
+            {id: interactive3.interactive_item_id, embeddableId: interactive3.id, pageId: page.id, name: interactive3.name, section: Section::DEFAULT_SECTION_TITLE, url: interactive3.url, thumbnailUrl: nil, supportsSnapshots: true}
           ]
         }.to_json)
       end
@@ -115,9 +115,9 @@ describe Api::V1::InteractivePagesController do
         expect(response.body).to eql({
           success: true,
           interactives: [
-            {id: interactive1.interactive_item_id, pageId: page.id, name: interactive1.name, section: Section::INTERACTIVE_BOX, url: interactive1.url, thumbnailUrl: nil, supportsSnapshots: true},
-            {id: interactive4.interactive_item_id, pageId: page.id, name: interactive4.name, section: Section::INTERACTIVE_BOX, url: "http://foo.com/test1", thumbnailUrl: nil, supportsSnapshots: true},
-            {id: interactive3.interactive_item_id, pageId: page.id, name: interactive3.name, section: Section::DEFAULT_SECTION_TITLE, url: interactive3.url, thumbnailUrl: nil, supportsSnapshots: true}
+            {id: interactive1.interactive_item_id, embeddableId: interactive1.id, pageId: page.id, name: interactive1.name, section: Section::INTERACTIVE_BOX, url: interactive1.url, thumbnailUrl: nil, supportsSnapshots: true},
+            {id: interactive4.interactive_item_id, embeddableId: interactive4.id, pageId: page.id, name: interactive4.name, section: Section::INTERACTIVE_BOX, url: "http://foo.com/test1", thumbnailUrl: nil, supportsSnapshots: true},
+            {id: interactive3.interactive_item_id, embeddableId: interactive3.id, pageId: page.id, name: interactive3.name, section: Section::DEFAULT_SECTION_TITLE, url: interactive3.url, thumbnailUrl: nil, supportsSnapshots: true}
           ]
         }.to_json)
       end
@@ -129,8 +129,8 @@ describe Api::V1::InteractivePagesController do
         expect(response.body).to eql({
           success: true,
           interactives: [
-            {id: interactive2.interactive_item_id, pageId: page.id, name: interactive2.name, section: InteractivePage::HEADER_BLOCK, url: interactive2.url, thumbnailUrl: nil, supportsSnapshots: false},
-            {id: interactive5.interactive_item_id, pageId: page.id, name: interactive5.name, section: InteractivePage::HEADER_BLOCK, url: "http://bar.com/test2", thumbnailUrl: "http://thumbnail.url", supportsSnapshots: false}
+            {id: interactive2.interactive_item_id, embeddableId: interactive2.id, pageId: page.id, name: interactive2.name, section: InteractivePage::HEADER_BLOCK, url: interactive2.url, thumbnailUrl: nil, supportsSnapshots: false},
+            {id: interactive5.interactive_item_id, embeddableId: interactive5.id, pageId: page.id, name: interactive5.name, section: InteractivePage::HEADER_BLOCK, url: "http://bar.com/test2", thumbnailUrl: "http://thumbnail.url", supportsSnapshots: false}
           ]
         }.to_json)
       end
@@ -222,6 +222,30 @@ describe Api::V1::InteractivePagesController do
       xhr :post, "create_page_item", {id: page.id, page_item: {
         section_id: section.id,
         embeddable: "MwInteractive",
+        position: 1,
+        section_position: 1,
+        column: PageItem::COLUMN_PRIMARY
+      }}
+      expect(response.status).to eq(200)
+      expect(response.content_type).to eq("application/json")
+    end
+
+    it "succeeds with valid windowshade plugin parameters" do
+      xhr :post, "create_page_item", {id: page.id, page_item: {
+        section_id: section.id,
+        embeddable: "Plugin_1::windowShade",
+        position: 1,
+        section_position: 1,
+        column: PageItem::COLUMN_PRIMARY
+      }}
+      expect(response.status).to eq(200)
+      expect(response.content_type).to eq("application/json")
+    end
+
+    it "succeeds with valid question wrapper plugin parameters" do
+      xhr :post, "create_page_item", {id: page.id, page_item: {
+        section_id: section.id,
+        embeddable: "Plugin_1::questionWrapper",
         position: 1,
         section_position: 1,
         column: PageItem::COLUMN_PRIMARY

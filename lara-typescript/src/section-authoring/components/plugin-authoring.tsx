@@ -1,77 +1,130 @@
 import * as React from "react";
 import { initPlugin, setNextPluginLabel } from "../../plugins/plugins";
 import { AuthoringApiUrls } from "../../page-item-authoring/common/types";
-import { IPluginAuthoringContextOptions } from "../../plugins/plugin-context";
+import { renderInteractiveAuthoringPreview } from "../../page-item-authoring";
+import { IEmbeddableContextOptions, IPluginAuthoringContextOptions } from "../../plugins/plugin-context";
 import { ISectionItem } from "../api/api-types";
+import { useGetPageItemEmbeddableExport, usePageAPI } from "../hooks/use-api-provider";
 
 export interface PluginAuthoringProps {
   pageItem: ISectionItem;
   authoringApiUrls: AuthoringApiUrls;
   onUpdate?: (authorData: string) => void;
+  wrappedItem?: ISectionItem;
 }
 
 export const PluginAuthoring: React.FC<PluginAuthoringProps> = (
-  props: PluginAuthoringProps) => {
-  const { pageItem, authoringApiUrls, onUpdate} = props;
+  props: PluginAuthoringProps
+  ) => {
+  const { pageItem, authoringApiUrls, onUpdate, wrappedItem } = props;
   const { data } = pageItem;
-  const { componentLabel, url, label, name, authorData, pluginId} = data;
+  const { componentLabel, url, label, name, authorData, pluginId } = data;
+  const api = usePageAPI();
 
-  const wrappedDiv = React.useRef<HTMLDivElement>(null);
-  const containerDiv = React.useRef<HTMLDivElement>(null);
+  const wrappedDiv = React.useRef<HTMLDivElement|null>(null);
+  const containerDiv = React.useRef<HTMLDivElement|null>(null);
+
+  const libraryInteractiveId = wrappedItem?.data?.libraryInteractiveId;
+  const libraryInteractives = api.getLibraryInteractives.data?.libraryInteractives;
+  const libraryInteractive = libraryInteractives?.find(i => i.id === libraryInteractiveId);
+  const wrappedInteractiveUrl = wrappedItem?.type === "MwInteractive"
+                                  ? wrappedItem?.data.url
+                                  : `${libraryInteractive?.base_url}${wrappedItem?.data?.urlFragment || ""}`;
+  const wrappedInteractive = wrappedItem ? {
+    id: parseFloat(wrappedItem.id),
+    name: wrappedItem?.data.name,
+    url: wrappedInteractiveUrl,
+    aspect_ratio: wrappedItem?.data.aspectRatio,
+    aspect_ratio_method: wrappedItem?.data.customAspectRatioMethod ? wrappedItem?.data.customAspectRatioMethod : "",
+    authored_state: wrappedItem?.data.authoredState,
+    interactive_item_id: wrappedItem?.data.interactiveItemId,
+    linked_interactives: wrappedItem?.data.linkedInteractives
+  } : undefined;
+
+  const wrappedItemJson = useGetPageItemEmbeddableExport(wrappedItem?.id);
+  const wrappedEmbeddable: IEmbeddableContextOptions | null = wrappedItemJson && wrappedDiv.current !== null
+    ?  {
+        container: wrappedDiv.current,
+        laraJson: wrappedItemJson ? wrappedItemJson.data : undefined,
+        interactiveStateUrl: null,
+        interactiveAvailable: true
+      }
+    : null;
+
   const firebaseJwtUrl = "TODO:firebaseJwtUrl"; // NP 2022-05-26 TODO: from whence?
   const portalJwtUrl = "TODO:portalJwtUrl";     // NP 2022-05-26 TODO: from whence?
-
   const authorDataSaveUrl = authoringApiUrls.update_plugin_author_data || "";
   const effectDeps = [
     wrappedDiv.current, containerDiv.current, firebaseJwtUrl,
     portalJwtUrl, authorDataSaveUrl, label, url
   ];
-  React.useEffect(() => {
-    if (!(url && containerDiv.current)) return;
-    const script = document.createElement("script");
-    script.onload = () => {
-      setNextPluginLabel(label);
-      const pluginContext: IPluginAuthoringContextOptions = {
-        type: "authoring",
-        name,
-        url,
-        pluginId,
-        componentLabel,
-        authoredState: authorData || null,
-        container: containerDiv.current!,
-        wrappedEmbeddable: null,
-        saveAuthoredPluginState: (authoredPluginState: string) => {
-          onUpdate?.(authoredPluginState);
-          return Promise.resolve(authoredPluginState);
-        },
-        /**** TODO: Handle Wrapped Embeddable for other plugin types
-         #{!wrapped_embeddable ? 'null' : "{
-          container: wrappedDiv,
-          laraJson: #{wrapped_embeddable_lara_json},
-          interactiveStateUrl: null,
-          interactiveAvailable: #{!click_to_play}
-        }"},
-          if ($('#wrapped_embeddable').length > 0) {
-          const interactiveContainer = $('#wrapped_embeddable').find('.interactive-container')[0];
-          renderInteractiveAuthoringPreview(interactiveContainer, {
-          interactive: #{wrapped_embeddable
-              && defined?(wrapped_embeddable.to_authoring_preview_hash)
-              ? wrapped_embeddable.to_authoring_preview_hash().to_json
-              : 'null'},
-          user: #{userInfo.to_json}
-        });
-      }
-        **/
-        authorDataSaveUrl,
-        firebaseJwtUrl,
-        portalJwtUrl
-      };
-      initPlugin(label, pluginContext);
 
-    },
+  const existingTEAuthoringScript = document.getElementById("plugin-authoring-script");
+
+  const renderPluginAuthoring = () => {
+    setNextPluginLabel(label);
+    const pluginContext: IPluginAuthoringContextOptions = {
+      type: "authoring",
+      name,
+      url,
+      pluginId,
+      componentLabel,
+      authoredState: authorData || null,
+      container: containerDiv.current!,
+      wrappedEmbeddable,
+      saveAuthoredPluginState: (authoredPluginState: string) => {
+        onUpdate?.(authoredPluginState);
+        return Promise.resolve(authoredPluginState);
+      },
+      authorDataSaveUrl,
+      firebaseJwtUrl,
+      portalJwtUrl
+    };
+    initPlugin(label, pluginContext);
+    if (wrappedInteractive && wrappedDiv.current && wrappedEmbeddable) {
+      renderInteractiveAuthoringPreview(wrappedDiv.current, {
+        interactive: wrappedInteractive,
+        user: {
+          loggedIn: true,
+          authProvider: null,
+          email: null
+        }
+      });
+    }
+  };
+
+  const loadPluginScript = () => {
+    const script = document.createElement("script");
+    script.id = "plugin-authoring-script";
     script.onerror = (e) => alert(`Unable to load plugin script: ${url} ${e} ${script.src}`);
     script.src = url;
     document.head.append(script);
+    renderPluginAuthoring();
+  };
+
+  React.useEffect(() => {
+    return () => {
+      if (existingTEAuthoringScript) {
+        existingTEAuthoringScript.remove();
+      }
+    };
+  }, []);
+
+  React.useEffect(() => {
+    if (wrappedDiv.current && wrappedEmbeddable) {
+      renderPluginAuthoring();
+    }
+  }, [wrappedDiv.current, wrappedEmbeddable]);
+
+  React.useEffect(() => {
+    if (existingTEAuthoringScript) {
+      renderPluginAuthoring();
+      return;
+    }
+    if (!(url && containerDiv.current) || (wrappedItem && !wrappedDiv.current)) {
+      return;
+    }
+    loadPluginScript();
   }, effectDeps);
 
   return(

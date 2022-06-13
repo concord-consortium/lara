@@ -11,7 +11,9 @@ import {useMutation, useQuery, useQueryClient} from "react-query";
 import {
     IAuthoringAPIProvider, ICreatePageItem, IPage, ISection, ISectionItem,
     ISectionItemType, ItemId, PageId, SectionColumns, SectionId, ILibraryInteractive,
-    IPortal
+    IPortal,
+    IPlugin,
+    IEmbeddableMetaData
 } from "../api/api-types";
 import { API as DEFAULT_API } from "../api/mock-api-provider";
 import { UserInterfaceContext  } from "../containers/user-interface-provider";
@@ -20,12 +22,47 @@ import { snakeToCamelCaseKeys } from "../../shared/convert-keys";
 const PAGES_CACHE_KEY = "pages";
 const SECTION_ITEM_TYPES_KEY = "SectionItemTypes";
 const LIBRARY_INTERACTIVES_KEY = "LibraryInteractives";
+const EMBEDDABLES_KEY = "Embeddables";
+const PAGE_ITEM_KEY = "PageItem";
+const PLUGIN_KEY = "Plugins";
 const PORTAL_KEY = "Portal";
 const LAUNCH_URLS_KEY = "LaunchUrls";
 
 // Use this in a parent component to setup API context:
 // <APIProviderContext.Provider value={someAPIProvider} />
 export const APIContext  = React.createContext<IAuthoringAPIProvider>(DEFAULT_API);
+
+export const useGetPageItemEmbeddableExport = (pageItemId: string | undefined) => {
+  const provider: IAuthoringAPIProvider = useContext(APIContext);
+  if (!pageItemId) {
+    return;
+  }
+  return useQuery<any, Error>
+    ([PAGE_ITEM_KEY, pageItemId],
+    () => provider.getPageItemEmbeddableExport(pageItemId));
+};
+
+export const useGetAvailablePlugins = () => {
+  const provider: IAuthoringAPIProvider = useContext(APIContext);
+  return useQuery
+    <{plugins: IPlugin[]}, Error>
+    (PLUGIN_KEY, provider.getAvailablePlugins);
+};
+
+export const useGetPageItemPlugins = (pageItemId: string) => {
+  const provider: IAuthoringAPIProvider = useContext(APIContext);
+  return useQuery<{pageItemPlugins: IPlugin[]}, Error>
+    ([PLUGIN_KEY, pageItemId],
+    () => provider.getPageItemPlugins(pageItemId), {})
+    .data?.pageItemPlugins;
+};
+
+export const useGetPageItemEmbeddableMetaData = (pageItemId: string) => {
+  const provider: IAuthoringAPIProvider = useContext(APIContext);
+  return useQuery<IEmbeddableMetaData, Error>
+    ([EMBEDDABLES_KEY, pageItemId],
+    () => provider.getPageItemEmbeddableMetaData(pageItemId));
+};
 
 export const usePageAPI = () => {
 
@@ -66,7 +103,7 @@ export const usePageAPI = () => {
       refetchOnMount: false
     });
 
-  const getPage =  () => {
+  const getPage = () => {
     const pages = getPages.data;
     if (pages && pages.length > -1) {
       if (userInterface.currentPageId != null) {
@@ -81,7 +118,12 @@ export const usePageAPI = () => {
 
   const currentPage = getPage();
   const mutationsOpts = {
-    onSuccess: () => client.invalidateQueries(PAGES_CACHE_KEY)
+    onSuccess: () => {
+      client.invalidateQueries(PAGES_CACHE_KEY);
+      client.invalidateQueries(PLUGIN_KEY);
+      client.invalidateQueries(EMBEDDABLES_KEY);
+      client.invalidateQueries(PAGE_ITEM_KEY);
+    }
   };
 
   const addPageItemMutationsOpts = {

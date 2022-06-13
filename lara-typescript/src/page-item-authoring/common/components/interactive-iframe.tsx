@@ -23,10 +23,11 @@ interface Props {
   authoringApiUrls?: AuthoringApiUrls;
 }
 
-interface IFramePhoneParentEndpoint {
-  addListener: (event: string, callback: (data: any) => void) => void;
+export interface IframePhone {
+  post: (type: string, data?: any) => void;
+  addListener: (type: string, handler: (data: any) => void) => void;
+  initialize: () => void;
   disconnect: () => void;
-  post: (message: string, data: any) => void;
 }
 
 export const InteractiveIframe: React.FC<Props> = (props) => {
@@ -36,7 +37,8 @@ export const InteractiveIframe: React.FC<Props> = (props) => {
     authoringApiUrls
   } = props;
 
-  const iframe = useRef<HTMLIFrameElement|null>(null);
+  const iframeRef = useRef<HTMLIFrameElement|null>(null);
+  const phoneRef = useRef<IframePhone>();
 
   // FIXME: The interactive sizing computation at runtime is currently handled
   // by the setSize method in interactives-sizing.js
@@ -80,10 +82,10 @@ export const InteractiveIframe: React.FC<Props> = (props) => {
     })
     .then(response => response.json())
     .then((data: {interactives: IInteractiveListResponseItem[]}) => {
-      phone.post("interactiveList", {requestId, interactives: data.interactives});
+      phoneRef.current?.post("interactiveList", {requestId, interactives: data.interactives});
     })
     .catch((error) => {
-      phone.post("interactiveList", {requestId, response_type: "ERROR", message: error});
+      phoneRef.current?.post("interactiveList", {requestId, response_type: "ERROR", message: error});
     });
   };
 
@@ -110,89 +112,91 @@ export const InteractiveIframe: React.FC<Props> = (props) => {
     })
     .then(response => response.json())
     .then((data: {token: string}) => {
-      phone.post("firebaseJWT", createResponse({requestId: requestId!, token: data.token}));
+      phoneRef.current?.post("firebaseJWT", createResponse({requestId: requestId!, token: data.token}));
     })
     .catch((error) => {
-      phone.post("firebaseJWT", createResponse({requestId: requestId!, response_type: "ERROR", message: error}));
+      phoneRef.current?.post(
+        "firebaseJWT", createResponse({requestId: requestId!, response_type: "ERROR", message: error}
+      ));
     });
   };
 
-  const [iframeId, setIFrameId] = useState<number>(0);
-  let phone: IFramePhoneParentEndpoint;
-
-  const connect = () => {
-    phone = new iframePhone.ParentEndpoint(iframe.current!, () => {
-      phone.post("initInteractive", initMsg);
-    });
-    phone.addListener("authoredState", (authoredState: any) => {
-      if (onAuthoredStateChange) {
-        onAuthoredStateChange(authoredState);
+  useEffect(() => {
+    const initInteractive = () => {
+      const phone = phoneRef.current;
+      if (!phone) {
+        return;
       }
-    });
-    phone.addListener("supportedFeatures", (info: any) => handleSupportedFeatures(info));
-    phone.addListener("height", (newHeight: number | string) => handleHeightChange(newHeight));
-
-    const getInteractiveListUrl = authoringApiUrls?.get_interactive_list;
-    if (getInteractiveListUrl) {
-      phone.addListener("getInteractiveList",
-        (request: LaraInteractiveApi.IGetInteractiveListRequest) => {
-          handleGetInteractiveList(request, getInteractiveListUrl);
+      phone.addListener("authoredState", (authoredState: any) => {
+        if (onAuthoredStateChange) {
+          onAuthoredStateChange(authoredState);
         }
-      );
-    }
+      });
+      phone.addListener("supportedFeatures", (info: any) => handleSupportedFeatures(info));
+      phone.addListener("height", (newHeight: number | string) => handleHeightChange(newHeight));
 
-    phone.addListener("setLinkedInteractives", (request: LaraInteractiveApi.ISetLinkedInteractives) => {
-      onLinkedInteractivesChange?.(request);
-    });
+      const getInteractiveListUrl = authoringApiUrls?.get_interactive_list;
+      if (getInteractiveListUrl) {
+        phone.addListener("getInteractiveList",
+          (request: LaraInteractiveApi.IGetInteractiveListRequest) => {
+            handleGetInteractiveList(request, getInteractiveListUrl);
+          }
+        );
+      }
 
-    phone.addListener("getFirebaseJWT", (request?: IGetFirebaseJwtRequestOptionalRequestId) => {
-      return handleGetFirebaseJwt(request);
-    });
-  };
+      phone.addListener("setLinkedInteractives", (request: LaraInteractiveApi.ISetLinkedInteractives) => {
+        onLinkedInteractivesChange?.(request);
+      });
 
-  const disconnect = () => {
-    if (phone) {
-      phone.disconnect();
-    }
-  };
-
-  const handleIframeLoaded = () => {
-    connect();
-  };
-
-  useEffect(() => {
-    return () => {
-      disconnect();
+      phone.addListener("getFirebaseJWT", (request?: IGetFirebaseJwtRequestOptionalRequestId) => {
+        return handleGetFirebaseJwt(request);
+      });
+      try {
+        phone.post("initInteractive", initMsg);
+      }
+      catch (e) {
+        // tslint:disable-next-line
+        console.log("Error", e);
+      }
     };
-  }, []);
 
-  useEffect(() => {
-    if (iframe.current) {
-      disconnect();
-      setIFrameId(iframeId + 1);
+    if (iframeRef.current) {
+      // Reload the iframe.
+      iframeRef.current.src = src;
+      // Re-init interactive, this time using a new mode (report or runtime).
+      phoneRef.current = new iframePhone.ParentEndpoint(iframeRef.current, initInteractive) as unknown as IframePhone;
     }
-  }, [src, resetCount]);
+
+    // Cleanup.
+    return () => {
+      if (phoneRef.current) {
+        phoneRef.current.disconnect();
+      }
+    };
+    // Re-running the effect reloads the iframe.
+    // The _only_ time that's ever appropriate is when the url has changed.
+  }, [resetCount, src]);  // eslint-disable-line react-hooks/exhaustive-deps
 
   let computedHeight = 300;
   if (height !== null) {
     computedHeight = Number(height);
-  } else if (iframe.current && aspectRatio) {
-    computedHeight = Math.round(iframe.current.offsetWidth / aspectRatio);
+  } else if (iframeRef.current && aspectRatio) {
+    computedHeight = Math.round(iframeRef.current.offsetWidth / aspectRatio);
   }
 
   return (
     <iframe
-      ref={iframe}
+      data-reset-count={resetCount}
+      ref={iframeRef}
       src={src}
       width={width}
       height={computedHeight}
-      key={iframeId}
+      key={resetCount}
       frameBorder="no"
       scrolling="no"
       allowFullScreen={true}
       allow="geolocation *; microphone *; camera *"
       data-iframe_mouseover="false"
-      onLoad={handleIframeLoaded}
     />
   );
 };

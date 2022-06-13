@@ -7,6 +7,7 @@ interface IUserInterface {
   movingItemId: string | false;
   movingSectionId: string | false;
   editingItemId: string | false;
+  wrappedItemId: string | false;
 }
 
 const getPageIdFromLocation = () => {
@@ -23,7 +24,8 @@ const defaultUI: IUserInterface = {
   currentPageId: getPageIdFromLocation(),
   movingItemId: false,
   movingSectionId: false,
-  editingItemId: false
+  editingItemId: false,
+  wrappedItemId: false
 };
 
 interface IUIActions {
@@ -31,6 +33,7 @@ interface IUIActions {
   setMovingSectionId: (id: false|string) => void;
   setEditingItemId: (id: false|string) => void;
   setCurrentPageId: (id: false|string) => void;
+  setWrappedItemId: (id: false|string) => void;
 }
 
 interface IUIContext {
@@ -47,6 +50,8 @@ export const defaultUIContext: IUIContext = {
     setMovingSectionId: (id) => console.log(id),
     // tslint:disable-next-line
     setEditingItemId: (id) => console.log(id),
+    // tslint:disable-next-line
+    setWrappedItemId: (id) => console.log(id),
     // tslint:disable-next-line
     setCurrentPageId: (id) => console.log(id)
   }
@@ -74,6 +79,10 @@ const UserInterfaceProvider: React.FC = ({children}) => {
     setUserInterface( (draft) => { draft.editingItemId = id; });
   };
 
+  const setWrappedItemId = (id: string| false) => {
+    setUserInterface( (draft) => { draft.wrappedItemId = id; });
+  };
+
   const setCurrentPageId = (id: string) => {
     const url = window.location.toString();
     const nextUrl = url.replace(/\/pages\/\d+\//, `/pages/${id}/`);
@@ -83,7 +92,10 @@ const UserInterfaceProvider: React.FC = ({children}) => {
     setUserInterface( (draft) => {draft.currentPageId = id; });
   };
 
-  const actions = { setMovingItemId, setMovingSectionId, setEditingItemId, setCurrentPageId};
+  const actions = {
+    setMovingItemId, setMovingSectionId, setEditingItemId, setCurrentPageId,
+    setWrappedItemId
+  };
   return (
     <UserInterfaceContext.Provider value={{actions, userInterface}}>
       {children}
