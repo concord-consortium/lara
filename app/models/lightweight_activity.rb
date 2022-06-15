@@ -216,6 +216,7 @@ class LightweightActivity < ActiveRecord::Base
     import_activity.is_official = activity_json_object[:is_official]
     import_activity.runtime = activity_json_object[:runtime]
     import_activity.project = Project.find_or_create(activity_json_object[:project]) if activity_json_object[:project]
+    self.link_glossaries_on_import(activity_json_object, import_activity)
     helper = LaraSerializationHelper.new if helper.nil?
     LightweightActivity.transaction do
       import_activity.save!(validate: false)
@@ -234,6 +235,23 @@ class LightweightActivity < ActiveRecord::Base
       import_activity.fix_page_positions
     end
     import_activity
+  end
+
+  def self.link_glossaries_on_import(activity_json_object, import_activity)
+    return unless activity_json_object[:plugins]
+
+    glossary_plugin_object = activity_json_object[:plugins].find { |p| p[:approved_script_label] == "glossary" }
+    return unless glossary_plugin_object && glossary_plugin_object[:author_data]
+
+    author_data = JSON.parse(glossary_plugin_object[:author_data], :symbolize_names => true)
+    return unless author_data && author_data[:s3Url]
+
+    # this purposefully ignores the domain of the original glossary url
+    # so that we can import between domains when doing the LARA 2 cutover
+    matches = author_data[:s3Url].match /\/api\/v1\/glossaries\/(\d+)/
+    return unless matches && matches[1]
+
+    import_activity.glossary = Glossary.find_by_id(matches[1])
   end
 
   # TODO: Include acts_as_list? @pjmorse would hate that.

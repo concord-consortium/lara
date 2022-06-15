@@ -428,6 +428,21 @@ describe LightweightActivity do
       expect(act.related).to eq(json[:related])
       expect(act.imported_activity_url).to eq(imported_activity_url)
       expect(act.pages.count).to eq(json[:pages].length)
+      expect(act.glossary_id).to eq(nil)
+    end
+
+    describe "for activities that use the glossary model" do
+      let(:glossary) { glossary = FactoryGirl.create(:glossary, user: author) }
+      let(:host) { 'http://example.com' }
+      let(:approved_script) { FactoryGirl.create(:approved_script, label: "glossary") }
+      let(:plugin) { FactoryGirl.create(:plugin, approved_script: approved_script, component_label: "glossary") }
+
+      it 'should import an existing glossary' do
+        activity.plugins.push(plugin)
+        json = activity.export(host)
+        act = LightweightActivity.import(json, new_owner, host)
+        expect(act.glossary_id).to eq(glossary.id)
+      end
     end
   end
 
