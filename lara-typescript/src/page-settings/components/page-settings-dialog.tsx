@@ -138,6 +138,8 @@ export const PageSettingsDialog: React.FC<IPageSettingsDialogProps> = ({
               onChange={handleIsCompletionChange}
             />
           </dd>
+          {/* TODO: Reinstate this option if/when we add support for
+              arg blocks.
           <dt className={`input4 ${!argBlockSettingEnabled && "disabled"}`}>
             <label htmlFor="hasArgBlock">Page has an argumentation block</label>
           </dt>
@@ -149,7 +151,7 @@ export const PageSettingsDialog: React.FC<IPageSettingsDialogProps> = ({
               defaultChecked={hasArgBlock}
               onChange={handleHasArgBlockChange}
             />
-          </dd>
+          </dd> */}
           <dt className={`input5 ${!studentSidebarSettingEnabled && "disabled"}`}>
             <label htmlFor="hasStudentSidebar">Page has a student sidebar menu</label>
           </dt>
@@ -162,6 +164,9 @@ export const PageSettingsDialog: React.FC<IPageSettingsDialogProps> = ({
               onChange={handleHasStudentSidebarChange}
             />
           </dd>
+          {/* TODO: Reinstate this option if/when we update how
+              TE sidebars are handled. For now they are added
+              like any other page item.
           <dt className={`input6 ${!teSidebarSettingEnabled && "disabled"}`}>
             <label htmlFor="hasTESidebar">Page has a Teacher Edition sidebar menu</label>
           </dt>
@@ -173,7 +178,7 @@ export const PageSettingsDialog: React.FC<IPageSettingsDialogProps> = ({
               defaultChecked={hasTESidebar}
               onChange={handleHasTESidebarChange}
             />
-          </dd>
+          </dd> */}
         </dl>
         <ModalButtons buttons={modalButtons} />
       </div>

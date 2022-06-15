@@ -146,11 +146,17 @@ export const SectionColumn: React.FC<ISectionColumnProps> = ({
                   { items
                     && items.length > 0
                     && items.map((item, index) => {
+                    let itemCanBeCopied = true;
                     const sectionItemClasses = classNames("sectionItem", {
-                       halfWidth: item.data.isHalfWidth
+                       halfWidth: item.data.isHalfWidth,
+                       pluginItem: item.type === "Embeddable::EmbeddablePlugin",
+                       sideTipItem: item.data.componentLabel === "sideTip"
                     });
-                    if (item.data.name === "Teacher Edition: Question Wrapper") {
+                    if (item.data.componentLabel === "questionWrapper") {
                       return;
+                    }
+                    if (item.data.componentLabel === "sideTip") {
+                      itemCanBeCopied = false;
                     }
                     return (
                       <Draggable
@@ -171,7 +177,7 @@ export const SectionColumn: React.FC<ISectionColumnProps> = ({
                               key={item.id}
                               sectionColumn={column}
                               sectionId={sectionId}
-                              copyFunction={copyPageItem}
+                              copyFunction={itemCanBeCopied ? copyPageItem : undefined}
                               deleteFunction={deletePageItem}
                             />
                           </div>

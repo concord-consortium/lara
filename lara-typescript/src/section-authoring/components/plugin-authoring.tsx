@@ -10,13 +10,14 @@ export interface PluginAuthoringProps {
   pageItem: ISectionItem;
   authoringApiUrls: AuthoringApiUrls;
   onUpdate?: (authorData: string) => void;
+  closeForm?: () => void;
   wrappedItem?: ISectionItem;
 }
 
 export const PluginAuthoring: React.FC<PluginAuthoringProps> = (
   props: PluginAuthoringProps
   ) => {
-  const { pageItem, authoringApiUrls, onUpdate, wrappedItem } = props;
+  const { pageItem, authoringApiUrls, onUpdate, closeForm, wrappedItem } = props;
   const { data } = pageItem;
   const { componentLabel, url, label, name, authorData, pluginId } = data;
   const api = usePageAPI();
@@ -76,6 +77,7 @@ export const PluginAuthoring: React.FC<PluginAuthoringProps> = (
         onUpdate?.(authoredPluginState);
         return Promise.resolve(authoredPluginState);
       },
+      closeAuthoredPluginForm: closeForm,
       authorDataSaveUrl,
       firebaseJwtUrl,
       portalJwtUrl

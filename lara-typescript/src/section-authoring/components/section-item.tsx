@@ -145,7 +145,7 @@ export const SectionItem: React.FC<ISectionItemProps> = ({
             <li><button onClick={toggleCollapse}>Collapse</button></li>
             <li><button onClick={handleEdit}>Edit</button></li>
             <li><button onClick={handleMove}>Move</button></li>
-            <li><button onClick={handleCopy}>Copy</button></li>
+            {copyFunction && <li><button onClick={handleCopy}>Copy</button></li>}
             <li><button onClick={handleDelete}>Delete</button></li>
           </ul>
         </div>

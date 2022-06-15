@@ -845,7 +845,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    width: 310px; }
+    width: 299px; }
   .availablePlugins button {
     margin-left: 10px; }
 
@@ -884,11 +884,12 @@
   .pluginsList .pluginName {
     display: inline-block;
     overflow: hidden;
+    padding: 2px 0;
     text-overflow: ellipsis;
     white-space: nowrap; }
 
 .section-responsive-static .availablePlugins select {
-  width: 185px; }
+  width: 184px; }
 
 .section-responsive-static .pluginsList {
   background: var(--ltr-gray); }
@@ -896,7 +897,7 @@
     width: 145px; }
 
 .section-30 .availablePlugins select {
-  width: 190px; }
+  width: 189px; }
 
 .section-30 .pluginsList .pluginName {
   width: 150px; }
@@ -1033,19 +1034,19 @@
       align-self: center; }
 
 .section-40-60 .col-1 .menuStart {
-  max-width: 100px; }
+  max-width: 98px; }
 
 .section-60-40 .col-2 .menuStart {
-  max-width: 100px; }
+  max-width: 98px; }
 
 .section-30-70 .col-1 .menuStart {
-  max-width: 42px; }
+  max-width: 22px; }
 
 .section-30-70 .col-1 .menuEnd button {
   padding: 2px 5px; }
 
 .section-70-30 .col-2 .menuStart {
-  max-width: 42px; }
+  max-width: 22px; }
 
 .section-70-30 .col-2 .menuEnd button {
   padding: 5px; }
@@ -1059,7 +1060,7 @@
     padding: 5px; }
 
 .section-responsive-full-width .col-1 .menuStart {
-  max-width: 12px; }
+  max-width: auto; }
 
 .section-responsive-full-width .col-1 .menuEnd {
   margin-right: 0; }
@@ -1119,6 +1120,23 @@
   margin-bottom: 10px;
   min-height: 100px;
   width: 100%; }
+  .sectionItem.pluginItem .plugin-preview-wrapper {
+    padding: 20px; }
+  .sectionItem.sideTipItem {
+    background: #fff4e5;
+    border-color: #dc8008; }
+    .sectionItem.sideTipItem .sectionItemContainer .sectionItemMenu {
+      background: #dc8008; }
+      .sectionItem.sideTipItem .sectionItemContainer .sectionItemMenu button:after {
+        border-color: #fff4e5; }
+      .sectionItem.sideTipItem .sectionItemContainer .sectionItemMenu button:hover {
+        background: #fff4e5;
+        color: #dc8008; }
+      .sectionItem.sideTipItem .sectionItemContainer .sectionItemMenu button:active {
+        background: #eee4d5; }
+
+.sidebar-mod {
+  display: none; }
 
 @font-face {
   font-family: 'Lato-Light';
@@ -2485,10 +2503,8 @@ dl.textBlockEditForm {
     .modalContainer.itemEditDialog .modalBody section {
       height: calc(100% - 56px);
       padding: 0; }
-      .modalContainer.itemEditDialog .modalBody section#modalContent div:first-child {
+      .modalContainer.itemEditDialog .modalBody section#modalContent > div:first-child {
         height: 100%; }
-        .modalContainer.itemEditDialog .modalBody section#modalContent div:first-child div {
-          height: auto; }
 
 #itemEditDialog {
   display: flex;
@@ -2497,10 +2513,10 @@ dl.textBlockEditForm {
   overflow: hidden; }
   #itemEditDialog #itemEditForm {
     height: calc(100% - 60px);
-    max-width: 425px;
     overflow: auto;
-    padding: 10px 15px 30px 10px;
-    position: relative; }
+    padding: 10px 10px 30px;
+    position: relative;
+    width: 400px; }
     #itemEditDialog #itemEditForm.noPreview {
       max-width: 100%;
       width: 100%; }

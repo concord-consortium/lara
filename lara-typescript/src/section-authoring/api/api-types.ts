@@ -181,7 +181,7 @@ export interface IEmbeddablePluginData {
     approved_script: IApprovedScript;
     approved_script_label: "teacherEditionTips";
     author_data: string;
-    component_label: "windowShade" | "questionWrapper";
+    component_label: "questionWrapper" | "sideTip" | "windowShade";
     description: string;
     id: number;
   };
@@ -331,8 +331,8 @@ export interface IAuthoringAPIProvider {
   updatePageItem: APIPageItemUpdateF;
   copyPageItem: APIPageItemCopyF;
 
-  getLibraryInteractives: () => Promise<{libraryInteractives: ILibraryInteractive[]}>;
-  getAllEmbeddables: () => Promise<{allEmbeddables: ISectionItemType[]}>;
+  getLibraryInteractives: (args: {pageId: PageId | null}) => Promise<{libraryInteractives: ILibraryInteractive[]}>;
+  getAllEmbeddables: (args: {pageId: PageId | null}) => Promise<{allEmbeddables: ISectionItemType[]}>;
   getPreviewOptions: APIGetPreviewOptionsF;
 
   getPageItemEmbeddableExport: (pageItemId: ItemId) => Promise<Record<string, any>>;

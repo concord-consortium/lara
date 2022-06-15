@@ -19,4 +19,38 @@
   margin-bottom: 10px;
   min-height: 100px;
   width: 100%;
+
+  &.pluginItem {
+    .plugin-preview-wrapper {
+      padding: 20px;
+    }
+  }
+
+  &.sideTipItem {
+    background: #fff4e5;
+    border-color: #dc8008;
+
+    .sectionItemContainer .sectionItemMenu {
+      background: #dc8008;
+
+      button {
+        &:after {
+          border-color: #fff4e5;
+        }
+        &:hover {
+          background: #fff4e5;
+          color: #dc8008;
+        }
+        &:active {
+          background: #eee4d5;
+        }
+      }
+    }
+  }
+}
+
+.sidebar-mod {
+  display: none;
+  // TODO: Show fully functional side tip on authoring page? 
+  // Or ensure that side tip HTML isn't added to authoring page?
 }

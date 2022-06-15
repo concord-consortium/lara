@@ -190,7 +190,7 @@ export const ManagedInteractiveAuthoring: React.FC<Props> = (props) => {
         <TabList>
           <Tab>Authoring</Tab>
           <Tab>Advanced Options</Tab>
-          {user?.isAdmin ? <Tab>Authored State (Admin Only)</Tab> : undefined}
+          {user?.isAdmin ? <Tab>Admin</Tab> : undefined}
         </TabList>
         <TabPanel forceRender={true}>
           {renderAuthoringPanel()}

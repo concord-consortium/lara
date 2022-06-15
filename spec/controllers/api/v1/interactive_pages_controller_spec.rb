@@ -253,6 +253,18 @@ describe Api::V1::InteractivePagesController do
       expect(response.status).to eq(200)
       expect(response.content_type).to eq("application/json")
     end
+
+    it "succeeds with valid side tip plugin parameters" do
+      xhr :post, "create_page_item", {id: page.id, page_item: {
+        section_id: section.id,
+        embeddable: "Plugin_1::sideTip",
+        position: 1,
+        section_position: 1,
+        column: PageItem::COLUMN_PRIMARY
+      }}
+      expect(response.status).to eq(200)
+      expect(response.content_type).to eq("application/json")
+    end
   end
 
   describe "#get_library_interactives_list" do
@@ -266,7 +278,7 @@ describe Api::V1::InteractivePagesController do
       library_interactive2
       managed_interactive1
 
-      xhr :get, "get_library_interactives_list"
+      xhr :post, "get_library_interactives_list", {id: page.id}
       expect(response.status).to eq(200)
       expect(response.content_type).to eq("application/json")
       expect(response.body).to eql({

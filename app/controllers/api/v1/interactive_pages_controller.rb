@@ -1,7 +1,6 @@
 class Api::V1::InteractivePagesController < API::APIController
   layout false
   before_filter :set_interactive_page, except: [
-    :get_library_interactives_list,
     :get_wrapping_plugins_list,
     :get_portal_list,
     :get_pages,
@@ -227,15 +226,16 @@ class Api::V1::InteractivePagesController < API::APIController
       embeddable = MwInteractive.create!
     when /Embeddable::Xhtml/
       embeddable = Embeddable::Xhtml.create!
+    # For Teacher Edition plugin embeddables, parse the embeddable_type string 
+    # to get the approved_script id as well as the plugin_type.
+    # For these items we need to create a new embeddable of type
+    # Embeddable::Plugin and then associate it with the plugin.
+    # 1. Create a plugin with the instance of the approved_script
+    # 2. Create a Embeddable::EmbeddablePlugin
+    # Example: "Plugin_10::windowShade"
+    # IMPORTANT: 'windowShade' (or 'questionWrapper' or 'sideTip') as the 
+    # component_label is critical.
     when /Plugin_(\d+)::windowShade/
-      # Parse the embeddable_type string to get the approved_script id
-      # as well as the plugin_type
-      # For windowshade items we need to create a new embeddable of type
-      # Embeddable::Plugin and then associate it with the plugin.
-      # 1. Create a plugin with the instance of the approved_script
-      # 2. Create a Embeddable::EmbeddablePlugin
-      # Example: "Plugin_10::windowShade"
-      # IMPORTANT: 'windowShade' as the component_label is critical.
       tip_type = 'windowShade'
       regex = /Plugin_(\d+)::windowShade/
       script_id = embeddable_type.match(regex)[1]
@@ -248,18 +248,23 @@ class Api::V1::InteractivePagesController < API::APIController
       embeddable.is_half_width = false
       embeddable.save!
     when /Plugin_(\d+)::questionWrapper/
-      # Parse the embeddable_type string to get the approved_script id
-      # as well as the plugin_type
-      # For question wrapper items we need to create a new embeddable of type
-      # Embeddable::Plugin and then associate it with the plugin.
-      # 1. Create a plugin with the instance of the approved_script
-      # 2. Create a Embeddable::EmbeddablePlugin
-      # Example: "Plugin_10::questionWrapper"
-      # IMPORTANT: 'questionWrapper' as the component_label is critical.
       tip_type = 'questionWrapper'
       regex = /Plugin_(\d+)::questionWrapper/
       script_id = embeddable_type.match(regex)[1]
       author_data = { tipType: tip_type }.to_json
+      embeddable = Embeddable::EmbeddablePlugin.create!
+      embeddable.approved_script_id = script_id
+      embeddable.author_data = author_data
+      embeddable.component_label = tip_type
+      embeddable.embeddable_id = page_item_params["wrapped_embeddable_id"]
+      embeddable.embeddable_type = page_item_params["wrapped_embeddable_type"]
+      embeddable.is_half_width = false
+      embeddable.save!
+    when /Plugin_(\d+)::sideTip/
+      tip_type = 'sideTip'
+      regex = /Plugin_(\d+)::sideTip/
+      script_id = embeddable_type.match(regex)[1]
+      author_data = { content: "", tipType: tip_type }.to_json
       embeddable = Embeddable::EmbeddablePlugin.create!
       embeddable.approved_script_id = script_id
       embeddable.author_data = author_data
@@ -394,14 +399,21 @@ class Api::V1::InteractivePagesController < API::APIController
   end
 
   private
-  def map_plugin_to_hash(plugin)
+  def map_plugin_to_hash(plugin, page_has_te_sidetip)
+    authoring_metadata = JSON.parse(plugin.authoring_metadata)
+    # Only one Teacher Edition side tip per page is allowed. So we remove
+    # the TE side tip component as an option if page already has one.
+    if page_has_te_sidetip
+      authoring_metadata["components"] = authoring_metadata["components"].reject { |component| component["label"] == "sideTip" }
+    end
+
     {
       id: plugin.id,
       name: plugin.name,
       label: plugin.label,
       description: plugin.description,
       version: plugin.version,
-      authoring_metadata: JSON.parse(plugin.authoring_metadata)
+      authoring_metadata: authoring_metadata
     }
   end
 
@@ -412,7 +424,16 @@ class Api::V1::InteractivePagesController < API::APIController
       .joins("LEFT JOIN managed_interactives ON managed_interactives.linked_interactive_id = library_interactives.id")
       .group('library_interactives.id')
 
-    plugins = get_teacher_edition_plugins.map { |plugin| map_plugin_to_hash(plugin) }
+    # Determine if page has a Teacher Edition side tip since only one TE 
+    # side tip per page is allowed.
+    page_has_te_sidetip = false
+    @interactive_page.page_items.each do |pi|
+      if pi.embeddable_type == "Embeddable::EmbeddablePlugin" && pi.embeddable.component_label == "sideTip"
+        page_has_te_sidetip = true
+      end
+    end
+
+    plugins = get_teacher_edition_plugins.map { |plugin| map_plugin_to_hash(plugin, page_has_te_sidetip) }
 
     render :json => {
       success: true,
