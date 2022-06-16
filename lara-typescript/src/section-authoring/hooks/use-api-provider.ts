@@ -87,9 +87,9 @@ export const usePageAPI = () => {
     refetchOnMount: false
   });
 
-  const getAllEmbeddables = useQuery<{allEmbeddables: ISectionItemType[]}, Error>
-    ([SECTION_ITEM_TYPES_KEY, userInterface.currentPageId],
-      () => provider.getAllEmbeddables({pageId: userInterface.currentPageId}), {
+  const getAllEmbeddables = useQuery
+    <{allEmbeddables: ISectionItemType[]}, Error>
+    (SECTION_ITEM_TYPES_KEY, provider.getAllEmbeddables, {
       refetchOnWindowFocus: false,
       staleTime: Infinity,
       refetchOnMount: false
@@ -97,8 +97,7 @@ export const usePageAPI = () => {
 
   const getLibraryInteractives = useQuery
     <{libraryInteractives: ILibraryInteractive[]}, Error>
-      ([LIBRARY_INTERACTIVES_KEY, userInterface.currentPageId],
-      () => provider.getLibraryInteractives({pageId: userInterface.currentPageId}), {
+    (LIBRARY_INTERACTIVES_KEY, provider.getLibraryInteractives, {
       refetchOnWindowFocus: false,
       staleTime: Infinity,
       refetchOnMount: false
@@ -124,7 +123,6 @@ export const usePageAPI = () => {
       client.invalidateQueries(PLUGIN_KEY);
       client.invalidateQueries(EMBEDDABLES_KEY);
       client.invalidateQueries(PAGE_ITEM_KEY);
-      client.invalidateQueries(SECTION_ITEM_TYPES_KEY);
     }
   };
 

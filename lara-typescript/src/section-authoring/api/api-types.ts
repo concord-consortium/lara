@@ -331,8 +331,8 @@ export interface IAuthoringAPIProvider {
   updatePageItem: APIPageItemUpdateF;
   copyPageItem: APIPageItemCopyF;
 
-  getLibraryInteractives: (args: {pageId: PageId | null}) => Promise<{libraryInteractives: ILibraryInteractive[]}>;
-  getAllEmbeddables: (args: {pageId: PageId | null}) => Promise<{allEmbeddables: ISectionItemType[]}>;
+  getLibraryInteractives: () => Promise<{libraryInteractives: ILibraryInteractive[]}>;
+  getAllEmbeddables: () => Promise<{allEmbeddables: ISectionItemType[]}>;
   getPreviewOptions: APIGetPreviewOptionsF;
 
   getPageItemEmbeddableExport: (pageItemId: ItemId) => Promise<Record<string, any>>;

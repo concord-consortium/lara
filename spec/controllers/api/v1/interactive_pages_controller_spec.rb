@@ -278,7 +278,7 @@ describe Api::V1::InteractivePagesController do
       library_interactive2
       managed_interactive1
 
-      xhr :post, "get_library_interactives_list", {id: page.id}
+      xhr :get, "get_library_interactives_list"
       expect(response.status).to eq(200)
       expect(response.content_type).to eq("application/json")
       expect(response.body).to eql({

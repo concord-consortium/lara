@@ -52,7 +52,7 @@ export const getLaraAuthoringAPI =
   const deletePageItemUrl = (pageId: PageId) => `${prefix}/delete_page_item/${pageId}.json`;
   const copyPageItemUrl = (pageId: PageId) => `${prefix}/copy_page_item/${pageId}.json`;
   const getPreviewUrl = (pageId: PageId) => `${prefix}/get_preview_url/${pageId}.json`;
-  const libraryInteractivesUrl = (pageId: PageId) => `${prefix}/get_library_interactives_list/${pageId}.json`;
+  const libraryInteractivesUrl = `${prefix}/get_library_interactives_list.json`;
   const pageLevelPluginsUrl = `${prefix}/get_page_level_plugins_list.json`;
   const portalsURL = `${prefix}/get_portal_list.json`;
   const pluginsURL = `${prefix}/get_wrapping_plugins_list.json`;
@@ -170,9 +170,8 @@ export const getLaraAuthoringAPI =
     return sendToLara({url: copyPageItemUrl(pageId), method: "POST", body});
   };
 
-  const getLibraryInteractives = (args: {pageId: PageId}) => {
-    const { pageId } = args;
-    return sendToLara({url: libraryInteractivesUrl(pageId), method: "POST"})
+  const getLibraryInteractives = () => {
+    return sendToLara({url: libraryInteractivesUrl})
       // tslint:disable-next-line
       .then( (json: any) => {
         const result = {
@@ -201,7 +200,7 @@ export const getLaraAuthoringAPI =
       const { label, name, scope } = component;
       if (scope === "embeddable") {
         embeddables.push({
-          name: `${plugin.name} ${name}`,
+          name: `${plugin.name}: ${name}`,
           id: `Plugin::${label}`,
           serializeable_id: `Plugin_${plugin.id}::${label}`, // TODO?
           type: `Plugin::${plugin.label}`,
@@ -254,9 +253,8 @@ export const getLaraAuthoringAPI =
     });
   };
 
-  const getAllEmbeddables = (args: {pageId: PageId}) => {
-    const { pageId } = args;
-    return sendToLara({url: libraryInteractivesUrl(pageId), method: "POST"})
+  const getAllEmbeddables = () => {
+    return sendToLara({url: libraryInteractivesUrl})
       // tslint:disable-next-line
       .then( (json: any) => {
         const result = {

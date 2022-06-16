@@ -98,10 +98,10 @@ export const PluginAuthoring: React.FC<PluginAuthoringProps> = (
   const loadPluginScript = () => {
     const script = document.createElement("script");
     script.id = "plugin-authoring-script";
+    script.onload = renderPluginAuthoring;
     script.onerror = (e) => alert(`Unable to load plugin script: ${url} ${e} ${script.src}`);
     script.src = url;
     document.head.append(script);
-    renderPluginAuthoring();
   };
 
   React.useEffect(() => {
@@ -119,10 +119,13 @@ export const PluginAuthoring: React.FC<PluginAuthoringProps> = (
   }, [wrappedDiv.current, wrappedEmbeddable]);
 
   React.useEffect(() => {
-    if (existingTEAuthoringScript) {
-      renderPluginAuthoring();
-      return;
-    }
+    // TODO: Make it so we're only adding the plugin script to the page once.
+    // For some reason this attempt at doing that is causing the page to
+    // crash the very first time you add a TE element to a page.
+    // if (existingTEAuthoringScript) {
+    //   renderPluginAuthoring();
+    //   return;
+    // }
     if (!(url && containerDiv.current) || (wrappedItem && !wrappedDiv.current)) {
       return;
     }

@@ -6,10 +6,10 @@ import { absorbClickThen } from "../../shared/absorb-click";
 import { ICreatePageItem, ISection, ISectionItem, ItemId, SectionColumns } from "../api/api-types";
 import { DragDropContext, Droppable, Draggable, DropResult, DraggableProvided } from "react-beautiful-dnd";
 import { Add } from "../../shared/components/icons/add-icon";
-
-import "./section-column.scss";
 import { SectionItemPicker } from "./section-item-picker";
 import { usePageAPI } from "../hooks/use-api-provider";
+
+import "./section-column.scss";
 
 export interface ISectionColumnProps {
 

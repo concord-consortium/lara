@@ -218,7 +218,7 @@ LightweightStandalone::Application.routes.draw do
       match 'delete_page_item/:id' => 'interactive_pages#delete_page_item', :as => 'delete_page_item', :via => 'post'
       match 'copy_page_item/:id' => 'interactive_pages#copy_page_item', :as => 'copy_page_item', :via => 'post'
 
-      match 'get_library_interactives_list/:id' => 'interactive_pages#get_library_interactives_list', :as => 'get_library_interactives_list', :via => 'post'
+      match 'get_library_interactives_list' => 'interactive_pages#get_library_interactives_list', :as => 'get_library_interactives_list', :via => 'get'
       match 'get_portal_list' => 'interactive_pages#get_portal_list', :as => 'get_portal_list', :via => 'get'
 
       match 'get_pages/:activity_id' => 'interactive_pages#get_pages', :as => 'get_page_list', :via => 'get'
