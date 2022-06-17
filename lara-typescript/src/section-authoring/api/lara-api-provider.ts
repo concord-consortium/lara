@@ -7,6 +7,7 @@ import {
   APISectionCreateF, APISectionsUpdateF, APISectionUpdateF,
   APIPageItemCreateF, APIPageItemUpdateF,
   ILibraryInteractive, ILibraryInteractiveResponse,
+  IPlugin,
   IPortal,
   APIPageItemDeleteF,
   ISectionItem,
@@ -54,6 +55,11 @@ export const getLaraAuthoringAPI =
   const libraryInteractivesUrl = `${prefix}/get_library_interactives_list.json`;
   const pageLevelPluginsUrl = `${prefix}/get_page_level_plugins_list.json`;
   const portalsURL = `${prefix}/get_portal_list.json`;
+  const pluginsURL = `${prefix}/get_wrapping_plugins_list.json`;
+  const pageItemEmbeddableExportUrl = (pageItemId: string) =>
+    `${prefix}/export_page_item_embeddable/${pageItemId}.json`;
+  const pageItemPluginsURL = (pageItemId: string) => `${prefix}/get_page_item_plugins/${pageItemId}.json`;
+  const pageItemEmbeddableMetaDataURL = (pageItemId: string) => `${prefix}/get_embeddable_metadata/${pageItemId}.json`;
 
   interface ISendToLaraParams {
     url: string;
@@ -194,17 +200,57 @@ export const getLaraAuthoringAPI =
       const { label, name, scope } = component;
       if (scope === "embeddable") {
         embeddables.push({
-          name,
+          name: `${plugin.name}: ${name}`,
           id: `Plugin::${label}`,
           serializeable_id: `Plugin_${plugin.id}::${label}`, // TODO?
           type: `Plugin::${plugin.label}`,
           useCount: 0,
           dateAdded: 0,
-          isQuickAddItem: true
+          isQuickAddItem: false
         });
       }
     }
     return embeddables;
+  };
+
+  const getPageItemEmbeddableExport = (pageItemId: ItemId) => {
+    return sendToLara({url: pageItemEmbeddableExportUrl(pageItemId), method: "GET"})
+    // tslint:disable-next-line
+    .then( (json: any) => {
+      const result = snakeToCamelCaseKeys(json);
+      return result;
+    });
+  };
+
+  const getPageItemEmbeddableMetaData = (pageItemId: ItemId) => {
+    return sendToLara({url: pageItemEmbeddableMetaDataURL(pageItemId), method: "GET"})
+    // tslint:disable-next-line
+    .then( (json: any) => {
+      const result = snakeToCamelCaseKeys(json);
+      return result;
+    });
+  };
+
+  const getAvailablePlugins = () => {
+    return sendToLara({url: pluginsURL})
+    // tslint:disable-next-line
+    .then( (json: any) => {
+      const result = {
+        plugins: json.plugins.map((p: IPlugin) => ({...p}))
+      };
+      return result;
+    });
+  };
+
+  const getPageItemPlugins = (pageItemId: ItemId) => {
+    return sendToLara({url: pageItemPluginsURL(pageItemId), method: "GET"})
+    // tslint:disable-next-line
+    .then( (json: any) => {
+      const result = {
+        pageItemPlugins: json.plugins.map((p: IPlugin) => (snakeToCamelCaseKeys({...p})))
+      };
+      return result;
+    });
   };
 
   const getAllEmbeddables = () => {
@@ -250,9 +296,9 @@ export const getLaraAuthoringAPI =
 
   return {
     getPages, getPage, createPage, updatePage, deletePage, copyPage,
-    createSection, updateSections, updateSection, copySection,
-    createPageItem, updatePageItem, deletePageItem, copyPageItem,
-    getAllEmbeddables, getLibraryInteractives, getPortals, getPreviewOptions,
+    createSection, updateSections, updateSection, copySection, getPageItemPlugins,
+    createPageItem, updatePageItem, deletePageItem, copyPageItem, getAvailablePlugins, getPageItemEmbeddableExport,
+    getAllEmbeddables, getLibraryInteractives, getPortals, getPreviewOptions, getPageItemEmbeddableMetaData,
     pathToTinyMCE: "/assets/tinymce.js", pathToTinyMCECSS: "/assets/tinymce-content.css"
   };
 };

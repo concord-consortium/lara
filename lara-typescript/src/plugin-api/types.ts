@@ -165,6 +165,8 @@ export interface IPluginAuthoringContext {
   wrappedEmbeddable: IEmbeddableRuntimeContext | null;
   /** Function that returns JWT (Promise) for given app name. */
   getFirebaseJwt: (appName: string) => Promise<IJwtResponse>;
+  /** Function that closes a plugin authoring form */
+  closeAuthoredPluginForm?: () => void;
 }
 
 export interface IUser {

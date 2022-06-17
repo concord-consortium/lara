@@ -7,8 +7,10 @@ import { TextBlockPreview } from "./text-block-preview";
 import { PluginPreview } from "./plugin-preview";
 import { ManagedInteractivePreview } from "./managed-interactive-preview";
 import { MWInteractivePreview } from "./mw-interactive-preview";
+import { SectionItemPluginList } from "./section-item-plugin-list";
 
 import "./section-item.scss";
+import { SectionColumns } from "../api/api-types";
 
 export interface ISectionItemProps {
 
@@ -42,6 +44,10 @@ export interface ISectionItemProps {
    */
   position?: number;
 
+  sectionId: string;
+
+  sectionColumn: SectionColumns;
+
 }
 
 /**
@@ -52,16 +58,21 @@ export const SectionItem: React.FC<ISectionItemProps> = ({
   copyFunction,
   deleteFunction,
   type,
-  position
+  position,
+  sectionId,
+  sectionColumn
   }: ISectionItemProps) => {
 
   const api = usePageAPI();
   const pageItems = api.getItems();
   const pageItem = pageItems.find(pi => pi.id === id);
-  const { userInterface: {movingItemId}, actions: {setMovingItemId}} = React.useContext(UserInterfaceContext);
-  const { userInterface: {editingItemId}, actions: {setEditingItemId}} = React.useContext(UserInterfaceContext);
+  const {
+    userInterface: {editingItemId, movingItemId},
+    actions: {setEditingItemId, setMovingItemId}
+  } = React.useContext(UserInterfaceContext);
   const [isBeingUpdated, setIsBeingUpdated] = useState<boolean>(false);
   const prevEditingItemId = useRef<string>("");
+  let supportsPlugins = false;
 
   useEffect(() => {
     if (editingItemId === id) {
@@ -103,15 +114,16 @@ export const SectionItem: React.FC<ISectionItemProps> = ({
   const getContent = () => {
     switch (pageItem?.type) {
       case "Embeddable::Xhtml":
+        supportsPlugins = false;
         return <TextBlockPreview pageItem={pageItem} />;
       case "ManagedInteractive":
+        supportsPlugins = true;
         return <ManagedInteractivePreview pageItem={pageItem} />;
       case "MwInteractive":
+        supportsPlugins = true;
         return <MWInteractivePreview pageItem={pageItem} />;
-        break;
       case "Embeddable::EmbeddablePlugin":
         return <PluginPreview pageItem={pageItem} />;
-        break;
       default:
         return (
           <div className="previewNotSupported">
@@ -133,13 +145,16 @@ export const SectionItem: React.FC<ISectionItemProps> = ({
             <li><button onClick={toggleCollapse}>Collapse</button></li>
             <li><button onClick={handleEdit}>Edit</button></li>
             <li><button onClick={handleMove}>Move</button></li>
-            <li><button onClick={handleCopy}>Copy</button></li>
+            {copyFunction && <li><button onClick={handleCopy}>Copy</button></li>}
             <li><button onClick={handleDelete}>Delete</button></li>
           </ul>
         </div>
       </header>
       <section>
-        {getContent()}
+        {pageItem && getContent()}
+        {supportsPlugins &&
+          <SectionItemPluginList sectionColumn={sectionColumn} sectionId={sectionId} sectionItemId={id} />
+        }
       </section>
     </div>
   );

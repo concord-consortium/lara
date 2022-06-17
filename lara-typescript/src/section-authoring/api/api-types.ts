@@ -26,13 +26,14 @@ interface AuthoringApiUrls {
 }
 
 export interface ISectionItem {
+  authoringApiUrls?: AuthoringApiUrls;
   column: SectionColumns;
   data?: any;
+  embeddableId?: string;
   id: ItemId;
   position?: number;
   section_id?: string;
   type?: string;
-  authoringApiUrls?: AuthoringApiUrls;
 }
 
 export interface ISectionItemType {
@@ -57,6 +58,8 @@ export interface ICreatePageItem {
   embeddable: string;
   position?: number;
   type?: string;
+  wrapped_embeddable_id?: string;
+  wrapped_embeddable_type?: string;
 }
 
 export interface ITextBlockData {
@@ -178,7 +181,7 @@ export interface IEmbeddablePluginData {
     approved_script: IApprovedScript;
     approved_script_label: "teacherEditionTips";
     author_data: string;
-    component_label: "windowShade";
+    component_label: "questionWrapper" | "sideTip" | "windowShade";
     description: string;
     id: number;
   };
@@ -267,6 +270,23 @@ export interface IPage {
 
 }
 
+export interface IEmbeddableMetaData {
+  embeddableId: string;
+  embeddableType: string;
+}
+
+export interface IPlugin {
+  id: string;
+  name: string;
+}
+
+export interface IPluginEmbeddable {
+  embeddableId: string;
+  id: string;
+  name: string;
+  sectionItemId: string;
+}
+
 export interface IPortal {
   name: string;
   path: string;
@@ -315,6 +335,10 @@ export interface IAuthoringAPIProvider {
   getAllEmbeddables: () => Promise<{allEmbeddables: ISectionItemType[]}>;
   getPreviewOptions: APIGetPreviewOptionsF;
 
+  getPageItemEmbeddableExport: (pageItemId: ItemId) => Promise<Record<string, any>>;
+  getPageItemEmbeddableMetaData: (pageItemId: ItemId) => Promise<IEmbeddableMetaData>;
+  getPageItemPlugins: (pageItemId: ItemId) => Promise<{pageItemPlugins: IPlugin[]}>;
+  getAvailablePlugins: () => Promise<{plugins: IPlugin[]}>;
   getPortals: () => Promise<{portals: IPortal[]}>;
 
   pathToTinyMCE: string | null;

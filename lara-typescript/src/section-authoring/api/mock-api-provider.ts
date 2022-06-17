@@ -5,8 +5,7 @@ import {
   APIPageGetF, APIPagesGetF, APIPageItemUpdateF,
   IAuthoringAPIProvider, ISection, ICreatePageItem, ISectionItem, SectionColumns,
   ISectionItemType, APIPageItemDeleteF, ItemId, SectionId, SectionLayouts, ILibraryInteractive,
-  IPortal,
-  ISectionItemPlugin
+  IPortal, ISectionItemPlugin, IPlugin, IPluginEmbeddable, IEmbeddableMetaData
 } from "./api-types";
 import { IManagedInteractive } from "../../page-item-authoring/managed-interactives";
 
@@ -44,6 +43,7 @@ const makeNewPageItem = (attributes: ICreatePageItem): ISectionItem => {
   const returnAttributes = {...attributes, type: makePageItemType(attributes.type)};
   const newItem: ISectionItem = {
     id: `${++itemCounter}`,
+    embeddableId: `123${itemCounter}`,
     column: attributes.column || SectionColumns.PRIMARY,
     data: makeNewEmbeddable(returnAttributes),
     position: attributes.position || 1,
@@ -117,6 +117,7 @@ export const updatePageItem: APIPageItemUpdateF = (args: {pageId: string, sectio
   if (item) {
     const updatedItem: ISectionItem = {
       id: sectionItem.id,
+      embeddableId: sectionItem.embeddableId,
       column: sectionItem.column || SectionColumns.PRIMARY,
       data: sectionItem.data,
       position: sectionItem.position || 1,
@@ -399,7 +400,7 @@ const getAllEmbeddables = () => {
       type: "plugin",
       useCount: 5,
       dateAdded: 1630440491,
-      isQuickAddItem: true,
+      isQuickAddItem: false,
       components: [{
         label: "Teacher Tips",
         name: "Activity",
@@ -559,6 +560,87 @@ const getLibraryInteractives = () => {
   return Promise.resolve({libraryInteractives});
 };
 
+const getAvailablePlugins = () => {
+  const plugins: IPlugin[] = [
+    {
+      id: "1",
+      name: "Fake Plugin"
+    }
+  ];
+  return Promise.resolve({plugins});
+};
+
+const getPageItemPlugins = () => {
+  const pageItemPlugins: IPluginEmbeddable[] = [
+    {
+      embeddableId: "123",
+      id: "1",
+      name: "Fake Plugin",
+      sectionItemId: "567"
+    }
+  ];
+  return Promise.resolve({pageItemPlugins});
+};
+
+const getPageItemEmbeddableExport = () => {
+  const pageItemExport: Record<string, any> = {
+    name: "",
+    url_fragment: null,
+    authored_state: "{\"version\": 1,\"questionType\": \"open_response\", \"prompt\": \"What do you know?\"}",
+    is_hidden: false,
+    is_half_width: false,
+    show_in_featured_question_report: true,
+    inherit_aspect_ratio_method: true,
+    custom_aspect_ratio_method: "DEFAULT",
+    inherit_native_width: true,
+    custom_native_width: 576,
+    inherit_native_height: true,
+    custom_native_height: 435,
+    inherit_click_to_play: true,
+    custom_click_to_play: false,
+    inherit_full_window: true,
+    custom_full_window: false,
+    inherit_click_to_play_prompt: true,
+    custom_click_to_play_prompt: null,
+    inherit_image_url: true,
+    custom_image_url: null,
+    library_interactive: {
+      data: {
+        aspect_ratio_method: "DEFAULT",
+        authoring_guidance: "",
+        base_url: "https://models-resources.concord.org/question-interactives/version/v0.3.0/open-response/",
+        click_to_play: false,
+        click_to_play_prompt: null,
+        description: "",
+        enable_learner_state: true,
+        full_window: false,
+        has_report_url: false,
+        image_url: null,
+        name: "Open Response",
+        native_height: 435,
+        native_width: 576,
+        no_snapshots: false,
+        show_delete_data_button: false,
+        thumbnail_url: "",
+        customizable: true,
+        authorable: true
+      }
+    },
+    type: "ManagedInteractive",
+    ref_id: "6471-ManagedInteractive",
+    linked_interactives: []
+  };
+  return Promise.resolve(pageItemExport);
+};
+
+const getPageItemEmbeddableMetaData = () => {
+  const pageItemEmbeddableData: IEmbeddableMetaData = {
+    embeddableId: "123",
+    embeddableType: "Fake Type"
+  };
+  return Promise.resolve(pageItemEmbeddableData);
+};
+
 const getPortals = () => {
   const portals: IPortal[] = [
     {
@@ -598,7 +680,7 @@ export const API: IAuthoringAPIProvider = {
   getPages, getPage, createPage, updatePage, deletePage, copyPage,
   createSection, updateSections, updateSection, copySection,
   createPageItem, updatePageItem, deletePageItem, copyPageItem,
-  getAllEmbeddables, getLibraryInteractives, getPortals,
-  getPreviewOptions,
+  getAllEmbeddables, getLibraryInteractives, getAvailablePlugins, getPortals,
+  getPreviewOptions, getPageItemPlugins, getPageItemEmbeddableMetaData, getPageItemEmbeddableExport,
   pathToTinyMCE: "https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.10.0/tinymce.min.js", pathToTinyMCECSS: undefined
 };

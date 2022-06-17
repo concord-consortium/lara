@@ -5,9 +5,9 @@ import { Modal, ModalButtons } from "../../shared/components/modal/modal";
 import { Add } from "../../shared/components/icons/add-icon";
 import { absorbClickThen } from "../../shared/absorb-click";
 import { ISectionItemType } from "../api/api-types";
+import { usePageAPI } from "../hooks/use-api-provider";
 
 import "./section-item-picker.scss";
-import { usePageAPI } from "../hooks/use-api-provider";
 
 export interface IProps {
   onClose: () => void;

@@ -11,6 +11,7 @@
 ### Properties
 
 * [authoredState](ipluginauthoringcontext.md#authoredstate)
+* [closeAuthoredPluginForm](ipluginauthoringcontext.md#optional-closeauthoredpluginform)
 * [componentLabel](ipluginauthoringcontext.md#componentlabel)
 * [container](ipluginauthoringcontext.md#container)
 * [getFirebaseJwt](ipluginauthoringcontext.md#getfirebasejwt)
@@ -27,6 +28,14 @@
 • **authoredState**: *string | null*
 
 The authored configuration for this instance (if available).
+
+___
+
+### `Optional` closeAuthoredPluginForm
+
+• **closeAuthoredPluginForm**? : *undefined | function*
+
+Function that closes a plugin authoring form
 
 ___
 
