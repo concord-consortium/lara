@@ -220,6 +220,7 @@ export const ItemEditDialog: React.FC<IItemEditDialogProps> = ({
           pageItem={itemToEdit}
           authoringApiUrls={authoringApiUrls}
           onUpdate={handlePluginData}
+          closeForm={handleCancelUpdateItem}
           wrappedItem={wrappedItem}
           />;
       default:

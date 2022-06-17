@@ -181,7 +181,7 @@ export interface IEmbeddablePluginData {
     approved_script: IApprovedScript;
     approved_script_label: "teacherEditionTips";
     author_data: string;
-    component_label: "windowShade" | "questionWrapper";
+    component_label: "questionWrapper" | "sideTip" | "windowShade";
     description: string;
     id: number;
   };

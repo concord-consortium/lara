@@ -200,7 +200,7 @@ export const getLaraAuthoringAPI =
       const { label, name, scope } = component;
       if (scope === "embeddable") {
         embeddables.push({
-          name,
+          name: `${plugin.name}: ${name}`,
           id: `Plugin::${label}`,
           serializeable_id: `Plugin_${plugin.id}::${label}`, // TODO?
           type: `Plugin::${plugin.label}`,

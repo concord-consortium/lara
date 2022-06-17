@@ -9,7 +9,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    width: 310px;
+    width: 299px;
   }
 
   button {
@@ -64,6 +64,7 @@
   .pluginName {
     display: inline-block;
     overflow: hidden;
+    padding: 2px 0;
     text-overflow: ellipsis;
     white-space: nowrap;
   }
@@ -72,7 +73,7 @@
 .section-responsive-static {
   .availablePlugins {
     select {
-      width: 185px;
+      width: 184px;
     }
   }
   .pluginsList {
@@ -87,7 +88,7 @@
 .section-30 {
   .availablePlugins {
     select {
-      width: 190px;
+      width: 189px;
     }
   }
   .pluginsList {

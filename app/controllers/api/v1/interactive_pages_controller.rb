@@ -227,46 +227,31 @@ class Api::V1::InteractivePagesController < API::APIController
       embeddable = MwInteractive.create!
     when /Embeddable::Xhtml/
       embeddable = Embeddable::Xhtml.create!
-    when /Plugin_(\d+)::windowShade/
-      # Parse the embeddable_type string to get the approved_script id
-      # as well as the plugin_type
-      # For windowshade items we need to create a new embeddable of type
+    when /Plugin_(\d+)::(.*)/
+      # Parse the embeddable_type string to get the approved_script id.
+      # For plugin items we need to create a new embeddable of type
       # Embeddable::Plugin and then associate it with the plugin.
       # 1. Create a plugin with the instance of the approved_script
       # 2. Create a Embeddable::EmbeddablePlugin
       # Example: "Plugin_10::windowShade"
-      # IMPORTANT: 'windowShade' as the component_label is critical.
-      tip_type = 'windowShade'
-      regex = /Plugin_(\d+)::windowShade/
+      # IMPORTANT: The tip type, "windowShade" in the above example, as 
+      # the component_label is critical.
+      tip_type = $2
+      regex = /Plugin_(\d+)::#{tip_type}/
       script_id = embeddable_type.match(regex)[1]
       author_data = { tipType: tip_type }.to_json
+      wrapped_embeddable_id = page_item_params["wrapped_embeddable_id"]
+      wrapped_embeddable_type = page_item_params["wrapped_embeddable_type"]
       # I am following the convention I saw in interactive_pages_controller.rb
       embeddable = Embeddable::EmbeddablePlugin.create!
       embeddable.approved_script_id = script_id
       embeddable.author_data = author_data
       embeddable.component_label = tip_type
       embeddable.is_half_width = false
-      embeddable.save!
-    when /Plugin_(\d+)::questionWrapper/
-      # Parse the embeddable_type string to get the approved_script id
-      # as well as the plugin_type
-      # For question wrapper items we need to create a new embeddable of type
-      # Embeddable::Plugin and then associate it with the plugin.
-      # 1. Create a plugin with the instance of the approved_script
-      # 2. Create a Embeddable::EmbeddablePlugin
-      # Example: "Plugin_10::questionWrapper"
-      # IMPORTANT: 'questionWrapper' as the component_label is critical.
-      tip_type = 'questionWrapper'
-      regex = /Plugin_(\d+)::questionWrapper/
-      script_id = embeddable_type.match(regex)[1]
-      author_data = { tipType: tip_type }.to_json
-      embeddable = Embeddable::EmbeddablePlugin.create!
-      embeddable.approved_script_id = script_id
-      embeddable.author_data = author_data
-      embeddable.component_label = tip_type
-      embeddable.embeddable_id = page_item_params["wrapped_embeddable_id"]
-      embeddable.embeddable_type = page_item_params["wrapped_embeddable_type"]
-      embeddable.is_half_width = false
+      if wrapped_embeddable_id && wrapped_embeddable_type
+        embeddable.embeddable_id = wrapped_embeddable_id
+        embeddable.embeddable_type = wrapped_embeddable_type
+      end
       embeddable.save!
     else
       return error("Unknown embbeddable_type: #{embeddable_type}\nOnly library interactive embeddables, iFrame interactives, and text blocks are currently supported")
