@@ -238,6 +238,11 @@ class LightweightActivity < ActiveRecord::Base
   end
 
   def self.link_glossaries_on_import(activity_json_object, import_activity)
+    # this option will be turned on during testing of activity imports during the
+    # LARA2 cutover.  It is potentially dangerous as the domain of the glossary
+    # url is ignored so it is possible to link to the incorrect glossary
+    return unless !!ENV['ENABLE_DANGEROUS_GLOSSARY_LINKING_ON_IMPORT']
+
     return unless activity_json_object[:plugins]
 
     glossary_plugin_object = activity_json_object[:plugins].find { |p| p[:approved_script_label] == "glossary" }
