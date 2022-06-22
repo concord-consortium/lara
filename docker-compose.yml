@@ -39,6 +39,8 @@ services:
       ACTIVITY_PLAYER_URL: "${ACTIVITY_PLAYER_URL:-https://activity-player.concord.org/branch/master/}"
       # URL of script to create an Activity Player compatible version of resources by converting old embeddables to library interactives
       CONVERSION_SCRIPT_URL: "${CONVERSION_SCRIPT_URL:-https://models-resources.concord.org/question-interactives/convert-old-lara/?lara_root=https://app.lara.docker&template=https://app.lara.docker/api/v1/activities/214.json}"
+      # set to "true" to allow for linking to glossaries solely based on id, ignoring the domain
+      ENABLE_DANGEROUS_GLOSSARY_LINKING_ON_IMPORT:
 
       VIRTUAL_HOST: "${LARA_HOST:-app.lara.docker}"
 
