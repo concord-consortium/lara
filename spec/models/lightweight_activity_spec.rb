@@ -428,6 +428,38 @@ describe LightweightActivity do
       expect(act.related).to eq(json[:related])
       expect(act.imported_activity_url).to eq(imported_activity_url)
       expect(act.pages.count).to eq(json[:pages].length)
+      expect(act.glossary_id).to eq(nil)
+    end
+
+    describe "for activities that use the glossary model" do
+      let(:glossary) { glossary = FactoryGirl.create(:glossary, user: author) }
+      let(:host) { 'http://example.com' }
+      let(:approved_script) { FactoryGirl.create(:approved_script, label: "glossary") }
+      let(:plugin) { FactoryGirl.create(:plugin, approved_script: approved_script, component_label: "glossary") }
+
+      before(:each) do
+        activity.plugins.push(plugin)
+      end
+
+      it 'should not import an existing glossary when the environment variable is not set' do
+        ENV.delete('ENABLE_DANGEROUS_GLOSSARY_LINKING_ON_IMPORT')
+        act = LightweightActivity.import(activity.export(host), new_owner, host)
+        expect(act.glossary_id).to eq(nil)
+      end
+
+      it 'should not import an existing glossary when the environment variable is not equal to "true"' do
+        ENV['ENABLE_DANGEROUS_GLOSSARY_LINKING_ON_IMPORT'] = "false"
+        act = LightweightActivity.import(activity.export(host), new_owner, host)
+        expect(act.glossary_id).to eq(nil)
+        ENV.delete('ENABLE_DANGEROUS_GLOSSARY_LINKING_ON_IMPORT')
+      end
+
+      it 'should import an existing glossary when the environment variable is set to "true"' do
+        ENV['ENABLE_DANGEROUS_GLOSSARY_LINKING_ON_IMPORT'] = "true"
+        act = LightweightActivity.import(activity.export(host), new_owner, host)
+        expect(act.glossary_id).to eq(glossary.id)
+        ENV.delete('ENABLE_DANGEROUS_GLOSSARY_LINKING_ON_IMPORT')
+      end
     end
   end
 
