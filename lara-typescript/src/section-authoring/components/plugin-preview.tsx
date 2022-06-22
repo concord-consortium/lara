@@ -34,12 +34,15 @@ export const PluginPreview: React.FC<IPluginPreviewProps> = ({
   };
 
   React.useEffect(() => {
+    setNextPluginLabel(label);
+  }, []);
+
+  React.useEffect(() => {
     if (!(url && containerDiv.current)) return;
     const script = document.createElement("script");
     maybeAddTeacherEditionParams();
     script.onload = () => {
       if (authorData) {
-        setNextPluginLabel(label);
         const pluginContext: IPluginRuntimeContextOptions = {
           type: "runtime",
           learnerState: null,

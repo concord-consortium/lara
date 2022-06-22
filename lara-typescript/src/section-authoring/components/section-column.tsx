@@ -8,6 +8,7 @@ import { DragDropContext, Droppable, Draggable, DropResult, DraggableProvided } 
 import { Add } from "../../shared/components/icons/add-icon";
 import { SectionItemPicker } from "./section-item-picker";
 import { usePageAPI } from "../hooks/use-api-provider";
+import { snakeToCamelCaseKeys } from "../../shared/convert-keys";
 
 import "./section-column.scss";
 
@@ -147,15 +148,18 @@ export const SectionColumn: React.FC<ISectionColumnProps> = ({
                     && items.length > 0
                     && items.map((item, index) => {
                     let itemCanBeCopied = true;
+                    // TODO: Figure out why item.data property names are sometimes not converted
+                    // to camel case, and fix it instead of using this itemData variable.
+                    const itemData = snakeToCamelCaseKeys(item.data);
                     const sectionItemClasses = classNames("sectionItem", {
-                       halfWidth: item.data.isHalfWidth,
+                       halfWidth: itemData.isHalfWidth,
                        pluginItem: item.type === "Embeddable::EmbeddablePlugin",
-                       sideTipItem: item.data.componentLabel === "sideTip"
+                       sideTipItem: itemData.componentLabel === "sideTip"
                     });
-                    if (item.data.componentLabel === "questionWrapper") {
+                    if (itemData.componentLabel === "questionWrapper") {
                       return;
                     }
-                    if (item.data.componentLabel === "sideTip") {
+                    if (itemData.componentLabel === "sideTip") {
                       itemCanBeCopied = false;
                     }
                     return (
