@@ -241,7 +241,7 @@ class LightweightActivity < ActiveRecord::Base
     # this option will be turned on during testing of activity imports during the
     # LARA2 cutover.  It is potentially dangerous as the domain of the glossary
     # url is ignored so it is possible to link to the incorrect glossary
-    return unless !!ENV['ENABLE_DANGEROUS_GLOSSARY_LINKING_ON_IMPORT']
+    return unless ENV['ENABLE_DANGEROUS_GLOSSARY_LINKING_ON_IMPORT'] == "true"
 
     return unless activity_json_object[:plugins]
 
