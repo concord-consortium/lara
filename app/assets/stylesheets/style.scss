@@ -80,14 +80,16 @@ button, .btn-primary, span.edit_trigger, #modal .embeddable-save, #modal .close 
   text-align: center;
   text-decoration: none;
 
-  &:hover {
-    background: var(--ltr-teal);
-    color: var(--teal);
-  }
-
-  &:active {
-    background: var(--teal);
-    color: white;
+  &:not([disabled]) {
+    &:hover {
+      background: var(--ltr-teal);
+      color: var(--teal);
+    }
+  
+    &:active {
+      background: var(--teal);
+      color: white;
+    }
   }
 }
 
