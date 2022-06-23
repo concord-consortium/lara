@@ -1,5 +1,5 @@
 import * as React from "react";
-import { ICreatePageItem, SectionColumns } from "../api/api-types";
+import { ICreatePageItem, IPluginEmbeddable, SectionColumns } from "../api/api-types";
 import { UserInterfaceContext } from "../containers/user-interface-provider";
 import { useGetAvailablePlugins, useGetPageItemEmbeddableMetaData,
          useGetPageItemPlugins, usePageAPI } from "../hooks/use-api-provider";
@@ -51,27 +51,28 @@ export const SectionItemPluginList: React.FC<ISectionItemPluginListProps> = ({
   };
 
   const renderPluginsMenu = () => {
-    const plugins = availablePlugins.isSuccess ? availablePlugins.data.plugins.map((p: any, i: number) => {
-      const alreadyAdded = pageItemPlugins?.find(pi => pi.name === p.name);
-      if (alreadyAdded) {
-        return null;
-      }
-      const pluginValue = `Plugin_${p.id}::${p.component_label}`;
+    if (!availablePlugins.isSuccess) {
+      return null;
+    }
+    const unusedPlugins = availablePlugins.data.plugins.filter((ap: Record<string, any>) => {
+      return !pageItemPlugins?.some((pip: IPluginEmbeddable) => {
+        return pip.name === ap.name;
+      });
+    });
+
+    const pluginOptions = unusedPlugins.map((up: Record<string, any>, i: number) => {
+      const pluginValue = `Plugin_${up.id}::${up.component_label}`;
       return (
         <option
           key={`available-plugin-${sectionItemId}-${i}`}
           value={pluginValue}
-          data-approved-script-id={p.id}
-          data-component-label={p.label}
+          data-approved-script-id={up.id}
+          data-component-label={up.label}
         >
-          {p.name}
+          {up.name}
         </option>
       );
-    }) : [];
-
-    if (plugins.length === 0) {
-      return null;
-    }
+    });
 
     return (
       <div className="availablePlugins">
@@ -79,11 +80,12 @@ export const SectionItemPluginList: React.FC<ISectionItemPluginListProps> = ({
           id={`embeddable_type_embeddable-managed_interactive_${sectionItemId}`}
           name="embeddable_type"
           onChange={handlePluginSelect}
+          disabled={pluginOptions.length === 0}
         >
           <option value="">Select a plugin:</option>
-          {plugins}
+          {pluginOptions}
         </select>
-        <button onClick={handleAdd}>
+        <button onClick={handleAdd} disabled={pluginOptions.length === 0}>
           Add
         </button>
       </div>
