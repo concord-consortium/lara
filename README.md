@@ -122,31 +122,37 @@ install a Codespaces extension.
 
 Once machine is up and running, most of the steps described for local development are still valid for GH Codespaces.
 The main difference is that you should copy `.env-gh-codespaces-sample` to `.env` (instead of `.env-osx-sample`),
-there's no need for Dinghy setup, and LARA and Portal host will be significantly different (impossible to guess
-until you make their ports visible in Visual Studio Code).
+there's no need for Dinghy setup, and LARA and Portal hosts will be significantly different. However, everything
+you need to do in practice is described below.
 
-Run:
-```
-  cp .env-gh-codespaces-sample .env
-  docker login
-  docker-compose up
-```
+1. Run:
+    ```
+      cp .env-gh-codespaces-sample .env
+    ```
 
-Once the app has started, open "Ports" tab in Visual Studio Code. Find a process that uses port 3000 and change its
+2. Open Portal GitHub Codespace, run `echo ${CODESPACE_NAME}` in terminal, and set `PORTAL_CODESPACE_NAME` variable
+in LARA's `.env` file.
+
+3. Set `REPORT_SERVICE_TOKEN` in LARA's `.env` file following instructions that can be found there.
+
+4. Run
+    ```
+      docker login
+      docker-compose up
+    ```
+
+5. Once the app has started, open "Ports" tab in Visual Studio Code. Find a process that uses port 3000 and change its
 visibility to public (right click on "Private" -> Port Visibility -> Public). You should see an updated address in
 "Local Address" column. You can open this URL in the web browser and LARA should load. It seems it's necessary to do it
 each time you run `docker-compose up`.
 
-Copy this randomly generated host and open `.env` file. Find `[LARA-RANDOM-GH-CODESPACES-HOST]` and replace it with the
-copied value. Note that you have to do it only once, as this host will stay the same in the future, even if you
-shut down and restart your Codespaces machine.
-
-Once you setup Portal and make its port public, you should open `.env` file again, find `[PORTAL-RANDOM-GH-CODESPACES-HOST]`,
-and replace it with the randomly generated host for Portal.
-
-Remember to set `REPORT_SERVICE_TOKEN` in `.env` following instructions that can be found in this file.
-
-Each time `.env` file is updated, you need stop docker-compose and start it again using `docker-compose up`.
+6. Now, your LARA instance should work with Portal, Activity Player and basic reports. You can login to LARA
+through `Localhost` (Portal running on another GH Codespace) using `admin`, `password` credentials. You are now logged
+in with admin@concord.org in LARA, however this user is not actually an admin in LARA. Run the following command in
+terminal in the LARA Codespaces:
+    ```
+      docker-compose exec app bundle exec rake lightweight:admin_last_user
+    ```
 
 ## Editing CSS
 
