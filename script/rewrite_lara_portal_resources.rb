@@ -1,10 +1,19 @@
-PORTAL_COLUMNS_TO_SEARCH = {
-  'ExternalActivity' => %w[url launch_url author_url print_url teacher_guide_url],
+PORTAL_COLUMNS_TO_SEARCH_ALL = {
+  'ExternalActivity' => %w[url author_url print_url teacher_guide_url],
   'Admin::AuthoringSite' => ['url'],
   'Client' => ['site_url'],
   'LearnerProcessingEvent' =>  ['url']
 }.freeze
 
+PORTAL_COLUMNS_TO_SEARCH_NO_LEARNERS = {
+  'ExternalActivity' => %w[url author_url print_url teacher_guide_url],
+  'Admin::AuthoringSite' => ['url'],
+  'Client' => ['site_url']
+}.freeze
+
+PORTAL_COLUMNS_TO_SEARCH_INTERNAL_REFS = {
+  'ExternalActivity' => %w[teacher_resources_url]
+}.freeze
 
 LARA_COLUMNS_TO_SEARCH = {
   'CollaborationRun' => ['collaborators_data_url'],
@@ -47,8 +56,15 @@ end
 
 # In the Portal: Update references to LARA
 # Must be run in the Portal
-def update_portal_lara_refs(old_url='authoring.concord.org', new_url='my-lara.concord-qa.org')
-  update_server_name(PORTAL_COLUMNS_TO_SEARCH, old_url, new_url)
+def update_portal_lara_refs(old_url='authoring.concord.org', new_url='my-lara.concordqa.org', skip_learner_data=false)
+  portal_columns = skip_learner_data ? PORTAL_COLUMNS_TO_SEARCH_NO_LEARNERS : PORTAL_COLUMNS_TO_SEARCH_ALL
+  update_server_name(portal_columns, old_url, new_url)
+end
+
+# In the Portal: Update references to Portal
+# Must be run in the Portal
+def update_portal_portal_refs(old_url='learn.concord.org', new_url='my-portal.concordqa.org')
+  update_server_name(PORTAL_COLUMNS_TO_SEARCH_INTERNAL_REFS, old_url, new_url)
 end
 
 # In LARA: Update references to Portal
