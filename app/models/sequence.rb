@@ -1,6 +1,6 @@
 class Sequence < ActiveRecord::Base
 
-  attr_accessible :description, :title, :theme_id, :project_id,
+  attr_accessible :description, :title, :theme_id, :project_id, :defunct, 
     :user_id, :logo, :display_title, :thumbnail_url, :abstract, :publication_hash,
     :runtime, :project, :background_image
 
@@ -101,7 +101,8 @@ class Sequence < ActiveRecord::Base
                                         :display_title,
                                         :thumbnail_url,
                                         :runtime,
-                                        :background_image
+                                        :background_image,
+                                        :defunct
     ])
     sequence_json[:project] = self.project ? self.project.export : nil
     sequence_json[:activities] = []

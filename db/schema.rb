@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20220209211536) do
+ActiveRecord::Schema.define(:version => 20220627201532) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "kind"
@@ -165,8 +165,8 @@ ActiveRecord::Schema.define(:version => 20220209211536) do
   create_table "embeddable_image_questions", :force => true do |t|
     t.string   "name"
     t.text     "prompt"
-    t.datetime "created_at",                                                 :null => false
-    t.datetime "updated_at",                                                 :null => false
+    t.datetime "created_at",                                                   :null => false
+    t.datetime "updated_at",                                                   :null => false
     t.string   "bg_source",                        :default => "Shutterbug"
     t.string   "bg_url"
     t.text     "drawing_prompt"
@@ -179,6 +179,7 @@ ActiveRecord::Schema.define(:version => 20220209211536) do
     t.boolean  "show_in_featured_question_report", :default => true
     t.integer  "interactive_id"
     t.string   "interactive_type"
+    t.string   "migration_status",                 :default => "not migrated"
   end
 
   create_table "embeddable_labbook_answers", :force => true do |t|
@@ -236,8 +237,8 @@ ActiveRecord::Schema.define(:version => 20220209211536) do
   create_table "embeddable_multiple_choices", :force => true do |t|
     t.string   "name"
     t.text     "prompt"
-    t.datetime "created_at",                                               :null => false
-    t.datetime "updated_at",                                               :null => false
+    t.datetime "created_at",                                                   :null => false
+    t.datetime "updated_at",                                                   :null => false
     t.boolean  "custom",                           :default => false
     t.boolean  "enable_check_answer",              :default => true
     t.boolean  "multi_answer",                     :default => false
@@ -250,6 +251,7 @@ ActiveRecord::Schema.define(:version => 20220209211536) do
     t.text     "hint"
     t.boolean  "is_full_width",                    :default => false
     t.boolean  "show_in_featured_question_report", :default => true
+    t.string   "migration_status",                 :default => "not migrated"
   end
 
   create_table "embeddable_open_response_answers", :force => true do |t|
@@ -269,8 +271,8 @@ ActiveRecord::Schema.define(:version => 20220209211536) do
   create_table "embeddable_open_responses", :force => true do |t|
     t.string   "name"
     t.text     "prompt"
-    t.datetime "created_at",                                          :null => false
-    t.datetime "updated_at",                                          :null => false
+    t.datetime "created_at",                                                   :null => false
+    t.datetime "updated_at",                                                   :null => false
     t.boolean  "is_prediction",                    :default => false
     t.boolean  "give_prediction_feedback",         :default => false
     t.text     "prediction_feedback"
@@ -279,6 +281,7 @@ ActiveRecord::Schema.define(:version => 20220209211536) do
     t.text     "hint"
     t.boolean  "is_full_width",                    :default => false
     t.boolean  "show_in_featured_question_report", :default => true
+    t.string   "migration_status",                 :default => "not migrated"
   end
 
   create_table "embeddable_plugins", :force => true do |t|
@@ -313,12 +316,13 @@ ActiveRecord::Schema.define(:version => 20220209211536) do
     t.string   "url"
     t.text     "caption"
     t.text     "credit"
-    t.datetime "created_at",                       :null => false
-    t.datetime "updated_at",                       :null => false
-    t.boolean  "show_lightbox", :default => true
+    t.datetime "created_at",                                   :null => false
+    t.datetime "updated_at",                                   :null => false
+    t.boolean  "show_lightbox",    :default => true
     t.string   "credit_url"
-    t.boolean  "is_hidden",     :default => false
-    t.boolean  "is_full_width", :default => true
+    t.boolean  "is_hidden",        :default => false
+    t.boolean  "is_full_width",    :default => true
+    t.string   "migration_status", :default => "not migrated"
   end
 
   create_table "imports", :force => true do |t|
@@ -437,6 +441,7 @@ ActiveRecord::Schema.define(:version => 20220209211536) do
     t.string   "runtime",                                :default => "LARA"
     t.string   "background_image"
     t.string   "fixed_width_layout",                     :default => "1100px"
+    t.boolean  "defunct",                                :default => false
   end
 
   add_index "lightweight_activities", ["changed_by_id"], :name => "index_lightweight_activities_on_changed_by_id"
@@ -700,6 +705,7 @@ ActiveRecord::Schema.define(:version => 20220209211536) do
     t.string   "runtime",                                :default => "LARA"
     t.string   "background_image"
     t.string   "fixed_width_layout",                     :default => "1100px"
+    t.boolean  "defunct",                                :default => false
   end
 
   add_index "sequences", ["project_id"], :name => "index_sequences_on_project_id"
@@ -751,12 +757,13 @@ ActiveRecord::Schema.define(:version => 20220209211536) do
     t.string   "poster_url"
     t.text     "caption"
     t.text     "credit"
-    t.datetime "created_at",                       :null => false
-    t.datetime "updated_at",                       :null => false
-    t.integer  "width",         :default => 556,   :null => false
-    t.integer  "height",        :default => 240,   :null => false
-    t.boolean  "is_hidden",     :default => false
-    t.boolean  "is_full_width", :default => true
+    t.datetime "created_at",                                   :null => false
+    t.datetime "updated_at",                                   :null => false
+    t.integer  "width",            :default => 556,            :null => false
+    t.integer  "height",           :default => 240,            :null => false
+    t.boolean  "is_hidden",        :default => false
+    t.boolean  "is_full_width",    :default => true
+    t.string   "migration_status", :default => "not migrated"
   end
 
   create_table "video_sources", :force => true do |t|

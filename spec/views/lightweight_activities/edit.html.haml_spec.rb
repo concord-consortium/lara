@@ -1,14 +1,17 @@
 require 'spec_helper'
 
 # Chrome tip: open inspector, right-click on your HTML, copy Xpath... ## <= this is gold.
-def official_checkox
+def defunct_checkbox
+  '//*[@id="lightweight_activity_defunct"]'
+end
+def official_checkbox
   '//*[@id="lightweight_activity_is_official"]'
 end
 
 
 describe "lightweight_activities/edit" do
 
-  let(:activity)  { stub_model(LightweightActivity, :id => 1, :name => 'Activity name') }
+  let(:activity)  { stub_model(LightweightActivity, :id => 1, :name => 'Activity name', :defunct => false) }
   let(:user)      { stub_model(User, :is_admin => false)      }
 
   before(:each) do
@@ -19,12 +22,12 @@ describe "lightweight_activities/edit" do
   describe "the form" do
     let (:user) { stub_model(User, :is_admin => true)}
 
-    describe "is_official checkbox" do
+    describe "defunct checkbox" do
       context "when the current user is an admin" do
         let (:user) { stub_model(User, :is_admin => true)}
         it "should show the checkbox" do
           render
-          expect(rendered).to have_xpath official_checkox
+          expect(rendered).to have_xpath defunct_checkbox
         end
       end
 
@@ -32,7 +35,25 @@ describe "lightweight_activities/edit" do
         let (:user) { stub_model(User, :is_admin => false)}
         it "should not show the checkbox" do
           render
-          expect(rendered).not_to have_xpath official_checkox
+          expect(rendered).not_to have_xpath defunct_checkbox
+        end
+      end
+    end
+
+    describe "is_official checkbox" do
+      context "when the current user is an admin" do
+        let (:user) { stub_model(User, :is_admin => true)}
+        it "should show the checkbox" do
+          render
+          expect(rendered).to have_xpath official_checkbox
+        end
+      end
+
+      context "when the current user is not an admin" do
+        let (:user) { stub_model(User, :is_admin => false)}
+        it "should not show the checkbox" do
+          render
+          expect(rendered).not_to have_xpath official_checkbox
         end
       end
     end
