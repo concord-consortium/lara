@@ -24,18 +24,26 @@
           = f.submit "Save", :id => 'save-top', :class => 'btn-primary'
       .field
         = f.label :name, 'Activity Name'
-        = f.text_field :name
-      .field{:class => ("disabled" if @activity.latest_publication_portals.length > 0)}
-        = f.label :runtime, "Runtime Environment"
-        = f.select :runtime, options_for_select(LightweightActivity::RUNTIME_OPTIONS, @activity.runtime), :disabled => @activity.latest_publication_portals.length > 0
-        .hint
-          Once the activity is published, you can't change this setting.
+        = f.text_field :name, :size => 80
+      - if current_user.is_admin
+        .field
+          = f.label :defunct,  "Defunct"
+          = f.check_box :defunct
+          .hint (Check this box if the activity uses features not supported by Activity Player.)
+      .field{:class => ("disabled" if @activity.runtime != 'LARA')}
+        = f.label :theme_id, 'Theme'
+        = f.select :theme_id, options_from_collection_for_select(Theme.all, 'id', 'name', @activity.theme_id), { :include_blank => "None (inherit from sequence, project, or site default)" }
       .field
         = f.label :glossary_id, 'Glossary'
         = f.select :glossary_id, glossary_options_for_select(@activity, current_user), { :include_blank => "None" }
         %button#view_edit_glossary{style: "margin-top: 0; margin-left: 20px;"} View or Edit
         .hint
           Select a glossary from the list to add to this activity. If you do not wish to associate a glossary with this activity, select "None."
+      .field{:class => ("disabled" if @activity.latest_publication_portals.length > 0)}
+        = f.label :runtime, "Runtime Environment"
+        = f.select :runtime, options_for_select(LightweightActivity::RUNTIME_OPTIONS, @activity.runtime), :disabled => @activity.latest_publication_portals.length > 0
+        .hint
+          Once the activity is published, you can't change this setting.
       .field{:class => ("disabled" if @activity.runtime != 'Activity Player')}
         = f.label :fixed_width_layout, 'Activity Player Fixed Width Layout'
         = f.select :fixed_width_layout, options_for_select(LightweightActivity::FIXED_WIDTH_LAYOUT_OPTIONS, @activity.fixed_width_layout)
@@ -127,7 +135,7 @@
             = truncate(p.name, :length => 23, :omission => "…")
             %ul.menu
               %li.edit= link_to "Edit", edit_activity_page_path(@activity, p)
-              %li.run= link_to "Preview", preview_activity_page_path(@activity, p), :target => 'new'
+              %li.run= link_to "Preview", activity_preview_url(@activity, p), :target => 'new'
               - confirm_message = "Are you sure you want to delete this page from the activity? You will lose data from #{pluralize(@activity.active_runs, "learner")} that #{"has".pluralize(@activity.active_runs)} attempted this activity."
               %li.delete= link_to "Delete", activity_page_path(@activity, p), method: :delete, data: { confirm: (@activity.active_runs > 0) ? confirm_message : 'Are you sure?' }
               %li.drag_handle

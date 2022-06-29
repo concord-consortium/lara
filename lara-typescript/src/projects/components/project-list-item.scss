@@ -1,0 +1,61 @@
+@import "../../vars.scss";
+
+.projectListItem {
+  border-bottom: dashed 1px #ddd;
+  column-gap: 5px;
+  display: grid;
+  grid-template-columns: 10% 10fr;
+  grid-auto-flow: dense;
+  list-style: none;
+  margin: 0;
+  padding: 10px 5px;
+  row-gap: 0;
+
+  .projectListItem__title {
+    color: var(--teal);
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    grid-column-start: 1;
+    grid-column-end: span 7;
+    grid-row-start: 1;
+    grid-row-end: 1;
+    margin-bottom: 5px;
+  }
+  .projectListItem__link {
+    font-size: 9px;
+    grid-column-start: 1;
+    grid-column-end: span 10;
+    grid-row-start: 2;
+    grid-row-end: 2;
+  }
+
+  menu {
+    grid-column-start: 8;
+    grid-column-end: 10;
+    grid-row-start: 1;
+    grid-row-end: 1;
+
+    ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+
+      li {
+        display: inline-block;
+        margin: 0 0 0 20px;
+      }
+    }
+  }
+
+  button.textButton {
+    background: transparent;
+    border: none;
+    color: var(--dark-gray);
+    display: inline-block;
+    font-size: 12px;
+    margin: 0;
+    padding: 0;
+    text-transform: uppercase;
+  }
+}

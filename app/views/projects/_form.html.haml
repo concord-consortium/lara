@@ -37,6 +37,16 @@
     = f.label :url, "Project Page URL"
     %br
     = f.text_field :url
+    %br
+    .hint
+      When logo image is clicked, this is URL will launch in a new browser tab.
+  .field
+    = f.label :theme, "LARA Runtime Default Theme"
+    %br
+    = f.select :theme_id, options_from_collection_for_select(Theme.all, 'id', 'name', @project.theme_id), { :include_blank => "None (use site default)" }
+    %br
+    .hint
+      When LARA Runtime is the selected Runtime Environment, activities will use this theme by default. Themes can be changed in the activity settings.
   .field
     = f.label :footer, "LARA Runtime Footer"
     %br
@@ -79,9 +89,8 @@
     = f.label :contact_email, "Project Contact Email"
     %br
     = f.text_field :contact_email
-  .field
-    = f.label :theme, "LARA Runtime Default Theme"
     %br
-    = f.select :theme_id, options_from_collection_for_select(Theme.all, 'id', 'name', @project.theme_id), { :include_blank => "None (use site default)" }
+    .hint
+      Provide a valid email address for users to contact your project team. When this is provided, your contact email will be displayed in the footer.
   .actions
     = f.submit "Save"

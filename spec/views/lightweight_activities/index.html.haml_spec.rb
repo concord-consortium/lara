@@ -28,7 +28,8 @@ def fake_activity(official=false, is_public=true)
     changed_by: user,
     is_official: official,
     active_runs: 0,
-    portal_publications: []
+    portal_publications: [],
+    defunct: false
   )
 end
 

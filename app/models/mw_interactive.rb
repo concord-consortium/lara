@@ -8,7 +8,7 @@ class MwInteractive < ActiveRecord::Base
     :click_to_play_prompt, :image_url, :is_hidden, :linked_interactive_id, :linked_interactive_type,
     :full_window, :model_library_url, :authored_state, :no_snapshots,
     :show_delete_data_button, :show_in_featured_question_report, :is_half_width,
-    :aspect_ratio_method, :linked_interactive_item_id
+    :aspect_ratio_method, :linked_interactive_item_id, :report_item_url
 
   default_value_for :native_width, ASPECT_RATIO_DEFAULT_WIDTH
   default_value_for :native_height, ASPECT_RATIO_DEFAULT_HEIGHT
@@ -68,7 +68,8 @@ class MwInteractive < ActiveRecord::Base
       aspect_ratio_method: aspect_ratio_method,
       no_snapshots: no_snapshots,
       linked_interactive_item_id: linked_interactive_item_id,
-      linked_interactives: linked_interactives_list
+      linked_interactives: linked_interactives_list,
+      report_item_url: report_item_url
     }
   end
 
@@ -103,7 +104,8 @@ class MwInteractive < ActiveRecord::Base
                               :model_library_url,
                               :authored_state,
                               :aspect_ratio_method,
-                              :no_snapshots])
+                              :no_snapshots,
+                              :report_item_url])
   end
 
   def self.import(import_hash)

@@ -44835,31 +44835,15 @@ module.exports = g;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppComponent = void 0;
 var React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-var useEffect = React.useEffect;
-var resize_observer_polyfill_1 = __webpack_require__(/*! resize-observer-polyfill */ "./node_modules/resize-observer-polyfill/dist/ResizeObserver.es.js");
+var react_1 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 var interactive_api_client_1 = __webpack_require__(/*! ../../../interactive-api-client */ "./src/interactive-api-client/index.ts");
 var authoring_1 = __webpack_require__(/*! ./authoring */ "./src/example-interactives/src/testbed/authoring.tsx");
 var report_1 = __webpack_require__(/*! ./report */ "./src/example-interactives/src/testbed/report.tsx");
 var runtime_1 = __webpack_require__(/*! ./runtime */ "./src/example-interactives/src/testbed/runtime.tsx");
 var AppComponent = function (props) {
     var initMessage = (0, interactive_api_client_1.useInitMessage)();
-    // TODO: this should really be moved into a client hook file so it can be reused
-    useEffect(function () {
-        if (initMessage) {
-            var body_1 = document.getElementsByTagName("BODY")[0];
-            var updateHeight_1 = function () {
-                if (body_1 && body_1.clientHeight) {
-                    (0, interactive_api_client_1.setHeight)(body_1.clientHeight);
-                }
-            };
-            var observer_1 = new resize_observer_polyfill_1.default(function () { return updateHeight_1(); });
-            if (body_1) {
-                observer_1.observe(body_1);
-            }
-            return function () { return observer_1.disconnect(); };
-        }
-    }, [initMessage]);
-    useEffect(function () {
+    (0, interactive_api_client_1.useAutoSetHeight)();
+    (0, react_1.useEffect)(function () {
         if (initMessage) {
             (0, interactive_api_client_1.setSupportedFeatures)({
                 authoredState: true,
@@ -44878,6 +44862,8 @@ var AppComponent = function (props) {
             return React.createElement(report_1.ReportComponent, { initMessage: initMessage });
         case "runtime":
             return React.createElement(runtime_1.RuntimeComponent, { initMessage: initMessage });
+        case "reportItem":
+            return React.createElement("div", null, "The \"reportItem\" mode is not implemented in this example interactive");
     }
 };
 exports.AppComponent = AppComponent;
@@ -45405,7 +45391,7 @@ var __rest = (this && this.__rest) || function (s, e) {
     return t;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getAttachmentUrl = exports.readAttachment = exports.writeAttachment = exports.getLibraryInteractiveList = exports.getInteractiveSnapshot = exports.setLinkedInteractives = exports.getInteractiveList = exports.closeModal = exports.showModal = exports.removeLinkedInteractiveStateListener = exports.addLinkedInteractiveStateListener = exports.removeGlobalInteractiveStateListener = exports.addGlobalInteractiveStateListener = exports.removeAuthoredStateListener = exports.addAuthoredStateListener = exports.removeInteractiveStateListener = exports.addInteractiveStateListener = exports.log = exports.getFirebaseJwt = exports.getAuthInfo = exports.setNavigation = exports.setHint = exports.postDecoratedContentEvent = exports.setHeight = exports.setSupportedFeatures = exports.removeDecorateContentListener = exports.addDecorateContentListener = exports.removeCustomMessageListener = exports.addCustomMessageListener = exports.setGlobalInteractiveState = exports.getGlobalInteractiveState = exports.setAuthoredState = exports.getAuthoredState = exports.flushStateUpdates = exports.setInteractiveState = exports.setInteractiveStateTimeout = exports.getInteractiveState = exports.getMode = exports.getInitInteractiveMessage = void 0;
+exports.setOnUnload = exports.sendReportItemAnswer = exports.getAttachmentUrl = exports.readAttachment = exports.writeAttachment = exports.getLibraryInteractiveList = exports.getInteractiveSnapshot = exports.setLinkedInteractives = exports.getInteractiveList = exports.closeModal = exports.showModal = exports.removeLinkedInteractiveStateListener = exports.addLinkedInteractiveStateListener = exports.removeGlobalInteractiveStateListener = exports.addGlobalInteractiveStateListener = exports.removeAuthoredStateListener = exports.addAuthoredStateListener = exports.removeInteractiveStateListener = exports.addInteractiveStateListener = exports.log = exports.getFirebaseJwt = exports.getAuthInfo = exports.setNavigation = exports.setHint = exports.postDecoratedContentEvent = exports.setHeight = exports.setSupportedFeatures = exports.removeGetReportItemAnswerListener = exports.addGetReportItemAnswerListener = exports.removeDecorateContentListener = exports.addDecorateContentListener = exports.removeCustomMessageListener = exports.addCustomMessageListener = exports.setGlobalInteractiveState = exports.getGlobalInteractiveState = exports.setAuthoredState = exports.getAuthoredState = exports.flushStateUpdates = exports.setInteractiveState = exports.setInteractiveStateTimeout = exports.getInteractiveState = exports.getMode = exports.getInitInteractiveMessage = void 0;
 var client_1 = __webpack_require__(/*! ./client */ "./src/interactive-api-client/client.ts");
 var uuid_1 = __webpack_require__(/*! uuid */ "./node_modules/uuid/dist/esm-browser/index.js");
 var THROW_NOT_IMPLEMENTED_YET = function (method) {
@@ -45547,6 +45533,15 @@ var removeDecorateContentListener = function () {
     (0, client_1.getClient)().removeDecorateContentListener();
 };
 exports.removeDecorateContentListener = removeDecorateContentListener;
+// tslint:disable-next-line:max-line-length
+var addGetReportItemAnswerListener = function (callback) {
+    (0, client_1.getClient)().addGetReportItemAnswerListener(callback);
+};
+exports.addGetReportItemAnswerListener = addGetReportItemAnswerListener;
+var removeGetReportItemAnswerListener = function () {
+    (0, client_1.getClient)().removeGetReportItemAnswerListener();
+};
+exports.removeGetReportItemAnswerListener = removeGetReportItemAnswerListener;
 var setSupportedFeatures = function (features) {
     var request = {
         apiVersion: 1,
@@ -45563,7 +45558,7 @@ var postDecoratedContentEvent = function (msg) {
     (0, client_1.getClient)().post("decoratedContentEvent", msg);
 };
 exports.postDecoratedContentEvent = postDecoratedContentEvent;
-/*
+/**
  * Providing empty string or null disables hint.
  */
 var setHint = function (hint) {
@@ -45662,6 +45657,12 @@ var removeGlobalInteractiveStateListener = function (listener) {
 exports.removeGlobalInteractiveStateListener = removeGlobalInteractiveStateListener;
 // Mapping between external listener and internal listener, so it's possible to remove linkedInteractiveState listeners.
 var _linkedInteractiveStateListeners = new Map();
+/**
+ * The listener should be called immediately after it is added with any state of the linked
+ * interactive that the host currently knows about. This first call might not happen
+ * synchronously it could be slightly delayed. And then the listener should be called again
+ * whenever the state of the linked interactive changes.
+ */
 var addLinkedInteractiveStateListener = function (listener, options) {
     var client = (0, client_1.getClient)();
     var listenerId = (0, uuid_1.v4)();
@@ -45797,11 +45798,11 @@ var writeAttachment = function (params) {
     });
 };
 exports.writeAttachment = writeAttachment;
-var readAttachment = function (name) {
+var readAttachment = function (params) {
     return new Promise(function (resolve, reject) {
         // set up response listener
         var client = (0, client_1.getClient)();
-        var request = { name: name, operation: "read", requestId: client.getNextRequestId() };
+        var request = __assign(__assign({}, params), { operation: "read", requestId: client.getNextRequestId() });
         client.addListener("attachmentUrl", function (response) { return __awaiter(void 0, void 0, void 0, function () {
             var _a, e_2;
             return __generator(this, function (_b) {
@@ -45836,12 +45837,12 @@ var readAttachment = function (name) {
     });
 };
 exports.readAttachment = readAttachment;
-var getAttachmentUrl = function (name, contentType, expiresIn) {
+var getAttachmentUrl = function (params) {
     return new Promise(function (resolve, reject) {
         // set up response listener
         var client = (0, client_1.getClient)();
         var requestId = client.getNextRequestId();
-        var request = { name: name, operation: "read", contentType: contentType, expiresIn: expiresIn, requestId: requestId };
+        var request = __assign(__assign({}, params), { operation: "read", requestId: requestId });
         client.addListener("attachmentUrl", function (response) { return __awaiter(void 0, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 if (response.url) {
@@ -45857,6 +45858,14 @@ var getAttachmentUrl = function (name, contentType, expiresIn) {
     });
 };
 exports.getAttachmentUrl = getAttachmentUrl;
+var sendReportItemAnswer = function (request) {
+    (0, client_1.getClient)().post("reportItemAnswer", request);
+};
+exports.sendReportItemAnswer = sendReportItemAnswer;
+var setOnUnload = function (onUnload) {
+    (0, client_1.getClient)().setOnUnload(onUnload);
+};
+exports.setOnUnload = setOnUnload;
 
 
 /***/ }),
@@ -45880,6 +45889,42 @@ var __assign = (this && this.__assign) || function () {
         return t;
     };
     return __assign.apply(this, arguments);
+};
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
 };
 var __rest = (this && this.__rest) || function (s, e) {
     var t = {};
@@ -45929,6 +45974,7 @@ var Client = /** @class */ (function () {
         this.managedState = new managed_state_1.ManagedState();
         this.listeners = {};
         this.requestId = 1;
+        this.onUnload = undefined;
         this.setSupportedFeatures = function (request) {
             var newRequest = request;
             if (_this.customMessagesHandled) {
@@ -45937,6 +45983,9 @@ var Client = /** @class */ (function () {
                 newRequest = __assign({ features: features }, others);
             }
             _this.post("supportedFeatures", newRequest);
+        };
+        this.setOnUnload = function (onUnload) {
+            _this.onUnload = onUnload;
         };
         if (!(0, in_frame_1.inIframe)()) {
             // tslint:disable-next-line:no-console
@@ -46049,6 +46098,12 @@ var Client = /** @class */ (function () {
     Client.prototype.removeDecorateContentListener = function () {
         return this.removeListener("decorateContent");
     };
+    Client.prototype.addGetReportItemAnswerListener = function (callback) {
+        this.addListener("getReportItemAnswer", callback);
+    };
+    Client.prototype.removeGetReportItemAnswerListener = function () {
+        return this.removeListener("getReportItemAnswer");
+    };
     Client.prototype.connect = function () {
         var _this = this;
         this.phone = iframePhone.getIFrameEndpoint();
@@ -46056,7 +46111,12 @@ var Client = /** @class */ (function () {
             _this.managedState.initMessage = newInitMessage;
             // parseJSONIfString is used below quite a few times, as LARA and report are not consistent about format.
             // Sometimes they send string (report page), sometimes already parsed JSON (authoring, runtime).
-            _this.managedState.authoredState = parseJSONIfString(newInitMessage.authoredState);
+            if (newInitMessage.mode === "reportItem") {
+                _this.managedState.authoredState = {};
+            }
+            else {
+                _this.managedState.authoredState = parseJSONIfString(newInitMessage.authoredState);
+            }
             if (newInitMessage.mode === "runtime" || newInitMessage.mode === "report") {
                 _this.managedState.interactiveState = parseJSONIfString(newInitMessage.interactiveState);
                 // Don't consider initial state to be dirty, as user would see warnings while trying to leave page even
@@ -46067,10 +46127,26 @@ var Client = /** @class */ (function () {
                 _this.managedState.globalInteractiveState = parseJSONIfString(newInitMessage.globalInteractiveState);
             }
         });
-        this.addListener("getInteractiveState", function () {
-            _this.post("interactiveState", _this.managedState.interactiveState);
-            _this.managedState.interactiveStateDirty = false;
-        });
+        this.addListener("getInteractiveState", function (options) { return __awaiter(_this, void 0, void 0, function () {
+            var finalState;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        if (!((options === null || options === void 0 ? void 0 : options.unloading) && this.onUnload)) return [3 /*break*/, 2];
+                        return [4 /*yield*/, this.onUnload(options)];
+                    case 1:
+                        finalState = _a.sent();
+                        if (finalState) {
+                            this.managedState.interactiveState = finalState;
+                        }
+                        _a.label = 2;
+                    case 2:
+                        this.post("interactiveState", this.managedState.interactiveState);
+                        this.managedState.interactiveStateDirty = false;
+                        return [2 /*return*/];
+                }
+            });
+        }); });
         this.addListener("loadInteractiveGlobal", function (globalState) {
             _this.managedState.globalInteractiveState = parseJSONIfString(globalState);
         });
@@ -46129,8 +46205,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.useDecorateContent = exports.useCustomMessages = exports.useInitMessage = exports.useGlobalInteractiveState = exports.useAuthoredState = exports.useInteractiveState = void 0;
+exports.useAutoSetHeight = exports.useDecorateContent = exports.useCustomMessages = exports.useInitMessage = exports.useGlobalInteractiveState = exports.useAuthoredState = exports.useInteractiveState = void 0;
 var react_1 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+var resize_observer_polyfill_1 = __webpack_require__(/*! resize-observer-polyfill */ "./node_modules/resize-observer-polyfill/dist/ResizeObserver.es.js");
 var client = __webpack_require__(/*! ./api */ "./src/interactive-api-client/api.ts");
 var handleUpdate = function (newStateOrUpdateFunc, prevState) {
     if (typeof newStateOrUpdateFunc === "function") {
@@ -46252,6 +46329,25 @@ var useDecorateContent = function (callback) {
     }, []);
 };
 exports.useDecorateContent = useDecorateContent;
+var useAutoSetHeight = function () {
+    var initMessage = (0, exports.useInitMessage)();
+    (0, react_1.useEffect)(function () {
+        if (initMessage) {
+            var body_1 = document.body;
+            var html_1 = document.documentElement;
+            var updateHeight_1 = function () {
+                var height = Math.max(body_1.scrollHeight, body_1.offsetHeight, html_1.clientHeight, html_1.scrollHeight, html_1.offsetHeight);
+                client.setHeight(height);
+            };
+            var observer_1 = new resize_observer_polyfill_1.default(function () { return updateHeight_1(); });
+            if (body_1) {
+                observer_1.observe(body_1);
+            }
+            return function () { return observer_1.disconnect(); };
+        }
+    }, [initMessage]);
+};
+exports.useAutoSetHeight = useAutoSetHeight;
 
 
 /***/ }),
@@ -46306,6 +46402,7 @@ __exportStar(__webpack_require__(/*! ./metadata-types */ "./src/interactive-api-
 __exportStar(__webpack_require__(/*! ./in-frame */ "./src/interactive-api-client/in-frame.ts"), exports);
 __exportStar(__webpack_require__(/*! ./api */ "./src/interactive-api-client/api.ts"), exports);
 __exportStar(__webpack_require__(/*! ./hooks */ "./src/interactive-api-client/hooks.ts"), exports);
+__exportStar(__webpack_require__(/*! ./client */ "./src/interactive-api-client/client.ts"), exports);
 
 
 /***/ }),

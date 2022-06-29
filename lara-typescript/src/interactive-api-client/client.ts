@@ -3,9 +3,9 @@
 // to the same message and auto-removing listeners when a requestId is given.
 import * as iframePhone from "iframe-phone";
 import { ClientMessage, ICustomMessageHandler, ICustomMessagesHandledMap, IInitInteractive, ISupportedFeaturesRequest,
-        ServerMessage, ITextDecorationHandler, ITextDecorationInfo } from "./types";
+         ServerMessage, ITextDecorationHandler, ITextDecorationInfo, IGetReportItemAnswerHandler,
+         IGetInteractiveState, OnUnloadFunction } from "./types";
 import { postDecoratedContentEvent } from "../interactive-api-client";
-import { IEventListener } from "../plugin-api";
 import { inIframe } from "./in-frame";
 import { ManagedState } from "./managed-state";
 
@@ -46,6 +46,8 @@ export class Client {
   private customMessagesHandled: ICustomMessagesHandledMap;
   private listeners: IListenerMap = {};
   private requestId = 1;
+
+  private onUnload: OnUnloadFunction | undefined = undefined;
 
   constructor() {
     if (!inIframe()) {
@@ -170,6 +172,14 @@ export class Client {
     return this.removeListener("decorateContent");
   }
 
+  public addGetReportItemAnswerListener(callback: IGetReportItemAnswerHandler) {
+    this.addListener("getReportItemAnswer", callback);
+  }
+
+  public removeGetReportItemAnswerListener() {
+    return this.removeListener("getReportItemAnswer");
+  }
+
   public setSupportedFeatures = (request: ISupportedFeaturesRequest) => {
     let newRequest = request;
     if (this.customMessagesHandled) {
@@ -180,6 +190,10 @@ export class Client {
     this.post("supportedFeatures", newRequest);
   }
 
+  public setOnUnload = (onUnload?: OnUnloadFunction) => {
+    this.onUnload = onUnload;
+  }
+
   private connect() {
     this.phone = iframePhone.getIFrameEndpoint();
 
@@ -188,7 +202,11 @@ export class Client {
 
       // parseJSONIfString is used below quite a few times, as LARA and report are not consistent about format.
       // Sometimes they send string (report page), sometimes already parsed JSON (authoring, runtime).
-      this.managedState.authoredState = parseJSONIfString(newInitMessage.authoredState);
+      if (newInitMessage.mode === "reportItem") {
+        this.managedState.authoredState = {};
+      } else {
+        this.managedState.authoredState = parseJSONIfString(newInitMessage.authoredState);
+      }
       if (newInitMessage.mode === "runtime" || newInitMessage.mode === "report") {
         this.managedState.interactiveState = parseJSONIfString(newInitMessage.interactiveState);
         // Don't consider initial state to be dirty, as user would see warnings while trying to leave page even
@@ -200,7 +218,15 @@ export class Client {
       }
     });
 
-    this.addListener("getInteractiveState", () => {
+    this.addListener("getInteractiveState", async (options?: IGetInteractiveState) => {
+      if (options?.unloading && this.onUnload) {
+        // call the interactive's registered onUnload function
+        // and if it returns a value use that as the final interactive state
+        const finalState = await this.onUnload(options);
+        if (finalState) {
+          this.managedState.interactiveState = finalState;
+        }
+      }
       this.post("interactiveState", this.managedState.interactiveState);
       this.managedState.interactiveStateDirty = false;
     });

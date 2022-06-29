@@ -43,7 +43,8 @@ describe MwInteractive do
         aspect_ratio_method: interactive.aspect_ratio_method,
         no_snapshots: interactive.no_snapshots,
         linked_interactive_item_id: interactive.linked_interactive_item_id,
-        linked_interactives: []
+        linked_interactives: [],
+        report_item_url: interactive.report_item_url
       }
       hash = interactive.to_hash
       expect(hash).to eq(expected)

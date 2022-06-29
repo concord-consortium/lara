@@ -79,13 +79,16 @@ export class AttachmentsManager {
     const publicPath = this.tokenServiceClient.getPublicS3Path(folderResource, `${this.sessionId}/${name}`);
     const url = await this.getSignedUrl(folder, "putObject", { Key: publicPath, ContentType, expiresIn });
     // returns the writable url and the information required to read it
-    return [url, { folder, publicPath }];
+    return [url, { folder, publicPath, contentType: ContentType }];
   }
 
   public getSignedReadUrl(attachmentInfo: IReadableAttachmentInfo, options?: ISignedReadUrlOptions) {
     const { publicPath, folder } = attachmentInfo;
     const { expiresIn = kDefaultReadExpirationSec } = options || {};
-    return this.getSignedUrl(folder, "getObject", { Key: publicPath, expiresIn });
+    return this.getSignedUrl(folder, "getObject", {
+      Key: publicPath,
+      expiresIn
+    });
   }
 
   private async getFolderResource(folder: IAttachmentsFolder): Promise<S3Resource> {

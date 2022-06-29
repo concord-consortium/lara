@@ -62,3 +62,4 @@ config/environments/local-development.rb
 coverage/
 .DS_Store
 lara-typescript/yarn-error.log
+db/backups/

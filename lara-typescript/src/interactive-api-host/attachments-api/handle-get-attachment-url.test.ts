@@ -47,14 +47,16 @@ describe("findFolder", () => {
           folder: {
             id: "1",
             ownerId: "user-1"
-          }
+          },
+          contentType: "text/plain"
         },
         bar: {
           publicPath: "2/2",
           folder: {
             id: "2",
             ownerId: "classmate-1"
-          }
+          },
+          contentType: "audio/mp3"
         },
       }
     };
@@ -70,14 +72,16 @@ describe("findFolder", () => {
           folder: {
             id: "1",
             ownerId: "classmate-1"
-          }
+          },
+          contentType: "text/plain"
         },
         bar: {
           publicPath: "2/2",
           folder: {
             id: "2",
             ownerId: "user-1"
-          }
+          },
+          contentType: "audio/mp3"
         },
       }
     };
@@ -100,14 +104,16 @@ describe("findFolder", () => {
           folder: {
             id: "1",
             ownerId: "classmate-1"
-          }
+          },
+          contentType: "text/plain"
         },
         bar: {
           publicPath: "2/2",
           folder: {
             id: "2",
             ownerId: "classmate-2"
-          }
+          },
+          contentType: "audio/mp3"
         }
       }
     };
@@ -239,7 +245,12 @@ describe("handleGetAttachmentUrl", () => {
         onAnswerMetaUpdate: jest.fn()
       },
       answerMeta: {
-        attachments: { "test.json": { publicPath: "public/path", folder: { id: "folder-id", ownerId: "testRunKey" } } },
+        attachments: {
+          "test.json": {
+            publicPath: "public/path",
+            folder: { id: "folder-id", ownerId: "testRunKey" },
+            contentType: "text/plain"
+          } },
       }
     };
     const response = await handleGetAttachmentUrl(options);

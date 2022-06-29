@@ -17,7 +17,7 @@ To get started quickly, run:
 
     docker-compose up
 
-You can now access LARA at http://localhost:3000  
+You can now access LARA at http://localhost:3000
 
 This will be very slow on OS X and not support a connection to the portal. So we use docker-compose override files to layer additional features onto the basic compose file. These overrides are specified in a `.env` file. To make the initial setup easier there is a `.env-osx-sample` file that contains the standard setup we use. So you can simply:
 
@@ -97,6 +97,62 @@ Installing certificates, and configuring the docker overlay:
 `COMPOSE_FILE=` entry in `.env` includes that overlay.
 6. Edit your `.env` file to include `PORTAL_PROTOCOL=https`
 
+## GitHub Codespaces
+
+Github Codespaces is a cloud-based development environment. We are currently using it to do development work on LARA and
+Portal since it’s proven difficult to do local development on those codebases on M1 MacBooks.
+
+Github’s documentation for Codespaces can be found at [here](docs.github.com/en/codespaces).
+
+You will need to set up separate codespaces for LARA and the Portal.
+
+Use of Codespaces incurs an hourly cost. The amount is not a lot, but it should be kept in mind. Codespaces will shut themselves down
+automatically after a period of inactivity, but it would be best to manually shut them down when you’re done working in order to
+minimize cost.
+
+You can use Codespaces in web browser or you can connect to selected machine from desktop Visual Studio Code if you
+install a Codespaces extension.
+
+### Basic setup
+
+- Your GitHub account needs to have Codespaces activated by the organization admin.
+- Go to the github.com page for the repository you will be working on.
+- Click on the Code button, then click the Codespaces tab, and then click the “Create codespace on master” button.
+- LARA should be fine with 2-core machine, however 4-core seems to work significantly faster.
+
+Once machine is up and running, most of the steps described for local development are still valid for GH Codespaces.
+The main difference is that you should copy `.env-gh-codespaces-sample` to `.env` (instead of `.env-osx-sample`),
+there's no need for Dinghy setup, and LARA and Portal hosts will be significantly different. However, everything
+you need to do in practice is described below.
+
+1. Run:
+    ```
+      cp .env-gh-codespaces-sample .env
+    ```
+
+2. Open Portal GitHub Codespace, run `echo ${CODESPACE_NAME}` in terminal, and set `PORTAL_CODESPACE_NAME` variable
+in LARA's `.env` file.
+
+3. Set `REPORT_SERVICE_TOKEN` in LARA's `.env` file following instructions that can be found there.
+
+4. Run
+    ```
+      docker login
+      docker-compose up
+    ```
+
+5. Once the app has started, open "Ports" tab in Visual Studio Code. Find a process that uses port 3000 and change its
+visibility to public (right click on "Private" -> Port Visibility -> Public). You should see an updated address in
+"Local Address" column. You can open this URL in the web browser and LARA should load. It seems it's necessary to do it
+each time you run `docker-compose up`.
+
+6. Now, your LARA instance should work with Portal, Activity Player and basic reports. You can login to LARA
+through `Localhost` (Portal running on another GH Codespace) using `admin`, `password` credentials. You are now logged
+in with admin@concord.org in LARA, however this user is not actually an admin in LARA. Run the following command in
+terminal in the LARA Codespaces:
+    ```
+      docker-compose exec app bundle exec rake lightweight:admin_last_user
+    ```
 
 ## Editing CSS
 

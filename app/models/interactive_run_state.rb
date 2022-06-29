@@ -291,7 +291,7 @@ class InteractiveRunState < ActiveRecord::Base
         learner_url: learner_url,
         run_remote_endpoint: run_remote_endpoint,
         interactive_state_url: interactive_state_url(protocol, host),
-        interactive_id: interactive_id,
+        interactive_id: interactive.embeddable_id,
         interactive_name: interactive.name,
         page_number: page && page.page_number,
         page_name: page && page.name,

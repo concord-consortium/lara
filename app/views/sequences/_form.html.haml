@@ -17,6 +17,11 @@
     .field
       = f.label :title
       = f.text_field :title, :id => "sequence_title"
+    - if current_user.is_admin
+      .field
+        = f.label :defunct,  "Defunct"
+        = f.check_box :defunct
+        .hint (Check this box if the sequence uses features not supported by Activity Player.)
     .field
       = f.label :display_title, "Display Title"
       = f.text_field :display_title, :id => "sequence_display_title"

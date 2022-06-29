@@ -64,6 +64,13 @@ describe InteractiveRunState do
         expect(result_hash).to have_key "run_remote_endpoint"
       end
 
+      it "should have an interactive_id" do
+        expect(result_hash["interactive_id"]).to eq(interactive.embeddable_id)
+        parsed_class, parsed_id = Embeddable.parse_embeddable_id!(result_hash["interactive_id"])
+        expect(parsed_class).to eq(interactive.class.to_s)
+        expect(parsed_id).to eq(interactive.id)
+      end
+
       describe "when interactive run state has a run" do
         it "should have a external_report_url" do
           expect(ReportService).to receive(:report_url).and_return("https://test.report/123")

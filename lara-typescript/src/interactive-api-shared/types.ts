@@ -6,6 +6,11 @@ export { IPortalClaims, IJwtClaims, IJwtResponse } from "../shared/types";
 // Discussion about naming of these interfaces:
 // https://github.com/concord-consortium/lara/pull/550#issuecomment-639021815
 
+export interface IAttachmentInfo {
+  contentType?: string;
+}
+export type AttachmentInfoMap = Record<string, IAttachmentInfo>;
+
 export interface IInteractiveStateProps<InteractiveState = {}> {
   interactiveState: InteractiveState | null;
   hasLinkedInteractive?: boolean;
@@ -15,13 +20,14 @@ export interface IInteractiveStateProps<InteractiveState = {}> {
   updatedAt?: string;
   interactiveStateUrl?: string;
   interactive: {
-    id?: number;
+    id?: string;
     name?: string;
   };
   pageNumber?: number;
   pageName?: string;
   activityName?: string;
   externalReportUrl?: string;
+  attachments?: AttachmentInfoMap;
 }
 
 export interface IHostFeatureSupport extends Record<string, unknown> {
@@ -52,7 +58,7 @@ export interface IRuntimeInitInteractive<InteractiveState = {}, AuthoredState = 
   collaboratorUrls: string[] | null;
   classInfoUrl: string;
   interactive: {
-    id: number;
+    id: string;
     name: string;
   };
   authInfo: {
@@ -62,6 +68,7 @@ export interface IRuntimeInitInteractive<InteractiveState = {}, AuthoredState = 
   };
   linkedInteractives: ILinkedInteractive[];
   themeInfo: IThemeInfo;
+  attachments?: AttachmentInfoMap;
 }
 
 export interface IThemeInfo {
@@ -91,26 +98,32 @@ export interface IAuthoringInitInteractive<AuthoredState = {}> {
 export interface IReportInitInteractive<InteractiveState = {}, AuthoredState = {}> {
   version: 1;
   mode: "report";
+  view?: "standalone";
   hostFeatures: IHostFeatures;
   authoredState: AuthoredState;
   interactiveState: InteractiveState;
   themeInfo: IThemeInfo;
+  attachments?: AttachmentInfoMap;
+  linkedInteractives: ILinkedInteractive[];
 }
 
-export interface IAggregateInitInteractive<InteractiveState = {}, AuthoredState = {}> {
+export interface IReportItemInitInteractive<InteractiveState = {}, AuthoredState = {}> {
   version: 1;
-  mode: "aggregate";
+  mode: "reportItem";
   hostFeatures: IHostFeatures;
-  authoredState: AuthoredState;
-  interactiveState: InteractiveState;
+  interactiveItemId: string;
+  view: "singleAnswer" | "multipleAnswer";
+  users: Record<string, {hasAnswer: boolean}>;
+  attachments?: AttachmentInfoMap;
 }
 
 export type IInitInteractive<InteractiveState = {}, AuthoredState = {}, GlobalInteractiveState = {}> =
   IRuntimeInitInteractive<InteractiveState, AuthoredState, GlobalInteractiveState> |
   IAuthoringInitInteractive<AuthoredState> |
-  IReportInitInteractive<InteractiveState, AuthoredState>;
+  IReportInitInteractive<InteractiveState, AuthoredState> |
+  IReportItemInitInteractive<InteractiveState, AuthoredState>;
 
-export type InitInteractiveMode = "runtime" | "authoring" | "report";
+export type InitInteractiveMode = "runtime" | "authoring" | "report" | "reportItem";
 
 // Custom Report Fields
 //
@@ -138,7 +151,6 @@ export interface ICustomReportFieldsInteractiveState {
 
 TODO:
 
-Aggregate Mode
 Full window header buttons
 
 */
@@ -191,6 +203,11 @@ export type IAuthoringServerMessage = "interactiveList" |
                                       "firebaseJWT"
                                       ;
 
+export type IReportItemClientMessage = "reportItemAnswer" |
+                                       "reportItemClientReady";
+
+export type IReportItemServerMessage = "getReportItemAnswer";
+
 export type GlobalIFrameSaverClientMessage = "interactiveStateGlobal";
 export type GlobalIFrameSaverServerMessage = "loadInteractiveGlobal";
 
@@ -205,13 +222,15 @@ export type ClientMessage = DeprecatedRuntimeClientMessage |
                             IRuntimeClientMessage |
                             IAuthoringClientMessage |
                             GlobalIFrameSaverClientMessage |
-                            LoggerClientMessage;
+                            LoggerClientMessage |
+                            IReportItemClientMessage;
 
 export type ServerMessage = IframePhoneServerMessage |
                             DeprecatedRuntimeServerMessage |
                             IRuntimeServerMessage |
                             IAuthoringServerMessage |
-                            GlobalIFrameSaverServerMessage;
+                            GlobalIFrameSaverServerMessage |
+                            IReportItemServerMessage;
 
 // server messages
 
@@ -360,8 +379,10 @@ export interface IAuthInfo {
 export interface IAttachmentUrlRequest extends IBaseRequestResponse {
   name: string;
   operation: "read" | "write";
+  interactiveId?: string;
   contentType?: string; // defaults to text/plain
   expiresIn?: number; // seconds
+  platformUserId?: string;
 }
 export interface IWriteAttachmentRequest extends IAttachmentUrlRequest {
   content: any;
@@ -371,6 +392,10 @@ export interface IAttachmentUrlResponse extends IBaseRequestResponse {
   url?: string;
   error?: string;
 }
+
+export type ReadAttachmentParams = Omit<IAttachmentUrlRequest, "requestId" | "operation" | "contentType" | "expiresIn">;
+export type WriteAttachmentParams = Omit<IWriteAttachmentRequest, "requestId" | "operation">;
+export type GetAttachmentUrlParams = Omit<IAttachmentUrlRequest, "requestId" | "operation">;
 
 export interface IGetAuthInfoRequest extends IBaseRequestResponse {
   // no extra options, just the requestId
@@ -456,6 +481,46 @@ export interface ILinkedInteractiveStateResponse<LinkedInteractiveState> {
   interactiveState: LinkedInteractiveState | undefined;
 }
 
+export interface IGetReportItemAnswer<InteractiveState = {}, AuthoredState = {}> extends IBaseRequestResponse {
+  version: "2.0.0";
+  platformUserId: string;
+  interactiveState: InteractiveState;
+  authoredState: AuthoredState;
+}
+
+export interface IReportItemAnswerItemAttachment {
+  type: "attachment";
+  name: string;
+  label?: string;
+}
+export interface IReportItemAnswerItemAnswerText {
+  type: "answerText";
+}
+export interface IReportItemAnswerItemHtml {
+  type: "html";
+  html: string;
+}
+export interface IReportItemAnswerItemLinks {
+  type: "links";
+  hideViewInline?: boolean;
+  hideViewInNewTab?: boolean;
+}
+
+export type IReportItemAnswerItem =
+  IReportItemAnswerItemAttachment |
+  IReportItemAnswerItemAnswerText |
+  IReportItemAnswerItemHtml |
+  IReportItemAnswerItemLinks;
+
+export interface IReportItemAnswer extends IBaseRequestResponse {
+  version: "2.0.0";
+  platformUserId: string;
+  items: IReportItemAnswerItem[];
+}
+
+export type IGetReportItemAnswerHandler<InteractiveState = {}, AuthoredState = {}> =
+  (message: IGetReportItemAnswer<InteractiveState, AuthoredState>) => void;
+
 /**
  * Interface that can be used by interactives to export and consume datasets. For example:
  * - Vortex interactive is exporting its dataset in the interactive state
@@ -479,3 +544,8 @@ export interface IDataset {
 export interface IInteractiveStateWithDataset {
   dataset?: IDataset | null;
 }
+
+export interface IGetInteractiveState {
+  unloading?: boolean;  // set to true to tell the interactive it is getting the final state
+}
+export type OnUnloadFunction<InteractiveState = {}> = (options: IGetInteractiveState) => Promise<InteractiveState>;
