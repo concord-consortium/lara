@@ -1,0 +1,82 @@
+@import "../../../vars.scss";
+
+.sidebar-panel {
+  background-color: white;
+  width: 500px;
+
+  input, textarea {
+    border: solid 1.5px var(--med-gray);
+    border-radius: 4px;
+    padding: 5px 10px;
+    width: calc(100% - 22px);
+  }
+  
+  textarea {
+    height: 200px;
+  }
+
+  .sidebar-header {
+    background-color: $cc-orange-light1;
+    display: flex;
+    align-items: center;
+    height: 40px;
+
+    .sidebar-title {
+      color: white;
+      font-size: 20px;
+      width: 100%;
+      text-align: center;
+    }
+
+    .sidebar-menu {
+      color: white;
+      margin-left: 1em;
+      margin-right: 1em;
+      white-space: nowrap;
+      width: 120px;
+      text-align: right;
+      text-decoration: underline;
+      cursor: pointer;
+      span {
+        margin-left: 2px;
+        margin-right: 2px;
+      }
+    }
+
+    .icon {
+      fill: white;
+      width: 24px;
+      height: 18px;
+      margin-right: 9px;
+      border-radius: 5px;
+      cursor: pointer;
+
+      &:hover {
+        background-color: $cc-orange-light4;
+        fill: $cc-orange-light2;
+      }
+      &:active {
+        background-color: $cc-orange-light2;
+        fill: $cc-orange;
+      }
+    }
+  }
+
+  .sidebar-content {
+    line-height: 1.575;
+    margin-top: 0;
+    margin-bottom: 11pt;
+    text-align: left;
+    padding: 25px;
+    max-height: 649px;
+    overflow: auto;
+    min-height: 100px;
+  }
+
+  &.visible {
+    visibility: visible;
+  }
+  &.hidden {
+    visibility: hidden;
+  }
+}

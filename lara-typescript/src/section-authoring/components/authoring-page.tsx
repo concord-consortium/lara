@@ -16,6 +16,7 @@ import { Cog } from "../../shared/components/icons/cog-icon";
 import { HiddenIcon } from "../../shared/components/icons/hidden-icon";
 import { UserInterfaceContext} from "../containers/user-interface-provider";
 import { PreviewLinksContainer } from "../containers/preview-links-container";
+import { Sidebar } from "./page-sidebar/sidebar";
 
 import "./authoring-page.scss";
 
@@ -105,7 +106,10 @@ export const AuthoringPage: React.FC<IPageProps> = ({
 
   const [itemToEdit, setItemToEdit] = useState(initItemToEdit);
   const [showSettings, setShowSettings] = useState(isNew);
+  const [showSidebar, setShowSidebar] = useState(true);
 
+  // TODO FIXME:
+  const [pageHasStudentSidebar, setPageHasStudenSideBar] = useState(false);
   const { getPages, getItems, updatePage, moveSection } = usePageAPI();
 
   const updateSettings = (
@@ -239,11 +243,21 @@ export const AuthoringPage: React.FC<IPageProps> = ({
             isCompletion={isCompletion}
             isHidden={isHidden}
             // hasArgBlock={pageHasArgBlock}
-            // hasStudentSidebar={pageHasStudentSidebar}
+            hasStudentSidebar={pageHasStudentSidebar}
             // hasTESidebar={pageHasTESidebar}
             updateSettingsFunction={updateSettings}
             closeDialogFunction={handleCloseDialog}
             disableCompletionPageSetting={disableCompletionPageSetting()}
+          />
+        }
+        { true &&
+          <Sidebar
+            show={showSidebar}
+            index={1}
+            content="<div>Testing Testing 1,2,3</div>"
+            // tslint:disable-next-line
+            handleShowSidebar={ (index, show) => setShowSidebar(show) }
+            title="Testing 1 2 3"
           />
         }
     </>

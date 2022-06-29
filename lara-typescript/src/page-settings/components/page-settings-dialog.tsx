@@ -152,10 +152,10 @@ export const PageSettingsDialog: React.FC<IPageSettingsDialogProps> = ({
               onChange={handleHasArgBlockChange}
             />
           </dd> */}
-          <dt className={`input5 ${!studentSidebarSettingEnabled && "disabled"}`}>
+          <dt className={`input5 ${!studentSidebarSettingEnabled}`}>
             <label htmlFor="hasStudentSidebar">Page has a student sidebar menu</label>
           </dt>
-          <dd className={`input5 ${!studentSidebarSettingEnabled && "disabled"}`}>
+          <dd className={`input5 ${!studentSidebarSettingEnabled}`}>
             <input
               type="checkbox"
               id="hasStudentSidebar"
