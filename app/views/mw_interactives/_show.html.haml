@@ -50,7 +50,7 @@
     = interactive_data_div(interactive, @run)
 
 - if interactive.enable_learner_state && interactive.show_delete_data_button
-  = button_tag 'Undo all my work', {class: 'delete_interactive_data screen-only', id: "delete-int-data-#{interactive.id}", style: 'display: none;'}
+  = button_tag 'Clear & start over', {class: 'delete_interactive_data screen-only', id: "delete-int-data-#{interactive.id}", style: 'display: none;'}
 
 .print-only.iframe-url
   = link_to "#{interactive.url}", "#{interactive.url}"

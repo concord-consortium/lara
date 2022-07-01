@@ -8,7 +8,7 @@
           = truncate(activity.name_with_id, :length => 25, :omission => "…")
           %ul.menu
             %li.edit= link_to "Edit", edit_activity_path(activity) if can? :update, activity
-            %li.run= link_to "Preview", preview_sequence_activity_path(activity, sequence_id: @sequence.id)
+            %li.run= link_to "Preview", activity_sequence_preview_url(activity), :target => 'new'
             %li.delete
               = form_tag remove_activity_sequence_path(@sequence) do
                 = hidden_field_tag :activity_id, activity.id

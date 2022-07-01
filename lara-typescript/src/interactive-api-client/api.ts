@@ -29,7 +29,13 @@ import {
   ITextDecorationHandler,
   IAttachmentUrlRequest,
   IAttachmentUrlResponse,
-  IWriteAttachmentRequest
+  IWriteAttachmentRequest,
+  WriteAttachmentParams,
+  ReadAttachmentParams,
+  GetAttachmentUrlParams,
+  IGetReportItemAnswerHandler,
+  IReportItemAnswer,
+  OnUnloadFunction
 } from "./types";
 import { getClient } from "./client";
 import { v4 as uuidv4 } from "uuid";
@@ -175,6 +181,15 @@ export const removeDecorateContentListener = () => {
   getClient().removeDecorateContentListener();
 };
 
+// tslint:disable-next-line:max-line-length
+export const addGetReportItemAnswerListener = <InteractiveState, AuthoredState>(callback: IGetReportItemAnswerHandler<InteractiveState, AuthoredState>) => {
+  getClient().addGetReportItemAnswerListener(callback);
+};
+
+export const removeGetReportItemAnswerListener = () => {
+  getClient().removeGetReportItemAnswerListener();
+};
+
 export const setSupportedFeatures = (features: ISupportedFeatures) => {
   const request: ISupportedFeaturesRequest = {
     apiVersion: 1,
@@ -191,7 +206,7 @@ export const postDecoratedContentEvent = (msg: IDecoratedContentEvent) => {
   getClient().post("decoratedContentEvent", msg);
 };
 
-/*
+/**
  * Providing empty string or null disables hint.
  */
 export const setHint = (hint: string | null) => {
@@ -285,6 +300,12 @@ export const removeGlobalInteractiveStateListener = <GlobalInteractiveState>(lis
 
 // Mapping between external listener and internal listener, so it's possible to remove linkedInteractiveState listeners.
 const _linkedInteractiveStateListeners = new Map();
+/**
+ * The listener should be called immediately after it is added with any state of the linked
+ * interactive that the host currently knows about. This first call might not happen
+ * synchronously it could be slightly delayed. And then the listener should be called again
+ * whenever the state of the linked interactive changes.
+ */
 export const addLinkedInteractiveStateListener = <LinkedInteractiveState>(
   listener: (linkedIntState: LinkedInteractiveState | undefined) => void,
   options: IAddLinkedInteractiveStateListenerOptions
@@ -392,7 +413,6 @@ export const getLibraryInteractiveList = (options: IGetLibraryInteractiveListReq
   THROW_NOT_IMPLEMENTED_YET("getLibraryInteractiveList");
 };
 
-type WriteAttachmentParams = Omit<IWriteAttachmentRequest, "requestId" | "operation">;
 export const writeAttachment = (params: WriteAttachmentParams): Promise<Response> => {
   return new Promise<Response>((resolve, reject) => {
     const client = getClient();
@@ -420,11 +440,11 @@ export const writeAttachment = (params: WriteAttachmentParams): Promise<Response
   });
 };
 
-export const readAttachment = (name: string): Promise<Response> => {
+export const readAttachment = (params: ReadAttachmentParams): Promise<Response> => {
   return new Promise<Response>((resolve, reject) => {
     // set up response listener
     const client = getClient();
-    const request: IAttachmentUrlRequest = { name, operation: "read", requestId: client.getNextRequestId() };
+    const request: IAttachmentUrlRequest = { ...params, operation: "read", requestId: client.getNextRequestId() };
     client.addListener("attachmentUrl", async (response: IAttachmentUrlResponse) => {
       if (response.url) {
         try {
@@ -444,12 +464,12 @@ export const readAttachment = (name: string): Promise<Response> => {
   });
 };
 
-export const getAttachmentUrl = (name: string, contentType?: string, expiresIn?: number) => {
+export const getAttachmentUrl = (params: GetAttachmentUrlParams) => {
   return new Promise<string>((resolve, reject) => {
     // set up response listener
     const client = getClient();
     const requestId = client.getNextRequestId();
-    const request: IAttachmentUrlRequest = { name, operation: "read", contentType, expiresIn, requestId };
+    const request: IAttachmentUrlRequest = { ...params, operation: "read", requestId };
     client.addListener("attachmentUrl", async (response: IAttachmentUrlResponse) => {
       if (response.url) {
         resolve(response.url);
@@ -460,4 +480,12 @@ export const getAttachmentUrl = (name: string, contentType?: string, expiresIn?:
     }, request.requestId);
     client.post("getAttachmentUrl", request);
   });
+};
+
+export const sendReportItemAnswer = (request: Omit<IReportItemAnswer, "requestId">) => {
+  getClient().post("reportItemAnswer", request);
+};
+
+export const setOnUnload = (onUnload?: OnUnloadFunction) => {
+  getClient().setOnUnload(onUnload);
 };

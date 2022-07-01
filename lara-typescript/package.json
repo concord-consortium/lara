@@ -13,6 +13,7 @@
     "publish:interactive-api-host:yalc": "npm run build && cd dist/interactive-api-host && npx yalc publish",
     "build": "npm-run-all lint:build clean build:webpack build:types build:docs",
     "build:webpack": "webpack --devtool false && npm run build:copy-to-rails",
+    "build:webpack:no-copy-to-rails": "webpack --devtool false",
     "build:types": "rollup -c",
     "build:docs": "npm-run-all build:docs:plugin-api build:docs:interactive-api-client build:docs:interactive-api-host",
     "build:docs:plugin-api": "typedoc --readme src/plugin-api/README.md --out ../docs/lara-plugin-api src/plugin-api/index.ts",
@@ -76,7 +77,7 @@
       "node"
     ],
     "moduleNameMapper": {
-      "\\.(css|sass)$": "identity-obj-proxy"
+      "\\.(css|sass|scss)$": "identity-obj-proxy"
     }
   },
   "homepage": "https://github.com/concord-consortium/lara/tree/master/lara-typescript#readme",
@@ -99,6 +100,7 @@
     "@types/react-dom": "^16.9.14",
     "@types/react-select": "^3.1.2",
     "@types/react-tabs": "^2.3.3",
+    "@types/semver": "^7.3.9",
     "@types/uuid": "^8.3.1",
     "babel-core": "^6.26.3",
     "babel-loader": "^8.2.2",
@@ -140,7 +142,8 @@
   "dependencies": {
     "@aws-sdk/client-s3": "^3.30.0",
     "@aws-sdk/s3-request-presigner": "^3.30.0",
-    "@concord-consortium/interactive-api-host": "^0.4.0",
+    "@concord-consortium/interactive-api-host": "^0.7.1",
+    "@concord-consortium/slate-editor": "^0.7.3",
     "@concord-consortium/text-decorator": "^1.0.2",
     "@concord-consortium/token-service": "^2.1.0",
     "@tinymce/tinymce-react": "^3.12.7",
@@ -156,6 +159,7 @@
     "react-query": "^3.21.0",
     "react-select": "^3.2.0",
     "react-tabs": "^3.2.2",
+    "semver": "^7.3.5",
     "ts-debounce": "^4.0.0",
     "use-immer": "^0.6.0",
     "uuid": "^8.3.2"

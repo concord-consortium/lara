@@ -38,7 +38,7 @@ describe "reporting:publish_anonymous_runs" do
     allow(ENV).to receive(:[]).with("REPORT_SERVICE_SELF_URL").and_return("app.lara.docker")
     allow(ENV).to receive(:[]).with("REPORT_SERVICE_URL").and_return("http://foo.com")
     allow(ENV).to receive(:[]).with("REPORT_SERVICE_TOKEN").and_return("report_service_token")
-    allow(ENV).to receive(:[]).with("REPORT_PUSH_RUN_ACTIVITY_ID").and_return(run.activity_id)
+    allow(ENV).to receive(:[]).with("REPORT_PUSH_RUN_START_DATE").and_return(nil)
   end
 
   it "sends a run to the report service, specifying `send_all_answers`" do

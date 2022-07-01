@@ -16,7 +16,7 @@ class LightweightActivity < ActiveRecord::Base
     ['ITSI', ITSI_EDITOR_MODE]
   ]
 
-  attr_accessible :name, :user_id, :pages, :related, :description,
+  attr_accessible :name, :user_id, :pages, :related, :description, :defunct,
                   :time_to_complete, :is_locked, :notes, :thumbnail_url, :theme_id, :project_id,
                   :portal_run_count, :layout, :editor_mode, :publication_hash, :copied_from_id,
                   :student_report_enabled, :show_submit_button, :runtime, :project, :background_image,
@@ -147,7 +147,8 @@ class LightweightActivity < ActiveRecord::Base
                                         :student_report_enabled,
                                         :show_submit_button,
                                         :runtime,
-                                        :background_image ])
+                                        :background_image,
+                                        :defunct ])
     activity_json[:version] = 2
     activity_json[:theme_name] = self.theme ? self.theme.name : nil
     activity_json[:project] = self.project ? self.project.export : nil

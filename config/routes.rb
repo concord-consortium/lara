@@ -237,6 +237,13 @@ LightweightStandalone::Application.routes.draw do
       match 'plugins/:plugin_id/author_data' => 'plugins#load_author_data', as: 'show_plugin_author_data', via: 'get'
       match 'plugins/:plugin_id/author_data' => 'plugins#save_author_data', as: 'update_plugin_author_data', via: 'put'
 
+      match 'projects' => 'projects#index', as: 'index', via: 'get'
+      match 'projects' => 'projects#create', as: 'create', via: 'post'
+      match 'projects/:id' => 'projects#show', as: 'show', via: 'get'
+      match 'projects/:id' => 'projects#update', as: 'update', via: 'post'
+      match 'delete_project/:id' => 'projects#destroy', as: 'destroy', via: 'post'
+      match 'themes' => 'themes#index', as: 'index', via: 'get'
+
       match 'get_wrapping_plugins_list' => 'interactive_pages#get_wrapping_plugins_list', :as => 'get_wrapping_plugins_list', :via => 'get'
       match 'get_embeddable_metadata/:id' => 'page_items#get_embeddable_metadata', :as => 'get_embeddable_metadata', :via => 'get'
       match 'get_page_item_plugins/:id' => 'page_items#get_page_item_plugins', :as => 'get_page_item_plugins', :via => 'get'

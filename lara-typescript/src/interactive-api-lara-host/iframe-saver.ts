@@ -8,8 +8,8 @@ import {
   IGetAuthInfoResponse, IGetFirebaseJwtRequest, IGetFirebaseJwtResponse, IGetInteractiveSnapshotRequest,
   IGetInteractiveSnapshotResponse, IHintRequest, IInitInteractive, IInteractiveStateProps, ILinkedInteractive,
   INavigationOptions, initializeAttachmentsManager, ISupportedFeaturesRequest, ServerMessage
-} from "@concord-consortium/interactive-api-host";
-import { EnvironmentName } from "@concord-consortium/token-service";
+} from "../interactive-api-host";
+import { answerMetadataToAttachmentInfoMap } from "../interactive-api-host/attachments-api/helpers";
 
 // Shutterbug is imported globally and used by the old LARA JS code.
 const Shutterbug = (window as any).Shutterbug;
@@ -55,7 +55,7 @@ interface IInteractiveRunStateResponse {
   created_at: string;
   updated_at: string;
   interactive_state_url: string;
-  interactive_id: number;
+  interactive_id: string;
   interactive_name: string;
   page_number: number;
   page_name: string;
@@ -135,7 +135,7 @@ export class IFrameSaver {
   private loggedIn: boolean;
   private authoredState: object | null;
   private classInfoUrl: string;
-  private interactiveId: number;
+  private interactiveId: string;
   private interactiveName: string;
   private getFirebaseJWTUrl: string;
   private runKey: string | undefined;
@@ -223,7 +223,7 @@ export class IFrameSaver {
       data,
       success: response => {
         runSuccess();
-        // State has been saved. Show "Undo all my work" button.
+        // State has been saved. Show "Clear & start over" button.
         this.$deleteButton.show();
         this.saveIndicator.showSaved("Saved Interactive");
       },
@@ -375,14 +375,18 @@ export class IFrameSaver {
     });
 
     this.addListener("getAttachmentUrl", async (request: IAttachmentUrlRequest) => {
-      const answerMeta: IAnswerMetadataWithAttachmentsInfo = this.metadata || {};
+      let answerMeta: IAnswerMetadataWithAttachmentsInfo = this.metadata || {};
+      if (request.interactiveId) {
+        answerMeta = await this.getLinkedAnswerMetadata(request.interactiveId);
+      }
       const response = await handleGetAttachmentUrl({
         request,
         answerMeta,
         writeOptions: {
           interactiveId: this.interactiveId.toString(),
           onAnswerMetaUpdate: newMeta => {
-            this.saveMetadata({...answerMeta, ...newMeta});
+            // don't allow writes over passed in interactiveId (for now, until it is needed and thought through...)
+            this.saveMetadata({...(this.metadata || {}), ...newMeta});
           }
         }
       });
@@ -397,6 +401,26 @@ export class IFrameSaver {
     // so its state would be lost.
     return this.loadInteractive(() => {
       return this.setAutoSaveEnabled(true);
+    });
+  }
+
+  private async getLinkedAnswerMetadata(interactiveId: string) {
+    // start with fallback to the current answer
+    let answerMeta: IAnswerMetadataWithAttachmentsInfo = this.metadata || {};
+    return new Promise<IAnswerMetadataWithAttachmentsInfo>((resolve) => {
+      $.ajax({
+        url: this.interactiveRunStateUrl,
+        type: "GET",
+        data: {
+          interactive_id: interactiveId
+        },
+        success: (response: IInteractiveRunStateResponse) => {
+          answerMeta = safeJSONParse(response.metadata);
+        },
+        complete: () => {
+          resolve(answerMeta);
+        }
+      });
     });
   }
 
@@ -462,7 +486,7 @@ export class IFrameSaver {
             this.post("loadInteractive", interactive);
             // Lab logging needs to be re-enabled after interactive is (re)loaded.
             LoggerUtils.enableLabLogging(this.$iframe[0]);
-            // State is available. Show "Undo all my work" button.
+            // State is available. Show "Clear & start over" button.
             this.$deleteButton.show();
           }
         }
@@ -521,7 +545,8 @@ export class IFrameSaver {
           colorA: "red",
           colorB: "green"
         }
-      }
+      },
+      attachments: answerMetadataToAttachmentInfoMap(this.metadata)
     };
 
     // Perhaps it would be nicer to keep `interactiveStateProps` in some separate property instead of mixing

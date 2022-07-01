@@ -58,7 +58,7 @@ export const InteractiveAuthoringPreview: React.FC<Props> = ({interactive, user}
     collaboratorUrls: null,
     classInfoUrl: "",
     interactive: {
-      id: interactive.id,
+      id: interactive.id?.toString(),
       name: interactive.name
     },
     authInfo: {
@@ -72,7 +72,8 @@ export const InteractiveAuthoringPreview: React.FC<Props> = ({interactive, user}
         colorA: "red",
         colorB: "green"
       }
-    }
+    },
+    attachments: {}
   };
 
   return (

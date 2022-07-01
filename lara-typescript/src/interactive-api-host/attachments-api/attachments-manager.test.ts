@@ -28,6 +28,7 @@ const mockFolderId = "folder-id";
 const mockResourceType = "s3Folder";
 const mockResourceBucket = "bucket";
 const mockResourcePublicPath = "public-path";
+const mockContentType = "text/plain";
 const mockResource: Resource = {
     id: mockFolderId,
     name: "folder-name",
@@ -123,8 +124,9 @@ describe("AttachmentsManager", () => {
 
     it("can get signed read url", async () => {
       const readInfo: IReadableAttachmentInfo = {
-        folder: { id: mockFolderId, ownerId: mockUserId },
-        publicPath: mockResourcePublicPath
+        folder: { id: mockFolderId, ownerId: mockUserId},
+        publicPath: mockResourcePublicPath,
+        contentType: mockContentType
       };
       const url = await mgr.getSignedReadUrl(readInfo);
       expect(lastSignedUrlRequestIsGet()).toBe(true);
@@ -137,7 +139,7 @@ describe("AttachmentsManager", () => {
       };
       const url = await mgr.getSignedWriteUrl(folder, "foo");
       const readInfo: IReadableAttachmentInfo = {
-        publicPath: mockResourcePublicPath, folder
+        publicPath: mockResourcePublicPath, folder, contentType: mockContentType
       };
       expect(lastSignedUrlRequestIsPut()).toBe(true);
       expect(url).toEqual([mockSignedWriteUrl, readInfo]);
@@ -148,15 +150,15 @@ describe("AttachmentsManager", () => {
         id: mockFolderId, readWriteToken: mockReadWriteToken, ownerId: mockUserId
       };
       const options: ISignedWriteUrlOptions = {
-        ContentType: "image/png",
+        ContentType: mockContentType,
         expiresIn: 60 * 60
       };
       const url = await mgr.getSignedWriteUrl(folder, "foo", options);
       const readInfo: IReadableAttachmentInfo = {
-        publicPath: mockResourcePublicPath, folder
+        publicPath: mockResourcePublicPath, folder, contentType: mockContentType
       };
       expect(lastSignedUrlRequestIsPut()).toBe(true);
-      expect(lastSignedUrlRequest()[1].input.ContentType).toBe("image/png");
+      expect(lastSignedUrlRequest()[1].input.ContentType).toBe(mockContentType);
       expect(url).toEqual([mockSignedWriteUrl, readInfo]);
     });
 
@@ -221,7 +223,7 @@ describe("AttachmentsManager", () => {
     it("can get signed read url", async () => {
       const folder: IAttachmentsFolder = { id: mockFolderId, ownerId: mockUserId };
       const readInfo: IReadableAttachmentInfo = {
-        publicPath: mockResourcePublicPath, folder
+        publicPath: mockResourcePublicPath, folder, contentType: mockContentType
       };
       const url = await mgr.getSignedReadUrl(readInfo, { expiresIn: 60 * 60 });
       expect(lastSignedUrlRequestIsGet()).toBe(true);
@@ -231,7 +233,9 @@ describe("AttachmentsManager", () => {
     it("can get signed write url", async () => {
       const url = await mgr.getSignedWriteUrl({ id: mockFolderId, ownerId: mockUserId }, "foo", { expiresIn: 60 * 60 });
       const readInfo: IReadableAttachmentInfo = {
-        publicPath: mockResourcePublicPath, folder: { id: mockFolderId, ownerId: mockUserId }
+        publicPath: mockResourcePublicPath,
+        folder: { id: mockFolderId, ownerId: mockUserId },
+        contentType: mockContentType
       };
       expect(lastSignedUrlRequestIsPut()).toBe(true);
       expect(url).toEqual([mockSignedWriteUrl, readInfo]);

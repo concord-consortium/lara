@@ -33,7 +33,10 @@ export const CustomizeMWInteractive: React.FC<Props> = (props) => {
     image_url,
     show_in_featured_question_report,
     aspect_ratio_method,
-    linked_interactive_item_id
+    linked_interactive_id,
+    linked_interactive_type,
+    linked_interactive_item_id,
+    report_item_url
   } = interactive;
 
   const [aspectRatioValues, setAspectRatioValues] = useState<IAspectRatioChooserValues>({
@@ -49,6 +52,8 @@ export const CustomizeMWInteractive: React.FC<Props> = (props) => {
     native_height,
     native_width,
   });
+
+  const [reportItemURL, setReportItemURL] = useState(report_item_url);
 
   useEffect(() => {
     setState(currentState => ({
@@ -73,6 +78,10 @@ export const CustomizeMWInteractive: React.FC<Props> = (props) => {
       [name]: checked
     }));
     checkboxHandler?.(name, checked);
+  };
+
+  const handleChangeReportItemURL = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setReportItemURL(event.target.value);
   };
 
   const renderClickToPlayOptions = () => {
@@ -118,7 +127,7 @@ export const CustomizeMWInteractive: React.FC<Props> = (props) => {
         <Checkbox
           name="show_delete_data_button"
           defaultChecked={show_delete_data_button}
-          label={`Show "Undo all my work" button`}
+          label={`Show "Clear & start over" button`}
         />
       </div>
 
@@ -149,6 +158,21 @@ export const CustomizeMWInteractive: React.FC<Props> = (props) => {
         <div className="warning">
           <em>Warning</em>: Please do not link to another interactive
           unless the interactive knows how to load prior work.
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Report Item URL</legend>
+        <input
+          type="text"
+          name="report_item_url"
+          onChange={handleChangeReportItemURL}
+          defaultValue={reportItemURL}
+        />
+        <div className="warning">
+          This URL should point to an optional interactive used by the teacher report
+          to provide a summary of each interactive answer to teachers. The value should
+          be a partial URL relative to the iFrame interactive's URL.
         </div>
       </fieldset>
     </>;

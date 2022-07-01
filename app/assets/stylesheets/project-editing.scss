@@ -1,0 +1,16 @@
+.edit_project, .new_project {
+  h2 {
+    color: #007c8b;
+    font-size: 20px;
+    font-weight: bold;
+    margin: 40px 0 10px;
+  }
+  .field {
+    margin-bottom: 15px;
+
+    label {
+      font-weight: bolder;
+      margin-bottom: 5px;
+    }
+  }
+}
