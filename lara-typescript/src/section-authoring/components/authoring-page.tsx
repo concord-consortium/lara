@@ -83,18 +83,6 @@ export interface IPageProps extends IPage {
   addPageItem?: (pageItem: ICreatePageItem) => void;
 }
 
-// TODO: This could probably be just be Partial<IPage> ....
-// export interface IUpdatePageSettings{
-//   updatedTitle: string | undefined;
-//   updatedIsCompletion: boolean;
-//   updatedIsHidden: boolean;
-//   updatedHasStudentSidebar: boolean;
-//   updatedSidebar: string;
-//   updatedSidebarTitle: string;
-//   updatedHasArgBlock: boolean;
-//   updatedHasTESidebar: boolean;
-// }
-
 /**
  * Primary UI component for user interaction
  */

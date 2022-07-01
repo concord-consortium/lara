@@ -2,11 +2,6 @@ import * as React from "react";
 import { IconClose } from "./icon-close";
 import { renderHTML } from "../../../shared/render-html";
 
-// import { accessibilityClick } from "../../util/accessibility-helper";
-// import { Editor } from "@tinymce/tinymce-react";
-// import { classNames } from "react-select/src/utils";
-// import { usePageAPI } from "../../hooks/use-api-provider";
-
 import "./sidebar-panel.scss";
 import { IPage } from "../../api/api-types";
 
@@ -14,24 +9,6 @@ interface IRenderEditorProps {
   content: string ;
   handleChangeContent: (newContent: string) => void;
 }
-
-// NP 2022-07-01:
-// TODO: Move to TinyMCE using `import {RichEditor} from './rich-editor'`
-const RichEditor = (params: IRenderEditorProps) => {
-  const { content, handleChangeContent } = params;
-  const handleTextChange = (evt: React.ChangeEvent<HTMLTextAreaElement>) => {
-    handleChangeContent(evt.target.value);
-  };
-  return(
-    <textarea
-      className="wysiwyg-minimal"
-      defaultValue={content}
-      id="content"
-      name="content"
-      onChange={handleTextChange}
-    />
-  );
-};
 
 interface ISidebarPanelProps {
   handleCloseSidebarContent: (index: number, show: boolean) => void;
@@ -62,7 +39,6 @@ export const SidebarPanel = (props: ISidebarPanelProps) => {
     const sidebar = contentRef?.current?.value || content;
     updateSettingsFunction({sidebarTitle, sidebar });
     setEditMode(false);
-
   };
 
   const handleCloseButton = () => {
@@ -80,8 +56,9 @@ export const SidebarPanel = (props: ISidebarPanelProps) => {
 
   const Content = () => {
     if (editMode) {
+      // NP 2022-07-01: I couldn't get TinyMCE to work here.
+      // TODO: For rich text editing `import {RichEditor} from './rich-editor'`?
       return <textarea ref={contentRef} defaultValue={content} />;
-      // return <>renderHTML(innerContent)</>;
     }
     return <>{renderHTML(content)}</>;
   };
