@@ -87,11 +87,13 @@ class Api::V1::InteractivePagesController < API::APIController
     return error("Missing page parameter") if page_params.nil?
 
     if page_params
-      @interactive_page.update_attributes({
-        name: page_params['name'],
-        is_completion: page_params['isCompletion'],
-        is_hidden: page_params['isHidden']
-      })
+      change_keys = 'name is_completion is_hidden show_sidebar sidebar sidebar_title'.split
+      # Limit the parameters we accept here, remove nil values, and convert
+      # snake case to underscore.
+      clean_params = page_params.map { |key, value| [key.to_s.underscore, value] }.to_h
+      clean_params = clean_params.reject { |k, v| v.nil? }
+      clean_params = clean_params.select { |k, v| change_keys.include?(k) }
+      @interactive_page.update_attributes(clean_params)
 
       if page_params['isCompletion']
         @interactive_page.move_to_bottom
@@ -482,7 +484,7 @@ class Api::V1::InteractivePagesController < API::APIController
       isHidden: page.is_hidden,
       showSidebar: page.show_sidebar,
       sidebar: page.sidebar,
-      # sidebarTitle: sidebar_title,
+      sidebarTitle: page.sidebar_title,
       position: page.position,
       sections: sections
     }
