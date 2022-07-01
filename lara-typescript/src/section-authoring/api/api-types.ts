@@ -259,6 +259,21 @@ export interface IPage {
   isCompletion?: boolean;
 
   /**
+   * Does the page have a sidebar?
+   */
+  showSidebar?: boolean;
+
+  /**
+   * The sidebar content
+   */
+  sidebar?: string;
+
+  /**
+   * The sidebar title
+   */
+  sidebarTitle?: string;
+
+  /**
    * Sections on this page:
    */
   sections: ISection[];

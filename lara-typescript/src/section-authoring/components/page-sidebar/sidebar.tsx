@@ -3,12 +3,13 @@ import { SidebarTab } from "./sidebar-tab";
 import { SidebarPanel } from "./sidebar-panel";
 
 import "./sidebar.scss";
+import { IPage } from "../../api/api-types";
+import { ICustomReportFieldsAuthoredStateField } from "@concord-consortium/interactive-api-host";
 
 interface IProps {
   content: string;
-  handleShowSidebar: (index: number, show: boolean) => void;
+  updateSettingsFunction: (changes: Partial<IPage>) => void;
   index: number;
-  show: boolean;
   style?: any;
   title: string;
 }
@@ -20,25 +21,33 @@ interface IState {
 export class Sidebar extends React.PureComponent<IProps, IState> {
   constructor(props: IProps) {
     super(props);
-    // eslint-disable-next-line react/no-unused-state
     this.state = { showSidebarContent: false };
   }
+
+  public toggleShow = () => {
+    this.setState(prevstate => {
+      return { showSidebarContent: !prevstate.showSidebarContent };
+    });
+  }
+
   public render() {
-    const { content, handleShowSidebar, index, show, style, title } = this.props;
+    const { content, index, style, title, updateSettingsFunction } = this.props;
+    const { showSidebarContent } = this.state;
     return (
-      <div className={`sidebar-container ${show ? "expanded" : ""}`} style={style} data-cy="sidebar">
+      <div className={`sidebar-container ${showSidebarContent ? "expanded" : ""}`} style={style} data-cy="sidebar">
         <SidebarTab
-          handleShowSidebarContent={handleShowSidebar}
+          handleShowSidebarContent={this.toggleShow}
           index={index}
-          sidebarOpen={show}
+          sidebarOpen={showSidebarContent}
           title={title}
         />
         <SidebarPanel
           content={content}
-          handleCloseSidebarContent={handleShowSidebar}
+          handleCloseSidebarContent={this.toggleShow}
+          updateSettingsFunction={updateSettingsFunction}
           index={index}
           title={title}
-          show={show}
+          show={showSidebarContent}
         />
       </div>
     );

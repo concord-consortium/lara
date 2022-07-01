@@ -8,6 +8,7 @@ import { renderHTML } from "../../../shared/render-html";
 // import { usePageAPI } from "../../hooks/use-api-provider";
 
 import "./sidebar-panel.scss";
+import { IPage } from "../../api/api-types";
 
 interface IRenderEditorProps {
   content: string ;
@@ -34,6 +35,7 @@ const RichEditor = (params: IRenderEditorProps) => {
 
 interface ISidebarPanelProps {
   handleCloseSidebarContent: (index: number, show: boolean) => void;
+  updateSettingsFunction: (changes: Partial<IPage>) => void;
   index: number;
   content: string;
   title: string;
@@ -41,6 +43,7 @@ interface ISidebarPanelProps {
 }
 
 export const SidebarPanel = (props: ISidebarPanelProps) => {
+  const { updateSettingsFunction } = props;
   const [editMode, setEditMode] = React.useState(false);
   const [title, setTitle] = React.useState(props.title);
   const [content, setContent] = React.useState(props.content);
@@ -55,7 +58,11 @@ export const SidebarPanel = (props: ISidebarPanelProps) => {
     if (contentRef.current) {
       setContent(contentRef.current.value);
     }
+    const sidebarTitle = titleRef?.current?.value || title;
+    const sidebar = contentRef?.current?.value || content;
+    updateSettingsFunction({sidebarTitle, sidebar });
     setEditMode(false);
+
   };
 
   const handleCloseButton = () => {
