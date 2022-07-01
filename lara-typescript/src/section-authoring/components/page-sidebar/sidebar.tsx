@@ -5,12 +5,12 @@ import { SidebarPanel } from "./sidebar-panel";
 import "./sidebar.scss";
 
 interface IProps {
-  content: string | null;
+  content: string;
   handleShowSidebar: (index: number, show: boolean) => void;
   index: number;
   show: boolean;
   style?: any;
-  title: string | null;
+  title: string;
 }
 
 interface IState {

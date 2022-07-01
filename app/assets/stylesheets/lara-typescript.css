@@ -2734,6 +2734,225 @@ dl.textBlockEditForm {
   --lt-gray: hsl(0, 0%, 90%);
   --ltr-gray: hsl(0, 0%, 95%); }
 
+.sidebar-tab {
+  cursor: pointer;
+  width: 75px;
+  min-height: 70px;
+  text-align: center;
+  padding: 5px;
+  border-radius: 3px 0 0 3px;
+  background-color: #ffa350;
+  fill: white;
+  display: flex;
+  flex-direction: column;
+  justify-items: center;
+  left: -85px;
+  position: absolute; }
+  .sidebar-tab:hover {
+    background-color: #ffc18a; }
+  .sidebar-tab:active {
+    background-color: #ffcea1; }
+  .sidebar-tab .icon {
+    height: 30px;
+    width: 30px;
+    background-color: #ffe6d0;
+    fill: #ffa350;
+    border-radius: 50%;
+    margin-left: 20px;
+    transition-property: transform;
+    transition-duration: .25s; }
+    .sidebar-tab .icon.open {
+      transform: rotate(180deg); }
+  .sidebar-tab .tab-name {
+    color: #3f3f3f;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 1.15;
+    margin-top: 0.2em; }
+
+@font-face {
+  font-family: 'Lato-Light';
+  font-style: normal;
+  font-weight: 100;
+  src: local("Lato Light"), local("Lato-Light"), url(//fonts.googleapis.com/css?family=Lato:100) format("woff"); }
+
+@font-face {
+  font-family: 'Lato-Regular';
+  font-style: normal;
+  font-weight: 400;
+  src: local("Lato Regular"), local("Lato-Regular"), url(//themes.googleusercontent.com/static/fonts/lato/v6/qIIYRU-oROkIk8vfvxw6QvesZW2xOQ-xsNqO47m55DA.woff) format("woff"); }
+
+@font-face {
+  font-family: 'Lato-Bold';
+  font-style: normal;
+  font-weight: 700;
+  src: local("Lato Bold"), local("Lato-Bold"), url(//themes.googleusercontent.com/static/fonts/lato/v6/qdgUG4U09HnJwhYI-uK18wLUuEpTyoUstqEm5AMlJo4.woff) format("woff"); }
+
+:root {
+  --font-family-bold: Lato-Bold, helvetica, verdana, sans-serif;
+  --font-family-default: Lato-Regular, helvetica, verdana, sans-serif;
+  --font-family-light: Lato-Light, helvetica, verdana, sans-serif;
+  --font-color-default: #313131;
+  --dark-teal: #016082;
+  --teal: #0592af;
+  --lt-teal: #93d5e4;
+  --ltr-teal: #cdebf2;
+  --ltst-teal: #e2f4f8;
+  --gold: #ffc320;
+  --lt-orange: #ffe6d0;
+  --orange: #ea6d2f;
+  --dark-gray: #3f3f3f;
+  --med-gray: #979797;
+  --lt-gray: hsl(0, 0%, 90%);
+  --ltr-gray: hsl(0, 0%, 95%); }
+
+.sidebar-panel {
+  background-color: white;
+  width: 500px; }
+  .sidebar-panel input, .sidebar-panel textarea {
+    border: solid 1.5px var(--med-gray);
+    border-radius: 4px;
+    padding: 5px 10px;
+    width: calc(100% - 22px); }
+  .sidebar-panel textarea {
+    height: 200px; }
+  .sidebar-panel .sidebar-header {
+    background-color: #ffa350;
+    display: flex;
+    align-items: center;
+    height: 40px; }
+    .sidebar-panel .sidebar-header .sidebar-title {
+      color: white;
+      font-size: 20px;
+      width: 100%;
+      text-align: center; }
+    .sidebar-panel .sidebar-header .sidebar-menu {
+      color: white;
+      margin-left: 1em;
+      margin-right: 1em;
+      white-space: nowrap;
+      width: 120px;
+      text-align: right;
+      text-decoration: underline;
+      cursor: pointer; }
+      .sidebar-panel .sidebar-header .sidebar-menu span {
+        margin-left: 2px;
+        margin-right: 2px; }
+    .sidebar-panel .sidebar-header .icon {
+      fill: white;
+      width: 24px;
+      height: 18px;
+      margin-right: 9px;
+      border-radius: 5px;
+      cursor: pointer; }
+      .sidebar-panel .sidebar-header .icon:hover {
+        background-color: #ffe6d0;
+        fill: #ffc18a; }
+      .sidebar-panel .sidebar-header .icon:active {
+        background-color: #ffc18a;
+        fill: #ff8415; }
+  .sidebar-panel .sidebar-content {
+    line-height: 1.575;
+    margin-top: 0;
+    margin-bottom: 11pt;
+    text-align: left;
+    padding: 25px;
+    max-height: 649px;
+    overflow: auto;
+    min-height: 100px; }
+  .sidebar-panel.visible {
+    visibility: visible; }
+  .sidebar-panel.hidden {
+    visibility: hidden; }
+
+@font-face {
+  font-family: 'Lato-Light';
+  font-style: normal;
+  font-weight: 100;
+  src: local("Lato Light"), local("Lato-Light"), url(//fonts.googleapis.com/css?family=Lato:100) format("woff"); }
+
+@font-face {
+  font-family: 'Lato-Regular';
+  font-style: normal;
+  font-weight: 400;
+  src: local("Lato Regular"), local("Lato-Regular"), url(//themes.googleusercontent.com/static/fonts/lato/v6/qIIYRU-oROkIk8vfvxw6QvesZW2xOQ-xsNqO47m55DA.woff) format("woff"); }
+
+@font-face {
+  font-family: 'Lato-Bold';
+  font-style: normal;
+  font-weight: 700;
+  src: local("Lato Bold"), local("Lato-Bold"), url(//themes.googleusercontent.com/static/fonts/lato/v6/qdgUG4U09HnJwhYI-uK18wLUuEpTyoUstqEm5AMlJo4.woff) format("woff"); }
+
+:root {
+  --font-family-bold: Lato-Bold, helvetica, verdana, sans-serif;
+  --font-family-default: Lato-Regular, helvetica, verdana, sans-serif;
+  --font-family-light: Lato-Light, helvetica, verdana, sans-serif;
+  --font-color-default: #313131;
+  --dark-teal: #016082;
+  --teal: #0592af;
+  --lt-teal: #93d5e4;
+  --ltr-teal: #cdebf2;
+  --ltst-teal: #e2f4f8;
+  --gold: #ffc320;
+  --lt-orange: #ffe6d0;
+  --orange: #ea6d2f;
+  --dark-gray: #3f3f3f;
+  --med-gray: #979797;
+  --lt-gray: hsl(0, 0%, 90%);
+  --ltr-gray: hsl(0, 0%, 95%); }
+
+.sidebar-container {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  position: fixed;
+  top: 200px;
+  right: -500px;
+  border-radius: 0 0 0 8px;
+  width: 500px;
+  transition: 0.4s right, 0.4s z-index, 1.0s opacity, 0.20s 0.05s ease box-shadow;
+  font-family: Lato, helvetica, verdana, sans-serif; }
+  .sidebar-container.expanded {
+    right: 0 !important;
+    z-index: 2000;
+    box-shadow: -3px 2px 15px rgba(0, 0, 0, 0.3), 0 0 0 8000px rgba(68, 68, 68, 0.1), 0 0 0 8000px rgba(255, 255, 255, 0.7); }
+
+@font-face {
+  font-family: 'Lato-Light';
+  font-style: normal;
+  font-weight: 100;
+  src: local("Lato Light"), local("Lato-Light"), url(//fonts.googleapis.com/css?family=Lato:100) format("woff"); }
+
+@font-face {
+  font-family: 'Lato-Regular';
+  font-style: normal;
+  font-weight: 400;
+  src: local("Lato Regular"), local("Lato-Regular"), url(//themes.googleusercontent.com/static/fonts/lato/v6/qIIYRU-oROkIk8vfvxw6QvesZW2xOQ-xsNqO47m55DA.woff) format("woff"); }
+
+@font-face {
+  font-family: 'Lato-Bold';
+  font-style: normal;
+  font-weight: 700;
+  src: local("Lato Bold"), local("Lato-Bold"), url(//themes.googleusercontent.com/static/fonts/lato/v6/qdgUG4U09HnJwhYI-uK18wLUuEpTyoUstqEm5AMlJo4.woff) format("woff"); }
+
+:root {
+  --font-family-bold: Lato-Bold, helvetica, verdana, sans-serif;
+  --font-family-default: Lato-Regular, helvetica, verdana, sans-serif;
+  --font-family-light: Lato-Light, helvetica, verdana, sans-serif;
+  --font-color-default: #313131;
+  --dark-teal: #016082;
+  --teal: #0592af;
+  --lt-teal: #93d5e4;
+  --ltr-teal: #cdebf2;
+  --ltst-teal: #e2f4f8;
+  --gold: #ffc320;
+  --lt-orange: #ffe6d0;
+  --orange: #ea6d2f;
+  --dark-gray: #3f3f3f;
+  --med-gray: #979797;
+  --lt-gray: hsl(0, 0%, 90%);
+  --ltr-gray: hsl(0, 0%, 95%); }
+
 .editPageHeader {
   background: transparent;
   color: var(--orange);

@@ -29,12 +29,12 @@ export class SidebarWrapper extends React.PureComponent<IProps, IState> {
         {sidebars.map((sidebar: SidebarConfiguration, index: number) => (
           <Sidebar
             key={`sidebar-${index}`}
-            content={sidebar.content}
+            content={sidebar.content || ""}
             handleShowSidebar={this.setShowSidebarContent}
             index={index}
             show={this.state.showSidebarContent[index]}
             style={{ top: verticalOffset + kSidebarOffset * index}}
-            title={sidebar.title}
+            title={sidebar.title || ""}
           />
         ))}
       </React.Fragment>

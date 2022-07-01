@@ -17,7 +17,7 @@ export class SidebarTab extends React.PureComponent<IProps>{
 
   public render() {
     return (
-      <div className="sidebar-tab" onClick={this.handleSidebarShow} onKeyDown={this.handleSidebarShow} 
+      <div className="sidebar-tab" onClick={this.handleSidebarShow} onKeyDown={this.handleSidebarShow}
            data-cy="sidebar-tab" tabIndex={0}>
         <div className={`icon ${this.props.sidebarOpen ? "open" : ""}`}>
           <IconArrow />
