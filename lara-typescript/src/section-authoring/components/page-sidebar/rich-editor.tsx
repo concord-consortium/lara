@@ -1,4 +1,4 @@
-import React, { useRef, useState} from "react";
+import * as React from "react";
 import { Editor } from "@tinymce/tinymce-react";
 import "./sidebar-panel.scss";
 import { usePageAPI } from "../../hooks/use-api-provider";
@@ -13,11 +13,11 @@ const RichEditor = (params: IRenderEditorProps) => {
   const { content, handleChangeContent } = params;
   const pathToTinyMCE = api.pathToTinyMCE;
   const pathToTinyMCECSS = api.pathToTinyMCECSS;
-  const editorRef = useRef<any>(null);
+  const editorRef = React.useRef<any>(null);
   const initEditor = (e: any, editor: any) => {
     editorRef.current = editor;
   };
-  const contentRef = useRef<HTMLTextAreaElement|null>(null);
+  const contentRef = React.useRef<HTMLTextAreaElement|null>(null);
   return(
     <>
       {pathToTinyMCE &&

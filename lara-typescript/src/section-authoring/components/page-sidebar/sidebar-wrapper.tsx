@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import { Sidebar } from "./sidebar";
 
 const kSidebarOffset = 100;

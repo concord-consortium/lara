@@ -1,21 +1,24 @@
-import React, { ChangeEvent, useRef, useState} from "react";
+import * as React from "react";
 import { IconClose } from "./icon-close";
 import { renderHTML } from "../../../shared/render-html";
-import { accessibilityClick } from "../../util/accessibility-helper";
-import { Editor } from "@tinymce/tinymce-react";
+
+// import { accessibilityClick } from "../../util/accessibility-helper";
+// import { Editor } from "@tinymce/tinymce-react";
+// import { classNames } from "react-select/src/utils";
+// import { usePageAPI } from "../../hooks/use-api-provider";
+
 import "./sidebar-panel.scss";
-import { classNames } from "react-select/src/utils";
-import { usePageAPI } from "../../hooks/use-api-provider";
 
 interface IRenderEditorProps {
   content: string ;
   handleChangeContent: (newContent: string) => void;
 }
 
-// TODO: Wedge in TinyMCE using `import {RichEditor} from './rich-editor'`
+// NP 2022-07-01:
+// TODO: Move to TinyMCE using `import {RichEditor} from './rich-editor'`
 const RichEditor = (params: IRenderEditorProps) => {
   const { content, handleChangeContent } = params;
-  const handleTextChange = (evt: ChangeEvent<HTMLTextAreaElement>) => {
+  const handleTextChange = (evt: React.ChangeEvent<HTMLTextAreaElement>) => {
     handleChangeContent(evt.target.value);
   };
   return(
@@ -38,12 +41,12 @@ interface ISidebarPanelProps {
 }
 
 export const SidebarPanel = (props: ISidebarPanelProps) => {
-  const [editMode, setEditMode] = useState(false);
-  const [title, setTitle] = useState(props.title);
-  const [content, setContent] = useState(props.content);
+  const [editMode, setEditMode] = React.useState(false);
+  const [title, setTitle] = React.useState(props.title);
+  const [content, setContent] = React.useState(props.content);
   const toggleEditMode = () => setEditMode(!editMode);
-  const titleRef = useRef<HTMLInputElement>(null);
-  const contentRef = useRef<HTMLTextAreaElement>(null);
+  const titleRef = React.useRef<HTMLInputElement>(null);
+  const contentRef = React.useRef<HTMLTextAreaElement>(null);
 
   const handleSave = () => {
     if (titleRef.current) {

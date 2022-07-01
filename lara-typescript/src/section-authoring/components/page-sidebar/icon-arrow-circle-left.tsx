@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 
 export const IconArrow = () => (
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="10 10 485 485">

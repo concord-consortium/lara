@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import { SidebarTab } from "./sidebar-tab";
 import { SidebarPanel } from "./sidebar-panel";
 

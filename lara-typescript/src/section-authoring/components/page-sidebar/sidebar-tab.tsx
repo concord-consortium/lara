@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import { IconArrow } from "./icon-arrow-circle-left";
 
 import "./sidebar-tab.scss";
