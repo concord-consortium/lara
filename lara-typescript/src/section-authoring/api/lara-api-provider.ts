@@ -109,6 +109,9 @@ export const getLaraAuthoringAPI =
                            name: changes.name,
                            isCompletion: changes.isCompletion,
                            isHidden: changes.isHidden,
+                           showSidebar: changes.showSidebar,
+                           sidebar: changes.sidebar,
+                           sidebarTitle: changes.sidebarTitle
                          }
                  };
     return sendToLara({url: updatePageUrl(pageId), method: "PUT", body: data});

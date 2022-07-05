@@ -1,0 +1,19 @@
+@import "../../../vars.scss";
+
+.sidebar-container{
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  position: fixed;
+  top: 200px;
+  right: -500px;
+  border-radius: 0 0 0 8px;
+  width: 500px;
+  transition: 0.4s right, 0.4s z-index, 1.0s opacity, 0.20s 0.05s ease box-shadow;
+  font-family: Lato, helvetica, verdana, sans-serif;
+  &.expanded {
+    right: 0 !important;
+    z-index: 2000;
+    box-shadow: -3px 2px 15px rgba(0,0,0,0.3), 0 0 0 8000px rgba(68,68,68,0.1), 0 0 0 8000px rgba(255,255,255,0.7);
+  }
+}

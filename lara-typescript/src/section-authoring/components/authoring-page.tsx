@@ -16,6 +16,7 @@ import { Cog } from "../../shared/components/icons/cog-icon";
 import { HiddenIcon } from "../../shared/components/icons/hidden-icon";
 import { UserInterfaceContext} from "../containers/user-interface-provider";
 import { PreviewLinksContainer } from "../containers/preview-links-container";
+import { Sidebar } from "./page-sidebar/sidebar";
 
 import "./authoring-page.scss";
 
@@ -34,7 +35,7 @@ export interface IPageProps extends IPage {
   /**
    * Does page have a student sidebar?
    */
-  hasStudentSidebar?: boolean;
+  showSidebar?: boolean;
 
   /**
    * Does page have a Teacher Edition sidebar?
@@ -99,30 +100,18 @@ export const AuthoringPage: React.FC<IPageProps> = ({
   isCompletion = false,
   isHidden = false,
   hasArgBlock = false,
-  hasStudentSidebar = false,
-  hasTESidebar = false
+  showSidebar = false,
+  hasTESidebar = false,
+  sidebar = "(content here)",
+  sidebarTitle = "Did you know?"
   }: IPageProps) => {
 
   const [itemToEdit, setItemToEdit] = useState(initItemToEdit);
   const [showSettings, setShowSettings] = useState(isNew);
-
   const { getPages, getItems, updatePage, moveSection } = usePageAPI();
-
-  const updateSettings = (
-    updatedTitle: string | undefined,
-    updatedIsCompletion: boolean,
-    updatedIsHidden: boolean,
-    updatedHasArgBlock: boolean,
-    updatedHasStudentSidebar: boolean,
-    updatedHasTESidebar: boolean
-  ) => {
+  const updateSettings = (changes: Partial<IPage>) => {
     setShowSettings(false);
-
-    updatePage({ id,
-                 name: updatedTitle,
-                 isCompletion: updatedIsCompletion,
-                 isHidden: updatedIsHidden,
-               });
+    updatePage({ id, ...changes});
   };
 
  /*
@@ -238,12 +227,18 @@ export const AuthoringPage: React.FC<IPageProps> = ({
             name={name}
             isCompletion={isCompletion}
             isHidden={isHidden}
-            // hasArgBlock={pageHasArgBlock}
-            // hasStudentSidebar={pageHasStudentSidebar}
-            // hasTESidebar={pageHasTESidebar}
+            hasStudentSidebar={showSidebar}
             updateSettingsFunction={updateSettings}
             closeDialogFunction={handleCloseDialog}
             disableCompletionPageSetting={disableCompletionPageSetting()}
+          />
+        }
+        { showSidebar &&
+          <Sidebar
+            index={1}
+            content={sidebar}
+            updateSettingsFunction={updateSettings}
+            title={sidebarTitle}
           />
         }
     </>
@@ -280,6 +275,9 @@ export const AuthoringPageUsingAPI = () => {
           name={currentPage?.name}
           isCompletion={currentPage?.isCompletion}
           isHidden={currentPage?.isHidden}
+          showSidebar={currentPage?.showSidebar}
+          sidebar={currentPage?.sidebar}
+          sidebarTitle={currentPage?.sidebarTitle}
           changeSection={changeSection}
           addPageItem={addPageItem}
         />

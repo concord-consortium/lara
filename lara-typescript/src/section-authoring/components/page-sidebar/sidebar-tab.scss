@@ -1,0 +1,47 @@
+@import "../../../vars.scss";
+
+.sidebar-tab {
+  cursor: pointer;
+  width: 75px;
+  min-height: 70px;
+  text-align: center;
+  padding: 5px;
+  border-radius: 3px 0 0 3px;
+  background-color: $cc-orange-light1;
+  fill: white;
+  display: flex;
+  flex-direction: column;
+  justify-items: center;
+  left: -85px;
+  position: absolute;
+
+  &:hover {
+    background-color: $cc-orange-light2;
+  }
+  &:active {
+    background-color: $cc-orange-light3;
+  }
+
+  .icon {
+    height: 30px;
+    width: 30px;
+    background-color: $cc-orange-light4;
+    fill: $cc-orange-light1;
+    border-radius: 50%;
+    margin-left: 20px;
+    transition-property: transform;
+    transition-duration: .25s;
+
+    &.open {
+      transform: rotate(180deg);
+    }
+  }
+
+  .tab-name {
+    color: $cc-charcoal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 1.15;
+    margin-top:  0.2em;
+  }
+}
