@@ -2916,10 +2916,15 @@ dl.textBlockEditForm {
   --gold: #ffc320;
   --lt-orange: #ffe6d0;
   --orange: #ea6d2f;
+  --green: #2da343;
+  --med-green: #dcecde;
+  --lt-green: #edf5ee;
   --dark-gray: #3f3f3f;
   --med-gray: #979797;
   --lt-gray: hsl(0, 0%, 90%);
-  --ltr-gray: hsl(0, 0%, 95%); }
+  --ltr-gray: hsl(0, 0%, 95%);
+  --error-bg: #fee;
+  --error-fg: #ad2d23; }
 
 .sidebar-panel {
   background-color: white;
@@ -3011,10 +3016,15 @@ dl.textBlockEditForm {
   --gold: #ffc320;
   --lt-orange: #ffe6d0;
   --orange: #ea6d2f;
+  --green: #2da343;
+  --med-green: #dcecde;
+  --lt-green: #edf5ee;
   --dark-gray: #3f3f3f;
   --med-gray: #979797;
   --lt-gray: hsl(0, 0%, 90%);
-  --ltr-gray: hsl(0, 0%, 95%); }
+  --ltr-gray: hsl(0, 0%, 95%);
+  --error-bg: #fee;
+  --error-fg: #ad2d23; }
 
 .sidebar-container {
   display: flex;
@@ -3063,10 +3073,15 @@ dl.textBlockEditForm {
   --gold: #ffc320;
   --lt-orange: #ffe6d0;
   --orange: #ea6d2f;
+  --green: #2da343;
+  --med-green: #dcecde;
+  --lt-green: #edf5ee;
   --dark-gray: #3f3f3f;
   --med-gray: #979797;
   --lt-gray: hsl(0, 0%, 90%);
-  --ltr-gray: hsl(0, 0%, 95%); }
+  --ltr-gray: hsl(0, 0%, 95%);
+  --error-bg: #fee;
+  --error-fg: #ad2d23; }
 
 .editPageHeader {
   background: transparent;
