@@ -85,7 +85,6 @@ button, .btn-primary, span.edit_trigger, #modal .embeddable-save, #modal .close 
       background: var(--ltr-teal);
       color: var(--teal);
     }
-
     &:active {
       background: var(--teal);
       color: white;
@@ -609,7 +608,7 @@ ul.quiet_list {
     margin: 0;
     border-bottom: dashed 1px #ddd;
     overflow: auto;
-
+    
     .action_menu {
       display: flex;
       flex-direction: row;
