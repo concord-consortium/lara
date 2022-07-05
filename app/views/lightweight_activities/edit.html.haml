@@ -41,7 +41,7 @@
           Select a glossary from the list to add to this activity. If you do not wish to associate a glossary with this activity, select "None."
       .field{:class => ("disabled" if @activity.latest_publication_portals.length > 0)}
         = f.label :runtime, "Runtime Environment"
-        = f.select :runtime, options_for_select(LightweightActivity::RUNTIME_OPTIONS, @activity.runtime), :disabled => @activity.latest_publication_portals.length > 0
+        = f.select :runtime, options_for_select(LightweightActivity::RUNTIME_OPTIONS, selected:'Activity Player', disabled: 'LARA'), :disabled => @activity.latest_publication_portals.length > 0
         .hint
           Once the activity is published, you can't change this setting.
       .field{:class => ("disabled" if @activity.runtime != 'Activity Player')}

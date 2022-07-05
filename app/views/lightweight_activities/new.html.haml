@@ -24,7 +24,7 @@
       = f.text_field :name
     .field
       = f.label :runtime, "Runtime Environment"
-      = f.select :runtime, options_for_select(LightweightActivity::RUNTIME_OPTIONS, @activity.runtime)
+      = f.select :runtime, options_for_select(LightweightActivity::RUNTIME_OPTIONS, selected:'Activity Player', disabled: 'LARA')
       .hint
         Once the activity is published, you can't change this setting.
     .field
