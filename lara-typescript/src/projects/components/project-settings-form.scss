@@ -1,0 +1,96 @@
+@import "../../vars.scss";
+
+.projectSettingsForm {
+  padding-bottom: 20px;
+
+  h2 {
+    color: var(--teal);
+    font-family: var(--font-family-bold);
+    font-size: 20px;
+    line-height: 1.2;
+    margin: 30px 0 20px;
+    padding: 0;
+  }
+
+  .slateContainer {
+    border: solid 1.5px var(--med-gray);
+    border-radius: 4px;
+    font-size: 16px;
+    height: 250px;
+    width: calc(100% - 3px);
+
+    input {
+      margin-bottom: 0;
+    }
+  }
+
+  .alertMessage {
+    animation: pulse .3s 3 ease-in-out;
+    background: var(--lt-green);
+    color: var(--green);
+    margin-bottom: 10px;
+    padding: 10px;
+
+    &.error {
+      background: var(--error-bg);
+      color: var(--error-fg);
+    }
+  }
+  @keyframes pulse {
+    0% { opacity: .7; }
+    50% { opacity: 1; }
+    100% { opacity: .7 }
+  }
+  input, textarea {
+    border: solid 1.5px var(--med-gray);
+    border-radius: 4px;
+    font-family: var(--font-family-default);
+    font-size: 16px;
+    padding: 5px 10px 7px;
+    width: calc(50% - 23px); // 20px padding + 3px border = 23
+    -webkit-appearance: none;
+  }
+  textarea {
+    height: 200px;
+    width: calc(100% - 23px); // 20px padding + 3px border = 23
+  }
+
+  dl {
+    margin: 0 0 20px;
+    padding: 0;
+
+    dt {
+      font-size: 16px;
+      line-height: 1.6;
+      margin: 0 0 2px;
+      padding: 0;
+
+      label {
+        font-weight: 900;
+      }
+    }
+    dd {
+      margin: 0 0 20px;
+      padding: 0;
+
+      &.hasNote {
+        margin-bottom: 3px;
+      }
+      &.inputNote {
+        color: var(--med-gray);
+        font-size: 14px;
+        font-style: italic;
+      }
+
+      select {
+        overflow: hidden;
+        width: 50%;
+      }
+    }
+
+    .disabled {
+      cursor: none;
+      pointer-events: none;
+    }
+  }
+}

@@ -1,0 +1,25 @@
+name: Deploy Example Interactives
+
+on: push
+
+jobs:
+  deploy:
+    name: Build and Deploy
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+      - name: Install Dependencies
+        run: npm ci
+        working-directory: lara-typescript
+      - uses: concord-consortium/s3-deploy-action@v1
+        with:
+          bucket: models-resources
+          prefix: lara-example-interactives
+          awsAccessKeyId: ${{ secrets.EXAMPLE_INTERACTIVES_DEPLOY_ACCESS_KEY }}
+          awsSecretAccessKey: ${{ secrets.EXAMPLE_INTERACTIVES_DEPLOY_SECRET_ACCESS_KEY }}
+          workingDirectory: lara-typescript
+          build: npm run build:webpack:no-copy-to-rails
+          folderToDeploy: dist/example-interactives

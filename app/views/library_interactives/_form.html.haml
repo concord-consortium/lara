@@ -8,6 +8,12 @@
     = f.text_area :authoring_guidance, :rows => 5, :class => 'wysiwyg-minimal'
   = field_set_tag 'Base URL' do
     = f.text_area :base_url, size: "100x2"
+  = field_set_tag 'Report Item URL' do
+    = f.text_area :report_item_url, size: "100x2"
+    %div
+      This URL should point to an optional interactive used by the teacher report 
+      to provide a summary of each interactive answer to teachers. The value should 
+      be a partial URL relative to the iFrame interactive's URL.
   = field_set_tag 'Preview Image URL' do
     = f.text_area :thumbnail_url, size: "100x2"
 
@@ -20,7 +26,7 @@
         Please do not select this unless your interactive contains a serializable data set.
       .indent{:id => "enable_learner_state_indent_#{@library_interactive.id}"}
         = f.check_box :show_delete_data_button, :id => "show_delete_data_button_#{@library_interactive.id}"
-        = f.label :show_delete_data_button, 'Show "Undo all my work" button'
+        = f.label :show_delete_data_button, 'Show "Clear & start over" button'
         %br
         = f.check_box :has_report_url, :id => "has_report_url_#{@library_interactive.id}"
         = f.label :has_report_url, 'This interactive has a report URL'

@@ -1,6 +1,6 @@
 import { mockIFramePhone, MockedIframePhoneManager, setAutoConnect } from "./mock-iframe-phone";
 import { IFrameSaver } from "./iframe-saver";
-import { IAttachmentUrlRequest } from "@concord-consortium/interactive-api-host";
+import { IAttachmentUrlRequest } from "../interactive-api-host";
 
 const parentEl = document.createElement("iframe");
 
@@ -8,7 +8,7 @@ jest.mock("iframe-phone", () => mockIFramePhone(parentEl));
 
 const mockInitializeAttachmentsManager = jest.fn();
 const mockHandleGetAttachmentUrl = jest.fn();
-jest.mock("@concord-consortium/interactive-api-host", () => ({
+jest.mock("../interactive-api-host", () => ({
   initializeAttachmentsManager: (options: any) => mockInitializeAttachmentsManager(options),
   handleGetAttachmentUrl: (options: any) => mockHandleGetAttachmentUrl(options)
 }));
@@ -19,6 +19,27 @@ const mockSaveIndicator = () => {
     showSaving: jest.fn(),
     showSaveFailed: jest.fn()
   }))();
+};
+
+const mockMetadata = {
+  attachments: {
+    "test.txt": {
+      folder: {
+        id: "1",
+        ownerId: "user-1"
+      },
+      publicPath: "1/1",
+      contentType: "text/plain"
+    },
+    "test.mp3": {
+      folder: {
+        id: "1",
+        ownerId: "user-1"
+      },
+      publicPath: "1/2",
+      contentType: "audio/mp3"
+    }
+  }
 };
 
 const getSaver = () => {
@@ -55,7 +76,7 @@ describe("IFrameSaver", () => {
               data-linked-interactives='{"1":{"label":"one"}}'
           >
           </div>
-          <button class="delete_interactive_data">Undo all my work</button>
+          <button class="delete_interactive_data">Clear & start over</button>
         </div>
       </div>
 
@@ -133,7 +154,7 @@ describe("IFrameSaver", () => {
         $.ajax = jest.fn().mockImplementation((params: any) => {
           params.success({
             raw_data: JSON.stringify({interactiveState: 321}),
-            metadata: JSON.stringify({metadata: 321}),
+            metadata: JSON.stringify(mockMetadata),
             created_at: "2017",
             updated_at: "2018",
             activity_name: "test act",
@@ -186,13 +207,21 @@ describe("IFrameSaver", () => {
               colorA: "red",
               colorB: "green"
             }
-          }
+          },
+          attachments: {
+            "test.mp3": {
+              contentType: "audio/mp3",
+            },
+            "test.txt": {
+              contentType: "text/plain",
+            },
+          },
         });
       });
 
       it("should parse interactive state and metadata", () => {
         expect((saver as any).savedState).toEqual({ interactiveState: 321 });
-        expect((saver as any).metadata).toEqual({ metadata: 321 });
+        expect((saver as any).metadata).toEqual(mockMetadata);
       });
     });
 
@@ -233,7 +262,8 @@ describe("IFrameSaver", () => {
               colorA: "red",
               colorB: "green"
             }
-          }
+          },
+          attachments: {}
         });
       });
     });

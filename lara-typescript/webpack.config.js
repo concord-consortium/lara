@@ -264,6 +264,8 @@ module.exports = (env, argv) => {
   //   needs separate config as different files are copied,
   //   and no externals should be used
   exampleInteractive("testbed"),
-  exampleInteractive("linked-state")
+  exampleInteractive("linked-state"),
+  exampleInteractive("report-item"),
+  exampleInteractive("attachments")
   ];
 };

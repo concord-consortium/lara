@@ -19,7 +19,7 @@
       font-weight: 700;
       src: local('Lato Bold'), local('Lato-Bold'), url(//themes.googleusercontent.com/static/fonts/lato/v6/qdgUG4U09HnJwhYI-uK18wLUuEpTyoUstqEm5AMlJo4.woff) format('woff');
     }
-  }
+}
 @include font-import;
 
 $cc-orange: #ff8415;
@@ -45,8 +45,13 @@ $cc-charcoal: #3f3f3f;
   --gold: #ffc320;
   --lt-orange: #ffe6d0;
   --orange: #ea6d2f;
+  --green: #2da343;
+  --med-green: #dcecde;
+  --lt-green: #edf5ee;
   --dark-gray: #3f3f3f;
   --med-gray: #979797;
   --lt-gray: hsl(0, 0%, 90%);
   --ltr-gray: hsl(0, 0%, 95%);
+  --error-bg: #fee;
+  --error-fg: #ad2d23;
 }

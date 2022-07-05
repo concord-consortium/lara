@@ -8,8 +8,8 @@
 
 * [IAddLinkedInteractiveStateListenerOptions](interfaces/iaddlinkedinteractivestatelisteneroptions.md)
 * [IAddLinkedInteractiveStateListenerRequest](interfaces/iaddlinkedinteractivestatelistenerrequest.md)
-* [IAggregateInitInteractive](interfaces/iaggregateinitinteractive.md)
 * [IAnswerMetadataWithAttachmentsInfo](interfaces/ianswermetadatawithattachmentsinfo.md)
+* [IAttachmentInfo](interfaces/iattachmentinfo.md)
 * [IAttachmentUrlRequest](interfaces/iattachmenturlrequest.md)
 * [IAttachmentUrlResponse](interfaces/iattachmenturlresponse.md)
 * [IAttachmentsFolder](interfaces/iattachmentsfolder.md)
@@ -38,9 +38,11 @@
 * [IGetInteractiveSnapshotOptions](interfaces/igetinteractivesnapshotoptions.md)
 * [IGetInteractiveSnapshotRequest](interfaces/igetinteractivesnapshotrequest.md)
 * [IGetInteractiveSnapshotResponse](interfaces/igetinteractivesnapshotresponse.md)
+* [IGetInteractiveState](interfaces/igetinteractivestate.md)
 * [IGetLibraryInteractiveListOptions](interfaces/igetlibraryinteractivelistoptions.md)
 * [IGetLibraryInteractiveListRequest](interfaces/igetlibraryinteractivelistrequest.md)
 * [IGetLibraryInteractiveListResponse](interfaces/igetlibraryinteractivelistresponse.md)
+* [IGetReportItemAnswer](interfaces/igetreportitemanswer.md)
 * [IHandleGetAttachmentUrlOptions](interfaces/ihandlegetattachmenturloptions.md)
 * [IHintRequest](interfaces/ihintrequest.md)
 * [IHostFeatureSupport](interfaces/ihostfeaturesupport.md)
@@ -59,6 +61,12 @@
 * [IReadableAttachmentInfo](interfaces/ireadableattachmentinfo.md)
 * [IRemoveLinkedInteractiveStateListenerRequest](interfaces/iremovelinkedinteractivestatelistenerrequest.md)
 * [IReportInitInteractive](interfaces/ireportinitinteractive.md)
+* [IReportItemAnswer](interfaces/ireportitemanswer.md)
+* [IReportItemAnswerItemAnswerText](interfaces/ireportitemansweritemanswertext.md)
+* [IReportItemAnswerItemAttachment](interfaces/ireportitemansweritemattachment.md)
+* [IReportItemAnswerItemHtml](interfaces/ireportitemansweritemhtml.md)
+* [IReportItemAnswerItemLinks](interfaces/ireportitemansweritemlinks.md)
+* [IReportItemInitInteractive](interfaces/ireportiteminitinteractive.md)
 * [IRuntimeCustomReportValues](interfaces/iruntimecustomreportvalues.md)
 * [IRuntimeInitInteractive](interfaces/iruntimeinitinteractive.md)
 * [IS3SignedUrlOptions](interfaces/is3signedurloptions.md)
@@ -77,9 +85,11 @@
 
 ### Type aliases
 
+* [AttachmentInfoMap](globals.md#attachmentinfomap)
 * [ClientMessage](globals.md#clientmessage)
 * [DeprecatedRuntimeClientMessage](globals.md#deprecatedruntimeclientmessage)
 * [DeprecatedRuntimeServerMessage](globals.md#deprecatedruntimeservermessage)
+* [GetAttachmentUrlParams](globals.md#getattachmenturlparams)
 * [GlobalIFrameSaverClientMessage](globals.md#globaliframesaverclientmessage)
 * [GlobalIFrameSaverServerMessage](globals.md#globaliframesaverservermessage)
 * [IAuthoringClientMessage](globals.md#iauthoringclientmessage)
@@ -87,7 +97,11 @@
 * [ICustomMessageHandler](globals.md#icustommessagehandler)
 * [ICustomMessageOptions](globals.md#icustommessageoptions)
 * [ICustomMessagesHandledMap](globals.md#icustommessageshandledmap)
+* [IGetReportItemAnswerHandler](globals.md#igetreportitemanswerhandler)
 * [IInitInteractive](globals.md#iinitinteractive)
+* [IReportItemAnswerItem](globals.md#ireportitemansweritem)
+* [IReportItemClientMessage](globals.md#ireportitemclientmessage)
+* [IReportItemServerMessage](globals.md#ireportitemservermessage)
 * [IRuntimeClientMessage](globals.md#iruntimeclientmessage)
 * [IRuntimeServerMessage](globals.md#iruntimeservermessage)
 * [IShowModal](globals.md#ishowmodal)
@@ -97,8 +111,11 @@
 * [InteractiveItemId](globals.md#interactiveitemid)
 * [LoggerClientMessage](globals.md#loggerclientmessage)
 * [ModalType](globals.md#modaltype)
+* [OnUnloadFunction](globals.md#onunloadfunction)
+* [ReadAttachmentParams](globals.md#readattachmentparams)
 * [S3Operation](globals.md#s3operation)
 * [ServerMessage](globals.md#servermessage)
+* [WriteAttachmentParams](globals.md#writeattachmentparams)
 
 ### Variables
 
@@ -114,9 +131,15 @@
 
 ## Type aliases
 
+###  AttachmentInfoMap
+
+Ƭ **AttachmentInfoMap**: *Record‹string, [IAttachmentInfo](interfaces/iattachmentinfo.md)›*
+
+___
+
 ###  ClientMessage
 
-Ƭ **ClientMessage**: *[DeprecatedRuntimeClientMessage](globals.md#deprecatedruntimeclientmessage) | [IRuntimeClientMessage](globals.md#iruntimeclientmessage) | [IAuthoringClientMessage](globals.md#iauthoringclientmessage) | [GlobalIFrameSaverClientMessage](globals.md#globaliframesaverclientmessage) | [LoggerClientMessage](globals.md#loggerclientmessage)*
+Ƭ **ClientMessage**: *[DeprecatedRuntimeClientMessage](globals.md#deprecatedruntimeclientmessage) | [IRuntimeClientMessage](globals.md#iruntimeclientmessage) | [IAuthoringClientMessage](globals.md#iauthoringclientmessage) | [GlobalIFrameSaverClientMessage](globals.md#globaliframesaverclientmessage) | [LoggerClientMessage](globals.md#loggerclientmessage) | [IReportItemClientMessage](globals.md#ireportitemclientmessage)*
 
 ___
 
@@ -129,6 +152,12 @@ ___
 ###  DeprecatedRuntimeServerMessage
 
 Ƭ **DeprecatedRuntimeServerMessage**: *"getLearnerUrl" | "loadInteractive"*
+
+___
+
+###  GetAttachmentUrlParams
+
+Ƭ **GetAttachmentUrlParams**: *Omit‹[IAttachmentUrlRequest](interfaces/iattachmenturlrequest.md), "requestId" | "operation"›*
 
 ___
 
@@ -184,9 +213,43 @@ ___
 
 ___
 
+###  IGetReportItemAnswerHandler
+
+Ƭ **IGetReportItemAnswerHandler**: *function*
+
+#### Type declaration:
+
+▸ (`message`: [IGetReportItemAnswer](interfaces/igetreportitemanswer.md)‹InteractiveState, AuthoredState›): *void*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`message` | [IGetReportItemAnswer](interfaces/igetreportitemanswer.md)‹InteractiveState, AuthoredState› |
+
+___
+
 ###  IInitInteractive
 
-Ƭ **IInitInteractive**: *[IRuntimeInitInteractive](interfaces/iruntimeinitinteractive.md)‹InteractiveState, AuthoredState, GlobalInteractiveState› | [IAuthoringInitInteractive](interfaces/iauthoringinitinteractive.md)‹AuthoredState› | [IReportInitInteractive](interfaces/ireportinitinteractive.md)‹InteractiveState, AuthoredState›*
+Ƭ **IInitInteractive**: *[IRuntimeInitInteractive](interfaces/iruntimeinitinteractive.md)‹InteractiveState, AuthoredState, GlobalInteractiveState› | [IAuthoringInitInteractive](interfaces/iauthoringinitinteractive.md)‹AuthoredState› | [IReportInitInteractive](interfaces/ireportinitinteractive.md)‹InteractiveState, AuthoredState› | [IReportItemInitInteractive](interfaces/ireportiteminitinteractive.md)‹InteractiveState, AuthoredState›*
+
+___
+
+###  IReportItemAnswerItem
+
+Ƭ **IReportItemAnswerItem**: *[IReportItemAnswerItemAttachment](interfaces/ireportitemansweritemattachment.md) | [IReportItemAnswerItemAnswerText](interfaces/ireportitemansweritemanswertext.md) | [IReportItemAnswerItemHtml](interfaces/ireportitemansweritemhtml.md) | [IReportItemAnswerItemLinks](interfaces/ireportitemansweritemlinks.md)*
+
+___
+
+###  IReportItemClientMessage
+
+Ƭ **IReportItemClientMessage**: *"reportItemAnswer" | "reportItemClientReady"*
+
+___
+
+###  IReportItemServerMessage
+
+Ƭ **IReportItemServerMessage**: *"getReportItemAnswer"*
 
 ___
 
@@ -232,7 +295,7 @@ ___
 
 ###  InitInteractiveMode
 
-Ƭ **InitInteractiveMode**: *"runtime" | "authoring" | "report"*
+Ƭ **InitInteractiveMode**: *"runtime" | "authoring" | "report" | "reportItem"*
 
 ___
 
@@ -254,6 +317,28 @@ ___
 
 ___
 
+###  OnUnloadFunction
+
+Ƭ **OnUnloadFunction**: *function*
+
+#### Type declaration:
+
+▸ (`options`: [IGetInteractiveState](interfaces/igetinteractivestate.md)): *Promise‹InteractiveState›*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`options` | [IGetInteractiveState](interfaces/igetinteractivestate.md) |
+
+___
+
+###  ReadAttachmentParams
+
+Ƭ **ReadAttachmentParams**: *Omit‹[IAttachmentUrlRequest](interfaces/iattachmenturlrequest.md), "requestId" | "operation" | "contentType" | "expiresIn"›*
+
+___
+
 ###  S3Operation
 
 Ƭ **S3Operation**: *"getObject" | "putObject"*
@@ -262,7 +347,13 @@ ___
 
 ###  ServerMessage
 
-Ƭ **ServerMessage**: *[IframePhoneServerMessage](globals.md#iframephoneservermessage) | [DeprecatedRuntimeServerMessage](globals.md#deprecatedruntimeservermessage) | [IRuntimeServerMessage](globals.md#iruntimeservermessage) | [IAuthoringServerMessage](globals.md#iauthoringservermessage) | [GlobalIFrameSaverServerMessage](globals.md#globaliframesaverservermessage)*
+Ƭ **ServerMessage**: *[IframePhoneServerMessage](globals.md#iframephoneservermessage) | [DeprecatedRuntimeServerMessage](globals.md#deprecatedruntimeservermessage) | [IRuntimeServerMessage](globals.md#iruntimeservermessage) | [IAuthoringServerMessage](globals.md#iauthoringservermessage) | [GlobalIFrameSaverServerMessage](globals.md#globaliframesaverservermessage) | [IReportItemServerMessage](globals.md#ireportitemservermessage)*
+
+___
+
+###  WriteAttachmentParams
+
+Ƭ **WriteAttachmentParams**: *Omit‹[IWriteAttachmentRequest](interfaces/iwriteattachmentrequest.md), "requestId" | "operation"›*
 
 ## Variables
 

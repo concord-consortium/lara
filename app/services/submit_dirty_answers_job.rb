@@ -12,7 +12,12 @@ class SubmitDirtyAnswersJob < Struct.new(:run_id, :start_time)
       "num_answers: #{run.answers.count}, #{run.run_info_string}, " +
       "response: #{response.code} #{response.message} #{response.body}"
     )
-    run.abort_job_and_requeue(run.run_info_string) unless response.success?
+    if response.success?
+      run.set_status_flag(Run::SentToReportServiceStatusFlag)
+    else
+      run.clear_status_flag(Run::SentToReportServiceStatusFlag)
+      run.abort_job_and_requeue(run.run_info_string)
+    end
   end
 
   def perform

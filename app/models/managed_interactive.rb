@@ -106,6 +106,10 @@ class ManagedInteractive < ActiveRecord::Base
     library_interactive ? library_interactive.thumbnail_url : nil
   end
 
+  def report_item_url
+    library_interactive ? library_interactive.report_item_url : nil
+  end
+
   def self.portal_type
     "iframe interactive"
   end

@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import ResizeObserver from "resize-observer-polyfill";
+
 import { ICustomMessageHandler, ICustomMessagesHandledMap, IInitInteractive, ITextDecorationHandler } from "./types";
 import * as client from "./api";
 
@@ -129,4 +131,30 @@ export const useDecorateContent = (callback: ITextDecorationHandler) => {
     client.addDecorateContentListener(callback);
     return () => client.removeDecorateContentListener();
   }, []);
+};
+
+export const useAutoSetHeight = () => {
+  const initMessage = useInitMessage();
+
+  useEffect(() => {
+    if (initMessage) {
+      const body = document.body;
+      const html = document.documentElement;
+      const updateHeight = () => {
+        const height = Math.max(
+          body.scrollHeight,
+          body.offsetHeight,
+          html.clientHeight,
+          html.scrollHeight,
+          html.offsetHeight
+        );
+        client.setHeight(height);
+      };
+      const observer = new ResizeObserver(() => updateHeight());
+      if (body) {
+        observer.observe(body);
+      }
+      return () => observer.disconnect();
+    }
+  }, [initMessage]);
 };
