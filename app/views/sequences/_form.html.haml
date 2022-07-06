@@ -19,16 +19,16 @@
       = f.text_field :title, :id => "sequence_title"
     - if current_user.is_admin
       .field
-        = f.label :defunct,  "Defunct"
         = f.check_box :defunct
+        = f.label :defunct,  "Defunct"
         .hint (Check this box if the sequence uses features not supported by Activity Player.)
     .field
       = f.label :display_title, "Display Title"
       = f.text_field :display_title, :id => "sequence_display_title"
-    .field{:class => ("disabled" if @sequence.latest_publication_portals.length > 0)}
+    .field{:class => ("disabled")}
       = f.label :runtime, "Runtime Environment"
-      = f.select :runtime, options_for_select(Sequence::RUNTIME_OPTIONS, @sequence.runtime), :disabled => @sequence.latest_publication_portals.length > 0
-      .hint Once the sequence is published, you can't change this setting.
+      = f.select :runtime, options_for_select(Sequence::RUNTIME_OPTIONS, selected:'Activity Player', disabled: 'LARA'), :disabled => true
+      .hint Runtime selection is no longer applicable. This setting will be removed in a future release.
     .field{:class => ("disabled" if @sequence.runtime != 'Activity Player')}
       = f.label :fixed_width_layout, 'Fixed Width Layout'
       = f.select :fixed_width_layout, options_for_select(LightweightActivity::FIXED_WIDTH_LAYOUT_OPTIONS, @sequence.fixed_width_layout)

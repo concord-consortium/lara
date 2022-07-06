@@ -22,11 +22,11 @@
     .field
       = f.label :name, 'Activity Name'
       = f.text_field :name
-    .field
+    .field{:class => ("disabled")}
       = f.label :runtime, "Runtime Environment"
-      = f.select :runtime, options_for_select(LightweightActivity::RUNTIME_OPTIONS, @activity.runtime)
+      = f.select :runtime, options_for_select(LightweightActivity::RUNTIME_OPTIONS, selected:'Activity Player', disabled: 'LARA'), :disabled => true
       .hint
-        Once the activity is published, you can't change this setting.
+        Runtime selection is no longer applicable. This setting will be removed in a future release..
     .field
       = f.label :glossary_id, 'Glossary'
       = f.select :glossary_id, glossary_options_for_select(@activity, current_user), { :include_blank => "None" }
