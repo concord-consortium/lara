@@ -27,8 +27,8 @@
         = f.text_field :name, :size => 80
       - if current_user.is_admin
         .field
-          = f.label :defunct,  "Defunct"
           = f.check_box :defunct
+          = f.label :defunct,  "Defunct"
           .hint (Check this box if the activity uses features not supported by Activity Player.)
       .field{:class => ("disabled" if @activity.runtime != 'LARA')}
         = f.label :theme_id, 'Theme'
@@ -39,11 +39,11 @@
         %button#view_edit_glossary{style: "margin-top: 0; margin-left: 20px;"} View or Edit
         .hint
           Select a glossary from the list to add to this activity. If you do not wish to associate a glossary with this activity, select "None."
-      .field{:class => ("disabled" if @activity.latest_publication_portals.length > 0)}
+      .field{:class => ("disabled")}
         = f.label :runtime, "Runtime Environment"
-        = f.select :runtime, options_for_select(LightweightActivity::RUNTIME_OPTIONS, selected:'Activity Player', disabled: 'LARA'), :disabled => @activity.latest_publication_portals.length > 0
+        = f.select :runtime, options_for_select(LightweightActivity::RUNTIME_OPTIONS, selected:'Activity Player', disabled: 'LARA'), :disabled => true
         .hint
-          Once the activity is published, you can't change this setting.
+          Runtime selection is no longer applicable. This setting will be removed in a future release..
       .field{:class => ("disabled" if @activity.runtime != 'Activity Player')}
         = f.label :fixed_width_layout, 'Activity Player Fixed Width Layout'
         = f.select :fixed_width_layout, options_for_select(LightweightActivity::FIXED_WIDTH_LAYOUT_OPTIONS, @activity.fixed_width_layout)
