@@ -5,6 +5,10 @@ class ConvertActivitiesToNewSectionsSchema < ActiveRecord::Migration
   class PageItem < ActiveRecord::Base
   end
 
+  class Section < ActiveRecord::Base
+    attr_accessible :interactive_page_id, :layout, :position, :show 
+  end
+
   def create_section(page_id, layout, position, show)
     Section.create(
       :interactive_page_id => page_id,
@@ -26,6 +30,10 @@ class ConvertActivitiesToNewSectionsSchema < ActiveRecord::Migration
   end
 
   def up
+    # output number of pages that need to be processed
+    pages_to_process = InteractivePage.count
+    pages_processed = 0
+    puts "There are #{pages_to_process} pages to process."
     InteractivePage.find_each(batch_size: 10) do |page|
       layout_map = {
         "l-full-width" => "full-width",
@@ -39,7 +47,7 @@ class ConvertActivitiesToNewSectionsSchema < ActiveRecord::Migration
       header_block_items = []
       primary_block_items = []
       secondary_block_items = []
-      page.show_interactive = page.page.show_interactive
+      show_interactive = page.show_interactive
       show_info_assessment = page.show_info_assessment
       show_header = page.show_header
       page_items = PageItem.where(:interactive_page_id => page.id)
@@ -63,13 +71,13 @@ class ConvertActivitiesToNewSectionsSchema < ActiveRecord::Migration
       if primary_block_items.length > 0 || secondary_block_items.length > 0
         section_count += 1
         section_layout = layout_map[page.layout]
-        if page.show_interactive && show_info_assessment
+        if show_interactive && show_info_assessment
           # put all items in the same section
           assessment_section = create_section(page.id, section_layout, section_count, true)
           add_items_to_section(primary_block_items, assessment_section.id, "primary")
           secondary_items_column = section_layout != "full-width" ? "secondary" : "primary"
           add_items_to_section(secondary_block_items, assessment_section.id, secondary_items_column)
-        elsif page.show_interactive
+        elsif show_interactive
           assessment_section = create_section(page.id, section_layout, section_count, true)
           add_items_to_section(primary_block_items, assessment_section.id, "primary")
           # create a hidden section for any secondary items that may exist
@@ -99,7 +107,12 @@ class ConvertActivitiesToNewSectionsSchema < ActiveRecord::Migration
           end
         end
       end
+      pages_processed += 1
+      if pages_processed % 100 == 0
+        puts "Processed #{pages_processed} of #{pages_to_process} pages."
+      end
     end
+    puts "Processed #{pages_processed} of #{pages_to_process} pages."
   end
 
   def down
