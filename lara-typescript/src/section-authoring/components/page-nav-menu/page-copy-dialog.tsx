@@ -66,7 +66,7 @@ export const PageCopyDialog: React.FC<IPageCopyDialogProps> = ({
   ];
 
   return (
-    <Modal title="Copy this page and move to..." visibility={true}>
+    <Modal title="Copy this page and move to..." visibility={true} closeFunction={closeDialogFunction}>
       <div className="pageCopyDialog">
         <dl>
           <dt className="col1">Position</dt>
