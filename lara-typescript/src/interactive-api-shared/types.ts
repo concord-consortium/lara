@@ -112,7 +112,7 @@ export interface IReportItemInitInteractive<InteractiveState = {}, AuthoredState
   mode: "reportItem";
   hostFeatures: IHostFeatures;
   interactiveItemId: string;
-  view: "singleAnswer" | "multipleAnswer";
+  view: "singleAnswer" | "multipleAnswer" | "hidden";
   users: Record<string, {hasAnswer: boolean}>;
   attachments?: AttachmentInfoMap;
 }
@@ -481,11 +481,18 @@ export interface ILinkedInteractiveStateResponse<LinkedInteractiveState> {
   interactiveState: LinkedInteractiveState | undefined;
 }
 
+export type ReportItemsType = "fullAnswer" | "compactAnswer";
+
 export interface IGetReportItemAnswer<InteractiveState = {}, AuthoredState = {}> extends IBaseRequestResponse {
-  version: "2.0.0";
+  version: "2.1.0";
   platformUserId: string;
   interactiveState: InteractiveState;
   authoredState: AuthoredState;
+  /**
+   * When not provided, host should assume that itemsType is equal to "fullAnswer" (to maintain backward compatibility
+   * with version 2.0.0).
+   */
+  itemsType?: ReportItemsType;
 }
 
 export interface IReportItemAnswerItemAttachment {
@@ -505,21 +512,42 @@ export interface IReportItemAnswerItemLinks {
   hideViewInline?: boolean;
   hideViewInNewTab?: boolean;
 }
+export interface IReportItemAnswerItemScore {
+  type: "score";
+  score: number;
+  maxScore: number;
+}
 
 export type IReportItemAnswerItem =
   IReportItemAnswerItemAttachment |
   IReportItemAnswerItemAnswerText |
   IReportItemAnswerItemHtml |
-  IReportItemAnswerItemLinks;
+  IReportItemAnswerItemLinks |
+  IReportItemAnswerItemScore;
 
 export interface IReportItemAnswer extends IBaseRequestResponse {
-  version: "2.0.0";
+  version: "2.1.0";
   platformUserId: string;
   items: IReportItemAnswerItem[];
+  /**
+   * When not provided, host should assume that itemsType is equal to "fullAnswer" (to maintain backward compatibility
+   * with version 2.0.0).
+   */
+  itemsType: ReportItemsType;
 }
 
 export type IGetReportItemAnswerHandler<InteractiveState = {}, AuthoredState = {}> =
   (message: IGetReportItemAnswer<InteractiveState, AuthoredState>) => void;
+
+
+export interface IReportItemHandlerMetadata {
+  /**
+   * When compactAnswerReportItems is present and equal to true, report will try to get report items related to compact
+   * answer (small icons visible in the dashboard grid view). An example of compact answer report item is "score"
+   * used by ScoreBOT question.
+   */
+  compactAnswerReportItemsAvailable?: boolean;
+}
 
 /**
  * Interface that can be used by interactives to export and consume datasets. For example:

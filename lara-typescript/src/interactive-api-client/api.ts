@@ -35,7 +35,8 @@ import {
   GetAttachmentUrlParams,
   IGetReportItemAnswerHandler,
   IReportItemAnswer,
-  OnUnloadFunction
+  OnUnloadFunction,
+  IReportItemHandlerMetadata
 } from "./types";
 import { getClient } from "./client";
 import { v4 as uuidv4 } from "uuid";
@@ -183,11 +184,15 @@ export const removeDecorateContentListener = () => {
 
 // tslint:disable-next-line:max-line-length
 export const addGetReportItemAnswerListener = <InteractiveState, AuthoredState>(callback: IGetReportItemAnswerHandler<InteractiveState, AuthoredState>) => {
-  getClient().addGetReportItemAnswerListener(callback);
+  getClient().addListener("getReportItemAnswer", callback);
 };
 
 export const removeGetReportItemAnswerListener = () => {
-  getClient().removeGetReportItemAnswerListener();
+  getClient().removeListener("getReportItemAnswer");
+};
+
+export const notifyReportItemClientReady = (metadata?: IReportItemHandlerMetadata) => {
+  getClient().post("reportItemClientReady", metadata);
 };
 
 export const setSupportedFeatures = (features: ISupportedFeatures) => {

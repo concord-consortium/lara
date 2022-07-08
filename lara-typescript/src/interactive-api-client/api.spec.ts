@@ -554,6 +554,31 @@ describe("api", () => {
       });
     });
   });
+
+  describe("report item support", () => {
+    it("supports addGetReportItemAnswerListener and removeGetReportItemAnswerListener", () => {
+      const listener = jest.fn();
+      api.addGetReportItemAnswerListener(listener);
+      mockedPhone.fakeServerMessage({type: "getReportItemAnswer" });
+      expect(listener).toHaveBeenCalledTimes(1);
+
+      api.removeGetReportItemAnswerListener();
+      mockedPhone.fakeServerMessage({type: "getReportItemAnswer" });
+      expect(listener).toHaveBeenCalledTimes(1);
+    });
+
+    it("supports sendReportItemAnswer", () => {
+      const mockAnswer: any = { foo: 1 };
+      api.sendReportItemAnswer(mockAnswer);
+      expect(mockedPhone.messages[0]).toEqual({ type: "reportItemAnswer", content: mockAnswer });
+    });
+
+    it("supports notifyReportItemClientReady", () => {
+      const mockMetadata: any = { foo: 1 };
+      api.notifyReportItemClientReady(mockMetadata);
+      expect(mockedPhone.messages[0]).toEqual({ type: "reportItemClientReady", content: mockMetadata });
+    });
+  });
 });
 
 // helpers
