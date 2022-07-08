@@ -1,6 +1,6 @@
 {
   "name": "@concord-consortium/lara-interactive-api",
-  "version": "1.6.1",
+  "version": "1.7.0-pre.1",
   "description": "LARA Interactive API client and types",
   "main": "./index.js",
   "types": "./index-bundle.d.ts",
@@ -18,7 +18,7 @@
     "iframe-phone": "^1.3.1"
   },
   "peerDependencies": {
-    "react": "^16.9.0",
-    "react-dom": "^16.9.0"
+    "react": ">=16.9.0",
+    "react-dom": ">=16.9.0"
   }
 }
