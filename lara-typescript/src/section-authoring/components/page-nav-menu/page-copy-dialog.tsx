@@ -38,10 +38,6 @@ export const PageCopyDialog: React.FC<IPageCopyDialogProps> = ({
     setSelectedOtherPagePosition(parseInt(change.target.value, 10));
   };
 
-  const handleCloseDialog = () => {
-    closeDialogFunction();
-  };
-
   const handleCopyPage = () => {
     if (currentPageIndex != null && currentPageIndex > -1) {
       let destIndex = selectedOtherPagePosition;
@@ -61,7 +57,7 @@ export const PageCopyDialog: React.FC<IPageCopyDialogProps> = ({
   };
 
   const modalButtons = [
-    {classes: "cancel", clickHandler: handleCloseDialog, disabled: false, svg: <Close height="12" width="12"/>, text: "Cancel"},
+    {classes: "cancel", clickHandler: closeDialogFunction, disabled: false, svg: <Close height="12" width="12"/>, text: "Cancel"},
     {classes: "copy", clickHandler: handleCopyPage, disabled: false, svg: <Add height="16" width="16"/>, text: "Copy"}
   ];
 
