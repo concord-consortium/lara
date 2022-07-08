@@ -86,10 +86,12 @@ describe("api", () => {
     expect(mockedPhone.messages).toEqual([{type: "log", content: {action: "test action", data: {param1: 1}}}]);
   });
 
-  it("supports [add|remove]CustomMessageListener", () => {
-    const handler = jest.fn();
-    api.addCustomMessageListener(handler, { handles: { foo: true } });
-    api.removeCustomMessageListener();
+
+  it("can add/remove custom message listener and pass supported messages to setSupportedFeatures", () => {
+    const listener = jest.fn();
+    api.addCustomMessageListener(listener, { handles: { foo: true } });
+    api.setSupportedFeatures({ apiVersion: 1, features: {} } as any);
+    expect(api.removeCustomMessageListener()).toBe(true);
   });
 
   it("supports content decoration", () => {

@@ -123,7 +123,7 @@ export const useCustomMessages = (callback: ICustomMessageHandler, handles?: ICu
   useEffect(() => {
     client.addCustomMessageListener(callback, handles);
 
-    return () => client.removeCustomMessageListener();
+    return () => { client.removeCustomMessageListener() };
   }, []);
 };
 

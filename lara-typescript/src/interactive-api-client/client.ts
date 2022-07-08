@@ -39,11 +39,16 @@ export const getClient = () => {
   return clientInstance;
 };
 
+/**
+ * This class is intended to provide basic helpers (like `post()` or `add/removeListener`), maintain client-specific
+ * state, and generally be as minimal as possible. Most of the client-specific helpers and logic can be implemented
+ * in api.ts or hooks.ts (or both so the client app has choice).
+ */
 export class Client {
   public phone: iframePhone.IFrameEndpoint = iframePhone.getIFrameEndpoint();
   public managedState = new ManagedState();
+  public customMessagesHandled: ICustomMessagesHandledMap;
 
-  private customMessagesHandled: ICustomMessagesHandledMap;
   private listeners: IListenerMap = {};
   private requestId = 1;
 
@@ -132,44 +137,6 @@ export class Client {
     }
 
     return false;
-  }
-
-  public addCustomMessageListener(callback: ICustomMessageHandler, handles?: ICustomMessagesHandledMap) {
-    if (handles) this.customMessagesHandled = handles;
-    this.addListener("customMessage", callback);
-  }
-
-  public removeCustomMessageListener() {
-    return this.removeListener("customMessage");
-  }
-
-  public addDecorateContentListener(callback: ITextDecorationHandler) {
-    this.addListener("decorateContent", (msg: ITextDecorationInfo) => {
-      callback({
-        words: msg.words,
-        replace: msg.replace,
-        wordClass: msg.wordClass,
-        eventListeners: msg.listenerTypes.map((listener) => {
-          return {
-            type: listener.type,
-            listener: (evt: Event) => {
-              const wordElement = evt.srcElement as HTMLElement;
-              if (!wordElement) {
-                return;
-              }
-              const clickedWord = (wordElement.textContent || "").toLowerCase();
-              postDecoratedContentEvent({type: listener.type,
-                                         text: clickedWord,
-                                         bounds: wordElement.getBoundingClientRect()});
-            }
-          };
-        })
-      });
-    });
-  }
-
-  public removeDecorateContentListener() {
-    return this.removeListener("decorateContent");
   }
 
   public setSupportedFeatures = (request: ISupportedFeaturesRequest) => {
