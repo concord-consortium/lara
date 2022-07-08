@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import ResizeObserver from "resize-observer-polyfill";
 
-import { ICustomMessageHandler, ICustomMessagesHandledMap, IInitInteractive, ITextDecorationHandler } from "./types";
+import { ICustomMessageHandler, ICustomMessagesHandledMap, IInitInteractive, ITextDecorationHandler,
+  IReportItemHandlerMetadata, IGetReportItemAnswerHandler } from "./types";
 import * as client from "./api";
 
 type UpdateFunc<S> = (prevState: S | null) => S;
@@ -157,4 +158,20 @@ export const useAutoSetHeight = () => {
       return () => observer.disconnect();
     }
   }, [initMessage]);
+};
+
+
+export interface IUseReportItemOptions<InteractiveState, AuthoredState> {
+  metadata: IReportItemHandlerMetadata,
+  handler: IGetReportItemAnswerHandler<InteractiveState, AuthoredState>
+}
+
+export const useReportItem = <InteractiveState, AuthoredState>({ metadata, handler }: IUseReportItemOptions<InteractiveState, AuthoredState>) => {
+  useEffect(() => {
+    client.addGetReportItemAnswerListener(handler);
+
+    client.notifyReportItemClientReady(metadata);
+
+    return () => client.removeGetReportItemAnswerListener();
+  }, []);
 };
