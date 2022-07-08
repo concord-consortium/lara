@@ -123,7 +123,7 @@ export const useCustomMessages = (callback: ICustomMessageHandler, handles?: ICu
   useEffect(() => {
     client.addCustomMessageListener(callback, handles);
 
-    return () => { client.removeCustomMessageListener() };
+    return () => { client.removeCustomMessageListener(); };
   }, []);
 };
 
@@ -160,12 +160,12 @@ export const useAutoSetHeight = () => {
   }, [initMessage]);
 };
 
-
 export interface IUseReportItemOptions<InteractiveState, AuthoredState> {
-  metadata: IReportItemHandlerMetadata,
-  handler: IGetReportItemAnswerHandler<InteractiveState, AuthoredState>
+  metadata: IReportItemHandlerMetadata;
+  handler: IGetReportItemAnswerHandler<InteractiveState, AuthoredState>;
 }
 
+// tslint:disable-next-line:max-line-length
 export const useReportItem = <InteractiveState, AuthoredState>({ metadata, handler }: IUseReportItemOptions<InteractiveState, AuthoredState>) => {
   useEffect(() => {
     client.addGetReportItemAnswerListener(handler);

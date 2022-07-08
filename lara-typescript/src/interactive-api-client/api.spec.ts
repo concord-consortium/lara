@@ -86,7 +86,6 @@ describe("api", () => {
     expect(mockedPhone.messages).toEqual([{type: "log", content: {action: "test action", data: {param1: 1}}}]);
   });
 
-
   it("can add/remove custom message listener and pass supported messages to setSupportedFeatures", () => {
     const listener = jest.fn();
     api.addCustomMessageListener(listener, { handles: { foo: true } });

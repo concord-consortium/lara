@@ -539,7 +539,6 @@ export interface IReportItemAnswer extends IBaseRequestResponse {
 export type IGetReportItemAnswerHandler<InteractiveState = {}, AuthoredState = {}> =
   (message: IGetReportItemAnswer<InteractiveState, AuthoredState>) => void;
 
-
 export interface IReportItemHandlerMetadata {
   /**
    * When compactAnswerReportItems is present and equal to true, report will try to get report items related to compact
