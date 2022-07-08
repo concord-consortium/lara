@@ -20,6 +20,7 @@
 
 * [authoredState](igetreportitemanswer.md#authoredstate)
 * [interactiveState](igetreportitemanswer.md#interactivestate)
+* [itemsType](igetreportitemanswer.md#optional-itemstype)
 * [platformUserId](igetreportitemanswer.md#platformuserid)
 * [requestId](igetreportitemanswer.md#requestid)
 * [version](igetreportitemanswer.md#version)
@@ -35,6 +36,15 @@ ___
 ###  interactiveState
 
 • **interactiveState**: *InteractiveState*
+
+___
+
+### `Optional` itemsType
+
+• **itemsType**? : *[ReportItemsType](../globals.md#reportitemstype)*
+
+When not provided, host should assume that itemsType is equal to "fullAnswer" (to maintain backward compatibility
+with version 2.0.0).
 
 ___
 
@@ -54,4 +64,4 @@ ___
 
 ###  version
 
-• **version**: *"2.0.0"*
+• **version**: *"2.1.0"*

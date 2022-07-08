@@ -71,6 +71,8 @@
 * [IReportItemAnswerItemAttachment](interfaces/ireportitemansweritemattachment.md)
 * [IReportItemAnswerItemHtml](interfaces/ireportitemansweritemhtml.md)
 * [IReportItemAnswerItemLinks](interfaces/ireportitemansweritemlinks.md)
+* [IReportItemAnswerItemScore](interfaces/ireportitemansweritemscore.md)
+* [IReportItemHandlerMetadata](interfaces/ireportitemhandlermetadata.md)
 * [IReportItemInitInteractive](interfaces/ireportiteminitinteractive.md)
 * [IRuntimeCustomReportValues](interfaces/iruntimecustomreportvalues.md)
 * [IRuntimeImageQuestionMetadata](interfaces/iruntimeimagequestionmetadata.md)
@@ -88,6 +90,7 @@
 * [ITextDecorationHandlerInfo](interfaces/itextdecorationhandlerinfo.md)
 * [ITextDecorationInfo](interfaces/itextdecorationinfo.md)
 * [IThemeInfo](interfaces/ithemeinfo.md)
+* [IUseReportItemOptions](interfaces/iusereportitemoptions.md)
 * [IWriteAttachmentRequest](interfaces/iwriteattachmentrequest.md)
 
 ### Type aliases
@@ -123,6 +126,7 @@
 * [ModalType](globals.md#modaltype)
 * [OnUnloadFunction](globals.md#onunloadfunction)
 * [ReadAttachmentParams](globals.md#readattachmentparams)
+* [ReportItemsType](globals.md#reportitemstype)
 * [ServerMessage](globals.md#servermessage)
 * [WriteAttachmentParams](globals.md#writeattachmentparams)
 
@@ -155,6 +159,7 @@
 * [getMode](globals.md#const-getmode)
 * [inIframe](globals.md#const-iniframe)
 * [log](globals.md#const-log)
+* [notifyReportItemClientReady](globals.md#const-notifyreportitemclientready)
 * [postDecoratedContentEvent](globals.md#const-postdecoratedcontentevent)
 * [readAttachment](globals.md#const-readattachment)
 * [removeAuthoredStateListener](globals.md#const-removeauthoredstatelistener)
@@ -182,6 +187,7 @@
 * [useGlobalInteractiveState](globals.md#const-useglobalinteractivestate)
 * [useInitMessage](globals.md#const-useinitmessage)
 * [useInteractiveState](globals.md#const-useinteractivestate)
+* [useReportItem](globals.md#const-usereportitem)
 * [writeAttachment](globals.md#const-writeattachment)
 
 ## Type aliases
@@ -304,7 +310,7 @@ ___
 
 ###  IReportItemAnswerItem
 
-Ƭ **IReportItemAnswerItem**: *[IReportItemAnswerItemAttachment](interfaces/ireportitemansweritemattachment.md) | [IReportItemAnswerItemAnswerText](interfaces/ireportitemansweritemanswertext.md) | [IReportItemAnswerItemHtml](interfaces/ireportitemansweritemhtml.md) | [IReportItemAnswerItemLinks](interfaces/ireportitemansweritemlinks.md)*
+Ƭ **IReportItemAnswerItem**: *[IReportItemAnswerItemAttachment](interfaces/ireportitemansweritemattachment.md) | [IReportItemAnswerItemAnswerText](interfaces/ireportitemansweritemanswertext.md) | [IReportItemAnswerItemHtml](interfaces/ireportitemansweritemhtml.md) | [IReportItemAnswerItemLinks](interfaces/ireportitemansweritemlinks.md) | [IReportItemAnswerItemScore](interfaces/ireportitemansweritemscore.md)*
 
 ___
 
@@ -409,6 +415,12 @@ ___
 ###  ReadAttachmentParams
 
 Ƭ **ReadAttachmentParams**: *Omit‹[IAttachmentUrlRequest](interfaces/iattachmenturlrequest.md), "requestId" | "operation" | "contentType" | "expiresIn"›*
+
+___
+
+###  ReportItemsType
+
+Ƭ **ReportItemsType**: *"fullAnswer" | "compactAnswer"*
 
 ___
 
@@ -777,6 +789,20 @@ Name | Type |
 
 ___
 
+### `Const` notifyReportItemClientReady
+
+▸ **notifyReportItemClientReady**(`metadata?`: [IReportItemHandlerMetadata](interfaces/ireportitemhandlermetadata.md)): *void*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`metadata?` | [IReportItemHandlerMetadata](interfaces/ireportitemhandlermetadata.md) |
+
+**Returns:** *void*
+
+___
+
 ### `Const` postDecoratedContentEvent
 
 ▸ **postDecoratedContentEvent**(`msg`: [IDecoratedContentEvent](interfaces/idecoratedcontentevent.md)): *void*
@@ -831,9 +857,9 @@ ___
 
 ### `Const` removeCustomMessageListener
 
-▸ **removeCustomMessageListener**(): *void*
+▸ **removeCustomMessageListener**(): *boolean*
 
-**Returns:** *void*
+**Returns:** *boolean*
 
 ___
 
@@ -1243,6 +1269,29 @@ ___
 * **interactiveState**: *null | InteractiveState*
 
 * **setInteractiveState**: *handleSetInteractiveState* = handleSetInteractiveState
+
+___
+
+### `Const` useReportItem
+
+▸ **useReportItem**‹**InteractiveState**, **AuthoredState**›(`__namedParameters`: object): *void*
+
+**Type parameters:**
+
+▪ **InteractiveState**
+
+▪ **AuthoredState**
+
+**Parameters:**
+
+▪ **__namedParameters**: *object*
+
+Name | Type |
+------ | ------ |
+`handler` | function |
+`metadata` | [IReportItemHandlerMetadata](interfaces/ireportitemhandlermetadata.md) |
+
+**Returns:** *void*
 
 ___
 

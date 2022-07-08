@@ -13,6 +13,7 @@
 ### Properties
 
 * [items](ireportitemanswer.md#items)
+* [itemsType](ireportitemanswer.md#itemstype)
 * [platformUserId](ireportitemanswer.md#platformuserid)
 * [requestId](ireportitemanswer.md#requestid)
 * [version](ireportitemanswer.md#version)
@@ -22,6 +23,15 @@
 ###  items
 
 • **items**: *[IReportItemAnswerItem](../globals.md#ireportitemansweritem)[]*
+
+___
+
+###  itemsType
+
+• **itemsType**: *[ReportItemsType](../globals.md#reportitemstype)*
+
+When not provided, host should assume that itemsType is equal to "fullAnswer" (to maintain backward compatibility
+with version 2.0.0).
 
 ___
 
@@ -41,4 +51,4 @@ ___
 
 ###  version
 
-• **version**: *"2.0.0"*
+• **version**: *"2.1.0"*

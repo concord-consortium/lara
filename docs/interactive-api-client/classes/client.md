@@ -2,6 +2,10 @@
 
 # Class: Client
 
+This class is intended to provide basic helpers (like `post()` or `add/removeListener`), maintain client-specific
+state, and generally be as minimal as possible. Most of the client-specific helpers and logic can be implemented
+in api.ts or hooks.ts (or both so the client app has choice).
+
 ## Hierarchy
 
 * **Client**
@@ -14,20 +18,15 @@
 
 ### Properties
 
+* [customMessagesHandled](client.md#custommessageshandled)
 * [managedState](client.md#managedstate)
 * [phone](client.md#phone)
 
 ### Methods
 
-* [addCustomMessageListener](client.md#addcustommessagelistener)
-* [addDecorateContentListener](client.md#adddecoratecontentlistener)
-* [addGetReportItemAnswerListener](client.md#addgetreportitemanswerlistener)
 * [addListener](client.md#addlistener)
 * [getNextRequestId](client.md#getnextrequestid)
 * [post](client.md#post)
-* [removeCustomMessageListener](client.md#removecustommessagelistener)
-* [removeDecorateContentListener](client.md#removedecoratecontentlistener)
-* [removeGetReportItemAnswerListener](client.md#removegetreportitemanswerlistener)
 * [removeListener](client.md#removelistener)
 * [setOnUnload](client.md#setonunload)
 * [setSupportedFeatures](client.md#setsupportedfeatures)
@@ -42,6 +41,12 @@
 
 ## Properties
 
+###  customMessagesHandled
+
+• **customMessagesHandled**: *[ICustomMessagesHandledMap](../globals.md#icustommessageshandledmap)*
+
+___
+
 ###  managedState
 
 • **managedState**: *ManagedState‹›* = new ManagedState()
@@ -53,49 +58,6 @@ ___
 • **phone**: *IFrameEndpoint* = iframePhone.getIFrameEndpoint()
 
 ## Methods
-
-###  addCustomMessageListener
-
-▸ **addCustomMessageListener**(`callback`: [ICustomMessageHandler](../globals.md#icustommessagehandler), `handles?`: [ICustomMessagesHandledMap](../globals.md#icustommessageshandledmap)): *void*
-
-**Parameters:**
-
-Name | Type |
------- | ------ |
-`callback` | [ICustomMessageHandler](../globals.md#icustommessagehandler) |
-`handles?` | [ICustomMessagesHandledMap](../globals.md#icustommessageshandledmap) |
-
-**Returns:** *void*
-
-___
-
-###  addDecorateContentListener
-
-▸ **addDecorateContentListener**(`callback`: [ITextDecorationHandler](../globals.md#itextdecorationhandler)): *void*
-
-**Parameters:**
-
-Name | Type |
------- | ------ |
-`callback` | [ITextDecorationHandler](../globals.md#itextdecorationhandler) |
-
-**Returns:** *void*
-
-___
-
-###  addGetReportItemAnswerListener
-
-▸ **addGetReportItemAnswerListener**(`callback`: [IGetReportItemAnswerHandler](../globals.md#igetreportitemanswerhandler)): *void*
-
-**Parameters:**
-
-Name | Type |
------- | ------ |
-`callback` | [IGetReportItemAnswerHandler](../globals.md#igetreportitemanswerhandler) |
-
-**Returns:** *void*
-
-___
 
 ###  addListener
 
@@ -133,30 +95,6 @@ Name | Type |
 `content?` | any |
 
 **Returns:** *void*
-
-___
-
-###  removeCustomMessageListener
-
-▸ **removeCustomMessageListener**(): *boolean*
-
-**Returns:** *boolean*
-
-___
-
-###  removeDecorateContentListener
-
-▸ **removeDecorateContentListener**(): *boolean*
-
-**Returns:** *boolean*
-
-___
-
-###  removeGetReportItemAnswerListener
-
-▸ **removeGetReportItemAnswerListener**(): *boolean*
-
-**Returns:** *boolean*
 
 ___
 
