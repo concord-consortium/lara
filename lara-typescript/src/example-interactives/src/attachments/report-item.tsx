@@ -33,7 +33,7 @@ export const ReportItemComponent: React.FC<Props> = (props) => {
           });
         });
 
-        sendReportItemAnswer({version, platformUserId, items});
+        sendReportItemAnswer({version, platformUserId, items, itemsType: "fullAnswer"});
       } else {
         // tslint:disable-next-line:no-console
         console.error(
