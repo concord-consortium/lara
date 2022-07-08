@@ -13,7 +13,7 @@
 ### Properties
 
 * [items](ireportitemanswer.md#items)
-* [itemsType](ireportitemanswer.md#itemstype)
+* [itemsType](ireportitemanswer.md#optional-itemstype)
 * [platformUserId](ireportitemanswer.md#platformuserid)
 * [requestId](ireportitemanswer.md#requestid)
 * [version](ireportitemanswer.md#version)
@@ -26,9 +26,9 @@
 
 ___
 
-###  itemsType
+### `Optional` itemsType
 
-• **itemsType**: *[ReportItemsType](../globals.md#reportitemstype)*
+• **itemsType**? : *[ReportItemsType](../globals.md#reportitemstype)*
 
 When not provided, host should assume that itemsType is equal to "fullAnswer" (to maintain backward compatibility
 with version 2.0.0).

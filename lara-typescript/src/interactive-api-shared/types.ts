@@ -488,11 +488,7 @@ export interface IGetReportItemAnswer<InteractiveState = {}, AuthoredState = {}>
   platformUserId: string;
   interactiveState: InteractiveState;
   authoredState: AuthoredState;
-  /**
-   * When not provided, host should assume that itemsType is equal to "fullAnswer" (to maintain backward compatibility
-   * with version 2.0.0).
-   */
-  itemsType?: ReportItemsType;
+  itemsType: ReportItemsType;
 }
 
 export interface IReportItemAnswerItemAttachment {
@@ -533,7 +529,7 @@ export interface IReportItemAnswer extends IBaseRequestResponse {
    * When not provided, host should assume that itemsType is equal to "fullAnswer" (to maintain backward compatibility
    * with version 2.0.0).
    */
-  itemsType: ReportItemsType;
+  itemsType?: ReportItemsType;
 }
 
 export type IGetReportItemAnswerHandler<InteractiveState = {}, AuthoredState = {}> =
