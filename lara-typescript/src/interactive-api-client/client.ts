@@ -172,14 +172,6 @@ export class Client {
     return this.removeListener("decorateContent");
   }
 
-  public addGetReportItemAnswerListener(callback: IGetReportItemAnswerHandler) {
-    this.addListener("getReportItemAnswer", callback);
-  }
-
-  public removeGetReportItemAnswerListener() {
-    return this.removeListener("getReportItemAnswer");
-  }
-
   public setSupportedFeatures = (request: ISupportedFeaturesRequest) => {
     let newRequest = request;
     if (this.customMessagesHandled) {
