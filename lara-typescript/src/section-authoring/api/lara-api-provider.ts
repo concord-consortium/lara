@@ -56,8 +56,6 @@ export const getLaraAuthoringAPI =
   const pageLevelPluginsUrl = `${prefix}/get_page_level_plugins_list.json`;
   const portalsURL = `${prefix}/get_portal_list.json`;
   const pluginsURL = `${prefix}/get_wrapping_plugins_list.json`;
-  const pageItemEmbeddableExportUrl = (pageItemId: string) =>
-    `${prefix}/export_page_item_embeddable/${pageItemId}.json`;
   const pageItemPluginsURL = (pageItemId: string) => `${prefix}/get_page_item_plugins/${pageItemId}.json`;
   const pageItemEmbeddableMetaDataURL = (pageItemId: string) => `${prefix}/get_embeddable_metadata/${pageItemId}.json`;
 
@@ -216,15 +214,6 @@ export const getLaraAuthoringAPI =
     return embeddables;
   };
 
-  const getPageItemEmbeddableExport = (pageItemId: ItemId) => {
-    return sendToLara({url: pageItemEmbeddableExportUrl(pageItemId), method: "GET"})
-    // tslint:disable-next-line
-    .then( (json: any) => {
-      const result = snakeToCamelCaseKeys(json);
-      return result;
-    });
-  };
-
   const getPageItemEmbeddableMetaData = (pageItemId: ItemId) => {
     return sendToLara({url: pageItemEmbeddableMetaDataURL(pageItemId), method: "GET"})
     // tslint:disable-next-line
@@ -300,7 +289,7 @@ export const getLaraAuthoringAPI =
   return {
     getPages, getPage, createPage, updatePage, deletePage, copyPage,
     createSection, updateSections, updateSection, copySection, getPageItemPlugins,
-    createPageItem, updatePageItem, deletePageItem, copyPageItem, getAvailablePlugins, getPageItemEmbeddableExport,
+    createPageItem, updatePageItem, deletePageItem, copyPageItem, getAvailablePlugins,
     getAllEmbeddables, getLibraryInteractives, getPortals, getPreviewOptions, getPageItemEmbeddableMetaData,
     pathToTinyMCE: "/assets/tinymce.js", pathToTinyMCECSS: "/assets/tinymce-content.css"
   };

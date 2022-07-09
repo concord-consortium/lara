@@ -247,7 +247,6 @@ LightweightStandalone::Application.routes.draw do
       match 'get_wrapping_plugins_list' => 'interactive_pages#get_wrapping_plugins_list', :as => 'get_wrapping_plugins_list', :via => 'get'
       match 'get_embeddable_metadata/:id' => 'page_items#get_embeddable_metadata', :as => 'get_embeddable_metadata', :via => 'get'
       match 'get_page_item_plugins/:id' => 'page_items#get_page_item_plugins', :as => 'get_page_item_plugins', :via => 'get'
-      match 'export_page_item_embeddable/:id' => 'page_items#export_page_item_embeddable', :as => 'export_page_item_embeddable', :via => 'get'
     end
   end
 

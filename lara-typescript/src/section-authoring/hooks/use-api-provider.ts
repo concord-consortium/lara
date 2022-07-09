@@ -32,16 +32,6 @@ const LAUNCH_URLS_KEY = "LaunchUrls";
 // <APIProviderContext.Provider value={someAPIProvider} />
 export const APIContext  = React.createContext<IAuthoringAPIProvider>(DEFAULT_API);
 
-export const useGetPageItemEmbeddableExport = (pageItemId: string | undefined) => {
-  const provider: IAuthoringAPIProvider = useContext(APIContext);
-  if (!pageItemId) {
-    return;
-  }
-  return useQuery<any, Error>
-    ([PAGE_ITEM_KEY, pageItemId],
-    () => provider.getPageItemEmbeddableExport(pageItemId));
-};
-
 export const useGetAvailablePlugins = () => {
   const provider: IAuthoringAPIProvider = useContext(APIContext);
   return useQuery

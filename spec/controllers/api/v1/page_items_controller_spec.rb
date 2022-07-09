@@ -14,14 +14,6 @@ describe Api::V1::PageItemsController do
                                                   ) }
   let (:interactive1) { FactoryGirl.create(:mw_interactive) }
 
-  describe "#export_page_item_embeddable" do
-    it "returns JSON for a page item's embeddable" do
-      xhr :get, "export_page_item_embeddable", {id: 1}
-      expect(response.status).to eq(200)
-      expect(response.content_type).to eq("application/json")
-    end
-  end
-
   describe "#get_embeddable_metadata" do
     it "returns JSON for a page item's embeddable" do
       puts interactive1.inspect

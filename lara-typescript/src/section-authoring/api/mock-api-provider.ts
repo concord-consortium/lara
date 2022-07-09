@@ -582,57 +582,6 @@ const getPageItemPlugins = () => {
   return Promise.resolve({pageItemPlugins});
 };
 
-const getPageItemEmbeddableExport = () => {
-  const pageItemExport: Record<string, any> = {
-    name: "",
-    url_fragment: null,
-    authored_state: "{\"version\": 1,\"questionType\": \"open_response\", \"prompt\": \"What do you know?\"}",
-    is_hidden: false,
-    is_half_width: false,
-    show_in_featured_question_report: true,
-    inherit_aspect_ratio_method: true,
-    custom_aspect_ratio_method: "DEFAULT",
-    inherit_native_width: true,
-    custom_native_width: 576,
-    inherit_native_height: true,
-    custom_native_height: 435,
-    inherit_click_to_play: true,
-    custom_click_to_play: false,
-    inherit_full_window: true,
-    custom_full_window: false,
-    inherit_click_to_play_prompt: true,
-    custom_click_to_play_prompt: null,
-    inherit_image_url: true,
-    custom_image_url: null,
-    library_interactive: {
-      data: {
-        aspect_ratio_method: "DEFAULT",
-        authoring_guidance: "",
-        base_url: "https://models-resources.concord.org/question-interactives/version/v0.3.0/open-response/",
-        click_to_play: false,
-        click_to_play_prompt: null,
-        description: "",
-        enable_learner_state: true,
-        full_window: false,
-        has_report_url: false,
-        image_url: null,
-        name: "Open Response",
-        native_height: 435,
-        native_width: 576,
-        no_snapshots: false,
-        show_delete_data_button: false,
-        thumbnail_url: "",
-        customizable: true,
-        authorable: true
-      }
-    },
-    type: "ManagedInteractive",
-    ref_id: "6471-ManagedInteractive",
-    linked_interactives: []
-  };
-  return Promise.resolve(pageItemExport);
-};
-
 const getPageItemEmbeddableMetaData = () => {
   const pageItemEmbeddableData: IEmbeddableMetaData = {
     embeddableId: "123",
@@ -681,6 +630,6 @@ export const API: IAuthoringAPIProvider = {
   createSection, updateSections, updateSection, copySection,
   createPageItem, updatePageItem, deletePageItem, copyPageItem,
   getAllEmbeddables, getLibraryInteractives, getAvailablePlugins, getPortals,
-  getPreviewOptions, getPageItemPlugins, getPageItemEmbeddableMetaData, getPageItemEmbeddableExport,
+  getPreviewOptions, getPageItemPlugins, getPageItemEmbeddableMetaData,
   pathToTinyMCE: "https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.10.0/tinymce.min.js", pathToTinyMCECSS: undefined
 };
