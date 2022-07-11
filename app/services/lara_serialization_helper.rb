@@ -8,6 +8,7 @@ class LaraSerializationHelper
     results = item.export
     results[:type] = item.class.name
     results[:ref_id] = key(item)
+    results[:legacy_ref_id] = item.legacy_ref_id if item.respond_to?(:legacy_ref_id)
     if item.respond_to?(:interactive) && item.interactive
       results[:interactive_ref_id] = key(item.interactive)
     end
