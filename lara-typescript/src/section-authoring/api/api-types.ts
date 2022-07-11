@@ -350,7 +350,6 @@ export interface IAuthoringAPIProvider {
   getAllEmbeddables: () => Promise<{allEmbeddables: ISectionItemType[]}>;
   getPreviewOptions: APIGetPreviewOptionsF;
 
-  getPageItemEmbeddableExport: (pageItemId: ItemId) => Promise<Record<string, any>>;
   getPageItemEmbeddableMetaData: (pageItemId: ItemId) => Promise<IEmbeddableMetaData>;
   getPageItemPlugins: (pageItemId: ItemId) => Promise<{pageItemPlugins: IPlugin[]}>;
   getAvailablePlugins: () => Promise<{plugins: IPlugin[]}>;

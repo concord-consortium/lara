@@ -1,10 +1,11 @@
 import * as React from "react";
-import { initPlugin, setNextPluginLabel } from "../../plugins/plugins";
+import { initPlugin } from "../../plugins/plugins";
 import { AuthoringApiUrls } from "../../page-item-authoring/common/types";
 import { renderInteractiveAuthoringPreview } from "../../page-item-authoring";
 import { IEmbeddableContextOptions, IPluginAuthoringContextOptions } from "../../plugins/plugin-context";
 import { ISectionItem } from "../api/api-types";
-import { useGetPageItemEmbeddableExport, usePageAPI } from "../hooks/use-api-provider";
+import { usePageAPI } from "../hooks/use-api-provider";
+import { useScript } from "../hooks/use-script";
 
 export interface PluginAuthoringProps {
   pageItem: ISectionItem;
@@ -41,12 +42,10 @@ export const PluginAuthoring: React.FC<PluginAuthoringProps> = (
     interactive_item_id: wrappedItem?.data.interactiveItemId,
     linked_interactives: wrappedItem?.data.linkedInteractives
   } : undefined;
-
-  const wrappedItemJson = useGetPageItemEmbeddableExport(wrappedItem?.id);
-  const wrappedEmbeddable: IEmbeddableContextOptions | null = wrappedItemJson && wrappedDiv.current !== null
+  const wrappedEmbeddable: IEmbeddableContextOptions | null = wrappedItem?.data && wrappedDiv.current !== null
     ?  {
         container: wrappedDiv.current,
-        laraJson: wrappedItemJson ? wrappedItemJson.data : undefined,
+        laraJson: wrappedItem ? wrappedItem?.data : undefined,
         interactiveStateUrl: null,
         interactiveAvailable: true
       }
@@ -55,13 +54,15 @@ export const PluginAuthoring: React.FC<PluginAuthoringProps> = (
   const firebaseJwtUrl = "TODO:firebaseJwtUrl"; // NP 2022-05-26 TODO: from whence?
   const portalJwtUrl = "TODO:portalJwtUrl";     // NP 2022-05-26 TODO: from whence?
   const authorDataSaveUrl = authoringApiUrls.update_plugin_author_data || "";
+
+  const scriptStatus = useScript(label, url);
+  
   const effectDeps = [
     wrappedDiv.current, containerDiv.current, firebaseJwtUrl,
-    portalJwtUrl, authorDataSaveUrl, label, url
+    portalJwtUrl, authorDataSaveUrl, label, url, scriptStatus
   ];
 
   const renderPluginAuthoring = () => {
-    setNextPluginLabel(label);
     const pluginContext: IPluginAuthoringContextOptions = {
       type: "authoring",
       name,
@@ -93,25 +94,13 @@ export const PluginAuthoring: React.FC<PluginAuthoringProps> = (
     }
   };
 
-  const loadPluginScript = () => {
-    const script = document.createElement("script");
-    script.onload = renderPluginAuthoring;
-    script.onerror = (e) => alert(`Unable to load plugin script: ${url} ${e} ${script.src}`);
-    script.src = url;
-    document.head.append(script);
-  };
-
   React.useEffect(() => {
-    if (wrappedDiv.current && wrappedEmbeddable) {
+    if (wrappedItem && !wrappedDiv.current) {
+      return;
+    }    
+    if (containerDiv.current && scriptStatus === "ready") {
       renderPluginAuthoring();
     }
-  }, [wrappedDiv.current, wrappedEmbeddable]);
-
-  React.useEffect(() => {
-    if (!(url && containerDiv.current) || (wrappedItem && !wrappedDiv.current)) {
-      return;
-    }
-    loadPluginScript();
   }, effectDeps);
 
   return(
