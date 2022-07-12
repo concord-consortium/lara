@@ -510,7 +510,6 @@ ActiveRecord::Schema.define(:version => 20220711222748) do
     t.datetime "created_at",                                          :null => false
     t.datetime "updated_at",                                          :null => false
     t.string   "linked_interactive_type"
-    t.string   "legacy_ref_id"
   end
 
   create_table "mc_answer_choices", :id => false, :force => true do |t|
