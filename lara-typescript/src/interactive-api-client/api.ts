@@ -35,7 +35,9 @@ import {
   GetAttachmentUrlParams,
   IGetReportItemAnswerHandler,
   IReportItemAnswer,
-  OnUnloadFunction
+  OnUnloadFunction,
+  IReportItemHandlerMetadata,
+  ITextDecorationInfo
 } from "./types";
 import { getClient } from "./client";
 import { v4 as uuidv4 } from "uuid";
@@ -166,28 +168,57 @@ export const setGlobalInteractiveState = <GlobalInteractiveState>(newGlobalState
 };
 
 export const addCustomMessageListener = (callback: ICustomMessageHandler, handles?: ICustomMessagesHandledMap) => {
-  getClient().addCustomMessageListener(callback, handles);
+  const client = getClient();
+  if (handles) {
+    client.customMessagesHandled = handles;
+  }
+  client.addListener("customMessage", callback);
 };
 
 export const removeCustomMessageListener = () => {
-  getClient().removeCustomMessageListener();
+  return getClient().removeListener("customMessage");
 };
 
 export const addDecorateContentListener = (callback: ITextDecorationHandler) => {
-  getClient().addDecorateContentListener(callback);
+  getClient().addListener("decorateContent", (msg: ITextDecorationInfo) => {
+    callback({
+      words: msg.words,
+      replace: msg.replace,
+      wordClass: msg.wordClass,
+      eventListeners: msg.listenerTypes.map((listener) => {
+        return {
+          type: listener.type,
+          listener: (evt: Event) => {
+            const wordElement = evt.srcElement as HTMLElement;
+            if (!wordElement) {
+              return;
+            }
+            const clickedWord = (wordElement.textContent || "").toLowerCase();
+            postDecoratedContentEvent({type: listener.type,
+                                       text: clickedWord,
+                                       bounds: wordElement.getBoundingClientRect()});
+          }
+        };
+      })
+    });
+  });
 };
 
 export const removeDecorateContentListener = () => {
-  getClient().removeDecorateContentListener();
+  getClient().removeListener("decorateContent");
 };
 
 // tslint:disable-next-line:max-line-length
 export const addGetReportItemAnswerListener = <InteractiveState, AuthoredState>(callback: IGetReportItemAnswerHandler<InteractiveState, AuthoredState>) => {
-  getClient().addGetReportItemAnswerListener(callback);
+  getClient().addListener("getReportItemAnswer", callback);
 };
 
 export const removeGetReportItemAnswerListener = () => {
-  getClient().removeGetReportItemAnswerListener();
+  getClient().removeListener("getReportItemAnswer");
+};
+
+export const notifyReportItemClientReady = (metadata?: IReportItemHandlerMetadata) => {
+  getClient().post("reportItemClientReady", metadata);
 };
 
 export const setSupportedFeatures = (features: ISupportedFeatures) => {

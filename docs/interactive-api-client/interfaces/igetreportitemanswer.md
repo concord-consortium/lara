@@ -20,6 +20,7 @@
 
 * [authoredState](igetreportitemanswer.md#authoredstate)
 * [interactiveState](igetreportitemanswer.md#interactivestate)
+* [itemsType](igetreportitemanswer.md#itemstype)
 * [platformUserId](igetreportitemanswer.md#platformuserid)
 * [requestId](igetreportitemanswer.md#requestid)
 * [version](igetreportitemanswer.md#version)
@@ -35,6 +36,12 @@ ___
 ###  interactiveState
 
 • **interactiveState**: *InteractiveState*
+
+___
+
+###  itemsType
+
+• **itemsType**: *[ReportItemsType](../globals.md#reportitemstype)*
 
 ___
 
@@ -54,4 +61,4 @@ ___
 
 ###  version
 
-• **version**: *"2.0.0"*
+• **version**: *"2.1.0"*
