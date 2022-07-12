@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20220627201532) do
+ActiveRecord::Schema.define(:version => 20220712165650) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "kind"
@@ -408,6 +408,7 @@ ActiveRecord::Schema.define(:version => 20220627201532) do
     t.boolean  "customizable",            :default => false
     t.boolean  "authorable",              :default => false
     t.text     "report_item_url"
+    t.boolean  "official",                :default => false
   end
 
   add_index "library_interactives", ["export_hash"], :name => "library_interactives_export_hash_idx"
