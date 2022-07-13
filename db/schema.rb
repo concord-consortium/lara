@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20220711213558) do
+ActiveRecord::Schema.define(:version => 20220711222748) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "kind"
@@ -424,8 +424,8 @@ ActiveRecord::Schema.define(:version => 20220711213558) do
     t.string   "name"
     t.integer  "user_id"
     t.string   "publication_status",                     :default => "private"
-    t.datetime "created_at",                                                    :null => false
-    t.datetime "updated_at",                                                    :null => false
+    t.datetime "created_at",                                                         :null => false
+    t.datetime "updated_at",                                                         :null => false
     t.integer  "offerings_count"
     t.text     "related"
     t.text     "description"
@@ -451,6 +451,7 @@ ActiveRecord::Schema.define(:version => 20220711213558) do
     t.string   "fixed_width_layout",                     :default => "1100px"
     t.boolean  "defunct",                                :default => false
     t.integer  "glossary_id"
+    t.string   "migration_status",                       :default => "not_migrated"
   end
 
   add_index "lightweight_activities", ["changed_by_id"], :name => "index_lightweight_activities_on_changed_by_id"
@@ -714,8 +715,8 @@ ActiveRecord::Schema.define(:version => 20220711213558) do
   create_table "sequences", :force => true do |t|
     t.string   "title"
     t.text     "description"
-    t.datetime "created_at",                                                    :null => false
-    t.datetime "updated_at",                                                    :null => false
+    t.datetime "created_at",                                                         :null => false
+    t.datetime "updated_at",                                                         :null => false
     t.integer  "user_id"
     t.integer  "theme_id"
     t.integer  "project_id"
@@ -732,6 +733,7 @@ ActiveRecord::Schema.define(:version => 20220711213558) do
     t.string   "background_image"
     t.string   "fixed_width_layout",                     :default => "1100px"
     t.boolean  "defunct",                                :default => false
+    t.string   "migration_status",                       :default => "not_migrated"
   end
 
   add_index "sequences", ["project_id"], :name => "index_sequences_on_project_id"
