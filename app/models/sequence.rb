@@ -242,7 +242,7 @@ class Sequence < ActiveRecord::Base
     return import_sequence
   end
 
-  def self.search(query)
+  def self.search(query, _user)  # user not used
     where("title LIKE ?", "%#{query}%")
   end
 

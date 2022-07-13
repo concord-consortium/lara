@@ -411,7 +411,7 @@ class LightweightActivity < ActiveRecord::Base
     return { activity_id: self.id, fail_count: fail_count, success_count: success_count}
   end
 
-  def self.search(query)
+  def self.search(query, _user)  # user not used
     where("name LIKE ?", "%#{query}%")
   end
 
