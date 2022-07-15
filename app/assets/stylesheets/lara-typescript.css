@@ -732,8 +732,8 @@
     overflow: hidden;
     padding: 5px 20px 20px 20px; }
     .textBlock.callout .textBlockContent img {
-      height: auto;
-      max-width: 100%; }
+      height: auto !important;
+      max-width: 100% !important; }
     .textBlock.callout .textBlockContent b, .textBlock.callout .textBlockContent strong {
       font-family: var(--font-family-bold) !important; }
   .textBlock p {
