@@ -161,11 +161,6 @@ def convert_video_player(item, library_interactive)
 end
 
 def new_properties(item, library_interactive)
-  # Is this linked_interactive stuff needed anymore?
-  has_snapshot_target = item.embeddable_type == "Embeddable::ImageQuestion" && item.embeddable.interactive_id ? true : false
-  linked_interactive_id = has_snapshot_target ? item.embeddable.interactive_id : nil
-  linked_interactive_type = has_snapshot_target ? item.embeddable.interactive_type : nil
-
   new_properties = {
     library_interactive_id: library_interactive.id,
     url_fragment: nil,
@@ -184,12 +179,6 @@ def new_properties(item, library_interactive)
     inherit_image_url: true,
     custom_image_url: nil
   }
-
-  # Is this linked_interactive stuff needed anymore?
-  if has_snapshot_target
-    new_properties[:linked_interactive_id] = linked_interactive_id
-    new_properties[:linked_interactive_type] = linked_interactive_type
-  end
 
   return new_properties
 end
@@ -284,6 +273,7 @@ def delete_new_orphaned_embeddables()
       mi.destroy
     end
   end
+  # TODO: Delete any LinkedPageItems associated with the deleted ManagedInteractive embeddables.
 end
 
 def delete_old_embeddables()
