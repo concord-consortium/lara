@@ -85,7 +85,6 @@ button, .btn-primary, span.edit_trigger, #modal .embeddable-save, #modal .close 
       background: var(--ltr-teal);
       color: var(--teal);
     }
-  
     &:active {
       background: var(--teal);
       color: white;
@@ -608,8 +607,8 @@ ul.quiet_list {
     padding: 10px 5px;
     margin: 0;
     border-bottom: dashed 1px #ddd;
-
-
+    overflow: auto;
+    
     .action_menu {
       display: flex;
       flex-direction: row;
@@ -633,6 +632,10 @@ ul.quiet_list {
       clear: both;
       display: block;
       margin-top: 23px;
+      img {
+        max-height: 150px;
+        width: auto;
+      }
     }
     .author, .updated, .published {
       font-size: 11px;
