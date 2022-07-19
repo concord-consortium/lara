@@ -29,67 +29,63 @@ describe "interactive_pages/show" do
     assign(:all_pages, all_pages)
   end
 
-  # The commented out tests are broken because of changes related to the new sections schema.
-  # It may be that these tests are no longer needed. In the very least, they will need to be 
-  # adjusted in light of the new sections changes.
-  #
-  # it "renders the page title" do
-  #   render
-  #   expect(rendered).to match page.name
-  # end
+  it "renders the page title" do
+    render
+    expect(rendered).to match page.name
+  end
 
-  # describe "when the activity has a completed related content section" do
-  #   let(:activity) { stub_model(LightweightActivity, :id => 1, :related => "related content")}
-  #   it "should render the related section" do
-  #     render
-  #     expect(rendered).to match related_section_rgx
-  #   end
-  # end
+  describe "when the activity has a completed related content section" do
+    let(:activity) { stub_model(LightweightActivity, :id => 1, :related => "related content")}
+    it "should render the related section" do
+      render
+      expect(rendered).to match related_section_rgx
+    end
+  end
 
-  # describe "when the activity has an empty related content section" do
-  #   let(:activity) { stub_model(LightweightActivity, :id => 1, :related => "")}
-  #   it "shouldn't render the related section" do
-  #     render
-  #     expect(rendered).not_to match related_section_rgx
-  #   end
-  # end
+  describe "when the activity has an empty related content section" do
+    let(:activity) { stub_model(LightweightActivity, :id => 1, :related => "")}
+    it "shouldn't render the related section" do
+      render
+      expect(rendered).not_to match related_section_rgx
+    end
+  end
 
-  # describe "when the activity has a white-space only related content section" do
-  #   let(:activity) { stub_model(LightweightActivity, :id => 1, :related => " \n")}
-  #   it "shouldn't render the related section" do
-  #     render
-  #     expect(rendered).not_to match related_section_rgx
-  #   end
-  # end
+  describe "when the activity has a white-space only related content section" do
+    let(:activity) { stub_model(LightweightActivity, :id => 1, :related => " \n")}
+    it "shouldn't render the related section" do
+      render
+      expect(rendered).not_to match related_section_rgx
+    end
+  end
 
-  # describe "when the activity has only <br/> entities only related content section" do
-  #   let(:activity) { stub_model(LightweightActivity, :id => 1, :related => "<br/><p>\n")}
-  #   it "shouldn't render the related section" do
-  #     render
-  #     expect(rendered).not_to match related_section_rgx
-  #   end
-  # end
+  describe "when the activity has only <br/> entities only related content section" do
+    let(:activity) { stub_model(LightweightActivity, :id => 1, :related => "<br/><p>\n")}
+    it "shouldn't render the related section" do
+      render
+      expect(rendered).not_to match related_section_rgx
+    end
+  end
 
-  # describe "when the activity has no related content" do
-  #   let(:activity) { stub_model(LightweightActivity, :id => 1, :related => nil)}
-  #   it "shouldn't render the related section" do
-  #     render
-  #     expect(rendered).not_to match related_section_rgx
-  #   end
-  # end
+  describe "when the activity has no related content" do
+    let(:activity) { stub_model(LightweightActivity, :id => 1, :related => nil)}
+    it "shouldn't render the related section" do
+      render
+      expect(rendered).not_to match related_section_rgx
+    end
+  end
 
-  # describe 'when the embeddable display mode is carousel and there are embeddables' do
-  #   it 'should have a div with class jcarousel' do
-  #     render
-  #     expect(rendered).to have_css('div.jcarousel')
-  #   end
+  describe 'when the embeddable display mode is carousel and there are embeddables' do
+    it 'should have a div with class jcarousel' do
+      render
+      expect(rendered).to have_css('div.jcarousel')
+    end
 
-  #   it 'should have next and previous links' do
-  #     render
-  #     expect(rendered).to have_css('a.jcarousel-prev')
-  #     expect(rendered).to have_css('a.jcarousel-next')
-  #   end
-  # end
+    it 'should have next and previous links' do
+      render
+      expect(rendered).to have_css('a.jcarousel-prev')
+      expect(rendered).to have_css('a.jcarousel-next')
+    end
+  end
 
   describe 'the completion page' do
     before(:each) do
