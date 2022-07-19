@@ -118,8 +118,8 @@ class InteractivePage < ActiveRecord::Base
     page_items.select{ |pi| Embeddable::is_interactive?(pi.embeddable) }
   end
 
-  def section_embeddables(section_title)
-    section = sections.find { |s| s.title == section_title }
+  def section_embeddables(section_id)
+    section = sections.find { |s| s.id == section_id }
     if section
       section.page_items.map { |i| i.embeddable }
     else
@@ -127,15 +127,10 @@ class InteractivePage < ActiveRecord::Base
     end
   end
 
-  def main_embeddables
-    # Embeddables that do not have section specified (nil section).
-    section_embeddables(Section::DEFAULT_SECTION_TITLE)
-  end
-
   def visible_embeddables
     results = []
     sections.each do |s|
-      results += section_visible_embeddables(s.title)
+      results += section_visible_embeddables(s.id)
     end
     results
   end
