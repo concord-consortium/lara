@@ -118,8 +118,14 @@ class InteractivePage < ActiveRecord::Base
     page_items.select{ |pi| Embeddable::is_interactive?(pi.embeddable) }
   end
 
-  def section_embeddables(section_id)
-    section = sections.find { |s| s.id == section_id }
+  def section_embeddables(section)
+    # For now, we continue to support passing a section name as a string to 
+    # this method, but this legacy feature will be removed in the future and 
+    # passing the section itself will become the only option.
+    if !section.instance_of? Section
+      section = sections.find { |s| s.id == section_id }
+    end
+
     if section
       section.page_items.map { |i| i.embeddable }
     else
@@ -130,7 +136,7 @@ class InteractivePage < ActiveRecord::Base
   def visible_embeddables
     results = []
     sections.each do |s|
-      results += section_visible_embeddables(s.id)
+      results += section_visible_embeddables(s)
     end
     results
   end
@@ -148,18 +154,30 @@ class InteractivePage < ActiveRecord::Base
     section_visible_embeddables(Section::DEFAULT_SECTION_TITLE)
   end
 
+  # This function will no longer work. There is no longer a header block 
+  # section, and passing a section title to section_embeddables is no 
+  # longer supported.
   def header_block_embeddables
     section_embeddables(HEADER_BLOCK)
   end
 
+  # This function will no longer work. There is no longer a header block 
+  # section, and passing a section title to section_embeddables is no 
+  # longer supported.
   def header_block_visible_embeddables
     section_visible_embeddables(HEADER_BLOCK)
   end
 
+  # This function will no longer work. There is no longer an interactive box 
+  # section, and passing a section title to section_embeddables is no 
+  # longer supported.
   def interactive_box_embeddables
     section_embeddables(INTERACTIVE_BOX)
   end
 
+  # This function will no longer work. There is no longer an interactive box 
+  # section, and passing a section title to section_embeddables is no 
+  # longer supported.
   def interactive_box_visible_embeddables
     section_visible_embeddables(INTERACTIVE_BOX)
   end
