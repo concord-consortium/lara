@@ -19,12 +19,7 @@ not_convertable_question_types = []
 
 def count_embeddables()
   # Get a count of all built-in embeddables that need to be converted.
-  embeddables_count = 0
-  PageItem.all.each do |item|
-    if @convertable_embeddable_classes.include? item.embeddable_type
-      embeddables_count += 1
-    end
-  end
+  embeddables_count = PageItem.where(:embeddable_type => @convertable_embeddable_classes).length
   puts "There are #{embeddables_count} built-in embeddables to convert."
 end
 
@@ -166,9 +161,9 @@ def new_properties(item, library_interactive)
     url_fragment: nil,
     inherit_aspect_ratio_method:	true,
     custom_aspect_ratio_method: nil,
-    inherit_native_width: true,
+    inherit_native_width: library_interactive.native_width ? false : true,
     custom_native_width: library_interactive.native_width,
-    inherit_native_height: true,
+    inherit_native_height: library_interactive.native_height ? false : true,
     custom_native_height: library_interactive.native_height,
     inherit_click_to_play: true,
     custom_click_to_play: false,
@@ -267,12 +262,15 @@ end
 def delete_new_orphaned_embeddables()
   # Delete any ManagedInteractive embeddables that have a legacy_ref_id value
   # but are not associated with a PageItem.
+  deleted_embeddables = 0
   ManagedInteractive.where("legacy_ref_id IS NOT NULL AND legacy_ref_id != ?", "").each do |mi|
     if PageItem.where(:embeddable_id => mi.id, :embeddable_type => "ManagedInteractive").count == 0
       puts "Deleting orphaned ManagedInteractive: #{mi.id}"
       mi.destroy
+      deleted_embeddables += 1
     end
   end
+  puts "Deleted #{deleted_embeddables} orphaned ManagedInteractives."
   # TODO: Delete any LinkedPageItems associated with the deleted ManagedInteractive embeddables.
 end
 
