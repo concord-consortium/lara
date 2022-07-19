@@ -466,11 +466,14 @@ describe InteractivePage do
         expect(page.additional_sections).to_not be_nil
         expect(page.additional_sections["arg_block"]).to be_truthy
       end
-      it 'has at least one embeddable arg block' do
-        embeddable = page.embeddables.first
-        expect(page.section_embeddables("arg_block")).to_not be_nil
-        expect(page.section_embeddables("arg_block")).to include(embeddable)
-      end
+      # This check will not work. There is no longer an arg_block section, and passing a 
+      # section title to section_embeddables is no longer supported. It may be that this
+      # check can be removed, but we will revisit that question later.
+      # it 'has at least one embeddable arg block' do
+      #   embeddable = page.embeddables.first
+      #   expect(page.section_embeddables("arg_block")).to_not be_nil
+      #   expect(page.section_embeddables("arg_block")).to include(embeddable)
+      # end
     end
 
   end
