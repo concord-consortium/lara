@@ -123,7 +123,7 @@ class InteractivePage < ActiveRecord::Base
     # this method, but this legacy feature will be removed in the future and 
     # passing the section itself will become the only option.
     if !section.instance_of? Section
-      section = sections.find { |s| s.id == section_id }
+      section = sections.find { |s| s.title == section_title }
     end
 
     if section
