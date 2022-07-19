@@ -123,19 +123,31 @@ class InteractivePage < ActiveRecord::Base
     # this method, but this legacy feature will be removed in the future and 
     # passing the section itself will become the only option.
     if !section.instance_of? Section
-      section = sections.find { |s| s.title == section_title }
+      section = sections.find { |s| s.title == section }
     end
 
+    section_embeddables = []
     if section
-      section.page_items.map { |i| i.embeddable }
-    else
-      []
+      # If a section's primary column is on the right, we need to adjust the 
+      # embeddables' order so they're output in the same order they appear on 
+      # the activity page.
+      primary_right_layouts = ["40-60", "30-70", "responsive-2-columns"]
+      if primary_right_layouts.include? section.layout
+        secondary_column_items = section.page_items.where(:column => "secondary").order(:position)
+        primary_column_items = section.page_items.where(:column => "primary").order(:position)
+        page_items = secondary_column_items + primary_column_items
+        section_embeddables = page_items.map { |i| i.embeddable }
+      else
+        section_embeddables = section.page_items.map { |i| i.embeddable }
+      end
     end
+    section_embeddables
   end
 
   def visible_embeddables
     results = []
     sections.each do |s|
+      puts "LKLKLKLK 8 #{s.inspect}"
       results += section_visible_embeddables(s)
     end
     results
