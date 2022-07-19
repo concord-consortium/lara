@@ -40,7 +40,7 @@
     overflow: auto;
     padding: 10px 10px 30px;
     position: relative;
-    width: 400px;
+    width: 500px;
 
     &.noPreview {
       max-width: 100%;
@@ -54,7 +54,7 @@
       background: #fff;
       bottom: 20px;
       left: 1px;
-      max-width: 405px;
+      max-width: 455px;
       padding: 5px;
       position: fixed;
       width: calc(100% - 11px);
@@ -70,7 +70,7 @@
     margin-top: 20px;
     margin-bottom: 10px;
     padding: 0;
-  
+
     label {
       display: block;
       margin-bottom: 5px;
@@ -110,7 +110,7 @@
       font-weight: bold;
       margin: 10px 0 5px 0;
     }
-  
+
     .customizable-option {
 
       .customizable-option-setting {
@@ -155,10 +155,10 @@
     position: relative;
     width: 20px;
     -webkit-appearance: none;
-  
+
     &:checked {
       background: var(--teal);
-  
+
       &:after {
         border: solid white;
         border-width: 0 3px 3px 0;
@@ -178,7 +178,7 @@
     &:hover {
       &:after {
         color: var(--lt-teal);
-      }    
+      }
     }
     &:active {
       &:after {
