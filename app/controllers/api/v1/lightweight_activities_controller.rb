@@ -13,7 +13,7 @@ class Api::V1::LightweightActivitiesController < API::APIController
     render json: lightweight_activity_json
   end
 
-  # GET /api/v1/activities/1/reeport_structure.json
+  # GET /api/v1/activities/1/report_structure.json
   def report_structure
     activity = LightweightActivity.find(params[:id])
     self_url = "#{request.protocol}#{request.host_with_port}"
