@@ -192,6 +192,9 @@ def create_new_embeddables()
         authored_state = nil
         if item.embeddable
           legacy_ref_id = (LaraSerializationHelper.new).key(item.embeddable)
+          if ManagedInteractive.where(:legacy_ref_id => legacy_ref_id).count > 0
+            return
+          end
 
           case item.embeddable_type
           when "Embeddable::Answer", "Embeddable::AnswerFinder", "Embeddable::FeedbackFunctionality", "Embeddable::FeedbackItem", "Embeddable::LabbookAnswer", "Embeddable::Labbook"
