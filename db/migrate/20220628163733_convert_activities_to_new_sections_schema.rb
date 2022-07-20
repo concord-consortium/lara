@@ -39,9 +39,9 @@ class ConvertActivitiesToNewSectionsSchema < ActiveRecord::Migration
         "l-full-width" => "full-width",
         "l-responsive" => "responsive-2-columns",
         "l-6040" => "40-60",
-        "l-4060" => "60-40",
+        "r-4060" => "60-40",
         "l-7030" => "30-70",
-        "l-3070" => "70-30",
+        "r-3070" => "70-30",
       }
       section_count = 0
       header_block_items = []
