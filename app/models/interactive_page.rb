@@ -147,7 +147,6 @@ class InteractivePage < ActiveRecord::Base
   def visible_embeddables
     results = []
     sections.each do |s|
-      puts "LKLKLKLK 8 #{s.inspect}"
       results += section_visible_embeddables(s)
     end
     results
