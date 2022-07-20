@@ -42,7 +42,7 @@ describe Api::V1::GlossariesController do
       }
     })
   }
-  let(:glossary) { FactoryGirl.create(:glossary, name: "Glossary", user: author, json: stringifed_json) }
+  let(:glossary) { FactoryGirl.create(:glossary, name: "Glossary", legacy_glossary_resource_id: "TEST-LEGACY-ID", user: author, json: stringifed_json) }
 
   describe "#show" do
     it "recognizes and generates #show" do
@@ -62,6 +62,7 @@ describe Api::V1::GlossariesController do
       expect(json_response).to eq({
         id: glossary.id,
         name: glossary.name,
+        legacy_glossary_resource_id: "TEST-LEGACY-ID",
         user_id: glossary.user_id,
         can_edit: false,
         json: JSON.parse(stringifed_json)

@@ -6,7 +6,7 @@ RSpec.describe Glossary do
   let(:admin)     { FactoryGirl.create(:admin) }
 
   let(:glossary)      {
-    glossary = FactoryGirl.create(:glossary, name: "Glossary 1", user: author)
+    glossary = FactoryGirl.create(:glossary, name: "Glossary 1", user: author, legacy_glossary_resource_id: "TEST-LEGACY-ID")
     glossary.json = JSON.generate({
       askForUserDefinition: true,
       autoShowMediaInPopup: true,
@@ -54,6 +54,7 @@ RSpec.describe Glossary do
       expect(glossary.export(author)).to eq({
         id: glossary.id,
         name: glossary.name,
+        legacy_glossary_resource_id: "TEST-LEGACY-ID",
         user_id: glossary.user_id,
         can_edit: true,
         json: {
@@ -102,6 +103,10 @@ RSpec.describe Glossary do
 
     it "as not the author or admin with can_edit as false" do
       expect(glossary.export(author2)[:can_edit]).to eq(false)
+    end
+
+    it "with a nil legacy glossary resource id" do
+      expect(glossary2.export(author2)[:legacy_glossary_resource_id]).to eq(nil)
     end
   end
 
@@ -231,6 +236,7 @@ RSpec.describe Glossary do
     expect(glossary.to_hash).to eq({
       id: glossary.id,
       name: glossary.name,
+      legacy_glossary_resource_id: "TEST-LEGACY-ID",
       user_id: glossary.user_id,
       json: glossary.json
     })
@@ -240,6 +246,7 @@ RSpec.describe Glossary do
     expect(glossary.to_export_hash).to eq({
       id: glossary.id,
       name: glossary.name,
+      legacy_glossary_resource_id: "TEST-LEGACY-ID",
       user_id: glossary.user_id,
       json: glossary.json,
       type: "Glossary"
@@ -250,6 +257,7 @@ RSpec.describe Glossary do
     expect(glossary.duplicate(author2).to_hash).to eq({
       id: nil,
       name: "Copy of #{glossary.name}",
+      legacy_glossary_resource_id: nil,
       user_id: author2.id,
       json: glossary.json
     })
@@ -259,12 +267,14 @@ RSpec.describe Glossary do
     imported_glossary = Glossary.import(glossary.to_export_hash, author2)
     expect(imported_glossary.id).not_to eq(glossary.id)
     expect(imported_glossary.user).to eq(author2)
+    expect(imported_glossary.legacy_glossary_resource_id).to eq("TEST-LEGACY-ID")
   end
 
   it "should support #self.extract_from_hash" do
     expect(Glossary.extract_from_hash(glossary.to_export_hash)).to eq({
       name: glossary.name,
-      json: glossary.json
+      json: glossary.json,
+      legacy_glossary_resource_id: "TEST-LEGACY-ID"
     })
   end
 

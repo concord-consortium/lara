@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20220711222748) do
+ActiveRecord::Schema.define(:version => 20220720121921) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "kind"
@@ -318,6 +318,7 @@ ActiveRecord::Schema.define(:version => 20220711222748) do
     t.integer  "user_id"
     t.datetime "created_at",                     :null => false
     t.datetime "updated_at",                     :null => false
+    t.string   "legacy_glossary_resource_id"
   end
 
   create_table "image_interactives", :force => true do |t|

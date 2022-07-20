@@ -1,5 +1,5 @@
 class Glossary < ActiveRecord::Base
-  attr_accessible :name, :json, :user_id
+  attr_accessible :name, :json, :user_id, :legacy_glossary_resource_id
   validates :name, presence: true
   validates :user_id, presence: true
 
@@ -16,6 +16,7 @@ class Glossary < ActiveRecord::Base
       name: self.name,
       user_id: self.user_id,
       can_edit: self.can_edit(user),
+      legacy_glossary_resource_id: self.legacy_glossary_resource_id,
       json: self.export_json_only
     }
   end
@@ -29,6 +30,7 @@ class Glossary < ActiveRecord::Base
       id: self.id,
       name: self.name,
       user_id: self.user_id,
+      legacy_glossary_resource_id: self.legacy_glossary_resource_id,
       json: self.json || "{}"
     }
   end
@@ -38,6 +40,7 @@ class Glossary < ActiveRecord::Base
       id: self.id,
       name: self.name,
       user_id: self.user_id,
+      legacy_glossary_resource_id: self.legacy_glossary_resource_id,
       json: self.json || "{}",
       type: "Glossary"
     }
@@ -46,6 +49,7 @@ class Glossary < ActiveRecord::Base
   def duplicate(new_owner)
     new_glossary = Glossary.new(self.to_hash)
     new_glossary.name = "Copy of #{new_glossary.name}"
+    new_glossary.legacy_glossary_resource_id = nil
     new_glossary.user = new_owner
     new_glossary
   end
@@ -68,7 +72,8 @@ class Glossary < ActiveRecord::Base
   def self.extract_from_hash(glossary_json_object)
     {
       name: glossary_json_object[:name],
-      json: glossary_json_object[:json]
+      json: glossary_json_object[:json],
+      legacy_glossary_resource_id: glossary_json_object[:legacy_glossary_resource_id]
     }
   end
 
