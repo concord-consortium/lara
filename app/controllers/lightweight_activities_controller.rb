@@ -149,7 +149,24 @@ class LightweightActivitiesController < ApplicationController
 
   def edit
     authorize! :update, @activity
-    render :edit
+
+    @editor_mode = @activity.editor_mode
+    if params[:mode] && current_user.admin?
+      @editor_mode = case params[:mode]
+                       when "itsi" then LightweightActivity::ITSI_EDITOR_MODE
+                       else LightweightActivity::STANDARD_EDITOR_MODE
+                     end
+    end
+
+    # Data assigned to `gon` variable will be available for JavaScript code in `window.gon` object.
+    # this is used in both the itsi editor and in the standard editor to show the published activity
+    gon.ITSIEditor = ITSIAuthoring::Editor.new(@activity).to_json
+
+    if @editor_mode == LightweightActivity::ITSI_EDITOR_MODE
+      render :itsi_edit
+    else
+      render :edit
+    end
   end
 
   def update
