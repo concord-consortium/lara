@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20220712165650) do
+ActiveRecord::Schema.define(:version => 20220721203706) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "kind"
@@ -501,6 +501,8 @@ ActiveRecord::Schema.define(:version => 20220712165650) do
     t.datetime "created_at",                                          :null => false
     t.datetime "updated_at",                                          :null => false
     t.string   "linked_interactive_type"
+    t.integer  "legacy_ref_id"
+    t.string   "legacy_ref_type"
   end
 
   create_table "mc_answer_choices", :id => false, :force => true do |t|
