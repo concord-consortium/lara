@@ -22,17 +22,15 @@ def count_embeddables()
 end
 
 def multiple_choice_authored_state(item)
-  choice_id = 1
   converted_choices = []
   item.embeddable.choices.each do |choice|
     converted_choice = {
-      id: choice_id,
+      id: choice.id,
       content: choice.choice,
       correct: choice.is_correct,
       choiceFeedback: choice.prompt
     }
     converted_choices.push(converted_choice)
-    choice_id += 1
   end
 
   layout = item.embeddable.show_as_menu ? "Dropdown" : item.embeddable.layout
@@ -248,6 +246,7 @@ def create_new_embeddables(activity_id=nil)
     end
     # This requires the new migration_status field to be added to LightweightActivity
     # activity.migration_status = "in progress"
+    # activity.save!
   end
   puts "Processed #{activities_processed} of #{activities_to_process} activities."
 end
@@ -328,6 +327,7 @@ def replace_old_embeddables(activity_id=nil)
     activity.runtime = "Activity Player"
     # This requires the new migration_status field to be added to LightweightActivity
     # activity.migration_status = "migrated"
+    activity.save!
   end
   puts "Processed #{activities_processed} of #{activities_to_process} activities."
 
