@@ -236,6 +236,8 @@ def create_new_embeddables(activity_id=nil)
               authored_state: authored_state,
               library_interactive: library_interactive
             })
+            page_item.embeddable.migration_status = "in progress"
+            page_item.embeddable.save!
           end
         end
       end
@@ -244,9 +246,8 @@ def create_new_embeddables(activity_id=nil)
     if activities_processed % 100 == 0
       puts "Processed #{activities_processed} of #{activities_to_process} activities."
     end
-    # This requires the new migration_status field to be added to LightweightActivity
-    # activity.migration_status = "in progress"
-    # activity.save!
+    activity.migration_status = "in progress"
+    activity.save!
   end
   puts "Processed #{activities_processed} of #{activities_to_process} activities."
 end
@@ -325,8 +326,7 @@ def replace_old_embeddables(activity_id=nil)
       puts "Processed #{activities_processed} of #{activities_to_process} activities."
     end
     activity.runtime = "Activity Player"
-    # This requires the new migration_status field to be added to LightweightActivity
-    # activity.migration_status = "migrated"
+    activity.migration_status = "migrated"
     activity.save!
   end
   puts "Processed #{activities_processed} of #{activities_to_process} activities."
