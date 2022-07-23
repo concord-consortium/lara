@@ -15,10 +15,10 @@
   "Embeddable::ImageQuestion"
 ]
 
-def count_embeddables()
-  # Get a count of all built-in embeddables that need to be converted.
-  embeddables_count = PageItem.where(:embeddable_type => @convertable_embeddable_classes).length
-  puts "There are #{embeddables_count} built-in embeddables to convert."
+def count_embeddables(type=nil)
+  types = type ? type : @convertable_embeddable_classes
+  embeddables_count = PageItem.where(:embeddable_type => types).length
+  puts "There #{embeddables_count == 1 ? "is" : "are"} #{embeddables_count} #{type ? type : "built-in"} embeddables to convert."
 end
 
 def multiple_choice_authored_state(item)
@@ -121,7 +121,7 @@ def video_player_authored_state(item)
       video_source = source.url
     end
   end
-  if video_source == ""
+  if video_source == "" && item.embeddable.sources.length > 0
     video_source = item.embeddable.sources[0].url
   end
 
@@ -184,6 +184,7 @@ def create_new_embeddables(activity_id=nil)
   activities_to_update = LightweightActivity.includes(pages: {page_items: [:embeddable]}).where(where_conditions)
   activities_to_process = activities_to_update.count
   activities_processed = 0
+  embeddables_processed = 0
   activities_to_update.find_each(batch_size: 10) do |activity|
     activity.pages.each do |page|
       page.page_items.each do |page_item|
@@ -238,6 +239,10 @@ def create_new_embeddables(activity_id=nil)
             })
             page_item.embeddable.migration_status = "in progress"
             page_item.embeddable.save!
+            embeddables_processed += 1
+            if embeddables_processed % 100 == 0
+              puts "Processed #{embeddables_processed} embeddables."
+            end
           end
         end
       end
@@ -360,8 +365,8 @@ end
 namespace :convert_embeddables do
 
   desc "Counts the number of embeddables to be converted."
-  task :count_embeddables => :environment do
-    count_embeddables
+  task :count_embeddables, [:type] => :environment do |task, args|
+    count_embeddables(args[:type])
   end
 
   desc "Creates new ManagedInteractive versions of built-in embeddables."
