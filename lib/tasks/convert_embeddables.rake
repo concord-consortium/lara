@@ -208,7 +208,7 @@ def create_new_embeddables(activity_id=nil)
           case page_item.embeddable_type
           when "Embeddable::Answer", "Embeddable::AnswerFinder", "Embeddable::FeedbackFunctionality", "Embeddable::FeedbackItem", "Embeddable::LabbookAnswer", "Embeddable::Labbook"
             activity.defunct = true
-            activity.save!
+            activity.save(:validate => false)
           when "Embeddable::MultipleChoice"
             library_interactive = library_interactives["Multiple Choice"]
             name = page_item.embeddable.name != "Multiple Choice Question element" ? page_item.embeddable.name : ""
@@ -252,7 +252,7 @@ def create_new_embeddables(activity_id=nil)
       puts "Processed #{activities_processed} of #{activities_to_process} activities."
     end
     activity.migration_status = "in progress"
-    activity.save!
+    activity.save(:validate => false)
   end
   puts "Processed #{activities_processed} of #{activities_to_process} activities."
 end
@@ -332,7 +332,7 @@ def replace_old_embeddables(activity_id=nil)
     end
     activity.runtime = "Activity Player"
     activity.migration_status = "migrated"
-    activity.save!
+    activity.save(:validate => false)
   end
   puts "Processed #{activities_processed} of #{activities_to_process} activities."
 
