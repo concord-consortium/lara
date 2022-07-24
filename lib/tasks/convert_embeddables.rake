@@ -308,6 +308,7 @@ def replace_old_embeddables(activity_id=nil)
   activities_to_update = LightweightActivity.includes(pages: {page_items: [:embeddable]}).where(where_conditions)
   activities_to_process = activities_to_update.count
   activities_processed = 0
+  page_items_processed = 0
   activities_to_update.find_each(batch_size: 10) do |activity|
     activity.pages.each do |page|
       page.page_items.each do |page_item|
@@ -317,12 +318,15 @@ def replace_old_embeddables(activity_id=nil)
           new_embeddable = ManagedInteractive.where(legacy_ref_id: ref_id, legacy_ref_type: ref_type).first
           page_item.embeddable = new_embeddable
           page_item.save!
+          page_items_processed += 1
           wrapping_plugins = Embeddable::EmbeddablePlugin.where(embeddable_id: ref_id, embeddable_type: ref_type)
           wrapping_plugins.each do |wrapping_plugin|
             wrapping_plugin.embeddable = new_embeddable
             wrapping_plugin.save!
           end
-          old_embeddable.destroy
+        end
+        if page_items_processed % 100 == 0
+          puts "Processed #{page_items_processed} page items."
         end
       end
     end
