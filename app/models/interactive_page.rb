@@ -119,8 +119,8 @@ class InteractivePage < ActiveRecord::Base
   end
 
   def section_embeddables(section)
-    # For now, we continue to support passing a section name as a string to 
-    # this method, but this legacy feature will be removed in the future and 
+    # For now, we continue to support passing a section name as a string to
+    # this method, but this legacy feature will be removed in the future and
     # passing the section itself will become the only option.
     if !section.instance_of? Section
       section = sections.find { |s| s.title == section }
@@ -128,8 +128,8 @@ class InteractivePage < ActiveRecord::Base
 
     section_embeddables = []
     if section
-      # If a section's primary column is on the right, we need to adjust the 
-      # embeddables' order so they're output in the same order they appear on 
+      # If a section's primary column is on the right, we need to adjust the
+      # embeddables' order so they're output in the same order they appear on
       # the activity page.
       primary_right_layouts = ["40-60", "30-70", "responsive-2-columns"]
       if primary_right_layouts.include? section.layout
@@ -165,29 +165,29 @@ class InteractivePage < ActiveRecord::Base
     section_visible_embeddables(Section::DEFAULT_SECTION_TITLE)
   end
 
-  # This function will no longer work. There is no longer a header block 
-  # section, and passing a section title to section_embeddables is no 
+  # This function will no longer work. There is no longer a header block
+  # section, and passing a section title to section_embeddables is no
   # longer supported.
   def header_block_embeddables
     section_embeddables(HEADER_BLOCK)
   end
 
-  # This function will no longer work. There is no longer a header block 
-  # section, and passing a section title to section_embeddables is no 
+  # This function will no longer work. There is no longer a header block
+  # section, and passing a section title to section_embeddables is no
   # longer supported.
   def header_block_visible_embeddables
     section_visible_embeddables(HEADER_BLOCK)
   end
 
-  # This function will no longer work. There is no longer an interactive box 
-  # section, and passing a section title to section_embeddables is no 
+  # This function will no longer work. There is no longer an interactive box
+  # section, and passing a section title to section_embeddables is no
   # longer supported.
   def interactive_box_embeddables
     section_embeddables(INTERACTIVE_BOX)
   end
 
-  # This function will no longer work. There is no longer an interactive box 
-  # section, and passing a section title to section_embeddables is no 
+  # This function will no longer work. There is no longer an interactive box
+  # section, and passing a section title to section_embeddables is no
   # longer supported.
   def interactive_box_visible_embeddables
     section_visible_embeddables(INTERACTIVE_BOX)
@@ -375,16 +375,18 @@ class InteractivePage < ActiveRecord::Base
         end
       end
 
-      # First, import and cache all the embeddables.
-      page_json_object[:embeddables].each do |embed_hash|
-        embed = helper.import(embed_hash[:embeddable])
-        section = embed_hash[:section]
-        import_page.add_embeddable(embed, nil, section)
-      end
-      # Now when all the objects are created, setup references (e.g. question pointing to interactive, or
-      # one embeddable pointing to another one).
-      page_json_object[:embeddables].each do |embed_hash|
-        helper.set_references(embed_hash[:embeddable])
+      page_json_object[:sections].each do |s|
+        # First, import and cache all the embeddables.
+        s[:embeddables].each do |embed_json_obj|
+          embed = helper.import(embed_json_obj.except(:column, :position))
+          import_page.add_embeddable(embed, embed_json_obj[:position], s[:title], embed_json_obj[:column])
+        end
+
+        # Now when all the objects are created, setup references (e.g. question pointing to interactive, or
+        # one embeddable pointing to another one).
+        s[:embeddables].each do |embed_json_obj|
+          helper.set_references(embed_json_obj)
+        end
       end
       # For older export files, if page intro exists, add it as a new embeddable in header_block
       import_legacy_intro(import_page, page_json_object[:text])
