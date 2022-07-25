@@ -305,65 +305,26 @@ end
 def replace_old_embeddables(activity_id=nil)
   serialization_helper = LaraSerializationHelper.new
   where_conditions = activity_id ? {id: activity_id} : {runtime: "LARA"}
-  activities_to_update = LightweightActivity.includes(pages: {page_items: [:embeddable]}).where(where_conditions)
-  activities_to_process = activities_to_update.count
-  activities_processed = 0
+  page_items = PageItem.includes(interactive_page: {lightweight_activity: []}).where(embeddable_type: @convertable_embeddable_classes).where(lightweight_activities: where_conditions)
   page_items_processed = 0
-  activities_to_update.find_each(batch_size: 10) do |activity|
-    activity.pages.each do |page|
-      page.page_items.each do |page_item|
-        if @convertable_embeddable_classes.include? page_item.embeddable_type
-          old_embeddable = page_item.embeddable
-          ref_id, ref_type = serialization_helper.key(old_embeddable).split("-")
-          new_embeddable = ManagedInteractive.where(legacy_ref_id: ref_id, legacy_ref_type: ref_type).first
-          page_item.embeddable = new_embeddable
-          page_item.save!
-          page_items_processed += 1
-          wrapping_plugins = Embeddable::EmbeddablePlugin.where(embeddable_id: ref_id, embeddable_type: ref_type)
-          wrapping_plugins.each do |wrapping_plugin|
-            wrapping_plugin.embeddable = new_embeddable
-            wrapping_plugin.save!
-          end
-        end
-        if page_items_processed % 100 == 0
-          puts "Processed #{page_items_processed} page items."
-        end
+  page_items_to_process = page_items.count
+  page_items.find_each(batch_size: 100) do |page_item|
+    new_embeddable = ManagedInteractive.where(legacy_ref_id: page_item.embeddable_id, legacy_ref_type: page_item.embeddable_type).first
+    if new_embeddable
+      page_item.embeddable = new_embeddable
+      page_item.save!
+      wrapping_plugins = Embeddable::EmbeddablePlugin.where(embeddable_id: new_embeddable.legacy_ref_id, embeddable_type: new_embeddable.legacy_ref_type)
+      wrapping_plugins.each do |wrapping_plugin|
+        wrapping_plugin.embeddable = new_embeddable
+        wrapping_plugin.save!
+      end
+      page_items_processed += 1
+      if page_items_processed % 100 == 0
+        puts "Processed #{page_items_processed} page items."
       end
     end
-    activities_processed += 1
-    if activities_processed % 100 == 0
-      puts "Processed #{activities_processed} of #{activities_to_process} activities."
-    end
-    activity.runtime = "Activity Player"
-    activity.migration_status = "migrated"
-    activity.save(:validate => false)
   end
-  puts "Processed #{activities_processed} of #{activities_to_process} activities."
-
-  # OLD METHOD
-  # To replace the old, built-in embeddables, first we find any ManagedInteractive embeddables
-  # that have a legacy_ref_id value and are not yet associated with a PageItem. Then, we use 
-  # each of these ManagedInteractive embeddables' legacy_ref_id values to find the old embeddable 
-  # it will replace and the PageItem that it's associated with. We replace the PageItem's old 
-  # embeddable with the new embeddable. We also update any wrapping plugins for the old embeddable
-  # so they point to the new embeddable. Finally, delete the old embeddable.
-  # new_embeddables = ManagedInteractive.includes(:page_item).where("legacy_ref_id IS NOT NULL AND legacy_ref_id != ?", "").where(page_items: { id: nil })
-  # new_embeddables.find_each(batch_size: 100) do |new_embeddable|
-  #   old_embeddable_id, old_embeddable_type = new_embeddable.legacy_ref_id.split("-")
-  #   old_embeddable = old_embeddable_type.constantize.find(old_embeddable_id)
-  #   # Built-in embeddables can have more than one page item
-  #   page_items = activity_id ? PageItem.include(:interactive_page).where(:embeddable_id => old_embeddable.id, :embeddable_type => old_embeddable_type).where(interactive_pages: {activity: [activity_id]}) : PageItem.include(:interactive_page).where(:embeddable_id => old_embeddable.id, :embeddable_type => old_embeddable_type)
-  #   page_items.each do |page_item|
-  #     page_item.embeddable = new_embeddable
-  #     page_item.save!
-  #     wrapping_plugins = Embeddable::EmbeddablePlugin.where(:embeddable_id => old_embeddable.id, :embeddable_type => old_embeddable_type)
-  #     wrapping_plugins.each do |wrapping_plugin|
-  #       wrapping_plugin.embeddable = new_embeddable
-  #       wrapping_plugin.save!
-  #     end
-  #     old_embeddable.destroy
-  #   end
-  # end
+  puts "Processed #{page_items_processed} of #{page_items_to_process} page items."
 end
 
 namespace :convert_embeddables do
