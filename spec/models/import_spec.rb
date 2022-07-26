@@ -2,7 +2,7 @@ require 'spec_helper'
 describe Import do
 
   let (:user) { FactoryGirl.create(:admin) }
-  let (:valid_activity_import_json) { File.read(Rails.root + 'spec/import_examples/valid_lightweight_activity_import.json') }
+  let (:valid_activity_import_json) { File.read(Rails.root + 'spec/import_examples/valid_lightweight_activity_import_v2.json') }
   let (:invalid_activity_import_json) { File.read(Rails.root + 'spec/import_examples/invalid_lightweight_activity_import.json') }
   let (:valid_sequence_import_json) { File.read(Rails.root + 'spec/import_examples/valid_sequence_import.json') }
   let (:invalid_sequence_import_json) { File.read(Rails.root + 'spec/import_examples/invalid_sequence_import.json') }
