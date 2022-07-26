@@ -303,28 +303,23 @@ def delete_orphaned_old_embeddables()
 end
 
 def replace_old_embeddables(activity_id=nil)
-  serialization_helper = LaraSerializationHelper.new
-  where_conditions = activity_id ? {id: activity_id} : {runtime: "LARA"}
-  new_embeddables = ManagedInteractive.includes(converted_interactive: {page_items: [:interactive_page]}).where("legacy_ref_id IS NOT NULL AND legacy_ref_id != ?", "")
+  new_embeddables = ManagedInteractive.includes(:page_item).preload(converted_interactive: {page_items: [:interactive_page, :embeddable]}).where("legacy_ref_id IS NOT NULL AND legacy_ref_id != ?", "").where("page_items.id IS NULL")
   embeddables_processed = 0
   embeddables_to_process = new_embeddables.count
   new_embeddables.find_each(batch_size: 100) do |new_embeddable|
-    if new_embeddable.converted_interactive
-      old_embeddable = new_embeddable.converted_interactive
-      page_items = old_embeddable.page_items
-      page_items.each do |page_item|
-        page_item.embeddable = new_embeddable
-        page_item.save!
-        wrapping_plugins = Embeddable::EmbeddablePlugin.where(embeddable_id: new_embeddable.legacy_ref_id, embeddable_type: new_embeddable.legacy_ref_type)
-        wrapping_plugins.each do |wrapping_plugin|
-          wrapping_plugin.embeddable = new_embeddable
-          wrapping_plugin.save!
-        end
-      end
-      embeddables_processed += 1
-      if embeddables_processed % 100 == 0
-        puts "Processed #{embeddables_processed} embeddables."
-      end
+    page_item = new_embeddable.converted_interactive.page_items.first
+    # not sure how to limit by specified activity_id (if present) before we iterate through new_embeddables
+    page_item_activity_id = page_item.interactive_page.lightweight_activity_id
+    page_item.embeddable = new_embeddable
+    page_item.save!
+    wrapping_plugins = Embeddable::EmbeddablePlugin.where(embeddable_id: new_embeddable.legacy_ref_id, embeddable_type: new_embeddable.legacy_ref_type)
+    wrapping_plugins.each do |wrapping_plugin|
+      wrapping_plugin.embeddable = new_embeddable
+      wrapping_plugin.save!
+    end
+    embeddables_processed += 1
+    if embeddables_processed % 100 == 0
+      puts "Processed #{embeddables_processed} embeddables."
     end
   end
   puts "Processed #{embeddables_processed} of #{embeddables_to_process} embeddables."
