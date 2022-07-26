@@ -15,7 +15,7 @@ describe VideoInteractive do
     video_interactive.reload
     page.reload
 
-    expect(video_interactive.interactive_page).to eq(page)
+    expect(video_interactive.interactive_pages.first).to eq(page)
   end
 
   it 'may have sources' do

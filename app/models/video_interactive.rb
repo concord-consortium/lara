@@ -3,7 +3,7 @@ class VideoInteractive < ActiveRecord::Base
 
   has_many :page_items, :as => :embeddable, :dependent => :destroy
   # PageItem is a join model; if this is deleted, that instance should go too
-  has_one :interactive_page, :through => :page_item
+  has_many :interactive_pages, :through => :page_items
   has_many :sources, :class_name => 'VideoSource',
            :foreign_key => 'video_interactive_id',
            :dependent => :destroy # If we delete this video we should dump its sources
@@ -39,8 +39,8 @@ class VideoInteractive < ActiveRecord::Base
   end
 
   def activity
-    if interactive_page
-      return self.interactive_page.lightweight_activity
+    if interactive_pages
+      return self.interactive_pages.first.lightweight_activity
     else
       return nil
     end

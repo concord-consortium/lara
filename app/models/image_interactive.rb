@@ -7,7 +7,7 @@ class ImageInteractive < ActiveRecord::Base
   # PageItem is a join model; if this is deleted, that instance should go too
   has_one :converted_interactive, class_name: "ManagedInteractive", as: :legacy_ref
   has_many :embeddable_plugins, class_name: "Embeddable::EmbeddablePlugin", as: :embeddable
-  has_one :interactive_page, :through => :page_items
+  has_many :interactive_pages, :through => :page_items
   has_one :labbook, :as => :interactive, :class_name => 'Embeddable::Labbook'
 
   def self.portal_type
