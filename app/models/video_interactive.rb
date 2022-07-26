@@ -8,7 +8,7 @@ class VideoInteractive < ActiveRecord::Base
            :foreign_key => 'video_interactive_id',
            :dependent => :destroy # If we delete this video we should dump its sources
   has_many :embeddable_plugins, class_name: "Embeddable::EmbeddablePlugin", as: :embeddable
-  has_one :converted_interactive, class_name: "ManagedInteractive", as: :legacy_embeddable
+  has_one :converted_interactive, class_name: "ManagedInteractive", as: :legacy_ref
 
   # TODO: Not sure if labbooks work with video interactives.
   has_one :labbook, :as => :interactive, :class_name => 'Embeddable::Labbook'

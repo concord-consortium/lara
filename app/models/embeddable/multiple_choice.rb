@@ -18,7 +18,7 @@ module Embeddable
     # the join should go too.
     has_many :interactive_pages, :through => :page_items
     has_many :embeddable_plugins, as: :embeddable
-    has_one :converted_interactive, class_name: "ManagedInteractive", as: :legacy_embeddable
+    has_one :converted_interactive, class_name: "ManagedInteractive", as: :legacy_ref
 
     has_many :answers,
       :class_name => 'Embeddable::MultipleChoiceAnswer',

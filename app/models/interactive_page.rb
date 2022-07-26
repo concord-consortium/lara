@@ -32,6 +32,7 @@ class InteractivePage < ActiveRecord::Base
 
   # PageItem is a join model; if this is deleted, it should go too
   has_many :page_items, :order => [:section, :position], :dependent => :destroy, :include => [:embeddable]
+  has_many :legacy_page_items, :class_name => "PageItem", :conditions => "embeddable_type in ('Embeddable::MultipleChoice','Embeddable::OpenResponse','ImageInteractive','VideoInteractive','Embeddable::ImageQuestion')"
 
   def toggle_info_assessment
     self[:toggle_info_assessment].nil? ? true : self[:toggle_info_assessment]
