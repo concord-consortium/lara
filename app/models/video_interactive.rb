@@ -1,7 +1,7 @@
 class VideoInteractive < ActiveRecord::Base
   include Embeddable
 
-  has_one :page_item, :as => :embeddable, :dependent => :destroy
+  has_many :page_items, :as => :embeddable, :dependent => :destroy
   # PageItem is a join model; if this is deleted, that instance should go too
   has_one :interactive_page, :through => :page_item
   has_many :sources, :class_name => 'VideoSource',
@@ -53,7 +53,8 @@ class VideoInteractive < ActiveRecord::Base
   end
 
   def page_section
-    page_item && page_item.section
+    # In practice one question can't be added to multiple pages. Perhaps it should be refactored to has_one / belongs_to relation.
+    page_items.count > 0 && page_items.first.section
   end
 
   def to_hash

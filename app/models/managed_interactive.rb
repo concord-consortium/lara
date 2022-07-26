@@ -45,6 +45,7 @@ class ManagedInteractive < ActiveRecord::Base
   has_one :labbook, :as => :interactive, :class_name => 'Embeddable::Labbook'
 
   belongs_to :linked_interactive, :polymorphic => true
+  belongs_to :converted_interactive, :polymorphic => true, :foreign_key => :legacy_ref_id, :foreign_type => :legacy_ref_type
 
   # getter for constructed url
   def url

@@ -305,26 +305,29 @@ end
 def replace_old_embeddables(activity_id=nil)
   serialization_helper = LaraSerializationHelper.new
   where_conditions = activity_id ? {id: activity_id} : {runtime: "LARA"}
-  page_items = PageItem.includes(interactive_page: {lightweight_activity: []}).where(embeddable_type: @convertable_embeddable_classes).where(lightweight_activities: where_conditions)
-  page_items_processed = 0
-  page_items_to_process = page_items.count
-  page_items.find_each(batch_size: 100) do |page_item|
-    new_embeddable = ManagedInteractive.where(legacy_ref_id: page_item.embeddable_id, legacy_ref_type: page_item.embeddable_type).first
-    if new_embeddable
-      page_item.embeddable = new_embeddable
-      page_item.save!
-      wrapping_plugins = Embeddable::EmbeddablePlugin.where(embeddable_id: new_embeddable.legacy_ref_id, embeddable_type: new_embeddable.legacy_ref_type)
-      wrapping_plugins.each do |wrapping_plugin|
-        wrapping_plugin.embeddable = new_embeddable
-        wrapping_plugin.save!
+  new_embeddables = ManagedInteractive.includes(converted_interactive: {page_items: [:interactive_page]}).where("legacy_ref_id IS NOT NULL AND legacy_ref_id != ?", "")
+  embeddables_processed = 0
+  embeddables_to_process = new_embeddables.count
+  new_embeddables.find_each(batch_size: 100) do |new_embeddable|
+    if new_embeddable.converted_interactive
+      old_embeddable = new_embeddable.converted_interactive
+      page_items = old_embeddable.page_items
+      page_items.each do |page_item|
+        page_item.embeddable = new_embeddable
+        page_item.save!
+        wrapping_plugins = Embeddable::EmbeddablePlugin.where(embeddable_id: new_embeddable.legacy_ref_id, embeddable_type: new_embeddable.legacy_ref_type)
+        wrapping_plugins.each do |wrapping_plugin|
+          wrapping_plugin.embeddable = new_embeddable
+          wrapping_plugin.save!
+        end
       end
-      page_items_processed += 1
-      if page_items_processed % 100 == 0
-        puts "Processed #{page_items_processed} page items."
+      embeddables_processed += 1
+      if embeddables_processed % 100 == 0
+        puts "Processed #{embeddables_processed} embeddables."
       end
     end
   end
-  puts "Processed #{page_items_processed} of #{page_items_to_process} page items."
+  puts "Processed #{embeddables_processed} of #{embeddables_to_process} embeddables."
 end
 
 namespace :convert_embeddables do
