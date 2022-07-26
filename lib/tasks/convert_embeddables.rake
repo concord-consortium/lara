@@ -304,16 +304,16 @@ end
 
 def replace_old_embeddables(activity_id=nil)
   # TODO: Preload wrapping plugins in main query before looping through embeddables.
-  # TODO: Limit query to embeddables for specified activity_id, if present.
-  new_embeddables = ManagedInteractive.includes(:page_item).preload(converted_plugins: [], converted_interactive: {page_items: {interactive_page: [:lightweight_activity]}}).where("legacy_ref_id IS NOT NULL AND legacy_ref_id != ?", "").where("page_items.id IS NULL")
+  # TODO: Limit query to embeddables for a specific activity if activity_id is specified.
+  new_embeddables = ManagedInteractive.includes(:page_item).preload(legacy_embeddable: [:embeddable_plugins, {page_items: {interactive_page: [:lightweight_activity]}}]).where("legacy_ref_id IS NOT NULL AND legacy_ref_id != ?", "").where("page_items.id IS NULL")
   embeddables_processed = 0
   embeddables_to_process = new_embeddables.count
   new_embeddables.find_each(batch_size: 100) do |new_embeddable|
-    page_item = new_embeddable.converted_interactive.page_items.first
+    page_item = new_embeddable.legacy_embeddable.page_items.first
+    wrapping_plugins = new_embeddable.legacy_embeddable.embeddable_plugins
     activity = page_item.interactive_page.lightweight_activity
     page_item.embeddable = new_embeddable
     page_item.save!
-    wrapping_plugins = Embeddable::EmbeddablePlugin.where(embeddable_id: new_embeddable.legacy_ref_id, embeddable_type: new_embeddable.legacy_ref_type)
     wrapping_plugins.each do |wrapping_plugin|
       wrapping_plugin.embeddable = new_embeddable
       wrapping_plugin.save!
@@ -322,7 +322,7 @@ def replace_old_embeddables(activity_id=nil)
     if embeddables_processed % 100 == 0
       puts "Processed #{embeddables_processed} embeddables."
     end
-    # TODO: Figure out how to tell when all embeddables in an activity have been updated, and then update activity runtime and migration_status.
+    # TODO: Figure out how to tell when all embeddables in an activity have been updated, and then update activity's runtime and migration_status.
     # activity.runtime = "Activity Player"
     # activity.migration_status = "migrated"
     # activity.save(:validate => false)
