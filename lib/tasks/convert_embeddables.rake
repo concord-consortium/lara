@@ -303,13 +303,14 @@ def delete_orphaned_old_embeddables()
 end
 
 def replace_old_embeddables(activity_id=nil)
-  new_embeddables = ManagedInteractive.includes(:page_item).preload(converted_interactive: {page_items: [:interactive_page, :embeddable]}).where("legacy_ref_id IS NOT NULL AND legacy_ref_id != ?", "").where("page_items.id IS NULL")
+  # TODO: Preload wrapping plugins in main query before looping through embeddables.
+  # TODO: Limit query to embeddables for specified activity_id, if present.
+  new_embeddables = ManagedInteractive.includes(:page_item).preload(converted_plugins: [], converted_interactive: {page_items: {interactive_page: [:lightweight_activity]}}).where("legacy_ref_id IS NOT NULL AND legacy_ref_id != ?", "").where("page_items.id IS NULL")
   embeddables_processed = 0
   embeddables_to_process = new_embeddables.count
   new_embeddables.find_each(batch_size: 100) do |new_embeddable|
     page_item = new_embeddable.converted_interactive.page_items.first
-    # not sure how to limit by specified activity_id (if present) before we iterate through new_embeddables
-    page_item_activity_id = page_item.interactive_page.lightweight_activity_id
+    activity = page_item.interactive_page.lightweight_activity
     page_item.embeddable = new_embeddable
     page_item.save!
     wrapping_plugins = Embeddable::EmbeddablePlugin.where(embeddable_id: new_embeddable.legacy_ref_id, embeddable_type: new_embeddable.legacy_ref_type)
@@ -321,6 +322,10 @@ def replace_old_embeddables(activity_id=nil)
     if embeddables_processed % 100 == 0
       puts "Processed #{embeddables_processed} embeddables."
     end
+    # TODO: Figure out how to tell when all embeddables in an activity have been updated, and then update activity runtime and migration_status.
+    # activity.runtime = "Activity Player"
+    # activity.migration_status = "migrated"
+    # activity.save(:validate => false)
   end
   puts "Processed #{embeddables_processed} of #{embeddables_to_process} embeddables."
 end
