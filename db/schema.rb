@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20220721203706) do
+ActiveRecord::Schema.define(:version => 20220726150351) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "kind"
@@ -505,6 +505,8 @@ ActiveRecord::Schema.define(:version => 20220721203706) do
     t.integer  "legacy_ref_id"
     t.string   "legacy_ref_type"
   end
+
+  add_index "managed_interactives", ["legacy_ref_id", "legacy_ref_type"], :name => "managed_interactive_legacy_idx"
 
   create_table "mc_answer_choices", :id => false, :force => true do |t|
     t.integer "answer_id"

@@ -42,9 +42,13 @@ class ManagedInteractive < ActiveRecord::Base
   has_one :interactive_page, :through => :page_item
   has_many :interactive_run_states, :as => :interactive, :dependent => :destroy
 
+  has_many :embeddable_plugins, class_name: "Embeddable::EmbeddablePlugin", as: :embeddable
+  has_one :converted_interactive, class_name: "ManagedInteractive", as: :legacy_ref
+
   has_one :labbook, :as => :interactive, :class_name => 'Embeddable::Labbook'
 
   belongs_to :linked_interactive, :polymorphic => true
+  belongs_to :legacy_ref, :polymorphic => true
 
   # getter for constructed url
   def url

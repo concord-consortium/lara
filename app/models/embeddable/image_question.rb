@@ -7,6 +7,8 @@ class Embeddable::ImageQuestion < ActiveRecord::Base
 
   has_many :page_items, :as => :embeddable, :dependent => :destroy
   has_many :interactive_pages, :through => :page_items
+  has_many :embeddable_plugins, as: :embeddable
+  has_one :converted_interactive, class_name: "ManagedInteractive", as: :legacy_ref
 
   has_many :answers,
     :class_name  => 'Embeddable::ImageQuestionAnswer',

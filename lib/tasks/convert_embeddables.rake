@@ -303,28 +303,33 @@ def delete_orphaned_old_embeddables()
 end
 
 def replace_old_embeddables(activity_id=nil)
-  serialization_helper = LaraSerializationHelper.new
   where_conditions = activity_id ? {id: activity_id} : {runtime: "LARA"}
-  page_items = PageItem.includes(interactive_page: {lightweight_activity: []}).where(embeddable_type: @convertable_embeddable_classes).where(lightweight_activities: where_conditions)
-  page_items_processed = 0
-  page_items_to_process = page_items.count
-  page_items.find_each(batch_size: 100) do |page_item|
-    new_embeddable = ManagedInteractive.where(legacy_ref_id: page_item.embeddable_id, legacy_ref_type: page_item.embeddable_type).first
-    if new_embeddable
-      page_item.embeddable = new_embeddable
-      page_item.save!
-      wrapping_plugins = Embeddable::EmbeddablePlugin.where(embeddable_id: new_embeddable.legacy_ref_id, embeddable_type: new_embeddable.legacy_ref_type)
-      wrapping_plugins.each do |wrapping_plugin|
-        wrapping_plugin.embeddable = new_embeddable
-        wrapping_plugin.save!
-      end
-      page_items_processed += 1
-      if page_items_processed % 100 == 0
-        puts "Processed #{page_items_processed} page items."
+  activities_to_update = LightweightActivity.preload(pages: {legacy_page_items: {embeddable: [:converted_interactive, :embeddable_plugins]}}).where(where_conditions)
+  activities_to_process = activities_to_update.count
+  activities_processed = 0
+  activities_to_update.find_each(batch_size: 10) do |activity|
+    activity.pages.each do |page|
+      page.legacy_page_items.each do |page_item|
+        old_embeddable = page_item.embeddable
+        new_embeddable = page_item.embeddable.converted_interactive
+        wrapping_plugins = page_item.embeddable.embeddable_plugins
+        wrapping_plugins.each do |wrapping_plugin|
+          wrapping_plugin.embeddable = new_embeddable
+          wrapping_plugin.save!
+        end
+        page_item.embeddable = new_embeddable
+        page_item.save!
       end
     end
+    activities_processed += 1
+    if activities_processed % 100 == 0
+      puts "Processed #{activities_processed} of #{activities_to_process} activities."
+    end
+    activity.runtime = "Activity Player"
+    activity.migration_status = "migrated"
+    activity.save(:validate => false)
   end
-  puts "Processed #{page_items_processed} of #{page_items_to_process} page items."
+  puts "Processed #{activities_processed} of #{activities_to_process} activities."
 end
 
 namespace :convert_embeddables do

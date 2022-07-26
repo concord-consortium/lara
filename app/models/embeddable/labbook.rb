@@ -16,7 +16,9 @@ module Embeddable
       :show_in_featured_question_report, :interactive, :hint, :is_full_width
 
     has_many :page_items, :as => :embeddable, :dependent => :destroy
+    has_many :embeddable_plugins, class_name: "Embeddable::EmbeddablePlugin", as: :embeddable
     has_many :interactive_pages, :through => :page_items
+    has_one :converted_interactive, class_name: "ManagedInteractive", as: :legacy_ref
 
     # "Answer" isn't the best word probably, but it fits the rest of names and convention.
     # LabbookAnswer is an instance related to particular activity run and user.
