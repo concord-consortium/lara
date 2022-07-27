@@ -96,7 +96,7 @@ class LibraryInteractive < ActiveRecord::Base
   end
 
   def use_count
-    ManagedInteractive.where(library_interactive_id: self.id).length
+    ManagedInteractive.where(library_interactive_id: self.id).count
   end
 
   def serializeable_id
