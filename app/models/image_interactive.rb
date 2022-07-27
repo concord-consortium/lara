@@ -3,9 +3,11 @@ class ImageInteractive < ActiveRecord::Base
 
   attr_accessible :url, :caption, :credit, :show_lightbox, :credit_url, :is_hidden, :is_half_width
 
-  has_one :page_item, :as => :embeddable, :dependent => :destroy
+  has_many :page_items, :as => :embeddable, :dependent => :destroy
   # PageItem is a join model; if this is deleted, that instance should go too
-  has_one :interactive_page, :through => :page_item
+  has_one :converted_interactive, class_name: "ManagedInteractive", as: :legacy_ref
+  has_many :embeddable_plugins, class_name: "Embeddable::EmbeddablePlugin", as: :embeddable
+  has_many :interactive_pages, :through => :page_items
   has_one :labbook, :as => :interactive, :class_name => 'Embeddable::Labbook'
 
   def self.portal_type
@@ -14,6 +16,11 @@ class ImageInteractive < ActiveRecord::Base
 
   def reportable?
     false
+  end
+  
+  def page_section
+    # In practice one question can't be added to multiple pages. Perhaps it should be refactored to has_one / belongs_to relation.
+    page_items.count > 0 && page_items.first.section
   end
 
   def no_snapshots

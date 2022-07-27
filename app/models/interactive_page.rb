@@ -34,6 +34,7 @@ class InteractivePage < ActiveRecord::Base
   # has_many :page_items, :order => [:old_section, :position], :dependent => :destroy, :include => [:embeddable]
 
   has_many :sections, order: :position, include: [:page_items]
+  has_many :legacy_page_items, :class_name => "PageItem", :conditions => "embeddable_type in ('Embeddable::MultipleChoice','Embeddable::OpenResponse','ImageInteractive','VideoInteractive','Embeddable::ImageQuestion')"
 
   # NP: 2021-09-01 TODO: This has-many was incorrectly ordering page_items.
   # I don't think it really matters B/C our sections include the page_items.

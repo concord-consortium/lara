@@ -66,6 +66,8 @@
 * [IReportItemAnswerItemAttachment](interfaces/ireportitemansweritemattachment.md)
 * [IReportItemAnswerItemHtml](interfaces/ireportitemansweritemhtml.md)
 * [IReportItemAnswerItemLinks](interfaces/ireportitemansweritemlinks.md)
+* [IReportItemAnswerItemScore](interfaces/ireportitemansweritemscore.md)
+* [IReportItemHandlerMetadata](interfaces/ireportitemhandlermetadata.md)
 * [IReportItemInitInteractive](interfaces/ireportiteminitinteractive.md)
 * [IRuntimeCustomReportValues](interfaces/iruntimecustomreportvalues.md)
 * [IRuntimeInitInteractive](interfaces/iruntimeinitinteractive.md)
@@ -113,6 +115,7 @@
 * [ModalType](globals.md#modaltype)
 * [OnUnloadFunction](globals.md#onunloadfunction)
 * [ReadAttachmentParams](globals.md#readattachmentparams)
+* [ReportItemsType](globals.md#reportitemstype)
 * [S3Operation](globals.md#s3operation)
 * [ServerMessage](globals.md#servermessage)
 * [WriteAttachmentParams](globals.md#writeattachmentparams)
@@ -237,7 +240,7 @@ ___
 
 ###  IReportItemAnswerItem
 
-Ƭ **IReportItemAnswerItem**: *[IReportItemAnswerItemAttachment](interfaces/ireportitemansweritemattachment.md) | [IReportItemAnswerItemAnswerText](interfaces/ireportitemansweritemanswertext.md) | [IReportItemAnswerItemHtml](interfaces/ireportitemansweritemhtml.md) | [IReportItemAnswerItemLinks](interfaces/ireportitemansweritemlinks.md)*
+Ƭ **IReportItemAnswerItem**: *[IReportItemAnswerItemAttachment](interfaces/ireportitemansweritemattachment.md) | [IReportItemAnswerItemAnswerText](interfaces/ireportitemansweritemanswertext.md) | [IReportItemAnswerItemHtml](interfaces/ireportitemansweritemhtml.md) | [IReportItemAnswerItemLinks](interfaces/ireportitemansweritemlinks.md) | [IReportItemAnswerItemScore](interfaces/ireportitemansweritemscore.md)*
 
 ___
 
@@ -336,6 +339,12 @@ ___
 ###  ReadAttachmentParams
 
 Ƭ **ReadAttachmentParams**: *Omit‹[IAttachmentUrlRequest](interfaces/iattachmenturlrequest.md), "requestId" | "operation" | "contentType" | "expiresIn"›*
+
+___
+
+###  ReportItemsType
+
+Ƭ **ReportItemsType**: *"fullAnswer" | "compactAnswer"*
 
 ___
 

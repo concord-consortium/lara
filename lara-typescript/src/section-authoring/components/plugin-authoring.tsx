@@ -56,7 +56,7 @@ export const PluginAuthoring: React.FC<PluginAuthoringProps> = (
   const authorDataSaveUrl = authoringApiUrls.update_plugin_author_data || "";
 
   const scriptStatus = useScript(label, url);
-  
+
   const effectDeps = [
     wrappedDiv.current, containerDiv.current, firebaseJwtUrl,
     portalJwtUrl, authorDataSaveUrl, label, url, scriptStatus
@@ -97,7 +97,7 @@ export const PluginAuthoring: React.FC<PluginAuthoringProps> = (
   React.useEffect(() => {
     if (wrappedItem && !wrappedDiv.current) {
       return;
-    }    
+    }
     if (containerDiv.current && scriptStatus === "ready") {
       renderPluginAuthoring();
     }

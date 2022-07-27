@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20220720121921) do
+ActiveRecord::Schema.define(:version => 20220726150351) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "kind"
@@ -314,10 +314,10 @@ ActiveRecord::Schema.define(:version => 20220720121921) do
 
   create_table "glossaries", :force => true do |t|
     t.string   "name"
-    t.text     "json",       :limit => 16777215
+    t.text     "json",                        :limit => 16777215
     t.integer  "user_id"
-    t.datetime "created_at",                     :null => false
-    t.datetime "updated_at",                     :null => false
+    t.datetime "created_at",                                      :null => false
+    t.datetime "updated_at",                                      :null => false
     t.string   "legacy_glossary_resource_id"
   end
 
@@ -417,6 +417,7 @@ ActiveRecord::Schema.define(:version => 20220720121921) do
     t.boolean  "customizable",            :default => false
     t.boolean  "authorable",              :default => false
     t.text     "report_item_url"
+    t.boolean  "official",                :default => false
   end
 
   add_index "library_interactives", ["export_hash"], :name => "library_interactives_export_hash_idx"
@@ -450,8 +451,8 @@ ActiveRecord::Schema.define(:version => 20220720121921) do
     t.string   "runtime",                                :default => "LARA"
     t.string   "background_image"
     t.string   "fixed_width_layout",                     :default => "1100px"
-    t.boolean  "defunct",                                :default => false
     t.integer  "glossary_id"
+    t.boolean  "defunct",                                :default => false
     t.string   "migration_status",                       :default => "not_migrated"
   end
 
@@ -511,8 +512,11 @@ ActiveRecord::Schema.define(:version => 20220720121921) do
     t.datetime "created_at",                                          :null => false
     t.datetime "updated_at",                                          :null => false
     t.string   "linked_interactive_type"
-    t.string   "legacy_ref_id"
+    t.integer  "legacy_ref_id"
+    t.string   "legacy_ref_type"
   end
+
+  add_index "managed_interactives", ["legacy_ref_id", "legacy_ref_type"], :name => "managed_interactive_legacy_idx"
 
   create_table "mc_answer_choices", :id => false, :force => true do |t|
     t.integer "answer_id"

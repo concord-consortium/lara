@@ -4,6 +4,13 @@
     = f.text_field :name
   = field_set_tag 'Description' do
     = f.text_area :description, size: "100x4"
+  = field_set_tag 'Status' do
+    %div{:class => "option_group"}
+      = f.check_box :official
+      = f.label :official, 'Official Version'
+      %div{:class => "checkbox_note"}
+        %em Note:
+        Only set one version of a question type to be the official version.
   = field_set_tag 'Authoring Guidance' do
     = f.text_area :authoring_guidance, :rows => 5, :class => 'wysiwyg-minimal'
   = field_set_tag 'Base URL' do

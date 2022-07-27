@@ -64,4 +64,4 @@ ___
 
 ###  view
 
-• **view**: *"singleAnswer" | "multipleAnswer"*
+• **view**: *"singleAnswer" | "multipleAnswer" | "hidden"*

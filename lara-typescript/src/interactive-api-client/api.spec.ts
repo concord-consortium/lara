@@ -86,10 +86,11 @@ describe("api", () => {
     expect(mockedPhone.messages).toEqual([{type: "log", content: {action: "test action", data: {param1: 1}}}]);
   });
 
-  it("supports [add|remove]CustomMessageListener", () => {
-    const handler = jest.fn();
-    api.addCustomMessageListener(handler, { handles: { foo: true } });
-    api.removeCustomMessageListener();
+  it("can add/remove custom message listener and pass supported messages to setSupportedFeatures", () => {
+    const listener = jest.fn();
+    api.addCustomMessageListener(listener, { handles: { foo: true } });
+    api.setSupportedFeatures({ apiVersion: 1, features: {} } as any);
+    expect(api.removeCustomMessageListener()).toBe(true);
   });
 
   it("supports content decoration", () => {
@@ -552,6 +553,31 @@ describe("api", () => {
         responseContent: [apiResponse],
         rejectsWith: [new Error(kUrlError)]
       });
+    });
+  });
+
+  describe("report item support", () => {
+    it("supports addGetReportItemAnswerListener and removeGetReportItemAnswerListener", () => {
+      const listener = jest.fn();
+      api.addGetReportItemAnswerListener(listener);
+      mockedPhone.fakeServerMessage({type: "getReportItemAnswer" });
+      expect(listener).toHaveBeenCalledTimes(1);
+
+      api.removeGetReportItemAnswerListener();
+      mockedPhone.fakeServerMessage({type: "getReportItemAnswer" });
+      expect(listener).toHaveBeenCalledTimes(1);
+    });
+
+    it("supports sendReportItemAnswer", () => {
+      const mockAnswer: any = { foo: 1 };
+      api.sendReportItemAnswer(mockAnswer);
+      expect(mockedPhone.messages[0]).toEqual({ type: "reportItemAnswer", content: mockAnswer });
+    });
+
+    it("supports notifyReportItemClientReady", () => {
+      const mockMetadata: any = { foo: 1 };
+      api.notifyReportItemClientReady(mockMetadata);
+      expect(mockedPhone.messages[0]).toEqual({ type: "reportItemClientReady", content: mockMetadata });
     });
   });
 });
