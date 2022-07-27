@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Api::V1::ImportController do
   let (:user) { FactoryGirl.create(:author) }
-  let (:valid_activity_import_json) { JSON.parse(File.read(Rails.root + 'spec/import_examples/valid_lightweight_activity_import.json'), symbolize_keys: true) }
+  let (:valid_activity_import_json) { JSON.parse(File.read(Rails.root + 'spec/import_examples/valid_lightweight_activity_import_v2.json'), symbolize_keys: true) }
   let (:invalid_activity_import_json) { JSON.parse(File.read(Rails.root + 'spec/import_examples/invalid_lightweight_activity_import.json'), symbolize_keys: true) }
 
   describe "when user is logged in and allowed to import activity" do

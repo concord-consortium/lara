@@ -123,23 +123,23 @@ describe InteractivePage do
   end
 
   it 'has embeddables' do
-    expect(page.embeddables.size).to eq(3)
+    expect(page.sections[0].embeddables.length()).to eq(3)
   end
 
   it 'has embeddables in the correct order' do
-    expect(page.embeddables.first.content).to eq("This is the 1st embeddable")
-    expect(page.embeddables.last.name).to eq("embeddable 3")
+    expect(page.sections[0].embeddables.first.content).to eq("This is the 1st embeddable")
+    expect(page.sections[0].embeddables.last.name).to eq("embeddable 3")
   end
 
   it 'inserts embeddables at the end if position is not provided' do
-    embed_count = page.embeddables.length
+    embed_count = page.sections[0].embeddables.length
     embed4 = FactoryGirl.create(:xhtml, :name => 'Embeddable 4')
     page.add_embeddable(embed4)
     page.reload
 
-    expect(page.embeddables.length).to eq(embed_count + 1)
-    expect(page.embeddables.first.content).to eq("This is the 1st embeddable")
-    expect(page.embeddables.last.name).to eq("Embeddable 4")
+    expect(page.sections[0].embeddables.length).to eq(embed_count + 1)
+    expect(page.sections[0].embeddables.first.content).to eq("This is the 1st embeddable")
+    expect(page.sections[0].embeddables.last.name).to eq("Embeddable 4")
   end
 
   describe 'helpers related to order of pages should respect is_hidden value' do
@@ -247,7 +247,7 @@ describe InteractivePage do
 
     it 'has copies of the original embeddables' do
       # Note that this only confirms that there are the same number of embeddables. Page starts with 3.
-      expect(page.duplicate.embeddables.length).to be(page.embeddables.length)
+      expect(page.duplicate.sections[0].embeddables.length).to be(page.sections[0].embeddables.length)
     end
 
     describe 'copies of the original interactives' do
@@ -283,12 +283,12 @@ describe InteractivePage do
       end
 
       it "should have the same number of embeddables" do
-        expect(dupe.embeddables.length).to be(page.embeddables.length)
+        expect(dupe.sections[0].embeddables.length).to be(page.sections[0].embeddables.length)
       end
 
       it "should have embeddables of the same visibility as the original" do
-        page.embeddables.each_with_index do |original,i|
-          copy_emb = dupe.embeddables[i]
+        page.sections[0].embeddables.each_with_index do |original,i|
+          copy_emb = dupe.sections[0].embeddables[i]
           expect(original.is_hidden?).to eq copy_emb.is_hidden?
         end
       end
@@ -429,7 +429,7 @@ describe InteractivePage do
 
   ## TODO: Test that 'additional_sections' imports from json.
   describe '#import' do
-    let(:example_json_file) { 'valid_lightweight_activity_import' }
+    let(:example_json_file) { 'valid_lightweight_activity_import_v2' }
     let(:activity_json) do
       JSON.parse(File.read(
         Rails.root +
@@ -438,7 +438,7 @@ describe InteractivePage do
     end
 
     describe "from a valid_lightweight_activity" do
-      let(:example_json_file) { 'valid_lightweight_activity_import' }
+      let(:example_json_file) { 'valid_lightweight_activity_import_v2' }
       it 'imports page from json' do
         activity_json[:pages].each do |p|
           page = InteractivePage.import(p)
@@ -447,12 +447,6 @@ describe InteractivePage do
           expect(p[:sidebar_title]).to eq(page.sidebar_title)
           expect(p[:position]).to be(page.position)
         end
-        # Test last page for interactive and labbook combo
-        # Note that interactive is positioned AFTER labbook in embeddables list.
-        # This case used to cause problems before, so test it explicitly.
-        page = InteractivePage.import(activity_json[:pages].last).reload
-        expect(page.interactives.last).to be_a ImageInteractive
-        expect(page.embeddables.last.interactive).to eq page.interactives.last
       end
     end
 
