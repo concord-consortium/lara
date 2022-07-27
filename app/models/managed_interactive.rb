@@ -186,6 +186,15 @@ class ManagedInteractive < ActiveRecord::Base
     # N.B. the duplicate hasn't been saved yet
   end
 
+  def report_service_hash
+    result = super # BaseInteractive#report_service_hash
+    if legacy_ref
+      # TODO: Make this more efficient
+      result[:legacy_id] = legacy_ref.embeddable_id
+    end
+    result
+  end
+
   def export
     hash = to_hash()
     hash.delete(:library_interactive_id)
