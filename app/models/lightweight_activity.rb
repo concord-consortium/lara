@@ -287,7 +287,8 @@ class LightweightActivity < ActiveRecord::Base
       id: "activity_" + self.id.to_s,
       type: "activity",
       name: self.name,
-      url: activity_url
+      url: activity_url,
+      migration_status: migration_status
     }
     if self.runtime == "Activity Player"
       data[:preview_url] = activity_player_url(host, preview: true)
