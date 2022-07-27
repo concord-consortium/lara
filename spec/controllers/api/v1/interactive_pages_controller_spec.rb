@@ -278,10 +278,7 @@ describe Api::V1::InteractivePagesController do
       library_interactive2
       managed_interactive1
 
-      xhr :get, "get_library_interactives_list"
-      expect(response.status).to eq(200)
-      expect(response.content_type).to eq("application/json")
-      expect(response.body).to eql({
+      expected_response_body = {
         success: true,
         library_interactives: [
           {
@@ -304,7 +301,8 @@ describe Api::V1::InteractivePagesController do
             name: library_interactive1.name, 
             native_height: library_interactive1.native_height, 
             native_width: library_interactive1.native_width,
-            no_snapshots: library_interactive1.no_snapshots, 
+            no_snapshots: library_interactive1.no_snapshots,
+            official: library_interactive1.official,
             report_item_url: library_interactive1.report_item_url,
             serializeable_id: library_interactive1.serializeable_id,
             show_delete_data_button: library_interactive1.show_delete_data_button,
@@ -332,7 +330,8 @@ describe Api::V1::InteractivePagesController do
             name: library_interactive2.name, 
             native_height: library_interactive2.native_height, 
             native_width: library_interactive2.native_width, 
-            no_snapshots: library_interactive2.no_snapshots, 
+            no_snapshots: library_interactive2.no_snapshots,
+            official: library_interactive2.official, 
             report_item_url: library_interactive2.report_item_url,
             serializeable_id: library_interactive2.serializeable_id,
             show_delete_data_button: library_interactive2.show_delete_data_button, 
@@ -343,7 +342,12 @@ describe Api::V1::InteractivePagesController do
         ],
         # TODO: Add some page-level plugins to test...
         plugins: []
-      }.to_json)
+      }.to_json
+
+      xhr :get, "get_library_interactives_list"
+      expect(response.status).to eq(200)
+      expect(response.content_type).to eq("application/json")
+      expect(response.body).to eql(expected_response_body)
     end
   end
 

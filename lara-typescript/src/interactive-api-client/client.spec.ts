@@ -178,14 +178,6 @@ describe("Client", () => {
       expect(listener).toHaveBeenCalledTimes(1);
     });
 
-    it("can add/remove custom message listener and pass supported messages to setSupportedFeatures", () => {
-      const client = new Client();
-      const listener = jest.fn();
-      client.addCustomMessageListener(listener, { handles: { foo: true } });
-      client.setSupportedFeatures({ apiVersion: 1, features: {} });
-      expect(client.removeCustomMessageListener()).toBe(true);
-    });
-
     it("warns user when he tries to leave the page and interactive state is dirty", () => {
       const spy = jest.spyOn(window, "addEventListener");
       const client = new Client();

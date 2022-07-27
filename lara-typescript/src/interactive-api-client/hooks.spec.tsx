@@ -279,3 +279,21 @@ describe("useCustomMessages", () => {
   });
 
 });
+
+describe("useReportItem", () => {
+  it("lets client set answer handler and metadata", async () => {
+    const handler = jest.fn();
+    const metadata: any = { foo: 1 };
+
+    renderHook(() => hooks.useReportItem<any, any>({ handler, metadata }));
+
+    expect(mockedPhone.messages[0]).toEqual({ type: "reportItemClientReady", content: metadata });
+
+    const request = { bar: 1 };
+    mockedPhone.fakeServerMessage({
+      type: "getReportItemAnswer",
+      content: request
+    });
+    expect(handler).toHaveBeenCalledWith(request);
+  });
+});

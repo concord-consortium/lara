@@ -8,6 +8,8 @@ module Embeddable
     has_many :page_items, :as => :embeddable, :dependent => :destroy
     has_many :sections, through: :page_items
     has_many :interactive_pages, through: :sections
+    has_one :converted_interactive, class_name: "ManagedInteractive", as: :legacy_ref
+    has_many :embeddable_plugins, class_name: "Embeddable::EmbeddablePlugin", as: :embeddable
     delegate :name,  to: :approved_script, allow_nil: true
     delegate :label, to: :approved_script, allow_nil: true
     delegate :url,   to: :approved_script, allow_nil: true

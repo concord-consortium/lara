@@ -14,7 +14,7 @@ describe ImageInteractive do
     image_interactive.reload
     page.reload
 
-    expect(image_interactive.interactive_page).to eq(page)
+    expect(image_interactive.interactive_pages.first).to eq(page)
   end
 
   describe '#to_hash' do

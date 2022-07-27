@@ -1,12 +1,14 @@
 class VideoInteractive < ActiveRecord::Base
   include Embeddable
 
-  has_one :page_item, :as => :embeddable, :dependent => :destroy
+  has_many :page_items, :as => :embeddable, :dependent => :destroy
   # PageItem is a join model; if this is deleted, that instance should go too
-  has_one :interactive_page, :through => :page_item
+  has_many :interactive_pages, :through => :page_items
   has_many :sources, :class_name => 'VideoSource',
            :foreign_key => 'video_interactive_id',
            :dependent => :destroy # If we delete this video we should dump its sources
+  has_many :embeddable_plugins, class_name: "Embeddable::EmbeddablePlugin", as: :embeddable
+  has_one :converted_interactive, class_name: "ManagedInteractive", as: :legacy_ref
 
   # TODO: Not sure if labbooks work with video interactives.
   has_one :labbook, :as => :interactive, :class_name => 'Embeddable::Labbook'
@@ -37,8 +39,8 @@ class VideoInteractive < ActiveRecord::Base
   end
 
   def activity
-    if interactive_page
-      return self.interactive_page.lightweight_activity
+    if interactive_pages
+      return self.interactive_pages.first.lightweight_activity
     else
       return nil
     end
@@ -50,6 +52,11 @@ class VideoInteractive < ActiveRecord::Base
 
   def no_snapshots
     false
+  end
+
+  def page_section
+    # In practice one question can't be added to multiple pages. Perhaps it should be refactored to has_one / belongs_to relation.
+    page_items.count > 0 && page_items.first.section
   end
 
   def to_hash

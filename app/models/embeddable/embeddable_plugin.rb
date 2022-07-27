@@ -15,6 +15,8 @@ module Embeddable
     has_many :page_items, :as => :embeddable, :dependent => :destroy
     has_many :sections, through: :page_items
     has_many :interactive_pages, through: :sections
+    has_many :embeddable_plugins, class_name: "Embeddable::EmbeddablePlugin", as: :embeddable
+    has_one :converted_interactive, class_name: "ManagedInteractive", as: :legacy_ref
 
     delegate :approved_script,  to: :plugin
     delegate :approved_script=,  to: :plugin

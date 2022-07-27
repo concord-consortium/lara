@@ -60,7 +60,7 @@ export const ReportItemComponent: React.FC<Props> = (props) => {
 
         const items: IReportItemAnswerItem[] = [{type: "html", html}];
 
-        sendReportItemAnswer({version, platformUserId, items});
+        sendReportItemAnswer({version, platformUserId, items, itemsType: "fullAnswer"});
       } else {
         // tslint:disable-next-line:no-console
         console.error("Example Report Item Interactive: Unsupported version in getReportItemAnswer request:", version);

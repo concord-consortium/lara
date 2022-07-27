@@ -36436,7 +36436,7 @@ var ReportItemComponent = function (props) {
                         name: name
                     });
                 });
-                (0, interactive_api_client_1.sendReportItemAnswer)({ version: version, platformUserId: platformUserId, items: items });
+                (0, interactive_api_client_1.sendReportItemAnswer)({ version: version, platformUserId: platformUserId, items: items, itemsType: "fullAnswer" });
             }
             else {
                 // tslint:disable-next-line:no-console
@@ -36756,7 +36756,7 @@ var __rest = (this && this.__rest) || function (s, e) {
     return t;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.setOnUnload = exports.sendReportItemAnswer = exports.getAttachmentUrl = exports.readAttachment = exports.writeAttachment = exports.getLibraryInteractiveList = exports.getInteractiveSnapshot = exports.setLinkedInteractives = exports.getInteractiveList = exports.closeModal = exports.showModal = exports.removeLinkedInteractiveStateListener = exports.addLinkedInteractiveStateListener = exports.removeGlobalInteractiveStateListener = exports.addGlobalInteractiveStateListener = exports.removeAuthoredStateListener = exports.addAuthoredStateListener = exports.removeInteractiveStateListener = exports.addInteractiveStateListener = exports.log = exports.getFirebaseJwt = exports.getAuthInfo = exports.setNavigation = exports.setHint = exports.postDecoratedContentEvent = exports.setHeight = exports.setSupportedFeatures = exports.removeGetReportItemAnswerListener = exports.addGetReportItemAnswerListener = exports.removeDecorateContentListener = exports.addDecorateContentListener = exports.removeCustomMessageListener = exports.addCustomMessageListener = exports.setGlobalInteractiveState = exports.getGlobalInteractiveState = exports.setAuthoredState = exports.getAuthoredState = exports.flushStateUpdates = exports.setInteractiveState = exports.setInteractiveStateTimeout = exports.getInteractiveState = exports.getMode = exports.getInitInteractiveMessage = void 0;
+exports.setOnUnload = exports.sendReportItemAnswer = exports.getAttachmentUrl = exports.readAttachment = exports.writeAttachment = exports.getLibraryInteractiveList = exports.getInteractiveSnapshot = exports.setLinkedInteractives = exports.getInteractiveList = exports.closeModal = exports.showModal = exports.removeLinkedInteractiveStateListener = exports.addLinkedInteractiveStateListener = exports.removeGlobalInteractiveStateListener = exports.addGlobalInteractiveStateListener = exports.removeAuthoredStateListener = exports.addAuthoredStateListener = exports.removeInteractiveStateListener = exports.addInteractiveStateListener = exports.log = exports.getFirebaseJwt = exports.getAuthInfo = exports.setNavigation = exports.setHint = exports.postDecoratedContentEvent = exports.setHeight = exports.setSupportedFeatures = exports.notifyReportItemClientReady = exports.removeGetReportItemAnswerListener = exports.addGetReportItemAnswerListener = exports.removeDecorateContentListener = exports.addDecorateContentListener = exports.removeCustomMessageListener = exports.addCustomMessageListener = exports.setGlobalInteractiveState = exports.getGlobalInteractiveState = exports.setAuthoredState = exports.getAuthoredState = exports.flushStateUpdates = exports.setInteractiveState = exports.setInteractiveStateTimeout = exports.getInteractiveState = exports.getMode = exports.getInitInteractiveMessage = void 0;
 var client_1 = __webpack_require__(/*! ./client */ "./src/interactive-api-client/client.ts");
 var uuid_1 = __webpack_require__(/*! uuid */ "./node_modules/uuid/dist/esm-browser/index.js");
 var THROW_NOT_IMPLEMENTED_YET = function (method) {
@@ -36883,30 +36883,59 @@ var setGlobalInteractiveState = function (newGlobalState) {
 };
 exports.setGlobalInteractiveState = setGlobalInteractiveState;
 var addCustomMessageListener = function (callback, handles) {
-    (0, client_1.getClient)().addCustomMessageListener(callback, handles);
+    var client = (0, client_1.getClient)();
+    if (handles) {
+        client.customMessagesHandled = handles;
+    }
+    client.addListener("customMessage", callback);
 };
 exports.addCustomMessageListener = addCustomMessageListener;
 var removeCustomMessageListener = function () {
-    (0, client_1.getClient)().removeCustomMessageListener();
+    return (0, client_1.getClient)().removeListener("customMessage");
 };
 exports.removeCustomMessageListener = removeCustomMessageListener;
 var addDecorateContentListener = function (callback) {
-    (0, client_1.getClient)().addDecorateContentListener(callback);
+    (0, client_1.getClient)().addListener("decorateContent", function (msg) {
+        callback({
+            words: msg.words,
+            replace: msg.replace,
+            wordClass: msg.wordClass,
+            eventListeners: msg.listenerTypes.map(function (listener) {
+                return {
+                    type: listener.type,
+                    listener: function (evt) {
+                        var wordElement = evt.srcElement;
+                        if (!wordElement) {
+                            return;
+                        }
+                        var clickedWord = (wordElement.textContent || "").toLowerCase();
+                        (0, exports.postDecoratedContentEvent)({ type: listener.type,
+                            text: clickedWord,
+                            bounds: wordElement.getBoundingClientRect() });
+                    }
+                };
+            })
+        });
+    });
 };
 exports.addDecorateContentListener = addDecorateContentListener;
 var removeDecorateContentListener = function () {
-    (0, client_1.getClient)().removeDecorateContentListener();
+    (0, client_1.getClient)().removeListener("decorateContent");
 };
 exports.removeDecorateContentListener = removeDecorateContentListener;
 // tslint:disable-next-line:max-line-length
 var addGetReportItemAnswerListener = function (callback) {
-    (0, client_1.getClient)().addGetReportItemAnswerListener(callback);
+    (0, client_1.getClient)().addListener("getReportItemAnswer", callback);
 };
 exports.addGetReportItemAnswerListener = addGetReportItemAnswerListener;
 var removeGetReportItemAnswerListener = function () {
-    (0, client_1.getClient)().removeGetReportItemAnswerListener();
+    (0, client_1.getClient)().removeListener("getReportItemAnswer");
 };
 exports.removeGetReportItemAnswerListener = removeGetReportItemAnswerListener;
+var notifyReportItemClientReady = function (metadata) {
+    (0, client_1.getClient)().post("reportItemClientReady", metadata);
+};
+exports.notifyReportItemClientReady = notifyReportItemClientReady;
 var setSupportedFeatures = function (features) {
     var request = {
         apiVersion: 1,
@@ -37308,7 +37337,6 @@ exports.Client = exports.getClient = void 0;
 // to allow callbacks to optionally be tied to a requestId.  This allows us to have multiple listeners
 // to the same message and auto-removing listeners when a requestId is given.
 var iframePhone = __webpack_require__(/*! iframe-phone */ "./node_modules/iframe-phone/main.js");
-var interactive_api_client_1 = __webpack_require__(/*! ../interactive-api-client */ "./src/interactive-api-client/index.ts");
 var in_frame_1 = __webpack_require__(/*! ./in-frame */ "./src/interactive-api-client/in-frame.ts");
 var managed_state_1 = __webpack_require__(/*! ./managed-state */ "./src/interactive-api-client/managed-state.ts");
 var parseJSONIfString = function (data) {
@@ -37332,6 +37360,11 @@ var getClient = function () {
     return clientInstance;
 };
 exports.getClient = getClient;
+/**
+ * This class is intended to provide basic helpers (like `post()` or `add/removeListener`), maintain client-specific
+ * state, and generally be as minimal as possible. Most of the client-specific helpers and logic can be implemented
+ * in api.ts or hooks.ts (or both so the client app has choice).
+ */
 var Client = /** @class */ (function () {
     function Client() {
         var _this = this;
@@ -37427,47 +37460,6 @@ var Client = /** @class */ (function () {
             return true;
         }
         return false;
-    };
-    Client.prototype.addCustomMessageListener = function (callback, handles) {
-        if (handles)
-            this.customMessagesHandled = handles;
-        this.addListener("customMessage", callback);
-    };
-    Client.prototype.removeCustomMessageListener = function () {
-        return this.removeListener("customMessage");
-    };
-    Client.prototype.addDecorateContentListener = function (callback) {
-        this.addListener("decorateContent", function (msg) {
-            callback({
-                words: msg.words,
-                replace: msg.replace,
-                wordClass: msg.wordClass,
-                eventListeners: msg.listenerTypes.map(function (listener) {
-                    return {
-                        type: listener.type,
-                        listener: function (evt) {
-                            var wordElement = evt.srcElement;
-                            if (!wordElement) {
-                                return;
-                            }
-                            var clickedWord = (wordElement.textContent || "").toLowerCase();
-                            (0, interactive_api_client_1.postDecoratedContentEvent)({ type: listener.type,
-                                text: clickedWord,
-                                bounds: wordElement.getBoundingClientRect() });
-                        }
-                    };
-                })
-            });
-        });
-    };
-    Client.prototype.removeDecorateContentListener = function () {
-        return this.removeListener("decorateContent");
-    };
-    Client.prototype.addGetReportItemAnswerListener = function (callback) {
-        this.addListener("getReportItemAnswer", callback);
-    };
-    Client.prototype.removeGetReportItemAnswerListener = function () {
-        return this.removeListener("getReportItemAnswer");
     };
     Client.prototype.connect = function () {
         var _this = this;
@@ -37570,7 +37562,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.useAutoSetHeight = exports.useDecorateContent = exports.useCustomMessages = exports.useInitMessage = exports.useGlobalInteractiveState = exports.useAuthoredState = exports.useInteractiveState = void 0;
+exports.useReportItem = exports.useAutoSetHeight = exports.useDecorateContent = exports.useCustomMessages = exports.useInitMessage = exports.useGlobalInteractiveState = exports.useAuthoredState = exports.useInteractiveState = void 0;
 var react_1 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 var resize_observer_polyfill_1 = __webpack_require__(/*! resize-observer-polyfill */ "./node_modules/resize-observer-polyfill/dist/ResizeObserver.es.js");
 var client = __webpack_require__(/*! ./api */ "./src/interactive-api-client/api.ts");
@@ -37683,7 +37675,7 @@ exports.useInitMessage = useInitMessage;
 var useCustomMessages = function (callback, handles) {
     (0, react_1.useEffect)(function () {
         client.addCustomMessageListener(callback, handles);
-        return function () { return client.removeCustomMessageListener(); };
+        return function () { client.removeCustomMessageListener(); };
     }, []);
 };
 exports.useCustomMessages = useCustomMessages;
@@ -37713,6 +37705,16 @@ var useAutoSetHeight = function () {
     }, [initMessage]);
 };
 exports.useAutoSetHeight = useAutoSetHeight;
+// tslint:disable-next-line:max-line-length
+var useReportItem = function (_a) {
+    var metadata = _a.metadata, handler = _a.handler;
+    (0, react_1.useEffect)(function () {
+        client.addGetReportItemAnswerListener(handler);
+        client.notifyReportItemClientReady(metadata);
+        return function () { return client.removeGetReportItemAnswerListener(); };
+    }, []);
+};
+exports.useReportItem = useReportItem;
 
 
 /***/ }),
@@ -37935,4 +37937,3 @@ Object.defineProperty(exports, "__esModule", { value: true });
 /***/ })
 
 /******/ });
-//# sourceMappingURL=index.js.map

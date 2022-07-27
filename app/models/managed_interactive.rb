@@ -21,7 +21,9 @@ class ManagedInteractive < ActiveRecord::Base
     :inherit_full_window, :custom_full_window,
     :inherit_click_to_play_prompt, :custom_click_to_play_prompt,
     :inherit_image_url, :custom_image_url,
-    :linked_interactive_item_id
+    :linked_interactive_item_id,
+    :legacy_ref_id,
+    :legacy_ref_type
 
   default_value_for :custom_native_width, ASPECT_RATIO_DEFAULT_WIDTH
   default_value_for :custom_native_height, ASPECT_RATIO_DEFAULT_HEIGHT
@@ -41,9 +43,13 @@ class ManagedInteractive < ActiveRecord::Base
   has_one :interactive_page, :through => :section
   has_many :interactive_run_states, :as => :interactive, :dependent => :destroy
 
+  has_many :embeddable_plugins, class_name: "Embeddable::EmbeddablePlugin", as: :embeddable
+  has_one :converted_interactive, class_name: "ManagedInteractive", as: :legacy_ref
+
   has_one :labbook, :as => :interactive, :class_name => 'Embeddable::Labbook'
 
   belongs_to :linked_interactive, :polymorphic => true
+  belongs_to :legacy_ref, :polymorphic => true
 
   # getter for constructed url
   def url

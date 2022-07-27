@@ -10,12 +10,12 @@ class AddApFooterFieldsToProjects < ActiveRecord::Migration
   end
 
   def down
-    remove_column :projects, :copyright, :text
-    remove_column :projects, :copyright_image_url, :string
-    remove_column :projects, :collaborators, :text
-    remove_column :projects, :funders_image_url, :string
-    remove_column :projects, :collaborators_image_url, :string
-    remove_column :projects, :contact_email, :string
+    remove_column :projects, :copyright
+    remove_column :projects, :copyright_image_url
+    remove_column :projects, :collaborators
+    remove_column :projects, :funders_image_url
+    remove_column :projects, :collaborators_image_url
+    remove_column :projects, :contact_email
     add_column :projects, :help, :text
   end
 end
