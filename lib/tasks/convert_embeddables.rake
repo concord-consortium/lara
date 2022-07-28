@@ -25,7 +25,7 @@ def multiple_choice_authored_state(item)
   converted_choices = []
   item.embeddable.choices.each do |choice|
     converted_choice = {
-      id: choice.id,
+      id: choice.id.to_s, # to be consistent with Question Interactives MC data format
       content: choice.choice,
       correct: choice.is_correct,
       choiceFeedback: choice.prompt
@@ -192,11 +192,11 @@ def create_new_embeddables(activity_id=nil)
         authored_state = nil
         if page_item.embeddable
           legacy_ref_id, legacy_ref_type = serialization_helper.key(page_item.embeddable).split("-")
-          # The following check to see if a new managed interactive has already been created 
+          # The following check to see if a new managed interactive has already been created
           # would be very slow, so we're disabling it for now. We should enable it when we
-          # run this task a second time to determine if we need to create a new managed 
+          # run this task a second time to determine if we need to create a new managed
           # interactive embeddable. We will have to create a new one if there are brand new
-          # built-in embeddables that weren't processed in the first pass, or if an 
+          # built-in embeddables that weren't processed in the first pass, or if an
           # existing built-in embeddable was modified after the first pass.
           # TODO: Check the updated_at timestamps to see if an existing built-in embeddable
           # has been modified after the first pass.
@@ -359,4 +359,4 @@ namespace :convert_embeddables do
     delete_orphaned_old_embeddables
   end
 
-end 
+end
