@@ -32,6 +32,17 @@ class LightweightActivitiesController < ApplicationController
 
     # If there are launch parameters, set class info on run,
     # See /app/models/with_class_info.rb #update_platform_info
+
+    query_param = {
+      activity: "https://authoring.concord.org" + "/api/v1/activities" + <params[:ID]> + ".json"
+    }
+
+    if params[:runKey]
+      redirect_to ENV[:ACTIVITY_PLAYER_URL] + "?activity=" + query_param.activity + "?runKey=" + <params[:runKey]>
+    else
+      redirect_to ENV[:ACTIVITY_PLAYER_URL] + "?activity=" + query_param.activity
+    end
+
     @run.update_platform_info(params)
     authorize! :read, @activity
 
