@@ -394,17 +394,23 @@ class Api::V1::InteractivePagesController < API::APIController
 
   public
   def get_library_interactives_list
-    # FIXME: The computed use count is not actually used. Instead, the JSON render is calling the use_count method on the library interactive instance.
     library_interactives = LibraryInteractive
-      .select("library_interactives.*, CONCAT('LibraryInteractive_', library_interactives.id) as serializeable_id, count(managed_interactives.id) as use_count, UNIX_TIMESTAMP(library_interactives.created_at) as date_added")
+      .select("library_interactives.*, CONCAT('LibraryInteractive_', library_interactives.id) as serializeable_id, count(managed_interactives.id) as query_use_count, UNIX_TIMESTAMP(library_interactives.created_at) as date_added")
       .joins("LEFT JOIN managed_interactives ON managed_interactives.library_interactive_id = library_interactives.id")
       .group('library_interactives.id')
 
     plugins = get_teacher_edition_plugins.map { |plugin| map_plugin_to_hash(plugin) }
 
+    library_interactives_list = library_interactives.map do |library_interactive|
+      li_json = library_interactive.as_json
+      li_json["use_count"] = li_json["query_use_count"]
+      li_json.delete("query_use_count")
+      li_json
+    end
+
     render :json => {
       success: true,
-      library_interactives: library_interactives,
+      library_interactives: library_interactives_list,
       plugins: plugins
     }
   end
