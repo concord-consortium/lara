@@ -29,59 +29,19 @@ class LightweightActivitiesController < ApplicationController
 
   # These are the runtime (student-facing) actions, show and summary
   def show # show index
-
-    # If there are launch parameters, set class info on run,
-    # See /app/models/with_class_info.rb #update_platform_info
-    @run.update_platform_info(params)
     authorize! :read, @activity
 
-    setup_show
-    raise_error_if_not_authorized_run(@run)
-
-    if params[:print]
-      # we pass all query_parameters through so the print param is passed too
-      # however, it might be better to just pass the print param explictly
-      redirect_to runnable_single_page_activity_path(@activity, request.query_parameters) and return
+    uri = URI.parse(ENV['ACTIVITY_PLAYER_URL'])
+    query = Rack::Utils.parse_query(uri.query)
+    if request.url.include? "/sequences/"
+      query["sequence"] = "#{api_v1_sequence_url(params[:sequence_id])}.json"
+      query["sequenceActivity"] = "activity_#{params[:id]}"
+    else
+      query["activity"] = "#{api_v1_activity_url(params[:id])}.json"
     end
-
-    # redirect if this run has a sequence and sequences is not part of the path
-    if @run.sequence && !(request.url.include? "/sequences/")
-      redirect_to sequence_activity_with_run_path(@run.sequence, @activity, @run.key, request.query_parameters) and return
-    end
-
-    if @activity.layout == LightweightActivity::LAYOUT_SINGLE_PAGE
-      redirect_to runnable_single_page_activity_path(@activity) and return
-    end
-
-    # this run count seems to be pretty useless it might be incremented mutliple times
-    # depending on redirects. It will also be incremented whenever the user returns to
-    # this show page. I suspect it was added to try to track how many times the activity
-    # has been access by a user. If we really wanted to get a more accurate count this
-    # probably needs to be moved into the client code. The client can store a
-    # sessionStorage variable which will be unique to the browser tab. On each page load
-    # the client can async send this to the server and the server can track the unique
-    # values. Perhaps there is a more simple way to do this.
-    @run.increment_run_count!
-
-    if @run.last_page && !@run.last_page.is_hidden && !params[:show_index]
-      # TODO: If the Page isn't in this activity... Then we need to log that as an error,
-      # and do the best we can to get back to the right page...
-      if @activity != @run.last_page.lightweight_activity
-        Rails.logger.error("Page has wrong activity or vice versa")
-        Rails.logger.error("Page: #{@run.last_page.id}  wrong activity: #{@activity.id} right activity: #{@run.last_page.lightweight_activity.id}")
-        @activity = @run.last_page.lightweight_activity
-      end
-      redirect_to_page_with_run_path(@run.sequence, @activity.id, @run.last_page.id, @run.key) and return
-    end
-
-    # if we haven't done any other redirects and we don't have a run_key parameter,
-    # redirect back here with a run_key, this way the user sees a consistant URL.
-    # And if the user stays on this page and gets signed out we will know which run
-    # they were originally accessing
-    if params[:run_key].blank?
-      redirect_to runnable_activity_path(@activity) and return
-    end
-
+    query["runKey"] = params[:run_key] if params[:run_key]
+    uri.query = Rack::Utils.build_query(query)
+    redirect_to uri.to_s
   end
 
   def preview

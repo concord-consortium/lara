@@ -38,212 +38,42 @@ describe LightweightActivitiesController do
       }.to raise_error(ActiveRecord::RecordNotFound)
     end
 
-    it_behaves_like "runnable resource launchable by the portal", Run do
-      let(:action) { :show }
-      let(:resource_template) { 'lightweight_activities/show' }
-      let(:base_params) { {id: act.id} }
-      let(:base_factory_params) { {activity_id: act.id}}
-      let(:run_path_helper) { :activity_with_run_path }
-      let(:run_key_param_name) { :run_key }
-      let(:run_variable_name) { :run }
+    it "redirects to AP with the correct activity" do
+      uri = URI.parse(ENV['ACTIVITY_PLAYER_URL'])
+      query = Rack::Utils.parse_query(uri.query)
+      query["activity"] = "#{api_v1_activity_url(act[:id])}.json"
+      uri.query = Rack::Utils.build_query(query)
+
+      get :show, :id => act[:id]
+      expect(response).to redirect_to uri.to_s
     end
 
-    describe "when the run has a page" do
-      let(:last_page) { page }
-      before(:each) do
-        ar_run.set_last_page(last_page)
-      end
-      describe "when the URL has a run_key" do
-        subject { get :show, :id => act.id, :run_key => ar_run.key}
+    it "redirects to AP with the correct sequence" do
+      sequence_with_activity = FactoryGirl.create(:sequence_with_activity)
 
-        it "should redirect to the run page" do
-          # page_with_run_path(@activity.id, @run.last_page.id, @run)
-          expect(subject).to redirect_to(page_with_run_path(act.id, page.id, ar_run.key))
-        end
+      uri = URI.parse(ENV['ACTIVITY_PLAYER_URL'])
+      query = Rack::Utils.parse_query(uri.query)
+      query["sequence"] = "#{api_v1_sequence_url(sequence_with_activity[:id])}.json"
+      query["sequenceActivity"] = "activity_#{sequence_with_activity.activities[0].id}"
+      uri.query = Rack::Utils.build_query(query)
 
-        describe "when the run page is hidden" do
-          let(:page) { FactoryGirl.create(:page, name: "Page 1", is_hidden: true) }
-
-          it "should not redirect to the run page" do
-            expect(subject).not_to redirect_to(page_with_run_path(act.id, page.id, ar_run.key))
-            expect(response).to render_template('lightweight_activities/show')
-          end
-        end
-
-        describe "when the run page is for a different activity" do
-          let(:other_act) { FactoryGirl.create(:public_activity) }
-          let(:other_page) { FactoryGirl.create(:page, name: "Page 2", lightweight_activity: other_act) }
-          let(:last_page) { other_page }
-
-          it "should redirect to Act 2 run page." do
-            expect(subject).to redirect_to(page_with_run_path(other_act.id, other_page.id, ar_run.key))
-          end
-        end
-
-        describe 'when activity has a single page layout' do
-          before(:each) do
-            act.layout = LightweightActivity::LAYOUT_SINGLE_PAGE
-            act.save
-          end
-          it 'should redirect to the single page view instead' do
-            get :show, :id => act.id
-            expect(subject).to redirect_to(activity_single_page_with_run_path(act.id, ar_run.key))
-          end
-
-          describe "when the URL has portal properties" do
-            before(:each) do
-              ar_run.remote_endpoint = 'https://example.com'
-              ar_run.remote_id = 1
-              ar_run.user = user
-              ar_run.save
-              sign_in user
-            end
-
-            subject { get :show, id: act.id,
-               returnUrl: 'https://example.com', externalId: 1 }
-
-            it "should redirect to the single page with a run key" do
-              expect(subject).to redirect_to(activity_single_page_with_run_path(act.id, ar_run.key))
-            end
-          end
-
-        end
-
-      end
+      get :show, :sequence_id => sequence_with_activity[:id], :id => sequence_with_activity.activities[0].id
+      expect(response).to redirect_to uri.to_s
     end
 
-    describe 'when it is part of a sequence' do
-      let (:seq_run) { FactoryGirl.create(:sequence_run, :sequence_id => sequence.id, :user_id => nil) }
+    it "redirects to AP with a run key if given one" do
+      uri = URI.parse(ENV['ACTIVITY_PLAYER_URL'])
+      query = Rack::Utils.parse_query(uri.query)
+      query["activity"] = "#{api_v1_activity_url(act[:id])}.json"
+      query["runKey"] = ar_run.key
+      uri.query = Rack::Utils.build_query(query)
 
-      before(:each) do
-        # Add the activity to the sequence
-        act.sequences = [sequence]
-        act.save
-      end
-
-      it_behaves_like "runnable resource not launchable by the portal", Run do
-        let(:action) { :show }
-        let(:resource_template) { 'lightweight_activities/show' }
-        let(:base_params) { {id: act.id, sequence_id: sequence.id} }
-        let(:base_factory_params) { {activity_id: act.id, sequence_id: sequence.id,
-          sequence_run: seq_run }}
-        let(:run_path_helper) { :sequence_activity_with_run_path }
-        let(:run_key_param_name) { :run_key }
-        let(:run_variable_name) { :run }
-      end
-
-
-      it 'creates a sequence run and activity run if not specificied' do
-        get :show, :id => act.id, :sequence_id => sequence.id
-        expect(assigns(:sequence_run)).not_to be_nil
-      end
-
-      describe "when an anonymous run with a sequence run already exists" do
-        before(:each) do
-          ar_run.sequence = sequence
-          ar_run.sequence_run = seq_run
-          ar_run.save
-        end
-
-        it "assigns a sequence even if the URL doesn't have one" do
-          ar_run.sequence = sequence
-          ar_run.sequence_run = seq_run
-          ar_run.save
-          get :show, :id => act.id, :run_key => ar_run.key
-          expect(assigns(:sequence)).to eq(sequence)
-        end
-
-        # this is mostly duplicated in the runnable_resource shared examples but those
-        # examples don't currently check that the sequencerun is created too
-        describe "when the activity is loaded without a run_key" do
-          # build is used here so this new_seq_run cannot be accidentally found during a
-          # broken lookup
-          let(:new_seq_run) { FactoryGirl.build(:sequence_run, sequence_id: sequence.id) }
-
-          it 'creates a new run, it does not reuse the existing run' do
-            expect(new_seq_run).to_not be_persisted
-            # we need to save this sequence run so the runs.create can be called later
-            expect(SequenceRun).to receive(:create!) { new_seq_run.save; new_seq_run }
-            get :show, sequence_id: sequence.id, id: act.id
-            expect(assigns[:sequence_run]).to eq(new_seq_run)
-            expect(assigns[:run].sequence_run).to eq(new_seq_run)
-            expect(assigns[:run]).to_not eq(ar_run)
-          end
-        end
-      end
-
-      it 'assigns a sequence if one is in the URL' do
-        get :show, :id => act.id, :sequence_id => sequence.id
-        expect(assigns(:sequence)).not_to be_nil
-      end
-
-      describe 'when the current_user has a run with portal properties with this sequence' do
-
-        before(:each) do
-          ar_run.sequence_run = seq_run
-          ar_run.sequence = sequence
-          ar_run.user = user
-          ar_run.remote_endpoint = 'http://example.com'
-          ar_run.remote_id = 1
-          ar_run.save
-          sign_in user
-        end
-
-        # this is mostly duplicated by the runnable_resource shared examples but those
-        # examples don't check if the SequenceRun is created
-        describe 'when the URL has no parameters' do
-          # build is used here so this new_seq_run cannot be accidentally found during a
-          # broken lookup
-          let(:new_seq_run) { FactoryGirl.build(:sequence_run, sequence_id: sequence.id) }
-
-          it 'creates a new run, it does not reuse the existing run' do
-            expect(new_seq_run).to_not be_persisted
-            # we need to save this sequence run so the runs.create can be called later
-            expect(SequenceRun).to receive(:create!) { new_seq_run.save; new_seq_run }
-            get :show, sequence_id: sequence.id, id: act.id
-            expect(assigns[:sequence_run]).to eq(new_seq_run)
-            expect(assigns[:run].sequence_run).to eq(new_seq_run)
-            expect(assigns[:run]).to_not eq(ar_run)
-          end
-        end
-
-      end
-
-      it 'fails if URL has a sequence but the run does not' do
-        ar_run.sequence = nil
-        ar_run.sequence_run = seq_run
-        ar_run.save
-        ar_run.reload
-        expect {
-          get :show, :id => act.id, :run_key => ar_run.key, :sequence_id => sequence.id
-        }.to raise_error(ActiveRecord::RecordNotFound)
-      end
-
-      it "fails if the run's sequence doesn't match the URL sequence" do
-        other_activity = FactoryGirl.create(:activity)
-        other_sequence = FactoryGirl.create(:sequence, lightweight_activities: [other_activity])
-
-        ar_run.sequence = sequence
-        ar_run.sequence_run = seq_run
-        ar_run.save
-        ar_run.reload
-        expect {
-          get :show, :id => other_activity.id, :run_key => ar_run.key, :sequence_id => other_sequence.id
-        }.to raise_error(ActiveRecord::RecordNotFound)
-      end
-
-      it 'fails if the activity is not part of the sequence' do
-        other_activity = FactoryGirl.create(:activity)
-        expect {
-          get :show, :id => other_activity.id, :sequence_id => sequence.id
-        }.to raise_error(ActiveRecord::RecordNotFound)
-
-      end
+      get :show, {:id => act[:id], :run_key => ar_run.key}
+      expect(response).to redirect_to uri.to_s
     end
-
   end
 
-  describe '#preview' do
+    describe '#preview' do
     before(:each) {
       sign_in author
     }
