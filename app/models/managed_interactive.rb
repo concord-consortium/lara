@@ -211,8 +211,7 @@ class ManagedInteractive < ActiveRecord::Base
   def report_service_hash
     result = super # BaseInteractive#report_service_hash
     if legacy_ref
-      # TODO: Make this more efficient
-      result[:legacy_id] = legacy_ref.embeddable_id
+      result[:legacy_id] = "#{legacy_ref_id}-#{legacy_ref_type}"
     end
     result
   end
