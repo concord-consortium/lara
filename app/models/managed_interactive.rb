@@ -211,7 +211,8 @@ class ManagedInteractive < ActiveRecord::Base
   def report_service_hash
     result = super # BaseInteractive#report_service_hash
     if legacy_ref
-      result[:legacy_id] = "#{legacy_ref_id}-#{legacy_ref_type}"
+      embeddable_class = legacy_ref_type.constantize
+      result[:legacy_id] = "#{legacy_ref_id}-#{embeddable_class.to_s.demodulize.underscore}"
     end
     result
   end
