@@ -41,6 +41,8 @@ services:
       CONVERSION_SCRIPT_URL: "${CONVERSION_SCRIPT_URL:-https://models-resources.concord.org/question-interactives/convert-old-lara/?lara_root=https://app.lara.docker&template=https://app.lara.docker/api/v1/activities/214.json}"
       # set to "true" to allow for linking to glossaries solely based on id, ignoring the domain
       ENABLE_DANGEROUS_GLOSSARY_LINKING_ON_IMPORT:
+      # set to "true" to disable auto publishing on saves of activities and sequences
+      DISABLE_AUTO_PUBLISHING:
 
       VIRTUAL_HOST: "${LARA_HOST:-app.lara.docker}"
 
