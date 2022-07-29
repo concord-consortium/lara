@@ -89,7 +89,17 @@ def image_authored_state(item)
 end
 
 def image_question_authored_state(item)
-  background_source = item.embeddable.bg_source == "Shutterbug" ? "snapshot" : item.embeddable.bg_source === "Upload" ? "upload" : nil
+  background_source =
+    if item.embeddable.bg_source == "Shutterbug"
+      "snapshot"
+    elsif item.embeddable.bg_source === "Upload"
+      "upload"
+    elsif item.embeddable.bg_url.present? # && item.embeddable.bg_source == "Drawing", but it's redundant at this point
+      "url"
+    else
+      nil
+    end
+
   target_page_item = background_source == "snapshot" ? PageItem.where(:embeddable_id => item.embeddable.interactive_id, :embeddable_type => item.embeddable.interactive_type).first : nil
   if target_page_item
     new_linked_page_item = LinkedPageItem.new(primary_id: item.id, secondary_id: target_page_item.id, label: "snapshotTarget")
@@ -102,13 +112,17 @@ def image_question_authored_state(item)
     required: item.embeddable.is_prediction,
     predictionFeedback: item.embeddable.prediction_feedback,
     backgroundImageUrl: item.embeddable.bg_url,
-    backgroundSource: background_source,
     imageFit: "shrinkBackgroundToCanvas",
     imagePosition: "center",
     answerPrompt: item.embeddable.drawing_prompt,
     prompt: item.embeddable.prompt,
     hint: item.embeddable.hint
   }
+  # Question Interactives Image Questions authoring complains about `null` or "" (empty string) values.
+  # So, if backgroundSource should not be defined if it's equal to `nil`.
+  if background_source.present?
+    authored_state[:backgroundSource] = background_source
+  end
 
   return authored_state.to_json
 end
