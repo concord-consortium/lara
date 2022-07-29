@@ -209,6 +209,7 @@ describe Sequence do
         type: "sequence",
         name: sequence.title,
         url: "http://test.host#{Rails.application.routes.url_helpers.sequence_path(sequence)}",
+        migration_status: "unknown",
         children: []
       }
     end
@@ -219,6 +220,7 @@ describe Sequence do
         type: "sequence",
         name: sequence_with_activities.title,
         url: "http://test.host#{Rails.application.routes.url_helpers.sequence_path(sequence_with_activities)}",
+        migration_status: "not_migrated",
         children: [
           # Note that we reordered activities!
           act2.serialize_for_report_service("http://test.host"),

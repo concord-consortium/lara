@@ -25,7 +25,7 @@ def multiple_choice_authored_state(item)
   converted_choices = []
   item.embeddable.choices.each do |choice|
     converted_choice = {
-      id: choice.id,
+      id: choice.id.to_s, # to be consistent with Question Interactives MC data format
       content: choice.choice,
       correct: choice.is_correct,
       choiceFeedback: choice.prompt
@@ -89,7 +89,17 @@ def image_authored_state(item)
 end
 
 def image_question_authored_state(item)
-  background_source = item.embeddable.bg_source == "Shutterbug" ? "snapshot" : item.embeddable.bg_source === "Upload" ? "upload" : nil
+  background_source =
+    if item.embeddable.bg_source == "Shutterbug"
+      "snapshot"
+    elsif item.embeddable.bg_source === "Upload"
+      "upload"
+    elsif item.embeddable.bg_url.present? # && item.embeddable.bg_source == "Drawing", but it's redundant at this point
+      "url"
+    else
+      nil
+    end
+
   target_page_item = background_source == "snapshot" ? PageItem.where(:embeddable_id => item.embeddable.interactive_id, :embeddable_type => item.embeddable.interactive_type).first : nil
   if target_page_item
     new_linked_page_item = LinkedPageItem.new(primary_id: item.id, secondary_id: target_page_item.id, label: "snapshotTarget")
@@ -102,13 +112,17 @@ def image_question_authored_state(item)
     required: item.embeddable.is_prediction,
     predictionFeedback: item.embeddable.prediction_feedback,
     backgroundImageUrl: item.embeddable.bg_url,
-    backgroundSource: background_source,
     imageFit: "shrinkBackgroundToCanvas",
     imagePosition: "center",
     answerPrompt: item.embeddable.drawing_prompt,
     prompt: item.embeddable.prompt,
     hint: item.embeddable.hint
   }
+  # Question Interactives Image Questions authoring complains about `null` or "" (empty string) values.
+  # So, if backgroundSource should not be defined if it's equal to `nil`.
+  if background_source.present?
+    authored_state[:backgroundSource] = background_source
+  end
 
   return authored_state.to_json
 end
@@ -192,11 +206,11 @@ def create_new_embeddables(activity_id=nil)
         authored_state = nil
         if page_item.embeddable
           legacy_ref_id, legacy_ref_type = serialization_helper.key(page_item.embeddable).split("-")
-          # The following check to see if a new managed interactive has already been created 
+          # The following check to see if a new managed interactive has already been created
           # would be very slow, so we're disabling it for now. We should enable it when we
-          # run this task a second time to determine if we need to create a new managed 
+          # run this task a second time to determine if we need to create a new managed
           # interactive embeddable. We will have to create a new one if there are brand new
-          # built-in embeddables that weren't processed in the first pass, or if an 
+          # built-in embeddables that weren't processed in the first pass, or if an
           # existing built-in embeddable was modified after the first pass.
           # TODO: Check the updated_at timestamps to see if an existing built-in embeddable
           # has been modified after the first pass.
@@ -359,4 +373,4 @@ namespace :convert_embeddables do
     delete_orphaned_old_embeddables
   end
 
-end 
+end

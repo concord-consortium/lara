@@ -208,6 +208,15 @@ class ManagedInteractive < ActiveRecord::Base
     # N.B. the duplicate hasn't been saved yet
   end
 
+  def report_service_hash
+    result = super # BaseInteractive#report_service_hash
+    if legacy_ref
+      # TODO: Make this more efficient
+      result[:legacy_id] = legacy_ref.embeddable_id
+    end
+    result
+  end
+
   def export
     # Remove linked_interactives from the hash so we don't export linked embeddables. The export method 
     # in LaraSerializationHelper provides special handling for this value. See comment there for more.

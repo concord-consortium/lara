@@ -644,6 +644,7 @@ describe LightweightActivity do
         type: "activity",
         name: activity.name,
         url: activity_url,
+        migration_status: "not_migrated",
         children: [
           {
             id: "section_#{activity.id}",

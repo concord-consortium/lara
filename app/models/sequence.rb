@@ -183,7 +183,17 @@ class Sequence < ActiveRecord::Base
     # the sequence, so links in the report to the activities or activity pages
     # will not show the activity or page in the context of a sequence
     # see https://www.pivotaltracker.com/story/show/177122631
-    data[:children] = self.activities.map { |a| a.serialize_for_report_service(host) }
+    migration_status = "unknown"
+    data[:children] = self.activities.map { |a| 
+      if a.migration_status != "migrated"
+        migration_status = "not_migrated"
+      end
+      a.serialize_for_report_service(host)
+    }
+    if data[:children].count > 0 && migration_status == "unknown"
+      migration_status = "migrated"
+    end
+    data[:migration_status] = migration_status
     data
   end
 
