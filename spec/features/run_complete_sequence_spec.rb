@@ -1,3 +1,5 @@
+# NOTE: this spec is disabled because runs are no longer created when viewing activities, instead the user is redirected to the Activity Player.
+
 # require 'spec_helper'
 # require 'uri'
 
