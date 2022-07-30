@@ -33,30 +33,13 @@ class SequencesController < ApplicationController
   # GET /sequences/1.json
   def show
     authorize! :read, @sequence
-    current_theme
-    current_project
-    respond_to do |format|
-      format.html do
-        raise_error_if_not_authorized_run(@sequence_run)
-        if !params[:sequence_run_key]
-          redirect_to append_white_list_params(sequence_with_sequence_run_key_path(@sequence, @sequence_run.key), sequence_param_whitelist)
-          return
-        end
-        if @sequence_run.has_been_run
-          unless params[:show_index]
-            activity = @sequence_run.most_recent_activity
-            redirect_to sequence_activity_with_run_path(@sequence, activity,
-              @sequence_run.run_for_activity(activity), request.query_parameters)
-            return
-          end
-        end
-        # show.html.erb  ⬅ default template is shown otherwise
-        render layout: "sequence_run"
-      end
-      format.json { render json: @sequence }
-    end
-  end
 
+    uri = URI.parse(ENV['ACTIVITY_PLAYER_URL'])
+    query = Rack::Utils.parse_query(uri.query)
+    query["sequence"] = "#{api_v1_sequence_url(@sequence.id)}.json"
+    uri.query = Rack::Utils.build_query(query)
+    redirect_to uri.to_s
+  end
 
   # GET /sequences/new
   # GET /sequences/new.json

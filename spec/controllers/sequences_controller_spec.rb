@@ -53,74 +53,16 @@ describe SequencesController do
       expect(assigns(:sequence)).to eq(sequence)
     end
 
-    it_behaves_like "runnable resource launchable by the portal", SequenceRun do
-      let(:action) { :show }
-      let(:resource_template) { 'sequences/show' }
-      let(:base_params) { {id: sequence.id} }
-      let(:base_factory_params) { {sequence_id: sequence.id}}
-      let(:run_path_helper) { :sequence_with_sequence_run_key_path }
-      let(:run_key_param_name) { :sequence_run_key }
-      let(:run_variable_name) { :sequence_run }
-    end
+    it "redirects to the activity player" do
+      uri = URI.parse(ENV['ACTIVITY_PLAYER_URL'])
+      query = Rack::Utils.parse_query(uri.query)
+      query["sequence"] = "#{api_v1_sequence_url(sequence.id)}.json"
+      uri.query = Rack::Utils.build_query(query)
 
-    describe "when sequence has some activities" do
-      before :each do
-        sequence.activities << activity
-        sequence.save!
-      end
-
-      describe "when platform info is provided and sequence run doesn't exist" do
-        it "creates sequence and activity runs with platform info" do
-          expect(SequenceRun.count).to eq(0)
-          expect(Run.count).to eq(0)
-          get :show, {:id => sequence.id, platform_id: "test_platform"}
-          expect(SequenceRun.count).to eq(1)
-          expect(Run.count).to eq(1)
-          expect(SequenceRun.last.platform_id).to eq("test_platform")
-          expect(Run.last.platform_id).to eq("test_platform")
-        end
-      end
-
-      describe "when platform info is provided and sequence run exists" do
-        let(:sequence_run) { FactoryGirl.create(:sequence_run, user_id: user.id, sequence: sequence) }
-        before :each do
-          sequence_run
-          sign_in user
-        end
-        it "creates activity runs with platform info" do
-          expect(SequenceRun.count).to eq(1)
-          expect(Run.count).to eq(0)
-          get :show, id: sequence.id, platform_id: "test_platform"
-          expect(SequenceRun.count).to eq(1)
-          expect(Run.count).to eq(1)
-          expect(SequenceRun.last.platform_id).to eq("test_platform")
-          expect(Run.last.platform_id).to eq("test_platform")
-        end
-      end
-    end
-
-    describe "when there is a sequence run that has been run before" do
-      let(:sequence_run) { FactoryGirl.create(:sequence_run, user_id: nil, sequence: sequence) }
-      let(:run) { FactoryGirl.create(:run,
-        sequence: sequence,
-        sequence_run: sequence_run,
-        activity: activity,
-        run_count: 1,
-        user_id: nil) }
-      before(:each) {
-        run
-      }
-      it "redirects to the most recent activity with the run key" do
-        get :show, id: sequence.id, sequence_run_key: sequence_run.key
-        expect(response).to redirect_to(sequence_activity_with_run_path(sequence.id, activity.id, run))
-      end
-      it "does not redirect to the most recent activity if the show_index parameter is present" do
-        get :show, id: sequence.id, sequence_run_key: sequence_run.key, show_index: true
-        expect(response).not_to redirect_to(sequence_activity_with_run_path(sequence.id, activity.id, run))
-      end
+      get :show, {:id => sequence.to_param}
+      expect(response).to redirect_to(uri.to_s)
     end
   end
-
 
   describe "GET new" do
     it "redirects to edit" do
