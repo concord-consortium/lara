@@ -15,7 +15,9 @@ class Api::V1::LightweightActivitiesController < API::APIController
 
   # GET /api/v1/activities/1/report_structure.json
   def report_structure
-    activity = LightweightActivity.find(params[:id])
+    activity = LightweightActivity.preload(pages: {sections: {page_items: {embeddable: [embeddable_plugins: :plugin]}}})
+                                  .where(:id => params[:id])
+                                  .first
     self_url = "#{request.protocol}#{request.host_with_port}"
     json = activity.serialize_for_report_service(self_url).to_json
     render json: json
