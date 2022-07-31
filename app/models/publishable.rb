@@ -165,6 +165,11 @@ module Publishable
       end
 
       def queue_publish
+        if ENV['DISABLE_AUTO_PUBLISHING'] == "true"
+          Rails.logger.info "Auto publishing has been disabled. Skipping queue_publish for #{self.class.name} ##{self.id}."
+          return
+        end
+
         queue_auto_publish_to_portal
         queue_publish_to_report_service
 
