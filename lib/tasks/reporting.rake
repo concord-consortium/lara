@@ -37,9 +37,12 @@ namespace :reporting do
     error_count = 0
     success_count = 0
     start_time = Time.now
-    # if portal, only send resources that are in the portal, otherwise send resources that are _not_ in the portal
+    # If portal is set, only send activities or sequences that are in the portal, otherwise send 
+    # activities or sequences that are _not_ in the portal
     resource_requirement = portal ? "publication_hash IS NOT NULL" : "publication_hash IS NULL"
-    resources = resource_class.where(resource_requirement)
+    # Only use above resource_requirement if we're sending activities or sequences
+    is_activity_or_sequence = [LightweightActivity, Sequence].include? resource_class
+    resources = is_activity_or_sequence ? resource_class.where(resource_requirement) : resource_class
     count = resources.count
     puts "==> Sending #{count} #{resource_class.name}s: ..."
     puts ""
@@ -85,7 +88,7 @@ namespace :reporting do
     end
     runs = Run.where(where_query)
     opts = { send_all_answers: true }
-    send_all_resources(runs, ReportService::RunSender, opts)
+    send_resources(runs, ReportService::RunSender, nil, opts)
   end
 
   desc "publish anonymous runs to report service"
@@ -96,7 +99,7 @@ namespace :reporting do
       runs = runs.where("updated_at >= :date", date: env_value)
     end
     opts = { send_all_answers: true }
-    send_all_resources(runs, ReportService::RunSender, opts)
+    send_resources(runs, ReportService::RunSender, nil, opts)
   end
 
   # Given a CSV file exported from the portal, import `class_hash` value
