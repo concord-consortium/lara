@@ -55,7 +55,7 @@ class GlossariesController < ApplicationController
   def export
     authorize! :export, @glossary
     glossary_json = @glossary.to_export_hash.to_json
-    send_data glossary_json, type: :json, disposition: "attachment", filename: "#{@glossary.name}_version_1.json"
+    send_data glossary_json, type: :json, disposition: "attachment", filename: "#{@glossary.name}_version_2.json"
   end
 
   private

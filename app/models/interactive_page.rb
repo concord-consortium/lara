@@ -205,9 +205,11 @@ class InteractivePage < ActiveRecord::Base
     # Local function to test whether section_identifier is a numeric value
     numeric = ->(x) { Float(x) != nil rescue false }
 
-    # look for a section specified by title or ID
-    if numeric.call(section_identifier)
-      section = sections.find { |s| s.id = section_identifier}
+    # look for a section specified by instance, title or ID
+    if section_identifier.is_a?(Section)
+      section = section_identifier
+    elsif numeric.call(section_identifier)
+      section = sections.find { |s| s.id = section_identifier}  # <--- this seems like the = would blow things up
       throw "Cant find section #{section_identifier}" unless section
     else
       section = sections.find { |s| s.title == section_identifier }
@@ -358,7 +360,7 @@ class InteractivePage < ActiveRecord::Base
     attributes
   end
 
-  def self.import(page_json_object, helper=nil)
+  def self.import(page_json_object, helper=nil, version=nil)
     helper = LaraSerializationHelper.new if helper.nil?
     import_page = InteractivePage.new(self.extract_from_hash(page_json_object))
 
@@ -375,19 +377,46 @@ class InteractivePage < ActiveRecord::Base
         end
       end
 
-      page_json_object[:sections].each do |s|
+      # if explicit version not set figure it out from the json
+      version = version || (page_json_object.has_key?(:sections) ? 2 : 1)
+
+      if version == 1 
         # First, import and cache all the embeddables.
-        s[:embeddables].each do |embed_json_obj|
-          embed = helper.import(embed_json_obj.except(:column, :position))
-          import_page.add_embeddable(embed, embed_json_obj[:position], s[:title], embed_json_obj[:column])
+        page_json_object[:embeddables].each do |embed_hash|
+          embed = helper.import(embed_hash[:embeddable])
+          section = embed_hash[:section]
+          import_page.add_embeddable(embed, nil, section)
         end
 
         # Now when all the objects are created, setup references (e.g. question pointing to interactive, or
         # one embeddable pointing to another one).
-        s[:embeddables].each do |embed_json_obj|
-          helper.set_references(embed_json_obj)
+        page_json_object[:embeddables].each do |embed_hash|
+          helper.set_references(embed_hash[:embeddable])
+        end
+      elsif version == 2
+        page_json_object[:sections].each do |s|
+          # first create the section and add it to the page at the correct location
+          new_section = import_page.sections.create(Section::DEFAULT_PARAMS.merge({title: s[:title]}))
+          if s[:title] == Section::HEADER_BLOCK
+            new_section.move_to_top
+          else
+            new_section.move_to_bottom
+          end
+    
+          # First, import and cache all the embeddables.
+          s[:embeddables].each do |embed_json_obj|
+            embed = helper.import(embed_json_obj.except(:column, :position))
+            import_page.add_embeddable(embed, embed_json_obj[:position], new_section, embed_json_obj[:column])
+          end
+  
+          # Now when all the objects are created, setup references (e.g. question pointing to interactive, or
+          # one embeddable pointing to another one).
+          s[:embeddables].each do |embed_json_obj|
+            helper.set_references(embed_json_obj)
+          end
         end
       end
+
       # For older export files, if page intro exists, add it as a new embeddable in header_block
       import_legacy_intro(import_page, page_json_object[:text])
     end

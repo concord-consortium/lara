@@ -33,7 +33,8 @@
           "sections": []
         }
       ],
-      "position": 1
+      "position": 1,
+      "version": 2
     },
     {
       "description": "This is description of activity<span class=\"Apple-tab-span\" style=\"white-space:pre\">\t</span>",
@@ -45,7 +46,8 @@
       "thumbnail_url": "",
       "time_to_complete": 10,
       "pages": [],
-      "position": 2
+      "position": 2,
+      "version": 2
     }
   ],
   "type": "Sequence"

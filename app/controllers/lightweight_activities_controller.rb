@@ -244,14 +244,14 @@ class LightweightActivitiesController < ApplicationController
   def export
     authorize! :export, @activity
     lightweight_activity_json = @activity.export(request.host_with_port).to_json
-    send_data lightweight_activity_json, type: :json, disposition: "attachment", filename: "#{@activity.name}_version_1.json"
+    send_data lightweight_activity_json, type: :json, disposition: "attachment", filename: "#{@activity.name}_version_2.json"
   end
 
   def export_for_portal
     authorize! :export, @activity
     self_url = "#{request.protocol}#{request.host_with_port}"
     publication_json = @activity.serialize_for_portal(self_url).to_json
-    send_data publication_json, type: :json, disposition: "attachment", filename: "#{@activity.name}_version_1.json"
+    send_data publication_json, type: :json, disposition: "attachment", filename: "#{@activity.name}_version_2.json"
   end
 
   def move_up

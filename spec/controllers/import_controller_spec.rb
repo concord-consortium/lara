@@ -53,7 +53,7 @@ describe ImportController do
 
     context "sequence" do
 
-      valid_sequence_import_json = File.new(Rails.root + 'spec/import_examples/valid_sequence_import.json')
+      valid_sequence_import_json = File.new(Rails.root + 'spec/import_examples/valid_sequence_import_v1.json')
       let(:params1) do
             {
                import:{
