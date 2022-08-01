@@ -399,6 +399,10 @@ class Api::V1::InteractivePagesController < API::APIController
       .joins("LEFT JOIN managed_interactives ON managed_interactives.library_interactive_id = library_interactives.id")
       .group('library_interactives.id')
 
+    if !current_user.is_admin
+      library_interactives = library_interactives.where("library_interactives.official = true")
+    end
+
     plugins = get_teacher_edition_plugins.map { |plugin| map_plugin_to_hash(plugin) }
 
     library_interactives_list = library_interactives.map do |library_interactive|
