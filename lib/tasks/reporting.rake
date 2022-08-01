@@ -32,15 +32,21 @@ namespace :reporting do
     return false
   end
 
-  def send_all_resources(resource_class, sender_class, opts={})
+  def send_resources(resource_class, sender_class, portal, opts={})
     index = 0
     error_count = 0
     success_count = 0
     start_time = Time.now
-    count = resource_class.count
+    # If portal is set, only send activities or sequences that are in the portal, otherwise send 
+    # activities or sequences that are _not_ in the portal
+    resource_requirement = portal ? "publication_hash IS NOT NULL" : "publication_hash IS NULL"
+    # Only use above resource_requirement if we're sending activities or sequences
+    is_activity_or_sequence = [LightweightActivity, Sequence].include? resource_class
+    resources = is_activity_or_sequence ? resource_class.where(resource_requirement) : resource_class
+    count = resources.count
     puts "==> Sending #{count} #{resource_class.name}s: ..."
     puts ""
-    resource_class
+    resources
       .find_in_batches(batch_size: 20) do |group|
         group.each do |item|
           if send_resource(item, sender_class, opts)
@@ -62,13 +68,13 @@ namespace :reporting do
     puts ""
   end
 
-  desc "Publish All activity structures to FireStore report serivce"
-  task :publish_structures => :environment do
+  desc "Publish activity structures to FireStore report service"
+  task :publish_structures, [:portal] => :environment do |task, args|
     # Send activities
-    send_all_resources(LightweightActivity, ReportService::ResourceSender)
+    send_resources(LightweightActivity, ReportService::ResourceSender, args[:portal])
 
-    # Send squences:
-    send_all_resources(Sequence, ReportService::ResourceSender)
+    # Send squences
+    send_resources(Sequence, ReportService::ResourceSender, args[:portal])
   end
 
   desc "publish student runs to report service"
@@ -82,7 +88,7 @@ namespace :reporting do
     end
     runs = Run.where(where_query)
     opts = { send_all_answers: true }
-    send_all_resources(runs, ReportService::RunSender, opts)
+    send_resources(runs, ReportService::RunSender, nil, opts)
   end
 
   desc "publish anonymous runs to report service"
@@ -93,7 +99,7 @@ namespace :reporting do
       runs = runs.where("updated_at >= :date", date: env_value)
     end
     opts = { send_all_answers: true }
-    send_all_resources(runs, ReportService::RunSender, opts)
+    send_resources(runs, ReportService::RunSender, nil, opts)
   end
 
   # Given a CSV file exported from the portal, import `class_hash` value
