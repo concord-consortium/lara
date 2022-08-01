@@ -1,22 +1,25 @@
 require 'spec_helper'
 
 describe Api::V1::InteractivePagesController do
+  let (:admin) { FactoryGirl.create(:admin) }
   let (:author) { FactoryGirl.create(:author) }
-  let(:project) { FactoryGirl.create(:project) }
-  let(:theme) { FactoryGirl.create(:theme) }
+  let (:project) { FactoryGirl.create(:project) }
+  let (:theme) { FactoryGirl.create(:theme) }
   let (:publication_status) { "public" }
   let (:act) { FactoryGirl.create(:public_activity, project: project, theme: theme, publication_status: publication_status, user: author ) }
   let (:page) { FactoryGirl.create(:page, :lightweight_activity => act) }
   let (:library_interactive1) { FactoryGirl.create(:library_interactive,
                                                    :name => 'Test Library Interactive 1',
                                                    :base_url => 'http://foo.com/',
-                                                   :thumbnail_url => nil
+                                                   :thumbnail_url => nil,
+                                                   :official => true
                                                   ) }
   let (:library_interactive2) { FactoryGirl.create(:library_interactive,
                                                    :name => 'Test Library Interactive 2',
                                                    :base_url => 'http://bar.com/',
                                                    :thumbnail_url => 'http://thumbnail.url',
-                                                   :no_snapshots => true
+                                                   :no_snapshots => true,
+                                                   :official => false
                                                   ) }
   let (:interactive1) { FactoryGirl.create(:mw_interactive) }
   let (:interactive2) { FactoryGirl.create(:mw_interactive, :no_snapshots => true) }
@@ -272,13 +275,15 @@ describe Api::V1::InteractivePagesController do
       :library_interactive_id => library_interactive1.id
     )}
 
-    it "returns a list of library interactives including all properties" do
+    it "returns a list of all library interactives including all properties for signed-in admins" do
+      sign_in admin
+
       # make sure the mocks exist
       library_interactive1
       library_interactive2
       managed_interactive1
 
-      expected_response_body = {
+      expected_response_for_admin = {
         success: true,
         library_interactives: [
           {
@@ -347,7 +352,58 @@ describe Api::V1::InteractivePagesController do
       xhr :get, "get_library_interactives_list"
       expect(response.status).to eq(200)
       expect(response.content_type).to eq("application/json")
-      expect(response.body).to eql(expected_response_body)
+      expect(response.body).to eql(expected_response_for_admin)
+    end
+
+    it "returns a list of only official library interactives including all properties for non admins" do
+      sign_in author
+
+      # make sure the mocks exist
+      library_interactive1
+      library_interactive2
+      managed_interactive1
+
+      expected_response_for_non_admin = {
+        success: true,
+        library_interactives: [
+          {
+            aspect_ratio_method: library_interactive1.aspect_ratio_method, 
+            authorable: library_interactive1.authorable, 
+            authoring_guidance: library_interactive1.authoring_guidance, 
+            base_url: library_interactive1.base_url, 
+            click_to_play: library_interactive1.click_to_play, 
+            click_to_play_prompt: library_interactive1.click_to_play_prompt, 
+            created_at: library_interactive1.created_at, 
+            customizable: library_interactive1.customizable, 
+            date_added: library_interactive1.created_at.to_i,
+            description: library_interactive1.description, 
+            enable_learner_state: library_interactive1.enable_learner_state, 
+            export_hash: library_interactive1.export_hash, 
+            full_window: library_interactive1.full_window, 
+            has_report_url: library_interactive1.has_report_url, 
+            id: library_interactive1.id, 
+            image_url: library_interactive1.image_url, 
+            name: library_interactive1.name, 
+            native_height: library_interactive1.native_height, 
+            native_width: library_interactive1.native_width,
+            no_snapshots: library_interactive1.no_snapshots,
+            official: library_interactive1.official,
+            report_item_url: library_interactive1.report_item_url,
+            serializeable_id: library_interactive1.serializeable_id,
+            show_delete_data_button: library_interactive1.show_delete_data_button,
+            thumbnail_url: library_interactive1.thumbnail_url, 
+            updated_at: library_interactive1.updated_at,
+            use_count: 1
+          }
+        ],
+        # TODO: Add some page-level plugins to test...
+        plugins: []
+      }.to_json
+
+      xhr :get, "get_library_interactives_list"
+      expect(response.status).to eq(200)
+      expect(response.content_type).to eq("application/json")
+      expect(response.body).to eql(expected_response_for_non_admin)
     end
   end
 
