@@ -395,15 +395,11 @@ class InteractivePage < ActiveRecord::Base
         end
       elsif version == 2
         page_json_object[:sections].each do |s|
-          # first create the section and add it to the page at the correct location
+          # First create the section and add it to the page at the bottom to keep it in the same order as the export
           new_section = import_page.sections.create(Section::DEFAULT_PARAMS.merge({title: s[:title]}))
-          if s[:title] == Section::HEADER_BLOCK
-            new_section.move_to_top
-          else
-            new_section.move_to_bottom
-          end
+          new_section.move_to_bottom
     
-          # First, import and cache all the embeddables.
+          # Then, import and cache all the embeddables.
           s[:embeddables].each do |embed_json_obj|
             embed = helper.import(embed_json_obj.except(:column, :position))
             import_page.add_embeddable(embed, embed_json_obj[:position], new_section, embed_json_obj[:column])
