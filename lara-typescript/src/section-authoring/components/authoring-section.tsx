@@ -74,6 +74,7 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
   position,
   collapsed: initCollapsed = false,
   title,
+  show: initShow = true,
   moveItemFunction,
   editItemFunction,
   draggableProvided,
@@ -85,6 +86,7 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
   const { deleteSectionFunction, copySection } = usePageAPI();
   const [layout, setLayout] = useState(initLayout);
   const [collapsed, setCollapsed] = useState(initCollapsed);
+  const [show, setShow] = useState(initShow);
 
   React.useEffect(() => {
     setLayout(initLayout);
@@ -106,6 +108,12 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
     const nextCollapsed = !collapsed;
     setCollapsed(nextCollapsed);
     updateFunction?.({section: {collapsed: nextCollapsed, id}});
+  };
+
+  const toggleShow = () => {
+    const nextShow = !show;
+    setShow(nextShow);
+    updateFunction?.({section: {show: nextShow, id}});
   };
 
   const handleDelete = () => {
@@ -193,7 +201,13 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
 
   const sectionClassNames = () => {
     const layoutClass = "section-" + layout.toLowerCase().replace(/ /g, "-");
-    return `edit-page-grid-container sectionContainer ${layoutClass}`;
+    const sectionClasses = classNames(
+      "edit-page-grid-container",
+      "sectionContainer",
+      layoutClass,
+      !show ? "hidden" : "",
+    );
+    return sectionClasses;
   };
 
   const toggleSecondaryColumnDisabled = layout === SectionLayouts.LAYOUT_FULL_WIDTH ||
@@ -242,6 +256,7 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
             <li><button onClick={toggleCollapse}>Collapse</button></li>
             <li><button onClick={handleMoveSection}>Move</button></li>
             <li><button onClick={handleCopy}>Copy</button></li>
+            <li><button onClick={toggleShow}>{ show ? "Hide" : "Show" }</button></li>
             <li><button onClick={handleDelete}>Delete</button></li>
           </ul>
         </div>

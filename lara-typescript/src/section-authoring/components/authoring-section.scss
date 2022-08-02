@@ -146,6 +146,9 @@ select {
   &.col-2 {
     margin-left: 0;
   }
+  &.hidden {
+    opacity: .5;
+  }
 }
 
 .teal-label {
