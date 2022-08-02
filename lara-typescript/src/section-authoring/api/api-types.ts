@@ -232,7 +232,7 @@ export interface ISection {
   items?: ISectionItem[];
 
   /**
-   * Items in this section
+   * Should the section be shown in runtime?
    */
   show?: boolean;
 }
