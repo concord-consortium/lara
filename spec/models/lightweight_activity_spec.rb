@@ -421,7 +421,7 @@ describe LightweightActivity do
     let(:new_owner) { FactoryGirl.create(:user) }
 
     it 'should return an activity' do
-      json = JSON.parse(File.read(Rails.root + 'spec/import_examples/valid_lightweight_activity_import.json'), :symbolize_names => true)
+      json = JSON.parse(File.read(Rails.root + 'spec/import_examples/valid_lightweight_activity_import_v2.json'), :symbolize_names => true)
       imported_activity_url = "http://foo.com/"
       act = LightweightActivity.import(json,new_owner,imported_activity_url)
       expect(act.user).to be new_owner

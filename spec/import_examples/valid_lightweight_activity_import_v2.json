@@ -1,0 +1,307 @@
+{
+  "background_image": "",
+  "defunct": false,
+  "description": "<p>Contains all page layout formats</p>",
+  "editor_mode": 0,
+  "id": 84,
+  "layout": 0,
+  "name": "Example Activity",
+  "notes": "",
+  "related": "",
+  "runtime": "Activity Player",
+  "show_submit_button": true,
+  "student_report_enabled": true,
+  "thumbnail_url": "",
+  "time_to_complete": null,
+  "version": 2,
+  "theme_name": null,
+  "project": null,
+  "pages": [
+    {
+      "additional_sections": null,
+      "embeddable_display_mode": "stacked",
+      "id": 102,
+      "is_completion": false,
+      "is_hidden": false,
+      "layout": "l-6040",
+      "name": null,
+      "position": 1,
+      "show_header": false,
+      "show_info_assessment": false,
+      "show_interactive": false,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": "Did you know?",
+      "toggle_info_assessment": false,
+      "sections": [
+        {
+          "title": "assessment_block",
+          "is_hidden": false,
+          "layout": "full-width",
+          "secondary_column_collapsible": false,
+          "secondary_column_display_mode": "stacked",
+          "embeddables": [
+            {
+              "content": "<p>My test text here.</p>",
+              "is_callout": true,
+              "is_half_width": false,
+              "is_hidden": false,
+              "name": "My test text block.",
+              "type": "Embeddable::Xhtml",
+              "ref_id": "22-Embeddable::Xhtml",
+              "column": "primary",
+              "position": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "additional_sections": null,
+      "embeddable_display_mode": "stacked",
+      "id": 103,
+      "is_completion": false,
+      "is_hidden": false,
+      "layout": "l-6040",
+      "name": null,
+      "position": 2,
+      "show_header": false,
+      "show_info_assessment": false,
+      "show_interactive": false,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": "Did you know?",
+      "toggle_info_assessment": false,
+      "sections": [
+        {
+          "title": "assessment_block",
+          "is_hidden": false,
+          "layout": "responsive-full-width",
+          "secondary_column_collapsible": false,
+          "secondary_column_display_mode": "stacked",
+          "embeddables": [
+            {
+              "content": "<p>My second block of text.</p>",
+              "is_callout": true,
+              "is_half_width": true,
+              "is_hidden": false,
+              "name": "My second text block.",
+              "type": "Embeddable::Xhtml",
+              "ref_id": "23-Embeddable::Xhtml",
+              "column": "secondary",
+              "position": 1
+            },
+            {
+              "content": "<p>My third block of text.</p>",
+              "is_callout": true,
+              "is_half_width": true,
+              "is_hidden": false,
+              "name": "My third text block.",
+              "type": "Embeddable::Xhtml",
+              "ref_id": "24-Embeddable::Xhtml",
+              "column": "secondary",
+              "position": 2
+            }
+          ]
+        },
+        {
+          "title": "assessment_block",
+          "is_hidden": false,
+          "layout": "30-70",
+          "secondary_column_collapsible": false,
+          "secondary_column_display_mode": "stacked",
+          "embeddables": [
+            {
+              "content": "<p>Goes here.</p>",
+              "is_callout": true,
+              "is_half_width": false,
+              "is_hidden": false,
+              "name": "My fifth text block.",
+              "type": "Embeddable::Xhtml",
+              "ref_id": "28-Embeddable::Xhtml",
+              "column": "primary",
+              "position": 1
+            },
+            {
+              "content": "<p>My fourth block of text is in a new section on the same page.</p>",
+              "is_callout": true,
+              "is_half_width": false,
+              "is_hidden": false,
+              "name": "My fourth text block.",
+              "type": "Embeddable::Xhtml",
+              "ref_id": "25-Embeddable::Xhtml",
+              "column": "secondary",
+              "position": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "additional_sections": null,
+      "embeddable_display_mode": "stacked",
+      "id": 104,
+      "is_completion": false,
+      "is_hidden": false,
+      "layout": "l-6040",
+      "name": null,
+      "position": 3,
+      "show_header": false,
+      "show_info_assessment": false,
+      "show_interactive": false,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": "Did you know?",
+      "toggle_info_assessment": false,
+      "sections": [
+        {
+          "title": "assessment_block",
+          "is_hidden": false,
+          "layout": "60-40",
+          "secondary_column_collapsible": false,
+          "secondary_column_display_mode": "stacked",
+          "embeddables": [
+            {
+              "content": "<p>Here I am.</p>",
+              "is_callout": true,
+              "is_half_width": false,
+              "is_hidden": false,
+              "name": "My second to last text block.",
+              "type": "Embeddable::Xhtml",
+              "ref_id": "27-Embeddable::Xhtml",
+              "column": "primary",
+              "position": 1
+            },
+            {
+              "content": "<p>My last block of text.</p>",
+              "is_callout": true,
+              "is_half_width": false,
+              "is_hidden": false,
+              "name": "My last text block.",
+              "type": "Embeddable::Xhtml",
+              "ref_id": "26-Embeddable::Xhtml",
+              "column": "secondary",
+              "position": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "additional_sections": null,
+      "embeddable_display_mode": "stacked",
+      "id": 105,
+      "is_completion": false,
+      "is_hidden": false,
+      "layout": "l-6040",
+      "name": null,
+      "position": 4,
+      "show_header": false,
+      "show_info_assessment": false,
+      "show_interactive": false,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": "Did you know?",
+      "toggle_info_assessment": false,
+      "sections": [
+        {
+          "title": "assessment_block",
+          "is_hidden": false,
+          "layout": "40-60",
+          "secondary_column_collapsible": false,
+          "secondary_column_display_mode": "stacked",
+          "embeddables": [
+            {
+              "content": "<p>And I am going to test them all.</p>",
+              "is_callout": true,
+              "is_half_width": false,
+              "is_hidden": false,
+              "name": "There are more layouts to test!",
+              "type": "Embeddable::Xhtml",
+              "ref_id": "30-Embeddable::Xhtml",
+              "column": "primary",
+              "position": 1
+            },
+            {
+              "content": "<p>You thought that was the last of me, but I'm still going.</p>",
+              "is_callout": true,
+              "is_half_width": false,
+              "is_hidden": false,
+              "name": "Just kidding.",
+              "type": "Embeddable::Xhtml",
+              "ref_id": "29-Embeddable::Xhtml",
+              "column": "secondary",
+              "position": 2
+            }
+          ]
+        },
+        {
+          "title": "assessment_block",
+          "is_hidden": false,
+          "layout": "30-70",
+          "secondary_column_collapsible": false,
+          "secondary_column_display_mode": "stacked",
+          "embeddables": [
+            {
+              "content": "<p>I am much larger.</p>",
+              "is_callout": true,
+              "is_half_width": false,
+              "is_hidden": false,
+              "name": "And I am the 70 block of text.",
+              "type": "Embeddable::Xhtml",
+              "ref_id": "32-Embeddable::Xhtml",
+              "column": "primary",
+              "position": 1
+            },
+            {
+              "content": "<p>I am a smallish block of text.</p>",
+              "is_callout": true,
+              "is_half_width": false,
+              "is_hidden": false,
+              "name": "Here is the 30 on a 30-70.",
+              "type": "Embeddable::Xhtml",
+              "ref_id": "31-Embeddable::Xhtml",
+              "column": "secondary",
+              "position": 2
+            }
+          ]
+        },
+        {
+          "title": "assessment_block",
+          "is_hidden": false,
+          "layout": "responsive-2-columns",
+          "secondary_column_collapsible": false,
+          "secondary_column_display_mode": "stacked",
+          "embeddables": [
+            {
+              "content": "<p>I am so responsive!</p>",
+              "is_callout": true,
+              "is_half_width": false,
+              "is_hidden": false,
+              "name": "Responsive",
+              "type": "Embeddable::Xhtml",
+              "ref_id": "34-Embeddable::Xhtml",
+              "column": "primary",
+              "position": 1
+            },
+            {
+              "content": "<p>And for real this time, here is the response two-column.</p>",
+              "is_callout": true,
+              "is_half_width": false,
+              "is_hidden": false,
+              "name": "Lastly",
+              "type": "Embeddable::Xhtml",
+              "ref_id": "33-Embeddable::Xhtml",
+              "column": "secondary",
+              "position": 2
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "plugins": [],
+  "type": "LightweightActivity",
+  "export_site": "Lightweight Activities Runtime and Authoring",
+  "fixed_width_layout": "1100px"
+}

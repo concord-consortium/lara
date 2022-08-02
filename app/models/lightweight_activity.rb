@@ -210,6 +210,7 @@ class LightweightActivity < ActiveRecord::Base
   end
 
   def self.import(activity_json_object,new_owner,imported_activity_url=nil,helper=nil)
+    version = activity_json_object[:version] || 1
     author_user = User.find_by_email(activity_json_object[:user_email]) if activity_json_object[:user_email]
     import_activity = LightweightActivity.new(self.extract_from_hash(activity_json_object))
     import_activity.theme = Theme.find_by_name(activity_json_object[:theme_name]) if activity_json_object[:theme_name]
@@ -228,7 +229,7 @@ class LightweightActivity < ActiveRecord::Base
       import_activity.user.is_author = true
       import_activity.user.save!
       activity_json_object[:pages].each do |p|
-        import_page = InteractivePage.import(p, helper)
+        import_page = InteractivePage.import(p, helper, version)
         import_page.lightweight_activity = import_activity
         import_page.set_list_position(p[:position])
         import_page.save!(validate: false)

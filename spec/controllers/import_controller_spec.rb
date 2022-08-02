@@ -20,7 +20,7 @@ describe ImportController do
 
     context "lightweight activity" do
 
-      valid_activity_import_json = File.new(Rails.root + 'spec/import_examples/valid_lightweight_activity_import.json', :symbolize_names => true)
+      valid_activity_import_json = File.new(Rails.root + 'spec/import_examples/valid_lightweight_activity_import_v2.json', :symbolize_names => true)
       let(:params1) do
             {
                import:{
@@ -53,7 +53,7 @@ describe ImportController do
 
     context "sequence" do
 
-      valid_sequence_import_json = File.new(Rails.root + 'spec/import_examples/valid_sequence_import.json')
+      valid_sequence_import_json = File.new(Rails.root + 'spec/import_examples/valid_sequence_import_v1.json')
       let(:params1) do
             {
                import:{

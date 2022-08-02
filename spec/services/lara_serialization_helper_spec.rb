@@ -128,11 +128,19 @@ describe LaraSerializationHelper do
         {
           type: "InteractivePage",
           ref_id: "100-InteractivePage",
-          embeddables: [
+          sections: [
             {
-              embeddable: {
+            "title": "interactive_box",
+            "is_hidden": false,
+            "layout": "full-width",
+            "secondary_column_collapsible": false,
+            "secondary_column_display_mode": "stacked",
+            embeddables: [
+              {
                 type: "MwInteractive",
                 ref_id: "100-MwInteractive",
+                column: "primary",
+                position: 1,
                 linked_interactives: [
                   {
                     ref_id: "101-ManagedInteractive",
@@ -144,38 +152,34 @@ describe LaraSerializationHelper do
                   }
                 ]
               },
-              section: "interactive_box"
-            },
-            {
-              embeddable: {
+              {
                 type: "ManagedInteractive",
                 ref_id: "101-ManagedInteractive",
+                column: "primary",
+                position: 2,
                 linked_interactives: []
               },
-              section: "interactive_box"
-            },
-            {
-              embeddable: {
+              {
                 type: "MwInteractive",
                 ref_id: "102-MwInteractive",
+                column: "primary",
+                position: 3,
                 linked_interactives: []
               },
-              section: "interactive_box"
-            },
-            {
-              embeddable: {
+              {
                 type: "ManagedInteractive",
                 ref_id: "103-ManagedInteractive",
+                column: "primary",
+                position: 4,
                 linked_interactives: [
                   {
                     ref_id: "100-MwInteractive",
                     label: "three"
                   }
                 ]
-              },
-              section: "interactive_box"
-            }
-          ]
+              }
+            ]
+          }]
         }
       end
       let(:result) do

@@ -91,7 +91,7 @@ describe Embeddable::EmbeddablePlugin do
     let(:page) { InteractivePage.import(page_json)}
 
     it 'sets the plugin_scope of the associated plugin' do
-      embeddable = page.embeddables.find{|e| e.is_a? Embeddable::EmbeddablePlugin}
+      embeddable = page.sections[0].embeddables.find{|e| e.is_a? Embeddable::EmbeddablePlugin}
       expect(embeddable).to_not be_nil
       expect(embeddable.plugin.plugin_scope).to eq(embeddable)
     end

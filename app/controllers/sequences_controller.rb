@@ -169,14 +169,14 @@ class SequencesController < ApplicationController
   def export
     authorize! :export, @sequence
     sequence_json = @sequence.export(request.host_with_port)
-    send_data sequence_json, type: :json, disposition: "attachment", filename: "#{@sequence.name}_version_1.json"
+    send_data sequence_json, type: :json, disposition: "attachment", filename: "#{@sequence.name}_version_2.json"
   end
 
   def export_for_portal
     authorize! :export, @sequence
     self_url = "#{request.protocol}#{request.host_with_port}"
     sequence_json = @sequence.serialize_for_portal(self_url).to_json
-    send_data sequence_json, type: :json, disposition: "attachment", filename: "#{@sequence.name}_version_1.json"
+    send_data sequence_json, type: :json, disposition: "attachment", filename: "#{@sequence.name}_version_2.json"
   end
 
   private
