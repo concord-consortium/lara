@@ -989,6 +989,10 @@
 
 .sectionItemContainer {
   font-size: 12px; }
+  .sectionItemContainer.hidden {
+    opacity: .5; }
+    .sectionItemContainer.hidden h4:before {
+      content: "HIDDEN - "; }
   .sectionItemContainer .sectionItemMenu {
     background-color: var(--teal);
     color: white;

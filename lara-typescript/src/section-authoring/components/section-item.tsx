@@ -1,5 +1,6 @@
 import * as React from "react";
 import { useEffect, useRef, useState } from "react";
+import classNames from "classnames";
 import { usePageAPI } from "../hooks/use-api-provider";
 import { GripLines } from "../../shared/components/icons/grip-lines";
 import { UserInterfaceContext } from "../containers/user-interface-provider";
@@ -133,8 +134,13 @@ export const SectionItem: React.FC<ISectionItemProps> = ({
     }
   };
 
+  const containerClasses = classNames(
+    "sectionItemContainer",
+    pageItem?.data.isHidden ? "hidden" : "",
+  );
+
   return(
-    <div className="sectionItemContainer">
+    <div className={containerClasses}>
       <header className="sectionItemMenu">
         <div className="menuStart">
           <GripLines />

@@ -3,6 +3,14 @@
 .sectionItemContainer {
   font-size: 12px;
 
+  &.hidden {
+    opacity: .5;
+
+    h4:before {
+      content: "HIDDEN - ";
+    }
+  }
+
   .sectionItemMenu {
     background-color: var(--teal);
     color: white;
