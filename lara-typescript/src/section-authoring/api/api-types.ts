@@ -230,6 +230,11 @@ export interface ISection {
    * Items in this section
    */
   items?: ISectionItem[];
+
+  /**
+   * Should the section be shown in runtime?
+   */
+  show?: boolean;
 }
 
 export interface IPage {

@@ -478,11 +478,12 @@ class Api::V1::InteractivePagesController < API::APIController
 
   def generate_section_json(section)
     {
+      can_collapse_small: section.can_collapse_small,
       id: section.id.to_s,
+      items: section.page_items.map { |pi| generate_item_json(pi) },
       layout: section.layout,
       position: section.position,
-      can_collapse_small: section.can_collapse_small,
-      items: section.page_items.map { |pi| generate_item_json(pi) }
+      show: section.show
     }
   end
 

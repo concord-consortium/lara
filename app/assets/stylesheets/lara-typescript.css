@@ -1672,6 +1672,8 @@ select {
           width: calc(50% - 6px); }
   .edit-page-grid-container.col-2 {
     margin-left: 0; }
+  .edit-page-grid-container.hidden {
+    opacity: .5; }
 
 .teal-label {
   color: var(--teal);
