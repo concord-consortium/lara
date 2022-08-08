@@ -161,8 +161,11 @@ export const AuthoringPage: React.FC<IPageProps> = ({
   };
 
   const pageSettingsClickHandler = () => { setShowSettings(true); };
-  const displayTitle = name && name !== "" ? name : <em>(title not set)</em>;
-  useTitle("Edit " + name);
+  const trimmedName = name?.trim() || "";
+  const hasName = trimmedName.length > 0;
+  const pageName = hasName ? trimmedName : "(title not set)";
+  const displayTitle = hasName ? pageName : <em>{pageName}</em>;
+  useTitle("Edit " + pageName);
   return (
     <>
       <PageNavContainer />
