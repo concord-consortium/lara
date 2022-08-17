@@ -46585,7 +46585,7 @@ exports.renderHTML = void 0;
 var DOMPurify = __webpack_require__(/*! dompurify */ "./node_modules/dompurify/dist/purify.js");
 var html_react_parser_1 = __webpack_require__(/*! html-react-parser */ "./node_modules/html-react-parser/index.mjs");
 function renderHTML(html) {
-    return (0, html_react_parser_1.default)(DOMPurify.sanitize(html || ""));
+    return (0, html_react_parser_1.default)(DOMPurify.sanitize(html || "", { ADD_TAGS: ["iframe"], ADD_ATTR: ["allowfullscreen", "frameborder", "scrolling", "target"] }));
 }
 exports.renderHTML = renderHTML;
 

@@ -1,6 +1,4 @@
 import * as React from "react";
-import * as DOMPurify from "dompurify";
-import parse from "html-react-parser";
 import classNames from "classnames";
 import { ISectionItem, ITextBlockData } from "../api/api-types";
 
