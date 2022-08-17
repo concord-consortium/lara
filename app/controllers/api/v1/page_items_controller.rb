@@ -19,7 +19,7 @@ class Api::V1::PageItemsController < API::APIController
     plugins = []
     page_item_plugins = Embeddable::EmbeddablePlugin.where({embeddable_id: @page_item.embeddable_id, embeddable_type: @page_item.embeddable_type})
     page_item_plugins.each do |plugin|
-      plugin_page_item = PageItem.where(embeddable_id: plugin.id, embeddable_type: "Embeddable::EmbeddablePlugin").first
+      plugin_page_item = plugin.page_items.first
       plugins.push({
         :embeddable_id => @page_item.embeddable_id,
         :id => plugin.id,
