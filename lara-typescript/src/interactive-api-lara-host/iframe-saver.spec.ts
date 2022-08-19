@@ -186,7 +186,8 @@ describe("IFrameSaver", () => {
             },
             getFirebaseJwt: {
               version: "1.0.0"
-            }
+            },
+            domain: "localhost"
           },
           authoredState: {test: 123},
           interactiveState: {interactiveState: 321},
@@ -246,7 +247,8 @@ describe("IFrameSaver", () => {
             },
             getFirebaseJwt: {
               version: "1.0.0"
-            }
+            },
+            domain: "localhost"
           },
           authoredState: {test: 123},
           interactiveState: null,
