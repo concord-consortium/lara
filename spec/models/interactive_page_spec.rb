@@ -594,10 +594,10 @@ describe InteractivePage do
       end
     end
 
-    describe "specifying the section to add to by id" do
+    describe "specifying the section to add to" do
       it "should put everything in the same section" do
         s = page.sections.create({title: "some random section"})
-        embeddables.each { |e| page.add_embeddable(e, 0, s.id) }
+        embeddables.each { |e| page.add_embeddable(e, 0, s) }
         page.visible_embeddables.each do |e|
           expect(e.page_section).to eq(s.title)
         end
