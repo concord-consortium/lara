@@ -146,7 +146,7 @@ describe("moveItem", () => {
       const itemId = "bogus";
 
       // Move failed:
-      expect(moveItem({ destination, pages, itemId })).toEqual([]);
+      expect(moveItem({ destination, pages, itemId })).toEqual(null);
     });
   });
 
