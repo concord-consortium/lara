@@ -163,9 +163,8 @@ describe("moveItem", () => {
       };
       const itemId = "item0";
 
-      const changedSections = moveItem({ destination, pages, itemId });
-      expect(changedSections.length).toEqual(1);
-      expect(changedSections[0].items!.map(i => i.id)).toEqual(["item1", "item2", "item0" ]);
+      const changedSection = moveItem({ destination, pages, itemId });
+      expect(changedSection?.items!.map(i => i.id)).toEqual(["item1", "item2", "item0"]);
     });
 
     it("can move an item forward from one page to another", () => {
@@ -178,9 +177,8 @@ describe("moveItem", () => {
         destColumn: SectionColumns.PRIMARY
       };
       const itemId = "item9";
-      const changedSections = moveItem({ destination, pages, itemId });
-      expect(changedSections.length).toEqual(2);
-      expect(changedSections[1].items!.map(i => i.id)).toEqual(["item9", "item0", "item1", "item2" ]);
+      const changedSection = moveItem({ destination, pages, itemId });
+      expect(changedSection?.items!.map(i => i.id)).toEqual(["item9", "item0", "item1", "item2"]);
     });
 
     it("can move an item backward from one page to another, not specifying item destination", () => {
@@ -192,9 +190,8 @@ describe("moveItem", () => {
         destColumn: SectionColumns.PRIMARY
       };
       const itemId = "item0";
-      const changedSections = moveItem({ destination, pages, itemId });
-      expect(changedSections.length).toEqual(2);
-      expect(changedSections[1].items!.map(i => i.id)).toEqual(["item9", "item10", "item11", "item0" ]);
+      const changedSection = moveItem({ destination, pages, itemId });
+      expect(changedSection?.items!.map(i => i.id)).toEqual(["item9", "item10", "item11", "item0"]);
     });
 
     it("can move an item backward from the first section to the last not specifying item destination", () => {
@@ -206,9 +203,8 @@ describe("moveItem", () => {
         destColumn: SectionColumns.PRIMARY
       };
       const itemId = "item0";
-      const changedSections = moveItem({ destination, pages, itemId });
-      expect(changedSections.length).toEqual(2);
-      expect(changedSections[1].items!.map(i => i.id)).toEqual(["item24", "item25", "item26", "item0" ]);
+      const changedSection = moveItem({ destination, pages, itemId });
+      expect(changedSection?.items!.map(i => i.id)).toEqual(["item24", "item25", "item26", "item0"]);
     });
 
     it("can move an item backward from the first section on a page to the last not specifying item destination", () => {
@@ -220,10 +216,9 @@ describe("moveItem", () => {
         destColumn: SectionColumns.PRIMARY
       };
       const itemId = "item0";
-      const changedSections = moveItem({ destination, pages, itemId });
-      expect(changedSections.length).toEqual(2);
-      expect(changedSections[0].items!.map(i => i.id)).toEqual(["item1", "item2" ]);
-      expect(changedSections[1].items!.map(i => i.id)).toEqual(["item6", "item7", "item8", "item0" ]);
+      const changedSection = moveItem({ destination, pages, itemId });
+      // expect(changedSection?.items!.map(i => i.id)).toEqual(["item1", "item2" ]);
+      expect(changedSection?.items!.map(i => i.id)).toEqual(["item6", "item7", "item8", "item0"]);
     });
 
     it("will update the position attributes of the sections and items that moved", () => {
@@ -235,10 +230,8 @@ describe("moveItem", () => {
         destColumn: SectionColumns.PRIMARY
       };
       const itemId = "item0";
-      const changedSections = moveItem({ destination, pages, itemId });
-      for (const section of changedSections) {
-        verifyPositions(section.items!);
-      }
+      const changedSection = moveItem({ destination, pages, itemId });
+      verifyPositions(changedSection?.items!);
     });
   });
 });

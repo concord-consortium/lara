@@ -110,11 +110,12 @@ export const moveSection = (args: IMoveSectionSignature): IPage[] => {
   return [setSectionPositions(nextSourcePage), setSectionPositions(nextDestPage)];
 };
 
-export const moveItem = (args: IMoveItemSignature): ISection[] => {
-  const { itemId, destination,  pages } = args;
+export const moveItem = (args: IMoveItemSignature): ISection | null => {
+  const { itemId, destination, pages } = args;
   const { relativeLocation } = destination;
-  const sourceAddress = findItemAddress({ pages, itemId});
-  const destAddress = findItemAddress({pages,
+  const sourceAddress = findItemAddress({ pages, itemId });
+  const destAddress = findItemAddress({
+    pages,
     pageId: destination.destPageId,
     sectionId: destination.destSectionId,
     itemId: destination.destItemId
@@ -123,14 +124,18 @@ export const moveItem = (args: IMoveItemSignature): ISection[] => {
   // The source item has to exist:
   const sourceItem = findItemByAddress(pages, sourceAddress);
   if (sourceItem == null || sourceAddress.pageIndex == null) {
-    return error(`can't find itemId ${itemId}`);
+    // tslint:disable-next-line
+    console.error(`can't find itemId ${itemId}`);
+    return null;
   }
 
-  // Set the items column:
+  // Set the item's column:
   sourceItem.column = destination.destColumn;
   // We must have a destination section:
   if (destAddress.sectionIndex == null || destAddress.pageIndex == null) {
-    return error(`can't find destination ${destination}`);
+    // tslint:disable-next-line
+    console.error(`can't find destination ${destination}`);
+    return null;
   }
 
   // If no item is specified, insert at the end of the section
@@ -155,13 +160,16 @@ export const moveItem = (args: IMoveItemSignature): ISection[] => {
   const sourceSection = findSectionByAddress(pages, sourceAddress);
   const destSection = findSectionByAddress(pages, destAddress);
   if (destSection == null || sourceSection == null) {
-    return error("Destination or source section missing ...");
+    // tslint:disable-next-line
+    console.error("Destination or source section missing.");
+    return null;
   }
 
   // Remove the sourceItem from the sourceSection
   sourceSection.items = sourceSection.items?.filter(s => s.id !== sourceItem.id) || [];
 
-  // Here we add the item back to the same section we removed it from:
+  // If source and destination section are the same, add the
+  // item back to the same section we removed it from:
   if (
       (sourceAddress.pageIndex === destAddress.pageIndex) &&
       (sourceAddress.sectionIndex === destAddress.sectionIndex)
@@ -169,10 +177,10 @@ export const moveItem = (args: IMoveItemSignature): ISection[] => {
     sourceSection.items.splice(destAddress.itemIndex, 0, sourceItem);
     updatePositions(sourceSection.items);
     // Just return the one page that changed:
-    return [ sourceSection ];
+    return sourceSection;
   }
 
   destSection.items!.splice(destAddress.itemIndex, 0, sourceItem);
   updatePositions(destSection?.items || []);
-  return [sourceSection, destSection];
+  return destSection;
 };
