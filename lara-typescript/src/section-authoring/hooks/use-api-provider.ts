@@ -251,16 +251,13 @@ export const usePageAPI = () => {
 
   const moveItem = (itemId: string, destination: IItemDestination) => {
     if (currentPage) {
-      const updatedSections = _moveItem({itemId, destination, pages: getPages.data || []});
-      for (const updatedSection of updatedSections) {
-        if (updatedSection.items) {
-          const changes = {section: updatedSection, sectionId: updatedSection.id};
-          updateSection.mutate({pageId: currentPage.id, changes});
-          updateSectionItems({sectionId: updatedSection.id, newItems: updatedSection.items});
-        }
+      const updatedSection = _moveItem({itemId, destination, pages: getPages.data || []});
+      if (updatedSection?.items) {
+        const changes = {section: updatedSection, sectionId: updatedSection.id};
+        updateSection.mutate({pageId: currentPage.id, changes});
+        updateSectionItems({sectionId: updatedSection.id, newItems: updatedSection.items});
       }
-    }
-    else {
+    } else {
       // tslint:disable-next-line
       console.error("no page specified, cant invoke method.");
     }

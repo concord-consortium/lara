@@ -78,11 +78,14 @@ class Section < ActiveRecord::Base
     page_items.map(&:embeddable)
   end
 
-  def duplicate(helper=nil)
+  def duplicate(helper=nil, new_page_id=nil)
     helper = LaraDuplicationHelper.new if helper.nil?
     new_section = Section.new(to_hash)
-    new_section.position = new_section.position + 1
-
+    if new_page_id.nil?
+      new_section.position = new_section.position + 1
+    else
+      new_section.interactive_page_id = new_page_id
+    end
     Section.transaction do
       new_section.save!(validate: false)
 

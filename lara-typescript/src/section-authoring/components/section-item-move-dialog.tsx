@@ -68,9 +68,14 @@ export const SectionItemMoveDialog: React.FC = () => {
     if (selectedSectionId) {
       const selectedSection = getSections().find(s => s.id === selectedSectionId);
       if (selectedSection?.items) {
-        itemsList = selectedSection.items
-          .filter(i => i.column === selectedColumn)
-          .filter(i => i.id !== movingItemId);
+        if (selectedSection?.layout === "full-width") {
+          itemsList = selectedSection.items
+            .filter(i => i.id !== movingItemId);
+        } else {
+          itemsList = selectedSection.items
+            .filter(i => i.column === selectedColumn)
+            .filter(i => i.id !== movingItemId);
+        }
       }
     }
     if (itemsList.length < 1) {

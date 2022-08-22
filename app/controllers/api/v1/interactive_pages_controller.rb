@@ -182,8 +182,7 @@ class Api::V1::InteractivePagesController < API::APIController
       if section && new_items
         new_items.each do |pi|
           page_item = PageItem.find(pi.delete('id'))
-          page_item&.update_attributes(
-            {
+          page_item&.update_attributes({
               column: pi['column'],
               position: pi['position'],
               section: section
@@ -259,7 +258,7 @@ class Api::V1::InteractivePagesController < API::APIController
       return error("Unknown embbeddable_type: #{embeddable_type}\nOnly library interactive embeddables, iFrame interactives, and text blocks are currently supported")
     end
 
-    @interactive_page.add_embeddable(embeddable, position, section.id, column)
+    @interactive_page.add_embeddable(embeddable, position, section, column)
     @interactive_page.reload
 
     embeddable.reload

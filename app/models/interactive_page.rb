@@ -203,15 +203,10 @@ class InteractivePage < ActiveRecord::Base
   def add_embeddable(embeddable, position = nil, section_identifier = nil, column = PageItem::COLUMN_PRIMARY)
 
     section_identifier ||= Section::DEFAULT_SECTION_TITLE
-    # Local function to test whether section_identifier is a numeric value
-    numeric = ->(x) { Float(x) != nil rescue false }
 
-    # look for a section specified by instance, title or ID
+    # look for a section specified by instance or title
     if section_identifier.is_a?(Section)
       section = section_identifier
-    elsif numeric.call(section_identifier)
-      section = sections.find { |s| s.id = section_identifier}  # <--- this seems like the = would blow things up
-      throw "Cant find section #{section_identifier}" unless section
     else
       section = sections.find { |s| s.title == section_identifier }
       unless section
@@ -301,12 +296,12 @@ class InteractivePage < ActiveRecord::Base
   def duplicate(helper=nil)
     helper = LaraDuplicationHelper.new if helper.nil?
     new_page = InteractivePage.new(to_hash)
-    new_sections = sections.map { |s| s.duplicate(helper) }
 
     InteractivePage.transaction do
       new_page.save!(validate: false)
-      new_sections.each { |s| s.update_attribute(:interactive_page_id, new_page.id) }
+      new_sections = sections.map { |s| s.duplicate(helper, new_page.id) }
     end
+
     new_page.reload
   end
 
