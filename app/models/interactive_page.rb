@@ -298,24 +298,8 @@ class InteractivePage < ActiveRecord::Base
     new_page = InteractivePage.new(to_hash)
 
     InteractivePage.transaction do
-      new_sections = sections.map { |s| s.duplicate(helper) }
       new_page.save!(validate: false)
-      position = 1
-      new_sections.each do |s|
-        s.interactive_page_id = new_page.id
-        s.position = position
-        s.save!(validate: false)
-        position += 1
-      end
-
-      # Original sections' positions must be reset after duplicates are moved to new page
-      sections.reload
-      position = 1
-      sections.sort_by(&:position).each do |s|
-        s.position = position
-        s.save!(validate: false)
-        position += 1
-      end
+      new_sections = sections.map { |s| s.duplicate(helper, new_page.id) }
     end
 
     new_page.reload
