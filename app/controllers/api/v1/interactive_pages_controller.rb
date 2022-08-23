@@ -39,18 +39,16 @@ class Api::V1::InteractivePagesController < API::APIController
   ## Mutations
   def copy_page
     activity = @interactive_page.lightweight_activity
-
     authorize! :update, activity
     return error("Can't find required parameter 'dest_index'") unless params[:dest_index]
-
     return error("Can't find activity for page") unless activity
-
     position = params[:dest_index]
     next_page = @interactive_page.duplicate
     next_page.lightweight_activity = activity
     next_page.set_list_position(position)
     activity.reload
     next_page.reload
+    update_activity_changed_by(activity)
     render :json => generate_page_json(next_page)
   end
 
@@ -70,6 +68,7 @@ class Api::V1::InteractivePagesController < API::APIController
       page.reload
       generate_page_json page
     end
+    update_activity_changed_by(activity)
     render :json => pages
   end
 
@@ -77,6 +76,7 @@ class Api::V1::InteractivePagesController < API::APIController
     activity = @interactive_page.lightweight_activity
     authorize! :update, activity
     @interactive_page.destroy
+    update_activity_changed_by(activity)
     render :json => ({success: true})
   end
 
@@ -103,6 +103,7 @@ class Api::V1::InteractivePagesController < API::APIController
     pages = activity.reload.pages.map do |page|
       generate_page_json page
     end
+    update_activity_changed_by(activity)
     render :json => pages
   end
 
@@ -133,6 +134,7 @@ class Api::V1::InteractivePagesController < API::APIController
 
     @interactive_page.sections = new_sections
     @interactive_page.save!
+    update_activity_changed_by(@interactive_page.lightweight_activity)
     render_page_sections_json
   end
 
@@ -148,6 +150,7 @@ class Api::V1::InteractivePagesController < API::APIController
 
     section = @interactive_page.sections.find(section_id)
     section.duplicate
+    update_activity_changed_by(@interactive_page.lightweight_activity)
     render_page_sections_json
   end
 
@@ -158,6 +161,7 @@ class Api::V1::InteractivePagesController < API::APIController
 
     item = @interactive_page.page_items.find { |i| i.id == item_id.to_i }
     duplicate = item.duplicate
+    update_activity_changed_by(@interactive_page.lightweight_activity)
     render json: generate_item_json(duplicate)
   end
 
@@ -197,6 +201,7 @@ class Api::V1::InteractivePagesController < API::APIController
         item.update_attributes({ section: nil }) unless new_item_ids.include?(item.id.to_s)
       end
     end
+    update_activity_changed_by(@interactive_page.lightweight_activity)
     render_page_sections_json
   end
 
@@ -270,7 +275,7 @@ class Api::V1::InteractivePagesController < API::APIController
       type: pi.embeddable_type,
       data: pi.embeddable.to_hash # using pi.embeddable.to_interactive here broke editing/saving by sending unnecessary/incorrect data back
     }
-
+    update_activity_changed_by(@interactive_page.lightweight_activity)
     render json: result.to_json
   end
 
@@ -314,6 +319,7 @@ class Api::V1::InteractivePagesController < API::APIController
       end
     end
     @interactive_page.reload
+    update_activity_changed_by(@interactive_page.lightweight_activity)
     render json: embeddable_to_edit_hash(embeddable).to_json
   end
 
@@ -332,7 +338,7 @@ class Api::V1::InteractivePagesController < API::APIController
       end
     end
     @interactive_page.reload if changed
-
+    update_activity_changed_by(@interactive_page.lightweight_activity) if changed
     render_page_sections_json
   end
 

@@ -138,8 +138,8 @@ class InteractivePagesController < ApplicationController
 
   def add_section
     authorize! :update, @page
-    update_activity_changed_by
     @page.add_section
+    update_activity_changed_by
     redirect_to edit_activity_page_path(@activity, @page)
   end
 
