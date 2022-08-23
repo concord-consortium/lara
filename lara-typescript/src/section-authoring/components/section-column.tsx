@@ -132,6 +132,16 @@ export const SectionColumn: React.FC<ISectionColumnProps> = ({
 
   const showItemPicker = () => setShowAddItem(true);
 
+  const isWrappingItem = (itemData: any) => {
+    if (
+      itemData.componentLabel === "questionWrapper" ||
+      itemData.componentLabel === "interactives" // sharing plugin's component label
+      ) {
+      return true;
+    }
+    return false;
+  };
+
   return (
     <>
       <DragDropContext onDragEnd={onDragEnd}>
@@ -151,14 +161,14 @@ export const SectionColumn: React.FC<ISectionColumnProps> = ({
                     // TODO: Figure out why item.data property names are sometimes not converted
                     // to camel case, and fix it instead of using this itemData variable.
                     const itemData = snakeToCamelCaseKeys(item.data);
+                    if (isWrappingItem(itemData)) {
+                      return;
+                    }
                     const sectionItemClasses = classNames("sectionItem", {
                        halfWidth: itemData.isHalfWidth,
                        pluginItem: item.type === "Embeddable::EmbeddablePlugin",
                        sideTipItem: itemData.componentLabel === "sideTip"
                     });
-                    if (itemData.componentLabel === "questionWrapper") {
-                      return;
-                    }
                     if (itemData.componentLabel === "sideTip") {
                       itemCanBeCopied = false;
                     }
