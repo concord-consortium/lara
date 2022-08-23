@@ -12,10 +12,17 @@
 
 ### Properties
 
+* [domain](ihostfeatures.md#optional-domain)
 * [getFirebaseJwt](ihostfeatures.md#optional-getfirebasejwt)
 * [modal](ihostfeatures.md#optional-modal)
 
 ## Properties
+
+### `Optional` domain
+
+• **domain**? : *undefined | string*
+
+___
 
 ### `Optional` getFirebaseJwt
 

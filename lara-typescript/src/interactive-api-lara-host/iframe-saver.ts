@@ -522,7 +522,8 @@ export class IFrameSaver {
         },
         getFirebaseJwt: {
           version: "1.0.0",
-        }
+        },
+        domain: window.location.hostname
       },
       authoredState: this.authoredState,
       interactiveState: null,  // set in interactiveStateProps()
