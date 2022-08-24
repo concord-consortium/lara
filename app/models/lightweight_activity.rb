@@ -158,7 +158,10 @@ class LightweightActivity < ActiveRecord::Base
     end
     activity_json[:plugins] = []
     self.plugins.each do |p|
-      activity_json[:plugins] << p.export
+      # only export plugins that have an approved_script
+      if p.approved_script
+        activity_json[:plugins] << p.export
+      end
     end
 
     # if the activity has a glossary model assiged to it, add the fake glossary plugin to the list of plugins
