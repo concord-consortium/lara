@@ -200,15 +200,20 @@ describe LightweightActivity do
     let(:export) { activity.export(host) }
     let(:approved_script1) { FactoryGirl.create(:approved_script, label: "glossary") }
     let(:approved_script2) { FactoryGirl.create(:approved_script, label: "notaglossary") }
+    let(:approved_script3) { FactoryGirl.create(:approved_script, label: "willdelete") }
     let(:plugins) do
       [
         FactoryGirl.create(:plugin, approved_script: approved_script1, component_label: "glossary"),
-        FactoryGirl.create(:plugin, approved_script: approved_script2, component_label: "notaglossary")
+        FactoryGirl.create(:plugin, approved_script: approved_script2, component_label: "notaglossary"),
+        FactoryGirl.create(:plugin, approved_script: approved_script3, component_label: "willdeleteapprovedscript")
       ]
     end
 
     before :each do
       plugins.each { |p| activity.plugins.push(p) }
+      # delete the approved script to test export and then reload activity plugins to update model
+      approved_script3.destroy
+      activity.plugins.each { |p| p.reload }
     end
 
     describe "the activity json" do
@@ -216,7 +221,7 @@ describe LightweightActivity do
         expect(export[:pages].length).to eq(activity.pages.count)
       end
       it 'includes the plugins' do
-        expect(export[:plugins].length).to eq(activity.plugins.count)
+        expect(export[:plugins].length).to eq(activity.plugins.count - 1) # plugin missing approved_script not exported
         expect(export[:plugins][0][:id]).to eq(plugins[0].id)
         expect(export[:plugins][1][:id]).to eq(plugins[1].id)
       end
@@ -244,7 +249,7 @@ describe LightweightActivity do
           expect(activity.plugins[0].id).to eq(plugins[0].id)
           expect(activity.plugins[1].id).to eq(plugins[1].id)
 
-          expect(export[:plugins].length).to eq(activity.plugins.count)
+          expect(export[:plugins].length).to eq(activity.plugins.count - 1) # plugin missing approved_script not exported
           expect(export[:plugins][0][:id]).to eq(plugins[1].id)
           expect(export[:plugins][1][:id]).to eq(activity.fake_glossary_plugin_id())
         end
