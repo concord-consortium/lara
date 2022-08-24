@@ -132,14 +132,10 @@ export const SectionColumn: React.FC<ISectionColumnProps> = ({
 
   const showItemPicker = () => setShowAddItem(true);
 
+  // TODO: Find a way to more generically identify wrapping items so this function isn't needed.
   const isWrappingItem = (itemData: any) => {
-    if (
-      itemData.componentLabel === "questionWrapper" ||
-      itemData.componentLabel === "interactives" // sharing plugin's component label
-      ) {
-      return true;
-    }
-    return false;
+    // "interactives" is the Sharing Plugin's label
+    return ["questionWrapper", "interactives"].indexOf(itemData.componentLabel) !== -1;
   };
 
   return (
@@ -161,6 +157,7 @@ export const SectionColumn: React.FC<ISectionColumnProps> = ({
                     // TODO: Figure out why item.data property names are sometimes not converted
                     // to camel case, and fix it instead of using this itemData variable.
                     const itemData = snakeToCamelCaseKeys(item.data);
+                    // Wrapping items should not be rendered as separate page items
                     if (isWrappingItem(itemData)) {
                       return;
                     }
