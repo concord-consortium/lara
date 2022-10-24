@@ -73,7 +73,7 @@ export const ItemEditDialog: React.FC<IItemEditDialogProps> = ({
   };
 
   const handleUpdateItem = () => {
-    if (pageItem && itemData !== {}) {
+    if (pageItem) {
       pageItem.data = {...pageItem.data, ...itemData};
       updatePageItem(pageItem);
     }
