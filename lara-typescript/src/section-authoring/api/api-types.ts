@@ -26,7 +26,7 @@ interface AuthoringApiUrls {
 }
 
 export interface ISectionItem {
-  authoringApiUrls?: AuthoringApiUrls;
+  authoring_api_urls?: AuthoringApiUrls;
   column: SectionColumns;
   data?: any;
   embeddableId?: string;

@@ -185,7 +185,7 @@ export const ItemEditDialog: React.FC<IItemEditDialogProps> = ({
     modalButtons = pluginModalButtons;
   }
   const getEditForm = (itemToEdit: ISectionItem) => {
-    const authoringApiUrls = itemToEdit.authoringApiUrls ? itemToEdit.authoringApiUrls : {};
+    const authoringApiUrls = itemToEdit.authoring_api_urls ? itemToEdit.authoring_api_urls : {};
     switch (itemToEdit.type) {
       case "Embeddable::Xhtml":
         return <TextBlockEditForm
