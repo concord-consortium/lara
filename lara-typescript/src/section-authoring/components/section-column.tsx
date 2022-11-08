@@ -44,19 +44,9 @@ export interface ISectionColumnProps {
   items: ISectionItem[];
 
   /**
-   * Function to move an item
-   */
-  moveFunction?: (id: string) => void;
-
-  /**
    * The ID of the column's parent section
    */
   sectionId: string;
-
-  /**
-   * Function to edit an item
-   */
-  editItemFunction?: (id: string) => void;
 }
 
 export const SectionColumn: React.FC<ISectionColumnProps> = ({
@@ -66,8 +56,6 @@ export const SectionColumn: React.FC<ISectionColumnProps> = ({
   column,
   columnNumber,
   items,
-  moveFunction,
-  editItemFunction,
   sectionId
   }: ISectionColumnProps) => {
 
@@ -103,17 +91,7 @@ export const SectionColumn: React.FC<ISectionColumnProps> = ({
     }
   };
 
-  const handleMoveItem = (itemId: string) => {
-    moveFunction?.(itemId);
-  };
-
-  const handleEditItem = (itemId: string) => {
-    editItemFunction?.(itemId);
-  };
-
   const handleToggleShowAddItem = () => setShowAddItem((prev) => !prev);
-
-  const handleShowAddItem = absorbClickThen(handleToggleShowAddItem);
 
   const handleAddItem = (itemId: string) => {
     const lastItemPosition = items.length > 0 ? items[items.length - 1].position : undefined;

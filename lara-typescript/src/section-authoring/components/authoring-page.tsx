@@ -38,11 +38,6 @@ export interface IPageProps extends IPage {
   showSidebar?: boolean;
 
   /**
-   * Does page have a Teacher Edition sidebar?
-   */
-  hasTESidebar?: boolean;
-
-  /**
    *  Update page when page settings or sections change
    */
   updatePage?: (changes: Partial<IPage>) => void;
@@ -68,16 +63,6 @@ export interface IPageProps extends IPage {
   setPageItems?: (items: ISectionItem[]) => void;
 
   /**
-   * Move an item
-   */
-  itemToMove?: ISectionItem;
-
-  /**
-   * Edit an item
-   */
-  itemToEdit?: ISectionItem;
-
-  /**
    * how to add a new page item
    */
   addPageItem?: (pageItem: ICreatePageItem) => void;
@@ -94,19 +79,14 @@ export const AuthoringPage: React.FC<IPageProps> = ({
   addSection,
   changeSection,
   setSections,
-  itemToMove: initItemToMove,
-  itemToEdit: initItemToEdit,
   addPageItem,
   isCompletion = false,
   isHidden = false,
-  hasArgBlock = false,
   showSidebar = false,
-  hasTESidebar = false,
   sidebar = "(content here)",
   sidebarTitle = "Did you know?"
   }: IPageProps) => {
 
-  const [itemToEdit, setItemToEdit] = useState(initItemToEdit);
   const [showSettings, setShowSettings] = useState(isNew);
   const { getPages, getItems, updatePage, moveSection } = usePageAPI();
   const updateSettings = (changes: Partial<IPage>) => {
@@ -147,17 +127,8 @@ export const AuthoringPage: React.FC<IPageProps> = ({
     }
   };
 
-  const handleEditItemInit = (itemId: string, layout: string) => {
-    const items = getItems();
-    const item = items[items.length - 1];
-    if (item) {
-      setItemToEdit(item);
-    }
-  };
-
   const handleCloseDialog = () => {
     setShowSettings(false);
-    setItemToEdit(undefined);
   };
 
   const pageSettingsClickHandler = () => { setShowSettings(true); };
@@ -204,7 +175,6 @@ export const AuthoringPage: React.FC<IPageProps> = ({
                                 key={`section-${sProps.id}-${index}`}
                                 updateFunction={changeSection}
                                 addPageItem={addPageItem}
-                                editItemFunction={handleEditItemInit}
                               />
                             </div>
                           )
