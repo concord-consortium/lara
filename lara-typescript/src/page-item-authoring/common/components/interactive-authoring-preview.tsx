@@ -29,20 +29,9 @@ export const InteractiveAuthoringPreview: React.FC<Props> = ({interactive, user}
     ? interactive.authored_state
     : JSON.stringify(interactive.authored_state || "{}");
   const [prevAuthoredState, setPrevAuthoredState] = useState<string|null>(authoredState);
-  let linkedInteractives = typeof interactive.linked_interactives === "string"
+  const linkedInteractives = typeof interactive.linked_interactives === "string"
     ? JSON.parse(interactive.linked_interactives || "[]")
     : interactive.linked_interactives;
-  if ((linkedInteractives as any).linkedInteractives) {
-    // This is workaround of a larger issue. Usually the init message is like:
-    // `linkedInteractives: [ ... ]`
-    // as that's what LARA ManagedInteractive.to_hash returns.
-    // However, after saving the interactive edit dialog there's an unnecessary nesting:
-    // `linkedInteractives: { linkedInteractives: [ ... ] }`
-    // It happens because LARA page_item.set_linked_interactives expects linked interactives to include two separate
-    // props: linkedInteractives and linkedState (optional). And they get embedded in the edit form that is later
-    // used to generate the init message.
-    linkedInteractives = (linkedInteractives as any).linkedInteractives;
-  }
 
   const resetCount = useRef(0);
 

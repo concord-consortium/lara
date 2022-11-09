@@ -74,8 +74,9 @@ export const ItemEditDialog: React.FC<IItemEditDialogProps> = ({
 
   const handleUpdateItem = () => {
     if (pageItem) {
-      pageItem.data = {...pageItem.data, ...itemData};
-      updatePageItem(pageItem);
+      const pageItemUpdateOpts = {...pageItem};
+      pageItemUpdateOpts.data = {...pageItem.data, ...itemData};
+      updatePageItem(pageItemUpdateOpts);
     }
     handleCloseDialog();
   };
