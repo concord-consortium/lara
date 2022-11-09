@@ -268,8 +268,6 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
         column={columnValueForIndex(0)}
         columnNumber={1}
         items={getColumnItems(columnValueForIndex(0))}
-        moveFunction={handleMoveItem}
-        editItemFunction={handleEditItem}
         sectionId={id}
         />
       }
@@ -281,7 +279,6 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
           column={columnValueForIndex(1)}
           columnNumber={2}
           items={getColumnItems(columnValueForIndex(1))}
-          moveFunction={handleMoveItem}
           sectionId={id}
         />
       }
