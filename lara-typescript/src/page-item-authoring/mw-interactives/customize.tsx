@@ -33,8 +33,6 @@ export const CustomizeMWInteractive: React.FC<Props> = (props) => {
     image_url,
     show_in_featured_question_report,
     aspect_ratio_method,
-    linked_interactive_id,
-    linked_interactive_type,
     linked_interactive_item_id,
     report_item_url
   } = interactive;
