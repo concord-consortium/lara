@@ -452,9 +452,9 @@ ActiveRecord::Schema.define(:version => 20220808120311) do
     t.string   "runtime",                                :default => "LARA"
     t.string   "background_image"
     t.string   "fixed_width_layout",                     :default => "1100px"
+    t.integer  "glossary_id"
     t.boolean  "defunct",                                :default => false
     t.string   "migration_status",                       :default => "not_migrated"
-    t.integer  "glossary_id"
   end
 
   add_index "lightweight_activities", ["changed_by_id"], :name => "index_lightweight_activities_on_changed_by_id"
