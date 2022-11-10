@@ -65,7 +65,8 @@ describe ManagedInteractive do
         custom_click_to_play_prompt: managed_interactive.custom_click_to_play_prompt,
         inherit_image_url: managed_interactive.inherit_image_url,
         custom_image_url: managed_interactive.custom_image_url,
-        linked_interactives: []
+        linked_interactives: [],
+        linked_interactive_item_id: nil
        }
       expect(managed_interactive.to_hash).to eq(expected)
     end
