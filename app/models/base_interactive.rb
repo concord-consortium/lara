@@ -150,9 +150,12 @@ module BaseInteractive
 
   def linked_interactive_item_id=(val)
     matches = val.nil? ? nil : val.match(/^interactive_(.+)$/)
-    page_item = matches ? PageItem.find(matches[1]) : nil
+    page_item = matches ? PageItem.find_by_id(matches[1]) : nil
     if page_item
       self.linked_interactive = page_item.embeddable
+    else
+      # A way to unlink interactive
+      self.linked_interactive = nil
     end
   end
 
