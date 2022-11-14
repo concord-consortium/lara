@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useCallback, useState } from "react";
 import { ISectionItem, ITextBlockData } from "../api/api-types";
 import { Modal, ModalButtons } from "../../shared/components/modal/modal";
 import { TextBlockEditForm } from "./text-block-edit-form";
@@ -34,7 +34,6 @@ export const ItemEditDialog: React.FC<IItemEditDialogProps> = ({
   const pageItem = pageItems.find(pi => pi.id === editingItemId);
   const wrappedItem = pageItems.find(pi => pi.id === wrappedItemId);
   const [previewPageItem, setPreviewPageItem] = useState<ISectionItem>();
-  const [modalVisibility, setModalVisibility] = useState(true);
   const [itemData, setItemData] = useState({});
   const libraryInteractives = getLibraryInteractives.data?.libraryInteractives;
 
@@ -81,7 +80,7 @@ export const ItemEditDialog: React.FC<IItemEditDialogProps> = ({
     handleCloseDialog();
   };
 
-  const handleUpdateItemPreview = (updates: Record<string, any> | Partial<IManagedInteractive>) => {
+  const handleUpdateItemPreview = useCallback((updates: Record<string, any> | Partial<IManagedInteractive>) => {
     if (previewPageItem) {
       const data = {...previewPageItem.data, ...updates};
       setPreviewPageItem({...previewPageItem, data});
@@ -89,7 +88,7 @@ export const ItemEditDialog: React.FC<IItemEditDialogProps> = ({
       const data = {...pageItem.data, ...updates};
       setPreviewPageItem({...pageItem, data});
     }
-  };
+  }, [pageItem, previewPageItem]);
 
   const handleBooleanElement = (element: HTMLInputElement) => {
     // boolean value form fields are of type radio or of type hidden
@@ -272,7 +271,7 @@ export const ItemEditDialog: React.FC<IItemEditDialogProps> = ({
         title="Edit"
         className="itemEditDialog"
         closeFunction={handleCancelUpdateItem}
-        visibility={modalVisibility}
+        visibility={true}
       >
         <div id="itemEditDialog">
           {errorMessage &&

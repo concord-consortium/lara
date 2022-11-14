@@ -1,5 +1,5 @@
 import { ILinkedInteractive, ISetLinkedInteractives } from "@concord-consortium/interactive-api-host";
-import { RefObject, useCallback, useEffect, useState } from "react";
+import { RefObject, useCallback, useEffect, useMemo, useState } from "react";
 import { debounce } from "ts-debounce";
 
 interface IInteractiveBase {
@@ -29,15 +29,23 @@ export const useAuthoringPreview = (options: IOptions) => {
   const [linkedInteractives, setLinkedInteractives] =
     useState<ILinkedInteractive[] | undefined>(interactive.linked_interactives);
 
-  const _updatePreview = ({ newAuthoredState, newLinkedInteractives, newUrl }: IPreviewUpdate) => {
-    handleUpdateItemPreview?.({
-      authoredState: typeof newAuthoredState === "string" ? newAuthoredState : JSON.stringify(newAuthoredState),
-      linkedInteractives: newLinkedInteractives,
-      url: newUrl
-    });
-  };
+  const updatePreview = useMemo(() => {
+    const _updatePreview = ({ newAuthoredState, newLinkedInteractives, newUrl }: IPreviewUpdate) => {
+      handleUpdateItemPreview?.({
+        authoredState: typeof newAuthoredState === "string" ? newAuthoredState : JSON.stringify(newAuthoredState),
+        linkedInteractives: newLinkedInteractives,
+        url: newUrl
+      });
+    };
+    return debounce(_updatePreview, 500);
+  }, [handleUpdateItemPreview]);
 
-  const updatePreview = useCallback(debounce(_updatePreview, 500), []);
+  // Stop the invocation of the debounced function after unmounting.
+  useEffect(() => {
+    return () => {
+      updatePreview.cancel();
+    };
+  }, []);
 
   useEffect(() => {
     updatePreview({ newAuthoredState: authoredState, newLinkedInteractives: linkedInteractives, newUrl: url });
