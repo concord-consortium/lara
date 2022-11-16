@@ -8,10 +8,10 @@ import { Checkbox } from "../common/components/checkbox";
 import { useCurrentUser } from "../common/hooks/use-current-user";
 import { AuthoredState } from "../common/components/authored-state";
 import { AuthoringApiUrls } from "../common/types";
-import { ILinkedInteractive, ISetLinkedInteractives } from "../../interactive-api-client";
-import { debounce } from "ts-debounce";
+import { ILinkedInteractive } from "../../interactive-api-client";
 
 import "react-tabs/style/react-tabs.css";
+import { useAuthoringPreview } from "../common/hooks/use-authoring-preview";
 
 interface Props {
   managedInteractive: IManagedInteractive;
@@ -20,11 +20,6 @@ interface Props {
   authoringApiUrls: AuthoringApiUrls;
   onUpdate?: (updates: Partial<IManagedInteractive>) => void;
   handleUpdateItemPreview?: (updates: Record<string, any>) => void;
-}
-
-interface ISelectOption {
-  value: number;
-  label: string;
 }
 
 export interface IManagedInteractive {
@@ -65,27 +60,24 @@ export const ManagedInteractiveAuthoring: React.FC<Props> = (props) => {
     managedInteractive,
     defaultClickToPlayPrompt,
     authoringApiUrls,
-    onUpdate,
     handleUpdateItemPreview
   } = props;
   const { name, is_half_width } = managedInteractive;
   const libraryInteractiveIdRef = useRef<HTMLInputElement|null>(null);
-  const libraryInteractiveAuthoredStateRef = useRef<HTMLTextAreaElement|null>(null);
+  const interactiveAuthoredStateRef = useRef<HTMLTextAreaElement|null>(null);
   const linkedInteractivesRef = useRef<HTMLTextAreaElement|null>(null);
   const [urlFragment, setUrlFragment] = useState(managedInteractive.url_fragment);
   const user = useCurrentUser();
+  const { handleAuthoredStateChange, handleLinkedInteractivesChange } = useAuthoringPreview({
+    interactive: managedInteractive,
+    handleUpdateItemPreview,
+    interactiveAuthoredStateRef,
+    linkedInteractivesRef
+  });
 
   const handleUrlFragmentBlur = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setUrlFragment(e.target.value);
   };
-
-  const _updatePreview = (updates: any) => {
-    if (handleUpdateItemPreview !== undefined) {
-      handleUpdateItemPreview({authoredState: updates});
-    }
-  };
-
-  const updatePreview = useCallback(debounce(_updatePreview, 500), []);
 
   const renderRequiredFields = () => {
     if (!libraryInteractive) {
@@ -132,23 +124,6 @@ export const ManagedInteractiveAuthoring: React.FC<Props> = (props) => {
       authored_state: managedInteractive.authored_state,
       interactive_item_id: managedInteractive.interactive_item_id,
       linked_interactives: managedInteractive.linked_interactives
-    };
-
-    const handleAuthoredStateChange = (newAuthoredState: string | object) => {
-      if (libraryInteractiveAuthoredStateRef.current) {
-        libraryInteractiveAuthoredStateRef.current.value = typeof newAuthoredState === "string"
-          ? newAuthoredState
-          : JSON.stringify(newAuthoredState);
-        if (handleUpdateItemPreview !== undefined) {
-          updatePreview(libraryInteractiveAuthoredStateRef.current.value);
-        }
-      }
-    };
-
-    const handleLinkedInteractivesChange = (newLinkedInteractives: ISetLinkedInteractives) => {
-      if (linkedInteractivesRef.current) {
-        linkedInteractivesRef.current.value = JSON.stringify(newLinkedInteractives);
-      }
     };
 
     const renderAuthoringPanel = () => {
@@ -227,7 +202,7 @@ export const ManagedInteractiveAuthoring: React.FC<Props> = (props) => {
       <textarea
         id="authored_state"
         name="authored_state"
-        ref={libraryInteractiveAuthoredStateRef}
+        ref={interactiveAuthoredStateRef}
         defaultValue={managedInteractive.authored_state}
         style={{ display: "none" }}
       />

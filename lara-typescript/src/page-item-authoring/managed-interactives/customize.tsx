@@ -26,7 +26,6 @@ export const CustomizeManagedInteractive: React.FC<Props> = (props) => {
     custom_native_height,
     inherit_click_to_play,
     custom_click_to_play,
-    inherit_click_to_play_prompt,
     custom_click_to_play_prompt,
     inherit_full_window,
     custom_full_window,
@@ -44,7 +43,6 @@ export const CustomizeManagedInteractive: React.FC<Props> = (props) => {
   });
   const [inheritClickToPlay, setInheritClickToPlay] = useState(inherit_click_to_play);
   const [customClickToPlay, setCustomClickToPlay] = useState(custom_click_to_play);
-  const [inheritClickToPlayPrompt, setInheritClickToPlayPrompt] = useState(inherit_click_to_play_prompt);
   const [customClickToPlayPrompt, setCustomClickToPlayPrompt] = useState(custom_click_to_play_prompt);
   const [inheritFullWindow, setInheritFullWindow] = useState(inherit_full_window);
   const [inheritImageUrl, setInheritImageUrl] = useState(inherit_image_url);
