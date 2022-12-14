@@ -1,5 +1,5 @@
 ENV['SHUTTERBUG_URI']                    ||= "//snapshot.concord.org/shutterbug"
-ENV['LOGGER_URI']                        ||= '//logger.concord.org/logs'
+ENV['LOGGER_URI']                        ||= 'https://logger.concord.org/logs'
 ENV['LOGGER_APPLICATION_NAME']           ||= 'LARA-log-poc'
 
 ENV['LABBOOK_PROVIDER_URL']              ||= 'https://labbook.concord.org'
