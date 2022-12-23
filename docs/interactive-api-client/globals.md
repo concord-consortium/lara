@@ -1183,7 +1183,7 @@ ___
 
 * **authoredState**: *null | AuthoredState*
 
-* **setAuthoredState**: *handleSetAuthoredState* = handleSetAuthoredState
+* **setAuthoredState**: *(Anonymous function)* = handleSetAuthoredState
 
 ___
 
@@ -1236,7 +1236,7 @@ ___
 
 * **globalInteractiveState**: *null | GlobalInteractiveState*
 
-* **setGlobalInteractiveState**: *handleSetGlobalInteractiveState* = handleSetGlobalInteractiveState
+* **setGlobalInteractiveState**: *(Anonymous function)* = handleSetGlobalInteractiveState
 
 ___
 
@@ -1268,7 +1268,7 @@ ___
 
 * **interactiveState**: *null | InteractiveState*
 
-* **setInteractiveState**: *handleSetInteractiveState* = handleSetInteractiveState
+* **setInteractiveState**: *(Anonymous function)* = handleSetInteractiveState
 
 ___
 
