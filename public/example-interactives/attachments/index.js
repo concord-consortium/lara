@@ -37588,12 +37588,12 @@ var useInteractiveState = function () {
             client.removeInteractiveStateListener(handleStateUpdate);
         };
     }, []);
-    var handleSetInteractiveState = function (stateOrUpdateFunc) {
+    var handleSetInteractiveState = (0, react_1.useCallback)(function (stateOrUpdateFunc) {
         // Use client-managed state, as it should be up to date. React-managed state might not be the most recent version.
         var newState = handleUpdate(stateOrUpdateFunc, client.getInteractiveState());
         setInteractiveState(newState);
         client.setInteractiveState(newState);
-    };
+    }, []);
     return { interactiveState: interactiveState, setInteractiveState: handleSetInteractiveState };
 };
 exports.useInteractiveState = useInteractiveState;
@@ -37618,12 +37618,12 @@ var useAuthoredState = function () {
             client.removeAuthoredStateListener(handleStateUpdate);
         };
     }, []);
-    var handleSetAuthoredState = function (stateOrUpdateFunc) {
+    var handleSetAuthoredState = (0, react_1.useCallback)(function (stateOrUpdateFunc) {
         // Use client-managed state, as it should be up to date. React-managed state might not be the most recent version.
         var newState = handleUpdate(stateOrUpdateFunc, client.getAuthoredState());
         setAuthoredState(newState);
         client.setAuthoredState(newState);
-    };
+    }, []);
     return { authoredState: authoredState, setAuthoredState: handleSetAuthoredState };
 };
 exports.useAuthoredState = useAuthoredState;
@@ -37642,12 +37642,12 @@ var useGlobalInteractiveState = function () {
         };
     }, []);
     // tslint:disable-next-line:max-line-length
-    var handleSetGlobalInteractiveState = function (stateOrUpdateFunc) {
+    var handleSetGlobalInteractiveState = (0, react_1.useCallback)(function (stateOrUpdateFunc) {
         // Use client-managed state, as it should be up to date. React-managed state might not be the most recent version.
         var newState = handleUpdate(stateOrUpdateFunc, client.getGlobalInteractiveState());
         setGlobalInteractiveState(newState);
         client.setGlobalInteractiveState(newState);
-    };
+    }, []);
     return { globalInteractiveState: globalInteractiveState, setGlobalInteractiveState: handleSetGlobalInteractiveState };
 };
 exports.useGlobalInteractiveState = useGlobalInteractiveState;

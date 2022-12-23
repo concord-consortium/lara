@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import ResizeObserver from "resize-observer-polyfill";
 
 import { ICustomMessageHandler, ICustomMessagesHandledMap, IInitInteractive, ITextDecorationHandler,
@@ -30,12 +30,13 @@ export const useInteractiveState = <InteractiveState>() => {
     };
   }, []);
 
-  const handleSetInteractiveState = (stateOrUpdateFunc: InteractiveState | UpdateFunc<InteractiveState> | null) => {
+  const handleSetInteractiveState = useCallback(
+    (stateOrUpdateFunc: InteractiveState | UpdateFunc<InteractiveState> | null) => {
     // Use client-managed state, as it should be up to date. React-managed state might not be the most recent version.
     const newState = handleUpdate<InteractiveState>(stateOrUpdateFunc, client.getInteractiveState<InteractiveState>());
     setInteractiveState(newState);
     client.setInteractiveState<InteractiveState>(newState);
-  };
+  }, []);
 
   return { interactiveState, setInteractiveState: handleSetInteractiveState };
 };
@@ -63,12 +64,12 @@ export const useAuthoredState = <AuthoredState>() => {
     };
   }, []);
 
-  const handleSetAuthoredState = (stateOrUpdateFunc: AuthoredState | UpdateFunc<AuthoredState> | null) => {
+  const handleSetAuthoredState = useCallback((stateOrUpdateFunc: AuthoredState | UpdateFunc<AuthoredState> | null) => {
     // Use client-managed state, as it should be up to date. React-managed state might not be the most recent version.
     const newState = handleUpdate<AuthoredState>(stateOrUpdateFunc, client.getAuthoredState<AuthoredState>());
     setAuthoredState(newState);
     client.setAuthoredState<AuthoredState>(newState);
-  };
+  }, []);
 
   return { authoredState, setAuthoredState: handleSetAuthoredState };
 };
@@ -90,14 +91,14 @@ export const useGlobalInteractiveState = <GlobalInteractiveState>() => {
   }, []);
 
   // tslint:disable-next-line:max-line-length
-  const handleSetGlobalInteractiveState = (stateOrUpdateFunc: GlobalInteractiveState | UpdateFunc<GlobalInteractiveState> | null ) => {
+  const handleSetGlobalInteractiveState = useCallback((stateOrUpdateFunc: GlobalInteractiveState | UpdateFunc<GlobalInteractiveState> | null ) => {
     // Use client-managed state, as it should be up to date. React-managed state might not be the most recent version.
     const newState = handleUpdate<GlobalInteractiveState>(
       stateOrUpdateFunc, client.getGlobalInteractiveState<GlobalInteractiveState>()
     );
     setGlobalInteractiveState(newState);
     client.setGlobalInteractiveState<GlobalInteractiveState>(newState);
-  };
+  }, []);
 
   return { globalInteractiveState, setGlobalInteractiveState: handleSetGlobalInteractiveState };
 };
