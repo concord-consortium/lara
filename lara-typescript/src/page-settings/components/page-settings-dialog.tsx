@@ -44,7 +44,11 @@ export const PageSettingsDialog: React.FC<IPageSettingsDialogProps> = ({
   };
 
   const handleIsCompletionChange = () => {
-    setIsCompletionPage(!isCompletionPage);
+    const newIsCompletion = !isCompletionPage;
+    setIsCompletionPage(newIsCompletion);
+    if (newIsCompletion) {
+      setHasStudentSidebarPage(false);
+    }
   };
 
   const handleIsHiddenChange = () => {
@@ -52,7 +56,7 @@ export const PageSettingsDialog: React.FC<IPageSettingsDialogProps> = ({
   };
 
   const handleHasStudentSidebarChange = () => {
-    setHasStudentSidebarPage(!hasStudentSidebar);
+    setHasStudentSidebarPage(!hasStudentSidebarPage);
   };
 
   const handleUpdateSettings = () => {
@@ -85,7 +89,7 @@ export const PageSettingsDialog: React.FC<IPageSettingsDialogProps> = ({
               type="text"
               id="pageTitle"
               name="pageTitle"
-              defaultValue={name}
+              value={name}
               onChange={handleTitleChange}
               placeholder="Enter a title"
             />
@@ -98,7 +102,7 @@ export const PageSettingsDialog: React.FC<IPageSettingsDialogProps> = ({
               type="checkbox"
               id="isHidden"
               name="isHidden"
-              defaultChecked={isHiddenPage}
+              checked={isHiddenPage}
               onChange={handleIsHiddenChange}
             />
           </dd>
@@ -111,20 +115,22 @@ export const PageSettingsDialog: React.FC<IPageSettingsDialogProps> = ({
             <input
               type="checkbox"
               id="isCompletion"
+              disabled={isCompletionDisabled}
               name="isCompletion"
-              defaultChecked={isCompletionPage}
+              checked={isCompletionPage}
               onChange={handleIsCompletionChange}
             />
           </dd>
-          <dt className={`input5`}>
+          <dt className={`input5 ${isCompletionPage && "disabled"}`}>
             <label htmlFor="hasStudentSidebar">Page has a student sidebar menu</label>
           </dt>
-          <dd className={`input5`}>
+          <dd className={`input5 ${isCompletionPage && "disabled"}`}>
             <input
               type="checkbox"
               id="hasStudentSidebar"
+              disabled={isCompletionPage}
               name="hasStudentSidebar"
-              defaultChecked={hasStudentSidebar}
+              checked={hasStudentSidebarPage}
               onChange={handleHasStudentSidebarChange}
             />
           </dd>
