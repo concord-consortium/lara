@@ -11,7 +11,7 @@ export interface IPageSettingsDialogProps {
   isHidden?: boolean;
   isCompletion?: boolean;
   hasStudentSidebar?: boolean;
-  disableCompletionPageSetting?: boolean;
+  disableCompletionPageSetting?: string | boolean;
   updateSettingsFunction: (changes: Partial<IPage>) => void;
   closeDialogFunction: () => void;
 }
@@ -26,9 +26,11 @@ export const PageSettingsDialog: React.FC<IPageSettingsDialogProps> = ({
   closeDialogFunction
   }: IPageSettingsDialogProps) => {
 
+  const disableCompletionPageSettingReason = disableCompletionPageSetting ? disableCompletionPageSetting : null;
+
   const [hasStudentSidebarPage, setHasStudentSidebarPage] = React.useState(hasStudentSidebar);
   const [isCompletionPage, setIsCompletionPage] = React.useState(isCompletion);
-  const [isCompletionDisabled, setIsCompletionDisabled] = React.useState(disableCompletionPageSetting);
+  const [isCompletionDisabled, setIsCompletionDisabled] = React.useState(!!disableCompletionPageSetting);
   const [isHiddenPage, setIsHiddenPage] = React.useState(isHidden);
   const [isHiddenDisabled, setIsHiddenDisabled] = React.useState(isCompletion);
 
@@ -108,7 +110,7 @@ export const PageSettingsDialog: React.FC<IPageSettingsDialogProps> = ({
           </dd>
           <dt className={`input3 ${isCompletionDisabled && "disabled"}`}>
             <label htmlFor="isCompletion">
-              Page is a completion/summary page (An activity can only have one completion page)
+              Page is a completion/summary page { disableCompletionPageSettingReason && `(${disableCompletionPageSettingReason})` }
             </label>
           </dt>
           <dd className={`input3 ${isCompletionDisabled && "disabled"}`}>

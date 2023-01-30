@@ -95,14 +95,25 @@ export const AuthoringPage: React.FC<IPageProps> = ({
   };
 
  /*
-  * Returns true if activity already has a completion page and it is not the completion page
+  * Returns reason for disabling completion page checkbox, false otherwise
   */
   const disableCompletionPageSetting = () => {
+    if (isCompletion) {
+      // Never block authors from turning off the completion page option.
+      return false;
+    }
     const pages = getPages.data;
-    // return !!pages?.find(p => !!p.isCompletion);
-    const isCompletionPage = pages?.find(p => p.isCompletion === true);
-    const hasCompletionPage = isCompletionPage != null;
-    return (hasCompletionPage && !isCompletion ? true : false);
+    const hasCompletionPage = pages?.find(p => p.isCompletion === true);
+    if (hasCompletionPage) {
+      return "An activity can only have one completion page";
+    }
+
+    const items = getItems();
+    if (items.length > 0) {
+      return "A completion page has to be empty";
+    }
+
+    return false;
   };
 
   /*
