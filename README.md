@@ -153,6 +153,12 @@ terminal in the LARA Codespaces:
     ```
       docker-compose exec app bundle exec rake lightweight:admin_last_user
     ```
+    
+7. If you don't need Portal, you can skip all the instructions related to it. Finally, add `users/sign_up` to the URL and create a new user there. 
+   You can make this user an admin by running following command:
+    ```
+      docker-compose exec app bundle exec rake lightweight:admin_last_user
+    ```
 
 ## Editing CSS
 
