@@ -2,9 +2,9 @@ import * as React from "react";
 import { Modal, ModalButtons } from "../../shared/components/modal/modal";
 import { Save } from "../../shared/components/icons/save-icon";
 import { Close } from "../../shared/components/icons/close-icon";
+import { IPage } from "../../section-authoring/api/api-types";
 
 import "./page-settings-dialog.scss";
-import { IPage } from "../../section-authoring/api/api-types";
 
 export interface IPageSettingsDialogProps {
   name: string | undefined;
@@ -28,6 +28,7 @@ export const PageSettingsDialog: React.FC<IPageSettingsDialogProps> = ({
 
   const disableCompletionPageSettingReason = disableCompletionPageSetting ? disableCompletionPageSetting : null;
 
+  const [currentName, setCurrentName] = React.useState(name);
   const [hasStudentSidebarPage, setHasStudentSidebarPage] = React.useState(hasStudentSidebar);
   const [isCompletionPage, setIsCompletionPage] = React.useState(isCompletion);
   const [isCompletionDisabled, setIsCompletionDisabled] = React.useState(!!disableCompletionPageSetting);
@@ -41,8 +42,8 @@ export const PageSettingsDialog: React.FC<IPageSettingsDialogProps> = ({
     }
   }, [isCompletionPage, isHiddenPage]);
 
-  const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    name = event.target.value;
+  const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setCurrentName(event.target.value);
   };
 
   const handleIsCompletionChange = () => {
@@ -63,7 +64,7 @@ export const PageSettingsDialog: React.FC<IPageSettingsDialogProps> = ({
 
   const handleUpdateSettings = () => {
     updateSettingsFunction({
-      name,
+      name: currentName,
       isCompletion: isCompletionPage,
       isHidden: isHiddenPage,
       showSidebar: hasStudentSidebarPage
@@ -91,8 +92,8 @@ export const PageSettingsDialog: React.FC<IPageSettingsDialogProps> = ({
               type="text"
               id="pageTitle"
               name="pageTitle"
-              value={name}
-              onChange={handleTitleChange}
+              value={currentName}
+              onChange={handleNameChange}
               placeholder="Enter a title"
             />
           </dd>
