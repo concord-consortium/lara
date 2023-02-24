@@ -169,6 +169,7 @@
 * [removeGlobalInteractiveStateListener](globals.md#const-removeglobalinteractivestatelistener)
 * [removeInteractiveStateListener](globals.md#const-removeinteractivestatelistener)
 * [removeLinkedInteractiveStateListener](globals.md#const-removelinkedinteractivestatelistener)
+* [sendCustomMessage](globals.md#const-sendcustommessage)
 * [sendReportItemAnswer](globals.md#const-sendreportitemanswer)
 * [setAuthoredState](globals.md#const-setauthoredstate)
 * [setGlobalInteractiveState](globals.md#const-setglobalinteractivestate)
@@ -328,7 +329,7 @@ ___
 
 ###  IRuntimeClientMessage
 
-Ƭ **IRuntimeClientMessage**: *"interactiveState" | "height" | "hint" | "getAttachmentUrl" | "getAuthInfo" | "supportedFeatures" | "navigation" | "getFirebaseJWT" | "authoredState" | "authoringCustomReportFields" | "runtimeCustomReportValues" | "showModal" | "closeModal" | "getLibraryInteractiveList" | "getInteractiveSnapshot" | "addLinkedInteractiveStateListener" | "removeLinkedInteractiveStateListener" | "decoratedContentEvent"*
+Ƭ **IRuntimeClientMessage**: *"interactiveState" | "height" | "hint" | "getAttachmentUrl" | "getAuthInfo" | "supportedFeatures" | "navigation" | "getFirebaseJWT" | "authoredState" | "authoringCustomReportFields" | "runtimeCustomReportValues" | "showModal" | "closeModal" | "getLibraryInteractiveList" | "getInteractiveSnapshot" | "addLinkedInteractiveStateListener" | "removeLinkedInteractiveStateListener" | "decoratedContentEvent" | "customMessage"*
 
 ___
 
@@ -946,6 +947,20 @@ ___
 Name | Type |
 ------ | ------ |
 `intState` | InteractiveState &#124; null |
+
+**Returns:** *void*
+
+___
+
+### `Const` sendCustomMessage
+
+▸ **sendCustomMessage**(`customMessage`: [ICustomMessage](interfaces/icustommessage.md)): *void*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`customMessage` | [ICustomMessage](interfaces/icustommessage.md) |
 
 **Returns:** *void*
 

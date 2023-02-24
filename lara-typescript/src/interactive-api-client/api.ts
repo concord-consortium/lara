@@ -37,7 +37,8 @@ import {
   IReportItemAnswer,
   OnUnloadFunction,
   IReportItemHandlerMetadata,
-  ITextDecorationInfo
+  ITextDecorationInfo,
+  ICustomMessage
 } from "./types";
 import { getClient } from "./client";
 import { v4 as uuidv4 } from "uuid";
@@ -519,4 +520,8 @@ export const sendReportItemAnswer = (request: Omit<IReportItemAnswer, "requestId
 
 export const setOnUnload = (onUnload?: OnUnloadFunction) => {
   getClient().setOnUnload(onUnload);
+};
+
+export const sendCustomMessage = (customMessage: ICustomMessage) => {
+  getClient().post("customMessage", customMessage);
 };

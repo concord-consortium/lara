@@ -258,7 +258,7 @@ ___
 
 ###  IRuntimeClientMessage
 
-Ƭ **IRuntimeClientMessage**: *"interactiveState" | "height" | "hint" | "getAttachmentUrl" | "getAuthInfo" | "supportedFeatures" | "navigation" | "getFirebaseJWT" | "authoredState" | "authoringCustomReportFields" | "runtimeCustomReportValues" | "showModal" | "closeModal" | "getLibraryInteractiveList" | "getInteractiveSnapshot" | "addLinkedInteractiveStateListener" | "removeLinkedInteractiveStateListener" | "decoratedContentEvent"*
+Ƭ **IRuntimeClientMessage**: *"interactiveState" | "height" | "hint" | "getAttachmentUrl" | "getAuthInfo" | "supportedFeatures" | "navigation" | "getFirebaseJWT" | "authoredState" | "authoringCustomReportFields" | "runtimeCustomReportValues" | "showModal" | "closeModal" | "getLibraryInteractiveList" | "getInteractiveSnapshot" | "addLinkedInteractiveStateListener" | "removeLinkedInteractiveStateListener" | "decoratedContentEvent" | "customMessage"*
 
 ___
 
