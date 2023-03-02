@@ -178,7 +178,9 @@ export type IRuntimeClientMessage = "interactiveState" |
                                        "getInteractiveSnapshot" |
                                        "addLinkedInteractiveStateListener" |
                                        "removeLinkedInteractiveStateListener" |
-                                       "decoratedContentEvent"
+                                       "decoratedContentEvent" |
+                                       // intentionally same name as server message to allow bi-directional messages
+                                       "customMessage"
                                       ;
 
 export type IRuntimeServerMessage = "attachmentUrl" |
