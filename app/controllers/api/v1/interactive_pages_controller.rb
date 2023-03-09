@@ -240,7 +240,7 @@ class Api::V1::InteractivePagesController < API::APIController
       # 1. Create a plugin with the instance of the approved_script
       # 2. Create a Embeddable::EmbeddablePlugin
       # Example: "Plugin_10::windowShade"
-      # IMPORTANT: The tip type, "windowShade" in the above example, as 
+      # IMPORTANT: The tip type, "windowShade" in the above example, as
       # the component_label is critical.
       tip_type = $2
       regex = /Plugin_(\d+)::#{tip_type}/
@@ -404,7 +404,7 @@ class Api::V1::InteractivePagesController < API::APIController
       .joins("LEFT JOIN managed_interactives ON managed_interactives.library_interactive_id = library_interactives.id")
       .group('library_interactives.id')
 
-    if !current_user.is_admin
+    if current_user && !current_user.is_admin
       library_interactives = library_interactives.where("library_interactives.official = true")
     end
 
