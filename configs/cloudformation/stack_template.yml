@@ -1,0 +1,937 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: LARA ECS stack
+
+Parameters:
+  Environment:
+    Type: String
+    Default: qa
+    AllowedValues:
+      - qa
+      - staging
+      - production
+    Description: Enter staging or production. Default is qa.
+  DomainNameBase:
+    Type: String
+    AllowedValues:
+      - concord.org
+      - staging.concord.org
+      - lara.staging.concord.org
+      - concordqa.org
+    Description:
+      The base of the domain name. The host name is added to this to make the
+      full domain name. The DomanNameBase is also used to find a wildcard SSL certificate.
+  DatabaseSecurityGroupId:
+    Type: AWS::EC2::SecurityGroup::Id
+    Description:
+      Select security group of the RDS database. This security group will
+      be modified to allow access by the EC2 instances in this stack
+  HostName:
+    Type: String
+    Description:
+      The first part of the domain name the DomainNameBase will be added to
+      this. So the final domain name is [HostName].[DomainNameBase]
+  ShortName:
+    Type: String
+    Description: 12 character or less name to use for naming created resources
+    MaxLength: "12"
+  HostedZoneId:
+    Type: AWS::Route53::HostedZone::Id
+
+  ClusterStackName:
+    Type: String
+    Description:
+      The name of the CloudFormation stack that manages the cluster you want
+      this application deployed in.  The cluster security group, Vpc, and subnets will be
+      be used by resources in this stack.
+  SubnetIds:
+    Type: List<AWS::EC2::Subnet::Id>
+    Description:
+      List of VPC Subnet Ids, if this is set it will override the subnets
+      from the ClusterStackName. These subnets are used for by the application load balancer
+
+  PortalClientID:
+    Type: String
+    Default: authoring
+    Description:
+      Client ID used with OAuth2 connection to the portal. This is used
+      globably for all of the Portals configured for this LARA instance.
+  LearnMigrateSecret:
+    Type: String
+    Description:
+      The OAuth2 key to authenticate via learn-migrate. If this is not set, the portal
+      will not be configured.
+  LearnStagingSecret:
+    Type: String
+    Description:
+      The OAuth2 key to authenticate via learn.staging. If this is not set, the portal
+      will not be configured.
+  AssessmentPortalSecret:
+    Type: String
+    Description:
+      The OAuth2 key to authenticate via asessment.portal. If this is not set, the portal
+      will not be configured.
+  LearnPortalSecret:
+    Type: String
+    Description:
+      The OAuth2 key to authenticate via learn. If this is not set, the portal
+      will not be configured.
+  QAPortalSecret:
+    Type: String
+    Description:
+      The OAuth2 key to authenticate via the QA portal. If this is not set, the portal
+      will not be configured. Be sure to check the value of PortalClientID, and make sure that value
+      matches the `id` value in the Portal Auth Client.
+  QAPortalURL:
+    Type: String
+    Description: The QA Portal URL to use for OAuth2 authentication, used if QAPortalSecret is specified
+  CRaterPassword:
+    Type: String
+  CRaterUrl:
+    Type: String
+  CRaterApiKey:
+    Type: String
+
+  DbHost:
+    Type: String
+    Description: The hostname of the database. Template assumes database name is portal.
+  DbName:
+    Type: String
+    Description: The name of the database. Template assumes database name is portal.
+    Default: portal
+  DbPassword:
+    Type: String
+    Description: The password of the database. Template assumes username is master.
+
+  NewRelicAppName:
+    Type: String
+    Description: App name to show in NewRelic
+  NewRelicLicenseKey:
+    Type: String
+  RollbarsKey:
+    Type: String
+  RailsSecretToken:
+    Type: String
+  SesKey:
+    Type: String
+    Description: key to connect to AWS SES for email
+  SesSecret:
+    Type: String
+  LabBookProviderURL:
+    Type: String
+    Description: URL to the labbook service for use in the labbook items
+  ModelJsonListURL:
+    Type: String
+    Description: URL of the model json used in ITSI authoring. It is typically
+      a URL to a portal model library.
+  CloudWatchLogGroup:
+    Type: String
+    Description: logging group in cloud watch where the aws logs will be sent
+  MaxNumLaraWebTasks:
+    Type: String
+    Description: maxium number of LARA Web tasks the autoscaler will spin up
+  MinNumLaraWebTasks:
+    Type: String
+    Description: minimum number of LARA Web tasks the autoscaler will spin up
+  LaraDockerImage:
+    Type: String
+    Description: docker image to use for the web container and worker container
+  GoogleAnalyticsAccount:
+    Type: String
+    Description: key for Google Analytics
+  NestedTemplatesFolder:
+    Type: String
+    Default: https://s3.amazonaws.com/concord-devops/cloud-formation/v3
+  LoggerUri:
+    Type: String
+    Default: https://logger.concord.org/logs
+    Description: Protocol relative uri for log manager api endpoint. Default is https://logger.concord.org/logs.
+  ReportServiceToken:
+    Type: String
+    Description: secret key for LARA to use to send data to the report service
+  ReportServiceURL:
+    Type: String
+    Description: URL to the report service for importing activity structure
+    Default: https://us-central1-report-service-dev.cloudfunctions.net/api
+  ReportUrl:
+    Type: String
+    Description: URL for the portal-report to use for student report buttons in LARA
+    Default: https://portal-report.concord.org/branch/master/index.html
+  ShutterbugURI:
+    Type: String
+    Description: URI for the shutterbug service
+    Default: https://fh1fzvhx93.execute-api.us-east-1.amazonaws.com/production
+  CreateLoadBalancerHTTPRedirect:
+    Type: String
+    Description:
+      create a the load balancer listener to redirect http traffic. This is
+      temporary. The stack can't be created when an existing port 80 listener is defined.
+      And the previous version of this stack has one defined in a nested template. This
+      nested template doesn't get cleaned up until after the new template tries to create
+      the new port 80 listener.
+    AllowedValues:
+      - "true"
+      - "false"
+  ActivityPlayerURL:
+    Type: String
+    Description: URL to the Activity Player
+    Default: https://activity-player.concord.org
+  ConversionScriptURL:
+    Type: String
+    Description:
+      URL of script to create an Activity Player compatible version of
+      resources by converting old embeddables to library interactives
+    Default: https://models-resources.concord.org/question-interactives/branch/master/convert-old-lara/?lara_root=https://authoring.concord.org&template=https://authoring.concord.org/api/v1/activities/11354.json
+  EnableDangerousGlossaryLinkingOnImport:
+    Type: String
+    Description:
+      enables linking glossaries during activity import solely based on the
+      id in the glossary model api url, ignoring the api domain.  This will be used during
+      the LARA2 cutover to test imports.
+    AllowedValues: ["false", "true"]
+    Default: "false"
+
+Conditions:
+  AddLearnMigrate: !Not [!Equals [!Ref LearnMigrateSecret, ""]]
+  AddLearnStaging: !Not [!Equals [!Ref LearnStagingSecret, ""]]
+  AddAssessmentPortal: !Not [!Equals [!Ref AssessmentPortalSecret, ""]]
+  AddLearnPortal: !Not [!Equals [!Ref LearnPortalSecret, ""]]
+  AddQAPortal: !Not [!Equals [!Ref QAPortalSecret, ""]] # Also check for QAPortalURL?
+  CreateLoadBalancerHTTPRedirectCond:
+    !Equals [!Ref CreateLoadBalancerHTTPRedirect, "true"]
+  HasSubnetIds: !Not [!Equals [!Join ["", !Ref SubnetIds], ""]]
+
+Resources:
+  LARADNS:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      AliasTarget:
+        # need to get this from the cloudfront distribution
+        DNSName: !GetAtt CloudFrontDistribution.DomainName
+        # static zone id from documentation
+        HostedZoneId: Z2FDTNDATAQYW2
+      HostedZoneId: !Ref "HostedZoneId"
+      Name: !Sub "${HostName}.${DomainNameBase}"
+      Type: A
+      Weight: 100
+      SetIdentifier: !Ref AWS::StackName
+
+  # Putting CloudFront in front of LARA so we can proxy things like the sensor-interactive
+  # in theory this could also be used if we wanted to put our assets in an S3 bucket so
+  # the server wasn't hit to serve them
+  CloudFrontDistribution:
+    Type: "AWS::CloudFront::Distribution"
+    Properties:
+      DistributionConfig:
+        Aliases:
+          - !Sub "${HostName}.${DomainNameBase}"
+        CacheBehaviors:
+          - AllowedMethods:
+              - GET
+              - HEAD
+            Compress: false
+            ForwardedValues:
+              QueryString: false
+            PathPattern: "sensor-interactive/*"
+            TargetOriginId: S3Origin
+            ViewerProtocolPolicy: redirect-to-https
+        Comment: !Sub "Cloudfront Distribution for ${HostName}.${DomainNameBase} managed by CloudFormation"
+        DefaultCacheBehavior:
+          AllowedMethods:
+            - HEAD
+            - GET
+            - OPTIONS
+            - PUT
+            - POST
+            - PATCH
+            - DELETE
+          # Not sure
+          Compress: false
+          ForwardedValues:
+            QueryString: true
+            Cookies:
+              Forward: all
+            # It isn't clear from the documentation but it seems like this is the right
+            # way to say that we want to forward all headers
+            Headers:
+              - "*"
+          TargetOriginId: LARAOrigin
+          ViewerProtocolPolicy: redirect-to-https
+        Enabled: true
+        HttpVersion: "http2"
+        # Should fix this
+        # Logging:
+        #   Bucket: cc-cloudfront-logs.s3.amazonaws.com
+        #   IncludeCookies: false
+        #   Prefix: !Ref 'DomainName'
+        PriceClass: PriceClass_All
+        Origins:
+          - Id: LARAOrigin
+            DomainName: !Sub "${HostName}-lb.${DomainNameBase}"
+            CustomOriginConfig:
+              OriginProtocolPolicy: https-only
+              OriginReadTimeout: 180
+          - Id: S3Origin
+            DomainName: models-resources.s3-website-us-east-1.amazonaws.com
+            # We don't want an origin path we just want to forward the request through to models-resources
+            # since we are going limit the request to just the paths /sensor-interactive
+            CustomOriginConfig:
+              OriginProtocolPolicy: http-only
+        ViewerCertificate:
+          AcmCertificateArn:
+            !FindInMap [SSLCertificateMap, !Ref "DomainNameBase", Id]
+          SslSupportMethod: sni-only
+
+  AppLoadBalancerStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: !Sub "${NestedTemplatesFolder}/ecs-load-balancer.yml"
+      Parameters:
+        LoadBalancerIdleTimeout: "180"
+        DomainName: !Sub "${HostName}-lb.${DomainNameBase}"
+        ClusterSecurityGroupId:
+          {
+            "Fn::ImportValue": !Sub "${ClusterStackName}-ClusterSecurityGroupId",
+          }
+        VpcId: { "Fn::ImportValue": !Sub "${ClusterStackName}-ClusterVpcId" }
+        Subnets: !If
+          - HasSubnetIds
+          - !Join [",", !Ref SubnetIds]
+          - { "Fn::ImportValue": !Sub "${ClusterStackName}-ClusterSubnets" }
+        HostedZoneId: !Ref "HostedZoneId"
+
+  AppListener443:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    Properties:
+      Certificates:
+        - CertificateArn:
+            !FindInMap [SSLCertificateMap, !Ref "DomainNameBase", Id]
+      DefaultActions:
+        - TargetGroupArn: !Ref AppTargetGroup
+          Type: forward
+      LoadBalancerArn: !GetAtt AppLoadBalancerStack.Outputs.LoadBalancer
+      Port: "443"
+      Protocol: HTTPS
+
+  # Add a http redirect to the load balancer incase some access it directly
+  # instead of through cloud front
+  AppListener80:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    Condition: CreateLoadBalancerHTTPRedirectCond
+    Properties:
+      DefaultActions:
+        - Type: redirect
+          RedirectConfig:
+            Host: "#{host}"
+            Path: "/#{path}"
+            Port: "443"
+            Protocol: "HTTPS"
+            Query: "#{query}"
+            StatusCode: HTTP_301
+      LoadBalancerArn: !GetAtt AppLoadBalancerStack.Outputs.LoadBalancer
+      Port: "80"
+      Protocol: HTTP
+
+  AppService:
+    Type: AWS::ECS::Service
+    DependsOn:
+      - AppListener443
+    Properties:
+      Role: ecsServiceRole
+      TaskDefinition: !Ref AppTaskDefinition
+      DesiredCount: !Ref MinNumLaraWebTasks
+      HealthCheckGracePeriodSeconds: "60"
+      LoadBalancers:
+        - TargetGroupArn: !Ref AppTargetGroup
+          ContainerPort: "80"
+          ContainerName: App
+      Cluster: { "Fn::ImportValue": !Sub "${ClusterStackName}-ClusterName" }
+
+  AppTargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      HealthCheckIntervalSeconds: "30"
+      HealthCheckProtocol: HTTP
+      HealthyThresholdCount: "2"
+      UnhealthyThresholdCount: "3"
+      HealthCheckTimeoutSeconds: "5"
+      # even though this is set to 80 the actual port will
+      # be overriden by each of the containers that is added
+      # to the target group
+      Port: "80"
+      Protocol: HTTP
+      TargetGroupAttributes:
+        - Key: deregistration_delay.timeout_seconds
+          Value: "120"
+      VpcId: { "Fn::ImportValue": !Sub "${ClusterStackName}-ClusterVpcId" }
+      # Use this name property to force the TargetGroup to be recreated whenever the load
+      # balancer is recreated. Otherwise CloudFormation tries to add the TargetGroup
+      # to the new load balancer before removing it from the old one. And that results
+      # in an error.
+      Name: !Sub "${ShortName}-${AppLoadBalancerStack.Outputs.LoadBalancerEndingId}"
+
+  # 2019-03-20
+  # monitoring the CPU levels over 3 months with CPU: 512, Memory: 900 and 1 unicorn worker
+  # the average CPU usage over 15min intervals maxed out at 42%
+  # the maxium CPU usage occationally spiked to 200% but only for brief periods
+  # the maxium Memory usage was 55% at which point it appears the task was killed off
+  # We are now going to try using 2 unicorn workers to see how the memory and cpu usage changes
+  #
+  # 2019-04-09
+  # Over the last 2 weeks with the CPU: 512, Memory: 900, and 2 unicorn workers
+  # the average CPU usage over 5min intervales maxed out at 70% with just a few spikes
+  # on average the CPU usage didn't go higher than 52%
+  # the maxium CPU usage spiked up to 317% for short periods
+  # the maxium Memory usage was 74%
+  # the number of tasks autoscaled rarely, the queue time for requests did increase under
+  # load but too much. There were some spikes of 0.3 seconds with most of the time it
+  # stayed below 0.1 seconds
+  # To scale the cluster better I'm going to reduce the CPU reservation to 256
+  # because it is pretty cheap to scale up and improve performance it seems worthwhile
+  # The scaling rules also need to be adjust to match this change.
+  AppTaskDefinition:
+    Type: AWS::ECS::TaskDefinition
+    Properties:
+      Family: !Sub "${AWS::StackName}-App"
+      ContainerDefinitions:
+        - Name: App
+          Image: !Ref LaraDockerImage
+          Cpu: "256"
+          PortMappings:
+            - ContainerPort: "80"
+          Command:
+            - "./docker/prod/run.sh"
+          Memory: "900"
+          Essential: "true"
+          LogConfiguration:
+            LogDriver: awslogs
+            Options:
+              awslogs-region: us-east-1
+              awslogs-group: !Ref CloudWatchLogGroup
+              awslogs-stream-prefix: lara
+          Environment:
+            - Name: CONCORD_CONFIGURED_PORTALS
+              Value: !Join
+                - " "
+                - - !If [AddLearnStaging, LEARN_STAGING, !Ref "AWS::NoValue"]
+                  - !If [AddLearnMigrate, LEARN_MIGRATE, !Ref "AWS::NoValue"]
+                  - !If [AddAssessmentPortal, ASSESSMENT, !Ref "AWS::NoValue"]
+                  - !If [AddLearnPortal, Learn, !Ref "AWS::NoValue"]
+                  - !If [AddQAPortal, QA_PORTAL, !Ref "AWS::NoValue"]
+
+            # learn migrate configuration
+            - !If
+              - AddLearnMigrate
+              - Name: CONCORD_LEARN_MIGRATE_CLIENT_ID
+                Value: !Ref PortalClientID
+              - !Ref "AWS::NoValue"
+            - !If
+              - AddLearnMigrate
+              - Name: CONCORD_LEARN_MIGRATE_CLIENT_SECRET
+                Value: !Ref LearnMigrateSecret
+              - !Ref "AWS::NoValue"
+            - !If
+              - AddLearnMigrate
+              - Name: CONCORD_LEARN_MIGRATE_URL
+                Value: https://learn-migrate.concord.org/
+              - !Ref "AWS::NoValue"
+
+            # learn staging configuration
+            - !If
+              - AddLearnStaging
+              - Name: CONCORD_LEARN_STAGING_CLIENT_ID
+                Value: !Ref PortalClientID
+              - !Ref "AWS::NoValue"
+            - !If
+              - AddLearnStaging
+              - Name: CONCORD_LEARN_STAGING_CLIENT_SECRET
+                Value: !Ref LearnStagingSecret
+              - !Ref "AWS::NoValue"
+            - !If
+              - AddLearnStaging
+              - Name: CONCORD_LEARN_STAGING_URL
+                Value: https://learn.staging.concord.org/
+              - !Ref "AWS::NoValue"
+
+            # assessment configuration
+            - !If
+              - AddAssessmentPortal
+              - Name: CONCORD_ASSESSMENT_CLIENT_ID
+                Value: !Ref PortalClientID
+              - !Ref "AWS::NoValue"
+            - !If
+              - AddAssessmentPortal
+              - Name: CONCORD_ASSESSMENT_CLIENT_SECRET
+                Value: !Ref AssessmentPortalSecret
+              - !Ref "AWS::NoValue"
+            - !If
+              - AddAssessmentPortal
+              - Name: CONCORD_ASSESSMENT_URL
+                Value: https://ngss-assessment.portal.concord.org/
+              - !Ref "AWS::NoValue"
+
+            # learn configuration
+            - !If
+              - AddLearnPortal
+              - Name: CONCORD_LEARN_CLIENT_ID
+                Value: !Ref PortalClientID
+              - !Ref "AWS::NoValue"
+            - !If
+              - AddLearnPortal
+              - Name: CONCORD_LEARN_CLIENT_SECRET
+                Value: !Ref LearnPortalSecret
+              - !Ref "AWS::NoValue"
+            - !If
+              - AddLearnPortal
+              - Name: CONCORD_LEARN_URL
+                Value: https://learn.concord.org/
+              - !Ref "AWS::NoValue"
+
+            # QA configuration
+            - !If
+              - AddQAPortal
+              - Name: CONCORD_QA_PORTAL_CLIENT_ID
+                Value: !Ref PortalClientID
+              - !Ref "AWS::NoValue"
+            - !If
+              - AddQAPortal
+              - Name: CONCORD_QA_PORTAL_CLIENT_SECRET
+                Value: !Ref QAPortalSecret
+              - !Ref "AWS::NoValue"
+            - !If
+              - AddQAPortal
+              - Name: CONCORD_QA_PORTAL_DISPLAY_NAME
+                Value: QA Portal
+              - !Ref "AWS::NoValue"
+            - !If
+              - AddQAPortal
+              - Name: CONCORD_QA_PORTAL_URL
+                Value: !Ref QAPortalURL
+              - !Ref "AWS::NoValue"
+
+            - Name: C_RATER_CLIENT_ID
+              Value: CONCORD
+            - Name: C_RATER_PASSWORD
+              Value: !Ref CRaterPassword
+            - Name: C_RATER_USERNAME
+              Value: extSysCRTR02dev
+            - Name: C_RATER_URL
+              Value: !Ref CRaterUrl
+            - Name: C_RATER_API_KEY
+              Value: !Ref CRaterApiKey
+
+            - Name: DB_HOST
+              Value: !Ref DbHost
+            - Name: DB_NAME
+              Value: !Ref DbName
+            - Name: DB_USER
+              Value: master
+            - Name: DB_PASSWORD
+              Value: !Ref DbPassword
+
+            - Name: NEW_RELIC_APP_NAME
+              Value: !Ref NewRelicAppName
+            - Name: NEW_RELIC_LICENSE_KEY
+              Value: !Ref NewRelicLicenseKey
+            # Number of unicorn processes to start up. Most people recommend
+            # 2 times the number of cores. We were running this at only 1 for a few years.
+            # Looking at the data I'd like to try 2 for a while for the following reasons:
+            # - the aws loadbalancer is not smart so it doesn't know if a target is busy, with
+            #   with 1 worker if a long request is done by the worker that will slow down the
+            #   next request too as it sits in the queue. With 2 workers per target this
+            #   should be less likely to happen.
+            # - 2 workers should more efficiently use the memory and possibly CPU. Some of the
+            #   memory should be shared because we are using the prefork approach. There should
+            #   also be some overhead of the operating system which will now be shared across
+            #   both workers.
+            # This was switched to 2 around March 19, 2019
+            - Name: NUM_UNICORN_PROCESSES
+              Value: "2"
+            - Name: RAILS_STDOUT_LOGGING
+              Value: "true"
+            - Name: ROLLBARS_KEY
+              Value: !Ref RollbarsKey
+            - Name: SECRET_TOKEN
+              Value: !Ref RailsSecretToken
+            - Name: SES_KEY
+              Value: !Ref SesKey
+            - Name: SES_SECRET
+              Value: !Ref SesSecret
+            - Name: UPLOAD_ONLY_MODEL_URLS
+              Value: https://models-resources.concord.org/itsi/upload_photo/index.html
+            - Name: LABBOOK_PROVIDER_URL
+              Value: !Ref LabBookProviderURL
+            - Name: MODEL_JSON_LIST_URL
+              Value: !Ref ModelJsonListURL
+            - Name: LARA_VERSION
+              Value: !Select [1, !Split [":", !Ref LaraDockerImage]]
+            - Name: GOOGLE_ANALYTICS_ACCOUNT
+              Value: !Ref GoogleAnalyticsAccount
+            - Name: LOGGER_URI
+              Value: !Ref LoggerUri
+            - Name: REPORT_SERVICE_TOKEN
+              Value: !Ref ReportServiceToken
+            - Name: REPORT_SERVICE_URL
+              Value: !Ref ReportServiceURL
+            - Name: REPORT_SERVICE_SELF_URL
+              Value: !Sub "https://${HostName}.${DomainNameBase}"
+            - Name: REPORT_URL
+              Value: !Ref ReportUrl
+            - Name: SHUTTERBUG_URI
+              Value: !Ref ShutterbugURI
+            - Name: ACTIVITY_PLAYER_URL
+              Value: !Ref ActivityPlayerURL
+            - Name: CONVERSION_SCRIPT_URL
+              Value: !Ref ConversionScriptURL
+            - Name: ENABLE_DANGEROUS_GLOSSARY_LINKING_ON_IMPORT
+              Value: !Ref EnableDangerousGlossaryLinkingOnImport
+
+  LogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Ref CloudWatchLogGroup
+
+  DBIngress:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      GroupId: !Ref "DatabaseSecurityGroupId"
+      IpProtocol: tcp
+      FromPort: "3306"
+      ToPort: "3306"
+      SourceSecurityGroupId:
+        { "Fn::ImportValue": !Sub "${ClusterStackName}-ClusterSecurityGroupId" }
+
+  # 2019-03-20
+  # At ScaleUpAlarmThreshold:75 with 1 unicorn worker this rarely triggered a scale event
+  # even when the service was being used heavily. I'm going to try 70 with 2 unicorn
+  # workers for a while
+  #
+  # 2019-04-09
+  # At ScaleUpAlarmThreshold:70 with 2 unicorn workers this very rarely triggered a scale
+  # event. It was often running at CPUUtilization of 52% and seemed to be handling the load
+  # pretty well. There were a minimum of 3 worker tasks, so there was extra capacity
+  # that is probably why no autoscale event was triggered.
+  # I'm now decreasing the CPU reservation to 1/2 of what it was. So to keep
+  # the current scaling theshold the same it should be 140, but instead I'm going move the
+  # threshold to 80% and decrease the minimum number of tasks to 2 so we can see some more
+  # scaling
+  AppScalingStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      # Change to location of scaling Template
+      TemplateURL: !Sub "${NestedTemplatesFolder}/task-autoscale-2-step-up.yml"
+      Parameters:
+        ServiceName: !GetAtt AppService.Name
+        ClusterName:
+          { "Fn::ImportValue": !Sub "${ClusterStackName}-ClusterName" }
+        MaxNumTasks: !Ref MaxNumLaraWebTasks
+        MinNumTasks: !Ref MinNumLaraWebTasks
+        # we are using a longer alarm evaluation period to deal with the cooldown
+        # period. There might be a better way to handle this.
+        ScaleUpCooldown: "0"
+        ScaleUpStepBoundary: "25"
+        ScaleUpStepAdjustment1: "100"
+        ScaleUpStepAdjustment2: "200"
+        ScaleUpAlarmThreshold: "80"
+        # this 2 minute evaluation period helps with an initial spike
+        # when a new container is started, and it also helps the CPUUtilization start
+        # to reflect the change in capacity. This is also the point of the Cooldown setting
+        # but in that case I think it prevents more scaling up if we aren't able to keep up
+        # with demand.
+        ScaleUpAlarmEvaluationPeriods: "2"
+        ScaleUpAlarmPeriod: "60"
+        ScaleDownCooldown: "300"
+        ScaleDownStepAdjustment: "-1"
+        ScaleDownAlarmThreshold: "35"
+        # this uses 5 periods of 1 minute instead of 1 period of 5 minutes
+        # this approach helps offset a running average affecting the responsiveness.
+        # If the CPU is at 49%, but 5 minutes ago it started at 1% then a 5 minute average
+        # could be below 35%. However with 5 evaluation periods, then the 49% will cancel
+        # the alarm.
+        ScaleDownAlarmEvaluationPeriods: "5"
+        ScaleDownAlarmPeriod: "60"
+
+  # WorkerTask Notes from March 21, 2019:
+  # looking over 3 months when the Cpu: 512, Memory: 900, and delayed_job_workers:1.
+  # We had a max of max 40% CPU utilization with spikes higher during
+  # deployments.
+  # The max value of the average/hour is 12% over those 3 months.
+  # Memory usage max of max topped out at 13%
+  #
+  # It is not easy to increase the number of workers per task because the 'run' command
+  # we are using so the process is not run in the background only allows one worker to
+  # run.
+  #
+  # We are trying 2 changes:
+  # Memory: 256, CPU: 64
+  # this should give us more capacity in the cluster for more Tasks, and trigger
+  # autoscaling if the worker is working hard.
+  # It would be better to add a queue depth measure
+  WorkerTaskDefinition:
+    Type: AWS::ECS::TaskDefinition
+    Properties:
+      Family: !Sub "${AWS::StackName}-Worker"
+      ContainerDefinitions:
+        - Name: Worker
+          Image: !Ref LaraDockerImage
+          Cpu: "64"
+          Command:
+            - script/delayed_job
+            - run
+          Memory: "256"
+          Essential: "true"
+          LogConfiguration:
+            LogDriver: awslogs
+            Options:
+              awslogs-region: us-east-1
+              awslogs-group: !Ref CloudWatchLogGroup
+              awslogs-stream-prefix: lara
+          Environment:
+            - Name: CONCORD_CONFIGURED_PORTALS
+              Value: !Join
+                - " "
+                - - !If [AddLearnStaging, LEARN_STAGING, !Ref "AWS::NoValue"]
+                  - !If [AddLearnMigrate, LEARN_MIGRATE, !Ref "AWS::NoValue"]
+                  - !If [AddAssessmentPortal, ASSESSMENT, !Ref "AWS::NoValue"]
+                  - !If [AddLearnPortal, Learn, !Ref "AWS::NoValue"]
+                  - !If [AddQAPortal, QA_PORTAL, !Ref "AWS::NoValue"]
+
+            # learn docker staging configuration
+            - !If
+              - AddLearnMigrate
+              - Name: CONCORD_LEARN_MIGRATE_CLIENT_ID
+                Value: !Ref PortalClientID
+              - !Ref "AWS::NoValue"
+            - !If
+              - AddLearnMigrate
+              - Name: CONCORD_LEARN_MIGRATE_CLIENT_SECRET
+                Value: !Ref LearnMigrateSecret
+              - !Ref "AWS::NoValue"
+            - !If
+              - AddLearnMigrate
+              - Name: CONCORD_LEARN_MIGRATE_URL
+                Value: https://learn-migrate.concord.org/
+              - !Ref "AWS::NoValue"
+
+            # learn staging configuration
+            - !If
+              - AddLearnStaging
+              - Name: CONCORD_LEARN_STAGING_CLIENT_ID
+                Value: !Ref PortalClientID
+              - !Ref "AWS::NoValue"
+            - !If
+              - AddLearnStaging
+              - Name: CONCORD_LEARN_STAGING_CLIENT_SECRET
+                Value: !Ref LearnStagingSecret
+              - !Ref "AWS::NoValue"
+            - !If
+              - AddLearnStaging
+              - Name: CONCORD_LEARN_STAGING_URL
+                Value: https://learn.staging.concord.org/
+              - !Ref "AWS::NoValue"
+
+            # assessment configuration
+            - !If
+              - AddAssessmentPortal
+              - Name: CONCORD_ASSESSMENT_CLIENT_ID
+                Value: !Ref PortalClientID
+              - !Ref "AWS::NoValue"
+            - !If
+              - AddAssessmentPortal
+              - Name: CONCORD_ASSESSMENT_CLIENT_SECRET
+                Value: !Ref AssessmentPortalSecret
+              - !Ref "AWS::NoValue"
+            - !If
+              - AddAssessmentPortal
+              - Name: CONCORD_ASSESSMENT_URL
+                Value: https://ngss-assessment.portal.concord.org/
+              - !Ref "AWS::NoValue"
+
+            # learn confiuration
+            - !If
+              - AddLearnPortal
+              - Name: CONCORD_LEARN_CLIENT_ID
+                Value: !Ref PortalClientID
+              - !Ref "AWS::NoValue"
+            - !If
+              - AddLearnPortal
+              - Name: CONCORD_LEARN_CLIENT_SECRET
+                Value: !Ref LearnPortalSecret
+              - !Ref "AWS::NoValue"
+            - !If
+              - AddLearnPortal
+              - Name: CONCORD_LEARN_URL
+                Value: https://learn.concord.org/
+              - !Ref "AWS::NoValue"
+
+            # QA configuration
+            - !If
+              - AddQAPortal
+              - Name: CONCORD_QA_PORTAL_CLIENT_ID
+                Value: !Ref PortalClientID
+              - !Ref "AWS::NoValue"
+            - !If
+              - AddQAPortal
+              - Name: CONCORD_QA_PORTAL_CLIENT_SECRET
+                Value: !Ref QAPortalSecret
+              - !Ref "AWS::NoValue"
+            - !If
+              - AddQAPortal
+              - Name: CONCORD_QA_PORTAL_DISPLAY_NAME
+                Value: QA Portal
+              - !Ref "AWS::NoValue"
+            - !If
+              - AddQAPortal
+              - Name: CONCORD_QA_PORTAL_URL
+                Value: !Ref QAPortalURL
+              - !Ref "AWS::NoValue"
+
+            - Name: C_RATER_CLIENT_ID
+              Value: CONCORD
+            - Name: C_RATER_PASSWORD
+              Value: !Ref CRaterPassword
+            - Name: C_RATER_USERNAME
+              Value: extSysCRTR02dev
+            - Name: C_RATER_URL
+              Value: !Ref CRaterUrl
+            - Name: C_RATER_API_KEY
+              Value: !Ref CRaterApiKey
+
+            - Name: DB_HOST
+              Value: !Ref DbHost
+            - Name: DB_NAME
+              Value: !Ref DbName
+            - Name: DB_PASSWORD
+              Value: !Ref DbPassword
+            - Name: DB_USER
+              Value: master
+            - Name: NEW_RELIC_APP_NAME
+              Value: !Ref NewRelicAppName
+            - Name: NEW_RELIC_LICENSE_KEY
+              Value: !Ref NewRelicLicenseKey
+            - Name: RAILS_STDOUT_LOGGING
+              Value: "true"
+            - Name: ROLLBARS_KEY
+              Value: !Ref RollbarsKey
+            - Name: SECRET_TOKEN
+              Value: !Ref RailsSecretToken
+            - Name: SES_KEY
+              Value: !Ref SesKey
+            - Name: SES_SECRET
+              Value: !Ref SesSecret
+            - Name: UPLOAD_ONLY_MODEL_URLS
+              Value: https://models-resources.concord.org/itsi/upload_photo/index.html
+            - Name: LABBOOK_PROVIDER_URL
+              Value: !Ref LabBookProviderURL
+            - Name: MODEL_JSON_LIST_URL
+              Value: !Ref ModelJsonListURL
+            - Name: LOGGER_URI
+              Value: !Ref LoggerUri
+            - Name: REPORT_SERVICE_TOKEN
+              Value: !Ref ReportServiceToken
+            - Name: REPORT_SERVICE_URL
+              Value: !Ref ReportServiceURL
+            - Name: REPORT_SERVICE_SELF_URL
+              Value: !Sub "https://${HostName}.${DomainNameBase}"
+            - Name: REPORT_URL
+              Value: !Ref ReportUrl
+            - Name: ACTIVITY_PLAYER_URL
+              Value: !Ref ActivityPlayerURL
+            - Name: CONVERSION_SCRIPT_URL
+              Value: !Ref ConversionScriptURL
+            - Name: ENABLE_DANGEROUS_GLOSSARY_LINKING_ON_IMPORT
+              Value: !Ref EnableDangerousGlossaryLinkingOnImport
+
+  WorkerService:
+    Type: AWS::ECS::Service
+    Properties:
+      TaskDefinition: !Ref "WorkerTaskDefinition"
+      DesiredCount: 1
+      Cluster: { "Fn::ImportValue": !Sub "${ClusterStackName}-ClusterName" }
+
+  WorkerScalingStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      # Change to location of scaling Template
+      TemplateURL: !Sub "${NestedTemplatesFolder}/task-autoscale-2-step-up.yml"
+      Parameters:
+        ServiceName: !GetAtt WorkerService.Name
+        ClusterName:
+          { "Fn::ImportValue": !Sub "${ClusterStackName}-ClusterName" }
+        MaxNumTasks: "10"
+        MinNumTasks: "1"
+        ScaleUpCooldown: "240"
+        ScaleUpStepBoundary: "25"
+        ScaleUpStepAdjustment1: "100"
+        ScaleUpStepAdjustment2: "200"
+        # March 21, 2019 - decreased this to 70 along with some other CPU changes inorder to
+        # trigger more scaling
+        ScaleUpAlarmThreshold: "70"
+        ScaleUpAlarmEvaluationPeriods: "1"
+        ScaleUpAlarmPeriod: "60"
+        ScaleDownCooldown: "300"
+        ScaleDownStepAdjustment: "-1"
+        # March 22, 2019 changed this to 20 from 35, otherwise the workers were cycling
+        # up and down
+        ScaleDownAlarmThreshold: "20"
+        # this uses 5 periods of 1 minute instead of 1 period of 5 minutes
+        # this approach helps offset a running average affecting the responsiveness.
+        # If the CPU is at 49%, but 5 minutes ago it started at 1% then a 5 minute average
+        # could be below 35%. However with 5 evaluation periods, then the 49% will cancel
+        # the alarm.
+        ScaleDownAlarmEvaluationPeriods: "5"
+        ScaleDownAlarmPeriod: "60"
+
+Mappings:
+  SSLCertificateMap:
+    concord.org:
+      Id: arn:aws:acm:us-east-1:612297603577:certificate/2b62511e-ccc8-434b-ba6c-a8c33bbd509e
+    staging.concord.org:
+      Id: arn:aws:acm:us-east-1:612297603577:certificate/9c26b1e0-4ba7-4016-babc-34b3e13e8c21
+    lara.staging.concord.org:
+      Id: arn:aws:acm:us-east-1:612297603577:certificate/d4bb6d24-93bb-47cb-ba2b-52ffbebc5670
+    concordqa.org:
+      Id: arn:aws:acm:us-east-1:816253370536:certificate/7b8bb00e-7aa4-4b9f-a722-f49c828af83c
+Metadata:
+  AWS::CloudFormation::Interface:
+    ParameterGroups:
+      - Label:
+          default: "App Config"
+        Parameters:
+          - LaraDockerImage
+          - ActivityPlayerURL
+          - ConversionScriptURL
+          - ReportUrl
+          - CRaterPassword
+          - CRaterUrl
+          - CRaterApiKey
+          - DbHost
+          - DbPassword
+          - GoogleAnalyticsAccount
+          - LabBookProviderURL
+          - ModelJsonListURL
+          - NewRelicAppName
+          - NewRelicLicenseKey
+          - RailsSecretToken
+          - RollbarsKey
+          - SesKey
+          - SesSecret
+      - Label:
+          default: "Portals"
+        Parameters:
+          - PortalClientID
+          - AssessmentPortalSecret
+          - LearnMigrateSecret
+          - LearnPortalSecret
+          - LearnStagingSecret
+      - Label:
+          default: Infrastructure
+        Parameters:
+          - ClusterStackName
+          - CloudWatchLogGroup
+          - DatabaseSecurityGroupId
+          - HostName
+          - DomainNameBase
+          - HostedZoneId
+          - Environment
+          - MaxNumLaraWebTasks
+          - MinNumLaraWebTasks
