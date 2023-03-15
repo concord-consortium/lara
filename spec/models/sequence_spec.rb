@@ -246,7 +246,7 @@ describe Sequence do
   end
 
   describe '#to_hash' do
-    let(:sequence_opts) { {} }
+    let(:sequence_opts) { {hide_read_aloud: true} }
     it 'returns a hash with relevant values for sequence duplication' do
       expected = {
         title: sequence.title,
@@ -258,18 +258,20 @@ describe Sequence do
         project: sequence.project,
         display_title: sequence.display_title,
         thumbnail_url: sequence.thumbnail_url,
-        runtime: "LARA"
+        runtime: "LARA",
+        hide_read_aloud: true
       }
       expect(sequence.to_hash).to eq(expected)
     end
   end
 
   describe '#export' do
-    let(:sequence_opts) { {} }
+    let(:sequence_opts) { {hide_read_aloud: true} }
     let(:host) { 'http://test.host' }
     it 'returns json of a sequence' do
       sequence_json = JSON.parse(sequence.export(host))
       expect(sequence_json['activities'].length).to eq(sequence.activities.count)
+      expect(sequence_json['hide_read_aloud']).to eq(true)
     end
 
     it 'does not include the fixed width layout option' do
@@ -297,7 +299,8 @@ describe Sequence do
     let(:logo)          { "https://concord.org/logo.jpg" }
     let(:thumbnail_url) { "https://concord.org/sunflower.jpg" }
     let(:title)         { "title" }
-    let(:sequence_opts) { {logo: logo, thumbnail_url: thumbnail_url, title: title} }
+    let(:hide_read_aloud) { true }
+    let(:sequence_opts) { {logo: logo, thumbnail_url: thumbnail_url, title: title, hide_read_aloud: hide_read_aloud} }
     let(:owner)         { FactoryGirl.create(:user) }
     let(:host)          { 'http://test.host' }
 
@@ -306,6 +309,7 @@ describe Sequence do
       imported = Sequence.import(data, owner)
       expect(imported.thumbnail_url).to eq(thumbnail_url)
       expect(imported.logo).to eq(logo)
+      expect(imported.hide_read_aloud).to eq(hide_read_aloud)
     end
   end
   describe '#duplicate' do

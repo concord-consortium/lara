@@ -7,11 +7,13 @@ end
 def official_checkbox
   '//*[@id="lightweight_activity_is_official"]'
 end
-
+def hide_read_aloud_checkbox
+  '//*[@id="lightweight_activity_hide_read_aloud"]'
+end
 
 describe "lightweight_activities/edit" do
 
-  let(:activity)  { stub_model(LightweightActivity, :id => 1, :name => 'Activity name', :defunct => false) }
+  let(:activity)  { stub_model(LightweightActivity, :id => 1, :name => 'Activity name', :defunct => false, :hide_read_aloud => false) }
   let(:user)      { stub_model(User, :is_admin => false)      }
 
   before(:each) do
@@ -36,6 +38,24 @@ describe "lightweight_activities/edit" do
         it "should not show the checkbox" do
           render
           expect(rendered).not_to have_xpath defunct_checkbox
+        end
+      end
+    end
+
+    describe "hide_read_aloud checkbox" do
+      context "when the current user is an admin" do
+        let (:user) { stub_model(User, :is_admin => true)}
+        it "should show the checkbox" do
+          render
+          expect(rendered).to have_xpath hide_read_aloud_checkbox
+        end
+      end
+
+      context "when the current user is not an admin" do
+        let (:user) { stub_model(User, :is_admin => false)}
+        it "should show the checkbox" do
+          render
+          expect(rendered).to have_xpath hide_read_aloud_checkbox
         end
       end
     end

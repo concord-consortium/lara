@@ -1,6 +1,7 @@
 {
   "background_image": "",
   "defunct": false,
+  "hide_read_aloud": true,
   "description": "<p>Contains all page layout formats</p>",
   "editor_mode": 0,
   "id": 84,

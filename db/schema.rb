@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20220808120311) do
+ActiveRecord::Schema.define(:version => 20230315103923) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "kind"
@@ -455,6 +455,7 @@ ActiveRecord::Schema.define(:version => 20220808120311) do
     t.integer  "glossary_id"
     t.boolean  "defunct",                                :default => false
     t.string   "migration_status",                       :default => "not_migrated"
+    t.boolean  "hide_read_aloud",                        :default => false
   end
 
   add_index "lightweight_activities", ["changed_by_id"], :name => "index_lightweight_activities_on_changed_by_id"
@@ -741,6 +742,7 @@ ActiveRecord::Schema.define(:version => 20220808120311) do
     t.string   "fixed_width_layout",                     :default => "1100px"
     t.boolean  "defunct",                                :default => false
     t.string   "migration_status",                       :default => "not_migrated"
+    t.boolean  "hide_read_aloud",                        :default => false
   end
 
   add_index "sequences", ["project_id"], :name => "index_sequences_on_project_id"

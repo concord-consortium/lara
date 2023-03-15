@@ -1,8 +1,8 @@
 class Sequence < ActiveRecord::Base
 
-  attr_accessible :description, :title, :theme_id, :project_id, :defunct, 
+  attr_accessible :description, :title, :theme_id, :project_id, :defunct,
     :user_id, :logo, :display_title, :thumbnail_url, :abstract, :publication_hash,
-    :runtime, :project, :background_image
+    :runtime, :project, :background_image, :hide_read_aloud
 
   include Publishable # defines methods to publish to portals
   include PublicationStatus # defines publication status scopes and helpers
@@ -56,7 +56,8 @@ class Sequence < ActiveRecord::Base
       logo: logo,
       display_title: display_title,
       thumbnail_url: thumbnail_url,
-      runtime: runtime
+      runtime: runtime,
+      hide_read_aloud: hide_read_aloud
     }
   end
 
@@ -102,7 +103,8 @@ class Sequence < ActiveRecord::Base
                                         :thumbnail_url,
                                         :runtime,
                                         :background_image,
-                                        :defunct
+                                        :defunct,
+                                        :hide_read_aloud
     ])
     sequence_json[:project] = self.project ? self.project.export : nil
     sequence_json[:activities] = []
@@ -184,7 +186,7 @@ class Sequence < ActiveRecord::Base
     # will not show the activity or page in the context of a sequence
     # see https://www.pivotaltracker.com/story/show/177122631
     migration_status = "unknown"
-    data[:children] = self.activities.map { |a| 
+    data[:children] = self.activities.map { |a|
       if a.migration_status != "migrated"
         migration_status = "not_migrated"
       end
@@ -225,7 +227,8 @@ class Sequence < ActiveRecord::Base
       thumbnail_url: sequence_json_object[:thumbnail_url],
       title: sequence_json_object[:title],
       runtime: sequence_json_object[:runtime],
-      background_image: sequence_json_object[:background_image]
+      background_image: sequence_json_object[:background_image],
+      hide_read_aloud: sequence_json_object[:hide_read_aloud]
     }
 
   end

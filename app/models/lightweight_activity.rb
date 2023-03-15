@@ -20,7 +20,7 @@ class LightweightActivity < ActiveRecord::Base
                   :time_to_complete, :is_locked, :notes, :thumbnail_url, :theme_id, :project_id,
                   :portal_run_count, :layout, :editor_mode, :publication_hash, :copied_from_id,
                   :student_report_enabled, :show_submit_button, :runtime, :project, :background_image,
-                  :glossary_id
+                  :glossary_id, :hide_read_aloud
 
   belongs_to :user # Author
   belongs_to :changed_by, :class_name => 'User'
@@ -102,7 +102,8 @@ class LightweightActivity < ActiveRecord::Base
       editor_mode: editor_mode,
       student_report_enabled: student_report_enabled,
       show_submit_button: show_submit_button,
-      runtime: runtime
+      runtime: runtime,
+      hide_read_aloud: hide_read_aloud
     }
   end
 
@@ -148,7 +149,8 @@ class LightweightActivity < ActiveRecord::Base
                                         :show_submit_button,
                                         :runtime,
                                         :background_image,
-                                        :defunct ])
+                                        :defunct,
+                                        :hide_read_aloud ])
     activity_json[:version] = 2
     activity_json[:theme_name] = self.theme ? self.theme.name : nil
     activity_json[:project] = self.project ? self.project.export : nil
@@ -219,6 +221,7 @@ class LightweightActivity < ActiveRecord::Base
     import_activity.theme = Theme.find_by_name(activity_json_object[:theme_name]) if activity_json_object[:theme_name]
     import_activity.imported_activity_url = imported_activity_url
     import_activity.is_official = activity_json_object[:is_official]
+    import_activity.hide_read_aloud = activity_json_object[:hide_read_aloud]
     import_activity.runtime = activity_json_object[:runtime]
     import_activity.project = Project.find_or_create(activity_json_object[:project]) if activity_json_object[:project]
     self.link_glossaries_on_import(activity_json_object, import_activity)
