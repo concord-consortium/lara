@@ -21,6 +21,7 @@ describe "sequences/edit" do
       assert_select "select#sequence_theme_id", :name => "sequence[theme_id]" do
         assert_select 'option'
       end
+      assert_select "input#sequence_hide_read_aloud", :name => "sequence[hide_read_aloud]"
     end
   end
 end
