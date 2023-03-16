@@ -26,7 +26,7 @@
       = f.label :runtime, "Runtime Environment"
       = f.select :runtime, options_for_select(LightweightActivity::RUNTIME_OPTIONS, selected:'Activity Player', disabled: 'LARA'), :disabled => true
       .hint
-        Runtime selection is no longer applicable. This setting will be removed in a future release..
+        Runtime selection is no longer applicable. This setting will be removed in a future release.
     .field
       = f.label :glossary_id, 'Glossary'
       = f.select :glossary_id, glossary_options_for_select(@activity, current_user), { :include_blank => "None" }
