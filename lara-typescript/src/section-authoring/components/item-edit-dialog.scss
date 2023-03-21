@@ -211,6 +211,7 @@
     background: var(--ltst-teal);
     padding: 10px;
     width: calc(100% - 425px);
+    overflow: auto;
 
     @media screen and (max-width: 800px) {
       display: none;
