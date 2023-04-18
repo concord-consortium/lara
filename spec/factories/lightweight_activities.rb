@@ -10,7 +10,6 @@ FactoryGirl.define do
     publication_status 'hidden'
     related { generate(:related) }
     description { generate(:description) }
-    runtime "LARA"
     project nil
   end
 
@@ -72,6 +71,5 @@ FactoryGirl.define do
     related { generate(:related) }
     description { generate(:description) }
     fixed_width_layout '1100px'
-    runtime "Activity Player"
   end
 end

@@ -306,7 +306,6 @@ class LightweightActivitiesController < ApplicationController
   end
 
   def setup_show
-    current_theme
     current_project
     @pages = @activity.pages
   end

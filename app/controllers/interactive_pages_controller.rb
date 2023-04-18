@@ -18,7 +18,7 @@ class InteractivePagesController < ApplicationController
       redirect_to_page_with_run_path(@sequence, @activity.id, @page.id, @run_key, request.query_parameters) and return
     end
 
-    setup_theme_and_project
+    setup_project
     raise_error_if_not_authorized_run(@run)
 
     setup_show
@@ -246,13 +246,12 @@ class InteractivePagesController < ApplicationController
     end
   end
 
-  def setup_theme_and_project
-    current_theme
+  def setup_project
     current_project
   end
 
   def setup_show
-    setup_theme_and_project
+    setup_project
     setup_global_interactive_state_data
     @all_pages = @activity.pages
     @run.set_last_page(@page)

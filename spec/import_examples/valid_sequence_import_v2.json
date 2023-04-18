@@ -4,7 +4,6 @@
   "display_title": "",
   "logo": "",
   "project_id": null,
-  "theme_id": null,
   "thumbnail_url": "",
   "title": "Sequence 1",
   "activities": [
@@ -14,7 +13,6 @@
       "notes": "",
       "project_id": null,
       "related": "This is related content",
-      "theme_id": 1,
       "thumbnail_url": "",
       "time_to_complete": 10,
       "pages": [
@@ -42,7 +40,6 @@
       "notes": "",
       "project_id": null,
       "related": "This is related content",
-      "theme_id": 1,
       "thumbnail_url": "",
       "time_to_complete": 10,
       "pages": [],

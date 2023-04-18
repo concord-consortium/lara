@@ -3,9 +3,8 @@ require 'spec_helper'
 describe Api::V1::PageItemsController do
   let (:author) { FactoryGirl.create(:author) }
   let (:project) { FactoryGirl.create(:project) }
-  let (:theme) { FactoryGirl.create(:theme) }
   let (:publication_status) { "public" }
-  let (:act) { FactoryGirl.create(:public_activity, project: project, theme: theme, publication_status: publication_status, user: author ) }
+  let (:act) { FactoryGirl.create(:public_activity, project: project, publication_status: publication_status, user: author ) }
   let (:page) { FactoryGirl.create(:page, :lightweight_activity => act) }
   let (:library_interactive1) { FactoryGirl.create(:library_interactive,
                                                    :name => 'Test Library Interactive 1',

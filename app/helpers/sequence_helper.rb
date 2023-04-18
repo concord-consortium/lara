@@ -9,19 +9,10 @@ module SequenceHelper
   end
 
   def sequence_runtime_url(sequence)
-    if sequence.runtime == "Activity Player"
-      view_sequence_url = sequence.activity_player_sequence_url(request.base_url, preview: true)
-    else
-      view_sequence_url = sequence_path(sequence)
-    end
-    return view_sequence_url
+    sequence.activity_player_sequence_url(request.base_url, preview: true)
   end
 
   def activity_sequence_preview_url(activity)
-    if activity.runtime == "Activity Player"
-      @sequence.activity_player_sequence_url(request.base_url, preview: true, activity: activity.id)
-    else
-      preview_sequence_activity_path(activity, sequence_id: @sequence.id)
-    end
+    @sequence.activity_player_sequence_url(request.base_url, preview: true, activity: activity.id)
   end
 end

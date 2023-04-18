@@ -2,7 +2,7 @@ require "spec_helper"
 
 describe LightweightActivityHelper do
   let(:activity)     { FactoryGirl.create(:activity, id: 23, name: "Test Activity") }
-  let(:activity_player_activity) { FactoryGirl.create(:activity, id: 23, name: "Test Activity", runtime: "Activity Player") }
+  let(:activity_player_activity) { FactoryGirl.create(:activity, id: 23, name: "Test Activity") }
   let(:sequence)     { FactoryGirl.create(:sequence, id: 1, title: "Test Sequence", lightweight_activities: [activity])}
   let(:user)         { FactoryGirl.create(:user) }
   let(:sequence_run) { FactoryGirl.create(:sequence_run, sequence_id: sequence.id, user_id: user.id) }
@@ -82,11 +82,6 @@ describe LightweightActivityHelper do
         expect(helper.activity_preview_url(activity_player_activity)).to eq(url)
       end
     end
-    describe "with a LARA runtime activity" do
-      it "should return a LARA runtime URL" do
-        expect(helper.activity_preview_url(activity, 1)).to eq("/activities/#{activity.id}/pages/1/preview")
-      end
-    end
   end
 
   describe "#itsi_preview_url" do
@@ -97,11 +92,6 @@ describe LightweightActivityHelper do
         expect(helper.itsi_preview_url(activity_player_activity)).to eq(url)
       end
     end
-    context "with a LARA runtime preview" do
-      it "returns a LARA url" do
-        expect(helper.itsi_preview_url(activity)).to eq("/activities/#{activity.id}/preview")
-      end
-    end
   end
 
   describe "#runtime_url" do
@@ -110,11 +100,6 @@ describe LightweightActivityHelper do
         url = "https://activity-player.concord.org/branch/master" +
           "?activity=http%3A%2F%2Ftest.host%2Fapi%2Fv1%2Factivities%2F#{activity_player_activity.id}.json&preview"
         expect(helper.runtime_url(activity_player_activity)).to eq(url)
-      end
-    end
-    context "with a LARA runtime" do
-      it "returns a LARA url" do
-        expect(helper.runtime_url(activity)).to eq("/activities/#{activity.id}")
       end
     end
   end

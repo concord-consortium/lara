@@ -1,7 +1,0 @@
-@import "cc-runtime";
-
-$theme-params: (
-  activity-menu-display: none
-);
-
-@include theme($theme-params...);

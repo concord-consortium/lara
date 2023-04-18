@@ -27,11 +27,6 @@
 
   <!-- Stylesheets -->
   <%= stylesheet_link_tag '//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/base/jquery-ui.css' %>
-  <%- if @theme && @theme.css_file %>
-      <%= stylesheet_link_tag @theme.css_file, :media => 'all' %>
-  <%- else -%>
-      <%= stylesheet_link_tag Theme::DEFAULT_CSS_FILE, :media => 'all' %>
-  <%- end -%>
 
   <!-- Scripts -->
   <%= render partial: 'shared/rollbar' %>
@@ -91,20 +86,6 @@
         <%= yield %>
       </div>
       <!-- end site-width -->
-      <% unless @hide_navigation %>
-        <% if @theme && @theme.footer_nav %>
-          <div class="activity-nav-mod footer-nav">
-            <% # This table is a copy of the table in the activity_nav partial with the first cell removed. %>
-            <table class="l-nav site-width">
-              <tr>
-                <td class="activity-nav ui-block-2">
-                  <%= render :partial => 'shared/activity_nav_pages' %>
-                </td>
-              </tr>
-            </table>
-          </div>
-        <% end %>
-      <% end %>
     </div>
     <!-- end activity-mod -->
 

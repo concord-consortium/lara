@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20230418170010) do
+ActiveRecord::Schema.define(:version => 20230418213435) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "kind"
@@ -438,7 +438,6 @@ ActiveRecord::Schema.define(:version => 20230418170010) do
     t.boolean  "is_locked",                              :default => false
     t.text     "notes"
     t.string   "thumbnail_url"
-    t.integer  "theme_id"
     t.integer  "project_id"
     t.integer  "portal_run_count",                       :default => 0
     t.integer  "layout",                                 :default => 0
@@ -449,7 +448,6 @@ ActiveRecord::Schema.define(:version => 20230418170010) do
     t.boolean  "student_report_enabled",                 :default => true
     t.text     "last_report_service_hash"
     t.boolean  "show_submit_button",                     :default => true
-    t.string   "runtime",                                :default => "LARA"
     t.string   "background_image"
     t.string   "fixed_width_layout",                     :default => "1100px"
     t.integer  "glossary_id"
@@ -462,7 +460,6 @@ ActiveRecord::Schema.define(:version => 20230418170010) do
   add_index "lightweight_activities", ["changed_by_id"], :name => "index_lightweight_activities_on_changed_by_id"
   add_index "lightweight_activities", ["project_id"], :name => "index_lightweight_activities_on_project_id"
   add_index "lightweight_activities", ["publication_status"], :name => "lightweight_activities_publication_status_idx"
-  add_index "lightweight_activities", ["theme_id"], :name => "index_lightweight_activities_on_theme_id"
   add_index "lightweight_activities", ["updated_at"], :name => "lightweight_activities_updated_at_idx"
   add_index "lightweight_activities", ["user_id"], :name => "lightweight_activities_user_idx"
 
@@ -632,7 +629,6 @@ ActiveRecord::Schema.define(:version => 20230418170010) do
     t.text     "footer"
     t.datetime "created_at",              :null => false
     t.datetime "updated_at",              :null => false
-    t.integer  "theme_id"
     t.text     "about"
     t.string   "logo_ap"
     t.string   "project_key"
@@ -645,7 +641,6 @@ ActiveRecord::Schema.define(:version => 20230418170010) do
   end
 
   add_index "projects", ["project_key"], :name => "index_projects_on_project_key", :unique => true
-  add_index "projects", ["theme_id"], :name => "index_projects_on_theme_id"
 
   create_table "question_trackers", :force => true do |t|
     t.string  "name"
@@ -727,7 +722,6 @@ ActiveRecord::Schema.define(:version => 20230418170010) do
     t.datetime "created_at",                                                         :null => false
     t.datetime "updated_at",                                                         :null => false
     t.integer  "user_id"
-    t.integer  "theme_id"
     t.integer  "project_id"
     t.text     "logo"
     t.string   "publication_status",                     :default => "private"
@@ -738,7 +732,6 @@ ActiveRecord::Schema.define(:version => 20230418170010) do
     t.string   "publication_hash",         :limit => 40
     t.string   "imported_activity_url"
     t.text     "last_report_service_hash"
-    t.string   "runtime",                                :default => "LARA"
     t.string   "background_image"
     t.string   "fixed_width_layout",                     :default => "1100px"
     t.boolean  "defunct",                                :default => false
@@ -748,7 +741,6 @@ ActiveRecord::Schema.define(:version => 20230418170010) do
   end
 
   add_index "sequences", ["project_id"], :name => "index_sequences_on_project_id"
-  add_index "sequences", ["theme_id"], :name => "index_sequences_on_theme_id"
   add_index "sequences", ["updated_at"], :name => "sequences_updated_at_idx"
   add_index "sequences", ["user_id"], :name => "index_sequences_on_user_id"
 
@@ -760,14 +752,6 @@ ActiveRecord::Schema.define(:version => 20230418170010) do
   end
 
   add_index "settings", ["key"], :name => "index_settings_on_key"
-
-  create_table "themes", :force => true do |t|
-    t.string   "name"
-    t.string   "css_file"
-    t.datetime "created_at",                    :null => false
-    t.datetime "updated_at",                    :null => false
-    t.boolean  "footer_nav", :default => false
-  end
 
   create_table "tracked_questions", :force => true do |t|
     t.integer "question_tracker_id"

@@ -1,9 +1,0 @@
-@import "cc-runtime";
-
-$theme-params: (
-  bgColorOrUrl: #f5f5f5,
-  theme-color-a: #007c8B,
-  theme-color-b: #0592af
-);
-
-@include theme($theme-params...);

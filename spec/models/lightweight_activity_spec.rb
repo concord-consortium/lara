@@ -9,7 +9,6 @@ describe LightweightActivity do
     activity = FactoryGirl.create(:activity, act_opts)
     activity.user = author
     activity.save
-    activity.theme = FactoryGirl.create(:theme)
     activity
   }
   let(:valid)         {
@@ -22,7 +21,6 @@ describe LightweightActivity do
     activity_player_activity = FactoryGirl.create(:activity_player_activity, act_opts)
     activity_player_activity.user = author
     activity_player_activity.save
-    activity_player_activity.theme = FactoryGirl.create(:theme)
     activity_player_activity
   }
 
@@ -184,13 +182,11 @@ describe LightweightActivity do
         show_submit_button: true,
         description: activity.description,
         time_to_complete: activity.time_to_complete,
-        theme_id: activity.theme_id,
         thumbnail_url: activity.thumbnail_url,
         notes: activity.notes,
         project: activity.project,
         layout: activity.layout,
         editor_mode: activity.editor_mode,
-        runtime: "LARA",
         hide_read_aloud: activity.hide_read_aloud,
         font_size: activity.font_size,
        }
@@ -228,8 +224,8 @@ describe LightweightActivity do
         expect(export[:plugins][0][:id]).to eq(plugins[0].id)
         expect(export[:plugins][1][:id]).to eq(plugins[1].id)
       end
-      it 'does not include the fixed width layout option' do
-        expect(export).not_to include(:fixed_width_layout)
+      it 'includes the fixed width layout option' do
+        expect(export).to include(:fixed_width_layout)
       end
       it 'includes the hide_read_aloud setting' do
         expect(export["hide_read_aloud"]).to eq(true)
@@ -482,22 +478,6 @@ describe LightweightActivity do
   end
 
   describe '#serialize_for_portal_basic' do
-    let(:basic_portal_hash) do
-      url = "http://test.host/activities/#{activity.id}"
-      author_url = "#{url}/edit"
-      print_url = "#{url}/print_blank"
-      {
-        "type"                   =>"Activity",
-        "name"                   => activity.name,
-        "author_url"             => author_url,
-        "print_url"              => print_url,
-        "student_report_enabled" => activity.student_report_enabled,
-        "show_submit_button"     => true,
-        "thumbnail_url"          => thumbnail_url,
-        "is_locked"              => false,
-        "url"                    => url
-      }
-    end
     let(:ap_basic_portal_hash) do
       url = "http://test.host/activities/#{activity_player_activity.id}"
       author_url = "#{url}/edit"
@@ -518,37 +498,12 @@ describe LightweightActivity do
       }
     end
 
-    it 'returns a simple hash that can be consumed by the Portal' do
-      expect(activity.serialize_for_portal_basic('http://test.host')).to eq(basic_portal_hash)
-    end
-
     it 'returns a simple hash for an Activity Player activity that can be consumed by the Portal' do
       expect(activity_player_activity.serialize_for_portal_basic('http://test.host')).to eq(ap_basic_portal_hash)
     end
   end
 
   describe '#serialize_for_portal' do
-    let(:simple_portal_hash) do
-      url = "http://test.host/activities/#{activity.id}"
-      author_url = "#{url}/edit"
-      print_url = "#{url}/print_blank"
-      {
-        "source_type"            => "LARA",
-        "type"                   =>"Activity",
-        "name"                   => activity.name,
-        "description"            => activity.description,
-        "url"                    => url,
-        "create_url"             => url,
-        "author_url"             => author_url,
-        "print_url"              => print_url,
-        "thumbnail_url"          => thumbnail_url,
-        "author_email"           => activity.user.email,
-        "student_report_enabled" => activity.student_report_enabled,
-        "show_submit_button"     => true,
-        "is_locked"              => false,
-        "sections"               =>[{"name"=>"#{activity.name} Section", "pages"=>[]}]
-      }
-    end
     let(:ap_url) { "#{ENV["ACTIVITY_PLAYER_URL"]}?activity=http%3A%2F%2Ftest.host%2Fapi%2Fv1%2Factivities%2F#{activity_player_activity.id}.json" }
     let(:ap_simple_portal_hash) do
       url = "http://test.host/activities/#{activity_player_activity.id}"
@@ -569,33 +524,11 @@ describe LightweightActivity do
       }
     end
 
-    it 'returns a simple hash that can be consumed by the Portal' do
-      expect(activity.serialize_for_portal('http://test.host')).to eq(simple_portal_hash)
-    end
-
     it 'returns a simple hash for an Activity Player activity that can be consumed by the Portal' do
       expect(activity_player_activity.serialize_for_portal_basic('http://test.host')).to eq(ap_simple_portal_hash)
     end
 
     describe 'pages section' do
-      describe 'for the portal' do
-        before(:each) do
-          activity.pages << FactoryGirl.create(:page, name: 'page 1', position: 0)
-          activity.pages << FactoryGirl.create(:page, name: 'page 2', position: 1)
-          activity.pages << FactoryGirl.create(:page, name: 'hidden page', is_hidden: true, position: 2)
-          activity.reload
-        end
-
-        it 'returns only visible pages' do
-          pages = activity.serialize_for_portal('http://test.host')['sections'][0]['pages']
-          expect(pages.length).to eql(2)
-          expect(pages[0]['name']).to eql('page 1')
-          expect(pages[0]['url']).to match /http:\/\/test.host\/pages\/\d+/
-          expect(pages[1]['name']).to eql('page 2')
-          expect(pages[1]['url']).to match /http:\/\/test.host\/pages\/\d+/
-        end
-      end
-
       describe 'for the Activity Player' do
         before(:each) do
           activity_player_activity.pages << FactoryGirl.create(:page, name: 'page 1', position: 0)
@@ -674,12 +607,8 @@ describe LightweightActivity do
         ]
       }
     }
-    it 'returns a simple hash that can be consumed by the report service' do
-      expect(activity.serialize_for_report_service('http://test.host')).to eq(basic_report_service_hash)
-    end
 
     it 'adds a preview_url for activity player activities' do
-      activity.runtime = "Activity Player"
       ap_hash = basic_report_service_hash
       ap_hash[:preview_url] =
         "https://activity-player.concord.org/branch/master?activity=http%3A%2F%2Ftest.host%2Fapi%2Fv1%2Factivities%2F#{activity.id}.json&preview"
@@ -709,7 +638,6 @@ describe LightweightActivity do
       end
 
       it 'sets the page url for the activity player runtime' do
-        activity.runtime = "Activity Player"
         pages = activity.serialize_for_report_service('http://test.host')[:children][0][:children]
         expect(pages.length).to eql(2)
         expect(pages[0][:type]).to eql('page')

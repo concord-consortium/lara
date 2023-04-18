@@ -4,7 +4,8 @@ describe ReportService::ResourceSender do
   let(:self_host)            { "app.lara.docker" }
   let(:report_service_url)   { "fake-report-service.foo" }
   let(:report_service_token) { "secret-token-ssh" }
-  let(:id)        { "resource-id"}
+  let(:id)                   { "resource-id"}
+  let(:activity_player_url)  { "http://ap.url/"}
 
   let(:resource) { FactoryGirl.create(:activity_with_page_and_or) }
   let(:sender)   { ReportService::ResourceSender.new(resource) }
@@ -14,6 +15,7 @@ describe ReportService::ResourceSender do
     allow(ENV).to receive(:[]).with("REPORT_SERVICE_URL").and_return(report_service_url)
     allow(ENV).to receive(:[]).with("REPORT_SERVICE_TOKEN").and_return(report_service_token)
     allow(ENV).to receive(:[]).with("REPORT_SERVICE_TOOL_ID").and_return(nil)
+    allow(ENV).to receive(:[]).with("ACTIVITY_PLAYER_URL").and_return(activity_player_url)
   end
 
   describe "to_json" do

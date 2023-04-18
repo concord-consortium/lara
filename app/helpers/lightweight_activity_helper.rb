@@ -92,29 +92,15 @@ module LightweightActivityHelper
   end
 
   def activity_preview_url(activity, page=nil)
-    if activity.runtime == "Activity Player"
-      activity.activity_player_url(request.base_url, preview: true, page: page)
-    else
-      preview_activity_page_path(activity, page)
-    end
+    activity.activity_player_url(request.base_url, preview: true, page: page)
   end
 
   def itsi_preview_url(activity)
-    if activity.runtime == "Activity Player"
-      preview_activity_url = activity.activity_player_url(request.base_url, preview: true)
-    else
-      preview_activity_url = preview_activity_path(activity)
-    end
-    return preview_activity_url
+    activity.activity_player_url(request.base_url, preview: true)
   end
 
   def runtime_url(activity)
-    if activity.runtime == "Activity Player"
-      view_activity_url = activity.activity_player_url(request.base_url, preview: true)
-    else
-      view_activity_url = activity_path(activity)
-    end
-    return view_activity_url
+    activity.activity_player_url(request.base_url, preview: true)
   end
 
   def glossary_options_for_select(activity, user)

@@ -1,8 +1,8 @@
 class Sequence < ActiveRecord::Base
 
-  attr_accessible :description, :title, :theme_id, :project_id, :defunct,
+  attr_accessible :description, :title, :project_id, :defunct,
     :user_id, :logo, :display_title, :thumbnail_url, :abstract, :publication_hash,
-    :runtime, :project, :background_image, :hide_read_aloud, :font_size
+    :project, :background_image, :hide_read_aloud, :font_size
 
   include Publishable # defines methods to publish to portals
   include PublicationStatus # defines publication status scopes and helpers
@@ -12,7 +12,6 @@ class Sequence < ActiveRecord::Base
   has_many :lightweight_activities_sequences, :order => :position, :dependent => :destroy
   has_many :lightweight_activities, :through => :lightweight_activities_sequences, :order => :position
   belongs_to :user
-  belongs_to :theme
   belongs_to :project
 
   has_many :imports, as: :import_item
@@ -53,12 +52,10 @@ class Sequence < ActiveRecord::Base
       description: description,
       publication_status: publication_status,
       abstract: abstract,
-      theme_id: theme_id,
       project: project,
       logo: logo,
       display_title: display_title,
       thumbnail_url: thumbnail_url,
-      runtime: runtime,
       hide_read_aloud: hide_read_aloud,
       font_size: font_size
     }
@@ -100,11 +97,9 @@ class Sequence < ActiveRecord::Base
     sequence_json = self.as_json(only: [:title,
                                         :description,
                                         :abstract,
-                                        :theme_id,
                                         :logo,
                                         :display_title,
                                         :thumbnail_url,
-                                        :runtime,
                                         :background_image,
                                         :defunct,
                                         :hide_read_aloud,
@@ -119,9 +114,7 @@ class Sequence < ActiveRecord::Base
     end
     sequence_json[:type] = "Sequence"
     sequence_json[:export_site] = "Lightweight Activities Runtime and Authoring"
-    if self.runtime == "Activity Player"
-      sequence_json[:fixed_width_layout] = self.fixed_width_layout
-    end
+    sequence_json[:fixed_width_layout] = self.fixed_width_layout
     return sequence_json.to_json
   end
 
@@ -129,18 +122,10 @@ class Sequence < ActiveRecord::Base
     local_url = "#{host}#{Rails.application.routes.url_helpers.sequence_path(self)}"
     api_url = "#{host}#{Rails.application.routes.url_helpers.api_v1_sequence_path(self)}.json"
     ap_url = ENV["ACTIVITY_PLAYER_URL"] + "?sequence=" + api_url
-
-    if self.runtime == "Activity Player"
-      run_url = ap_url
-      source_type = "Activity Player"
-      append_auth_token = true
-      tool_id = ENV["ACTIVITY_PLAYER_URL"]
-    else
-      run_url = local_url
-      source_type = "LARA"
-      append_auth_token = false
-      tool_id = ""
-    end
+    run_url = ap_url
+    source_type = "Activity Player"
+    append_auth_token = true
+    tool_id = ENV["ACTIVITY_PLAYER_URL"]
 
     {
       'source_type' => source_type,
@@ -179,11 +164,9 @@ class Sequence < ActiveRecord::Base
       id: 'sequence_' + self.id.to_s,
       type: 'sequence',
       name: self.title,
-      url: local_url
+      url: local_url,
+      preview_url: self.activity_player_sequence_url(host, preview: true)
     }
-    if self.runtime == "Activity Player"
-      data[:preview_url] = self.activity_player_sequence_url(host, preview: true)
-    end
 
     # FIXME: the urls and preview_urls in these activities do not include the
     # the sequence, so links in the report to the activities or activity pages
@@ -227,10 +210,8 @@ class Sequence < ActiveRecord::Base
       description: sequence_json_object[:description],
       display_title: sequence_json_object[:display_title],
       logo: sequence_json_object[:logo],
-      theme_id: sequence_json_object[:theme_id],
       thumbnail_url: sequence_json_object[:thumbnail_url],
       title: sequence_json_object[:title],
-      runtime: sequence_json_object[:runtime],
       background_image: sequence_json_object[:background_image],
       hide_read_aloud: sequence_json_object[:hide_read_aloud],
       font_size: sequence_json_object[:font_size]
@@ -241,7 +222,6 @@ class Sequence < ActiveRecord::Base
   def self.import(sequence_json_object, new_owner, imported_activity_url=nil)
     helper = LaraSerializationHelper.new
     import_sequence = Sequence.new(self.extract_from_hash(sequence_json_object))
-    import_sequence.runtime = sequence_json_object[:runtime]
     import_sequence.project = Project.find_or_create(sequence_json_object[:project]) if sequence_json_object[:project]
     Sequence.transaction do
       import_sequence.title = import_sequence.title

@@ -22,20 +22,12 @@
     .field
       = f.label :name, 'Activity Name'
       = f.text_field :name
-    .field{:class => ("disabled")}
-      = f.label :runtime, "Runtime Environment"
-      = f.select :runtime, options_for_select(LightweightActivity::RUNTIME_OPTIONS, selected:'Activity Player', disabled: 'LARA'), :disabled => true
-      .hint
-        Runtime selection is no longer applicable. This setting will be removed in a future release.
     .field
       = f.label :glossary_id, 'Glossary'
       = f.select :glossary_id, glossary_options_for_select(@activity, current_user), { :include_blank => "None" }
       %button#view_edit_glossary{style: "margin-top: 0; margin-left: 20px;"} View/Edit
       .hint
         Select a glossary from the list to add to this activity. If you do not wish to associate a glossary with this activity, select "None."
-    .field
-      = f.label :theme_id, 'LARA Theme'
-      = f.select :theme_id, options_from_collection_for_select(Theme.all, 'id', 'name', @activity.theme_id), { :include_blank => "None (inherit from sequence, project, or site default)" }
     - if current_user.is_admin
       .field
         = f.label :project_id, 'Project'

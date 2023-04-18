@@ -18,9 +18,6 @@ describe "sequences/edit" do
     assert_select "form", :action => sequences_path(@sequence), :method => "post" do
       assert_select "input#sequence_title", :name => "sequence[title]"
       assert_select "textarea#sequence_description", :name => "sequence[description]"
-      assert_select "select#sequence_theme_id", :name => "sequence[theme_id]" do
-        assert_select 'option'
-      end
       assert_select "input#sequence_hide_read_aloud", :name => "sequence[hide_read_aloud]"
       assert_select "select#sequence_font_size", :name => "sequence[font_size]"
     end
