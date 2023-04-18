@@ -10,10 +10,13 @@ end
 def hide_read_aloud_checkbox
   '//*[@id="lightweight_activity_hide_read_aloud"]'
 end
+def font_size_select
+  '//*[@id="lightweight_activity_font_size"]'
+end
 
 describe "lightweight_activities/edit" do
 
-  let(:activity)  { stub_model(LightweightActivity, :id => 1, :name => 'Activity name', :defunct => false, :hide_read_aloud => false) }
+  let(:activity)  { stub_model(LightweightActivity, :id => 1, :name => 'Activity name', :defunct => false, :hide_read_aloud => false, :font_size => "normal") }
   let(:user)      { stub_model(User, :is_admin => false)      }
 
   before(:each) do
@@ -56,6 +59,24 @@ describe "lightweight_activities/edit" do
         it "should show the checkbox" do
           render
           expect(rendered).to have_xpath hide_read_aloud_checkbox
+        end
+      end
+    end
+
+    describe "font_size select" do
+      context "when the current user is an admin" do
+        let (:user) { stub_model(User, :is_admin => true)}
+        it "should show the select" do
+          render
+          expect(rendered).to have_xpath font_size_select
+        end
+      end
+
+      context "when the current user is not an admin" do
+        let (:user) { stub_model(User, :is_admin => false)}
+        it "should show the select" do
+          render
+          expect(rendered).to have_xpath font_size_select
         end
       end
     end

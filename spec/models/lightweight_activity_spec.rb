@@ -4,7 +4,7 @@ describe LightweightActivity do
   let(:thumbnail_url) { "http://fake.url.com/image" }
   let(:author)        { FactoryGirl.create(:author) }
   let(:glossary)      { nil }
-  let(:act_opts)      { {thumbnail_url: thumbnail_url, glossary: glossary, hide_read_aloud: true} }
+  let(:act_opts)      { {thumbnail_url: thumbnail_url, glossary: glossary, hide_read_aloud: true, font_size: "large"} }
   let(:activity)      {
     activity = FactoryGirl.create(:activity, act_opts)
     activity.user = author
@@ -192,6 +192,7 @@ describe LightweightActivity do
         editor_mode: activity.editor_mode,
         runtime: "LARA",
         hide_read_aloud: activity.hide_read_aloud,
+        font_size: activity.font_size,
        }
       expect(activity.to_hash).to eq(expected)
     end
@@ -232,6 +233,9 @@ describe LightweightActivity do
       end
       it 'includes the hide_read_aloud setting' do
         expect(export["hide_read_aloud"]).to eq(true)
+      end
+      it 'includes the font_size setting' do
+        expect(export["font_size"]).to eq("large")
       end
 
       describe "for activity player activities" do
@@ -291,6 +295,7 @@ describe LightweightActivity do
       expect(activity.glossary_id).to eq(glossary.id)
       expect(dup.glossary_id).to eq(activity.glossary_id)
       expect(dup.hide_read_aloud).to eq(activity.hide_read_aloud)
+      expect(dup.font_size).to eq(activity.font_size)
     end
 
     describe 'describe copying the activities plugins' do
@@ -441,6 +446,7 @@ describe LightweightActivity do
       expect(act.pages.count).to eq(json[:pages].length)
       expect(act.glossary_id).to eq(nil)
       expect(act.hide_read_aloud).to eq(true)
+      expect(act.font_size).to eq("large")
     end
 
     describe "for activities that use the glossary model" do

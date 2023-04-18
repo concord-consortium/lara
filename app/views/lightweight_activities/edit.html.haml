@@ -48,6 +48,9 @@
         = f.select :runtime, options_for_select(LightweightActivity::RUNTIME_OPTIONS, selected:'Activity Player', disabled: 'LARA'), :disabled => true
         .hint
           Runtime selection is no longer applicable. This setting will be removed in a future release.
+      .field
+        = f.label :font_size, "Font Size"
+        = f.select :font_size, options_for_select(LightweightActivity::FONT_SIZE_OPTIONS, @activity.font_size)
       .field{:class => ("disabled" if @activity.runtime != 'Activity Player')}
         = f.label :fixed_width_layout, 'Activity Player Fixed Width Layout'
         = f.select :fixed_width_layout, options_for_select(LightweightActivity::FIXED_WIDTH_LAYOUT_OPTIONS, @activity.fixed_width_layout)

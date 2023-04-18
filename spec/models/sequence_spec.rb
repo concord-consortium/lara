@@ -246,7 +246,7 @@ describe Sequence do
   end
 
   describe '#to_hash' do
-    let(:sequence_opts) { {hide_read_aloud: true} }
+    let(:sequence_opts) { {hide_read_aloud: true, font_size: "large"} }
     it 'returns a hash with relevant values for sequence duplication' do
       expected = {
         title: sequence.title,
@@ -259,19 +259,21 @@ describe Sequence do
         display_title: sequence.display_title,
         thumbnail_url: sequence.thumbnail_url,
         runtime: "LARA",
-        hide_read_aloud: true
+        hide_read_aloud: true,
+        font_size: "large"
       }
       expect(sequence.to_hash).to eq(expected)
     end
   end
 
   describe '#export' do
-    let(:sequence_opts) { {hide_read_aloud: true} }
+    let(:sequence_opts) { {hide_read_aloud: true, font_size: "large"} }
     let(:host) { 'http://test.host' }
     it 'returns json of a sequence' do
       sequence_json = JSON.parse(sequence.export(host))
       expect(sequence_json['activities'].length).to eq(sequence.activities.count)
       expect(sequence_json['hide_read_aloud']).to eq(true)
+      expect(sequence_json['font_size']).to eq("large")
     end
 
     it 'does not include the fixed width layout option' do
@@ -300,7 +302,8 @@ describe Sequence do
     let(:thumbnail_url) { "https://concord.org/sunflower.jpg" }
     let(:title)         { "title" }
     let(:hide_read_aloud) { true }
-    let(:sequence_opts) { {logo: logo, thumbnail_url: thumbnail_url, title: title, hide_read_aloud: hide_read_aloud} }
+    let(:font_size) { "large" }
+    let(:sequence_opts) { {logo: logo, thumbnail_url: thumbnail_url, title: title, hide_read_aloud: hide_read_aloud, font_size: font_size} }
     let(:owner)         { FactoryGirl.create(:user) }
     let(:host)          { 'http://test.host' }
 
@@ -310,6 +313,7 @@ describe Sequence do
       expect(imported.thumbnail_url).to eq(thumbnail_url)
       expect(imported.logo).to eq(logo)
       expect(imported.hide_read_aloud).to eq(hide_read_aloud)
+      expect(imported.font_size).to eq(font_size)
     end
   end
   describe '#duplicate' do

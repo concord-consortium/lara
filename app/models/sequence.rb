@@ -2,11 +2,13 @@ class Sequence < ActiveRecord::Base
 
   attr_accessible :description, :title, :theme_id, :project_id, :defunct,
     :user_id, :logo, :display_title, :thumbnail_url, :abstract, :publication_hash,
-    :runtime, :project, :background_image, :hide_read_aloud
+    :runtime, :project, :background_image, :hide_read_aloud, :font_size
 
   include Publishable # defines methods to publish to portals
   include PublicationStatus # defines publication status scopes and helpers
   include FixedWidthLayout # defines fixed width options
+  include Accessible # defines font options
+
   has_many :lightweight_activities_sequences, :order => :position, :dependent => :destroy
   has_many :lightweight_activities, :through => :lightweight_activities_sequences, :order => :position
   belongs_to :user
@@ -57,7 +59,8 @@ class Sequence < ActiveRecord::Base
       display_title: display_title,
       thumbnail_url: thumbnail_url,
       runtime: runtime,
-      hide_read_aloud: hide_read_aloud
+      hide_read_aloud: hide_read_aloud,
+      font_size: font_size
     }
   end
 
@@ -104,7 +107,8 @@ class Sequence < ActiveRecord::Base
                                         :runtime,
                                         :background_image,
                                         :defunct,
-                                        :hide_read_aloud
+                                        :hide_read_aloud,
+                                        :font_size
     ])
     sequence_json[:project] = self.project ? self.project.export : nil
     sequence_json[:activities] = []
@@ -228,7 +232,8 @@ class Sequence < ActiveRecord::Base
       title: sequence_json_object[:title],
       runtime: sequence_json_object[:runtime],
       background_image: sequence_json_object[:background_image],
-      hide_read_aloud: sequence_json_object[:hide_read_aloud]
+      hide_read_aloud: sequence_json_object[:hide_read_aloud],
+      font_size: sequence_json_object[:font_size]
     }
 
   end
