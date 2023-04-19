@@ -2,6 +2,7 @@ import * as React from "react";
 import { useEffect, useRef, useState } from "react";
 import { InteractiveIframe } from "./interactive-iframe";
 import { IInitInteractive } from "../../../interactive-api-client";
+import { pxForFontSize } from "../../../shared/accessibility";
 
 export interface IPreviewInteractive {
   id: number;
@@ -11,6 +12,7 @@ export interface IPreviewInteractive {
   aspect_ratio_method: string;
   authored_state: string | object;
   linked_interactives: string | object;
+  font_size: string;
 }
 
 export interface IPreviewUser {
@@ -74,7 +76,11 @@ export const InteractiveAuthoringPreview: React.FC<Props> = ({interactive, user}
         colorB: "green"
       }
     },
-    attachments: {}
+    attachments: {},
+    accessibility: {
+      fontSize: interactive.font_size,
+      fontSizeInPx: pxForFontSize(interactive.font_size)
+    }
   };
 
   return (

@@ -10,6 +10,7 @@ import {
   INavigationOptions, initializeAttachmentsManager, ISupportedFeaturesRequest, ServerMessage
 } from "../interactive-api-host";
 import { answerMetadataToAttachmentInfoMap } from "../interactive-api-host/attachments-api/helpers";
+import { pxForFontSize } from "../shared/accessibility";
 
 // Shutterbug is imported globally and used by the old LARA JS code.
 const Shutterbug = (window as any).Shutterbug;
@@ -143,6 +144,7 @@ export class IFrameSaver {
   private metadata: object | undefined;
   private savedState: object | string | null;
   private autoSaveIntervalId: number | null;
+  private fontSize: string;
   private alreadySetup: boolean;
   private iframePhone: ParentEndpoint;
   private successCallback: SuccessCallback | null | undefined;
@@ -165,6 +167,7 @@ export class IFrameSaver {
     this.getFirebaseJWTUrl = $dataDiv.data("get-firebase-jwt-url");
     this.runKey = $dataDiv.data("run-key");
     this.runRemoteEndpoint = $dataDiv.data("run-remote-endpoint");
+    this.fontSize = $dataDiv.data("font-size");
     this.linkedInteractives = getLinkedInteractives($dataDiv);
 
     this.saveIndicator = SaveIndicator.instance();
@@ -547,7 +550,11 @@ export class IFrameSaver {
           colorB: "green"
         }
       },
-      attachments: answerMetadataToAttachmentInfoMap(this.metadata)
+      attachments: answerMetadataToAttachmentInfoMap(this.metadata),
+      accessibility: {
+        fontSize: this.fontSize,
+        fontSizeInPx: pxForFontSize(this.fontSize)
+      }
     };
 
     // Perhaps it would be nicer to keep `interactiveStateProps` in some separate property instead of mixing

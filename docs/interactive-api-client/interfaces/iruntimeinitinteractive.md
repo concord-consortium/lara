@@ -20,6 +20,7 @@
 
 ### Properties
 
+* [accessibility](iruntimeinitinteractive.md#accessibility)
 * [activityName](iruntimeinitinteractive.md#optional-activityname)
 * [allLinkedStates](iruntimeinitinteractive.md#optional-alllinkedstates)
 * [attachments](iruntimeinitinteractive.md#optional-attachments)
@@ -47,6 +48,12 @@
 * [version](iruntimeinitinteractive.md#version)
 
 ## Properties
+
+###  accessibility
+
+• **accessibility**: *[IAccessibilitySettings](iaccessibilitysettings.md)*
+
+___
 
 ### `Optional` activityName
 

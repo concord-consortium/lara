@@ -10,6 +10,7 @@
 
 ### Interfaces
 
+* [IAccessibilitySettings](interfaces/iaccessibilitysettings.md)
 * [IAddLinkedInteractiveStateListenerOptions](interfaces/iaddlinkedinteractivestatelisteneroptions.md)
 * [IAddLinkedInteractiveStateListenerRequest](interfaces/iaddlinkedinteractivestatelistenerrequest.md)
 * [IAttachmentInfo](interfaces/iattachmentinfo.md)

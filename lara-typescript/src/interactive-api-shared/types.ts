@@ -46,6 +46,11 @@ export interface IHostFeatures extends Record<string, IHostFeatureSupport | stri
   domain?: string;
 }
 
+export interface IAccessibilitySettings {
+  fontSize: string;
+  fontSizeInPx: number;
+}
+
 export interface IRuntimeInitInteractive<InteractiveState = {}, AuthoredState = {}, GlobalInteractiveState = {}>
        extends IInteractiveStateProps<InteractiveState> {
   version: 1;
@@ -70,6 +75,7 @@ export interface IRuntimeInitInteractive<InteractiveState = {}, AuthoredState = 
   linkedInteractives: ILinkedInteractive[];
   themeInfo: IThemeInfo;
   attachments?: AttachmentInfoMap;
+  accessibility: IAccessibilitySettings;
 }
 
 export interface IThemeInfo {
