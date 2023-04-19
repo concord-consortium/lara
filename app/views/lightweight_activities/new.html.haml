@@ -19,53 +19,7 @@
     = f.error_messages
     - if defined?(session[:user_id])
       = f.hidden_field 'user_id', :value => session[:user_id]
-    .field
-      = f.label :name, 'Activity Name'
-      = f.text_field :name
-    .field
-      = f.label :glossary_id, 'Glossary'
-      = f.select :glossary_id, glossary_options_for_select(@activity, current_user), { :include_blank => "None" }
-      %button#view_edit_glossary{style: "margin-top: 0; margin-left: 20px;"} View/Edit
-      .hint
-        Select a glossary from the list to add to this activity. If you do not wish to associate a glossary with this activity, select "None."
-    - if current_user.is_admin
-      .field
-        = f.label :project_id, 'Project'
-        = f.select :project_id, options_from_collection_for_select(Project.all, 'id', 'title', @activity.project_id), { :include_blank => true }
-      .field
-        = f.check_box :is_official
-        = f.label :is_official,  "Official CC Activity"
-      .field
-        = f.check_box :is_locked
-        = f.label :is_locked, "Activity Locked"
-        .hint "Locked" activities may only be copied or edited by admin users, not regular authors.
-    .field
-      = f.label :publication_status, 'Publication Status'
-      = f.select :publication_status, options_for_select(LightweightActivity::PUB_STATUSES_OPTIONS, @activity.publication_status)
-    .field
-      = f.label :description, 'Activity Description'
-      = f.text_area :description, :class => 'wysiwyg'
-    .field
-      = f.label :thumbnail_url, "Preview Image URL"
-      = f.text_field :thumbnail_url, :class=>"thumbnail_source"
-    .field
-      = f.label :time_to_complete,  'Estimated Completion Time (in minutes)'
-      = f.text_field :time_to_complete
-    .field
-      = f.label :related, 'Related Content'
-      = f.text_area :related, :class => 'wysiwyg'
-    .field
-      = f.label :layout, "Activity Layout"
-      = f.select :layout, options_for_select(LightweightActivity::LAYOUT_OPTIONS, @activity.layout)
-    - if current_user.is_admin
-      .field
-        = f.label :editor_mode, "Authoring Mode"
-        = f.select :editor_mode, options_for_select(LightweightActivity::EDITOR_MODE_OPTIONS, @activity.editor_mode)
-    .field
-      = f.label :notes,  'Notes'
-      = f.text_area :notes
-      .hint The notes area is for storing information for other authors, e.g. source material or usage restrictions, and is not intended to be displayed in the runtime.
-
+      = render :partial => 'form', :locals => {f: f}
     = edit_menu_for(@activity, f)
 
 = render :partial => 'enable_disable_runtime_fields'
