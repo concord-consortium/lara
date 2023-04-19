@@ -133,6 +133,67 @@ describe Sequence do
 
   end
 
+  describe '#serialize_for_report_service' do
+    let(:act1) {
+      FactoryGirl.build(:activity_with_page)
+    }
+    let(:act2) {
+      FactoryGirl.build(:activity_with_page)
+    }
+    let(:sequence_with_activities) do
+      seq = FactoryGirl.build(:sequence)
+      seq.activities << act1
+      seq.activities << act2
+      seq.save!
+      # Reorder activities - move first one to the bottom.
+      seq.lightweight_activities_sequences.find { |as| as.lightweight_activity ==act1 }.move_to_bottom
+      seq.reload
+      seq
+    end
+
+    let(:simple_report_service_hash) do
+      {
+        id: "sequence_#{sequence.id}",
+        type: "sequence",
+        name: sequence.title,
+        url: "http://test.host#{Rails.application.routes.url_helpers.sequence_path(sequence)}",
+        preview_url: sequence.activity_player_sequence_url("http://test.host", preview: true),
+        migration_status: "unknown",
+        children: []
+      }
+    end
+
+    let(:complex_report_service_hash) do
+      {
+        id: "sequence_#{sequence_with_activities.id}",
+        type: "sequence",
+        name: sequence_with_activities.title,
+        url: "http://test.host#{Rails.application.routes.url_helpers.sequence_path(sequence_with_activities)}",
+        preview_url: sequence_with_activities.activity_player_sequence_url("http://test.host", preview: true),
+        migration_status: "not_migrated",
+        children: [
+          # Note that we reordered activities!
+          act2.serialize_for_report_service("http://test.host"),
+          act1.serialize_for_report_service("http://test.host")
+        ]
+      }
+    end
+
+    it 'returns a hash for a simple sequence that can be consumed by the report service' do
+      expect(sequence.serialize_for_report_service('http://test.host')).to eq(simple_report_service_hash)
+    end
+
+    it 'returns a hash for a simple sequence with a preview_url when sequence has an activity player runtime that can be consumed by the report service' do
+      ap_hash = simple_report_service_hash
+      ap_hash[:preview_url] = "https://activity-player.concord.org/branch/master?sequence=http%3A%2F%2Ftest.host%2Fapi%2Fv1%2Fsequences%2F#{sequence.id}.json&preview"
+      expect(sequence.serialize_for_report_service('http://test.host')).to eq(simple_report_service_hash)
+    end
+
+    it 'returns a hash for a sequence with activities that can be consumed by the report service' do
+      expect(sequence_with_activities.serialize_for_report_service("http://test.host")).to eq(complex_report_service_hash)
+    end
+  end
+
   describe '#to_hash' do
     let(:sequence_opts) { {hide_read_aloud: true, font_size: "large"} }
     it 'returns a hash with relevant values for sequence duplication' do

@@ -11,7 +11,6 @@
   - click_to_play = !!(wrapped_embeddable && wrapped_embeddable.respond_to?(:click_to_play) && wrapped_embeddable.click_to_play)
   - firebase_jwt_url = api_v1_get_firebase_jwt_url({firebase_app: '_FIREBASE_APP_'})
 
-  -# load runtime theme for preview of wrapped embeddable
   - if @embeddable
     %h1{style: "font-size: 1.5em; font-weight: bold; margin-bottom: 1em;"}
       = @embeddable.name
