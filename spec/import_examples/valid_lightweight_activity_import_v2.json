@@ -2,6 +2,7 @@
   "background_image": "",
   "defunct": false,
   "hide_read_aloud": true,
+  "font_size": "large",
   "description": "<p>Contains all page layout formats</p>",
   "editor_mode": 0,
   "id": 84,
