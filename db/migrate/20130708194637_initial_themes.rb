@@ -1,4 +1,9 @@
 class InitialThemes < ActiveRecord::Migration
+
+  class Theme < ActiveRecord::Base
+    attr_accessible :name, :css_file
+  end
+
   def up
     default = Theme.new(:name => 'Default', :css_file => 'runtime')
     default.footer = <<-DEFAULT
