@@ -6,7 +6,6 @@ describe ITSIAuthoring::Editor do
     activity = FactoryGirl.create(:activity)
     activity.user = author
     activity.save
-    activity.theme = FactoryGirl.create(:theme)
     activity
   }
 

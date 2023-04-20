@@ -41,13 +41,6 @@
     .hint
       When logo image is clicked, this is URL will launch in a new browser tab.
   .field
-    = f.label :theme, "LARA Runtime Default Theme"
-    %br
-    = f.select :theme_id, options_from_collection_for_select(Theme.all, 'id', 'name', @project.theme_id), { :include_blank => "None (use site default)" }
-    %br
-    .hint
-      When LARA Runtime is the selected Runtime Environment, activities will use this theme by default. Themes can be changed in the activity settings.
-  .field
     = f.label :footer, "LARA Runtime Footer"
     %br
     = f.text_area :footer, { :class => 'wysiwyg', :cols => 80, :rows => 10 }

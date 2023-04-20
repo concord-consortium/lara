@@ -18,9 +18,9 @@ class LightweightActivity < ActiveRecord::Base
   ]
 
   attr_accessible :name, :user_id, :pages, :related, :description, :defunct,
-                  :time_to_complete, :is_locked, :notes, :thumbnail_url, :theme_id, :project_id,
+                  :time_to_complete, :is_locked, :notes, :thumbnail_url, :project_id,
                   :portal_run_count, :layout, :editor_mode, :publication_hash, :copied_from_id,
-                  :student_report_enabled, :show_submit_button, :runtime, :project, :background_image,
+                  :student_report_enabled, :show_submit_button, :project, :background_image,
                   :glossary_id, :hide_read_aloud, :font_size
 
   belongs_to :user # Author
@@ -39,7 +39,6 @@ class LightweightActivity < ActiveRecord::Base
   has_many :lightweight_activities_sequences, :dependent => :destroy
   has_many :sequences, :through => :lightweight_activities_sequences
   has_many :runs, :foreign_key => 'activity_id', :dependent => :destroy
-  belongs_to :theme
   belongs_to :project
   belongs_to :glossary
 
@@ -96,14 +95,12 @@ class LightweightActivity < ActiveRecord::Base
       description: description,
       time_to_complete: time_to_complete,
       project: project,
-      theme_id: theme_id,
       thumbnail_url: thumbnail_url,
       notes: notes,
       layout: layout,
       editor_mode: editor_mode,
       student_report_enabled: student_report_enabled,
       show_submit_button: show_submit_button,
-      runtime: runtime,
       hide_read_aloud: hide_read_aloud,
       font_size: font_size
     }
@@ -149,13 +146,11 @@ class LightweightActivity < ActiveRecord::Base
                                         :editor_mode,
                                         :student_report_enabled,
                                         :show_submit_button,
-                                        :runtime,
                                         :background_image,
                                         :defunct,
                                         :hide_read_aloud,
                                         :font_size ])
     activity_json[:version] = 2
-    activity_json[:theme_name] = self.theme ? self.theme.name : nil
     activity_json[:project] = self.project ? self.project.export : nil
     activity_json[:pages] = []
     self.pages.each do |p|
@@ -192,9 +187,7 @@ class LightweightActivity < ActiveRecord::Base
 
     activity_json[:type] = "LightweightActivity"
     activity_json[:export_site] = "Lightweight Activities Runtime and Authoring"
-    if self.runtime == "Activity Player"
-      activity_json[:fixed_width_layout] = self.fixed_width_layout
-    end
+    activity_json[:fixed_width_layout] = self.fixed_width_layout
     return activity_json
   end
 
@@ -204,14 +197,12 @@ class LightweightActivity < ActiveRecord::Base
       name: activity_json_object[:name],
       notes: activity_json_object[:notes],
       related: activity_json_object[:related],
-      theme_id: activity_json_object[:theme_id],
       thumbnail_url: activity_json_object[:thumbnail_url],
       student_report_enabled: activity_json_object[:student_report_enabled],
       show_submit_button: activity_json_object[:show_submit_button],
       time_to_complete: activity_json_object[:time_to_complete],
       layout: activity_json_object[:layout],
       editor_mode: activity_json_object[:editor_mode],
-      runtime: activity_json_object[:runtime],
       background_image: activity_json_object[:background_image]
     }
 
@@ -221,12 +212,10 @@ class LightweightActivity < ActiveRecord::Base
     version = activity_json_object[:version] || 1
     author_user = User.find_by_email(activity_json_object[:user_email]) if activity_json_object[:user_email]
     import_activity = LightweightActivity.new(self.extract_from_hash(activity_json_object))
-    import_activity.theme = Theme.find_by_name(activity_json_object[:theme_name]) if activity_json_object[:theme_name]
     import_activity.imported_activity_url = imported_activity_url
     import_activity.is_official = activity_json_object[:is_official]
     import_activity.hide_read_aloud = activity_json_object[:hide_read_aloud]
     import_activity.font_size = activity_json_object[:font_size]
-    import_activity.runtime = activity_json_object[:runtime]
     import_activity.project = Project.find_or_create(activity_json_object[:project]) if activity_json_object[:project]
     self.link_glossaries_on_import(activity_json_object, import_activity)
     helper = LaraSerializationHelper.new if helper.nil?
@@ -290,16 +279,11 @@ class LightweightActivity < ActiveRecord::Base
       "student_report_enabled"  => student_report_enabled,
       "show_submit_button"  => show_submit_button,
       "thumbnail_url" => thumbnail_url,
-      "is_locked" => self.is_locked
+      "is_locked" => self.is_locked,
+      "url" => activity_player_url(host),
+      "tool_id" => "https://activity-player.concord.org",
+      "append_auth_token" => true
     }
-
-    if self.runtime == "Activity Player"
-      data["url"] = activity_player_url(host)
-      data["tool_id"] = "https://activity-player.concord.org"
-      data["append_auth_token"] = true
-    else
-      data["url"] = local_url
-    end
 
     data
   end
@@ -316,11 +300,7 @@ class LightweightActivity < ActiveRecord::Base
 
     pages = []
     visible_pages_with_embeddables.each do |page|
-      if self.runtime == "Activity Player"
-        page_url = activity_player_url(host, page: page, preview: true)
-      else
-        page_url = "#{host}#{Rails.application.routes.url_helpers.page_path(page)}"
-      end
+      page_url = activity_player_url(host, page: page, preview: true)
       elements = []
       page.reportable_items.each do |embeddable|
         if embeddable.respond_to?(:portal_hash)
@@ -351,11 +331,9 @@ class LightweightActivity < ActiveRecord::Base
       type: "activity",
       name: self.name,
       url: activity_url,
-      migration_status: migration_status
+      migration_status: migration_status,
+      preview_url: activity_player_url(host, preview: true)
     }
-    if self.runtime == "Activity Player"
-      data[:preview_url] = activity_player_url(host, preview: true)
-    end
 
     pages = []
     visible_pages_with_embeddables.each do |page|
@@ -370,11 +348,9 @@ class LightweightActivity < ActiveRecord::Base
         type: "page",
         name: page.name,
         url: page_url,
-        children: questions
+        children: questions,
+        preview_url: activity_player_url(host, page: page, preview: true)
       }
-      if self.runtime == "Activity Player"
-        page_data[:preview_url] = activity_player_url(host, page: page, preview: true)
-      end
 
       pages.push(page_data)
     end

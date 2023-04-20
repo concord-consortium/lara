@@ -2,12 +2,11 @@ class Project < ActiveRecord::Base
   DefaultName = 'Default Project'
   DefaultKey = 'default-project'
 
-  attr_accessible :footer, :logo_lara, :logo_ap, :title, :url, :theme_id, :about, :project_key, :copyright, 
+  attr_accessible :footer, :logo_lara, :logo_ap, :title, :url, :about, :project_key, :copyright,
                   :copyright_image_url, :collaborators, :funders_image_url, :collaborators_image_url, :contact_email
   validates :project_key, uniqueness: true
   has_many :sequences
   has_many :lightweight_activities
-  belongs_to :theme
 
   protected
   def self.create_default
@@ -63,7 +62,7 @@ class Project < ActiveRecord::Base
                                        :project_key,
                                        :title,
                                        :url,
-                                       :copyright, 
+                                       :copyright,
                                        :copyright_image_url,
                                        :collaborators,
                                        :funders_image_url,
@@ -82,7 +81,7 @@ class Project < ActiveRecord::Base
                                 project_key: project_data[:project_key],
                                 title: project_data[:title],
                                 url: project_data[:url],
-                                copyright: project_data[:copyright], 
+                                copyright: project_data[:copyright],
                                 copyright_image_url: project_data[:copyright_image_url],
                                 collaborators: project_data[:collaborators],
                                 funders_image_url: project_data[:funders_image_url],

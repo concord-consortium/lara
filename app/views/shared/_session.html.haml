@@ -1,9 +1,6 @@
 - if current_user
   -if can? :manage, User
     = link_to "User Admin", admin_users_path
-  -if can? :manage, Theme
-    |
-    = link_to "Themes", themes_path
   -if can? :manage, Project
     |
     = link_to "Projects", projects_path

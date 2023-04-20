@@ -31,7 +31,6 @@ describe PublicationsController do
       :thumbnail_url    => 'thumbnail',
     })
     activity.user = @user
-    activity.runtime = "LARA"
     activity.save
     activity
   end
@@ -44,7 +43,6 @@ describe PublicationsController do
       :thumbnail_url    => 'thumbnail',
     })
     activity.user = @user
-    activity.runtime = "Activity Player"
     activity.save
     activity
   end
@@ -111,55 +109,6 @@ describe PublicationsController do
     }}
     let(:good_response)   { {:status => 201, :body => "", :headers => {} }}
     let(:portal_response) { good_response }
-
-    context "when the activity has a LARA runtime" do
-
-      before(:each) do
-        # @url = controller.portal_url
-        # stub_request(:post, @url)
-        allow(controller).to receive(:find_portal).and_return mock_portal
-        allow(LightweightActivity).to receive(:find).and_return act_one
-        stub_request(:post, publishing_url).
-          with(good_request).
-          to_return(portal_response)
-      end
-
-      it "should have proper routing" do
-        expect({:get => "/publications/add/LightweightActivity/1"}).
-          to route_to({
-            :controller       => 'publications',
-            :action           => 'add_portal',
-            :publishable_type => 'LightweightActivity',
-            :publishable_id   => "1"
-        })
-      end
-
-      it "should call 'portal_publish' on the activity" do
-        expect(act_one).to receive(:portal_publish).with(@user, mock_portal, "#{request.protocol}#{request.host_with_port}")
-        get :add_portal, { :publishable_id => act_one.id, :publishable_type => "LightweightActivity" }
-        # should be moved to publishable_spec
-        # expect(act_one.publication_status).to eq('public')
-      end
-
-      # this should be moved to publishable_spec
-      it "should attempt to publish to the correct portal endpoint" do
-        skip "New portal configurations, more testing here"
-        expect(@url).to eq("#{ENV['CONCORD_PORTAL_URL']}/external_activities/publish/v2")
-      end
-
-      # this should be moved to publishable_spec
-      it 'creates a new PortalPublication record' do
-        old_publication_count = act_one.portal_publications.length
-        get :add_portal, { :publishable_id => act_one.id, :publishable_type => "LightweightActivity" }
-        expect(act_one.reload.portal_publications.length).to eq(old_publication_count + 1)
-      end
-
-      # this should be moved to publishable_spec
-      it "should set publication_status to public" do
-        get :add_portal, { :publishable_id => act_one.id, :publishable_type => "LightweightActivity" }
-        # expect(act_one.publication_status).to eq('public')
-      end
-    end
 
     context "when an activity has an Activity Player runtime" do
 

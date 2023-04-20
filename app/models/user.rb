@@ -149,9 +149,6 @@ class User < ActiveRecord::Base
     if can? :manage, User
       links.push({text: "User Admin", path: Rails.application.routes.url_helpers.admin_users_path})
     end
-    if can? :manage, Theme
-      links.push({text: "Themes", path: Rails.application.routes.url_helpers.themes_path})
-    end
     if can? :manage, Project
       links.push({text: "Projects", path: Rails.application.routes.url_helpers.projects_path})
     end

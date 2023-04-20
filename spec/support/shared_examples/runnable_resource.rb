@@ -136,9 +136,8 @@ shared_examples "runnable launched with run_key" do |run_type, portal_launchable
           expect(response).to render_template(resource_template)
         end
 
-        it 'assigns a project and a theme' do
+        it 'assigns a project' do
           expect(assigns(:project)).not_to be_nil
-          expect(assigns(:theme)).not_to be_nil
         end
       end
       describe "but the #{run_type} is owned by a user" do
@@ -150,10 +149,6 @@ shared_examples "runnable launched with run_key" do |run_type, portal_launchable
 
         it 'renders unauthorized run message' do
           expect(response).to render_template('runs/unauthorized_run')
-        end
-
-        it 'uses the theme of the resource' do
-          expect(assigns(:theme)).to eq(theme)
         end
 
         it 'uses the project of the resource' do

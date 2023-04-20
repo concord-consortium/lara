@@ -12,11 +12,10 @@ describe LightweightActivitiesController do
   let (:author) { FactoryGirl.create(:author) }
   let (:page) { FactoryGirl.create(:page, name: "Page 1" ) }
   # act.pages.create!(:name => "Page 1") }
-  let (:theme) { FactoryGirl.create(:theme) }
   let (:project) { FactoryGirl.create(:project) }
   let (:act) {
     activity = FactoryGirl.create(:public_activity,
-      user: author, theme: theme, project: project, pages: [page])
+      user: author, project: project, pages: [page])
   }
   let (:private_act) { FactoryGirl.create(:activity)}
   let (:ar_run)  { FactoryGirl.create(:run, :activity_id => act.id, :user_id => nil) }

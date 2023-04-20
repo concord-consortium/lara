@@ -27,11 +27,6 @@
 
   <!-- Stylesheets -->
   <%= stylesheet_link_tag '//ajax.googleapis.com/ajax/libs/jqueryui/1.10.1/themes/base/jquery-ui.css' %>
-  <%- if @theme && @theme.css_file %>
-      <%= stylesheet_link_tag @theme.css_file, :media => 'all' %>
-  <%- else -%>
-      <%= stylesheet_link_tag Theme::DEFAULT_CSS_FILE, :media => 'all' %>
-  <%- end -%>
 
   <!-- Scripts -->
   <%= render partial: 'shared/rollbar' %>

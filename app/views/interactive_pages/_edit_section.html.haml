@@ -1,13 +1,10 @@
 :ruby
   if section_name == InteractivePage::HEADER_BLOCK
     section_hidden_field = hidden_field_tag :section, InteractivePage::HEADER_BLOCK
-    selector_menu = @activity.runtime == "Activity Player" ? ap_interactives_selector : embeddable_selector(section_name)
   elsif section_name == InteractivePage::INTERACTIVE_BOX
     section_hidden_field = hidden_field_tag :section, InteractivePage::INTERACTIVE_BOX
-    selector_menu = @activity.runtime == "Activity Player" ? ap_interactives_selector : embeddable_interactives_selector
   else
     section_hidden_field = nil
-    selector_menu = @activity.runtime == "Activity Player" ? ap_interactives_selector : embeddable_selector(section_name)
   end
   section_embeddables_list = @page.section_embeddables(section_name)
 
@@ -22,7 +19,7 @@
           Collapsible
   = form_tag add_embeddable_activity_page_path(@activity, @page), :class => 'embeddables-form' do
     .select_container
-      = selector_menu
+      = ap_interactives_selector
     = hidden_field_tag :approved_script_id
     = hidden_field_tag :component_label
     - if !section_hidden_field.nil?

@@ -106,50 +106,6 @@ describe Sequence do
       activity_player_sequence
     }
 
-    let(:simple_portal_hash) do
-      url = "http://test.host#{Rails.application.routes.url_helpers.sequence_path(sequence)}"
-      author_url = "#{url}/edit"
-      print_url = "#{url}/print_blank"
-      {
-        "source_type" => "LARA",
-        "type"=>"Sequence", "name"=> sequence.title, "description"=> sequence.description,
-        "abstract" => sequence.abstract,
-        "url"=> url,
-        "create_url"=> url,
-        "author_url"    => author_url,
-        "print_url"     => print_url,
-        "thumbnail_url" => nil, # our simple sequence doesn't have one
-        "author_email" => sequence.user.email,
-        "activities"=>[],
-        "append_auth_token" => false,
-        "tool_id" => ""
-      }
-    end
-
-    let(:complex_portal_hash) do
-      url = "http://test.host#{Rails.application.routes.url_helpers.sequence_path(sequence_with_activities)}"
-      author_url = "#{url}/edit"
-      print_url = "#{url}/print_blank"
-      {
-        "source_type" => "LARA",
-        "type"=>"Sequence", "name"=> sequence_with_activities.title, "description"=> sequence_with_activities.description,
-        "abstract" => sequence_with_activities.abstract,
-        "url"=> url,
-        "create_url"=> url,
-        "author_url"    => author_url,
-        "print_url"     => print_url,
-        "thumbnail_url" => thumbnail_url,
-        "author_email" => sequence_with_activities.user.email,
-        "activities"=> [
-          # Note that we reordered activities!
-          act2.serialize_for_portal("http://test.host"),
-          act1.serialize_for_portal("http://test.host")
-        ],
-        "append_auth_token" => false,
-        "tool_id" => ""
-      }
-    end
-
     let(:ap_simple_portal_hash) do
       url = "http://test.host#{Rails.application.routes.url_helpers.sequence_path(activity_player_sequence)}"
       author_url = "#{url}/edit"
@@ -169,14 +125,6 @@ describe Sequence do
         "append_auth_token" => true,
         "tool_id" => ENV["ACTIVITY_PLAYER_URL"]
       }
-    end
-
-    it 'returns a hash for a simple sequence that can be consumed by the Portal' do
-      expect(sequence.serialize_for_portal('http://test.host')).to eq(simple_portal_hash)
-    end
-
-    it 'returns a hash for a sequence with activities that can be consumed by the Portal' do
-      expect(sequence_with_activities.serialize_for_portal("http://test.host")).to eq(complex_portal_hash)
     end
 
     it 'returns a simple hash for an Activity Player sequence that can be consumed by the Portal' do
@@ -209,6 +157,7 @@ describe Sequence do
         type: "sequence",
         name: sequence.title,
         url: "http://test.host#{Rails.application.routes.url_helpers.sequence_path(sequence)}",
+        preview_url: sequence.activity_player_sequence_url("http://test.host", preview: true),
         migration_status: "unknown",
         children: []
       }
@@ -220,6 +169,7 @@ describe Sequence do
         type: "sequence",
         name: sequence_with_activities.title,
         url: "http://test.host#{Rails.application.routes.url_helpers.sequence_path(sequence_with_activities)}",
+        preview_url: sequence_with_activities.activity_player_sequence_url("http://test.host", preview: true),
         migration_status: "not_migrated",
         children: [
           # Note that we reordered activities!
@@ -234,7 +184,6 @@ describe Sequence do
     end
 
     it 'returns a hash for a simple sequence with a preview_url when sequence has an activity player runtime that can be consumed by the report service' do
-      sequence.runtime = "Activity Player"
       ap_hash = simple_report_service_hash
       ap_hash[:preview_url] = "https://activity-player.concord.org/branch/master?sequence=http%3A%2F%2Ftest.host%2Fapi%2Fv1%2Fsequences%2F#{sequence.id}.json&preview"
       expect(sequence.serialize_for_report_service('http://test.host')).to eq(simple_report_service_hash)
@@ -253,12 +202,10 @@ describe Sequence do
         description: sequence.description,
         publication_status: sequence.publication_status,
         abstract: sequence.abstract,
-        theme_id: sequence.theme_id,
         logo: sequence.logo,
         project: sequence.project,
         display_title: sequence.display_title,
         thumbnail_url: sequence.thumbnail_url,
-        runtime: "LARA",
         hide_read_aloud: true,
         font_size: "large"
       }
@@ -276,9 +223,9 @@ describe Sequence do
       expect(sequence_json['font_size']).to eq("large")
     end
 
-    it 'does not include the fixed width layout option' do
+    it 'includes the fixed width layout option' do
       sequence_json = JSON.parse(sequence.export(host))
-      expect(sequence_json).not_to include('fixed_width_layout')
+      expect(sequence_json).to include('fixed_width_layout')
     end
 
     describe 'for activity player sequences' do
@@ -355,7 +302,6 @@ describe Sequence do
       expect(dup.user).to eq(owner)
       expect(dup.title).to eq("Copy of #{sequence.title}")
       expect(dup.description).to eq(sequence.description)
-      expect(dup.theme_id).to eq(sequence.theme_id)
       expect(dup.project_id).to eq(sequence.project_id)
       expect(dup.logo).to eq(sequence.logo)
       expect(dup.display_title).to eq(sequence.display_title)

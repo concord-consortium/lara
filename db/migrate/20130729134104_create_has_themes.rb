@@ -1,4 +1,8 @@
 class CreateHasThemes < ActiveRecord::Migration
+  class Theme < ActiveRecord::Base
+    attr_accessible :name, :css_file
+  end
+
   def up
     # Reset column info so that it won't think 'footer' is still a part of the model.
     # This can happen if migration 20130708135213_create_themes is run before this one,

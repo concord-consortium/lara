@@ -29,7 +29,8 @@ def fake_activity(official=false, is_public=true)
     is_official: official,
     active_runs: 0,
     portal_publications: [],
-    defunct: false
+    defunct: false,
+    activity_player_url: "https://ap.url/"
   )
 end
 
@@ -120,7 +121,7 @@ describe "lightweight_activities/index" do
     it 'provides a list of authored Lightweight Activities with edit and run links on the index page' do
       render
       expect(rendered).to match /<a[^>]+href="\/activities\/[\d]+\/edit"[^>]*>[\s]*Edit[\s]*<\/a>/
-      expect(rendered).to match /<a[^>]+href="\/activities\/[\d]+"[^>]*>[\s]*Run[\s]*<\/a>/
+      expect(rendered).to match /<a[^>]+href="https:\/\/ap.url\/"[^>]*>[\s]*Run[\s]*<\/a>/
     end
   end
 end

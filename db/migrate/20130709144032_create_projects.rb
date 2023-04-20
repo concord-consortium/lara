@@ -1,4 +1,8 @@
 class CreateProjects < ActiveRecord::Migration
+  class Theme < ActiveRecord::Base
+    attr_accessible :name, :css_file
+  end
+
   class Project < ActiveRecord::Base
     attr_accessible :logo, :title, :url
   end
@@ -20,7 +24,7 @@ class CreateProjects < ActiveRecord::Migration
     has = CreateProjects::Project.new(:title => 'High Adventure Science', :url => 'http://has.concord.org')
     has.save
     remove_column :themes, :footer
-    
+
     add_column :lightweight_activities, :project_id, :integer
     add_column :sequences, :project_id, :integer
   end

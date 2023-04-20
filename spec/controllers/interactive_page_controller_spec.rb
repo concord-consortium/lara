@@ -5,8 +5,7 @@ describe InteractivePagesController do
 
   render_views
   let(:project) { FactoryGirl.create(:project) }
-  let(:theme) { FactoryGirl.create(:theme) }
-  let (:act) { FactoryGirl.create(:public_activity, project: project, theme: theme ) }
+  let (:act) { FactoryGirl.create(:public_activity, project: project ) }
 
   let (:page1) do
     page1 = FactoryGirl.create(:page, :lightweight_activity => act)

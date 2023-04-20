@@ -10,10 +10,8 @@ describe HomeController do
 
   it_behaves_like "remote duplicate support" do
     let(:project) { FactoryGirl.create(:project) }
-    let(:theme) { FactoryGirl.create(:theme) }
     let(:sequence) { FactoryGirl.create(:sequence,
       publication_status: 'public',
-      theme: theme,
       project: project,
       user: user) }
     let(:activity) { FactoryGirl.create(:public_activity) }

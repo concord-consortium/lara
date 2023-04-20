@@ -88,21 +88,6 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def current_theme
-    # Assigns @theme
-    # This counts on @activity and/or @sequence being already assigned.
-    if defined?(@sequence) && @sequence  && @sequence.theme
-      @theme = @sequence.theme
-    elsif defined?(@activity) && @activity && @activity.theme
-      @theme = @activity.theme
-    elsif defined?(@project) && @project.theme
-      @theme = @project.theme
-    else
-      @theme = Theme.default
-    end
-    @theme
-  end
-
   def current_project
     # Assigns @project
     # This counts on @activity and/or @sequence being already assigned.

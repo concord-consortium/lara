@@ -120,12 +120,6 @@ describe "lightweight_activities/edit" do
     #   rendered.should match /<a[^>]+href="\/activities"[^<]*>[\s]*All Activities[\s]*<\/a>/
     # end
 
-    it 'should provide a select menu of themes' do
-      render
-      expect(rendered).to have_css('select#lightweight_activity_theme_id')
-      expect(rendered).to have_css('select#lightweight_activity_theme_id option')
-    end
-
     it 'should provide a select menu of projects' do
       render
       expect(rendered).to have_css('select#lightweight_activity_project_id')
