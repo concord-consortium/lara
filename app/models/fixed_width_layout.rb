@@ -1,8 +1,8 @@
 module FixedWidthLayout
   FIXED_WIDTH_LAYOUT_VALUES = %w(ipad_friendly 1100px)
   FIXED_WIDTH_LAYOUT_OPTIONS = {
-    '1100px' => '1100px',
-    'iPad Friendly' => 'ipad_friendly'
+    'Standard (1100px)' => '1100px',
+    'iPad Friendly (960px)' => 'ipad_friendly'
   }
 
   def self.included(clazz)

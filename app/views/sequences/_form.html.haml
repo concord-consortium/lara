@@ -15,49 +15,34 @@
       .submit
         = f.submit "Save", :id => 'save-top', :class => 'btn-primary'
     .field
-      = f.label :title
+      = f.label :title, "Sequence Title"
       = f.text_field :title, :id => "sequence_title"
-    - if current_user.is_admin
-      .field
-        = f.check_box :defunct
-        = f.label :defunct,  "Defunct"
-        .hint Check this box if the sequence uses features not supported by Activity Player.
+    .field
+      = f.label :display_title, "Display Title"
+      = f.text_field :display_title, :id => "sequence_display_title"
+    .field
+      = f.label :description, "Home Page Text"
+      = f.text_area :description, { :class => 'wysiwyg', :cols => 60, :rows => 10 }
     .field
       = f.check_box :hide_read_aloud
       = f.label :hide_read_aloud,  "Hide Read-Aloud Toggle"
       .hint Check this box if you do not want the "Tap text to listen" toggle to appear on activities in this sequence.
     .field
-      = f.label :display_title, "Display Title"
-      = f.text_field :display_title, :id => "sequence_display_title"
+      = f.label :fixed_width_layout, 'Activity Page Fixed Width Layout'
+      = f.select :fixed_width_layout, options_for_select(LightweightActivity::FIXED_WIDTH_LAYOUT_OPTIONS, @sequence.fixed_width_layout)
+    .field
+      = f.label :background_image, 'Activity Page Background Image URL'
+      = f.text_field :background_image, :id => "sequence_background_image"
+      .hint Specify the full URL of a background image file.
     .field
       = f.label :font_size, "Font Size"
       = f.select :font_size, options_for_select(Sequence::FONT_SIZE_OPTIONS, @sequence.font_size)
-    .field
-      = f.label :fixed_width_layout, 'Fixed Width Layout'
-      = f.select :fixed_width_layout, options_for_select(LightweightActivity::FIXED_WIDTH_LAYOUT_OPTIONS, @sequence.fixed_width_layout)
-    .field
-      = f.label :background_image, 'Activity Player Background Image URL'
-      = f.text_field :background_image, :id => "sequence_background_image"
-      .hint Specify the full URL of a background image file.
+      .hint This will override the font size setting for any activities in this sequence.
     .field
       = f.label :project_id, "Project"
       = f.select :project_id, options_from_collection_for_select(Project.all, 'id', 'title', @sequence.project_id), { :include_blank => true }
     .field
-      = f.label :logo
-      = f.text_field :logo
-    - if current_user.is_admin
-      .field
-        = f.check_box :is_official
-        = f.label :is_official, "Offical CC Sequence"
-        .hint Official activities appear in the STEM Resource Finder and should be vetted before being designated as such.
-    .field
-      = f.label :publication_status, "Publication Status"
-      = f.select :publication_status, options_for_select(LightweightActivity::PUB_STATUSES_OPTIONS, @sequence.publication_status)
-    .field
-      = f.label :description, "Index Page Text"
-      = f.text_area :description, { :class => 'wysiwyg', :cols => 60, :rows => 10 }
-    .field
-      = f.label :thumbnail_url, "Preview Image URL"
+      = f.label :thumbnail_url, "Sequence Preview Image URL"
       = f.text_field :thumbnail_url, :class => "thumbnail_source", :id => "sequence_thumbnail_source"
       .thumbnail_info.hint
         Preview image should be 1460 pixels wide by 800 pixels high.
@@ -65,6 +50,22 @@
           [preview]
         .activity_thumbnail#thumbnail_preview
           %img
+    .field
+      = f.label :publication_status, "Publication Status"
+      = f.select :publication_status, options_for_select(LightweightActivity::PUB_STATUSES_OPTIONS, @sequence.publication_status)
+    - if current_user.is_admin
+      .field
+        = f.check_box :is_official
+        = f.label :is_official, "Offical CC Sequence"
+        .hint Official activities appear in the STEM Resource Finder and should be vetted before being designated as such.
+    .field
+      = f.label :logo
+      = f.text_field :logo, :id => "sequence_logo"
+    - if current_user.is_admin
+      .field
+        = f.check_box :defunct
+        = f.label :defunct,  "Defunct"
+        .hint Check this box if the sequence uses features not supported by Activity Player.
     .field
       = f.label :abstract, "Abstract [DEPRECATED] Works only with old Portals"
       = f.text_area :abstract, { :class => 'wysiwyg', :cols => 60, :rows => 10 }

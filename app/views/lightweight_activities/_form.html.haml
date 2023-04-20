@@ -1,0 +1,112 @@
+.field
+  = f.label :name, 'Activity Name'
+  = f.text_field :name, :size => 80
+.field
+  = f.label :description, 'Home Page Text'
+  = f.text_area :description, :class => 'wysiwyg'
+.field
+  = f.check_box :hide_read_aloud
+  = f.label :hide_read_aloud,  "Hide Read-Aloud Toggle"
+  .hint Check this box if you do not want the "Tap text to listen" toggle to appear on this activity.
+.field
+  = f.label :layout, "Activity Layout"
+  = f.select :layout, options_for_select(LightweightActivity::LAYOUT_OPTIONS, @activity.layout)
+.field{:class => ("disabled" unless @activity.layout == 1)}
+  = f.check_box :show_submit_button, :disabled => (@activity.layout != 1 ? true : false)
+  = f.label :show_submit_button, 'Show Submit Button'
+  %br
+    .hint
+      Show a submit button at the bottom of a
+      %em
+        single page
+      activity.
+.field
+  = f.check_box :student_report_enabled
+  = f.label :student_report_enabled, t("STUDENT_REPORT_ENABLED")
+  %br
+    .hint
+      Show a link to the student so they can see all their answers and see if they are correct
+.field
+  = f.label :fixed_width_layout, 'Activity Page Fixed Width'
+  = f.select :fixed_width_layout, options_for_select(LightweightActivity::FIXED_WIDTH_LAYOUT_OPTIONS, @activity.fixed_width_layout)
+.field
+  = f.label :background_image, 'Activity Page Background Image URL'
+  = f.text_field :background_image
+  .hint Specify the full URL of a background image file.
+.field
+  = f.label :font_size, "Font Size"
+  = f.select :font_size, options_for_select(LightweightActivity::FONT_SIZE_OPTIONS, @activity.font_size)
+.field
+  = f.label :glossary_id, 'Glossary'
+  = f.select :glossary_id, glossary_options_for_select(@activity, current_user), { :include_blank => "None" }
+  %button#view_edit_glossary{style: "margin-top: 0; margin-left: 20px;"} View or Edit
+  .hint
+    Select a glossary from the list to add to this activity. If you do not wish to associate a glossary with this activity, select "None."
+- if current_user.is_admin
+  .field
+    = f.label :project_id, 'Project'
+    = f.select :project_id, options_from_collection_for_select(Project.all, 'id', 'title', @activity.project_id), { :include_blank => true }
+.field
+  = f.label :thumbnail_url, "Activity Thumbnail Image URL"
+  = f.text_field :thumbnail_url, :class=>"thumbnail_source"
+  .thumbnail_info.hint
+    Thumbnail image should be 1460 pixels wide by 800 pixels high.
+    %a#toggle_thumbnail_preview
+      [preview]
+    .activity_thumbnail#thumbnail_preview
+      %img
+.field
+  = f.label :publication_status, 'Publication Status'
+  = f.select :publication_status, options_for_select(LightweightActivity::PUB_STATUSES_OPTIONS, @activity.publication_status)
+- if current_user.is_admin
+  .field
+    = f.check_box :is_official
+    = f.label :is_official,  "Official CC Activity"
+    .hint Official activities appear in the STEM Resource Finder and should be vetted before being designated as such.
+- if current_user.is_admin
+  .field
+    = f.check_box :is_locked
+    = f.label :is_locked, "Activity Locked"
+    .hint "Locked" activities may only be copied or edited by admin users, not regular authors.
+.field
+  = f.label :time_to_complete,  'Estimated Completion Time (in minutes)'
+  = f.text_field :time_to_complete
+.field{:class => ("disabled" unless @activity.layout == 1)}
+  = f.label :related, 'Related Content'
+  = f.text_area :related, :class => 'wysiwyg', :disabled => (@activity.layout != 1 ? true : false)
+  .hint The content in this field will be shown at the bottom of the page in the Single Page layout only.
+- if current_user.is_admin
+  .field
+    = f.check_box :defunct
+    = f.label :defunct,  "Defunct"
+    .hint Check this box if the activity uses features not supported by Activity Player.
+.field
+  = f.label :editor_mode, "Copied From"
+  - if @activity.copied_from_activity
+    = link_to @activity.copied_from_activity.name, edit_activity_path(@activity.copied_from_activity)
+  - else
+    This activity was not copied from another activity
+.field
+  = f.label :notes,  'Notes'
+  = f.text_area :notes
+  .hint The notes area is for storing information for other authors, e.g. source material or usage restrictions, and is not intended to be displayed in the runtime.
+- if current_user.is_admin
+  .field
+    = f.label :editor_mode, "Authoring Mode"
+    = f.select :editor_mode, options_for_select(LightweightActivity::EDITOR_MODE_OPTIONS, @activity.editor_mode)
+
+:javascript
+  $(function() {
+    // toggle access to submit button and related content for single page layouts
+    $('#lightweight_activity_layout').on('change', function() {
+      var $this = $(this);
+      var selected = $this.find('option:selected').val();
+      if (selected === '1') {
+        $('#lightweight_activity_show_submit_button').removeAttr('disabled').parent().removeClass('disabled');
+        $('#lightweight_activity_related').removeAttr('disabled').parent().removeClass('disabled');
+      } else {
+        $('#lightweight_activity_show_submit_button').attr('disabled', true).parent().addClass('disabled');
+        $('#lightweight_activity_related').attr('disabled', true).parent().addClass('disabled');
+      }
+    })
+  });
