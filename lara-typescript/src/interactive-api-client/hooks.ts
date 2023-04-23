@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import ResizeObserver from "resize-observer-polyfill";
 
 import { ICustomMessageHandler, ICustomMessagesHandledMap, IInitInteractive, ITextDecorationHandler,
-  IReportItemHandlerMetadata, IGetReportItemAnswerHandler } from "./types";
+  IReportItemHandlerMetadata, IGetReportItemAnswerHandler, IAccessibilitySettings } from "./types";
 import * as client from "./api";
 
 type UpdateFunc<S> = (prevState: S | null) => S;
@@ -175,4 +175,33 @@ export const useReportItem = <InteractiveState, AuthoredState>({ metadata, handl
 
     return () => client.removeGetReportItemAnswerListener();
   }, []);
+};
+
+export const DefaultAccessibilitySettings: IAccessibilitySettings = {
+  fontSize: "normal",
+  fontSizeInPx: 16
+};
+
+export const useAccessibility = (props?: {updateHtmlFontSize?: boolean}) => {
+  const {updateHtmlFontSize} = props || {};
+  const initMessage = useInitMessage();
+  const [accessibility, setAccessibility] = useState<IAccessibilitySettings>(DefaultAccessibilitySettings);
+
+  useEffect(() => {
+    if (initMessage && initMessage.mode === "runtime") {
+      const _accessibility = initMessage.accessibility || DefaultAccessibilitySettings;
+      const {fontSizeInPx} = _accessibility;
+
+      setAccessibility(_accessibility);
+
+      if (updateHtmlFontSize && (fontSizeInPx !== DefaultAccessibilitySettings.fontSizeInPx)) {
+        const html = document.getElementsByTagName("html").item(0);
+        if (html) {
+          html.style.fontSize = `${fontSizeInPx}px`;
+        }
+      }
+    }
+  }, [initMessage, updateHtmlFontSize]);
+
+  return accessibility;
 };
