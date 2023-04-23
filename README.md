@@ -1,5 +1,7 @@
 # Lightweight Activities Runtime and Authoring (LARA)
 
+This is a test build to see if Travis errors out on a new branch
+
 [![Code Climate](https://codeclimate.com/github/concord-consortium/lara.png)](https://codeclimate.com/github/concord-consortium/lara)
 [![Build Status](https://travis-ci.org/concord-consortium/lara.png?branch=master)](https://travis-ci.org/concord-consortium/lara)
 
@@ -153,8 +155,8 @@ terminal in the LARA Codespaces:
     ```
       docker-compose exec app bundle exec rake lightweight:admin_last_user
     ```
-    
-7. If you don't need Portal, you can skip all the instructions related to it. Finally, add `users/sign_up` to the URL and create a new user there. 
+
+7. If you don't need Portal, you can skip all the instructions related to it. Finally, add `users/sign_up` to the URL and create a new user there.
    You can make this user an admin by running following command:
     ```
       docker-compose exec app bundle exec rake lightweight:admin_last_user
