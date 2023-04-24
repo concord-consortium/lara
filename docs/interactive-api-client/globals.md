@@ -10,6 +10,7 @@
 
 ### Interfaces
 
+* [IAccessibilitySettings](interfaces/iaccessibilitysettings.md)
 * [IAddLinkedInteractiveStateListenerOptions](interfaces/iaddlinkedinteractivestatelisteneroptions.md)
 * [IAddLinkedInteractiveStateListenerRequest](interfaces/iaddlinkedinteractivestatelistenerrequest.md)
 * [IAttachmentInfo](interfaces/iattachmentinfo.md)
@@ -181,6 +182,7 @@
 * [setOnUnload](globals.md#const-setonunload)
 * [setSupportedFeatures](globals.md#const-setsupportedfeatures)
 * [showModal](globals.md#const-showmodal)
+* [useAccessibility](globals.md#const-useaccessibility)
 * [useAuthoredState](globals.md#const-useauthoredstate)
 * [useAutoSetHeight](globals.md#const-useautosetheight)
 * [useCustomMessages](globals.md#const-usecustommessages)
@@ -190,6 +192,10 @@
 * [useInteractiveState](globals.md#const-useinteractivestate)
 * [useReportItem](globals.md#const-usereportitem)
 * [writeAttachment](globals.md#const-writeattachment)
+
+### Object literals
+
+* [DefaultAccessibilitySettings](globals.md#const-defaultaccessibilitysettings)
 
 ## Type aliases
 
@@ -1186,6 +1192,20 @@ Name | Type |
 
 ___
 
+### `Const` useAccessibility
+
+▸ **useAccessibility**(`props?`: undefined | object): *[IAccessibilitySettings](interfaces/iaccessibilitysettings.md)*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`props?` | undefined &#124; object |
+
+**Returns:** *[IAccessibilitySettings](interfaces/iaccessibilitysettings.md)*
+
+___
+
 ### `Const` useAuthoredState
 
 ▸ **useAuthoredState**‹**AuthoredState**›(): *object*
@@ -1321,3 +1341,17 @@ Name | Type |
 `params` | [WriteAttachmentParams](globals.md#writeattachmentparams) |
 
 **Returns:** *Promise‹Response›*
+
+## Object literals
+
+### `Const` DefaultAccessibilitySettings
+
+### ▪ **DefaultAccessibilitySettings**: *object*
+
+###  fontSize
+
+• **fontSize**: *string* = "normal"
+
+###  fontSizeInPx
+
+• **fontSizeInPx**: *number* = 16

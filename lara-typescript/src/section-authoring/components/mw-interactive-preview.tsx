@@ -14,7 +14,7 @@ export const MWInteractivePreview: React.FC<IMWInteractivePreviewProps> = ({
   }: IMWInteractivePreviewProps) => {
   const {
     aspectRatio, aspectRatioMethod, authoredState, id, interactiveItemId,
-    isHalfWidth, name, linkedInteractives, url
+    isHalfWidth, name, linkedInteractives, url, fontSize
    } = pageItem.data as IMWInteractiveData;
 
   const interactive = {
@@ -25,7 +25,8 @@ export const MWInteractivePreview: React.FC<IMWInteractivePreviewProps> = ({
     aspect_ratio_method: aspectRatioMethod,
     authored_state: authoredState,
     interactive_item_id: interactiveItemId,
-    linked_interactives: linkedInteractives
+    linked_interactives: linkedInteractives,
+    font_size: fontSize
   };
 
   const wrapperClasses = classNames("mwInteractive", {

@@ -51,6 +51,12 @@ module InteractiveRunHelper
     data['interactive-name'] = interactive.name
     data['linked-interactives'] = interactive.linked_interactives_list.to_json
 
+    # default to normal size unless set in activity
+    data['font-size'] = 'normal'
+    if run && run.activity && run.activity.font_size
+      data['font-size'] = run.activity.font_size
+    end
+
     opts = {
       :src => interactive.url,
       :data => data,

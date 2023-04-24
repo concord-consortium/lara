@@ -45682,7 +45682,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.useReportItem = exports.useAutoSetHeight = exports.useDecorateContent = exports.useCustomMessages = exports.useInitMessage = exports.useGlobalInteractiveState = exports.useAuthoredState = exports.useInteractiveState = void 0;
+exports.useAccessibility = exports.DefaultAccessibilitySettings = exports.useReportItem = exports.useAutoSetHeight = exports.useDecorateContent = exports.useCustomMessages = exports.useInitMessage = exports.useGlobalInteractiveState = exports.useAuthoredState = exports.useInteractiveState = void 0;
 var react_1 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 var resize_observer_polyfill_1 = __webpack_require__(/*! resize-observer-polyfill */ "./node_modules/resize-observer-polyfill/dist/ResizeObserver.es.js");
 var client = __webpack_require__(/*! ./api */ "./src/interactive-api-client/api.ts");
@@ -45835,6 +45835,36 @@ var useReportItem = function (_a) {
     }, []);
 };
 exports.useReportItem = useReportItem;
+exports.DefaultAccessibilitySettings = {
+    fontSize: "normal",
+    fontSizeInPx: 16
+};
+var useAccessibility = function (props) {
+    var _a = props || {}, updateHtmlFontSize = _a.updateHtmlFontSize, addBodyClass = _a.addBodyClass;
+    var initMessage = (0, exports.useInitMessage)();
+    var _b = (0, react_1.useState)(exports.DefaultAccessibilitySettings), accessibility = _b[0], setAccessibility = _b[1];
+    (0, react_1.useEffect)(function () {
+        if (initMessage && initMessage.mode === "runtime") {
+            var _accessibility = initMessage.accessibility || exports.DefaultAccessibilitySettings;
+            var fontSize = _accessibility.fontSize, fontSizeInPx = _accessibility.fontSizeInPx;
+            setAccessibility(_accessibility);
+            if (updateHtmlFontSize && (fontSizeInPx !== exports.DefaultAccessibilitySettings.fontSizeInPx)) {
+                var html = document.getElementsByTagName("html").item(0);
+                if (html) {
+                    html.style.fontSize = fontSizeInPx + "px";
+                }
+            }
+            if (addBodyClass) {
+                var body = document.getElementsByTagName("body").item(0);
+                if (body) {
+                    body.classList.add("font-size-" + fontSize.toLowerCase().replace(/\s/, "-"));
+                }
+            }
+        }
+    }, [initMessage, updateHtmlFontSize]);
+    return accessibility;
+};
+exports.useAccessibility = useAccessibility;
 
 
 /***/ }),

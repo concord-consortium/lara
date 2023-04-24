@@ -145,6 +145,7 @@ export interface IManagedInteractiveData {
   showDeleteDataButton: boolean;
   showInFeaturedQuestionReport: boolean;
   urlFragment: string;
+  fontSize: string;
 }
 
 export interface IMWInteractiveData {
@@ -173,6 +174,7 @@ export interface IMWInteractiveData {
   showDeleteDataButton: boolean;
   showInFeaturedQuestionReport: boolean;
   url: string;
+  fontSize: string;
 }
 
 type IApprovedScript = any;

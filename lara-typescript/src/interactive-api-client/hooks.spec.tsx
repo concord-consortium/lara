@@ -5,6 +5,7 @@ import { mockIFramePhone, MockPhone } from "../interactive-api-lara-host/mock-if
 import * as hooks from "./hooks";
 import * as iframePhone from "iframe-phone";
 import { getClient } from "./client";
+import { IAccessibilitySettings } from "./types";
 
 jest.mock("./in-frame", () => ({
   inIframe: () => true
@@ -295,5 +296,39 @@ describe("useReportItem", () => {
       content: request
     });
     expect(handler).toHaveBeenCalledWith(request);
+  });
+});
+
+describe("useAccessibility", () => {
+  it("returns the accessibility settings from the initMessage", async () => {
+    const accessibility: IAccessibilitySettings = {
+      fontSize: "large",
+      fontSizeInPx: 22
+    };
+
+    const { waitForNextUpdate } = renderHook(() => hooks.useInitMessage());
+    const { result } = renderHook(() => hooks.useAccessibility({
+      updateHtmlFontSize: true,
+      addBodyClass: true,
+    }));
+
+    setTimeout(() => {
+      mockedPhone.fakeServerMessage({
+        type: "initInteractive",
+        content: { mode: "runtime", accessibility }
+      });
+    }, 10);
+
+    // html and body should not have font updates yet
+    expect(document.getElementsByTagName("html").item(0)?.style.getPropertyValue("font-size")).toEqual("");
+    expect(document.getElementsByTagName("body").item(0)?.classList.toString()).toBe("");
+
+    await waitForNextUpdate();
+    expect(result.current).toEqual(accessibility);
+
+    // html and body should now have font updates
+    expect(document.getElementsByTagName("html").item(0)?.style.getPropertyValue("font-size")).toEqual("22px");
+    expect(document.getElementsByTagName("body").item(0)?.classList.toString()).toBe("font-size-large");
+
   });
 });

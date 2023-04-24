@@ -40,7 +40,8 @@ export const PluginAuthoring: React.FC<PluginAuthoringProps> = (
     aspect_ratio_method: wrappedItem?.data.customAspectRatioMethod ? wrappedItem?.data.customAspectRatioMethod : "",
     authored_state: wrappedItem?.data.authoredState,
     interactive_item_id: wrappedItem?.data.interactiveItemId,
-    linked_interactives: wrappedItem?.data.linkedInteractives
+    linked_interactives: wrappedItem?.data.linkedInteractives,
+    font_size: wrappedItem?.data.fontSize,
   } : undefined;
   const wrappedEmbeddable: IEmbeddableContextOptions | null = wrappedItem?.data && wrappedDiv.current !== null
     ?  {
