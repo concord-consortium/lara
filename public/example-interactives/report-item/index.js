@@ -37030,18 +37030,24 @@ exports.DefaultAccessibilitySettings = {
     fontSizeInPx: 16
 };
 var useAccessibility = function (props) {
-    var updateHtmlFontSize = (props || {}).updateHtmlFontSize;
+    var _a = props || {}, updateHtmlFontSize = _a.updateHtmlFontSize, addBodyClass = _a.addBodyClass;
     var initMessage = (0, exports.useInitMessage)();
-    var _a = (0, react_1.useState)(exports.DefaultAccessibilitySettings), accessibility = _a[0], setAccessibility = _a[1];
+    var _b = (0, react_1.useState)(exports.DefaultAccessibilitySettings), accessibility = _b[0], setAccessibility = _b[1];
     (0, react_1.useEffect)(function () {
         if (initMessage && initMessage.mode === "runtime") {
             var _accessibility = initMessage.accessibility || exports.DefaultAccessibilitySettings;
-            var fontSizeInPx = _accessibility.fontSizeInPx;
+            var fontSize = _accessibility.fontSize, fontSizeInPx = _accessibility.fontSizeInPx;
             setAccessibility(_accessibility);
             if (updateHtmlFontSize && (fontSizeInPx !== exports.DefaultAccessibilitySettings.fontSizeInPx)) {
                 var html = document.getElementsByTagName("html").item(0);
                 if (html) {
                     html.style.fontSize = fontSizeInPx + "px";
+                }
+            }
+            if (addBodyClass) {
+                var body = document.getElementsByTagName("body").item(0);
+                if (body) {
+                    body.classList.add("font-size-" + fontSize.toLowerCase().replace(/\s/, "-"));
                 }
             }
         }

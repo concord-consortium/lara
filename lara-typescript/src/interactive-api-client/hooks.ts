@@ -182,15 +182,15 @@ export const DefaultAccessibilitySettings: IAccessibilitySettings = {
   fontSizeInPx: 16
 };
 
-export const useAccessibility = (props?: {updateHtmlFontSize?: boolean}) => {
-  const {updateHtmlFontSize} = props || {};
+export const useAccessibility = (props?: {updateHtmlFontSize?: boolean, addBodyClass?: boolean}) => {
+  const {updateHtmlFontSize, addBodyClass} = props || {};
   const initMessage = useInitMessage();
   const [accessibility, setAccessibility] = useState<IAccessibilitySettings>(DefaultAccessibilitySettings);
 
   useEffect(() => {
     if (initMessage && initMessage.mode === "runtime") {
       const _accessibility = initMessage.accessibility || DefaultAccessibilitySettings;
-      const {fontSizeInPx} = _accessibility;
+      const {fontSize, fontSizeInPx} = _accessibility;
 
       setAccessibility(_accessibility);
 
@@ -198,6 +198,13 @@ export const useAccessibility = (props?: {updateHtmlFontSize?: boolean}) => {
         const html = document.getElementsByTagName("html").item(0);
         if (html) {
           html.style.fontSize = `${fontSizeInPx}px`;
+        }
+      }
+
+      if (addBodyClass) {
+        const body = document.getElementsByTagName("body").item(0);
+        if (body) {
+          body.classList.add(`font-size-${fontSize.toLowerCase().replace(/\s/, "-")}`);
         }
       }
     }
