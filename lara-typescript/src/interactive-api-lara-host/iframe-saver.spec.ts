@@ -74,6 +74,7 @@ describe("IFrameSaver", () => {
               data-user-email="user@example.com"
               data-loggedin="true"
               data-linked-interactives='{"1":{"label":"one"}}'
+              data-font-size="normal"
           >
           </div>
           <button class="delete_interactive_data">Clear & start over</button>
@@ -217,6 +218,10 @@ describe("IFrameSaver", () => {
               contentType: "text/plain",
             },
           },
+          accessibility: {
+            fontSize: "normal",
+            fontSizeInPx: 16,
+          },
         });
       });
 
@@ -265,7 +270,11 @@ describe("IFrameSaver", () => {
               colorB: "green"
             }
           },
-          attachments: {}
+          attachments: {},
+          accessibility: {
+            fontSize: "normal",
+            fontSizeInPx: 16,
+          }
         });
       });
     });
