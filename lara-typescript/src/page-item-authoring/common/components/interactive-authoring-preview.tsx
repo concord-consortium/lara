@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useEffect, useRef, useState } from "react";
 import { InteractiveIframe } from "./interactive-iframe";
-import { IInitInteractive } from "../../../interactive-api-client";
+import { DefaultAccessibilitySettings, IInitInteractive } from "../../../interactive-api-client";
 import { pxForFontSize } from "../../../shared/accessibility";
 
 export interface IPreviewInteractive {
@@ -45,6 +45,13 @@ export const InteractiveAuthoringPreview: React.FC<Props> = ({interactive, user}
     }
   }, [interactive]);
 
+  // Hack for now.  The interactive.font_size is always undefined for now as the embeddable to_hash
+  // Ruby method does not include it as it is a property of the top level activity or sequence.
+  // This may be the way we wish to keep it (defaulting to normal) so that the editing experience
+  // does not need to be tested for the large font setting.
+  const fontSize = interactive.font_size || DefaultAccessibilitySettings.fontSize;
+  const fontSizeInPx = pxForFontSize(fontSize);
+
   const initMsg: IInitInteractive = {
     version: 1,
     error: null,
@@ -78,8 +85,8 @@ export const InteractiveAuthoringPreview: React.FC<Props> = ({interactive, user}
     },
     attachments: {},
     accessibility: {
-      fontSize: interactive.font_size,
-      fontSizeInPx: pxForFontSize(interactive.font_size)
+      fontSize,
+      fontSizeInPx
     }
   };
 
