@@ -36,6 +36,7 @@
 .field
   = f.label :font_size, "Font Size"
   = f.select :font_size, options_for_select(LightweightActivity::FONT_SIZE_OPTIONS, @activity.font_size)
+  .hint Note: some interactives may not respond to font size settings.
 .field
   = f.label :glossary_id, 'Glossary'
   = f.select :glossary_id, glossary_options_for_select(@activity, current_user), { :include_blank => "None" }
