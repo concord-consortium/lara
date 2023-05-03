@@ -28,24 +28,25 @@
       = f.label :hide_read_aloud,  "Hide Read-Aloud Toggle"
       .hint Check this box if you do not want the "Tap text to listen" toggle to appear on activities in this sequence.
     .field
-      = f.label :fixed_width_layout, 'Activity Page Fixed Width Layout'
+      = f.label :fixed_width_layout, 'Activity Page Fixed Width'
       = f.select :fixed_width_layout, options_for_select(LightweightActivity::FIXED_WIDTH_LAYOUT_OPTIONS, @sequence.fixed_width_layout)
+      .hint This will override the "Activity Page Fixed Width" setting for any activities in this sequence.
     .field
       = f.label :background_image, 'Activity Page Background Image URL'
       = f.text_field :background_image, :id => "sequence_background_image"
-      .hint Specify the full URL of a background image file.
+      .hint Specify the full URL of a background image file. This will override the "Activity Page Background Image URL" setting for any activities in this sequence.
     .field
       = f.label :font_size, "Font Size"
       = f.select :font_size, options_for_select(Sequence::FONT_SIZE_OPTIONS, @sequence.font_size)
-      .hint This will override the font size setting for any activities in this sequence.
+      .hint This will override the "Font Size" setting for any activities in this sequence. Note: some interactives may not respond to font size settings.
     .field
       = f.label :project_id, "Project"
       = f.select :project_id, options_from_collection_for_select(Project.all, 'id', 'title', @sequence.project_id), { :include_blank => true }
     .field
-      = f.label :thumbnail_url, "Sequence Preview Image URL"
+      = f.label :thumbnail_url, "Sequence Thumbnail Image URL"
       = f.text_field :thumbnail_url, :class => "thumbnail_source", :id => "sequence_thumbnail_source"
       .thumbnail_info.hint
-        Preview image should be 1460 pixels wide by 800 pixels high.
+        Thumbnail image should be 1460 pixels wide by 800 pixels high.
         %a#toggle_thumbnail_preview
           [preview]
         .activity_thumbnail#thumbnail_preview
