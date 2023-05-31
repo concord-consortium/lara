@@ -6,9 +6,11 @@ class LightweightActivity < ActiveRecord::Base
 
   LAYOUT_MULTI_PAGE = 0
   LAYOUT_SINGLE_PAGE = 1
+  LAYOUT_NOTEBOOK = 2
   LAYOUT_OPTIONS = [
     ['Multi-page', LAYOUT_MULTI_PAGE],
-    ['Single-page', LAYOUT_SINGLE_PAGE]
+    ['Single-page', LAYOUT_SINGLE_PAGE],
+    ['Notebook', LAYOUT_NOTEBOOK]
   ]
   STANDARD_EDITOR_MODE = 0
   ITSI_EDITOR_MODE = 1
