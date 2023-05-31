@@ -376,6 +376,15 @@ describe LightweightActivity do
       end
     end
 
+    describe "for notebook activities" do
+      let(:layout)    { LightweightActivity::LAYOUT_NOTEBOOK }
+
+      it "should the notebook layout" do
+        dup = activity.duplicate(owner)
+        expect(dup.layout).to eq LightweightActivity::LAYOUT_NOTEBOOK
+      end
+    end
+
     it 'has pages in the same order as the source activity' do
       5.times do
         activity.pages << FactoryGirl.create(:page)
