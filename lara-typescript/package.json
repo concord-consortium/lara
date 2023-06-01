@@ -12,6 +12,7 @@
     "publish:interactive-api-host:beta": "npm run build && cd dist/interactive-api-host && npm publish --tag beta --access public",
     "publish:interactive-api-host:yalc": "npm run build && cd dist/interactive-api-host && npx yalc publish",
     "build": "npm-run-all lint:build clean build:webpack build:types build:docs",
+    "build:dev": "npm-run-all lint:build build:webpack",
     "build:webpack": "webpack --devtool false && npm run build:copy-to-rails",
     "build:webpack:no-copy-to-rails": "webpack --devtool false",
     "build:types": "rollup -c",

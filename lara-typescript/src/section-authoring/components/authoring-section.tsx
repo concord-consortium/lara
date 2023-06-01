@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { DraggableProvided } from "react-beautiful-dnd";
 import classNames from "classnames";
 import { GripLines } from "../../shared/components/icons/grip-lines";
@@ -8,6 +8,7 @@ import { ICreatePageItem, ISection, SectionColumns, SectionLayouts } from "../ap
 import { UserInterfaceContext } from "../containers/user-interface-provider";
 import { usePageAPI } from "../hooks/use-api-provider";
 import { changeLayout } from "../util/change-layout-utils";
+import { sectionName } from "../util/sections";
 
 import "./authoring-section.scss";
 
@@ -30,6 +31,54 @@ const classNameForItem = (_layout: SectionLayouts, itemIndex: number) => {
   const layouts = layoutClassNames[layout];
   const classNameIndex = itemIndex % layouts.length;
   return layoutClassNames[layout][classNameIndex];
+};
+
+interface ISectionNameProps {
+  name?: string;
+  position?: number;
+  title?: string;
+  onSave: (newName: string) => void;
+}
+
+const SectionName: React.FC<ISectionNameProps> = ({position, title, name, onSave}) => {
+  const [editing, setEditing] = useState(false);
+  const inputRef = useRef<HTMLInputElement|null>(null);
+
+  useEffect(() => {
+    if (editing) {
+      inputRef.current?.focus();
+    }
+  }, [editing]);
+
+  const toggleEditing = () => setEditing(prev => !prev);
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    handleSave();
+  };
+  const handleSave = () => {
+    // allow for empty name saves to revert to section numbering
+    onSave((inputRef.current?.value || "").trim());
+    toggleEditing();
+  };
+
+  if (editing) {
+    return (
+      <div className="sectionName">
+        <form onSubmit={handleSubmit}>
+          <input type="text" ref={inputRef} placeholder="Section name..." defaultValue={name} />
+          <button className="seperator" type="submit" onClick={handleSave}>Save</button>
+          <button onClick={toggleEditing}>Cancel</button>
+        </form>
+      </div>
+    );
+  }
+
+  return (
+    <div className="sectionName">
+      <h3>{sectionName({position, title, name})}</h3>
+      <button onClick={toggleEditing}>Edit</button>
+    </div>
+  );
 };
 
 export interface ISectionProps extends ISection {
@@ -74,6 +123,7 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
   position,
   collapsed: initCollapsed = false,
   title,
+  name,
   show: initShow = true,
   moveItemFunction,
   editItemFunction,
@@ -100,6 +150,17 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
       const updatedSection = changeLayout({id, layout: newLayout, page});
       if (updatedSection) {
         updateSection.mutate({pageId: page.id, changes: {section: updatedSection}});
+      }
+    }
+  };
+
+  const handleSaveSectionName = (newName: string) => {
+    const page = currentPage;
+    const section = page?.sections.find(s => s.id === id);
+    if (section) {
+      section.name = newName;
+      if (page) {
+        updateSection.mutate({pageId: page.id, changes: {section}});
       }
     }
   };
@@ -223,7 +284,12 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
           <span className="sectionDragHandle" {...draggableProvided?.dragHandleProps}>
             <GripLines  />
           </span>
-          <h3>Section {position}{title ? " " + title : ""}</h3>
+          <SectionName
+            name={name}
+            title={title}
+            position={position}
+            onSave={handleSaveSectionName}
+           />
           <label htmlFor="section_layout">Layout: </label>
           <select
             id="section_layout"

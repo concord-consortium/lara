@@ -8,6 +8,7 @@ import { usePageAPI } from "../hooks/use-api-provider";
 import { UserInterfaceContext } from "../containers/user-interface-provider";
 import { RelativeLocation } from "../util/move-utils";
 import { useDestinationChooser } from "../hooks/use-destination-chooser";
+import { sectionNumber } from "../util/sections";
 
 import "./section-item-move-dialog.scss";
 
@@ -115,7 +116,7 @@ export const SectionItemMoveDialog: React.FC = () => {
                 <option value="">Select ...</option>
                 {
                   sections.map((s) => {
-                    return <option key={`section-option-${s.id}`} value={s.id}>{s.position}</option>;
+                    return <option key={`section-option-${s.id}`} value={s.id}>{sectionNumber(s)}</option>;
                     })
                 }
               </select>

@@ -237,6 +237,8 @@ export interface ISection {
    * Should the section be shown in runtime?
    */
   show?: boolean;
+
+  name?: string;
 }
 
 export interface IPage {
