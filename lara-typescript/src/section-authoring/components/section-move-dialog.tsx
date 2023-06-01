@@ -7,6 +7,7 @@ import { usePageAPI } from "../hooks/use-api-provider";
 import { UserInterfaceContext } from "../containers/user-interface-provider";
 import { ISectionDestination } from "../util/move-utils";
 import { useDestinationChooser } from "../hooks/use-destination-chooser";
+import { sectionName } from "../util/sections";
 
 import "./section-move-dialog.scss";
 
@@ -43,7 +44,7 @@ export const SectionMoveDialog: React.FC = () => {
     }
     return sectionsList?.map((s) => (
       <option key={s.id} value={`${s.id}`}>
-        Section {`${s.position} ${s.title ? s.title : ""}`}
+        {sectionName(s)}
       </option>
     ));
   };
@@ -51,7 +52,10 @@ export const SectionMoveDialog: React.FC = () => {
   const movingSectionPosition = () => {
     const currentPageSections = currentPage && currentPage.sections;
     const sectionToMove =  currentPageSections && currentPageSections.find(s => s.id === movingSectionId);
-    return sectionToMove?.position;
+    if (sectionToMove?.name) {
+      return sectionToMove.name;
+    }
+    return `section ${sectionToMove?.position}`;
   };
 
   const modalButtons = [
@@ -61,7 +65,7 @@ export const SectionMoveDialog: React.FC = () => {
 
   if (movingSectionId) {
     return (
-      <Modal title={`Move section ${movingSectionPosition()} to...`}
+      <Modal title={`Move ${movingSectionPosition()} to...`}
         visibility={true} width={600} closeFunction={handleCloseDialog}>
         <div className="sectionMoveDialog">
           <dl>
