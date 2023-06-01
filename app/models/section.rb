@@ -1,5 +1,5 @@
 class Section < ActiveRecord::Base
-  attr_accessible :title, :position, :show, :layout, :interactive_page, :interactive_page_id, :can_collapse_small
+  attr_accessible :title, :position, :show, :layout, :interactive_page, :interactive_page_id, :can_collapse_small, :name
   acts_as_list scope: :interactive_page
 
   belongs_to :interactive_page
@@ -32,6 +32,7 @@ class Section < ActiveRecord::Base
 
   DEFAULT_PARAMS = {
     title: DEFAULT_SECTION_TITLE,
+    name: nil,
     show: true,
     layout: LAYOUT_DFEAULT,
     can_collapse_small: false
@@ -52,6 +53,7 @@ class Section < ActiveRecord::Base
   def to_hash
     {
       title: title,
+      name: name,
       show: show,
       layout: layout,
       position: position,
@@ -64,6 +66,7 @@ class Section < ActiveRecord::Base
     helper = LaraSerializationHelper.new
     {
       title: title,
+      name: name,
       is_hidden: !show,
       layout: layout,
       secondary_column_collapsible: can_collapse_small,
@@ -121,7 +124,7 @@ class Section < ActiveRecord::Base
           embed.primary_linked_items.each do |pli|
             primary = helper.get_copy(embed)
             secondary = helper.get_copy(pli.secondary.embeddable)
-            # If the secondary embeddable is in a different section, it won't be copied. So in that 
+            # If the secondary embeddable is in a different section, it won't be copied. So in that
             # case, the new primary embeddable references the original secondary embeddable.
             secondary_page_item = secondary.page_item ? secondary.page_item : pli.secondary.embeddable.page_item
             if primary && secondary_page_item

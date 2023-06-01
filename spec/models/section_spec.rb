@@ -18,6 +18,7 @@ describe Section do
       end
       it "should have default properties" do
         expect(section.title).to eql(Section::DEFAULT_SECTION_TITLE)
+        expect(section.name).to eql(nil)
         expect(section.layout).to eql(Section::LAYOUT_DFEAULT)
         expect(section.show).to eq(true)
         expect(section.can_collapse_small).to eq(false)
@@ -67,6 +68,7 @@ describe Section do
 
     it "should create a copy of itself" do
       expect(copy.title).to eql(original.title)
+      expect(copy.name).to eql(original.name)
       expect(copy.layout).to eql(original.layout)
       expect(copy.can_collapse_small).to eql(original.can_collapse_small)
       expect(copy.show).to eql(original.show)
