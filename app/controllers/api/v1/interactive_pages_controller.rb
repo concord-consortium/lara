@@ -487,6 +487,7 @@ class Api::V1::InteractivePagesController < API::APIController
       id: section.id.to_s,
       items: section.page_items.map { |pi| generate_item_json(pi) },
       layout: section.layout,
+      name: section.name,
       position: section.position,
       show: section.show
     }

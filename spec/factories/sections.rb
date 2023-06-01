@@ -2,6 +2,7 @@ FactoryGirl.define do
 
   factory :section, class: Section do
     title  { Faker::Lorem.sentence(3) }
+    name  { Faker::Lorem.sentence(2) }
     layout { Section::DEFAULT_SECTION_TITLE }
     show   { true }
     can_collapse_small { true }

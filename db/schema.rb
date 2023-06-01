@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20230418213435) do
+ActiveRecord::Schema.define(:version => 20230601143258) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "kind"
@@ -693,6 +693,7 @@ ActiveRecord::Schema.define(:version => 20230418213435) do
     t.boolean  "can_collapse_small"
     t.datetime "created_at",          :null => false
     t.datetime "updated_at",          :null => false
+    t.string   "name"
   end
 
   add_index "sections", ["interactive_page_id", "position"], :name => "index_sections_on_interactive_page_id_and_position"
