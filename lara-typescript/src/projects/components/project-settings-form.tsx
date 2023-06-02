@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
 import { SlateContainer, slateToHtml, htmlToSlate } from "@concord-consortium/slate-editor";
-import { IProject, IProjectTheme } from "../types";
+import { IProject } from "../types";
 import { camelToSnakeCaseKeys, snakeToCamelCaseKeys } from "../../shared/convert-keys";
 
 import "@concord-consortium/slate-editor/build/index.css";
@@ -25,7 +25,6 @@ export const ProjectSettingsForm: React.FC<IProjectSettingsFormProps> = ({id}: I
     logoLara: "",
     logoAp: "",
     projectKey: "",
-    themeId: undefined,
     title: "",
     url: ""
   };
@@ -39,7 +38,6 @@ export const ProjectSettingsForm: React.FC<IProjectSettingsFormProps> = ({id}: I
   const [projectLoaded, setProjectLoaded] = useState(false);
   const [isNewProject, setIsNewProject] = useState(false);
   const [projectSaved, setProjectSaved] = useState(false);
-  const [themeList, setThemeList] = useState<IProjectTheme[]>([]);
 
   useEffect(() => {
     if (id) {
@@ -48,10 +46,6 @@ export const ProjectSettingsForm: React.FC<IProjectSettingsFormProps> = ({id}: I
       setIsNewProject(true);
     }
   }, [projectSaved]);
-
-  useEffect(() => {
-    getThemes();
-  }, []);
 
   useEffect(() => {
     setAboutValue(htmlToSlate(project.about || ""));
@@ -77,22 +71,6 @@ export const ProjectSettingsForm: React.FC<IProjectSettingsFormProps> = ({id}: I
     setProject(snakeToCamelCaseKeys(data.project));
     setProjectLoaded(true);
     setPageTitle(`Edit ${data.project.title}`);
-  };
-
-  const getThemes = async () => {
-    const apiUrl = "/api/v1/themes";
-    const data = await fetch(apiUrl, {
-      method: "GET",
-      headers: {"Content-Type": "application/json"},
-      credentials: "include"
-    })
-    .then(response => response.json())
-    .catch(error => {
-      setAlertMessage(error);
-    });
-
-    const themes = data.themes.map((t: any) => ({id: t.id, name: t.name}));
-    setThemeList(themes);
   };
 
   const generateProjectKey = (title: string) => {
@@ -129,12 +107,6 @@ export const ProjectSettingsForm: React.FC<IProjectSettingsFormProps> = ({id}: I
     };
   };
 
-  const handleSelectMenuChange = (key: string) => {
-    return (e: React.ChangeEvent<HTMLSelectElement>) => {
-      setProject({...project, [key]: e.target.value});
-    };
-  };
-
   const handleCollaboratorsImageUrlChange = handleTextInputChange("collaboratorsImageUrl");
   const handleContactEmailChange = handleTextInputChange("contactEmail");
   const handleCopyrightImageUrlChange = handleTextInputChange("copyrightImageUrl");
@@ -143,7 +115,6 @@ export const ProjectSettingsForm: React.FC<IProjectSettingsFormProps> = ({id}: I
   const handleKeyChange = handleTextInputChange("projectKey");
   const handleLogoApChange = handleTextInputChange("logoAp");
   const handleLogoLaraChange = handleTextInputChange("logoLara");
-  const handleThemeChange = handleSelectMenuChange("themeId");
   const handleTitleChange = handleTextInputChange("title");
   const handleUrlChange = handleTextInputChange("url");
   const handleAboutChange = handleSlateRteChange("about", setAboutValue);
@@ -369,28 +340,6 @@ export const ProjectSettingsForm: React.FC<IProjectSettingsFormProps> = ({id}: I
         <dd className="inputNote">
           Provide a valid email address for users to contact your project team. When this is provided,
           your contact email will be displayed in the footer.
-        </dd>
-        <dt>
-          <label htmlFor="project-theme-id">LARA Runtime Default Theme</label>
-        </dt>
-        <dd className="hasNote">
-          <select
-            id="project-theme-id"
-            name="project[theme_id]"
-            value={project.themeId}
-            defaultValue={project.themeId}
-            onChange={handleThemeChange}
-          >
-            {themeList.map(theme => (
-              <option key={`theme-${theme.id}`} value={theme.id}>
-                {theme.name}
-              </option>
-            ))}
-          </select>
-        </dd>
-        <dd className="inputNote">
-          When LARA Runtime is the selected Runtime Environment, activities will use this theme by
-          default. Themes can be changed in the activity settings.
         </dd>
       </dl>
       <button id="save-button" onClick={handleSaveProject}>Save</button>
