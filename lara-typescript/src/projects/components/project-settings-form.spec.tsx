@@ -25,14 +25,9 @@ describe("ProjectSettingsForm", () => {
     logoLara: "",
     logoAp: "",
     projectKey: project1Key,
-    themeId: undefined,
     title: project1Title,
     url: project1Url
   };
-  const themes = [
-    {id: 1, name: "Test Theme 1"},
-    {id: 2, name: "Test Theme 2"}
-  ];
   let container: HTMLDivElement;
 
   beforeEach(() => {
@@ -63,7 +58,7 @@ describe("ProjectSettingsForm", () => {
   });
 
   it("renders a form with options for project settings", async () => {
-    fetch.mockResponse(JSON.stringify({project, themes}));
+    fetch.mockResponse(JSON.stringify({project}));
     await act(async () => {
       ReactDOM.render(<ProjectSettingsForm id={project1Id} />, container);
     });
@@ -76,10 +71,9 @@ describe("ProjectSettingsForm", () => {
     const keyInput = container.querySelector("#project-key") as HTMLInputElement;
     const logoApInput = container.querySelector("#project-logo-ap") as HTMLInputElement;
     const logoLaraInput = container.querySelector("#project-logo-lara") as HTMLInputElement;
-    const themeSelect = container.querySelector("#project-theme-id") as HTMLSelectElement;
     const titleInput = container.querySelector("#project-title") as HTMLInputElement;
     const urlInput = container.querySelector("#project-url") as HTMLInputElement;
-    expect(fetch).toHaveBeenCalledTimes(2);
+    expect(fetch).toHaveBeenCalledTimes(1);
     expect(pageHeading.textContent).toBe(`Edit ${project1Title}`);
     expect(collaboratorsImageUrlInput).toBeTruthy();
     expect(contactEmailInput).toBeTruthy();
@@ -89,7 +83,6 @@ describe("ProjectSettingsForm", () => {
     expect(keyInput.defaultValue).toBe(project1Key);
     expect(logoApInput).toBeTruthy();
     expect(logoLaraInput).toBeTruthy();
-    expect(themeSelect).toBeTruthy();
     expect(titleInput).toBeTruthy();
     expect(titleInput.defaultValue).toBe(project1Title);
     expect(urlInput).toBeTruthy();
@@ -97,7 +90,7 @@ describe("ProjectSettingsForm", () => {
   });
 
   it("saves changes to project settings", async () => {
-    fetch.mockResponse(JSON.stringify({project, themes}));
+    fetch.mockResponse(JSON.stringify({project}));
     await act(async () => {
       ReactDOM.render(<ProjectSettingsForm id={project1Id} />, container);
     });
@@ -105,21 +98,20 @@ describe("ProjectSettingsForm", () => {
     const urlInput = container.querySelector("#project-url") as HTMLInputElement;
     const saveButton = container.querySelector("#save-button") as HTMLButtonElement;
     const updatedProject = {...project, title: "Test Project A", url: "https://concord.org/new-path"};
-    fetch.mockResponse(JSON.stringify({project: updatedProject, themes, success: true}));
+    fetch.mockResponse(JSON.stringify({project: updatedProject, success: true}));
     await act(async () => {
       fireEvent.change(titleInput, { target: { value: "Test Project A"} });
       fireEvent.change(urlInput, { target: { value: "https://concord.org/new-path"} });
       saveButton.dispatchEvent(new MouseEvent("click", {bubbles: true}));
     });
     const alertMessage = container.querySelector(".alertMessage") as HTMLDivElement;
-    expect(fetch).toHaveBeenCalledTimes(4);
+    expect(fetch).toHaveBeenCalledTimes(3);
     expect(alertMessage.textContent).toBe("Project saved.");
     expect(titleInput.defaultValue).toBe("Test Project A");
     expect(urlInput.defaultValue).toBe("https://concord.org/new-path");
   });
 
   it("generates a project key automatically for new projects", async () => {
-    fetch.mockResponseOnce(JSON.stringify({themes}));
     await act(async () => {
       ReactDOM.render(<ProjectSettingsForm id={null} />, container);
     });
@@ -131,12 +123,11 @@ describe("ProjectSettingsForm", () => {
       fireEvent.blur(titleInput);
       fireEvent.focus(keyInput);
     });
-    expect(fetch).toHaveBeenCalledTimes(1);
     expect(keyInput.defaultValue).toBe("new-project-title");
   });
 
   it("saves new project and redirects", async () => {
-    fetch.mockResponse(JSON.stringify({themes, success: true}));
+    fetch.mockResponse(JSON.stringify({success: true}));
     await act(async () => {
       ReactDOM.render(<ProjectSettingsForm id={null} />, container);
     });
@@ -147,7 +138,7 @@ describe("ProjectSettingsForm", () => {
       fireEvent.blur(titleInput);
       saveButton.dispatchEvent(new MouseEvent("click", {bubbles: true}));
     });
-    expect(fetch).toHaveBeenCalledTimes(2);
+    expect(fetch).toHaveBeenCalledTimes(1);
     // when saving a new project is successful, the page redirects to the main projects list
     expect(global.location.assign).toHaveBeenCalledTimes(1);
   });
