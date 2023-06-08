@@ -1981,7 +1981,7 @@ select {
   display: flex;
   align-items: center;
   margin: 0 10px;
-  min-width: 230px;
+  width: 230px;
 }
 .sectionMenu .menuStart .sectionName form {
   display: flex;
@@ -1995,6 +1995,8 @@ select {
   display: inline;
   margin: 0 5px 0 0;
   white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 .sectionMenu .menuStart .sectionName button {
   background: transparent;
