@@ -1,6 +1,7 @@
 require File.expand_path('../boot', __FILE__)
 
 require 'rails/all'
+require_relative '../lib/middleware/inject_origin_header_middleware'
 
 if defined?(Bundler)
   # If you precompile assets before deploying to production, use this line
@@ -82,6 +83,10 @@ module LightweightStandalone
         resource '/image-proxy', :headers => :any, :methods => [:get, :options]
       end
     end
+
+    # Force Rack::Cors to always return Access-Control-Allow-Origin by injecting Origin header if it's missing.
+    # It's useful for image-proxy and image caching.
+    config.middleware.insert_before "Rack::Cors", InjectOriginHeaderMiddleware
 
     # Add a middlewere to log more info about the response
     config.middleware.insert_before 0, "Rack::ResponseLogger"
