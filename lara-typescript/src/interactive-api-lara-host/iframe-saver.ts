@@ -7,7 +7,7 @@ import {
   handleGetAttachmentUrl, ClientMessage, IAnswerMetadataWithAttachmentsInfo, IAttachmentUrlRequest, IGetAuthInfoRequest,
   IGetAuthInfoResponse, IGetFirebaseJwtRequest, IGetFirebaseJwtResponse, IGetInteractiveSnapshotRequest,
   IGetInteractiveSnapshotResponse, IHintRequest, IInitInteractive, IInteractiveStateProps, ILinkedInteractive,
-  INavigationOptions, initializeAttachmentsManager, ISupportedFeaturesRequest, ServerMessage
+  INavigationOptions, initializeAttachmentsManager, ISupportedFeaturesRequest, ServerMessage, IMediaLibrary
 } from "../interactive-api-host";
 import { answerMetadataToAttachmentInfoMap } from "../interactive-api-host/attachments-api/helpers";
 import { pxForFontSize } from "../shared/accessibility";
@@ -150,6 +150,7 @@ export class IFrameSaver {
   private successCallback: SuccessCallback | null | undefined;
   private plugins: IFrameSaverPluginApi[];
   private linkedInteractives: ILinkedInteractive[];
+  private mediaLibrary: IMediaLibrary;
 
   constructor($iframe: JQuery, $dataDiv: JQuery, $deleteButton: JQuery) {
     this.$iframe = $iframe;
@@ -169,6 +170,12 @@ export class IFrameSaver {
     this.runRemoteEndpoint = $dataDiv.data("run-remote-endpoint");
     this.fontSize = $dataDiv.data("font-size");
     this.linkedInteractives = getLinkedInteractives($dataDiv);
+
+    // the media library is not filled in by default by Lara, but is in AP
+    this.mediaLibrary = {
+      enabled: false,
+      items: []
+    };
 
     this.saveIndicator = SaveIndicator.instance();
 
@@ -554,7 +561,8 @@ export class IFrameSaver {
       accessibility: {
         fontSize: this.fontSize,
         fontSizeInPx: pxForFontSize(this.fontSize)
-      }
+      },
+      mediaLibrary: this.mediaLibrary,
     };
 
     // Perhaps it would be nicer to keep `interactiveStateProps` in some separate property instead of mixing

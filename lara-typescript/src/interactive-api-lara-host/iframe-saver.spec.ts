@@ -222,6 +222,10 @@ describe("IFrameSaver", () => {
             fontSize: "normal",
             fontSizeInPx: 16,
           },
+          mediaLibrary: {
+            enabled: false,
+            items: []
+          },
         });
       });
 
@@ -274,7 +278,11 @@ describe("IFrameSaver", () => {
           accessibility: {
             fontSize: "normal",
             fontSizeInPx: 16,
-          }
+          },
+          mediaLibrary: {
+            enabled: false,
+            items: []
+          },
         });
       });
     });

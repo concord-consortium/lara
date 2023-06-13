@@ -87,7 +87,11 @@ export const InteractiveAuthoringPreview: React.FC<Props> = ({interactive, user}
     accessibility: {
       fontSize,
       fontSizeInPx
-    }
+    },
+    mediaLibrary: {
+      enabled: false,
+      items: []
+    },
   };
 
   return (
