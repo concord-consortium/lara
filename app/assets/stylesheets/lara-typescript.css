@@ -1337,7 +1337,11 @@
   font-weight: 700;
   line-height: 1;
   margin: 0;
-  padding: 0;
+  padding: 0 5px 0 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  padding-right: 5px;
 }
 .modalContainer .modalBody header .modalClose {
   align-self: center;
