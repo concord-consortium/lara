@@ -76,6 +76,7 @@ export interface IRuntimeInitInteractive<InteractiveState = {}, AuthoredState = 
   themeInfo: IThemeInfo;
   attachments?: AttachmentInfoMap;
   accessibility: IAccessibilitySettings;
+  mediaLibrary: IMediaLibrary;
 }
 
 export interface IThemeInfo {
@@ -581,3 +582,27 @@ export interface IGetInteractiveState {
   unloading?: boolean;  // set to true to tell the interactive it is getting the final state
 }
 export type OnUnloadFunction<InteractiveState = {}> = (options: IGetInteractiveState) => Promise<InteractiveState>;
+
+/**
+ * Type of the exported media library items found in the activity or sequence.  Initially this will just
+ * be "image" but could be extended in the future to "video" or "audio".  The exact mime type would be
+ * preferable but that is not always detectable from the exported media library urls.
+ */
+export type IMediaLibraryItemType = "image";
+
+/**
+ * Interface for the exported media library items found in the activity or sequence.
+ */
+export interface IMediaLibraryItem {
+  url: string;
+  type: IMediaLibraryItemType;
+  caption?: string;
+}
+
+/**
+ * Interface for the media library.
+ */
+export interface IMediaLibrary {
+  enabled: boolean;
+  items: IMediaLibraryItem[];
+}

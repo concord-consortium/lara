@@ -39,6 +39,7 @@
 * [interactiveStateUrl](iruntimeinitinteractive.md#interactivestateurl)
 * [linkedInteractives](iruntimeinitinteractive.md#linkedinteractives)
 * [linkedState](iruntimeinitinteractive.md#optional-linkedstate)
+* [mediaLibrary](iruntimeinitinteractive.md#medialibrary)
 * [mode](iruntimeinitinteractive.md#mode)
 * [pageName](iruntimeinitinteractive.md#optional-pagename)
 * [pageNumber](iruntimeinitinteractive.md#optional-pagenumber)
@@ -194,6 +195,12 @@ ___
 • **linkedState**? : *undefined | object*
 
 *Inherited from [IInteractiveStateProps](iinteractivestateprops.md).[linkedState](iinteractivestateprops.md#optional-linkedstate)*
+
+___
+
+###  mediaLibrary
+
+• **mediaLibrary**: *[IMediaLibrary](imedialibrary.md)*
 
 ___
 

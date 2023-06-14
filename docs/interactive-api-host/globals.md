@@ -57,6 +57,8 @@
 * [ILibraryInteractiveListResponseItem](interfaces/ilibraryinteractivelistresponseitem.md)
 * [ILinkedInteractive](interfaces/ilinkedinteractive.md)
 * [ILinkedInteractiveStateResponse](interfaces/ilinkedinteractivestateresponse.md)
+* [IMediaLibrary](interfaces/imedialibrary.md)
+* [IMediaLibraryItem](interfaces/imedialibraryitem.md)
 * [INavigationOptions](interfaces/inavigationoptions.md)
 * [IPortalClaims](interfaces/iportalclaims.md)
 * [IReadableAttachmentInfo](interfaces/ireadableattachmentinfo.md)
@@ -102,6 +104,7 @@
 * [ICustomMessagesHandledMap](globals.md#icustommessageshandledmap)
 * [IGetReportItemAnswerHandler](globals.md#igetreportitemanswerhandler)
 * [IInitInteractive](globals.md#iinitinteractive)
+* [IMediaLibraryItemType](globals.md#imedialibraryitemtype)
 * [IReportItemAnswerItem](globals.md#ireportitemansweritem)
 * [IReportItemClientMessage](globals.md#ireportitemclientmessage)
 * [IReportItemServerMessage](globals.md#ireportitemservermessage)
@@ -236,6 +239,16 @@ ___
 ###  IInitInteractive
 
 Ƭ **IInitInteractive**: *[IRuntimeInitInteractive](interfaces/iruntimeinitinteractive.md)‹InteractiveState, AuthoredState, GlobalInteractiveState› | [IAuthoringInitInteractive](interfaces/iauthoringinitinteractive.md)‹AuthoredState› | [IReportInitInteractive](interfaces/ireportinitinteractive.md)‹InteractiveState, AuthoredState› | [IReportItemInitInteractive](interfaces/ireportiteminitinteractive.md)‹InteractiveState, AuthoredState›*
+
+___
+
+###  IMediaLibraryItemType
+
+Ƭ **IMediaLibraryItemType**: *"image"*
+
+Type of the exported media library items found in the activity or sequence.  Initially this will just
+be "image" but could be extended in the future to "video" or "audio".  The exact mime type would be
+preferable but that is not always detectable from the exported media library urls.
 
 ___
 
