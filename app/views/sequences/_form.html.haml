@@ -28,6 +28,9 @@
       = f.label :hide_read_aloud,  "Hide Read-Aloud Toggle"
       .hint Check this box if you do not want the "Tap text to listen" toggle to appear on activities in this sequence.
     .field
+      = f.label :layout_override, "Activity Layout Override"
+      = f.select :layout_override, options_for_select(LightweightActivity::LAYOUT_OVERRIDE_OPTIONS, @sequence.layout_override)
+    .field
       = f.label :fixed_width_layout, 'Activity Page Fixed Width'
       = f.select :fixed_width_layout, options_for_select(LightweightActivity::FIXED_WIDTH_LAYOUT_OPTIONS, @sequence.fixed_width_layout)
       .hint This will override the "Activity Page Fixed Width" setting for any activities in this sequence.

@@ -12,6 +12,13 @@ class LightweightActivity < ActiveRecord::Base
     ['Single-page', LAYOUT_SINGLE_PAGE],
     ['Notebook', LAYOUT_NOTEBOOK]
   ]
+  # the override uses 0 as no override and then the rest of the layout options as 1-based
+  LAYOUT_OVERRIDE_OPTIONS = [
+    ['None', 0],
+    ['Multi-page', LAYOUT_MULTI_PAGE + 1],
+    ['Single-page', LAYOUT_SINGLE_PAGE + 1],
+    ['Notebook', LAYOUT_NOTEBOOK + 1]
+  ]
   STANDARD_EDITOR_MODE = 0
   ITSI_EDITOR_MODE = 1
   EDITOR_MODE_OPTIONS = [
