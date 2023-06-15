@@ -93,6 +93,7 @@
 * [ITextDecorationHandlerInfo](interfaces/itextdecorationhandlerinfo.md)
 * [ITextDecorationInfo](interfaces/itextdecorationinfo.md)
 * [IThemeInfo](interfaces/ithemeinfo.md)
+* [IUseAccessibilityProps](interfaces/iuseaccessibilityprops.md)
 * [IUseReportItemOptions](interfaces/iusereportitemoptions.md)
 * [IWriteAttachmentRequest](interfaces/iwriteattachmentrequest.md)
 
@@ -1207,13 +1208,13 @@ ___
 
 ### `Const` useAccessibility
 
-▸ **useAccessibility**(`props?`: undefined | object): *[IAccessibilitySettings](interfaces/iaccessibilitysettings.md)*
+▸ **useAccessibility**(`props?`: [IUseAccessibilityProps](interfaces/iuseaccessibilityprops.md)): *[IAccessibilitySettings](interfaces/iaccessibilitysettings.md)*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
-`props?` | undefined &#124; object |
+`props?` | [IUseAccessibilityProps](interfaces/iuseaccessibilityprops.md) |
 
 **Returns:** *[IAccessibilitySettings](interfaces/iaccessibilitysettings.md)*
 
@@ -1361,6 +1362,10 @@ Name | Type |
 
 ### ▪ **DefaultAccessibilitySettings**: *object*
 
+###  fontFamilyForType
+
+• **fontFamilyForType**: *string* = getFamilyForFontType("normal")
+
 ###  fontSize
 
 • **fontSize**: *string* = "normal"
@@ -1368,3 +1373,7 @@ Name | Type |
 ###  fontSizeInPx
 
 • **fontSizeInPx**: *number* = 16
+
+###  fontType
+
+• **fontType**: *string* = "normal"

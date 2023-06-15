@@ -10,10 +10,18 @@
 
 ### Properties
 
+* [fontFamilyForType](iaccessibilitysettings.md#fontfamilyfortype)
 * [fontSize](iaccessibilitysettings.md#fontsize)
 * [fontSizeInPx](iaccessibilitysettings.md#fontsizeinpx)
+* [fontType](iaccessibilitysettings.md#fonttype)
 
 ## Properties
+
+###  fontFamilyForType
+
+• **fontFamilyForType**: *string*
+
+___
 
 ###  fontSize
 
@@ -24,3 +32,9 @@ ___
 ###  fontSizeInPx
 
 • **fontSizeInPx**: *number*
+
+___
+
+###  fontType
+
+• **fontType**: *string*

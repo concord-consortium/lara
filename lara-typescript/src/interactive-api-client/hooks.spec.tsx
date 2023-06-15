@@ -6,6 +6,7 @@ import * as hooks from "./hooks";
 import * as iframePhone from "iframe-phone";
 import { getClient } from "./client";
 import { IAccessibilitySettings } from "./types";
+import { getFamilyForFontType } from "../shared/accessibility";
 
 jest.mock("./in-frame", () => ({
   inIframe: () => true
@@ -303,13 +304,17 @@ describe("useAccessibility", () => {
   it("returns the accessibility settings from the initMessage", async () => {
     const accessibility: IAccessibilitySettings = {
       fontSize: "large",
-      fontSizeInPx: 22
+      fontSizeInPx: 22,
+      fontType: "notebook",
+      fontFamilyForType: "test-font-family, fallback-font-family"
     };
 
     const { waitForNextUpdate } = renderHook(() => hooks.useInitMessage());
     const { result } = renderHook(() => hooks.useAccessibility({
-      updateHtmlFontSize: true,
-      addBodyClass: true,
+      updateDOM: {
+        enabled: true,
+        fontFamilySelector: "body",
+      },
     }));
 
     setTimeout(() => {
@@ -320,15 +325,22 @@ describe("useAccessibility", () => {
     }, 10);
 
     // html and body should not have font updates yet
-    expect(document.getElementsByTagName("html").item(0)?.style.getPropertyValue("font-size")).toEqual("");
-    expect(document.getElementsByTagName("body").item(0)?.classList.toString()).toBe("");
+    const beforeHtml = document.getElementsByTagName("html").item(0);
+    const beforeBody = document.getElementsByTagName("body").item(0);
+    expect(beforeHtml?.style.getPropertyValue("font-size")).toEqual("");
+    // TODO: update test
+    // expect(beforeBody?.style.getPropertyValue("font-family")).toEqual("");
+    expect(beforeBody?.classList.toString()).toBe("");
 
     await waitForNextUpdate();
     expect(result.current).toEqual(accessibility);
 
     // html and body should now have font updates
-    expect(document.getElementsByTagName("html").item(0)?.style.getPropertyValue("font-size")).toEqual("22px");
-    expect(document.getElementsByTagName("body").item(0)?.classList.toString()).toBe("font-size-large");
-
+    const afterHtml = document.getElementsByTagName("html").item(0);
+    const afterBody = document.getElementsByTagName("body").item(0);
+    expect(afterHtml?.style.getPropertyValue("font-size")).toEqual("22px");
+    // TODO: update test
+    // expect(afterBody?.style.getPropertyValue("font-family")).toEqual("test-font-family, fallback-font-family");
+    expect(afterBody?.classList.toString()).toBe("font-size-large font-type-notebook");
   });
 });

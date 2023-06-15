@@ -42,6 +42,7 @@ export const PluginAuthoring: React.FC<PluginAuthoringProps> = (
     interactive_item_id: wrappedItem?.data.interactiveItemId,
     linked_interactives: wrappedItem?.data.linkedInteractives,
     font_size: wrappedItem?.data.fontSize,
+    font_type: wrappedItem?.data.fontType,
   } : undefined;
   const wrappedEmbeddable: IEmbeddableContextOptions | null = wrappedItem?.data && wrappedDiv.current !== null
     ?  {

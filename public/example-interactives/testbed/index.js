@@ -46205,6 +46205,7 @@ exports.useAccessibility = exports.DefaultAccessibilitySettings = exports.useRep
 var react_1 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 var resize_observer_polyfill_1 = __webpack_require__(/*! resize-observer-polyfill */ "./node_modules/resize-observer-polyfill/dist/ResizeObserver.es.js");
 var client = __webpack_require__(/*! ./api */ "./src/interactive-api-client/api.ts");
+var accessibility_1 = __webpack_require__(/*! ../shared/accessibility */ "./src/shared/accessibility.ts");
 var handleUpdate = function (newStateOrUpdateFunc, prevState) {
     if (typeof newStateOrUpdateFunc === "function") {
         return newStateOrUpdateFunc(prevState);
@@ -46356,31 +46357,40 @@ var useReportItem = function (_a) {
 exports.useReportItem = useReportItem;
 exports.DefaultAccessibilitySettings = {
     fontSize: "normal",
-    fontSizeInPx: 16
+    fontSizeInPx: 16,
+    fontType: "normal",
+    fontFamilyForType: (0, accessibility_1.getFamilyForFontType)("normal"),
 };
 var useAccessibility = function (props) {
-    var _a = props || {}, updateHtmlFontSize = _a.updateHtmlFontSize, addBodyClass = _a.addBodyClass;
+    var updateDOM = (props || {}).updateDOM;
     var initMessage = (0, exports.useInitMessage)();
-    var _b = (0, react_1.useState)(exports.DefaultAccessibilitySettings), accessibility = _b[0], setAccessibility = _b[1];
+    var _a = (0, react_1.useState)(exports.DefaultAccessibilitySettings), accessibility = _a[0], setAccessibility = _a[1];
+    var normalizeClass = function (text) { return text.toLowerCase().replace(/\s/, "-"); };
     (0, react_1.useEffect)(function () {
+        var _a;
         if (initMessage && initMessage.mode === "runtime") {
             var _accessibility = initMessage.accessibility || exports.DefaultAccessibilitySettings;
-            var fontSize = _accessibility.fontSize, fontSizeInPx = _accessibility.fontSizeInPx;
+            var fontSize = _accessibility.fontSize, fontSizeInPx = _accessibility.fontSizeInPx, fontType = _accessibility.fontType, fontFamilyForType = _accessibility.fontFamilyForType;
             setAccessibility(_accessibility);
-            if (updateHtmlFontSize && (fontSizeInPx !== exports.DefaultAccessibilitySettings.fontSizeInPx)) {
+            if (updateDOM) {
+                var fontFamilySelector = updateDOM.fontFamilySelector;
                 var html = document.getElementsByTagName("html").item(0);
+                var body = document.getElementsByTagName("body").item(0);
                 if (html) {
                     html.style.fontSize = fontSizeInPx + "px";
                 }
-            }
-            if (addBodyClass) {
-                var body = document.getElementsByTagName("body").item(0);
                 if (body) {
-                    body.classList.add("font-size-" + fontSize.toLowerCase().replace(/\s/, "-"));
+                    body.classList.add("font-size-" + normalizeClass(fontSize));
+                    body.classList.add("font-type-" + normalizeClass(fontType));
+                }
+                if (fontFamilySelector) {
+                    var style = document.createElement("style");
+                    document.head.appendChild(style);
+                    (_a = style.sheet) === null || _a === void 0 ? void 0 : _a.insertRule(fontFamilySelector + " { font-family: " + fontFamilyForType + "; }", 0);
                 }
             }
         }
-    }, [initMessage, updateHtmlFontSize]);
+    }, [initMessage, updateDOM]);
     return accessibility;
 };
 exports.useAccessibility = useAccessibility;
@@ -46601,6 +46611,36 @@ __exportStar(__webpack_require__(/*! ../interactive-api-shared/types */ "./src/i
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+
+
+/***/ }),
+
+/***/ "./src/shared/accessibility.ts":
+/*!*************************************!*\
+  !*** ./src/shared/accessibility.ts ***!
+  \*************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.getFamilyForFontType = exports.pxForFontSize = void 0;
+var pxForFontSize = function (fontSize) {
+    if (fontSize === "large") {
+        return 22;
+    }
+    return 16;
+};
+exports.pxForFontSize = pxForFontSize;
+var getFamilyForFontType = function (fontType) {
+    var baseFontFamily = "'Lato', arial, helvetica, sans-serif;";
+    if (fontType === "notebook") {
+        return "'Andika', " + baseFontFamily;
+    }
+    return baseFontFamily;
+};
+exports.getFamilyForFontType = getFamilyForFontType;
 
 
 /***/ }),

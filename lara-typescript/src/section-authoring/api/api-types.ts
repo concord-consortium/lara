@@ -146,6 +146,7 @@ export interface IManagedInteractiveData {
   showInFeaturedQuestionReport: boolean;
   urlFragment: string;
   fontSize: string;
+  fontType: string;
 }
 
 export interface IMWInteractiveData {
@@ -175,6 +176,7 @@ export interface IMWInteractiveData {
   showInFeaturedQuestionReport: boolean;
   url: string;
   fontSize: string;
+  fontType: string;
 }
 
 type IApprovedScript = any;

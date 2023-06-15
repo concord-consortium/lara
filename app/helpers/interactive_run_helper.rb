@@ -57,6 +57,12 @@ module InteractiveRunHelper
       data['font-size'] = run.activity.font_size
     end
 
+    # (for now) the font type is implied by the layout and not set directly on the interactive
+    data['font-type'] = 'normal'
+    if run && run.activity && run.activity.layout == LightweightActivity::LAYOUT_NOTEBOOK
+      data['font-type'] = 'notebook'
+    end
+
     opts = {
       :src => interactive.url,
       :data => data,
