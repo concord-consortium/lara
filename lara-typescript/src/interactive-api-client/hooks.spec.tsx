@@ -324,23 +324,24 @@ describe("useAccessibility", () => {
       });
     }, 10);
 
-    // html and body should not have font updates yet
+    // the DOM should not have font updates yet
     const beforeHtml = document.getElementsByTagName("html").item(0);
     const beforeBody = document.getElementsByTagName("body").item(0);
+    const beforeStyle = document.getElementsByTagName("style").item(0);
     expect(beforeHtml?.style.getPropertyValue("font-size")).toEqual("");
-    // TODO: update test
-    // expect(beforeBody?.style.getPropertyValue("font-family")).toEqual("");
+    expect(beforeStyle).toEqual(null);
     expect(beforeBody?.classList.toString()).toBe("");
 
     await waitForNextUpdate();
     expect(result.current).toEqual(accessibility);
 
-    // html and body should now have font updates
+    // the DOM should now have font updates
     const afterHtml = document.getElementsByTagName("html").item(0);
     const afterBody = document.getElementsByTagName("body").item(0);
+    const afterStyle = document.getElementsByTagName("style").item(0);
     expect(afterHtml?.style.getPropertyValue("font-size")).toEqual("22px");
-    // TODO: update test
-    // expect(afterBody?.style.getPropertyValue("font-family")).toEqual("test-font-family, fallback-font-family");
+    expect((afterStyle?.sheet?.cssRules[0] as any).selectorText).toEqual("body");
+    expect((afterStyle?.sheet?.cssRules[0] as any).style["font-family"]).toEqual("test-font-family, fallback-font-family");
     expect(afterBody?.classList.toString()).toBe("font-size-large font-type-notebook");
   });
 });
