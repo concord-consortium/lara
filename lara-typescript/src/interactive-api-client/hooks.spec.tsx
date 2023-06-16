@@ -311,10 +311,9 @@ describe("useAccessibility", () => {
 
     const { waitForNextUpdate } = renderHook(() => hooks.useInitMessage());
     const { result } = renderHook(() => hooks.useAccessibility({
-      updateDOM: {
-        enabled: true,
-        fontFamilySelector: "body",
-      },
+      updateHtmlFontSize: true,
+      addBodyClass: true,
+      fontFamilySelector: "body",
     }));
 
     setTimeout(() => {
@@ -329,8 +328,8 @@ describe("useAccessibility", () => {
     const beforeBody = document.getElementsByTagName("body").item(0);
     const beforeStyle = document.getElementsByTagName("style").item(0);
     expect(beforeHtml?.style.getPropertyValue("font-size")).toEqual("");
-    expect(beforeStyle).toEqual(null);
     expect(beforeBody?.classList.toString()).toBe("");
+    expect(beforeStyle).toEqual(null);
 
     await waitForNextUpdate();
     expect(result.current).toEqual(accessibility);
@@ -340,8 +339,8 @@ describe("useAccessibility", () => {
     const afterBody = document.getElementsByTagName("body").item(0);
     const afterStyle = document.getElementsByTagName("style").item(0);
     expect(afterHtml?.style.getPropertyValue("font-size")).toEqual("22px");
-    expect((afterStyle?.sheet?.cssRules[0] as any).selectorText).toEqual("body");
-    expect((afterStyle?.sheet?.cssRules[0] as any).style["font-family"]).toEqual("test-font-family, fallback-font-family");
     expect(afterBody?.classList.toString()).toBe("font-size-large font-type-notebook");
+    expect((afterStyle?.sheet?.cssRules[0] as CSSPageRule).selectorText).toEqual("body");
+    expect((afterStyle?.sheet?.cssRules[0] as CSSPageRule).style["font-family" as any]).toEqual("test-font-family, fallback-font-family");
   });
 });

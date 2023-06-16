@@ -186,14 +186,13 @@ export const DefaultAccessibilitySettings: IAccessibilitySettings = {
 };
 
 export interface IUseAccessibilityProps {
-  updateDOM?: {
-    enabled: boolean;
-    fontFamilySelector?: string;
-  };
+  updateHtmlFontSize?: boolean;
+  addBodyClass?: boolean;
+  fontFamilySelector?: string;
 }
 
 export const useAccessibility = (props?: IUseAccessibilityProps) => {
-  const {updateDOM} = props || {};
+  const {updateHtmlFontSize, addBodyClass, fontFamilySelector} = props || {};
   const initMessage = useInitMessage();
   const [accessibility, setAccessibility] = useState<IAccessibilitySettings>(DefaultAccessibilitySettings);
 
@@ -206,15 +205,14 @@ export const useAccessibility = (props?: IUseAccessibilityProps) => {
 
       setAccessibility(_accessibility);
 
-      if (updateDOM) {
-        const { fontFamilySelector } = updateDOM;
+      if (updateHtmlFontSize || addBodyClass || fontFamilySelector) {
         const html = document.getElementsByTagName("html").item(0);
         const body = document.getElementsByTagName("body").item(0);
 
-        if (html) {
+        if (updateHtmlFontSize && html) {
           html.style.fontSize = `${fontSizeInPx}px`;
         }
-        if (body) {
+        if (addBodyClass && body) {
           body.classList.add(`font-size-${normalizeClass(fontSize)}`);
           body.classList.add(`font-type-${normalizeClass(fontType)}`);
         }
@@ -226,7 +224,7 @@ export const useAccessibility = (props?: IUseAccessibilityProps) => {
         }
       }
     }
-  }, [initMessage, updateDOM]);
+  }, [initMessage, updateHtmlFontSize, addBodyClass, fontFamilySelector]);
 
   return accessibility;
 };

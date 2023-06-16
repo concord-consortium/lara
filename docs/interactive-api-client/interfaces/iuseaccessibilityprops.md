@@ -10,10 +10,24 @@
 
 ### Properties
 
-* [updateDOM](iuseaccessibilityprops.md#optional-updatedom)
+* [addBodyClass](iuseaccessibilityprops.md#optional-addbodyclass)
+* [fontFamilySelector](iuseaccessibilityprops.md#optional-fontfamilyselector)
+* [updateHtmlFontSize](iuseaccessibilityprops.md#optional-updatehtmlfontsize)
 
 ## Properties
 
-### `Optional` updateDOM
+### `Optional` addBodyClass
 
-• **updateDOM**? : *undefined | object*
+• **addBodyClass**? : *undefined | false | true*
+
+___
+
+### `Optional` fontFamilySelector
+
+• **fontFamilySelector**? : *undefined | string*
+
+___
+
+### `Optional` updateHtmlFontSize
+
+• **updateHtmlFontSize**? : *undefined | false | true*

@@ -34287,9 +34287,9 @@ exports.DefaultAccessibilitySettings = {
     fontFamilyForType: (0, accessibility_1.getFamilyForFontType)("normal"),
 };
 var useAccessibility = function (props) {
-    var updateDOM = (props || {}).updateDOM;
+    var _a = props || {}, updateHtmlFontSize = _a.updateHtmlFontSize, addBodyClass = _a.addBodyClass, fontFamilySelector = _a.fontFamilySelector;
     var initMessage = (0, exports.useInitMessage)();
-    var _a = (0, react_1.useState)(exports.DefaultAccessibilitySettings), accessibility = _a[0], setAccessibility = _a[1];
+    var _b = (0, react_1.useState)(exports.DefaultAccessibilitySettings), accessibility = _b[0], setAccessibility = _b[1];
     var normalizeClass = function (text) { return text.toLowerCase().replace(/\s/, "-"); };
     (0, react_1.useEffect)(function () {
         var _a;
@@ -34297,14 +34297,13 @@ var useAccessibility = function (props) {
             var _accessibility = initMessage.accessibility || exports.DefaultAccessibilitySettings;
             var fontSize = _accessibility.fontSize, fontSizeInPx = _accessibility.fontSizeInPx, fontType = _accessibility.fontType, fontFamilyForType = _accessibility.fontFamilyForType;
             setAccessibility(_accessibility);
-            if (updateDOM) {
-                var fontFamilySelector = updateDOM.fontFamilySelector;
+            if (updateHtmlFontSize || addBodyClass || fontFamilySelector) {
                 var html = document.getElementsByTagName("html").item(0);
                 var body = document.getElementsByTagName("body").item(0);
-                if (html) {
+                if (updateHtmlFontSize && html) {
                     html.style.fontSize = fontSizeInPx + "px";
                 }
-                if (body) {
+                if (addBodyClass && body) {
                     body.classList.add("font-size-" + normalizeClass(fontSize));
                     body.classList.add("font-type-" + normalizeClass(fontType));
                 }
@@ -34315,7 +34314,7 @@ var useAccessibility = function (props) {
                 }
             }
         }
-    }, [initMessage, updateDOM]);
+    }, [initMessage, updateHtmlFontSize, addBodyClass, fontFamilySelector]);
     return accessibility;
 };
 exports.useAccessibility = useAccessibility;
