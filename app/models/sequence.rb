@@ -2,7 +2,7 @@ class Sequence < ActiveRecord::Base
 
   attr_accessible :description, :title, :project_id, :defunct,
     :user_id, :logo, :display_title, :thumbnail_url, :abstract, :publication_hash,
-    :project, :background_image, :hide_read_aloud, :font_size
+    :project, :background_image, :hide_read_aloud, :font_size, :layout_override
 
   include Publishable # defines methods to publish to portals
   include PublicationStatus # defines publication status scopes and helpers
@@ -57,7 +57,8 @@ class Sequence < ActiveRecord::Base
       display_title: display_title,
       thumbnail_url: thumbnail_url,
       hide_read_aloud: hide_read_aloud,
-      font_size: font_size
+      font_size: font_size,
+      layout_override: layout_override
     }
   end
 
@@ -103,7 +104,8 @@ class Sequence < ActiveRecord::Base
                                         :background_image,
                                         :defunct,
                                         :hide_read_aloud,
-                                        :font_size
+                                        :font_size,
+                                        :layout_override
     ])
     sequence_json[:project] = self.project ? self.project.export : nil
     sequence_json[:activities] = []
@@ -214,7 +216,8 @@ class Sequence < ActiveRecord::Base
       title: sequence_json_object[:title],
       background_image: sequence_json_object[:background_image],
       hide_read_aloud: sequence_json_object[:hide_read_aloud],
-      font_size: sequence_json_object[:font_size]
+      font_size: sequence_json_object[:font_size],
+      layout_override: sequence_json_object[:layout_override]
     }
 
   end

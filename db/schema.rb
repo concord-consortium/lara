@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20230601143258) do
+ActiveRecord::Schema.define(:version => 20230614193153) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "kind"
@@ -739,6 +739,7 @@ ActiveRecord::Schema.define(:version => 20230601143258) do
     t.string   "migration_status",                       :default => "not_migrated"
     t.boolean  "hide_read_aloud",                        :default => false
     t.string   "font_size",                              :default => "normal"
+    t.integer  "layout_override",                        :default => 0
   end
 
   add_index "sequences", ["project_id"], :name => "index_sequences_on_project_id"
