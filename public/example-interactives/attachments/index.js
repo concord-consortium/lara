@@ -37730,7 +37730,8 @@ var useAccessibility = function (props) {
     var _a = props || {}, updateHtmlFontSize = _a.updateHtmlFontSize, addBodyClass = _a.addBodyClass, fontFamilySelector = _a.fontFamilySelector;
     var initMessage = (0, exports.useInitMessage)();
     var _b = (0, react_1.useState)(exports.DefaultAccessibilitySettings), accessibility = _b[0], setAccessibility = _b[1];
-    var normalizeClass = function (text) { return text.toLowerCase().replace(/\s/, "-"); };
+    // text may be optional while font type setting is rolled out from staging to production through AP
+    var normalizeClass = function (text) { return (text || "").toLowerCase().replace(/\s/, "-"); };
     (0, react_1.useEffect)(function () {
         var _a;
         if (initMessage && initMessage.mode === "runtime") {
@@ -37740,14 +37741,14 @@ var useAccessibility = function (props) {
             if (updateHtmlFontSize || addBodyClass || fontFamilySelector) {
                 var html = document.getElementsByTagName("html").item(0);
                 var body = document.getElementsByTagName("body").item(0);
-                if (updateHtmlFontSize && html) {
+                if (updateHtmlFontSize && html && fontSizeInPx) {
                     html.style.fontSize = fontSizeInPx + "px";
                 }
                 if (addBodyClass && body) {
                     body.classList.add("font-size-" + normalizeClass(fontSize));
                     body.classList.add("font-type-" + normalizeClass(fontType));
                 }
-                if (fontFamilySelector) {
+                if (fontFamilySelector && fontFamilyForType) {
                     var style = document.createElement("style");
                     document.head.appendChild(style);
                     (_a = style.sheet) === null || _a === void 0 ? void 0 : _a.insertRule(fontFamilySelector + " { font-family: " + fontFamilyForType + "; }", 0);

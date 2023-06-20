@@ -196,7 +196,8 @@ export const useAccessibility = (props?: IUseAccessibilityProps) => {
   const initMessage = useInitMessage();
   const [accessibility, setAccessibility] = useState<IAccessibilitySettings>(DefaultAccessibilitySettings);
 
-  const normalizeClass = (text: string) => text.toLowerCase().replace(/\s/, "-");
+  // text may be optional while font type setting is rolled out from staging to production through AP
+  const normalizeClass = (text?: string) => (text || "").toLowerCase().replace(/\s/, "-");
 
   useEffect(() => {
     if (initMessage && initMessage.mode === "runtime") {
@@ -209,7 +210,7 @@ export const useAccessibility = (props?: IUseAccessibilityProps) => {
         const html = document.getElementsByTagName("html").item(0);
         const body = document.getElementsByTagName("body").item(0);
 
-        if (updateHtmlFontSize && html) {
+        if (updateHtmlFontSize && html && fontSizeInPx) {
           html.style.fontSize = `${fontSizeInPx}px`;
         }
         if (addBodyClass && body) {
@@ -217,7 +218,7 @@ export const useAccessibility = (props?: IUseAccessibilityProps) => {
           body.classList.add(`font-type-${normalizeClass(fontType)}`);
         }
 
-        if (fontFamilySelector) {
+        if (fontFamilySelector && fontFamilyForType) {
           const style = document.createElement("style");
           document.head.appendChild(style);
           style.sheet?.insertRule(`${fontFamilySelector} { font-family: ${fontFamilyForType}; }`, 0);
