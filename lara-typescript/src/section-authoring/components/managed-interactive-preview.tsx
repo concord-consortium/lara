@@ -16,7 +16,7 @@ export const ManagedInteractivePreview: React.FC<IManagedInteractivePreviewProps
 
   const {
     aspectRatio, authoredState, customAspectRatioMethod, id, interactiveItemId,
-    isHalfWidth, name, libraryInteractiveId, linkedInteractives, urlFragment, fontSize
+    isHalfWidth, name, libraryInteractiveId, linkedInteractives, urlFragment, fontSize, fontType
   } = pageItem.data as IManagedInteractiveData;
   const { getLibraryInteractives } = usePageAPI();
 
@@ -35,7 +35,8 @@ export const ManagedInteractivePreview: React.FC<IManagedInteractivePreviewProps
     authored_state: authoredState,
     interactive_item_id: interactiveItemId,
     linked_interactives: linkedInteractives,
-    font_size: fontSize
+    font_size: fontSize,
+    font_type: fontType,
   };
 
   const wrapperClasses = classNames("managedInteractive", {

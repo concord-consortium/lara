@@ -2,7 +2,7 @@ import * as React from "react";
 import { useEffect, useRef, useState } from "react";
 import { InteractiveIframe } from "./interactive-iframe";
 import { DefaultAccessibilitySettings, IInitInteractive } from "../../../interactive-api-client";
-import { pxForFontSize } from "../../../shared/accessibility";
+import { getFamilyForFontType, pxForFontSize } from "../../../shared/accessibility";
 
 export interface IPreviewInteractive {
   id: number;
@@ -13,6 +13,7 @@ export interface IPreviewInteractive {
   authored_state: string | object;
   linked_interactives: string | object;
   font_size: string;
+  font_type: string;
 }
 
 export interface IPreviewUser {
@@ -51,6 +52,8 @@ export const InteractiveAuthoringPreview: React.FC<Props> = ({interactive, user}
   // does not need to be tested for the large font setting.
   const fontSize = interactive.font_size || DefaultAccessibilitySettings.fontSize;
   const fontSizeInPx = pxForFontSize(fontSize);
+  const fontType = interactive.font_type || DefaultAccessibilitySettings.fontType;
+  const fontFamilyForType = getFamilyForFontType(fontType);
 
   const initMsg: IInitInteractive = {
     version: 1,
@@ -86,7 +89,9 @@ export const InteractiveAuthoringPreview: React.FC<Props> = ({interactive, user}
     attachments: {},
     accessibility: {
       fontSize,
-      fontSizeInPx
+      fontSizeInPx,
+      fontType,
+      fontFamilyForType
     },
     mediaLibrary: {
       enabled: false,

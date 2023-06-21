@@ -4,6 +4,7 @@ import ResizeObserver from "resize-observer-polyfill";
 import { ICustomMessageHandler, ICustomMessagesHandledMap, IInitInteractive, ITextDecorationHandler,
   IReportItemHandlerMetadata, IGetReportItemAnswerHandler, IAccessibilitySettings } from "./types";
 import * as client from "./api";
+import { getFamilyForFontType } from "../shared/accessibility";
 
 type UpdateFunc<S> = (prevState: S | null) => S;
 const handleUpdate = <S>(newStateOrUpdateFunc: S | null | UpdateFunc<S>, prevState: S | null) => {
@@ -179,36 +180,52 @@ export const useReportItem = <InteractiveState, AuthoredState>({ metadata, handl
 
 export const DefaultAccessibilitySettings: IAccessibilitySettings = {
   fontSize: "normal",
-  fontSizeInPx: 16
+  fontSizeInPx: 16,
+  fontType: "normal",
+  fontFamilyForType: getFamilyForFontType("normal"),
 };
 
-export const useAccessibility = (props?: {updateHtmlFontSize?: boolean, addBodyClass?: boolean}) => {
-  const {updateHtmlFontSize, addBodyClass} = props || {};
+export interface IUseAccessibilityProps {
+  updateHtmlFontSize?: boolean;
+  addBodyClass?: boolean;
+  fontFamilySelector?: string;
+}
+
+export const useAccessibility = (props?: IUseAccessibilityProps) => {
+  const {updateHtmlFontSize, addBodyClass, fontFamilySelector} = props || {};
   const initMessage = useInitMessage();
   const [accessibility, setAccessibility] = useState<IAccessibilitySettings>(DefaultAccessibilitySettings);
+
+  // text may be optional while font type setting is rolled out from staging to production through AP
+  const normalizeClass = (text?: string) => (text || "").toLowerCase().replace(/\s/, "-");
 
   useEffect(() => {
     if (initMessage && initMessage.mode === "runtime") {
       const _accessibility = initMessage.accessibility || DefaultAccessibilitySettings;
-      const {fontSize, fontSizeInPx} = _accessibility;
+      const {fontSize, fontSizeInPx, fontType, fontFamilyForType} = _accessibility;
 
       setAccessibility(_accessibility);
 
-      if (updateHtmlFontSize && (fontSizeInPx !== DefaultAccessibilitySettings.fontSizeInPx)) {
+      if (updateHtmlFontSize || addBodyClass || fontFamilySelector) {
         const html = document.getElementsByTagName("html").item(0);
-        if (html) {
+        const body = document.getElementsByTagName("body").item(0);
+
+        if (updateHtmlFontSize && html && fontSizeInPx) {
           html.style.fontSize = `${fontSizeInPx}px`;
         }
-      }
+        if (addBodyClass && body) {
+          body.classList.add(`font-size-${normalizeClass(fontSize)}`);
+          body.classList.add(`font-type-${normalizeClass(fontType)}`);
+        }
 
-      if (addBodyClass) {
-        const body = document.getElementsByTagName("body").item(0);
-        if (body) {
-          body.classList.add(`font-size-${fontSize.toLowerCase().replace(/\s/, "-")}`);
+        if (fontFamilySelector && fontFamilyForType) {
+          const style = document.createElement("style");
+          document.head.appendChild(style);
+          style.sheet?.insertRule(`${fontFamilySelector} { font-family: ${fontFamilyForType}; }`, 0);
         }
       }
     }
-  }, [initMessage, updateHtmlFontSize]);
+  }, [initMessage, updateHtmlFontSize, addBodyClass, fontFamilySelector]);
 
   return accessibility;
 };

@@ -49,6 +49,8 @@ export interface IHostFeatures extends Record<string, IHostFeatureSupport | stri
 export interface IAccessibilitySettings {
   fontSize: string;
   fontSizeInPx: number;
+  fontType: string;
+  fontFamilyForType: string;
 }
 
 export interface IRuntimeInitInteractive<InteractiveState = {}, AuthoredState = {}, GlobalInteractiveState = {}>

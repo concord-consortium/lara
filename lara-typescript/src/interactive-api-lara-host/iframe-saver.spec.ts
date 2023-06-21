@@ -221,6 +221,8 @@ describe("IFrameSaver", () => {
           accessibility: {
             fontSize: "normal",
             fontSizeInPx: 16,
+            fontType: "normal",
+            fontFamilyForType: "'Lato', arial, helvetica, sans-serif;",
           },
           mediaLibrary: {
             enabled: false,
@@ -278,6 +280,8 @@ describe("IFrameSaver", () => {
           accessibility: {
             fontSize: "normal",
             fontSizeInPx: 16,
+            fontType: "normal",
+            fontFamilyForType: "'Lato', arial, helvetica, sans-serif;",
           },
           mediaLibrary: {
             enabled: false,

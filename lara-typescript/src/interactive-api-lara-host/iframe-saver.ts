@@ -10,7 +10,7 @@ import {
   INavigationOptions, initializeAttachmentsManager, ISupportedFeaturesRequest, ServerMessage, IMediaLibrary
 } from "../interactive-api-host";
 import { answerMetadataToAttachmentInfoMap } from "../interactive-api-host/attachments-api/helpers";
-import { pxForFontSize } from "../shared/accessibility";
+import { getFamilyForFontType, pxForFontSize } from "../shared/accessibility";
 
 // Shutterbug is imported globally and used by the old LARA JS code.
 const Shutterbug = (window as any).Shutterbug;
@@ -560,7 +560,9 @@ export class IFrameSaver {
       attachments: answerMetadataToAttachmentInfoMap(this.metadata),
       accessibility: {
         fontSize: this.fontSize,
-        fontSizeInPx: pxForFontSize(this.fontSize)
+        fontSizeInPx: pxForFontSize(this.fontSize),
+        fontType: "normal",
+        fontFamilyForType: getFamilyForFontType("normal"),
       },
       mediaLibrary: this.mediaLibrary,
     };
