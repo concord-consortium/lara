@@ -46449,6 +46449,19 @@ __exportStar(__webpack_require__(/*! ./in-frame */ "./src/interactive-api-client
 __exportStar(__webpack_require__(/*! ./api */ "./src/interactive-api-client/api.ts"), exports);
 __exportStar(__webpack_require__(/*! ./hooks */ "./src/interactive-api-client/hooks.ts"), exports);
 __exportStar(__webpack_require__(/*! ./client */ "./src/interactive-api-client/client.ts"), exports);
+var packageJson = __webpack_require__(/*! ./package.json */ "./src/interactive-api-client/package.json");
+var version = packageJson.version;
+var warningMsg = function (loadedVersion, newVersion) { return "\nLARA Interactive API is loaded multiple times. This will lead to unexpected behavior and might break multiple features\nof the API (especially interactive state saving). Please ensure that the library is loaded only once by the main app\nand that all its dependencies specify \"lara-interactive-api\" as \"peerDependency\" in their package.json files.\n\nAlready imported version: v" + loadedVersion + ", trying to load: v" + newVersion + ".\n"; };
+if (window.__LARA_INTERACTIVE_API__) {
+    var msg = warningMsg(window.__LARA_INTERACTIVE_API__.version, version);
+    window.alert(msg);
+    throw new Error(msg);
+}
+else {
+    window.__LARA_INTERACTIVE_API__ = {
+        version: packageJson.version
+    };
+}
 
 
 /***/ }),
@@ -46573,6 +46586,17 @@ exports.ManagedState = ManagedState;
 // to report service and portal.
 Object.defineProperty(exports, "__esModule", { value: true });
 
+
+/***/ }),
+
+/***/ "./src/interactive-api-client/package.json":
+/*!*************************************************!*\
+  !*** ./src/interactive-api-client/package.json ***!
+  \*************************************************/
+/*! exports provided: name, version, description, main, types, repository, author, license, bugs, homepage, dependencies, peerDependencies, default */
+/***/ (function(module) {
+
+module.exports = JSON.parse("{\"name\":\"@concord-consortium/lara-interactive-api\",\"version\":\"1.9.4\",\"description\":\"LARA Interactive API client and types\",\"main\":\"./index.js\",\"types\":\"./index-bundle.d.ts\",\"repository\":{\"type\":\"git\",\"url\":\"git+https://github.com/concord-consortium/lara.git\"},\"author\":\"Concord Consortium\",\"license\":\"MIT\",\"bugs\":{\"url\":\"https://github.com/concord-consortium/lara/issues\"},\"homepage\":\"https://github.com/concord-consortium/lara/tree/master/lara-typescript/src/interactive-api-client#readme\",\"dependencies\":{\"iframe-phone\":\"^1.3.1\"},\"peerDependencies\":{\"react\":\">=16.9.0\",\"react-dom\":\">=16.9.0\"}}");
 
 /***/ }),
 
