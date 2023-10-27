@@ -70,6 +70,8 @@ export interface IPluginRuntimeContext {
   log: (logData: string | ILogData) => void;
   /** Flag denoting offline mode of an Activity Player activity */
   offlineMode: boolean;
+  /** The starting z-index the plugin should use */
+  startingZIndex: number;
 }
 
 export interface IEmbeddableRuntimeContext {
@@ -167,6 +169,8 @@ export interface IPluginAuthoringContext {
   getFirebaseJwt: (appName: string) => Promise<IJwtResponse>;
   /** Function that closes a plugin authoring form */
   closeAuthoredPluginForm?: () => void;
+  /** The starting z-index the plugin should use */
+  startingZIndex: number;
 }
 
 export interface IUser {

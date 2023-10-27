@@ -259,7 +259,8 @@ export const generateRuntimePluginContext = (options: IPluginRuntimeContextOptio
     getFirebaseJwt: (appName: string) => getFirebaseJwt(options.firebaseJwtUrl, appName),
     wrappedEmbeddable: options.wrappedEmbeddable ? generateEmbeddableRuntimeContext(options.wrappedEmbeddable) : null,
     log: (logData: string | ILogData) => log(options, logData),
-    offlineMode: options.offlineMode
+    offlineMode: options.offlineMode,
+    startingZIndex: 1,
   };
   return context;
 };
@@ -278,6 +279,7 @@ export const generateAuthoringPluginContext = (options: IPluginAuthoringContextO
     saveAuthoredPluginState,
     closeAuthoredPluginForm: options.closeAuthoredPluginForm,
     wrappedEmbeddable: options.wrappedEmbeddable ? generateEmbeddableRuntimeContext(options.wrappedEmbeddable) : null,
-    getFirebaseJwt: (appName: string) => getFirebaseJwt(options.firebaseJwtUrl, appName)
+    getFirebaseJwt: (appName: string) => getFirebaseJwt(options.firebaseJwtUrl, appName),
+    startingZIndex: 1,
   };
 };

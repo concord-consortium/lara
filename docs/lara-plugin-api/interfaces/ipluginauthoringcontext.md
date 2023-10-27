@@ -18,6 +18,7 @@
 * [name](ipluginauthoringcontext.md#name)
 * [pluginId](ipluginauthoringcontext.md#pluginid)
 * [saveAuthoredPluginState](ipluginauthoringcontext.md#saveauthoredpluginstate)
+* [startingZIndex](ipluginauthoringcontext.md#startingzindex)
 * [url](ipluginauthoringcontext.md#url)
 * [wrappedEmbeddable](ipluginauthoringcontext.md#wrappedembeddable)
 
@@ -109,6 +110,14 @@ context.saveAuthoredPluginState('{"one": 1}').then((data) => console.log(data))
 Name | Type |
 ------ | ------ |
 `state` | string |
+
+___
+
+###  startingZIndex
+
+• **startingZIndex**: *number*
+
+The starting z-index the plugin should use
 
 ___
 

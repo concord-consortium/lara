@@ -23,6 +23,7 @@
 * [resourceUrl](ipluginruntimecontext.md#resourceurl)
 * [runId](ipluginruntimecontext.md#runid)
 * [saveLearnerPluginState](ipluginruntimecontext.md#savelearnerpluginstate)
+* [startingZIndex](ipluginruntimecontext.md#startingzindex)
 * [url](ipluginruntimecontext.md#url)
 * [userEmail](ipluginruntimecontext.md#useremail)
 * [wrappedEmbeddable](ipluginruntimecontext.md#wrappedembeddable)
@@ -183,6 +184,14 @@ context.saveLearnerPluginState('{"one": 1}').then((data) => console.log(data))
 Name | Type |
 ------ | ------ |
 `state` | string |
+
+___
+
+###  startingZIndex
+
+• **startingZIndex**: *number*
+
+The starting z-index the plugin should use
 
 ___
 
