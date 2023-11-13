@@ -4,7 +4,7 @@ class Api::V1::ProjectsController < API::APIController
 
   # GET /api/v1/projects
   def index
-    @projects = Project.all
+    @projects = Project.order(:title)
     authorize! :manage, @projects
     render json: {projects: @projects}
   end
@@ -51,7 +51,7 @@ class Api::V1::ProjectsController < API::APIController
       render json: {success: true}, status: 200
     else
       render json: @project.errors, status: :unprocessable_entity
-    end  
+    end
   end
 
 end
