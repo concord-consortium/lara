@@ -12,6 +12,7 @@ class User < ActiveRecord::Base
   has_many :runs
   has_many :imports
   has_many :glossaries, order: :name
+  has_many :admined_projects, :class_name => ProjectAdmin, include: [:project]
 
   # Setup accessible (or protected) attributes for your model
   attr_accessible :email, :password, :password_confirmation, :remember_me,

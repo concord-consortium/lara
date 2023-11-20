@@ -268,4 +268,25 @@ describe User do
 
   end
 
+  describe "admined_projects" do
+    let(:user) { FactoryGirl.create(:user) }
+    let(:project1) { FactoryGirl.create(:project) }
+    let(:project2) { FactoryGirl.create(:project) }
+    let(:project_admin1) { FactoryGirl.create(:project_admin, project: project1, user: user) }
+    let(:project_admin2) { FactoryGirl.create(:project_admin, project: project2, user: user) }
+
+    it "should be empty by default" do
+      expect(user.admined_projects.length).to be(0)
+    end
+
+    it "should return an array when set" do
+      user.admined_projects = [project_admin1, project_admin2]
+      expect(user.admined_projects.length).to be(2)
+      expect(user.admined_projects[0].project.id).to be(project1.id)
+      expect(user.admined_projects[1].project.id).to be(project2.id)
+      expect(user.admined_projects[0].user.id).to be(user.id)
+      expect(user.admined_projects[1].user.id).to be(user.id)
+    end
+  end
+
 end

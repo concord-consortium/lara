@@ -7,6 +7,7 @@ class Project < ActiveRecord::Base
   validates :project_key, uniqueness: true
   has_many :sequences
   has_many :lightweight_activities
+  has_many :project_admins, include: [:user]
 
   protected
   def self.create_default
