@@ -1,7 +1,9 @@
 require 'spec_helper'
 
 describe Api::V1::ProjectsController do
-  let!(:project1) { FactoryGirl.create(:project, title: "Test Project 1") }
+  let(:user) { FactoryGirl.create(:user) }
+  let(:user2) { FactoryGirl.create(:user) }
+  let!(:project1) { FactoryGirl.create(:project, title: "Test Project 1", admins: [user]) }
   let!(:project2) { FactoryGirl.create(:project, title: "Test Project 2") }
   let(:admin) { FactoryGirl.create(:admin) }
 
@@ -29,7 +31,8 @@ describe Api::V1::ProjectsController do
       expect(response.status).to eq(200)
       expect(response.content_type).to eq("application/json")
       expect(response.body).to eq({
-        project: project1
+        project: project1,
+        admins: [{id: user.id, email: user.email}]
       }.to_json)
     end
     it "returns a 404 error for a non-existent project ID" do
@@ -55,13 +58,35 @@ describe Api::V1::ProjectsController do
   describe "#update" do
     it "returns a success message and a JSON string when a project is updated" do
       prev_updated_at = project1.updated_at
-      xhr :post, "update", {project: {id: project1.id, title: "New Project Title"}}
+      admin_ids = project1.admins.map {|a| a.id}
+      xhr :post, "update", {project: {id: project1.id, title: "New Project Title", admin_ids: admin_ids}}
       expect(response.status).to eq(200)
       expect(response.content_type).to eq("application/json")
       response_body = JSON.parse(response.body, symbolize_names: true)
       project = response_body[:project]
       expect(project[:title]).to eq("New Project Title")
       expect(project[:updated_at]).not_to eq(prev_updated_at)
+      expect(response_body[:admins]).to eq([{id: user.id, email: user.email}])
+    end
+
+    it "allows removing project admins" do
+      expect(project1.admins.length).to eq(1)
+      xhr :post, "update", {project: {id: project1.id, title: "New Project Title", admin_ids: []}}
+      expect(response.status).to eq(200)
+      expect(response.content_type).to eq("application/json")
+      response_body = JSON.parse(response.body, symbolize_names: true)
+      project = response_body[:project]
+      expect(response_body[:admins]).to eq([])
+    end
+
+    it "filters out admins that are not already set" do
+      admin_ids = project1.admins.map {|a| a.id}
+      admin_ids.push(user2.id)
+      xhr :post, "update", {project: {id: project1.id, title: "New Project Title", admin_ids: admin_ids}}
+      expect(response.status).to eq(200)
+      expect(response.content_type).to eq("application/json")
+      response_body = JSON.parse(response.body, symbolize_names: true)
+      expect(response_body[:admins]).to eq([{id: user.id, email: user.email}])
     end
   end
 

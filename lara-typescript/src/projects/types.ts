@@ -14,3 +14,7 @@ export interface IProject {
   title: string;
   url?: string;
 }
+export interface IProjectAdmin {
+  id: number;
+  email: string;
+}

@@ -58,7 +58,7 @@ describe("ProjectSettingsForm", () => {
   });
 
   it("renders a form with options for project settings", async () => {
-    fetch.mockResponse(JSON.stringify({project}));
+    fetch.mockResponse(JSON.stringify({project, admins: []}));
     await act(async () => {
       ReactDOM.render(<ProjectSettingsForm id={project1Id} />, container);
     });
@@ -90,14 +90,14 @@ describe("ProjectSettingsForm", () => {
   });
 
   it("saves changes to project settings", async () => {
-    fetch.mockResponse(JSON.stringify({project}));
+    fetch.mockResponse(JSON.stringify({project, admins: []}));
     await act(async () => {
       ReactDOM.render(<ProjectSettingsForm id={project1Id} />, container);
     });
     const titleInput = container.querySelector("#project-title") as HTMLInputElement;
     const urlInput = container.querySelector("#project-url") as HTMLInputElement;
-    const saveButton = container.querySelector("#save-button") as HTMLButtonElement;
-    const updatedProject = {...project, title: "Test Project A", url: "https://concord.org/new-path"};
+    const saveButton = container.querySelector(".save-button") as HTMLButtonElement;
+    const updatedProject = {...project, title: "Test Project A", url: "https://concord.org/new-path", admins: []};
     fetch.mockResponse(JSON.stringify({project: updatedProject, success: true}));
     await act(async () => {
       fireEvent.change(titleInput, { target: { value: "Test Project A"} });
@@ -132,7 +132,7 @@ describe("ProjectSettingsForm", () => {
       ReactDOM.render(<ProjectSettingsForm id={null} />, container);
     });
     const titleInput = container.querySelector("#project-title") as HTMLInputElement;
-    const saveButton = container.querySelector("#save-button") as HTMLButtonElement;
+    const saveButton = container.querySelector(".save-button") as HTMLButtonElement;
     await act(async () => {
       fireEvent.change(titleInput, { target: { value: "New Project Title"} });
       fireEvent.blur(titleInput);
