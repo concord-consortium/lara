@@ -4,7 +4,6 @@
   <%= render :partial => 'form', :locals => { :f => f } %>
 <%- end -%>
 
-<p>
-<%= link_to 'Show', admin_user_path(@user) %> |
-<%= link_to 'Back', admin_users_path %>
-</p>
+<div style="margin-top: 20px;">
+  <%= link_to '‹ Back to Users List', admin_users_path %>
+</div>

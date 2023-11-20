@@ -64,24 +64,27 @@ describe Project do
     end
   end
 
-  describe "Project admins" do
+  describe "project_admins and admins" do
     let(:project) { FactoryGirl.create(:project) }
     let(:user1) { FactoryGirl.create(:user) }
     let(:user2) { FactoryGirl.create(:user) }
-    let(:project_admin1) { FactoryGirl.create(:project_admin, project: project, user: user1) }
-    let(:project_admin2) { FactoryGirl.create(:project_admin, project: project, user: user2) }
 
     it "should be empty by default" do
+      expect(project.admins.length).to be(0)
       expect(project.project_admins.length).to be(0)
     end
 
     it "should return an array when set" do
-      project.project_admins = [project_admin1, project_admin2]
+      project.admins = [user1, user2]
       expect(project.project_admins.length).to be(2)
       expect(project.project_admins[0].project.id).to be(project.id)
       expect(project.project_admins[1].project.id).to be(project.id)
       expect(project.project_admins[0].user.id).to be(user1.id)
       expect(project.project_admins[1].user.id).to be(user2.id)
+
+      expect(project.admins.length).to be(2)
+      expect(project.admins[0].id).to be(user1.id)
+      expect(project.admins[1].id).to be(user2.id)
     end
   end
 end

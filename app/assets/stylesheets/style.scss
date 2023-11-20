@@ -608,7 +608,7 @@ ul.quiet_list {
     margin: 0;
     border-bottom: dashed 1px #ddd;
     overflow: auto;
-    
+
     .action_menu {
       display: flex;
       flex-direction: row;
@@ -1187,6 +1187,9 @@ div.breadcrumbs {
 
 /* User admin stuff */
 body.admin {
+  h1 {
+    margin: 10px 0;
+  }
   td {
     padding: 7px;
     border-width: 0 1px;
@@ -1202,7 +1205,7 @@ body.admin {
     border-bottom: 1px solid #333;
   }
 }
-body.admin.edit {
+body.admin.edit, body.admin.new {
   fieldset {
     border: 1px solid #999;
     padding: 7px;
@@ -1210,9 +1213,15 @@ body.admin.edit {
       padding: 5px;
       text-align: right;
       font-weight: bold;
+      &.left {
+        text-align: left;
+      }
     }
     label {
       font-weight: bold;
+      &.normal {
+        font-weight: normal;
+      }
     }
     p {
       padding: 7px;
