@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20230614193153) do
+ActiveRecord::Schema.define(:version => 20231113215504) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "kind"
@@ -621,6 +621,15 @@ ActiveRecord::Schema.define(:version => 20230614193153) do
   end
 
   add_index "portal_publications", ["publishable_id", "publishable_type"], :name => "index_portal_publications_on_publishable_id_and_publishable_type"
+
+  create_table "project_admins", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "project_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "project_admins", ["user_id", "project_id"], :name => "index_project_admins_on_user_id_and_project_id", :unique => true
 
   create_table "projects", :force => true do |t|
     t.string   "title"
