@@ -97,8 +97,8 @@ describe("ProjectSettingsForm", () => {
     const titleInput = container.querySelector("#project-title") as HTMLInputElement;
     const urlInput = container.querySelector("#project-url") as HTMLInputElement;
     const saveButton = container.querySelector(".save-button") as HTMLButtonElement;
-    const updatedProject = {...project, title: "Test Project A", url: "https://concord.org/new-path", admins: []};
-    fetch.mockResponse(JSON.stringify({project: updatedProject, success: true}));
+    const updatedProject = {...project, title: "Test Project A", url: "https://concord.org/new-path"};
+    fetch.mockResponse(JSON.stringify({project: updatedProject, admins: [], success: true}));
     await act(async () => {
       fireEvent.change(titleInput, { target: { value: "Test Project A"} });
       fireEvent.change(urlInput, { target: { value: "https://concord.org/new-path"} });

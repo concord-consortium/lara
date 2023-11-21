@@ -1,5 +1,5 @@
 class ProjectAdmin < ActiveRecord::Base
-  attr_accessible :user, :project, :user_id, :project_id
+  attr_accessible :user, :project
 
   belongs_to :user
   belongs_to :project
