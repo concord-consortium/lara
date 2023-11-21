@@ -32,7 +32,7 @@ class Admin::UsersController < ApplicationController
   # GET /admin/users/new.json
   def new
     @user = User.new
-    @projects = Project.order(:title)
+    @projects = Project.all
     authorize! :create, User
 
     respond_to do |format|
@@ -44,7 +44,7 @@ class Admin::UsersController < ApplicationController
   # GET /admin/users/1/edit
   def edit
     @user = User.find(params[:id])
-    @projects = Project.order(:title)
+    @projects = Project.all
     authorize! :update, @user
   end
 

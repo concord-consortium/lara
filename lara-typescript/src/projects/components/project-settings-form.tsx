@@ -70,7 +70,7 @@ export const ProjectSettingsForm: React.FC<IProjectSettingsFormProps> = ({id}: I
     delete data.project.created_at;
     delete data.project.updated_at;
     setProject(snakeToCamelCaseKeys(data.project));
-    setAdmins(data.admins || []);
+    setAdmins(data.admins);
     setProjectLoaded(true);
     setPageTitle(`Edit ${data.project.title}`);
   };
@@ -124,7 +124,7 @@ export const ProjectSettingsForm: React.FC<IProjectSettingsFormProps> = ({id}: I
   const handleSaveProject = async () => {
     const apiUrl = id ? `/api/v1/projects/${id}` : `/api/v1/projects`;
     const projectData = camelToSnakeCaseKeys(project);
-    projectData.admin_ids = admins.map(a => a.id);
+    projectData.admins = admins;
 
     const data = await fetch(apiUrl, {
       method: "POST",

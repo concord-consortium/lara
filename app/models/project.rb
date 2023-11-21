@@ -10,6 +10,8 @@ class Project < ActiveRecord::Base
   has_many :project_admins
   has_many :admins, through: :project_admins, :source => :user
 
+  default_scope order('title')
+
   protected
   def self.create_default
     self.create(:title => DefaultName, :logo_lara => '', :url => 'https://concord.org/', :project_key => DefaultKey)

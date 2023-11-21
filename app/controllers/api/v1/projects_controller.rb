@@ -4,7 +4,7 @@ class Api::V1::ProjectsController < API::APIController
 
   # GET /api/v1/projects
   def index
-    @projects = Project.order(:title)
+    @projects = Project.all
     authorize! :manage, @projects
     render json: {projects: @projects}
   end
@@ -37,8 +37,12 @@ class Api::V1::ProjectsController < API::APIController
     @project = Project.find(@updated_project_hash[:id]);
     authorize! :update, @project
 
-    # remove any extra admin ids in the update that are not in the original, to ensure we can only remove and not add project admins
-    @updated_project_hash[:admin_ids] = (@updated_project_hash[:admin_ids] || []).select { |id| @project.admin_ids.include?(id.to_i) }
+    # extract the ids from the passed admin objects and remove any extra admins in the update that
+    # are not in the original, to ensure we can only remove and not add project admins
+    @updated_project_hash[:admin_ids] = (@updated_project_hash[:admins] || [])
+      .select { |admin| @project.admin_ids.include?(admin[:id].to_i) }
+      .map { |admin| admin[:id] }
+    @updated_project_hash.delete(:admins)
 
     if @project.update_attributes(@updated_project_hash)
       render json: {success: true, project: @project, admins: admin_json(@project)}, status: :ok
