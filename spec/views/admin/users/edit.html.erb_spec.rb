@@ -3,6 +3,7 @@ require 'spec_helper'
 describe "admin/users/edit" do
   before(:each) do
     @user = assign(:user, stub_model(User))
+    @projects = assign(:project, [stub_model(Project)])
   end
 
   it "renders the edit user form" do

@@ -268,24 +268,36 @@ describe User do
 
   end
 
-  describe "admined_projects" do
+  describe "project_admins and admined_projects" do
     let(:user) { FactoryGirl.create(:user) }
     let(:project1) { FactoryGirl.create(:project) }
     let(:project2) { FactoryGirl.create(:project) }
-    let(:project_admin1) { FactoryGirl.create(:project_admin, project: project1, user: user) }
-    let(:project_admin2) { FactoryGirl.create(:project_admin, project: project2, user: user) }
 
     it "should be empty by default" do
+      project1
+      project2
+
+      expect(user.project_admins.length).to be(0)
       expect(user.admined_projects.length).to be(0)
+
+      expect(user.project_admin_of?(project1)).to be(false)
+      expect(user.project_admin_of?(project2)).to be(false)
     end
 
     it "should return an array when set" do
-      user.admined_projects = [project_admin1, project_admin2]
+      user.admined_projects = [project1, project2]
+      expect(user.project_admins.length).to be(2)
+      expect(user.project_admins[0].project.id).to be(project1.id)
+      expect(user.project_admins[1].project.id).to be(project2.id)
+      expect(user.project_admins[0].user.id).to be(user.id)
+      expect(user.project_admins[1].user.id).to be(user.id)
+
       expect(user.admined_projects.length).to be(2)
-      expect(user.admined_projects[0].project.id).to be(project1.id)
-      expect(user.admined_projects[1].project.id).to be(project2.id)
-      expect(user.admined_projects[0].user.id).to be(user.id)
-      expect(user.admined_projects[1].user.id).to be(user.id)
+      expect(user.admined_projects[0].id).to be(project1.id)
+      expect(user.admined_projects[1].id).to be(project2.id)
+
+      expect(user.project_admin_of?(project1)).to be(true)
+      expect(user.project_admin_of?(project2)).to be(true)
     end
   end
 

@@ -11,34 +11,45 @@
 <% end %>
 
 <fieldset>
-  <legend>Permissions</legend>
-  <p>
-    <label for="user_is_admin">
-      Admin?
-      <%= f.check_box :is_admin %>
+  <legend class="left">Permissions</legend>
+  <div>
+    <%= f.check_box :is_admin %>
+    <label class="normal" for="user_is_admin">
+      Admin
     </label>
-  </p>
-  <p>
-    <label for="user_is_author">
-      Author?
-      <%= f.check_box :is_author %>
+  </div>
+  <div>
+    <%= f.check_box :is_author %>
+    <label class="normal" for="user_is_author">
+      Author
     </label>
-  </p>
-  <p>
-    <label for="has_api_key">
-      Allow API access (for GET requests)?
-      <%= f.check_box :has_api_key %>
-      <% if @user.has_api_key%>
-        <p>
-          API KEY: <input type="text" size="64" readonly value="<%= @user.api_key %>">
-        </p>
-      <% end %>
+  </div>
+  <div style="margin-top: 15px;">
+    <%= f.check_box :has_api_key %>
+    <label class="normal" for="has_api_key">
+      Allow API access (for GET requests)
     </label>
-  </p>
-
-
+    <% if @user.has_api_key%>
+      <p>
+        API KEY: <input type="text" size="64" readonly value="<%= @user.api_key %>">
+      </p>
+    <% end %>
+  </div>
 </fieldset>
 
-<div class="actions">
+<fieldset>
+  <legend class="left">Project Admin for Projects</legend>
+
+  <% @projects.each do |project| %>
+    <div>
+      <%= check_box_tag "user[admined_project_ids][]", project.id, @user.project_admin_of?(project) %>
+      <label class="normal">
+        <%= project.title %>
+      </label>
+    </div>
+  <% end %>
+</fieldset>
+
+<div style="margin: 15px 0;">
   <%= f.submit %>
 </div>
