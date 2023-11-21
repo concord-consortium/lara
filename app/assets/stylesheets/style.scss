@@ -1227,6 +1227,11 @@ body.admin.edit, body.admin.new {
       padding: 7px;
     }
   }
+  input[type=checkbox] {
+    vertical-align: middle;
+    position: relative;
+    bottom: 1px;
+  }
   div.actions {
     padding: 7px;
     input {

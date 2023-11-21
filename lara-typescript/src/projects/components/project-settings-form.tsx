@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
 import { SlateContainer, slateToHtml, htmlToSlate } from "@concord-consortium/slate-editor";
-import { IProject } from "../types";
+import { IProject, IProjectAdmin } from "../types";
 import { camelToSnakeCaseKeys, snakeToCamelCaseKeys } from "../../shared/convert-keys";
 
 import "@concord-consortium/slate-editor/build/index.css";
@@ -35,6 +35,7 @@ export const ProjectSettingsForm: React.FC<IProjectSettingsFormProps> = ({id}: I
   const [copyrightValue, setCopyrightValue] = useState(htmlToSlate(""));
   const [pageTitle, setPageTitle] = useState("New Project");
   const [project, setProject] = useState(newProject);
+  const [admins, setAdmins] = useState<IProjectAdmin[]>([]);
   const [projectLoaded, setProjectLoaded] = useState(false);
   const [isNewProject, setIsNewProject] = useState(false);
   const [projectSaved, setProjectSaved] = useState(false);
@@ -69,6 +70,7 @@ export const ProjectSettingsForm: React.FC<IProjectSettingsFormProps> = ({id}: I
     delete data.project.created_at;
     delete data.project.updated_at;
     setProject(snakeToCamelCaseKeys(data.project));
+    setAdmins(data.admins || []);
     setProjectLoaded(true);
     setPageTitle(`Edit ${data.project.title}`);
   };
@@ -110,11 +112,9 @@ export const ProjectSettingsForm: React.FC<IProjectSettingsFormProps> = ({id}: I
   const handleCollaboratorsImageUrlChange = handleTextInputChange("collaboratorsImageUrl");
   const handleContactEmailChange = handleTextInputChange("contactEmail");
   const handleCopyrightImageUrlChange = handleTextInputChange("copyrightImageUrl");
-  const handleFooterChange = handleTextareaChange("footer");
   const handleFundersImageUrlChange = handleTextInputChange("fundersImageUrl");
   const handleKeyChange = handleTextInputChange("projectKey");
   const handleLogoApChange = handleTextInputChange("logoAp");
-  const handleLogoLaraChange = handleTextInputChange("logoLara");
   const handleTitleChange = handleTextInputChange("title");
   const handleUrlChange = handleTextInputChange("url");
   const handleAboutChange = handleSlateRteChange("about", setAboutValue);
@@ -124,6 +124,7 @@ export const ProjectSettingsForm: React.FC<IProjectSettingsFormProps> = ({id}: I
   const handleSaveProject = async () => {
     const apiUrl = id ? `/api/v1/projects/${id}` : `/api/v1/projects`;
     const projectData = camelToSnakeCaseKeys(project);
+    projectData.admin_ids = admins.map(a => a.id);
 
     const data = await fetch(apiUrl, {
       method: "POST",
@@ -150,6 +151,63 @@ export const ProjectSettingsForm: React.FC<IProjectSettingsFormProps> = ({id}: I
     window.scrollTo(0, 0);
   };
 
+  const handleRemoveAdmin = (admin: IProjectAdmin) => (e: React.MouseEvent<HTMLButtonElement>) => {
+    const title = project.title.trim().length > 0 ? project.title : "this project";
+    if (confirm(`Are you sure you want to remove ${admin.email} as a Project Admin of ${title}?`)) {
+      setAdmins(prev => prev.filter(a => a.id !== admin.id));
+    }
+  };
+
+  const renderProjectAdmins = () => {
+    if (!id) {
+      return null;
+    }
+
+    const renderList = () => {
+      if (!projectLoaded) {
+        return <div className="emphasis">Loading the admin list ...</div>;
+      }
+
+      if (admins.length === 0) {
+        return (
+          <div className="emphasis">
+            There are no project admins assigned to this project.
+            Please contact a site admin to add project admins to this project.
+          </div>
+        );
+      }
+
+      return (
+        <div>
+          <table>
+            <tbody>
+              {admins.map(admin => (
+                <tr key={admin.id}>
+                  <td>{admin.email}</td>
+                  <td>
+                    <button
+                      title="Remove this project admin from the project"
+                      onClick={handleRemoveAdmin(admin)}>
+                        DELETE
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <div className="emphasis">Please contact a site admin to add additional project admins to this project.</div>
+        </div>
+      );
+    };
+
+    return (
+      <div className="projectAdmins">
+        <label>Project Admins</label>
+        {renderList()}
+      </div>
+    );
+  };
+
   if (isNewProject && projectSaved) {
     return(null);
   }
@@ -165,95 +223,72 @@ export const ProjectSettingsForm: React.FC<IProjectSettingsFormProps> = ({id}: I
           </ul>
         </div>
       </nav>
-      <h1 className="title">{pageTitle}</h1>
+      <div className="titleContainer">
+        <h1>{pageTitle}</h1>
+        <button className="save-button" onClick={handleSaveProject}>Save</button>
+      </div>
       {alertMessage && <div className="alertMessage">{alertMessage}</div>}
-      <dl>
-        <dt>
-          <label htmlFor="project-title">Title</label>
-        </dt>
-        <dd>
-          <input
-            id="project-title"
-            name="project[title]"
-            defaultValue={project.title}
-            onChange={handleTitleChange}
-            onBlur={handleTitleBlur}
-          />
-        </dd>
-        <dt>
-          <label htmlFor="project-key">Project Key</label>
-        </dt>
-        <dd className="hasNote">
-          <input
-            id="project-key"
-            name="project[projectKey]"
-            defaultValue={project.projectKey}
-            onChange={handleKeyChange}
-          />
-        </dd>
-        <dd className="inputNote">
-          The project key is used across sites to synchronise project information. It must be a unique value.
-        </dd>
-        <dt>
-          <label htmlFor="project-logo-lara">LARA Runtime Logo URL</label>
-        </dt>
-        <dd className="hasNote">
-          <input
-            id="project-logo-lara"
-            name="project[logo_lara]"
-            defaultValue={project.logoLara}
-            onChange={handleLogoLaraChange}
-          />
-        </dd>
-        <dd className="inputNote">
-          Image should be 228 pixels wide by 70 pixels high. If left blank, the Concord Consortium
-          logo will be used by default.
-        </dd>
-        <dt>
-          <label htmlFor="project-logo-ap">Activity Player Logo URL</label>
-        </dt>
-        <dd className="hasNote">
-          <input
-            id="project-logo-ap"
-            name="project[logo_ap]"
-            defaultValue={project.logoAp}
-            onChange={handleLogoApChange}
-          />
-        </dd>
-        <dd className="inputNote">
-          Image should be 250 pixels wide by 78 pixels high. If left blank, the Concord Consortium
-          logo will be used by default.
-        </dd>
-        <dt>
-          <label htmlFor="project-url">Project Page URL</label>
-        </dt>
-        <dd className="hasNote">
-          <input
-            id="project-url"
-            name="project[url]"
-            defaultValue={project.url}
-            onChange={handleUrlChange}
-          />
-        </dd>
-        <dd className="inputNote">
-          When logo image is clicked, this is URL will launch in a new browser tab.
-        </dd>
-        <dt>
-          <label htmlFor="project-url">LARA Runtime Footer</label>
-        </dt>
-        <dd className="hasNote">
-          <textarea
-            id="project-footer"
-            name="project[footer]"
-            defaultValue={project.footer}
-            onChange={handleFooterChange}
-          />
-        </dd>
-        <dd className="inputNote">
-          Raw HTML can be entered into this legacy field.
-        </dd>
-      </dl>
-      <h2>Activity Player Footer</h2>
+      <div className="splitForm">
+        <dl>
+          <dt>
+            <label htmlFor="project-title">Title</label>
+          </dt>
+          <dd>
+            <input
+              id="project-title"
+              name="project[title]"
+              defaultValue={project.title}
+              onChange={handleTitleChange}
+              onBlur={handleTitleBlur}
+            />
+          </dd>
+          <dt>
+            <label htmlFor="project-key">Project Key</label>
+          </dt>
+          <dd className="hasNote">
+            <input
+              id="project-key"
+              name="project[projectKey]"
+              defaultValue={project.projectKey}
+              onChange={handleKeyChange}
+            />
+          </dd>
+          <dd className="inputNote">
+            The project key is used across sites to synchronise project information. It must be a unique value.
+          </dd>
+          <dt>
+            <label htmlFor="project-logo-ap">Activity Header Logo URL</label>
+          </dt>
+          <dd className="hasNote">
+            <input
+              id="project-logo-ap"
+              name="project[logo_ap]"
+              defaultValue={project.logoAp}
+              onChange={handleLogoApChange}
+            />
+          </dd>
+          <dd className="inputNote">
+            Image should be 250 pixels wide by 78 pixels high. If left blank, the Concord Consortium
+            logo will be used by default.
+          </dd>
+          <dt>
+            <label htmlFor="project-url">Project Page URL</label>
+          </dt>
+          <dd className="hasNote">
+            <input
+              id="project-url"
+              name="project[url]"
+              defaultValue={project.url}
+              onChange={handleUrlChange}
+            />
+          </dd>
+          <dd className="inputNote">
+            When logo image is clicked, this is URL will launch in a new browser tab.
+          </dd>
+        </dl>
+        {renderProjectAdmins()}
+      </div>
+      <h2>Activity Homepage Footer</h2>
       <dl>
         <dt>
           <label>Copyright/Attribution Text</label>
@@ -342,7 +377,35 @@ export const ProjectSettingsForm: React.FC<IProjectSettingsFormProps> = ({id}: I
           your contact email will be displayed in the footer.
         </dd>
       </dl>
-      <button id="save-button" onClick={handleSaveProject}>Save</button>
+      <h2>Legacy LARA Fields</h2>
+      <dl>
+        <dd className="inputNote">
+          These fields are no longer used but are shown here in case you need to see or copy their values.
+        </dd>
+        <dt>
+          <label htmlFor="project-logo-lara">LARA Runtime Logo URL</label>
+        </dt>
+        <dd>
+          <input
+            id="project-logo-lara"
+            name="project[logo_lara]"
+            defaultValue={project.logoLara}
+            disabled={true}
+          />
+        </dd>
+        <dt>
+          <label htmlFor="project-url">LARA Runtime Footer</label>
+        </dt>
+        <dd>
+          <textarea
+            id="project-footer"
+            name="project[footer]"
+            defaultValue={project.footer}
+            disabled={true}
+          />
+        </dd>
+      </dl>
+      <button className="save-button" onClick={handleSaveProject}>Save</button>
     </div>
   );
 };

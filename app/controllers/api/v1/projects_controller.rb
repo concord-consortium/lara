@@ -12,9 +12,9 @@ class Api::V1::ProjectsController < API::APIController
   # GET /api/v1/projects/1.json
   def show
     begin
-      @project = Project.find(params[:id])
+      @project = Project.includes(:admins).find(params[:id])
       authorize! :manage, @project
-      render json: {project: @project}, status: 200
+      render json: {project: @project, admins: admin_json(@project)}, status: 200
     rescue ActiveRecord::RecordNotFound
       render json: {error: "Project not found"}, status: 404
     end
@@ -36,8 +36,12 @@ class Api::V1::ProjectsController < API::APIController
     @updated_project_hash = params[:project]
     @project = Project.find(@updated_project_hash[:id]);
     authorize! :update, @project
+
+    # remove any extra admin ids in the update that are not in the original, to ensure we can only remove and not add project admins
+    @updated_project_hash[:admin_ids] = (@updated_project_hash[:admin_ids] || []).select { |id| @project.admin_ids.include?(id.to_i) }
+
     if @project.update_attributes(@updated_project_hash)
-      render json: {success: true, project: @project}, status: :ok
+      render json: {success: true, project: @project, admins: admin_json(@project)}, status: :ok
     else
       render json: @project.errors, status: :unprocessable_entity
     end
@@ -52,6 +56,12 @@ class Api::V1::ProjectsController < API::APIController
     else
       render json: @project.errors, status: :unprocessable_entity
     end
+  end
+
+  private
+
+  def admin_json(project)
+    project.admins.map { |a| {id: a.id, email: a.email} }
   end
 
 end

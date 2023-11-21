@@ -3,7 +3,7 @@ class Project < ActiveRecord::Base
   DefaultKey = 'default-project'
 
   attr_accessible :footer, :logo_lara, :logo_ap, :title, :url, :about, :project_key, :copyright,
-                  :copyright_image_url, :collaborators, :funders_image_url, :collaborators_image_url, :contact_email
+                  :copyright_image_url, :collaborators, :funders_image_url, :collaborators_image_url, :contact_email, :admin_ids
   validates :project_key, uniqueness: true
   has_many :sequences
   has_many :lightweight_activities
