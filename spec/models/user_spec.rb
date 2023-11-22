@@ -26,57 +26,100 @@ describe User do
     context 'when is an administrator' do
       let(:user) { FactoryGirl.build(:admin) }
 
-      it { is_expected.to be_able_to(:manage, User) }
-      it { is_expected.to be_able_to(:manage, Sequence) }
-      it { is_expected.to be_able_to(:manage, LightweightActivity) }
-      it { is_expected.to be_able_to(:manage, InteractivePage) }
-      it { is_expected.to be_able_to(:manage, locked_activity) }
+      it { is_expected.to be_able_to(:manage, :all) }
     end
 
     context 'when is an author' do
-      let(:user) { FactoryGirl.build(:author) }
-      let(:other_user) { FactoryGirl.build(:author) }
-      let (:pages) { FactoryGirl.create(:page) }
-      let(:self_activity) { stub_model(LightweightActivity, :user_id => user.id) }
+      let (:user) { FactoryGirl.build(:author) }
+      let (:other_user) { FactoryGirl.build(:author) }
+      let (:page) { FactoryGirl.create(:page) }
+      let (:other_page) { FactoryGirl.create(:page) }
+      let (:self_activity) { stub_model(LightweightActivity, :user_id => user.id, :pages => [page]) }
       let (:other_activity) { stub_model(
                                          LightweightActivity,
                                          :user_id => 15,
-                                         :pages => [pages],
+                                         :pages => [other_page],
                                          :publication_status => 'public'
                                         ) }
       let (:self_sequence) { stub_model(Sequence, :user_id => user.id) }
       let (:other_sequence) { stub_model(Sequence, :user_id => 15) }
+      let (:public_sequence) { stub_model(Sequence, :publication_status => "public", :user_id => 15) }
+      let (:hidden_sequence) { stub_model(Sequence, :publication_status => "hidden", :user_id => 15) }
+      let (:private_sequence) { stub_model(Sequence, :publication_status => "private", :user_id => 15) }
+      let (:archive_sequence) { stub_model(Sequence, :publication_status => "archive", :user_id => 15) }
+      let (:self_glossary) { stub_model(Glossary, :user_id => user.id) }
+      let (:section) { FactoryGirl.create(:section, :on_page, :with_items, interactive_page: page) }
+      let (:plugin) { FactoryGirl.create(:plugin, plugin_scope: self_activity) }
+      let (:other_plugin) { FactoryGirl.create(:plugin, plugin_scope: other_activity) }
+      let (:interactive) { FactoryGirl.create(:mw_interactive) }
 
-      it { is_expected.to be_able_to(:create, Sequence) }
-      it { is_expected.to be_able_to(:create, LightweightActivity) }
+      it { is_expected.to be_able_to(:create, Glossary) }
+      it { is_expected.to be_able_to(:duplicate, Glossary) }
+      it { is_expected.to be_able_to(:export, Glossary) }
+      it { is_expected.to be_able_to(:import, Glossary) }
+      it { is_expected.to be_able_to(:manage, Glossary, self_glossary) }
+      it { is_expected.to be_able_to(:read, Glossary) }
+
       it { is_expected.to be_able_to(:create, InteractivePage) }
-      # Can export all activities and sequences
-      it { is_expected.to be_able_to(:export, self_sequence) }
-      it { is_expected.to be_able_to(:export, other_sequence) }
+      it { is_expected.to be_able_to(:manage, InteractivePage, self_activity) }
+
+      it { is_expected.to be_able_to(:create, LightweightActivity) }
+      it { is_expected.to be_able_to(:duplicate, other_activity) }
+      it { is_expected.not_to be_able_to(:duplicate, locked_activity) }
       it { is_expected.to be_able_to(:export, self_activity) }
       it { is_expected.to be_able_to(:export, other_activity) }
-      # Can import all activities and sequences
-      it { is_expected.to be_able_to(:import, Sequence) }
+      it { is_expected.not_to be_able_to(:export, locked_activity) }
       it { is_expected.to be_able_to(:import, LightweightActivity) }
-      # Can edit activities, etc. which they own
+      it { is_expected.to be_able_to(:read, other_activity) }
+      it { is_expected.not_to be_able_to(:manage, other_activity) }
+      it { is_expected.to be_able_to(:manage, self_activity) }
+      it { is_expected.not_to be_able_to(:manage, locked_activity) }
+      it { is_expected.not_to be_able_to(:manage, other_activity) }
+
+      it { is_expected.to be_able_to(:create, LinkedPageItem) }
+
+      it { is_expected.to be_able_to(:create, PageItem) }
+      it { is_expected.to be_able_to(:read, other_activity.pages.first) }
+
+      it { is_expected.to be_able_to(:create, Plugin) }
+      it { is_expected.to be_able_to(:manage, plugin) }
+      it { is_expected.not_to be_able_to(:manage, other_plugin) }
+
+      it { is_expected.to be_able_to(:create, Sequence) }
+      it { is_expected.to be_able_to(:duplicate, public_sequence) }
+      it { is_expected.to be_able_to(:duplicate, hidden_sequence) }
+      it { is_expected.not_to be_able_to(:duplicate, private_sequence) }
+      it { is_expected.not_to be_able_to(:duplicate, archive_sequence) }
+      it { is_expected.to be_able_to(:export, self_sequence) }
+      it { is_expected.to be_able_to(:export, other_sequence) }
+      it { is_expected.to be_able_to(:export, public_sequence) }
+      it { is_expected.to be_able_to(:export, hidden_sequence) }
+      it { is_expected.to be_able_to(:export, private_sequence) }
+      it { is_expected.to be_able_to(:export, archive_sequence) }
+      it { is_expected.to be_able_to(:import, Sequence) }
       it { is_expected.to be_able_to(:update, self_sequence) }
       it { is_expected.not_to be_able_to(:update, other_sequence) }
-      it { is_expected.to be_able_to(:update, self_activity) }
-      it { is_expected.not_to be_able_to(:update, other_activity) }
-      it { is_expected.to be_able_to(:read, other_activity) }
-      it { is_expected.to be_able_to(:read, other_activity.pages.first) }
-      it { is_expected.to be_able_to(:duplicate, other_activity) }
-      # Can't edit locked activities
-      it { is_expected.not_to be_able_to(:update, locked_activity) }
-      it { is_expected.to be_able_to(:read, other_activity.pages.first) }
-      it { is_expected.not_to be_able_to(:duplicate, locked_activity) }
-    end
-
-    context 'when is a user' do
-      # pending 'currently same as anonymous'
     end
 
     context 'when is anonymous' do
+      let(:other_user) do
+        ou = FactoryGirl.build(:author)
+        ou.id = 3
+        ou.save
+        ou
+      end
+      let(:anon_run) { FactoryGirl.create(:run, user: nil) }
+      let(:anon_sequence_run) { FactoryGirl.create(:sequence_run, user: nil) }
+      let(:other_run) { FactoryGirl.create(:run, user: other_user) }
+      let(:other_sequence_run) { FactoryGirl.create(:sequence_run, user: other_user) }
+
+      it { is_expected.to be_able_to(:access, anon_run) }
+      it { is_expected.to be_able_to(:access, anon_sequence_run) }
+      it { is_expected.not_to be_able_to(:access, other_run) }
+      it { is_expected.not_to be_able_to(:access, other_sequence_run) }
+    end
+
+    context 'when is a user' do
       let(:user) do
         u = FactoryGirl.build(:user)
         u.id = 2
@@ -89,14 +132,38 @@ describe User do
         ou.save
         ou
       end
+      let(:other_user2) do
+        ou = FactoryGirl.build(:author)
+        ou.id = 4
+        ou.save
+        ou
+      end
       let(:hidden_activity) do
         act = FactoryGirl.create(:activity)
         act.user = other_user
+        act.user_id = other_user.id
+        act.pages << FactoryGirl.create(:page)
         act.save
         act
       end
       let(:public_activity) do
         oa = FactoryGirl.create(:public_activity)
+        oa.user = other_user
+        oa.user_id = other_user.id
+        oa.pages << FactoryGirl.create(:page)
+        oa.save
+        oa
+      end
+      let(:private_activity) do
+        oa = FactoryGirl.create(:private_activity)
+        oa.user = other_user
+        oa.user_id = other_user.id
+        oa.pages << FactoryGirl.create(:page)
+        oa.save
+        oa
+      end
+      let(:archive_activity) do
+        oa = FactoryGirl.create(:archive_activity)
         oa.user = other_user
         oa.user_id = other_user.id
         oa.pages << FactoryGirl.create(:page)
@@ -111,14 +178,98 @@ describe User do
         oa.save
         oa
       end
+      let(:own_sequence) do
+        os = FactoryGirl.create(:sequence_with_activity, :publication_status => "private")
+        os.user = user
+        os.user_id = user.id
+        os.save
+        os
+      end
+      let(:archive_sequence) { FactoryGirl.create(:sequence_with_activity, :publication_status => "archive") }
+      let(:hidden_sequence) { FactoryGirl.create(:sequence_with_activity, :publication_status => "hidden") }
+      let(:public_sequence) { FactoryGirl.create(:sequence_with_activity, :publication_status => "public") }
+      let(:private_sequence) { FactoryGirl.create(:sequence_with_activity, :publication_status => "private") }
+      let(:own_run) { FactoryGirl.create(:run, user: user) }
+      let(:anon_run) { FactoryGirl.create(:run, user: nil) }
+      let(:other_run) { FactoryGirl.create(:run, user: other_user) }
+      let(:own_sequence_run) { FactoryGirl.create(:sequence_run, user: user) }
+      let(:own_irs) { FactoryGirl.create(:interactive_run_state, run: own_run) }
+      let(:other_irs) { FactoryGirl.create(:interactive_run_state, run: other_run) }
+      let(:other_sequence_run) { FactoryGirl.create(:sequence_run, user: other_user) }
+      let(:anon_irs) { FactoryGirl.create(:interactive_run_state, run: anon_run) }
+
+      let(:collaboration_activity) { FactoryGirl.create(:activity) }
+      let(:follower_run) { FactoryGirl.create(:run, user: user, activity: collaboration_activity) }
+      let(:leader_run) { FactoryGirl.create(:run, user: other_user, activity: collaboration_activity) }
+      let(:collaboration_run) { FactoryGirl.create(:collaboration_run, user: other_user) }
+      let(:collaborating_run) { FactoryGirl.create(:run, user: other_user, collaboration_run: collaboration_run, activity: collaboration_activity) }
+      let(:collaboration_irs) { FactoryGirl.create(:interactive_run_state, run: collaborating_run) }
+
+      let(:other_collaboration_activity) { FactoryGirl.create(:activity) }
+      let(:other_follower_run) { FactoryGirl.create(:run, user: other_user2, activity: other_collaboration_activity) }
+      let(:other_leader_run) { FactoryGirl.create(:run, user: other_user, activity: other_collaboration_activity) }
+      let(:other_collaboration_run) { FactoryGirl.create(:collaboration_run, user: other_user2) }
+      let(:other_collaborating_run) { FactoryGirl.create(:run, user: other_user, collaboration_run: other_collaboration_run, activity: other_collaboration_activity) }
+      let(:other_collaboration_irs) { FactoryGirl.create(:interactive_run_state, run: other_collaborating_run) }
+
+      it { is_expected.not_to be_able_to(:create, LightweightActivity) }
+      it { is_expected.to be_able_to(:read, archive_activity) }
+      it { is_expected.to be_able_to(:read, hidden_activity) }
+      it { is_expected.to be_able_to(:read, public_activity) }
+      it { is_expected.not_to be_able_to(:read, private_activity) }
+      it { is_expected.to be_able_to(:update, own_activity) }
+      it { is_expected.not_to be_able_to(:update, public_activity) }
+
+      it { is_expected.not_to be_able_to(:create, InteractivePage) }
+      it { is_expected.to be_able_to(:read, archive_activity.pages[0]) }
+      it { is_expected.to be_able_to(:read, hidden_activity.pages[0]) }
+      it { is_expected.to be_able_to(:read, public_activity.pages[0]) }
+      it { is_expected.not_to be_able_to(:read, private_activity.pages[0]) }
+      it { is_expected.to be_able_to(:update, own_activity.pages[0]) }
+      it { is_expected.not_to be_able_to(:update, public_activity.pages[0]) }
+
+      it { is_expected.not_to be_able_to(:create, Sequence) }
+      it { is_expected.to be_able_to(:read, Sequence) }
+      it { is_expected.to be_able_to(:read, archive_sequence) }
+      it { is_expected.to be_able_to(:read, hidden_sequence) }
+      it { is_expected.to be_able_to(:read, public_sequence) }
+      it { is_expected.not_to be_able_to(:read, private_sequence) }
+      it { is_expected.to be_able_to(:update, own_sequence) }
+      it { is_expected.not_to be_able_to(:update, public_sequence) }
 
       it { is_expected.not_to be_able_to(:manage, User) }
-      it { is_expected.not_to be_able_to(:create, LightweightActivity) }
-      it { is_expected.not_to be_able_to(:update, public_activity) }
-      it { is_expected.to be_able_to(:update, own_activity) }
-      it { is_expected.to be_able_to(:read, Sequence) }
-      it { is_expected.to be_able_to(:read, public_activity) }
-      it { is_expected.to be_able_to(:read, hidden_activity) } # But it won't be in lists
+
+      it { is_expected.to be_able_to(:about, Project) }
+      it { is_expected.to be_able_to(:help, Project) }
+      it { is_expected.to be_able_to(:contact_us, Project) }
+
+      it { is_expected.to be_able_to(:access, own_run) }
+      it { is_expected.not_to be_able_to(:access, other_run) }
+      it { is_expected.to be_able_to(:access, own_sequence_run) }
+      it { is_expected.not_to be_able_to(:access, other_sequence_run) }
+
+      it { is_expected.to be_able_to(:show, own_irs) }
+      it { is_expected.to be_able_to(:update, own_irs) }
+      it { is_expected.to be_able_to(:show, anon_irs) }
+      it { is_expected.to be_able_to(:update, anon_irs) }
+      it { is_expected.not_to be_able_to(:show, other_irs) }
+      it { is_expected.not_to be_able_to(:update, other_irs) }
+
+      describe "collaboration interactive run states" do
+        before (:each) do
+          collaboration_run.runs << leader_run
+          collaboration_run.runs << follower_run
+
+          other_collaboration_run.runs << other_leader_run
+          other_collaboration_run.runs << other_follower_run
+        end
+
+        it { is_expected.to be_able_to(:show, collaboration_irs) }
+        it { is_expected.to be_able_to(:update, collaboration_irs) }
+
+        it { is_expected.not_to be_able_to(:show, other_collaboration_irs) }
+        it { is_expected.not_to be_able_to(:update, other_collaboration_irs) }
+      end
     end
   end
 
