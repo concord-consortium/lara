@@ -57,11 +57,11 @@ describe User do
       it { is_expected.to be_able_to(:duplicate, Glossary) }
       it { is_expected.to be_able_to(:export, Glossary) }
       it { is_expected.to be_able_to(:import, Glossary) }
-      it { is_expected.to be_able_to(:manage, Glossary, self_glossary) }
+      it { is_expected.to be_able_to(:manage, self_glossary) }
       it { is_expected.to be_able_to(:read, Glossary) }
 
       it { is_expected.to be_able_to(:create, InteractivePage) }
-      it { is_expected.to be_able_to(:manage, InteractivePage, self_activity) }
+      it { is_expected.to be_able_to(:manage, self_activity) }
 
       it { is_expected.to be_able_to(:create, LightweightActivity) }
       it { is_expected.to be_able_to(:duplicate, other_activity) }
@@ -99,6 +99,82 @@ describe User do
       it { is_expected.to be_able_to(:import, Sequence) }
       it { is_expected.to be_able_to(:update, self_sequence) }
       it { is_expected.not_to be_able_to(:update, other_sequence) }
+    end
+
+    context 'when is a project admin' do
+      before(:each) do
+        project.admins = [user]
+        project.save!
+        project.reload
+
+        locked_activity.project = project
+        locked_activity.save!
+        locked_activity.reload
+      end
+
+      let (:user) { FactoryGirl.build(:user) }
+      let (:project) { FactoryGirl.build(:project) }
+      let (:other_project) { FactoryGirl.build(:project) }
+      let (:page) { FactoryGirl.build(:page) }
+      let (:activity) { stub_model(LightweightActivity, :user_id => 15, :pages => [page], :project => project) }
+      let (:other_activity) { stub_model(LightweightActivity, :user_id => 15, :pages => [page], :publication_status => 'public') }
+      let (:sequence) { stub_model(Sequence, :user_id => 15, :project => project) }
+      let (:public_sequence) { stub_model(Sequence, :publication_status => "public", :user_id => 15, :project => project) }
+      let (:hidden_sequence) { stub_model(Sequence, :publication_status => "hidden", :user_id => 15, :project => project) }
+      let (:private_sequence) { stub_model(Sequence, :publication_status => "private", :user_id => 15, :project => project) }
+      let (:archive_sequence) { stub_model(Sequence, :publication_status => "archive", :user_id => 15, :project => project) }
+      let (:glossary) { stub_model(Glossary, :user_id => 15, :project => project) }
+      let (:no_project_glossary) { stub_model(Glossary, :user_id => 15) }
+      let (:other_project_glossary) { stub_model(Glossary, :user_id => 15, :project => other_project) }
+      let (:section) { FactoryGirl.create(:section, :on_page, :with_items, interactive_page: page) }
+      let (:plugin) { FactoryGirl.create(:plugin, plugin_scope: activity) }
+      let (:interactive) { FactoryGirl.create(:mw_interactive) }
+
+      it { is_expected.to be_able_to(:create, Glossary) }
+      it { is_expected.to be_able_to(:duplicate, glossary) }
+      it { is_expected.to be_able_to(:export, glossary) }
+      it { is_expected.to be_able_to(:import, glossary) }
+      it { is_expected.to be_able_to(:manage, glossary) }
+      it { is_expected.not_to be_able_to(:manage, no_project_glossary) }
+      it { is_expected.not_to be_able_to(:manage, other_project_glossary) }
+      it { is_expected.to be_able_to(:read, glossary) }
+
+      it { is_expected.to be_able_to(:create, InteractivePage) }
+      it { is_expected.to be_able_to(:manage, InteractivePage, activity) }
+
+      it { is_expected.to be_able_to(:create, LightweightActivity) }
+      it { is_expected.to be_able_to(:duplicate, other_activity) }
+      it { is_expected.to be_able_to(:duplicate, locked_activity) }
+      it { is_expected.to be_able_to(:export, activity) }
+      it { is_expected.to be_able_to(:export, other_activity) }
+      it { is_expected.to be_able_to(:export, locked_activity) }
+      it { is_expected.to be_able_to(:import, LightweightActivity) }
+      it { is_expected.to be_able_to(:read, other_activity) }
+      it { is_expected.not_to be_able_to(:manage, other_activity) }
+      it { is_expected.to be_able_to(:manage, activity) }
+      it { is_expected.to be_able_to(:manage, locked_activity) }
+      it { is_expected.not_to be_able_to(:manage, other_activity) }
+
+      it { is_expected.to be_able_to(:create, LinkedPageItem) }
+
+      it { is_expected.to be_able_to(:create, PageItem) }
+      it { is_expected.to be_able_to(:read, other_activity.pages.first) }
+
+      it { is_expected.to be_able_to(:create, Plugin) }
+      it { is_expected.to be_able_to(:manage, plugin) }
+
+      it { is_expected.to be_able_to(:create, Sequence) }
+      it { is_expected.to be_able_to(:duplicate, public_sequence) }
+      it { is_expected.to be_able_to(:duplicate, hidden_sequence) }
+      it { is_expected.to be_able_to(:duplicate, private_sequence) }
+      it { is_expected.to be_able_to(:duplicate, archive_sequence) }
+      it { is_expected.to be_able_to(:export, sequence) }
+      it { is_expected.to be_able_to(:export, public_sequence) }
+      it { is_expected.to be_able_to(:export, hidden_sequence) }
+      it { is_expected.to be_able_to(:export, private_sequence) }
+      it { is_expected.to be_able_to(:export, archive_sequence) }
+      it { is_expected.to be_able_to(:import, Sequence) }
+      it { is_expected.to be_able_to(:update, sequence) }
     end
 
     context 'when is anonymous' do

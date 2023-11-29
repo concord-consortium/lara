@@ -45,8 +45,12 @@ class User < ActiveRecord::Base
     return is_author
   end
 
+  def is_project_admin?()
+    admined_projects.length > 0
+  end
+
   def project_admin_of?(project)
-    admined_projects.any? {|ap| ap.id == project.id }
+    project && admined_projects.any? {|ap| ap.id == project.id }
   end
 
   def most_recent_authentication

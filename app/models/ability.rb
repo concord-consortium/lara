@@ -13,6 +13,62 @@ class Ability
       # Admins can do everything
       can :manage, :all
 
+    elsif user.is_project_admin?
+      can :create, Glossary
+      can :duplicate, Glossary
+      can :export, Glossary
+      can :import, Glossary
+      can :manage, Glossary do |glossary|
+        user.id == glossary.user_id || user.project_admin_of?(glossary.project)
+      end
+      can :read, Glossary
+
+      can :create, InteractivePage
+      can :manage, InteractivePage do |page|
+        user.id == page.lightweight_activity.user_id || user.project_admin_of?(page.lightweight_activity.project)
+      end
+
+      can :create, LightweightActivity
+      can :duplicate, LightweightActivity do |activity|
+        user.id == activity.user_id || user.project_admin_of?(activity.project) || (!activity.is_locked && ['public', 'hidden'].include?(activity.publication_status))
+      end
+      can :export, LightweightActivity do |activity|
+        user.id == activity.user_id || user.project_admin_of?(activity.project) || (!activity.is_locked && ['public', 'hidden'].include?(activity.publication_status))
+      end
+      can :import, LightweightActivity
+      can :manage, LightweightActivity do |activity|
+        user.id == activity.user_id || user.project_admin_of?(activity.project)
+      end
+
+      can :create, LinkedPageItem
+      can :manage, LinkedPageItem do |linked_page_item|
+        activity = linked_page_item.primary.interactive_page.lightweight_activity
+        user.id == activity.user_id || user.project_admin_of?(activity.project)
+      end
+
+      can :create, PageItem
+      can :manage, PageItem do |page_item|
+        activity = page_item.interactive_page.lightweight_activity
+        user.id == activity.user_id || user.project_admin_of?(activity.project)
+      end
+
+      can :create, Plugin
+      can :manage, Plugin do |plugin|
+        user.id == plugin.plugin_scope.user_id || user.project_admin_of?(plugin.plugin_scope.project)
+      end
+
+      can :create, Sequence
+      can :duplicate, Sequence do |sequence|
+        user.id == sequence.user_id || user.project_admin_of?(sequence.project) || ['public', 'hidden'].include?(sequence.publication_status)
+      end
+      can :export, Sequence do |sequence|
+        user.id == sequence.user_id || user.project_admin_of?(sequence.project) || ['public', 'hidden'].include?(sequence.publication_status)
+      end
+      can :import, Sequence
+      can :manage, Sequence do |sequence|
+        user.id == sequence.user_id || user.project_admin_of?(sequence.project)
+      end
+
     elsif user.author?
       # Authors can do the following, organized by model
       can :create, Glossary
@@ -50,16 +106,28 @@ class Ability
     end
 
     # Everyone (author and regular user) can update activities they own.
-    can :update, LightweightActivity, :user_id => user.id
+    can :update, LightweightActivity do |activity|
+      user.id == activity.user_id || user.project_admin_of?(activity.project)
+    end
     # Everyone (author and regular user) can update pages in the activities they own.
-    can :update, InteractivePage, :lightweight_activity => { :user_id => user.id }
+    can :update, InteractivePage do |page|
+      user.id == page.lightweight_activity.user_id || user.project_admin_of?(page.lightweight_activity)
+    end
     # Everyone (author and regular user) can update sequences they own.
-    can :update, Sequence, :user_id => user.id
+    can :update, Sequence do |sequence|
+      user.id == sequence.user_id || user.project_admin_of?(sequence.project)
+    end
     # Everyone (author and regular user) can read public, hidden and archived sequences or activities.
     ['public', 'hidden', 'archive'].each do |allowed_status|
-      can :read, Sequence, :publication_status => allowed_status
-      can :read, LightweightActivity, :publication_status => allowed_status
-      can :read, InteractivePage, :lightweight_activity => { :publication_status => allowed_status }
+      can :read, Sequence do |sequence|
+        sequence.publication_status == allowed_status || user.project_admin_of?(sequence.project)
+      end
+      can :read, LightweightActivity do |activity|
+        activity.publication_status == allowed_status || user.project_admin_of?(activity.project)
+      end
+      can :read, InteractivePage do |page|
+        page.lightweight_activity.publication_status == allowed_status || user.project_admin_of?(page.lightweight_activity)
+      end
     end
     can :about, Project
     can :help, Project

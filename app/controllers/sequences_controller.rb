@@ -5,6 +5,8 @@ class SequencesController < ApplicationController
 
   before_filter :enable_js_logger, :only => [:show]
 
+  before_filter :setup_abilities, :only => [:new, :edit]
+
   # Adds remote_duplicate handler (POST remote_duplicate)
   include RemoteDuplicateSupport
 
@@ -205,4 +207,11 @@ class SequencesController < ApplicationController
     end
   end
 
+  def setup_abilities
+    if params[:action] == "edit"
+      @is_project_admin = current_user.project_admin_of?(@sequence.project) || (@sequence.user_id == current_user.id && current_user.is_project_admin?)
+    else
+      @is_project_admin = current_user.is_project_admin?
+    end
+  end
 end

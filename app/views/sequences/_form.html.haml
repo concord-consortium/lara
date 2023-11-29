@@ -42,9 +42,10 @@
       = f.label :font_size, "Font Size"
       = f.select :font_size, options_for_select(Sequence::FONT_SIZE_OPTIONS, @sequence.font_size)
       .hint This will override the "Font Size" setting for any activities in this sequence. Note: some interactives may not respond to font size settings.
-    .field
-      = f.label :project_id, "Project"
-      = f.select :project_id, options_from_collection_for_select(Project.visible_to_user(current_user), 'id', 'title', @sequence.project_id), { :include_blank => true }
+    - if current_user.is_admin || @is_project_admin
+      .field
+        = f.label :project_id, "Project"
+        = f.select :project_id, options_from_collection_for_select(Project.visible_to_user(current_user), 'id', 'title', @sequence.project_id), { :include_blank => true }
     .field
       = f.label :thumbnail_url, "Sequence Thumbnail Image URL"
       = f.text_field :thumbnail_url, :class => "thumbnail_source", :id => "sequence_thumbnail_source"
@@ -65,7 +66,7 @@
     .field
       = f.label :logo
       = f.text_field :logo, :id => "sequence_logo"
-    - if current_user.is_admin
+    - if current_user.is_admin || @is_project_admin
       .field
         = f.check_box :defunct
         = f.label :defunct,  "Defunct"
