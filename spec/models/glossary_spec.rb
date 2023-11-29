@@ -4,9 +4,10 @@ RSpec.describe Glossary do
   let(:author)    { FactoryGirl.create(:author) }
   let(:author2)   { FactoryGirl.create(:author) }
   let(:admin)     { FactoryGirl.create(:admin) }
+  let(:project)     { FactoryGirl.create(:project) }
 
   let(:glossary)      {
-    glossary = FactoryGirl.create(:glossary, name: "Glossary 1", user: author, legacy_glossary_resource_id: "TEST-LEGACY-ID")
+    glossary = FactoryGirl.create(:glossary, name: "Glossary 1", user: author, project: project, legacy_glossary_resource_id: "TEST-LEGACY-ID")
     glossary.json = JSON.generate({
       askForUserDefinition: true,
       autoShowMediaInPopup: true,
@@ -54,6 +55,7 @@ RSpec.describe Glossary do
       expect(glossary.export(author)).to eq({
         id: glossary.id,
         name: glossary.name,
+        project: project.export(),
         legacy_glossary_resource_id: "TEST-LEGACY-ID",
         user_id: glossary.user_id,
         can_edit: true,
@@ -236,6 +238,7 @@ RSpec.describe Glossary do
     expect(glossary.to_hash).to eq({
       id: glossary.id,
       name: glossary.name,
+      project: glossary.project,
       legacy_glossary_resource_id: "TEST-LEGACY-ID",
       user_id: glossary.user_id,
       json: glossary.json
@@ -246,6 +249,7 @@ RSpec.describe Glossary do
     expect(glossary.to_export_hash).to eq({
       id: glossary.id,
       name: glossary.name,
+      project: glossary.project,
       legacy_glossary_resource_id: "TEST-LEGACY-ID",
       user_id: glossary.user_id,
       json: glossary.json,
@@ -257,6 +261,7 @@ RSpec.describe Glossary do
     expect(glossary.duplicate(author2).to_hash).to eq({
       id: nil,
       name: "Copy of #{glossary.name}",
+      project: glossary.project,
       legacy_glossary_resource_id: nil,
       user_id: author2.id,
       json: glossary.json

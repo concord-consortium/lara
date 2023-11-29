@@ -27,6 +27,8 @@ class GlossariesController < ApplicationController
     @can_edit = @glossary.can_edit(current_user)
     # any user can see the edit form as it has a special readonly view
     @approved_glossary_script = Glossary.get_glossary_approved_script()
+    @project = Project.id_and_title(@glossary.project)
+    @projects = Project.visible_to_user(current_user).map {|p| Project.id_and_title(p)}
   end
 
   def update

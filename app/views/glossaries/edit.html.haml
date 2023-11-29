@@ -24,6 +24,8 @@
       initialData: {
         id: #{@glossary.id.to_json},
         name: #{@glossary.name.to_json},
+        project: #{@project.to_json},
+        projects: #{@projects.to_json},
         json: #{@glossary.export_json_only.to_json},
         canEdit: #{@can_edit}
       },

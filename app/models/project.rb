@@ -97,4 +97,24 @@ class Project < ActiveRecord::Base
       return existing_project
     end
   end
+
+  def self.visible_to_user(user)
+    if user
+      if user.is_admin
+        self.all
+      else
+        user.admined_projects
+      end
+    else
+      self.none
+    end
+  end
+
+  def self.id_and_title(project)
+    if project
+      {id: project.id, title: project.title}
+    else
+      nil
+    end
+  end
 end

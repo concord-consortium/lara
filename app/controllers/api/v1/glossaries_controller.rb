@@ -25,12 +25,19 @@ class Api::V1::GlossariesController < API::APIController
         glossary.json = params[:json].to_json
       end
     end
+    if params.has_key?(:project)
+      if params[:project].nil?
+        glossary.project_id = nil
+      else
+        glossary.project_id = params[:project]["id"]
+      end
+    end
     begin
       glossary.save!
     rescue => e
       error(e.message)
     else
-      render :json => {id: glossary.id, name: glossary.name, json: glossary.export_json_only}
+      render :json => {id: glossary.id, name: glossary.name, project: Project.id_and_title(glossary.project), json: glossary.export_json_only}
     end
   end
 end

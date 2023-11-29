@@ -1,9 +1,10 @@
 class Glossary < ActiveRecord::Base
-  attr_accessible :name, :json, :user_id, :legacy_glossary_resource_id
+  attr_accessible :name, :json, :user_id, :legacy_glossary_resource_id, :project_id, :project
   validates :name, presence: true
   validates :user_id, presence: true
 
   belongs_to :user
+  belongs_to :project
   has_many :lightweight_activities
 
   # scope :public, self.scoped # all glossaries are public
@@ -14,6 +15,7 @@ class Glossary < ActiveRecord::Base
     {
       id: self.id,
       name: self.name,
+      project: self.project ? self.project.export : nil,
       user_id: self.user_id,
       can_edit: self.can_edit(user),
       legacy_glossary_resource_id: self.legacy_glossary_resource_id,
@@ -29,6 +31,7 @@ class Glossary < ActiveRecord::Base
     {
       id: self.id,
       name: self.name,
+      project: self.project,
       user_id: self.user_id,
       legacy_glossary_resource_id: self.legacy_glossary_resource_id,
       json: self.json || "{}"
@@ -39,6 +42,7 @@ class Glossary < ActiveRecord::Base
     {
       id: self.id,
       name: self.name,
+      project: self.project,
       user_id: self.user_id,
       legacy_glossary_resource_id: self.legacy_glossary_resource_id,
       json: self.json || "{}",
