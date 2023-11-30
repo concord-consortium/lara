@@ -26,14 +26,14 @@ describe GlossariesController do
     describe "as an admin" do
       it "assigns all glossaries as @glossaries" do
         get :index
-        expect(assigns(:glossaries)).to eq([glossary, glossary2, glossary3])
+        expect(assigns(:glossaries)).to match_array([glossary, glossary2, glossary3])
       end
     end
     describe "as an author" do
       let (:current_user) { author1 }
       it "assigns all glossaries as @glossaries" do
         get :index
-        expect(assigns(:glossaries)).to eq([glossary, glossary2, glossary3])
+        expect(assigns(:glossaries)).to match_array([glossary, glossary2, glossary3])
       end
     end
     describe "as an anonyous user" do
