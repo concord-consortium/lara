@@ -7,7 +7,10 @@ class Api::V1::GlossariesController < API::APIController
     if params[:json_only]
       render json: glossary.export_json_only.to_json
     else
-      render json: glossary.export(current_user).to_json
+      data = glossary.export(current_user)
+      # don't send the full project object to the plugin
+      data[:project] = Project.id_and_title(glossary.project)
+      render json: data.to_json
     end
   end
 

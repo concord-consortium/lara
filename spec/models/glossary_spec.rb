@@ -273,6 +273,7 @@ RSpec.describe Glossary do
     expect(imported_glossary.id).not_to eq(glossary.id)
     expect(imported_glossary.user).to eq(author2)
     expect(imported_glossary.legacy_glossary_resource_id).to eq("TEST-LEGACY-ID")
+    expect(imported_glossary.project.id).to eq(project.id)
   end
 
   it "should support #self.extract_from_hash" do

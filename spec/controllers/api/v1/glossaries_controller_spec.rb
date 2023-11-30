@@ -3,6 +3,8 @@ require "spec_helper"
 describe Api::V1::GlossariesController do
   let(:author)        { FactoryGirl.create(:author) }
   let(:author2)       { FactoryGirl.create(:author) }
+  let(:project1)      { FactoryGirl.create(:project) }
+  let(:project2)      { FactoryGirl.create(:project) }
   let(:stringifed_json) {
     JSON.generate({
       askForUserDefinition: true,
@@ -42,7 +44,9 @@ describe Api::V1::GlossariesController do
       }
     })
   }
-  let(:glossary) { FactoryGirl.create(:glossary, name: "Glossary", legacy_glossary_resource_id: "TEST-LEGACY-ID", user: author, json: stringifed_json) }
+  let(:glossary) { FactoryGirl.create(:glossary, name: "Glossary", legacy_glossary_resource_id: "TEST-LEGACY-ID", user: author, json: stringifed_json, project: project1) }
+  let(:project1_data) { Project.id_and_title(project1) }
+  let(:project2_data) { Project.id_and_title(project2) }
 
   describe "#show" do
     it "recognizes and generates #show" do
@@ -65,7 +69,8 @@ describe Api::V1::GlossariesController do
         legacy_glossary_resource_id: "TEST-LEGACY-ID",
         user_id: glossary.user_id,
         can_edit: false,
-        json: JSON.parse(stringifed_json)
+        json: JSON.parse(stringifed_json),
+        project: project1_data
       }.as_json)
     end
 
@@ -130,7 +135,8 @@ describe Api::V1::GlossariesController do
         expect(json_response).to eq({
           id: glossary.id,
           name: updated_name,
-          json: glossary.export_json_only
+          json: glossary.export_json_only,
+          project: project1_data
         }.as_json)
       end
 
@@ -142,7 +148,8 @@ describe Api::V1::GlossariesController do
         expect(json_response).to eq({
           id: glossary.id,
           name: glossary.name,
-          json: updated_json
+          json: updated_json,
+          project: project1_data
         }.as_json)
       end
 
@@ -154,19 +161,47 @@ describe Api::V1::GlossariesController do
         expect(json_response).to eq({
           id: glossary.id,
           name: glossary.name,
-          json: updated_json
+          json: updated_json,
+          project: project1_data
         }.as_json)
       end
 
-      it "updates to both name and json are allowed" do
-        post :update, :id => glossary.id, :name => updated_name, :json => updated_stringified_json, :format => :json
+      it "updates to just the project using nil are allowed" do
+        post :update, :id => glossary.id, :project => nil, :format => :json
+
+        expect(response.status).to eq(200)
+        json_response = JSON.parse(response.body)
+        expect(json_response).to eq({
+          id: glossary.id,
+          name: glossary.name,
+          json: glossary.export_json_only,
+          project: nil
+        }.as_json)
+      end
+
+      it "updates to just the project are allowed" do
+        post :update, :id => glossary.id, :project => project2_data, :format => :json
+
+        expect(response.status).to eq(200)
+        json_response = JSON.parse(response.body)
+        expect(json_response).to eq({
+          id: glossary.id,
+          name: glossary.name,
+          json: glossary.export_json_only,
+          project: project2_data
+        }.as_json)
+      end
+
+      it "updates to name, json, and project are allowed" do
+        post :update, :id => glossary.id, :name => updated_name, :json => updated_stringified_json, project: project2_data, :format => :json
 
         expect(response.status).to eq(200)
         json_response = JSON.parse(response.body)
         expect(json_response).to eq({
           id: glossary.id,
           name: updated_name,
-          json: updated_json
+          json: updated_json,
+          project: project2_data
         }.as_json)
       end
     end

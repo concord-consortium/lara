@@ -68,6 +68,7 @@ class Glossary < ActiveRecord::Base
 
   def self.import(glossary_json_object, new_owner)
     imported_glossary = Glossary.new(self.extract_from_hash(glossary_json_object))
+    imported_glossary.project = Project.find_or_create(glossary_json_object[:project]) if glossary_json_object[:project]
     imported_glossary.user = new_owner
     imported_glossary.save!
     imported_glossary
