@@ -46,7 +46,7 @@
 - if current_user.is_admin
   .field
     = f.label :project_id, 'Project'
-    = f.select :project_id, options_from_collection_for_select(Project.all, 'id', 'title', @activity.project_id), { :include_blank => true }
+    = f.select :project_id, options_from_collection_for_select(Project.visible_to_user(current_user), 'id', 'title', @activity.project_id), { :include_blank => true }
 .field
   = f.label :thumbnail_url, "Activity Thumbnail Image URL"
   = f.text_field :thumbnail_url, :class=>"thumbnail_source"

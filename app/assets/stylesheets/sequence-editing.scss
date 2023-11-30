@@ -86,6 +86,9 @@
     }
     select {
       min-width: 220px;
+      &#glossary_project_id {
+        width: 100%;
+      }
     }
     textarea {
       display: block;
