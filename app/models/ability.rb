@@ -8,63 +8,59 @@ class Ability
     # https://github.com/ryanb/cancan/wiki/Defining-Abilities
 
     user ||= User.new # guest user (not logged in)
+
     if user.admin?
       # Admins can do everything
       can :manage, :all
-      can :inspect, Run
-      can :manage, QuestionTracker
-      can :report, QuestionTracker
-      can :manage, ApprovedScript
-      can :manage, LibraryInteractive
-      can :manage, Setting
+
     elsif user.author?
-      # Authors can create new items
-      can :create, Sequence
-      can :create, LightweightActivity
-      can :create, InteractivePage
-      can :create, Plugin
-      can :create, PageItem
-      can :create, LinkedPageItem
+      # Authors can do the following, organized by model
       can :create, Glossary
-      # any authors can see the glossaries
-      can :read, Glossary
-      # Authors can see the export buttons for all glossaries, activities, sequences
+      can :duplicate, Glossary
       can :export, Glossary
-      can :export, LightweightActivity, :is_locked => false, :publication_status => ['public', 'hidden']
-      can :export, Sequence
-      # authors can import all glossaries, activities, sequences
       can :import, Glossary
-      can :import, LightweightActivity
-      can :import, Sequence
-      # authors can manage items they created
-      can :manage, Sequence, :user_id => user.id
       can :manage, Glossary, :user_id => user.id
-      can :manage, LightweightActivity, :user_id => user.id
+      can :read, Glossary
+
+      can :create, InteractivePage
       can :manage, InteractivePage, :lightweight_activity => { :user_id => user.id }
+
+      can :create, LightweightActivity
+      can :duplicate, LightweightActivity, :is_locked => false, :publication_status => ['public', 'hidden']
+      can :export, LightweightActivity, :is_locked => false, :publication_status => ['public', 'hidden']
+      can :import, LightweightActivity
+      can :manage, LightweightActivity, :user_id => user.id
+
+      can :create, LinkedPageItem
+      can :manage, LinkedPageItem, :primary => { :interactive_page => { :interactive_page => { :lightweight_activity => { :user_id => user.id } } } }
+
+      can :create, PageItem
+      can :manage, PageItem, :interactive_page => { :lightweight_activity => { :user_id => user.id } }
+
+      can :create, Plugin
       can :manage, Plugin do |plugin|
         plugin.plugin_scope.user_id == user.id
       end
-      can :manage, PageItem, :interactive_page => { :lightweight_activity => { :user_id => user.id } }
-      can :manage, LinkedPageItem, :primary => { :interactive_page => { :interactive_page => { :lightweight_activity => { :user_id => user.id } } } }
 
-      # and duplicate unlocked activities and sequences
-      can :duplicate, LightweightActivity, :is_locked => false, :publication_status => ['public', 'hidden']
+      can :create, Sequence
       can :duplicate, Sequence, :publication_status => ['public', 'hidden']
-      can :duplicate, Glossary
-
-
+      can :export, Sequence
+      can :import, Sequence
+      can :manage, Sequence, :user_id => user.id
     end
+
     # Everyone (author and regular user) can update activities they own.
     can :update, LightweightActivity, :user_id => user.id
     # Everyone (author and regular user) can update pages in the activities they own.
     can :update, InteractivePage, :lightweight_activity => { :user_id => user.id }
+    # Everyone (author and regular user) can update sequences they own.
+    can :update, Sequence, :user_id => user.id
     # Everyone (author and regular user) can read public, hidden and archived sequences or activities.
     ['public', 'hidden', 'archive'].each do |allowed_status|
       can :read, Sequence, :publication_status => allowed_status
       can :read, LightweightActivity, :publication_status => allowed_status
       can :read, InteractivePage, :lightweight_activity => { :publication_status => allowed_status }
     end
-
     can :about, Project
     can :help, Project
     can :contact_us, Project
