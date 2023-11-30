@@ -66,11 +66,15 @@ export const ProjectSettingsForm: React.FC<IProjectSettingsFormProps> = ({id}: I
       setAlertMessage(error);
     });
 
+    // sort the admins by email address
+    const sortedAdmins = data.admins as IProjectAdmin[];
+    sortedAdmins.sort((a, b) => a.email.localeCompare(b.email));
+
     // remove protected attributes
     delete data.project.created_at;
     delete data.project.updated_at;
     setProject(snakeToCamelCaseKeys(data.project));
-    setAdmins(data.admins);
+    setAdmins(sortedAdmins);
     setProjectLoaded(true);
     setPageTitle(`Edit ${data.project.title}`);
   };
@@ -178,23 +182,19 @@ export const ProjectSettingsForm: React.FC<IProjectSettingsFormProps> = ({id}: I
       }
 
       return (
-        <div>
-          <table>
-            <tbody>
-              {admins.map(admin => (
-                <tr key={admin.id}>
-                  <td>{admin.email}</td>
-                  <td>
-                    <button
-                      title="Remove this project admin from the project"
-                      onClick={handleRemoveAdmin(admin)}>
-                        DELETE
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        <div className="projectAdminsList">
+          {admins.map(admin => (
+            <div className="projectAdminsListItem" key={admin.id}>
+              <div title={admin.email}>{admin.email}</div>
+              <div>
+                <button
+                  title="Remove this project admin from the project"
+                  onClick={handleRemoveAdmin(admin)}>
+                    DELETE
+                </button>
+              </div>
+            </div>
+          ))}
           <div className="emphasis">Please contact a site admin to add additional project admins to this project.</div>
         </div>
       );

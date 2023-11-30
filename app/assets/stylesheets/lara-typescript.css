@@ -4130,12 +4130,7 @@ button.bigButton svg {
   font-size: 16px;
   font-weight: 900;
 }
-.projectSettingsForm .splitForm .projectAdmins table {
-  margin: 10px 0;
-  width: 100%;
-  border-spacing: 10px;
-}
-.projectSettingsForm .splitForm .projectAdmins table button {
+.projectSettingsForm .splitForm .projectAdmins button {
   background: transparent;
   border: none;
   color: var(--dark-gray);
@@ -4148,6 +4143,23 @@ button.bigButton svg {
 .projectSettingsForm .splitForm .projectAdmins .emphasis {
   margin: 10px 0;
   font-style: italic;
+}
+.projectSettingsForm .splitForm .projectAdmins .projectAdminsList {
+  width: 100%;
+  overflow: hidden;
+  margin: 10px 0;
+}
+.projectSettingsForm .splitForm .projectAdmins .projectAdminsList .projectAdminsListItem {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin: 5px 0;
+}
+.projectSettingsForm .splitForm .projectAdmins .projectAdminsList .projectAdminsListItem div:first-child {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
 }
 .projectSettingsForm .slateContainer {
   border: solid 1.5px var(--med-gray);

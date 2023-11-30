@@ -39,26 +39,43 @@
         font-size: 16px;
         font-weight: 900;
       }
-      table {
-        margin: 10px 0;
-        width: 100%;
-        border-spacing: 10px;
 
-        button {
-          background: transparent;
-          border: none;
-          color: var(--dark-gray);
-          display: inline-block;
-          font-size: 12px;
-          margin: 0;
-          padding: 0;
-          text-transform: uppercase;
-        }
+      button {
+        background: transparent;
+        border: none;
+        color: var(--dark-gray);
+        display: inline-block;
+        font-size: 12px;
+        margin: 0;
+        padding: 0;
+        text-transform: uppercase;
       }
+
       .emphasis {
         margin: 10px 0;
         font-style: italic;
       }
+
+      .projectAdminsList {
+        width: 100%;
+        overflow: hidden;
+        margin: 10px 0;
+
+        .projectAdminsListItem {
+          display: flex;
+          justify-content: space-between;
+          gap: 10px;
+          margin: 5px 0;
+
+          div:first-child {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            min-width: 0;
+          }
+        }
+      }
+
     }
   }
 
