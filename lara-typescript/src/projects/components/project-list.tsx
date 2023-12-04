@@ -7,6 +7,7 @@ import { snakeToCamelCaseKeys } from "../../shared/convert-keys";
 import "./project-list.scss";
 
 export const ProjectList: React.FC = () => {
+  const [isAdmin, setIsAdmin] = useState(false);
   const [projects, setProjects] = useState<IProject[]|null>(null);
   const [projectsUpdated, setProjectsUpdated] = useState(false);
   const [alertMessage, setAlertMessage] = useState<string|undefined>(undefined);
@@ -15,12 +16,31 @@ export const ProjectList: React.FC = () => {
   const newProjectCreated = urlParams.get("newProjectCreated");
 
   useEffect(() => {
+    checkUser();
+  }, []);
+
+  useEffect(() => {
     getProjects();
     setProjectsUpdated(false);
     if (newProjectCreated) {
       setAlertMessage("Project created.");
     }
   }, [projectsUpdated]);
+
+  const checkUser = async () => {
+    const apiUrl = `/api/v1/user_check`;
+    const data = await fetch(apiUrl, {
+      method: "GET",
+      headers: {"Content-Type": "application/json"},
+      credentials: "include"
+    })
+    .then(response => response.json())
+    .catch(error => {
+       setAlertMessage(error);
+    });
+
+    setIsAdmin(data.user.is_admin);
+  };
 
   const getProjects = async () => {
     const apiUrl = `/api/v1/projects`;
@@ -92,7 +112,7 @@ export const ProjectList: React.FC = () => {
             id={project.id}
             title={project.title}
             url={project.url}
-            onDelete={handleDeleteRequest}
+            onDelete={isAdmin ? handleDeleteRequest : undefined}
           />
         ))}
       </ul>

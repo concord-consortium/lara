@@ -6,7 +6,7 @@ export interface IProjectListItemProps {
   id?: number;
   title: string;
   url: string | undefined;
-  onDelete: (id: number) => void;
+  onDelete?: (id: number) => void;
 }
 
 export const ProjectListItem: React.FC<IProjectListItemProps> = ({
@@ -22,7 +22,7 @@ export const ProjectListItem: React.FC<IProjectListItemProps> = ({
 
   const handleDeleteButtonClick = () => {
     if (id) {
-      onDelete(id);
+      onDelete?.(id);
     }
   };
 
@@ -32,7 +32,7 @@ export const ProjectListItem: React.FC<IProjectListItemProps> = ({
       <menu>
         <ul>
           <li><button className="textButton editButton" onClick={handleEditButtonClick}>Edit</button></li>
-          <li><button className="textButton deleteButton" onClick={handleDeleteButtonClick}>Delete</button></li>
+          {onDelete && <li><button className="textButton deleteButton" onClick={handleDeleteButtonClick}>Delete</button></li>}
         </ul>
       </menu>
       <div className="projectListItem__link">
