@@ -288,6 +288,13 @@ describe User do
       let(:other_collaborating_run) { FactoryGirl.create(:run, user: other_user, collaboration_run: other_collaboration_run, activity: other_collaboration_activity) }
       let(:other_collaboration_irs) { FactoryGirl.create(:interactive_run_state, run: other_collaborating_run) }
 
+      let(:glossary) { FactoryGirl.create(:glossary, user: other_user) }
+      let(:own_glossary) { FactoryGirl.create(:glossary, user: user) }
+
+      it { is_expected.not_to be_able_to(:create, Glossary) }
+      it { is_expected.to be_able_to(:update, own_glossary) }
+      it { is_expected.not_to be_able_to(:update, glossary) }
+
       it { is_expected.not_to be_able_to(:create, LightweightActivity) }
       it { is_expected.to be_able_to(:read, archive_activity) }
       it { is_expected.to be_able_to(:read, hidden_activity) }

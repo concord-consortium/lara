@@ -105,6 +105,10 @@ class Ability
       can :manage, Sequence, :user_id => user.id
     end
 
+    # Everyone (author and regular user) can update glossaries they own.
+    can :update, Glossary do |glossary|
+      user.id == glossary.user_id || user.project_admin_of?(glossary.project)
+    end
     # Everyone (author and regular user) can update activities they own.
     can :update, LightweightActivity do |activity|
       user.id == activity.user_id || user.project_admin_of?(activity.project)
