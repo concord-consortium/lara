@@ -14,6 +14,7 @@ describe Api::V1::PluginLearnerStatesController do
       email: "student@school.edu",
       admin?: false,
       author?: false,
+      is_project_admin?: false
     }
   end
 
@@ -23,6 +24,7 @@ describe Api::V1::PluginLearnerStatesController do
       email: "student@school.edu",
       admin?: false,
       author?: false,
+      is_project_admin?: false
     }
   end
 

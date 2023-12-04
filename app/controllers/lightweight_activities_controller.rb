@@ -11,6 +11,8 @@ class LightweightActivitiesController < ApplicationController
 
   before_filter :enable_js_logger, :only => [:summary, :show, :preview, :single_page]
 
+  before_filter :setup_abilities, :only => [:new, :edit]
+
   layout :set_layout
 
   # Adds remote_duplicate handler (POST remote_duplicate)
@@ -313,5 +315,13 @@ class LightweightActivitiesController < ApplicationController
   def setup_single_page_show
     setup_show
     setup_global_interactive_state_data
+  end
+
+  def setup_abilities
+    if params[:action] == "edit"
+      @is_project_admin = current_user.project_admin_of?(@activity.project) || (@activity.user_id == current_user.id && current_user.is_project_admin?)
+    else
+      @is_project_admin = current_user.is_project_admin?
+    end
   end
 end

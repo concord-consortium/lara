@@ -43,7 +43,7 @@
   %button#view_edit_glossary{style: "margin-top: 0; margin-left: 20px;"} View or Edit
   .hint
     Select a glossary from the list to add to this activity. If you do not wish to associate a glossary with this activity, select "None."
-- if current_user.is_admin
+- if current_user.is_admin || @is_project_admin
   .field
     = f.label :project_id, 'Project'
     = f.select :project_id, options_from_collection_for_select(Project.visible_to_user(current_user), 'id', 'title', @activity.project_id), { :include_blank => true }
@@ -64,7 +64,7 @@
     = f.check_box :is_official
     = f.label :is_official,  "Official CC Activity"
     .hint Official activities appear in the STEM Resource Finder and should be vetted before being designated as such.
-- if current_user.is_admin
+- if current_user.is_admin || @is_project_admin
   .field
     = f.check_box :is_locked
     = f.label :is_locked, "Activity Locked"
@@ -76,7 +76,7 @@
   = f.label :related, 'Related Content'
   = f.text_area :related, :class => 'wysiwyg', :disabled => (@activity.layout != 1 ? true : false)
   .hint The content in this field will be shown at the bottom of the page in the Single Page layout only.
-- if current_user.is_admin
+- if current_user.is_admin || @is_project_admin
   .field
     = f.check_box :defunct
     = f.label :defunct,  "Defunct"
