@@ -2,6 +2,9 @@ sudo: false # see: http://docs.travis-ci.com/user/workers/container-based-infras
 language: ruby
 rvm:
   - "2.3.7"
+# See https://github.com/travis-ci/travis-ci/issues/4942#issuecomment-159132444
+git:
+  depth: 99999
 
 dist: precise
 
