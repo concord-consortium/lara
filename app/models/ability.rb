@@ -57,6 +57,10 @@ class Ability
         user.id == plugin.plugin_scope.user_id || user.project_admin_of?(plugin.plugin_scope.project)
       end
 
+      can :manage, Project do |project|
+        user.project_admin_of?(project)
+      end
+
       can :create, Sequence
       can :duplicate, Sequence do |sequence|
         user.id == sequence.user_id || user.project_admin_of?(sequence.project) || ['public', 'hidden'].include?(sequence.publication_status)

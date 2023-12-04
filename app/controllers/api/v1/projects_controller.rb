@@ -4,8 +4,8 @@ class Api::V1::ProjectsController < API::APIController
 
   # GET /api/v1/projects
   def index
-    @projects = Project.all
-    authorize! :manage, @projects
+    @projects = Project.visible_to_user(current_user)
+    authorize! :manage, Project
     render json: {projects: @projects}
   end
 
