@@ -50,7 +50,7 @@ class User < ActiveRecord::Base
   end
 
   def project_admin_of?(project)
-    project && admined_projects.any? {|ap| ap.id == project.id }
+    !!(project && admined_projects.any? {|ap| ap.id == project.id })
   end
 
   def most_recent_authentication
