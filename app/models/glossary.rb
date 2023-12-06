@@ -62,7 +62,7 @@ class Glossary < ActiveRecord::Base
     if user.nil?
       false
     else
-      user.id == self.user_id || user.admin?
+      user.id == self.user_id || user.admin? || user.project_admin_of?(self.project)
     end
   end
 
