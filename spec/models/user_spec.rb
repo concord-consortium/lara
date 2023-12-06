@@ -514,6 +514,7 @@ describe User do
       expect(user.project_admins.length).to be(0)
       expect(user.admined_projects.length).to be(0)
 
+      expect(user.project_admin_of?(nil)).to be(false)
       expect(user.project_admin_of?(project1)).to be(false)
       expect(user.project_admin_of?(project2)).to be(false)
     end
