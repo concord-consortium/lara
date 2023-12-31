@@ -29,10 +29,6 @@
           packages = (with pkgs; [
             act
             pkgs-old-node.nodejs-10_x # Node.js v10.15.3
-            # (pkgs.lib.traceVal
-            #   (builtins.filter
-            #     (p: lib.hasPrefix "node" p)
-            #     (builtins.attrNames pkgs-old-node))).nodejs
           ]) ++ (with pkgs-old-ruby; [
             ruby_2_3 # Ruby v2.3.7
             glibc # Includes 'libcrypt'
