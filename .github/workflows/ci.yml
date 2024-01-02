@@ -1,0 +1,92 @@
+name: CI
+on:
+  - push
+
+env:
+  CC_TEST_REPORTER_ID: 7729fca8695dd1ce5c6117fcd57680ee5a00726647ae7d4fe52c029de211449f
+  COVERAGE_REPORT: true
+  BUNDLE_GEMS__RAILSLTS__COM: ${{ secrets.BUNDLE_GEMS__RAILSLTS__COM }}
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    services:
+      database:
+        image: mariadb:11.2
+        ports:
+          - 3306:3306
+        env:
+          MARIADB_DATABASE: ${{ github.event.repository.name }}_test
+          MARIADB_ROOT_PASSWORD: root
+    env:
+      MYSQL_HOST: 127.0.0.1
+      MYSQL_USER: root
+      DB_PASSWORD: root
+      RAILS_ENV: test
+    steps:
+      - uses: cachix/install-nix-action@v24
+      - uses: actions/checkout@v4
+      - name: Copy configuration templates
+        run: |-
+          cp -v ./config/database.sample.yml ./config/database.yml
+          cp -v ./config/app_environment_variables.sample.rb ./config/app_environment_variables.rb
+      - name: Install Gems with Bundle
+        run: nix develop -c bundle install --without production
+      - name: Apply database migrations
+        run: nix develop -c bundle exec rake db:migrate
+      - run: nix develop -c bundle exec rake
+      - name: Test LARA plugin API v2
+        run: |-
+          nix develop -c npm ci
+          nix develop -c npm run test
+        working-directory: ./lara-plugin-api-V2/
+      - name: Test LARA TypeScript project
+        run: |-
+          nix develop -c npm ci
+          nix develop -c npm run test
+        working-directory: ./lara-typescript/
+  build:
+    name: Build Docker image
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    env:
+      REGISTRY: ghcr.io
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      - name: Login to GitHub Container Registry (GHCR)
+        uses: docker/login-action@v2
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ secrets.GH_USER }}
+          password: ${{ secrets.GH_PAT }}
+      - name: Extract metadata for Docker image tagging
+        id: docker_metadata
+        uses: docker/metadata-action@v4
+        with:
+          images: |-
+            ${{ env.REGISTRY }}/${{ github.repository }}
+          tags: |-
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=semver,pattern={{major}}
+            type=ref,event=branch
+            type=ref,event=pr
+            type=sha,prefix=git-
+      - name: Build & push Docker image
+        uses: docker/build-push-action@v4
+        with:
+          # Don't push image to registry when running Actions locally with act CLI
+          push: ${{ env.ACT != 'true' }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          labels: ${{ steps.docker_metadata.outputs.labels }}
+          tags: ${{ steps.docker_metadata.outputs.tags }}
+          build-args: |-
+            LARA_VERSION=${{ github.ref_name }}

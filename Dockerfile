@@ -1,4 +1,7 @@
-FROM concordconsortium/docker-rails-base-private:ruby-2.3.7-rails-3.2.22.25
+FROM ghcr.io/concord-consortium/docker-rails-base-private:ruby-2.3.7-rails-3.2.22.25
+
+RUN echo 'deb http://archive.debian.org/debian/ stretch main' > /etc/apt/sources.list
+RUN apt-get update
 
 # install nginx
 RUN apt-get install -qq -y nginx
