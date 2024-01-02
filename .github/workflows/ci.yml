@@ -37,13 +37,10 @@ jobs:
         shell: bash
       - name: Install Gems with Bundle
         run: bundle install --without production
+      - run: echo ${{ github.event.repository.name }}_test && test
       - name: Apply database migrations
         run: bundle exec rake db:migrate
-        # Service containers are not yet supported by act CLI, so skip this step
-        if: ${{ env.ACT != 'true' }}
       - name: Run RSpec tests
-        # See comment from previous step's 'if' condition
-        if: ${{ env.ACT != 'true' }}
         run: bundle exec rake
       - name: Test LARA plugin API v2
         run: |-
