@@ -24,6 +24,9 @@ jobs:
       MYSQL_USER: root
       DB_PASSWORD: root
       RAILS_ENV: test
+    defaults:
+      run:
+        shell: nix develop -c {0}
     steps:
       - uses: cachix/install-nix-action@v24
       - uses: actions/checkout@v4
@@ -32,19 +35,24 @@ jobs:
           cp -v ./config/database.sample.yml ./config/database.yml
           cp -v ./config/app_environment_variables.sample.rb ./config/app_environment_variables.rb
       - name: Install Gems with Bundle
-        run: nix develop -c bundle install --without production
+        run: bundle install --without production
       - name: Apply database migrations
-        run: nix develop -c bundle exec rake db:migrate
-      - run: nix develop -c bundle exec rake
+        run: bundle exec rake db:migrate
+        # Service containers are not yet supported by act CLI, so skip this step
+        if: ${{ env.ACT != 'true' }}
+      - name: Run RSpec tests
+        # See comment from previous step's 'if' condition
+        if: ${{ env.ACT != 'true' }}
+        run: bundle exec rake
       - name: Test LARA plugin API v2
         run: |-
-          nix develop -c npm ci
-          nix develop -c npm run test
+          npm ci
+          npm run test
         working-directory: ./lara-plugin-api-V2/
       - name: Test LARA TypeScript project
         run: |-
-          nix develop -c npm ci
-          nix develop -c npm run test
+          npm ci
+          npm run test
         working-directory: ./lara-typescript/
   build:
     name: Build Docker image
@@ -55,20 +63,20 @@ jobs:
     env:
       REGISTRY: ghcr.io
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@v2
+        uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
+        uses: docker/setup-buildx-action@v3
       - name: Login to GitHub Container Registry (GHCR)
-        uses: docker/login-action@v2
+        uses: docker/login-action@v3
         with:
           registry: ${{ env.REGISTRY }}
-          username: ${{ secrets.GH_USER }}
-          password: ${{ secrets.GH_PAT }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
       - name: Extract metadata for Docker image tagging
         id: docker_metadata
-        uses: docker/metadata-action@v4
+        uses: docker/metadata-action@v5
         with:
           images: |-
             ${{ env.REGISTRY }}/${{ github.repository }}
@@ -80,7 +88,7 @@ jobs:
             type=ref,event=pr
             type=sha,prefix=git-
       - name: Build & push Docker image
-        uses: docker/build-push-action@v4
+        uses: docker/build-push-action@v5
         with:
           # Don't push image to registry when running Actions locally with act CLI
           push: ${{ env.ACT != 'true' }}
