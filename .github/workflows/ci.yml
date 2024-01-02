@@ -38,13 +38,13 @@ jobs:
       - run: nix develop -c bundle exec rake
       - name: Test LARA plugin API v2
         run: |-
-          npm ci
-          npm run test
+          nix develop -c npm ci
+          nix develop -c npm run test
         working-directory: ./lara-plugin-api-V2/
       - name: Test LARA TypeScript project
         run: |-
-          npm ci
-          npm run test
+          nix develop -c npm ci
+          nix develop -c npm run test
         working-directory: ./lara-typescript/
   build:
     name: Build Docker image
