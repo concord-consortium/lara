@@ -1,11 +1,11 @@
 {
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
-    nixpkgs-old-ruby = {
+    nixpkgs-ancient-ruby = {
       url = "github:nixos/nixpkgs/0bcbb978795bab0f1a45accc211b8b0e349f1cdb";
       flake = false;
     };
-    nixpkgs-old-node = {
+    nixpkgs-ancient-node = {
       url = "github:nixos/nixpkgs/22f65339f3773f5b691f55b8b3a139e5582ae85b";
       flake = false;
     };
@@ -16,10 +16,10 @@
     flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = nixpkgs.legacyPackages.${system};
-        pkgs-old-node = import inputs.nixpkgs-old-node {
+        pkgs-ancient-node = import inputs.nixpkgs-ancient-node {
           inherit system;
         };
-        pkgs-old-ruby = import inputs.nixpkgs-old-ruby {
+        pkgs-ancient-ruby = import inputs.nixpkgs-ancient-ruby {
           inherit system;
         };
       in
@@ -28,8 +28,8 @@
         devShells.default = pkgs.mkShell {
           packages = (with pkgs; [
             act
-            pkgs-old-node.nodejs-10_x # Node.js v10.15.3
-          ]) ++ (with pkgs-old-ruby; [
+            pkgs-ancient-node.nodejs-10_x # Node.js v10.15.3
+          ]) ++ (with pkgs-ancient-ruby; [
             ruby_2_3 # Ruby v2.3.7
             glibc # Includes 'libcrypt'
             libffi # Needed for 'ffi' Gem
