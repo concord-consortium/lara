@@ -36,7 +36,8 @@ jobs:
           cp -v ./config/app_environment_variables.sample.rb ./config/app_environment_variables.rb
         shell: bash
       - name: Install Gems with Bundle
-        run: env && bundle install --without production
+        run: id && whoami
+        shell: bash
       - run: echo ${{ github.event.repository.name }}_test && test
       - name: Apply database migrations
         run: bundle exec rake db:migrate
