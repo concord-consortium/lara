@@ -20,11 +20,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1703499205,
-        "narHash": "sha256-lF9rK5mSUfIZJgZxC3ge40tp1gmyyOXZ+lRY3P8bfbg=",
+        "lastModified": 1704008649,
+        "narHash": "sha256-rGPSWjXTXTurQN9beuHdyJhB8O761w1Zc5BqSSmHvoM=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "e1fa12d4f6c6fe19ccb59cac54b5b3f25e160870",
+        "rev": "d44d59d2b5bd694cd9d996fd8c51d03e3e9ba7f7",
         "type": "github"
       },
       "original": {
@@ -34,7 +34,7 @@
         "type": "github"
       }
     },
-    "nixpkgs-old-node": {
+    "nixpkgs-ancient-node": {
       "flake": false,
       "locked": {
         "lastModified": 1556992326,
@@ -51,7 +51,7 @@
         "type": "github"
       }
     },
-    "nixpkgs-old-ruby": {
+    "nixpkgs-ancient-ruby": {
       "flake": false,
       "locked": {
         "lastModified": 1538837980,
@@ -72,8 +72,8 @@
       "inputs": {
         "flake-utils": "flake-utils",
         "nixpkgs": "nixpkgs",
-        "nixpkgs-old-node": "nixpkgs-old-node",
-        "nixpkgs-old-ruby": "nixpkgs-old-ruby"
+        "nixpkgs-ancient-node": "nixpkgs-ancient-node",
+        "nixpkgs-ancient-ruby": "nixpkgs-ancient-ruby"
       }
     },
     "systems": {
