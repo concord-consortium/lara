@@ -2,6 +2,7 @@
   "background_image": "",
   "defunct": false,
   "hide_read_aloud": true,
+  "hide_question_numbers": true,
   "font_size": "large",
   "description": "<p>Contains all page layout formats</p>",
   "editor_mode": 0,

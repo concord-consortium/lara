@@ -30,7 +30,7 @@ class LightweightActivity < ActiveRecord::Base
                   :time_to_complete, :is_locked, :notes, :thumbnail_url, :project_id,
                   :portal_run_count, :layout, :editor_mode, :publication_hash, :copied_from_id,
                   :student_report_enabled, :show_submit_button, :project, :background_image,
-                  :glossary_id, :hide_read_aloud, :font_size
+                  :glossary_id, :hide_read_aloud, :font_size, :hide_question_numbers
 
   belongs_to :user # Author
   belongs_to :changed_by, :class_name => 'User'
@@ -111,6 +111,7 @@ class LightweightActivity < ActiveRecord::Base
       student_report_enabled: student_report_enabled,
       show_submit_button: show_submit_button,
       hide_read_aloud: hide_read_aloud,
+      hide_question_numbers: hide_question_numbers,
       font_size: font_size
     }
   end
@@ -158,6 +159,7 @@ class LightweightActivity < ActiveRecord::Base
                                         :background_image,
                                         :defunct,
                                         :hide_read_aloud,
+                                        :hide_question_numbers,
                                         :font_size ])
     activity_json[:version] = 2
     activity_json[:project] = self.project ? self.project.export : nil
@@ -224,6 +226,7 @@ class LightweightActivity < ActiveRecord::Base
     import_activity.imported_activity_url = imported_activity_url
     import_activity.is_official = activity_json_object[:is_official]
     import_activity.hide_read_aloud = activity_json_object[:hide_read_aloud]
+    import_activity.hide_question_numbers = activity_json_object[:hide_question_numbers]
     import_activity.font_size = activity_json_object[:font_size]
     import_activity.project = Project.find_or_create(activity_json_object[:project]) if activity_json_object[:project]
     self.link_glossaries_on_import(activity_json_object, import_activity)

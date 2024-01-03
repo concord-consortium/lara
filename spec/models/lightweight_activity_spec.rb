@@ -4,7 +4,7 @@ describe LightweightActivity do
   let(:thumbnail_url) { "http://fake.url.com/image" }
   let(:author)        { FactoryGirl.create(:author) }
   let(:glossary)      { nil }
-  let(:act_opts)      { {thumbnail_url: thumbnail_url, glossary: glossary, hide_read_aloud: true, font_size: "large"} }
+  let(:act_opts)      { {thumbnail_url: thumbnail_url, glossary: glossary, hide_read_aloud: true, hide_question_numbers: true, font_size: "large"} }
   let(:activity)      {
     activity = FactoryGirl.create(:activity, act_opts)
     activity.user = author
@@ -188,6 +188,7 @@ describe LightweightActivity do
         layout: activity.layout,
         editor_mode: activity.editor_mode,
         hide_read_aloud: activity.hide_read_aloud,
+        hide_question_numbers: activity.hide_question_numbers,
         font_size: activity.font_size,
        }
       expect(activity.to_hash).to eq(expected)
@@ -229,6 +230,9 @@ describe LightweightActivity do
       end
       it 'includes the hide_read_aloud setting' do
         expect(export["hide_read_aloud"]).to eq(true)
+      end
+      it 'includes the hide_question_numbers setting' do
+        expect(export["hide_question_numbers"]).to eq(true)
       end
       it 'includes the font_size setting' do
         expect(export["font_size"]).to eq("large")
@@ -291,6 +295,7 @@ describe LightweightActivity do
       expect(activity.glossary_id).to eq(glossary.id)
       expect(dup.glossary_id).to eq(activity.glossary_id)
       expect(dup.hide_read_aloud).to eq(activity.hide_read_aloud)
+      expect(dup.hide_question_numbers).to eq(activity.hide_question_numbers)
       expect(dup.font_size).to eq(activity.font_size)
     end
 
@@ -451,6 +456,7 @@ describe LightweightActivity do
       expect(act.pages.count).to eq(json[:pages].length)
       expect(act.glossary_id).to eq(nil)
       expect(act.hide_read_aloud).to eq(true)
+      expect(act.hide_question_numbers).to eq(true)
       expect(act.font_size).to eq("large")
     end
 

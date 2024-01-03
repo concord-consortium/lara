@@ -2,7 +2,7 @@ class Sequence < ActiveRecord::Base
 
   attr_accessible :description, :title, :project_id, :defunct,
     :user_id, :logo, :display_title, :thumbnail_url, :abstract, :publication_hash,
-    :project, :background_image, :hide_read_aloud, :font_size, :layout_override
+    :project, :background_image, :hide_read_aloud, :font_size, :layout_override, :hide_question_numbers
 
   include Publishable # defines methods to publish to portals
   include PublicationStatus # defines publication status scopes and helpers
@@ -57,6 +57,7 @@ class Sequence < ActiveRecord::Base
       display_title: display_title,
       thumbnail_url: thumbnail_url,
       hide_read_aloud: hide_read_aloud,
+      hide_question_numbers: hide_question_numbers,
       font_size: font_size,
       layout_override: layout_override
     }
@@ -104,6 +105,7 @@ class Sequence < ActiveRecord::Base
                                         :background_image,
                                         :defunct,
                                         :hide_read_aloud,
+                                        :hide_question_numbers,
                                         :font_size,
                                         :layout_override
     ])
@@ -216,6 +218,7 @@ class Sequence < ActiveRecord::Base
       title: sequence_json_object[:title],
       background_image: sequence_json_object[:background_image],
       hide_read_aloud: sequence_json_object[:hide_read_aloud],
+      hide_question_numbers: sequence_json_object[:hide_question_numbers],
       font_size: sequence_json_object[:font_size],
       layout_override: sequence_json_object[:layout_override]
     }
