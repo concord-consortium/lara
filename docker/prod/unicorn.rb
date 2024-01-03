@@ -1,4 +1,4 @@
-app_dir = "/lara"
+app_dir = "/app"
 
 working_directory app_dir
 

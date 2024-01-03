@@ -10,7 +10,7 @@ RUN apt-get install -qq -y nginx
 RUN gem install foreman
 
 # if this is changed it also needs to be changed in nginx-sites.conf and unicorn.rb
-ENV APP_HOME /lara
+ENV APP_HOME /app
 
 RUN mkdir $APP_HOME
 WORKDIR $APP_HOME
