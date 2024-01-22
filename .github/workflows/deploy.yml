@@ -31,7 +31,6 @@ jobs:
       - uses: actions/checkout@v4
       - name: Select version to deploy or use latest version of project released
         # Only run this step to lookup the latest pre-release/release version if no 'version' input was specified
-        if: ${{ github.event.inputs.version == '' }}
         run: |-
           if [[ -n "${{ github.event.inputs.version }}" ]]; then
             echo "User selected to deploy release version '${{ github.event.inputs.version }}'"
@@ -47,7 +46,7 @@ jobs:
               echo -n "pre-release version"
               latest_github_release_ver=$(gh release list | grep -oP 'Pre-release\s+v\K\d+\.\d+\.\d-pre\.\d+' | sort -uVr | head -n 1 | tr -d '\n')
             else
-              echo "Enironment name must include the sub-string \"(Production)\" or \"(Staging)\" to indicate whether it is a staging or production stack"
+              echo "Environment name must include the sub-string \"(Production)\" or \"(Staging)\" to indicate whether it is a staging or production stack"
               test
             fi
             echo "..."
