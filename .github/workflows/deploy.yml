@@ -1,0 +1,144 @@
+name: Deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        type: environment
+        default: 'Authoring (Staging) - authoring.lara.staging.concord.org'
+        description: CloudFormation stack to deploy to
+        required: true
+      version:
+        default: ''
+        type: string
+        description: >-
+          Application version to deploy (defaults to latest pre-release/release version depending on if stack is a
+          staging or production environment)
+
+env:
+  CONTAINER_IMAGE: ghcr.io/${{ github.repository }}
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ensure deployment environment has non-empty value
+        run: |-
+          if [[ "${{ github.event.inputs.environment }}" == "" ]]; then
+            test # Fail if it is blank
+          fi
+          echo "Deploying to environment '${{ github.event.inputs.environment }}'"
+      - uses: actions/checkout@v4
+      - name: Select version to deploy or use latest version of project released
+        run: |-
+          if [[ -n "${{ github.event.inputs.version }}" ]]; then
+            echo "User selected to deploy release version '${{ github.event.inputs.version }}'"
+            echo -n "selected-app-version=${{ github.event.inputs.version }}" >> "$GITHUB_OUTPUT"
+          # Otherwise use latest pre-release/stable release version...
+          else
+            echo "User did not select a release version to deploy."
+            echo -n "Querying API for latest "
+            if [[ "${{ github.event.inputs.environment }}" == *"(Production)"* ]]; then
+              echo -n "release version"
+              latest_github_release_ver=$(gh release view --json 'tagName' --jq '.tagName[1:]' | tr -d '\n')
+            elif [[ "${{ github.event.inputs.environment }}" == *"(Staging)"* ]]; then
+              echo -n "pre-release version"
+              latest_github_release_ver=$(gh release list | grep -oP 'Pre-release\s+v\K\d+\.\d+\.\d-pre\.\d+' | sort -uVr | head -n 1 | tr -d '\n')
+            else
+              echo "Environment name must include the sub-string \"(Production)\" or \"(Staging)\" to indicate whether it is a staging or production stack"
+              test
+            fi
+            echo "..."
+            echo "Determined latest pre-release/release version is '$latest_github_release_ver'"
+            echo -n "selected-app-version=$latest_github_release_ver" >> "$GITHUB_OUTPUT"
+          fi
+        id: selected-app-version
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ vars.AWS_REGION }}
+      - name: Lookup ECS cluster name for selected CloudFormation stack environment
+        id: ecs-cluster-name
+        run: |-
+          aws cloudformation describe-stacks \
+            --stack-name \
+              $(aws cloudformation describe-stacks \
+                --stack-name ${{ vars.CF_STACK_NAME }} \
+                --query "Stacks[0].Parameters[?ParameterKey=='ClusterStackName'].ParameterValue" \
+                --output text | tr -d '\n') \
+            --output text \
+            --query "Stacks[0].Parameters[?ParameterKey=='EcsClusterName'].ParameterValue" | \
+              awk '{printf "ecs-cluster-name=" $1}' >> "$GITHUB_OUTPUT"
+      - run: echo "Selected CloudFormation stack uses ECS cluster '${{ steps.ecs-cluster-name.outputs.ecs-cluster-name }}'"
+      - name: Create modified copy of 'App' ECS task definition
+        run: |-
+          aws ecs describe-task-definition \
+            --task-definition '${{ vars.CF_STACK_NAME }}-App' \
+            --query 'taskDefinition' | \
+            jq -r '.containerDefinitions |= map(.name = "apply-rails-migrations" | .image = "${{ env.CONTAINER_IMAGE }}:${{ steps.selected-app-version.outputs.selected-app-version }}" | .entryPoint = ["bundle", "exec"] | .command = ["rake", "db:migrate"]) | del(.taskDefinitionArn) | del(.registeredBy)' > /tmp/rails_migration_task_definition.json
+      - name: Register new ECS task definition for running database schema migrations
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        with:
+          task-definition: /tmp/rails_migration_task_definition.json
+          cluster: ${{ steps.ecs-cluster-name.outputs.ecs-cluster-name }}
+        id: register-ecs-task-def
+      - name: Run ECS task to apply database schema migrations
+        run: |-
+          # See https://stackoverflow.com/a/48314818
+          migrations_task_id=$(aws ecs run-task \
+            --cluster '${{ steps.ecs-cluster-name.outputs.ecs-cluster-name }}' \
+            --task-definition '${{ steps.register-ecs-task-def.outputs.task-definition-arn }}' \
+            --output text \
+            --query 'tasks[0].taskArn' | cut -d '/' -f 3)
+          echo "Waiting for migrations to finish applying (running as ECS task with ID '$migrations_task_id'..."
+          aws ecs wait tasks-stopped \
+            --tasks "$migrations_task_id" \
+            --cluster '${{ steps.ecs-cluster-name.outputs.ecs-cluster-name }}'
+          echo "Migration task completed:"
+          aws ecs describe-tasks --query 'tasks[0].{ExitCode: containers[0].exitCode, StoppedReason: stoppedReason}' --tasks $migrations_task_id --cluster '${{ steps.ecs-cluster-name.outputs.ecs-cluster-name }}' | tee /tmp/task_exit_status.json
+          exit_code=$(jq -r '.ExitCode' /tmp/task_exit_status.json)
+          stopped_reason=$(jq -r '.StoppedReason' /tmp/task_exit_status.json)
+          if [[ "$exit_code" != "0" ]] || [[ "$stopped_reason" != "Essential container in task exited" ]]; then
+            echo "Rails migration task failed to complete running successfully. See ECS task logs for more details: https://${{ vars.AWS_REGION }}.console.aws.amazon.com/ecs/v2/clusters/staging/tasks/$migrations_task_id/logs?region=${{ vars.AWS_REGION }}"
+            exit 1
+          else
+            echo "Migrations task completed successfully, deploying CloudFormation stack..."
+          fi
+      - name: Deploy to AWS CloudFormation & watch stack events
+        # Ideally it would be nicer to use the 'aws-actions/aws-cloudformation-github-deploy' Action but it currently
+        # has an issue of being unable to inherrit current CloudFormation stack parameters and only modify a select few
+        # params.
+        # See: https://github.com/aws-actions/aws-cloudformation-github-deploy/issues/99#issue-1694259285
+        #uses: aws-actions/aws-cloudformation-github-deploy@v1
+        #with:
+        #  name: ${{ vars.CF_STACK_NAME }}
+        #  template: ./configs/cloudformation/stack_template.yml
+        #  parameter-overrides: "LaraDockerImage=${{ env.CONTAINER_IMAGE }}"
+        run: |-
+          npm install -g tail-stack-events
+          aws cloudformation update-stack \
+            --template-body file://$(pwd)/configs/cloudformation/stack_template.yml \
+            --stack-name '${{ vars.CF_STACK_NAME }}' \
+            --parameters ParameterKey=LaraDockerImage,ParameterValue=${{ env.CONTAINER_IMAGE }}:${{ steps.selected-app-version.outputs.selected-app-version }} $(aws cloudformation describe-stacks --stack-name '${{ vars.CF_STACK_NAME }}' --query 'Stacks[0].Parameters[].ParameterKey' --output json | jq -r 'map("ParameterKey=" + . + ",UsePreviousValue=true") | join(" ")')
+          tail-stack-events \
+            --stack-name ${{ vars.CF_STACK_NAME }} \
+            --follow \
+            --die
+
+          # Get the last status of the CloudFormation stack
+          status=$(aws cloudformation describe-stacks \
+            --stack-name '${{ vars.CF_STACK_NAME }}' \
+            --query 'Stacks[0].StackStatus' \
+            --output text)
+
+          if [ "$status" == "UPDATE_COMPLETE" ]; then
+            echo "Stack update succeeded."
+          elif [[ "$status" == *"ROLLBACK"* ]]; then
+            echo "Stack update failed and was rolled back"
+            exit 1
+          else
+            echo "Stack has unexpected state: $status"
+            exit 1
+          fi
