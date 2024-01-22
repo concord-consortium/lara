@@ -1,4 +1,4 @@
-name: Deploy
+name: 🚀 Deploy Web Backend to AWS
 
 on:
   workflow_dispatch:
@@ -17,19 +17,24 @@ on:
 
 env:
   CONTAINER_IMAGE: ghcr.io/${{ github.repository }}
+  # To use GitHub CLI in a GitHub Actions workflow, set the GH_TOKEN environment variable.
+  GH_TOKEN: ${{ github.token }}
 
 jobs:
   deploy:
+    name: 🚀 Deploy to '${{ inputs.environment }}'
     runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
     steps:
-      - name: Ensure deployment environment has non-empty value
+      - name: 🧐 Ensure deployment environment has non-empty value
         run: |-
           if [[ "${{ github.event.inputs.environment }}" == "" ]]; then
             test # Fail if it is blank
           fi
           echo "Deploying to environment '${{ github.event.inputs.environment }}'"
-      - uses: actions/checkout@v4
-      - name: Select version to deploy or use latest version of project released
+      - name: 📥 Checkout project source
+        uses: actions/checkout@v4
+      - name: 👉 Select version to deploy or use latest version of project released
         run: |-
           if [[ -n "${{ github.event.inputs.version }}" ]]; then
             echo "User selected to deploy release version '${{ github.event.inputs.version }}'"
@@ -53,13 +58,19 @@ jobs:
             echo -n "selected-app-version=$latest_github_release_ver" >> "$GITHUB_OUTPUT"
           fi
         id: selected-app-version
-      - name: Configure AWS credentials
+      - name: 🧐 Ensure app version is set to a non-empty value
+        run: |-
+          if [[ "${{ steps.selected-app-version.outputs.selected-app-version }}" == "" ]]; then
+            echo "Unable to determine an application version to deploy and application version may not be left blank"
+            test # Fail if it is blank
+          fi
+      - name: 🔐 Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v3
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ vars.AWS_REGION }}
-      - name: Lookup ECS cluster name for selected CloudFormation stack environment
+      - name: 🔍 Lookup ECS cluster name for selected CloudFormation stack environment
         id: ecs-cluster-name
         run: |-
           aws cloudformation describe-stacks \
@@ -71,20 +82,19 @@ jobs:
             --output text \
             --query "Stacks[0].Parameters[?ParameterKey=='EcsClusterName'].ParameterValue" | \
               awk '{printf "ecs-cluster-name=" $1}' >> "$GITHUB_OUTPUT"
-      - run: echo "Selected CloudFormation stack uses ECS cluster '${{ steps.ecs-cluster-name.outputs.ecs-cluster-name }}'"
-      - name: Create modified copy of 'App' ECS task definition
+      - name: 🛠️ Create modified copy of 'App' ECS task definition
         run: |-
           aws ecs describe-task-definition \
             --task-definition '${{ vars.CF_STACK_NAME }}-App' \
             --query 'taskDefinition' | \
             jq -r '.containerDefinitions |= map(.name = "apply-rails-migrations" | .image = "${{ env.CONTAINER_IMAGE }}:${{ steps.selected-app-version.outputs.selected-app-version }}" | .entryPoint = ["bundle", "exec"] | .command = ["rake", "db:migrate"]) | del(.taskDefinitionArn) | del(.registeredBy)' > /tmp/rails_migration_task_definition.json
-      - name: Register new ECS task definition for running database schema migrations
+      - name: 📝 Register new ECS task definition for running database schema migrations
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
         with:
           task-definition: /tmp/rails_migration_task_definition.json
           cluster: ${{ steps.ecs-cluster-name.outputs.ecs-cluster-name }}
         id: register-ecs-task-def
-      - name: Run ECS task to apply database schema migrations
+      - name: 🏃 Run ECS task to apply database schema migrations
         run: |-
           # See https://stackoverflow.com/a/48314818
           migrations_task_id=$(aws ecs run-task \
@@ -106,7 +116,7 @@ jobs:
           else
             echo "Migrations task completed successfully, deploying CloudFormation stack..."
           fi
-      - name: Deploy to AWS CloudFormation & watch stack events
+      - name: 🚀 Deploy to AWS CloudFormation & watch stack events
         # Ideally it would be nicer to use the 'aws-actions/aws-cloudformation-github-deploy' Action but it currently
         # has an issue of being unable to inherrit current CloudFormation stack parameters and only modify a select few
         # params.
@@ -121,7 +131,7 @@ jobs:
           aws cloudformation update-stack \
             --template-body file://$(pwd)/configs/cloudformation/stack_template.yml \
             --stack-name '${{ vars.CF_STACK_NAME }}' \
-            --parameters ParameterKey=LaraDockerImage,ParameterValue=${{ env.CONTAINER_IMAGE }}:${{ steps.selected-app-version.outputs.selected-app-version }} $(aws cloudformation describe-stacks --stack-name '${{ vars.CF_STACK_NAME }}' --query 'Stacks[0].Parameters[].ParameterKey' --output json | jq -r 'map("ParameterKey=" + . + ",UsePreviousValue=true") | join(" ")')
+            --parameters $(aws cloudformation describe-stacks --stack-name '${{ vars.CF_STACK_NAME }}' --query 'Stacks[0].Parameters[].ParameterKey' --output json | jq -r 'map("ParameterKey=" + . + ",UsePreviousValue=true") | join(" ")') ParameterKey=LaraDockerImage,ParameterValue=${{ env.CONTAINER_IMAGE }}:${{ steps.selected-app-version.outputs.selected-app-version }}
           tail-stack-events \
             --stack-name ${{ vars.CF_STACK_NAME }} \
             --follow \
