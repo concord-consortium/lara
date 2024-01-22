@@ -30,7 +30,6 @@ jobs:
           echo "Deploying to environment '${{ github.event.inputs.environment }}'"
       - uses: actions/checkout@v4
       - name: Select version to deploy or use latest version of project released
-        # Only run this step to lookup the latest pre-release/release version if no 'version' input was specified
         run: |-
           if [[ -n "${{ github.event.inputs.version }}" ]]; then
             echo "User selected to deploy release version '${{ github.event.inputs.version }}'"
