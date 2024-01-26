@@ -29,15 +29,14 @@ runs:
         else
           echo "User did not select a release version to deploy."
           echo -n "Querying API for latest "
-          if [[ "${{ github.event.inputs.environment }}" == *"(Production)"* ]]; then
-            echo -n "release version"
-            latest_github_release_ver=$(gh release view --json 'tagName' --jq '.tagName[1:]' | tr -d '\n')
-          elif [[ "${{ github.event.inputs.environment }}" == *"(Staging)"* ]]; then
+          # If environment name/URL contains ".staging." subdomain
+          if [[ "${{ github.event.inputs.environment }}" == *".staging."* ]]; then
             echo -n "pre-release version"
             latest_github_release_ver=$(gh release list | grep -oP 'Pre-release\s+v\K\d+\.\d+\.\d-pre\.\d+' | sort -uVr | head -n 1 | tr -d '\n')
+          # Otherwise assume that it's a production deployment environment
           else
-            echo "Environment name must include the sub-string \"(Production)\" or \"(Staging)\" to indicate whether it is a staging or production stack"
-            test
+            echo -n "release version"
+            latest_github_release_ver=$(gh release view --json 'tagName' --jq '.tagName[1:]' | tr -d '\n')
           fi
           echo "..."
           echo "Determined latest pre-release/release version is '$latest_github_release_ver'"
