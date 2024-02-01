@@ -5,7 +5,7 @@ on:
     inputs:
       environment:
         type: environment
-        default: 'Authoring (Staging) - authoring.lara.staging.concord.org'
+        default: 'authoring.lara.staging.concord.org'
         description: CloudFormation stack to deploy to
         required: true
       version:
@@ -24,7 +24,9 @@ jobs:
   deploy:
     name: 🚀 Deploy to '${{ inputs.environment }}'
     runs-on: ubuntu-latest
-    environment: ${{ inputs.environment }}
+    environment:
+      name: ${{ inputs.environment }}
+      url: https://${{ inputs.environment }}
     steps:
       - name: 📥 Checkout project source
         uses: actions/checkout@v4
