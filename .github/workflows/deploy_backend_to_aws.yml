@@ -5,7 +5,7 @@ on:
   workflow_call:
     inputs:
       environment:
-        type: environment
+        type: string
         required: true
       version:
         default: ''
