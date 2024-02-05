@@ -1,6 +1,16 @@
 name: 🚀 Deploy Web Backend to AWS
 
 on:
+  # Make this a reusable workflow
+  workflow_call:
+    inputs:
+      environment:
+        type: environment
+        required: true
+      version:
+        default: ''
+        type: string
+        required: false
   workflow_dispatch:
     inputs:
       environment:
@@ -37,3 +47,4 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ vars.AWS_REGION }}
           cf-stack-name: ${{ vars.CF_STACK_NAME }}
+          docker-image-template-key-prefix: Lara

@@ -9,6 +9,10 @@ inputs:
     required: true
   cf-stack-name:
     required: true
+  # String prefix for specifiying the app's Docker image CloudFormation template parameter (i.e. "Lara" for 
+  # "LaraDockerImage" or "Portal" for "PortalDockerImage")
+  docker-image-template-key-prefix:
+    required: true
 runs:
   using: "composite"
   steps:
@@ -121,7 +125,7 @@ runs:
         aws cloudformation update-stack \
           --template-body file://$(pwd)/configs/cloudformation/stack_template.yml \
           --stack-name '${{ inputs.cf-stack-name }}' \
-          --parameters $(aws cloudformation describe-stacks --stack-name '${{ inputs.cf-stack-name }}' --query 'Stacks[0].Parameters[].ParameterKey' --output json | jq -r 'map("ParameterKey=" + . + ",UsePreviousValue=true") | join(" ")') ParameterKey=LaraDockerImage,ParameterValue=${{ env.CONTAINER_IMAGE }}:${{ steps.selected-app-version.outputs.selected-app-version }}
+          --parameters $(aws cloudformation describe-stacks --stack-name '${{ inputs.cf-stack-name }}' --query 'Stacks[0].Parameters[].ParameterKey' --output json | jq -r 'map("ParameterKey=" + . + ",UsePreviousValue=true") | join(" ")') ParameterKey=${{ inputs.docker-image-template-key-prefix }}DockerImage,ParameterValue=${{ env.CONTAINER_IMAGE }}:${{ steps.selected-app-version.outputs.selected-app-version }}
         tail-stack-events \
           --stack-name ${{ inputs.cf-stack-name }} \
           --follow \
