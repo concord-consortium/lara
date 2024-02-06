@@ -1,10 +1,10 @@
 import * as React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import classNames from "classnames";
 import { Modal, ModalButtons } from "../../shared/components/modal/modal";
 import { Add } from "../../shared/components/icons/add-icon";
 import { absorbClickThen } from "../../shared/absorb-click";
-import { ISectionItemType } from "../api/api-types";
+import { ILibraryInteractive, ISectionItemType } from "../api/api-types";
 import { usePageAPI } from "../hooks/use-api-provider";
 
 import "./section-item-picker.scss";
@@ -26,7 +26,17 @@ const SectionItemButton = ({item, disabled, className, onClick}: {
 
 export const SectionItemPicker: React.FC<IProps> = (props) => {
   const api = usePageAPI();
-  const allItems = api.getAllEmbeddables.data;
+  const allItems = useMemo(() => {
+    if (!api.getAllEmbeddables.data) {
+      return undefined;
+    }
+    // filter out non-official embeddables if the user is not an admin
+    const allEmbeddables = api.getAllEmbeddables.data.allEmbeddables.filter(em => {
+      const official = (em as unknown as ILibraryInteractive).official ?? false;
+      return api.isAdmin || official;
+    });
+    return {allEmbeddables};
+  }, [api.getAllEmbeddables.data, api.isAdmin]);
   const quickAddItems = api.getAllEmbeddables.data?.allEmbeddables.filter(e => e.isQuickAddItem);
   const { onClose, onAdd } = props;
   const modalIsVisible = true;

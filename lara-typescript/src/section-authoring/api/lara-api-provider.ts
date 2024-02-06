@@ -24,14 +24,16 @@ const APIBase = "/api/v1";
 interface IGetLARAAuthoringAPIParams {
   activityId: string;
   host: string;
+  isAdmin: boolean;
 }
 
 export const getLaraAuthoringAPI =
   (authoringArgs: IGetLARAAuthoringAPIParams = {
     activityId: "",
-    host: window.location.origin
+    host: window.location.origin,
+    isAdmin: false
   }): IAuthoringAPIProvider => {
-  const { activityId, host } = authoringArgs;
+  const { activityId, host, isAdmin } = authoringArgs;
   const prefix = `${host}${APIBase}`;
   // endpoints:
 
@@ -291,6 +293,7 @@ export const getLaraAuthoringAPI =
     createSection, updateSections, updateSection, copySection, getPageItemPlugins,
     createPageItem, updatePageItem, deletePageItem, copyPageItem, getAvailablePlugins,
     getAllEmbeddables, getLibraryInteractives, getPortals, getPreviewOptions, getPageItemEmbeddableMetaData,
-    pathToTinyMCE: "/assets/tinymce.js", pathToTinyMCECSS: "/assets/tinymce-content.css"
+    pathToTinyMCE: "/assets/tinymce.js", pathToTinyMCECSS: "/assets/tinymce-content.css",
+    isAdmin
   };
 };

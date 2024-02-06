@@ -354,7 +354,7 @@ describe Api::V1::InteractivePagesController do
       expect(response.body).to eql(expected_response_for_admin)
     end
 
-    it "returns a list of only official library interactives including all properties for non admins" do
+    it "returns a list of all library interactives including all properties for non admins" do
       sign_in author
 
       # make sure the mocks exist
@@ -393,6 +393,35 @@ describe Api::V1::InteractivePagesController do
             thumbnail_url: library_interactive1.thumbnail_url,
             updated_at: library_interactive1.updated_at,
             use_count: 1
+          },
+          {
+            aspect_ratio_method: library_interactive2.aspect_ratio_method,
+            authorable: library_interactive2.authorable,
+            authoring_guidance: library_interactive2.authoring_guidance,
+            base_url: library_interactive2.base_url,
+            click_to_play: library_interactive2.click_to_play,
+            click_to_play_prompt: library_interactive2.click_to_play_prompt,
+            created_at: library_interactive2.created_at,
+            customizable: library_interactive2.customizable,
+            date_added: library_interactive2.created_at.to_i,
+            description: library_interactive2.description,
+            enable_learner_state: library_interactive2.enable_learner_state,
+            export_hash: library_interactive2.export_hash,
+            full_window: library_interactive2.full_window,
+            has_report_url: library_interactive2.has_report_url,
+            id: library_interactive2.id,
+            image_url: library_interactive2.image_url,
+            name: library_interactive2.name,
+            native_height: library_interactive2.native_height,
+            native_width: library_interactive2.native_width,
+            no_snapshots: library_interactive2.no_snapshots,
+            official: library_interactive2.official,
+            report_item_url: library_interactive2.report_item_url,
+            serializeable_id: library_interactive2.serializeable_id,
+            show_delete_data_button: library_interactive2.show_delete_data_button,
+            thumbnail_url: library_interactive2.thumbnail_url,
+            updated_at: library_interactive2.updated_at,
+            use_count: 0
           }
         ],
         # TODO: Add some page-level plugins to test...

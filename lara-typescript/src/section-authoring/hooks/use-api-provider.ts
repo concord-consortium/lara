@@ -310,6 +310,7 @@ export const usePageAPI = () => {
     updateSectionItems, moveItem, getItems, getPortals,
     getAllEmbeddables, getLibraryInteractives, currentPage, deleteSectionFunction,
     getPreviewOptions,
-    pathToTinyMCE: provider.pathToTinyMCE, pathToTinyMCECSS: provider.pathToTinyMCECSS
+    pathToTinyMCE: provider.pathToTinyMCE, pathToTinyMCECSS: provider.pathToTinyMCECSS,
+    isAdmin: provider.isAdmin
   };
 };
