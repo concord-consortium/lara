@@ -37,7 +37,7 @@ export const SectionItemPicker: React.FC<IProps> = (props) => {
     });
     return {allEmbeddables};
   }, [api.getAllEmbeddables.data, api.isAdmin]);
-  const quickAddItems = api.getAllEmbeddables.data?.allEmbeddables.filter(e => e.isQuickAddItem);
+  const quickAddItems = allItems?.allEmbeddables.filter(e => e.isQuickAddItem);
   const { onClose, onAdd } = props;
   const modalIsVisible = true;
   const [currentSelectedItem, setCurrentSelectedItem]

@@ -261,7 +261,8 @@ export const getLaraAuthoringAPI =
           type: "MwInteractive",
           useCount: 0,
           dateAdded: 0,
-          isQuickAddItem: true
+          isQuickAddItem: true,
+          official: true,
         });
         result.allEmbeddables.push({
           id: "Embeddable::Xhtml",
@@ -270,7 +271,8 @@ export const getLaraAuthoringAPI =
           type: "Embeddable::Xhtml",
           useCount: 0,
           dateAdded: 0,
-          isQuickAddItem: true
+          isQuickAddItem: true,
+          official: true,
         });
         const plugins = (json.plugins as IPluginType[]);
         for (const plugin of plugins) {
