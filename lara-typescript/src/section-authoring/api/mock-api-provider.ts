@@ -439,6 +439,7 @@ const getLibraryInteractives = () => {
       native_height: 435,
       native_width: 576,
       no_snapshots: false,
+      official: false,
       show_delete_data_button: false,
       thumbnail_url: "",
       updated_at: "2021-05-04T21:26:18Z"
@@ -467,6 +468,7 @@ const getLibraryInteractives = () => {
       native_height: 435,
       native_width: 576,
       no_snapshots: false,
+      official: false,
       show_delete_data_button: false,
       thumbnail_url: "",
       updated_at: "2021-05-04T21:26:18Z"
@@ -495,6 +497,7 @@ const getLibraryInteractives = () => {
       native_height: 435,
       native_width: 576,
       no_snapshots: false,
+      official: false,
       show_delete_data_button: false,
       thumbnail_url: "",
       updated_at: "2021-05-04T21:26:18Z"
@@ -523,6 +526,7 @@ const getLibraryInteractives = () => {
       native_height: 435,
       native_width: 576,
       no_snapshots: false,
+      official: false,
       show_delete_data_button: false,
       thumbnail_url: "",
       updated_at: "2021-05-04T21:26:18Z"
@@ -552,6 +556,7 @@ const getLibraryInteractives = () => {
       native_height: 435,
       native_width: 576,
       no_snapshots: false,
+      official: false,
       show_delete_data_button: false,
       thumbnail_url: "",
       updated_at: "2021-05-04T21:26:18Z"
@@ -631,5 +636,6 @@ export const API: IAuthoringAPIProvider = {
   createPageItem, updatePageItem, deletePageItem, copyPageItem,
   getAllEmbeddables, getLibraryInteractives, getAvailablePlugins, getPortals,
   getPreviewOptions, getPageItemPlugins, getPageItemEmbeddableMetaData,
-  pathToTinyMCE: "https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.10.0/tinymce.min.js", pathToTinyMCECSS: undefined
+  pathToTinyMCE: "https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.10.0/tinymce.min.js", pathToTinyMCECSS: undefined,
+  isAdmin: false
 };

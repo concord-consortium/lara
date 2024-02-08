@@ -32,7 +32,11 @@ export const ProjectListItem: React.FC<IProjectListItemProps> = ({
       <menu>
         <ul>
           <li><button className="textButton editButton" onClick={handleEditButtonClick}>Edit</button></li>
-          {onDelete && <li><button className="textButton deleteButton" onClick={handleDeleteButtonClick}>Delete</button></li>}
+          {onDelete && (
+            <li>
+              <button className="textButton deleteButton" onClick={handleDeleteButtonClick}>Delete</button>
+            </li>
+          )}
         </ul>
       </menu>
       <div className="projectListItem__link">

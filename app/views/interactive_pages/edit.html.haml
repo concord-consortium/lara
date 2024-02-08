@@ -63,10 +63,9 @@
       var params = {
         host: window.location.origin,
         activityId: "#{@activity.id}",
-        id: "#{@page.id}"
+        id: "#{@page.id}",
+        isAdmin: #{((current_user && current_user.is_admin) || false).to_json}
       };
-      var element;
-      console.log(params);
       var container = $("#sections-container")[0];
       LARA.SectionAuthoring.renderAuthoringPage(container, params);
     });

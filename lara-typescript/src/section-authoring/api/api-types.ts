@@ -91,6 +91,7 @@ export interface ILibraryInteractive {
   native_height: number;
   native_width: number;
   no_snapshots: boolean;
+  official: boolean;
   serializeable_id: string;
   show_delete_data_button: boolean;
   thumbnail_url: string;
@@ -368,4 +369,6 @@ export interface IAuthoringAPIProvider {
 
   pathToTinyMCE: string | null;
   pathToTinyMCECSS: string | undefined;
+
+  isAdmin: boolean;
 }
