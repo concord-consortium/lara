@@ -209,7 +209,10 @@ export const getLaraAuthoringAPI =
           type: `Plugin::${plugin.label}`,
           useCount: 0,
           dateAdded: 0,
-          isQuickAddItem: false
+          isQuickAddItem: false,
+          // since there is no official column for plugins in the model
+          // we force it to true here so it shows in the item picker for non-admins
+          official: true,
         });
       }
     }
