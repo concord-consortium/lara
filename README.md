@@ -7,11 +7,19 @@ This is a Rails application intended to provide a platform for authoring and usi
 
 ## Getting started
 
-We use Docker for our local development. We also are currently using rails-lts which is a non-open source version of Rails that includes security backports for Rails 3.2. So your dockerhub user will need access to `concordconsortium/docker-rails-base-private` to do development.
+We use Docker for our local development. We also are currently using rails-lts which is a non-open source version of Rails that includes security backports for Rails 3.2. So your dockerhub user will need access to `ghcr.io/concord-consortium/docker-rails-base-private` to do development.
+
+Create GitHub personal access token and select the read:packages scope to download container images and read their metadata
+
+More details: https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry#authenticating-with-a-personal-access-token-classic
+
+ Save your token as an environment variable:
+
+    export CR_PAT=YOUR_TOKEN
 
 Log in to docker if you haven't already:
 
-    docker login
+    echo $CR_PAT | docker login ghcr.io -u USERNAME --password-stdin
 
 To get started quickly, run:
 
@@ -130,31 +138,38 @@ you need to do in practice is described below.
       cp .env-gh-codespaces-sample .env
     ```
 
-2. Open Portal GitHub Codespace, run `echo ${CODESPACE_NAME}` in terminal, and set `PORTAL_CODESPACE_NAME` variable
+1. Open Portal GitHub Codespace, run `echo ${CODESPACE_NAME}` in terminal, and set `PORTAL_CODESPACE_NAME` variable
 in LARA's `.env` file.
 
-3. Set `REPORT_SERVICE_TOKEN` in LARA's `.env` file following instructions that can be found there.
+1. Set `REPORT_SERVICE_TOKEN` in LARA's `.env` file following instructions that can be found there.
 
-4. Run
+1. Create GitHub personal access token and select the `read:packages` scope to download container images and read their metadata. More details: https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry#authenticating-with-a-personal-access-token-classic
+
+    Save your token as an environment variable and log in to docker:
     ```
-      docker login
+      export CR_PAT=YOUR_TOKEN
+      echo $CR_PAT | docker login ghcr.io -u USERNAME --password-stdin
+    ```
+
+1. Run
+    ```
       docker-compose up
     ```
 
-5. Once the app has started, open "Ports" tab in Visual Studio Code. Find a process that uses port 3000 and change its
+1. Once the app has started, open "Ports" tab in Visual Studio Code. Find a process that uses port 3000 and change its
 visibility to public (right click on "Private" -> Port Visibility -> Public). You should see an updated address in
 "Local Address" column. You can open this URL in the web browser and LARA should load. It seems it's necessary to do it
 each time you run `docker-compose up`.
 
-6. Now, your LARA instance should work with Portal, Activity Player and basic reports. You can login to LARA
+1. Now, your LARA instance should work with Portal, Activity Player and basic reports. You can login to LARA
 through `Localhost` (Portal running on another GH Codespace) using `admin`, `password` credentials. You are now logged
 in with admin@concord.org in LARA, however this user is not actually an admin in LARA. Run the following command in
 terminal in the LARA Codespaces:
     ```
       docker-compose exec app bundle exec rake lightweight:admin_last_user
     ```
-    
-7. If you don't need Portal, you can skip all the instructions related to it. Finally, add `users/sign_up` to the URL and create a new user there. 
+
+1. If you don't need Portal, you can skip all the instructions related to it. Finally, add `users/sign_up` to the URL and create a new user there.
    You can make this user an admin by running following command:
     ```
       docker-compose exec app bundle exec rake lightweight:admin_last_user
