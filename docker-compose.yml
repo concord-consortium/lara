@@ -30,7 +30,6 @@ services:
       REPORT_SERVICE_TOOL_ID: "${LARA_HOST:-app.lara.docker}.${USER}"
       REPORT_URL: "${REPORT_URL:-https://portal-report.concord.org/branch/master/index.html}"
       SECRET_TOKEN: b30c94c7-81b7-4f20-8df9-686b079a616a
-      SHUTTERBUG_URI:
       # Enables logging to stdout instead of file.
       RAILS_STDOUT_LOGGING: "true"
       # set to https in .env
