@@ -160,10 +160,6 @@ Parameters:
     Type: String
     Description: URL for the portal-report to use for student report buttons in LARA
     Default: https://portal-report.concord.org/branch/master/index.html
-  ShutterbugURI:
-    Type: String
-    Description: URI for the shutterbug service
-    Default: https://fh1fzvhx93.execute-api.us-east-1.amazonaws.com/production
   CreateLoadBalancerHTTPRedirect:
     Type: String
     Description:
@@ -582,8 +578,6 @@ Resources:
               Value: !Sub "https://${HostName}.${DomainNameBase}"
             - Name: REPORT_URL
               Value: !Ref ReportUrl
-            - Name: SHUTTERBUG_URI
-              Value: !Ref ShutterbugURI
             - Name: ACTIVITY_PLAYER_URL
               Value: !Ref ActivityPlayerURL
             - Name: CONVERSION_SCRIPT_URL

@@ -40,7 +40,6 @@
 //= require jquery.colorbox
 //= require interactive-sizing
 //= require embeddable-carousel
-//= require image_question_drawing_tool
 //= require nav_menu
 //= require profile
 //= require iframe-phone
@@ -48,7 +47,6 @@
 //= require activity-box-click
 //= require wait-message
 //= require external-scripts
-//= require labbook
 //= require c_rater
 //= require interactive-manager
 //= require components

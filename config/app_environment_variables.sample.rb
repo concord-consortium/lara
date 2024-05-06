@@ -10,7 +10,6 @@ ENV['CONCORD_HAS_STAGING_DISPLAY_NAME']  ||= 'Has Staging Portal'  # Optional pa
 
 ENV['SECRET_TOKEN']                      ||= 'use `rake secret` to generate'
 
-ENV['SHUTTERBUG_URI']                    ||= 'https://fh1fzvhx93.execute-api.us-east-1.amazonaws.com/production/make-snapshot'
 ENV['LOGGER_URI']                        ||= 'https://logger.concord.org/logs'
 ENV['LOGGER_APPLICATION_NAME']           ||= 'LARA-log-poc'
 ENV['C_RATER_CLIENT_ID']                 ||= 'XXXXXXX'
