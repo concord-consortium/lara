@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20240103135547) do
+ActiveRecord::Schema.define(:version => 20240718182117) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "kind"
@@ -457,6 +457,7 @@ ActiveRecord::Schema.define(:version => 20240103135547) do
     t.boolean  "hide_read_aloud",                        :default => false
     t.string   "font_size",                              :default => "normal"
     t.boolean  "hide_question_numbers",                  :default => false
+    t.integer  "rubric_id"
   end
 
   add_index "lightweight_activities", ["changed_by_id"], :name => "index_lightweight_activities_on_changed_by_id"
@@ -659,6 +660,14 @@ ActiveRecord::Schema.define(:version => 20240103135547) do
     t.integer "master_question_id"
     t.string  "master_question_type"
     t.integer "user_id"
+  end
+
+  create_table "rubrics", :force => true do |t|
+    t.string   "name"
+    t.integer  "user_id"
+    t.integer  "project_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "runs", :force => true do |t|
