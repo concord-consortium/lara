@@ -113,6 +113,10 @@ class Ability
     can :update, Glossary do |glossary|
       user.id == glossary.user_id || user.project_admin_of?(glossary.project)
     end
+    # Everyone (author and regular user) can update rubrics they own.
+    can :update, Rubric do |rubric|
+      user.id == rubric.user_id || user.project_admin_of?(rubric.project)
+    end
     # Everyone (author and regular user) can update activities they own.
     can :update, LightweightActivity do |activity|
       user.id == activity.user_id || user.project_admin_of?(activity.project)

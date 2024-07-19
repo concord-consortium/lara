@@ -12,6 +12,7 @@ class User < ActiveRecord::Base
   has_many :runs
   has_many :imports
   has_many :glossaries, order: :name
+  has_many :rubrics, order: :name
   has_many :project_admins
   has_many :admined_projects, through: :project_admins, :source => :project
 
