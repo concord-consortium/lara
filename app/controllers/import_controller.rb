@@ -18,6 +18,7 @@ class ImportController < ApplicationController
       if import_result[:success]
         path = import_result[:type] === "Sequence" ? edit_sequence_path(import_result[:import_item]) :
                import_result[:type] === "Glossary" ? edit_glossary_path(import_result[:import_item]) :
+               import_result[:type] === "Rubric" ? edit_rubric_path(import_result[:import_item]) :
                                                      edit_activity_path(import_result[:import_item])
         format.js { render :js => "window.location.href = '#{path}';" }
       else

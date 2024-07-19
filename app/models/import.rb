@@ -18,6 +18,8 @@ class Import < ActiveRecord::Base
         @import_item = Sequence.import(json_object, user, imported_activity_url)
       elsif json_object[:type] == "Glossary"
         @import_item = Glossary.import(json_object, user)
+      elsif json_object[:type] == "Rubric"
+        @import_item = Rubric.import(json_object, user)
       else
         return {success: false, error: "Import failed: unknown type"}
       end
