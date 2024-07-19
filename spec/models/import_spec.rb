@@ -10,6 +10,8 @@ describe Import do
   let (:invalid_sequence_import_json) { File.read(Rails.root + 'spec/import_examples/invalid_sequence_import.json') }
   let (:valid_glossary_import_json) { File.read(Rails.root + 'spec/import_examples/valid_glossary_import.json') }
   let (:invalid_glossary_import_json) { File.read(Rails.root + 'spec/import_examples/invalid_glossary_import.json') }
+  let (:valid_rubric_import_json) { File.read(Rails.root + 'spec/import_examples/valid_rubric_import.json') }
+  let (:invalid_rubric_import_json) { File.read(Rails.root + 'spec/import_examples/invalid_rubric_import.json') }
 
   describe '#import' do
     context "lightweight activity" do
@@ -72,6 +74,21 @@ describe Import do
 
       it "returns error if input is incorrect" do
         result = Import.import(invalid_glossary_import_json, user)
+        expect(result[:success]).to eq(false)
+        expect(result[:error]).to be_a(String)
+      end
+    end
+
+    context "rubric" do
+      it "can import a rubric from a valid rubric json" do
+        result = Import.import(valid_rubric_import_json, user)
+        expect(result[:success]).to eq(true)
+        expect(result[:import_item]).to be_a(Rubric)
+        expect(result[:type]).to eq("Rubric")
+      end
+
+      it "returns error if input is incorrect" do
+        result = Import.import(invalid_rubric_import_json, user)
         expect(result[:success]).to eq(false)
         expect(result[:error]).to be_a(String)
       end
