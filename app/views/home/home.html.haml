@@ -38,6 +38,8 @@
         %a{ :href => "#sequence_listing_head" }=t("SEQUENCES")
       -if @glossaries
         %a{ :href => "#glossary_listing_head" }=t("GLOSSARIES")
+      -if @rubrics
+        %a{ :href => "#rubric_listing_head" }=t("RUBRICS")
 
 
 -if @activities
@@ -66,3 +68,12 @@
       =render :partial => "glossaries/index_item", :locals => {:glossary => glossary}
   .glossaries-link
     = link_to t("SEE_ALL_GLOSSARIES"), glossaries_path
+
+-if @rubrics
+  #rubric_listing_head
+    %h1=t("RUBRICS")
+  %ul.quiet_list.rubrics
+    - @rubrics.each do |rubric|
+      =render :partial => "rubrics/index_item", :locals => {:rubric => rubric}
+  .rubrics-link
+    = link_to t("SEE_ALL_RUBRICS"), rubrics_path
