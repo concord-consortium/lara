@@ -1,0 +1,20 @@
+.sequence_form
+  = form_for(@rubric) do |f|
+    - if @rubric.errors.any?
+      #error_explanation
+        %h2
+          = pluralize(@rubric.errors.count, "error")
+          prohibited this rubric from being saved:
+        %ul
+          - @rubric.errors.full_messages.each do |msg|
+            %li= msg
+
+    .field
+      = f.label :name
+      = f.text_field :name, autofocus: true
+    .field
+      = f.label :project_id, 'Project'
+      = f.select :project_id, options_from_collection_for_select(Project.visible_to_user(current_user), 'id', 'title', @rubric.project_id), { :include_blank => true }
+    %footer
+      .submit
+        = f.submit "Save", :id => 'save-top', :class => 'btn-primary'
