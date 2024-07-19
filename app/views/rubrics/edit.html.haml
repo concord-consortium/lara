@@ -1,0 +1,22 @@
+- firebase_jwt_url = api_v1_get_firebase_jwt_url({firebase_app: '_FIREBASE_APP_'})
+= content_for :session do
+  #session
+    = render :partial => 'shared/session'
+= content_for :title do
+  = "#{@can_edit ? "Edit" : "View"} #{@rubric.name}"
+= content_for :nav do
+  .breadcrumbs
+    %ul
+      %li= link_to "Home", root_path
+      %li
+        \/
+        = link_to 'All Rubrics', rubrics_path
+      %li= "/ #{@can_edit ? "Edit" : "View"} #{@rubric.name}"
+
+#rubric_authoring_form
+  %div{style: "margin: 10px 0; font-weight: bold"} TODO: add authoring form here in later stories
+
+:javascript
+  $(document).ready(function() {
+    // TODO: render authoring form in #rubric_authoring_form div
+  });

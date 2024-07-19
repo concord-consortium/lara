@@ -40,6 +40,13 @@ LightweightStandalone::Application.routes.draw do
     end
   end
 
+  resources :rubrics do
+    member do
+      get :duplicate
+      get :export
+    end
+  end
+
   resources :sequences, :constraints => { :id => /\d+/ } do
     member do
       post :add_activity
@@ -184,6 +191,7 @@ LightweightStandalone::Application.routes.draw do
       end
 
       resources :glossaries, :controller => 'glossaries', only: [:show, :update]
+      resources :rubrics, :controller => 'rubrics', only: [:show, :update]
 
       match 'import' => 'import#import', :via => 'post'
 

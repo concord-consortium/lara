@@ -1,0 +1,32 @@
+= content_for :session do
+  #session
+    = render :partial => 'shared/session'
+= content_for :title do
+  Rubrics
+= content_for :nav do
+  .breadcrumbs
+    %ul
+      %li= link_to "Home", root_path
+      %li / All Rubrics
+
+%ul#new-menu
+  %li#collection_filter= collection_filter_tag @filter
+.buttons-menu
+  - if can? :create, Rubric
+    %a{ :href => new_rubric_path }
+      %button=t("NEW_RUBRIC_BUTTON")
+  - if can? :import, Rubric
+    %a{ :href => import_status_path, 'data-remote'=>"true" }
+      %button=t("IMPORT")
+
+#official_listing_heading.pagination_heading
+  %h1 Rubrics
+  = page_entries_info @rubrics, :model => "Rubrics"
+  = t(:COLLECTION_SORT_ORDER)
+  .pagination_info
+    = will_paginate @rubrics
+  %ul.quiet_list.official_listing
+    - @rubrics.each do |rubric|
+      = render :partial => "index_item", :locals => {:rubric => rubric}
+  .pagination_info
+    = will_paginate @rubrics
