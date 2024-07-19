@@ -41,6 +41,7 @@ class ApplicationController < ActionController::Base
   before_filter :reject_old_browsers, :except => [:bad_browser]
   before_filter :set_locale
   before_filter :store_auto_publish_url # to enable auto publishing to build an url from the request object
+  before_filter :intialize_gon
   after_filter :log_session_after
 
   helper_method :resource_name
@@ -356,5 +357,16 @@ class ApplicationController < ActionController::Base
     else
       return ""
     end
+  end
+
+  def intialize_gon
+    # GON needs to have a variable set in order for it to inject a window.gon
+    # object variable in the page that subsequent scripts rely on to exist.
+    # In the past there was a shutterbug uri variable set, but that was removed,
+    # and so the script element with the gon variable was not emitted.
+    #
+    # NOTE: the actual name of the variable does not matter, just that a variable
+    # has been set on each page render.
+    gon.__initializeToEnsureWindowGONExists = true
   end
 end
