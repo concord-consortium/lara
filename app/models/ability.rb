@@ -61,6 +61,15 @@ class Ability
         user.project_admin_of?(project)
       end
 
+      can :create, Rubric
+      can :duplicate, Rubric
+      can :export, Rubric
+      can :import, Rubric
+      can :manage, Rubric do |rubric|
+        user.id == rubric.user_id || user.project_admin_of?(rubric.project)
+      end
+      can :read, Rubric
+
       can :create, Sequence
       can :duplicate, Sequence do |sequence|
         user.id == sequence.user_id || user.project_admin_of?(sequence.project) || ['public', 'hidden'].include?(sequence.publication_status)
@@ -101,6 +110,13 @@ class Ability
       can :manage, Plugin do |plugin|
         plugin.plugin_scope.user_id == user.id
       end
+
+      can :create, Rubric
+      can :duplicate, Rubric
+      can :export, Rubric
+      can :import, Rubric
+      can :manage, Rubric, :user_id => user.id
+      can :read, Rubric
 
       can :create, Sequence
       can :duplicate, Sequence, :publication_status => ['public', 'hidden']
