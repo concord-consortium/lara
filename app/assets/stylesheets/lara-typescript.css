@@ -3651,6 +3651,84 @@ button.bigButton svg {
   fill: var(--dark-gray);
   margin: 0 3px 0 0;
 }
+.rubric-settings .rubric-settings-header {
+  background-color: var(--orange);
+  color: white;
+  font-size: 18px;
+  font-weight: 700;
+  border-radius: 5px 5px 0px 0px;
+  padding: 10px;
+}
+.rubric-settings .rubric-settings-form {
+  border: solid 2px #333;
+  background-color: #fce8de;
+  padding: 10px;
+}
+.rubric-settings .rubric-settings-form div {
+  margin: 10px 0;
+}
+.rubric-settings .rubric-settings-form label {
+  width: 150px;
+  display: inline-block;
+  text-align: right;
+  margin-right: 10px;
+}
+.rubric-settings .rubric-settings-form input[type=text], .rubric-settings .rubric-settings-form select {
+  width: 700px;
+  box-sizing: border-box;
+}
+.rubric-settings .rubric-settings-form .rubric-settings-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+  margin-top: 20px;
+}
+.rubric-settings .rubric-settings-form .rubric-settings-buttons button, .rubric-settings .rubric-settings-form .rubric-settings-buttons input[type=submit] {
+  border: none;
+  border-radius: 0;
+  padding: 10px 15px;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 14px;
+  margin: 0;
+  text-align: center;
+  text-decoration: none;
+  font-weight: bold;
+}
+.rubric-settings .rubric-settings-form .rubric-settings-buttons button {
+  background-color: white;
+  color: #3f3f3f;
+}
+.rubric-settings .rubric-settings-form .rubric-settings-buttons input[type=submit] {
+  background-color: var(--orange);
+  color: white;
+}
+.rubric-settings .rubric-settings-form .rubric-settings-buttons input[type=submit]:disabled {
+  background-color: var(#777);
+}
+.rubric-form-container {
+  font-family: "Lato-Bold", helvetica, verdana, sans-serif;
+}
+.rubric-form-container .rubric-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.rubric-form-container .rubric-header h1 {
+  color: var(--orange);
+  font-size: 24px;
+  font-weight: 700;
+  margin: 20px 0px 20px 0px;
+}
+.rubric-form-container .rubric-header .rubric-auto-save {
+  font-style: italic;
+}
+.rubric-form-container .rubric-header .rubric-edit-settings {
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: bold;
+  color: var(--orange);
+}
 @font-face {
   font-family: "Lato-Light";
   font-style: normal;

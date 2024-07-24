@@ -17,6 +17,10 @@
 
 :javascript
   $(document).ready(function() {
-    // TODO: pass properties in second parameter in future stories
-    LARA.RubricAuthoring.renderRubricForm(document.getElementById("rubric_authoring_form"), {});
+    LARA.RubricAuthoring.renderRubricForm(document.getElementById("rubric_authoring_form"), {
+      name: "#{j @rubric.name}",
+      updateSettingsUrl: "#{j api_v1_rubric_url(@rubric.id)}",
+      project: #{@project.to_json},
+      projects: #{@projects.to_json},
+    });
   });
