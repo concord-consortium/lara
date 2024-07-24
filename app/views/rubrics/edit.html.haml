@@ -14,9 +14,9 @@
       %li= "/ #{@can_edit ? "Edit" : "View"} #{@rubric.name}"
 
 #rubric_authoring_form
-  %div{style: "margin: 10px 0; font-weight: bold"} TODO: add authoring form here in later stories
 
 :javascript
   $(document).ready(function() {
-    // TODO: render authoring form in #rubric_authoring_form div
+    // TODO: pass properties in second parameter in future stories
+    LARA.RubricAuthoring.renderRubricForm(document.getElementById("rubric_authoring_form"), {});
   });
