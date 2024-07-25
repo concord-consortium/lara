@@ -7,6 +7,7 @@ import * as Events from "./events";
 import * as PageHeader from "./section-authoring/components/page-header";
 import * as PageItemAuthoring from "./page-item-authoring";
 import * as SectionAuthoring from "./section-authoring";
+import * as RubricAuthoring from "./rubric-authoring";
 import * as Projects from "./projects";
 
 export interface LaraGlobalType {
@@ -23,7 +24,8 @@ export {
   PageHeader,
   PageItemAuthoring,
   SectionAuthoring,
-  Projects
+  Projects,
+  RubricAuthoring
 };
 
 // Note that LARA namespace is defined for the first time by V2 API. Once V2 is removed, this code should also be
@@ -36,6 +38,7 @@ export {
 (window as any).LARA.InteractiveAPI = InteractiveAPI;
 (window as any).LARA.PageItemAuthoring = PageItemAuthoring;
 (window as any).LARA.SectionAuthoring = SectionAuthoring;
+(window as any).LARA.RubricAuthoring = RubricAuthoring;
 (window as any).LARA.Projects = Projects;
 
 // for clients that don't require LARA to be a global on window
