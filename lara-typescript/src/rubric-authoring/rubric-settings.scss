@@ -1,4 +1,6 @@
 .rubric-settings {
+  margin-bottom: 10px;
+
   .rubric-settings-header {
     background-color: var(--orange);
     color: white;
@@ -9,7 +11,7 @@
   }
 
   .rubric-settings-form {
-    border: solid 2px #333;
+    border: solid 1px #333;
     background-color: #fce8de;
     padding: 10px;
 
