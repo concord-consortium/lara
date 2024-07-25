@@ -1,16 +1,66 @@
 import * as React from "react";
+import { useState } from "react";
+import { RubricSettings, UpdateSettingsParams } from "./rubric-settings";
 
-// TODO: import css when needed
-// import "./rubric-form.scss";
+import "./rubric-form.scss";
 
-export interface IRubricFormProps {
-  // TODO: add props here in later stories
+export interface RubricProject {
+  id: number;
+  title: string;
 }
 
-export const RubricForm: React.FC<IRubricFormProps> = () => {
+export interface IRubricFormProps {
+  name: string;
+  updateSettingsUrl: string;
+  project: RubricProject|null;
+  projects: RubricProject[];
+}
+
+export const RubricForm = (props: IRubricFormProps) => {
+  const [name, setName] = useState(props.name);
+  const [project, setProject] = useState(props.project);
+  const [showSettings, setShowSettings] = useState(false);
+
+  const handleToggleShowSettings = () => {
+    setShowSettings(prev => !prev);
+  };
+
+  const handleUpdateSettings = (saveSettings: UpdateSettingsParams) => {
+    fetch(props.updateSettingsUrl, {
+      method: "PUT",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(saveSettings)
+    }).then((resp) => {
+      if (resp.status === 200) {
+        setName(saveSettings.name);
+        setProject(saveSettings.project);
+        handleToggleShowSettings();
+      } else {
+        alert("Something went wrong saving the settings");
+      }
+    }).catch(fetchError => {
+      alert(fetchError.toString());
+    });
+  };
+
   return (
-    <div>
-      TODO: add real rubric form here
+    <div className="rubric-form-container">
+      <div className="rubric-header">
+        <h1>Edit Rubric: {name}</h1>
+        <div className="rubric-auto-save">All changes auto-saved!</div>
+        <div className="rubric-edit-settings" onClick={handleToggleShowSettings}>Edit Settings</div>
+      </div>
+
+      {showSettings &&
+        <RubricSettings
+          name={name}
+          project={project}
+          projects={props.projects}
+          update={handleUpdateSettings}
+          cancel={handleToggleShowSettings}
+        />
+      }
     </div>
   );
 };

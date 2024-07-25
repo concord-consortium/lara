@@ -1,0 +1,64 @@
+.rubric-settings {
+  .rubric-settings-header {
+    background-color: var(--orange);
+    color: white;
+    font-size: 18px;
+    font-weight: 700;
+    border-radius: 5px 5px 0px 0px;
+    padding: 10px;
+  }
+
+  .rubric-settings-form {
+    border: solid 2px #333;
+    background-color: #fce8de;
+    padding: 10px;
+
+    div {
+      margin: 10px 0;
+    }
+
+    label {
+      width: 150px;
+      display: inline-block;
+      text-align: right;
+      margin-right: 10px;
+    }
+
+    input[type=text], select {
+      width: 700px;
+      box-sizing: border-box;
+    }
+
+    .rubric-settings-buttons {
+      display: flex;
+      justify-content: flex-end;
+      gap: 15px;
+      margin-top: 20px;
+
+      button, input[type=submit] {
+        border: none;
+        border-radius: 0;
+        padding: 10px 15px;
+        cursor: pointer;
+        display: inline-block;
+        font-size: 14px;
+        margin: 0;
+        text-align: center;
+        text-decoration: none;
+        font-weight: bold;
+      }
+      button {
+        background-color: white;
+        color: #3f3f3f;
+      }
+      input[type=submit] {
+        background-color: var(--orange);
+        color: white;
+
+        &:disabled {
+          background-color: var(#777);
+        }
+      }
+    }
+  }
+}
