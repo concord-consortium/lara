@@ -1,66 +1,78 @@
 import * as React from "react";
-import { useState } from "react";
+import { useCallback } from "react";
+
 import { IRubricRating } from "./types";
+import { Trash } from "./trash";
+import { Plus } from "./plus";
+import { useRubric } from "./use-rubric";
 
 import "./rubric-ratings.scss";
-
-const Trash = ({onClick}: {onClick: () => void}) => {
-  return (
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" onClick={onClick}>
-      <path d="M20 6h-3.155a.949.949 0 0 0-.064-.125l-1.7-2.124A1.989 1.989 0 0 0 13.519 3h-3.038a1.987 1.987 0 0 0-1.562.75l-1.7 2.125A.949.949 0 0 0 7.155 6H4a1 1 0 0 0 0 2h1v11a2 2 0 0 0 1.994 2h10.011A2 2 0 0 0 19 19V8h1a1 1 0 0 0 0-2zm-9.519-1h3.038l.8 1H9.681zm6.524 14H7V8h10z"/>
-      <path d="M14 18a1 1 0 0 1-1-1v-7a1 1 0 0 1 2 0v7a1 1 0 0 1-1 1zM10 18a1 1 0 0 1-1-1v-7a1 1 0 0 1 2 0v7a1 1 0 0 1-1 1z"/>
-    </svg>
-  );
-};
-
-const Plus = () => {
-  return (
-    <svg viewBox="0 0 17 16" xmlns="http://www.w3.org/2000/svg" width="18" height="18">
-      <path d="m9.021.097c-4.396 0-7.958 3.558-7.958 7.943 0 4.388 3.562 7.945 7.958 7.945 4.395 0 7.958-3.558 7.958-7.945 0-4.386-3.564-7.943-7.958-7.943zm2.304 8.985h-1.237v1.237c0 .979.059 1.769-1.088 1.769-1.144 0-1.088-.79-1.088-1.769v-1.237h-1.237c-.979 0-1.769.056-1.769-1.088 0-1.146.79-1.088 1.769-1.088h1.237v-1.237c0-.979-.056-1.769 1.088-1.769 1.146 0 1.088.79 1.088 1.769v1.237h1.237c.979 0 1.769-.059 1.769 1.088 0 1.144-.79 1.088-1.769 1.088z" fill="#434343" fill-rule="evenodd"/>
-    </svg>
-  );
-};
 
 export interface IRubricRatingsItemProps {
   index: number;
   rating: IRubricRating;
   onDelete: (index: number) => void;
+  onUpdate: (index: number, rating: IRubricRating) => void;
 }
 
-export const RubricRatingsItem = ({index, rating, onDelete}: IRubricRatingsItemProps) => {
+export const RubricRatingsItem = ({index, rating, onDelete, onUpdate}: IRubricRatingsItemProps) => {
   const {id, label, score} = rating;
+
   const handleDelete = () => onDelete(index);
+  const handleLabelUpdate = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    onUpdate(index, {...rating, label: e.target.value});
+  }, [rating]);
+  const handleScoreUpdate = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    onUpdate(index, {...rating, score: parseInt(e.target.value, 10)});
+  }, [rating]);
 
   return (
     <tr>
-      <td><input name="rating[][id]" value={id} type="text" disabled={true} /></td>
-      <td><input name="rating[][label]" defaultValue={label} type="text" autoFocus={true} /></td>
-      <td><input name="rating[][score]" defaultValue={score} type="number" /></td>
+      <td><input value={id} type="text" disabled={true} /></td>
+      <td><input value={label} type="text" autoFocus={true} onChange={handleLabelUpdate} /></td>
+      <td><input value={score} type="number" onChange={handleScoreUpdate} /></td>
       <td><Trash onClick={handleDelete} /></td>
     </tr>
   );
 };
 
-export interface IRatingsProps {
-  ratings: IRubricRating[];
-}
+export const RubricRatings = () => {
+  const { rubric, setRubric } = useRubric();
 
-export const RubricRatings = (props: IRatingsProps) => {
-  const [ratings, setRatings] = useState<IRubricRating[]>(props.ratings);
+  if (!rubric) {
+    return null;
+  }
+
+  const { ratings } = rubric;
 
   const handleDelete = (index: number) => {
     if (confirm("Are you sure you want to delete this rating?")) {
-      setRatings(prev => {
-        const next = [...prev];
-        next.splice(index, 1);
-        return next;
+      setRubric(prev => {
+        const ratingId = prev.ratings[index].id;
+        const newRatings = [...prev.ratings];
+        newRatings.splice(index, 1);
+        const newCriteria = [...prev.criteria];
+        newCriteria.forEach(c => {
+          delete c.ratingDescriptions[ratingId];
+          delete c.ratingDescriptionsForStudent[ratingId];
+          c.nonApplicableRatings = c.nonApplicableRatings.filter(nar => nar !== ratingId);
+        });
+        return {...prev, ratings: newRatings, criteria: newCriteria};
       });
     }
   };
 
+  const handleUpdate = (index: number, rating: IRubricRating) => {
+    setRubric(prev => {
+      const next = [...prev.ratings];
+      next[index] = rating;
+      return {...prev, ratings: next};
+    });
+  };
+
   const handleAdd = () => {
-    setRatings(prev => {
-      return [...prev, {id: `R${prev.length + 1}`, label: "", score: 0}];
+    setRubric(prev => {
+      return {...prev, ratings: [...prev.ratings, {id: `R${prev.ratings.length + 1}`, label: "", score: 0}]};
     });
   };
 
@@ -77,7 +89,13 @@ export const RubricRatings = (props: IRatingsProps) => {
         </thead>
         <tbody>
           {ratings.map((rating, index) => (
-            <RubricRatingsItem key={index} index={index} rating={rating} onDelete={handleDelete} />
+            <RubricRatingsItem
+              key={index}
+              index={index}
+              rating={rating}
+              onDelete={handleDelete}
+              onUpdate={handleUpdate}
+            />
           ))}
         </tbody>
       </table>}

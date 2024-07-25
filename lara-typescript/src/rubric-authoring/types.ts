@@ -1,8 +1,10 @@
 export interface IRubricCriterion {
   id: string;
   description: string;
+  descriptionForStudent: string;
   nonApplicableRatings: string[];
   ratingDescriptions: Record<string, string>;
+  ratingDescriptionsForStudent: Record<string, string>;
 }
 
 export interface IRubricRating {

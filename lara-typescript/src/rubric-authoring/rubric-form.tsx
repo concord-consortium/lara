@@ -1,11 +1,14 @@
 import * as React from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { RubricSettings, UpdateSettingsParams } from "./rubric-settings";
 import { RubricGeneralOptions } from "./rubric-general-options";
 import { RubricPanel } from "./rubric-panel";
 import { RubricRatings } from "./rubric-ratings";
+import { RubricCriteria } from "./rubric-criteria";
 
 import "./rubric-form.scss";
+import { IRubricCriterion, IRubricRating } from "./types";
+import { RubricContext, useRubricValue } from "./use-rubric";
 
 export interface RubricProject {
   id: number;
@@ -23,6 +26,13 @@ export const RubricForm = (props: IRubricFormProps) => {
   const [name, setName] = useState(props.name);
   const [project, setProject] = useState(props.project);
   const [showSettings, setShowSettings] = useState(false);
+  const rubricContextValue = useRubricValue();
+
+  /* for use later for debugging
+  useEffect(() => {
+    console.log(rubricContextValue.rubric);
+  }, [rubricContextValue.rubric]);
+  */
 
   const handleToggleShowSettings = () => {
     setShowSettings(prev => !prev);
@@ -47,40 +57,57 @@ export const RubricForm = (props: IRubricFormProps) => {
     });
   };
 
+  const renderRubricPanels = () => {
+    if (rubricContextValue.loadStatus === "loading") {
+      return <div>Loading...</div>;
+    }
+
+    if (rubricContextValue.loadStatus === "error") {
+      return <div>Error loading rubric!</div>;
+    }
+
+    return (
+      <>
+        <RubricPanel title="Rubric Preview" backgroundColor={"#e2f4f8"}>
+          TBD
+        </RubricPanel>
+
+        <RubricPanel title="General Options">
+          <RubricGeneralOptions />
+        </RubricPanel>
+
+        <RubricPanel title="Ratings">
+          <RubricRatings />
+        </RubricPanel>
+
+        <RubricPanel title="Criteria">
+          <RubricCriteria />
+        </RubricPanel>
+      </>
+    );
+  };
+
   return (
-    <div className="rubric-form-container">
-      <div className="rubric-header">
-        <h1>Edit Rubric: {name}</h1>
-        <div className="rubric-dev-note">Dev Note: Saving is not implemented yet.</div>
-        <button className="rubric-edit-settings" onClick={handleToggleShowSettings}>Edit Settings</button>
+    <RubricContext.Provider value={rubricContextValue}>
+      <div className="rubric-form-container">
+        <div className="rubric-header">
+          <h1>Edit Rubric: {name}</h1>
+          <div className="rubric-dev-note">Dev Note: Saving is not implemented yet.</div>
+          <button className="rubric-edit-settings" onClick={handleToggleShowSettings}>Edit Settings</button>
+        </div>
+
+        {showSettings &&
+          <RubricSettings
+            name={name}
+            project={project}
+            projects={props.projects}
+            update={handleUpdateSettings}
+            cancel={handleToggleShowSettings}
+          />
+        }
+
+        {renderRubricPanels()}
       </div>
-
-      {showSettings &&
-        <RubricSettings
-          name={name}
-          project={project}
-          projects={props.projects}
-          update={handleUpdateSettings}
-          cancel={handleToggleShowSettings}
-        />
-      }
-
-      <RubricPanel title="Rubric Preview" backgroundColor={"#e2f4f8"}>
-        TBD
-      </RubricPanel>
-
-      <RubricPanel title="General Options">
-        <RubricGeneralOptions />
-      </RubricPanel>
-
-      <RubricPanel title="Ratings">
-        <RubricRatings ratings={[]} /> {/* empty initial ratings for now, will change once save is added */}
-      </RubricPanel>
-
-      <RubricPanel title="Criteria">
-        TBD
-      </RubricPanel>
-
-    </div>
+    </RubricContext.Provider>
   );
 };
