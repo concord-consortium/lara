@@ -3709,30 +3709,6 @@ button.bigButton svg {
 .rubric-settings .rubric-settings-form .rubric-settings-buttons input[type=submit]:disabled {
   background-color: var(#777);
 }
-.rubric-form-container {
-  font-family: "Lato", helvetica, verdana, sans-serif;
-}
-.rubric-form-container .rubric-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.rubric-form-container .rubric-header h1 {
-  color: var(--orange);
-  font-size: 24px;
-  font-weight: 700;
-  margin: 20px 0px 20px 0px;
-}
-.rubric-form-container .rubric-header .rubric-dev-note {
-  font-weight: bold;
-  color: red;
-}
-.rubric-form-container .rubric-header .rubric-edit-settings {
-  cursor: pointer;
-  font-size: 18px;
-  font-weight: bold;
-  color: var(--orange);
-}
 .general-options table {
   border-collapse: separate;
   border-spacing: 0 10px;
@@ -3781,6 +3757,35 @@ button.bigButton svg {
 }
 .rubric-panel .rubric-panel-body.rubric-panel-body-expanded {
   display: block;
+}
+.rubric-form-container {
+  font-family: "Lato", helvetica, verdana, sans-serif;
+}
+.rubric-form-container .rubric-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.rubric-form-container .rubric-header h1 {
+  color: var(--orange);
+  font-size: 24px;
+  font-weight: 700;
+  margin: 20px 0px 20px 0px;
+}
+.rubric-form-container .rubric-header .rubric-dev-note {
+  font-weight: bold;
+  color: red;
+}
+.rubric-form-container .rubric-header .rubric-edit-settings {
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: bold;
+  color: #333;
+  background-color: #fce8de;
+  border-radius: 3px;
+  border: solid 1px #333;
+  text-transform: uppercase;
+  margin: 0;
 }
 @font-face {
   font-family: "Lato-Light";
