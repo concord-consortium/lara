@@ -20,9 +20,14 @@
 
     .rubric-edit-settings {
       cursor: pointer;
-      font-size: 18px;
+      font-size: 12px;
       font-weight: bold;
-      color: var(--orange);
+      color: #333;
+      background-color: #fce8de;
+      border-radius: 3px;
+      border: solid 1px #333;
+      text-transform: uppercase;
+      margin: 0;
     }
   }
 }

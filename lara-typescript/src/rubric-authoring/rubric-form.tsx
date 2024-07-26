@@ -1,10 +1,10 @@
 import * as React from "react";
 import { useState } from "react";
 import { RubricSettings, UpdateSettingsParams } from "./rubric-settings";
-
-import "./rubric-form.scss";
 import { RubricGeneralOptions } from "./rubric-general-options";
 import { RubricPanel } from "./rubric-panel";
+
+import "./rubric-form.scss";
 
 export interface RubricProject {
   id: number;
@@ -51,7 +51,7 @@ export const RubricForm = (props: IRubricFormProps) => {
       <div className="rubric-header">
         <h1>Edit Rubric: {name}</h1>
         <div className="rubric-dev-note">Dev Note: Saving is not implemented yet.</div>
-        <div className="rubric-edit-settings" onClick={handleToggleShowSettings}>Edit Settings</div>
+        <button className="rubric-edit-settings" onClick={handleToggleShowSettings}>Edit Settings</button>
       </div>
 
       {showSettings &&
