@@ -1,10 +1,14 @@
 import * as React from "react";
 
 export const Trash = ({onClick}: {onClick?: () => void}) => {
+  const style: React.CSSProperties = onClick ? {cursor: "pointer"} : {};
+
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" onClick={onClick}>
-      <path d="M20 6h-3.155a.949.949 0 0 0-.064-.125l-1.7-2.124A1.989 1.989 0 0 0 13.519 3h-3.038a1.987 1.987 0 0 0-1.562.75l-1.7 2.125A.949.949 0 0 0 7.155 6H4a1 1 0 0 0 0 2h1v11a2 2 0 0 0 1.994 2h10.011A2 2 0 0 0 19 19V8h1a1 1 0 0 0 0-2zm-9.519-1h3.038l.8 1H9.681zm6.524 14H7V8h10z"/>
-      <path d="M14 18a1 1 0 0 1-1-1v-7a1 1 0 0 1 2 0v7a1 1 0 0 1-1 1zM10 18a1 1 0 0 1-1-1v-7a1 1 0 0 1 2 0v7a1 1 0 0 1-1 1z"/>
+    <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" onClick={onClick} style={style}>
+      <g fill="none" fillRule="evenodd">
+        <path d="M0 0h24v24H0z"/>
+        <path d="M18.5 7v12c0 1.1-.9 2-2 2h-9c-1.1 0-2-.9-2-2V7h13zm-9 3h-1v8h1v-8zm3 0h-1v8h1v-8zm3 0h-1v8h1v-8zm-1-7 1 1h4v2h-15V4h4l1-1h5z" fill="#000" fillRule="nonzero"/>
+      </g>
     </svg>
   );
 };
