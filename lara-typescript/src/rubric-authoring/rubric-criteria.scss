@@ -1,0 +1,77 @@
+.rubric-criteria {
+  .rubric-criteria-item {
+    background-color: #eee;
+    padding: 10px;
+    margin-bottom: 10px;
+
+    .rubric-criteria-item-header {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+
+      div {
+        font-weight: bold;
+        font-size: 18px;
+      }
+    }
+
+    .rubric-criteria-item-body {
+      margin: 10px 0;
+
+      .rubric-criteria-item-body-row {
+        display: flex;
+        justify-content: space-between;
+        margin: 10px 0;
+        gap: 10px;
+
+        > div {
+          flex: 1;
+        }
+
+        .rubric-criteria-item-body-row-label {
+          display: flex;
+          gap: 10px;
+          align-items: center;
+        }
+
+        label {
+          font-weight: bold;
+        }
+
+        .rubric-checkboxes {
+          display: flex;
+          align-items: center;
+
+          div {
+            display: flex;
+            align-items: center;
+          }
+        }
+
+        .react-mde {
+          margin-top: 5px;
+
+          .mde-preview {
+            h1 {
+              color: black;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  button {
+    background-color: #e2f4f8;
+    text-transform: uppercase;
+    font-size: 12px;
+    font-weight: bold;
+    color: #333;
+    border-radius: 3px;
+    border: solid 1px #333;
+    margin: 0 0 0 10px;
+    display: flex;
+    gap: 5px;
+    align-items: center;
+  }
+}
