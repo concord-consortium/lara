@@ -1,0 +1,36 @@
+.rubric-panel {
+  margin-bottom: 10px;
+
+  .rubric-panel-header {
+    background-color: var(--teal);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-radius: 5px 5px 0px 0px;
+    user-select: none;
+
+    div:first-child {
+      font-size: 18px;
+      color: white;
+      font-weight: bold;
+    }
+
+    div:last-child {
+      color: var(--teal);
+      cursor: pointer;
+      display: flex;
+    }
+  }
+
+  .rubric-panel-body {
+    display: none;
+    border: solid 1px #333;
+    background-color: white;
+    padding: 10px;
+
+    &.rubric-panel-body-expanded {
+      display: block;
+    }
+  }
+}

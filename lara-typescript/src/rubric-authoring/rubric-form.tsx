@@ -3,6 +3,8 @@ import { useState } from "react";
 import { RubricSettings, UpdateSettingsParams } from "./rubric-settings";
 
 import "./rubric-form.scss";
+import { RubricGeneralOptions } from "./rubric-general-options";
+import { RubricPanel } from "./rubric-panel";
 
 export interface RubricProject {
   id: number;
@@ -48,7 +50,7 @@ export const RubricForm = (props: IRubricFormProps) => {
     <div className="rubric-form-container">
       <div className="rubric-header">
         <h1>Edit Rubric: {name}</h1>
-        <div className="rubric-auto-save">All changes auto-saved!</div>
+        <div className="rubric-dev-note">Dev Note: Saving is not implemented yet.</div>
         <div className="rubric-edit-settings" onClick={handleToggleShowSettings}>Edit Settings</div>
       </div>
 
@@ -61,6 +63,23 @@ export const RubricForm = (props: IRubricFormProps) => {
           cancel={handleToggleShowSettings}
         />
       }
+
+      <RubricPanel title="Rubric Preview" backgroundColor={"#e2f4f8"}>
+        TBD
+      </RubricPanel>
+
+      <RubricPanel title="General Options">
+        <RubricGeneralOptions />
+      </RubricPanel>
+
+      <RubricPanel title="Ratings">
+        TBD
+      </RubricPanel>
+
+      <RubricPanel title="Criteria">
+        TBD
+      </RubricPanel>
+
     </div>
   );
 };

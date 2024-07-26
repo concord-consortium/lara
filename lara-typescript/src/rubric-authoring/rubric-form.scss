@@ -1,5 +1,5 @@
 .rubric-form-container {
-  font-family: 'Lato-Bold', helvetica, verdana, sans-serif;
+  font-family: 'Lato', helvetica, verdana, sans-serif;
 
   .rubric-header {
     display: flex;
@@ -13,8 +13,9 @@
       margin: 20px 0px 20px 0px;
     }
 
-    .rubric-auto-save {
-      font-style: italic;
+    .rubric-dev-note {
+      font-weight: bold;
+      color: red;
     }
 
     .rubric-edit-settings {

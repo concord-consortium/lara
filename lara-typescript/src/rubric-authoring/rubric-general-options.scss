@@ -1,0 +1,25 @@
+.general-options {
+  table {
+    border-collapse: separate;
+    border-spacing: 0 10px;
+
+    tr td:first-child {
+      text-align: right;
+    }
+
+    td.rubric-checkbox {
+      display: flex; // to center the labels
+    }
+  }
+
+
+  label {
+    font-weight: normal;
+    margin: 0 10px;
+  }
+
+  input[type=text] {
+    width: 750px;
+    box-sizing: border-box;
+  }
+}
