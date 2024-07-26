@@ -1,0 +1,162 @@
+.rubricContainer {
+  border: solid 1.5px #979797;
+  border-radius: 8px;
+  background-color: white;
+  margin: 10px;
+  font-size: 14px;
+  overflow: hidden;
+
+  .columnHeaders {
+    height: 45px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    text-align: center;
+    font-weight: bold;
+
+    .rubricDescriptionHeader {
+      display: flex;
+      align-items: center;
+      flex: auto;
+
+      .scoringGuideArea {
+        width: 100px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
+        .launchButton {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          cursor: pointer;
+          height: 30px;
+          width: 30px;
+          margin: 0 11px;
+          background-color: #e5f1e7;
+          border: solid 1.5px #979797;
+          border-radius: 8px 0;
+          box-sizing: border-box;
+
+          &:hover {
+            background-color: #c9e2cd;
+          }
+          &:active {
+            color: white;
+            background-color: #4ea15a;
+
+            .icon {
+              fill: white;
+            }
+          }
+
+          .icon {
+            width: 24px;
+            height: 24px;
+            pointer-events: none;
+            fill: #4ea15a;
+          }
+        }
+      }
+
+      .rubricDescriptionTitle {
+        justify-content: center;
+        width: 75%
+      }
+    }
+    .rubricScoreHeader {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 92px;
+      flex-grow: 0;
+      flex-shrink: 0;
+      height: 100%;
+      border-left: solid 1.5px #979797;
+    }
+
+  }
+
+  .rubricTable {
+
+    .rubricTableRow {
+      display: flex;
+      border-top: solid 1.5px #979797;
+
+      .rubricDescription {
+        padding: 5px 10px;
+        font-weight: normal;
+        flex: auto;
+          li {
+          margin-left: 20px;
+          list-style-type: disc;
+        }
+      }
+
+      .ratingsGroup{
+        display: flex;
+        min-height: 45px;
+
+        .rubricScoreBox {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 92px;
+          flex-grow: 0;
+          flex-shrink: 0;
+          border-left: solid 1.5px #979797;
+
+          .rubricButton{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+            margin: 5px;
+            cursor: pointer;
+
+            &:hover .outerCircle {
+              background-color: white;
+
+              &:hover .innerCircle {
+                background-color: #c9e2cd;
+              }
+            }
+            &:active .outerCircle {
+              background-color: #4ea15a;
+
+              &:active .innerCircle {
+                background-color: white;
+              }
+            }
+
+            .outerCircle {
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              width: 20px;
+              height: 20px;
+              border-radius: 50%;
+              border: solid 1.5px #979797;
+              background-color: white;
+              cursor: pointer;
+              margin: 0;
+
+              .innerCircle {
+                width: 12px;
+                height: 12px;
+                background-color: white;
+                border-radius: 50%;
+
+                &.selected {
+                  background-color: #4ea15a;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
