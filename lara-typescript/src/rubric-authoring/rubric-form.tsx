@@ -3,6 +3,7 @@ import { useState } from "react";
 import { RubricSettings, UpdateSettingsParams } from "./rubric-settings";
 import { RubricGeneralOptions } from "./rubric-general-options";
 import { RubricPanel } from "./rubric-panel";
+import { RubricRatings } from "./rubric-ratings";
 
 import "./rubric-form.scss";
 
@@ -73,7 +74,7 @@ export const RubricForm = (props: IRubricFormProps) => {
       </RubricPanel>
 
       <RubricPanel title="Ratings">
-        TBD
+        <RubricRatings ratings={[]} /> {/* empty initial ratings for now, will change once save is added */}
       </RubricPanel>
 
       <RubricPanel title="Criteria">

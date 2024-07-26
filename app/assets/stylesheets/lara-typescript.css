@@ -3758,6 +3758,30 @@ button.bigButton svg {
 .rubric-panel .rubric-panel-body.rubric-panel-body-expanded {
   display: block;
 }
+.rubric-ratings table {
+  border-collapse: separate;
+  border-spacing: 10px;
+}
+.rubric-ratings table th {
+  font-weight: bold;
+  text-align: left;
+}
+.rubric-ratings table td {
+  vertical-align: middle;
+}
+.rubric-ratings button {
+  background-color: #e2f4f8;
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: bold;
+  color: #333;
+  border-radius: 3px;
+  border: solid 1px #333;
+  margin: 0 0 0 10px;
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
 .rubric-form-container {
   font-family: "Lato", helvetica, verdana, sans-serif;
 }
