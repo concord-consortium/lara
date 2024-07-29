@@ -1,4 +1,6 @@
 .rubric-ratings {
+  @import "shared";
+
   table {
     border-collapse: separate;
     border-spacing: 10px;
@@ -11,19 +13,5 @@
     td {
       vertical-align: middle;
     }
-  }
-
-  button {
-    background-color: #e2f4f8;
-    text-transform: uppercase;
-    font-size: 12px;
-    font-weight: bold;
-    color: #333;
-    border-radius: 3px;
-    border: solid 1px #333;
-    margin: 0 0 0 10px;
-    display: flex;
-    gap: 5px;
-    align-items: center;
   }
 }

@@ -1,0 +1,65 @@
+
+.rubric-criterion {
+  @import "shared";
+
+  background-color: #eee;
+  padding: 10px;
+  margin-bottom: 10px;
+
+  .rubric-criterion-header {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+
+    div {
+      font-weight: bold;
+      font-size: 18px;
+    }
+  }
+
+  .rubric-criterion-body {
+    margin: 10px 0;
+
+    .rubric-criterion-body-row {
+      display: flex;
+      justify-content: space-between;
+      margin: 10px 0;
+      gap: 10px;
+
+      > div {
+        flex: 1;
+      }
+
+      .rubric-criterion-body-row-label {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+      }
+
+      label {
+        font-weight: bold;
+      }
+
+      .rubric-checkboxes {
+        display: flex;
+        align-items: center;
+
+        div {
+          display: flex;
+          align-items: center;
+        }
+      }
+
+      .react-mde {
+        margin-top: 5px;
+
+        .mde-preview {
+          h1 {
+            color: black;
+          }
+        }
+      }
+    }
+  }
+}
+

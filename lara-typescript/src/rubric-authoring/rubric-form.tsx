@@ -80,9 +80,7 @@ export const RubricForm = (props: IRubricFormProps) => {
           <RubricRatings />
         </RubricPanel>
 
-        <RubricPanel title="Criteria">
-          <RubricCriteria />
-        </RubricPanel>
+        <RubricCriteria />
       </>
     );
   };

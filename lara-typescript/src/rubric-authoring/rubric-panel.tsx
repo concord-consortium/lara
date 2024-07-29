@@ -20,9 +20,10 @@ export interface IPanelProps {
   title: string;
   backgroundColor?: string;
   children: ReactNode;
+  button?: ReactNode;
 }
 
-export const RubricPanel = ({title, backgroundColor, children}: IPanelProps) => {
+export const RubricPanel = ({title, backgroundColor, button, children}: IPanelProps) => {
   const [expanded, setExpanded] = useState(true);
 
   const handleToggleExpanded = (e: React.MouseEvent) => {
@@ -39,6 +40,7 @@ export const RubricPanel = ({title, backgroundColor, children}: IPanelProps) => 
       <div className="rubric-panel-header" onClick={handleToggleExpanded}>
         <div>{title}</div>
         <div>
+          {button}
           <Caret expanded={expanded} />
         </div>
       </div>

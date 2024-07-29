@@ -80,77 +80,105 @@
 
   .rubricTable {
 
-    .rubricTableRow {
+    .rubricTableGroup {
       display: flex;
       border-top: solid 1.5px #979797;
 
-      .rubricDescription {
-        padding: 5px 10px;
-        font-weight: normal;
-        flex: auto;
-          li {
-          margin-left: 20px;
-          list-style-type: disc;
-        }
+      .rubricTableGroupLabel {
+        writing-mode: vertical-rl;
+        padding: 20px 40px;
+        border-left: solid 1.5px #979797;  // left is really right due to rotation
+        transform: rotate(180deg);
+        text-align: center;
+        font-weight: bold;
       }
 
-      .ratingsGroup{
+      .rubricTableRows {
         display: flex;
-        min-height: 45px;
+        flex-direction: column;
+        flex: 1;
 
-        .rubricScoreBox {
+        .rubricTableRow {
+          &:first-child {
+            border: none;
+          }
+
           display: flex;
-          align-items: center;
-          justify-content: center;
-          width: 92px;
-          flex-grow: 0;
-          flex-shrink: 0;
-          border-left: solid 1.5px #979797;
+          flex: 1;
+          border-top: solid 1.5px #979797;
 
-          .rubricButton{
+          .rubricDescription {
+            padding: 5px 10px;
+            font-weight: normal;
             display: flex;
             align-items: center;
-            justify-content: center;
-            width: 30px;
-            height: 30px;
-            margin: 5px;
-            cursor: pointer;
+            flex: auto;
 
-            &:hover .outerCircle {
-              background-color: white;
-
-              &:hover .innerCircle {
-                background-color: #c9e2cd;
-              }
+            li {
+              margin-left: 20px;
+              list-style-type: disc;
             }
-            &:active .outerCircle {
-              background-color: #4ea15a;
+          }
 
-              &:active .innerCircle {
-                background-color: white;
-              }
-            }
+          .ratingsGroup{
+            display: flex;
+            min-height: 45px;
 
-            .outerCircle {
+            .rubricScoreBox {
               display: flex;
               align-items: center;
               justify-content: center;
-              width: 20px;
-              height: 20px;
-              border-radius: 50%;
-              border: solid 1.5px #979797;
-              background-color: white;
-              cursor: pointer;
-              margin: 0;
+              width: 92px;
+              flex-grow: 0;
+              flex-shrink: 0;
+              border-left: solid 1.5px #979797;
 
-              .innerCircle {
-                width: 12px;
-                height: 12px;
-                background-color: white;
-                border-radius: 50%;
+              .rubricButton{
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 30px;
+                height: 30px;
+                margin: 5px;
+                cursor: pointer;
 
-                &.selected {
+                &:hover .outerCircle {
+                  background-color: white;
+
+                  &:hover .innerCircle {
+                    background-color: #c9e2cd;
+                  }
+                }
+                &:active .outerCircle {
                   background-color: #4ea15a;
+
+                  &:active .innerCircle {
+                    background-color: white;
+                  }
+                }
+
+                .outerCircle {
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  width: 20px;
+                  height: 20px;
+                  border-radius: 50%;
+                  border: solid 1.5px #979797;
+                  background-color: white;
+                  cursor: pointer;
+                  margin: 0;
+
+                  .innerCircle {
+                    width: 12px;
+                    height: 12px;
+                    background-color: white;
+                    border-radius: 50%;
+
+                    &.selected {
+                      background-color: #4ea15a;
+                    }
+                  }
                 }
               }
             }

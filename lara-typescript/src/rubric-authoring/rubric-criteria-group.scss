@@ -1,0 +1,20 @@
+
+.rubric-criteria-group {
+  @import "shared";
+
+  .rubric-criteria-group-input {
+    margin-bottom: 10px;
+
+    label {
+      width: 250px;
+      display: inline-block;
+      text-align: right;
+      margin-right: 10px;
+    }
+
+    input[type=text], select {
+      width: 700px;
+      box-sizing: border-box;
+    }
+  }
+}

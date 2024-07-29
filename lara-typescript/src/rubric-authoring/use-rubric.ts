@@ -1,22 +1,23 @@
 import { createContext, Dispatch, SetStateAction, useContext, useEffect, useState } from "react";
+import { Updater, useImmer } from "use-immer";
 import { IRubric } from "./types";
 
 export interface IRubricContext {
   rubric: IRubric;
-  setRubric: Dispatch<SetStateAction<IRubric>>;
+  setRubric: Updater<IRubric>;
   loadStatus: "loading" | "loaded" | "error";
 }
 
 export const useRubricValue = () => {
-  const [rubric, setRubric] = useState<IRubric>({} as IRubric);
+  const [rubric, setRubric] = useImmer<IRubric>({} as IRubric);
   const [loadStatus, setLoadStatus] = useState<IRubricContext["loadStatus"]>("loading");
 
   useEffect(() => {
-    // TBD: load rubric
+    // TBD: load rubric and run migrations
 
     setRubric({
       id: "",
-      version: "",
+      version: "1.2.0",
       versionNumber: "",
       updatedMsUTC: 0,
       originUrl: "",
@@ -27,7 +28,7 @@ export const useRubricValue = () => {
       criteriaLabel: "",
       criteriaLabelForStudent: "",
       feedbackLabelForStudent: "",
-      criteria: [],
+      criteriaGroups: [],
       ratings: [],
     });
 
