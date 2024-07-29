@@ -99,6 +99,7 @@ export const RubricTableContainer = ({rubric}: IProps) => {
             <div className="rubricTableRows">
               {criteriaGroup.criteria.map((crit) =>
                 <div className="rubricTableRow" key={crit.id}>
+                  {crit.iconUrl && <img src={crit.iconUrl} />}
                   <div className="rubricDescription">
                     <Markdown>{crit.description}</Markdown>
                   </div>

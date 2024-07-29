@@ -106,6 +106,13 @@
           display: flex;
           flex: 1;
           border-top: solid 1.5px #979797;
+          align-items: center;
+
+          img {
+            max-width: 24px;
+            max-height: 24px;
+            padding-left: 10px;
+          }
 
           .rubricDescription {
             padding: 5px 10px;
