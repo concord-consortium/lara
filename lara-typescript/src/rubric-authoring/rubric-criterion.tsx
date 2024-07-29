@@ -48,6 +48,13 @@ export const RubricCriterion = ({index, groupIndex, criterion, onDelete}: Rubric
 
   const handleDelete = () => onDelete(index);
 
+  const handleIconUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const url = e.target.value;
+    setRubric(draft => {
+      draft.criteriaGroups[groupIndex].criteria[index].iconUrl = url;
+    });
+  };
+
   const handleCriteriaMarkdownUpdate = (key: CriterionKey) => (value: string) => {
     setRubric(draft => {
       draft.criteriaGroups[groupIndex].criteria[index][key] = value;
@@ -80,6 +87,17 @@ export const RubricCriterion = ({index, groupIndex, criterion, onDelete}: Rubric
         <button onClick={handleDelete}><Trash /> <span>Remove Criterion</span></button>
       </div>
       <div className="rubric-criterion-body">
+        <div className="rubric-criterion-body-row">
+          <div className="rubric-criterion-body-row-label" style={{flex: "initial"}}>
+            <label htmlFor="iconUrl">Icon URL:</label>
+            <input
+              type="text"
+              value={criterion.iconUrl}
+              onChange={handleIconUrlChange}
+            />
+          </div>
+        </div>
+
         <div className="rubric-criterion-body-row">
           <div>
             <label htmlFor="description">{id} Teacher Description</label>

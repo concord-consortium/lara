@@ -31,7 +31,8 @@ export const RubricCriteriaGroup = ({criteriaGroup, groupIndex}: IRubricCriteria
         descriptionForStudent: "",
         nonApplicableRatings: [],
         ratingDescriptions: {},
-        ratingDescriptionsForStudent: {}
+        ratingDescriptionsForStudent: {},
+        iconUrl: "",
       });
     });
   };

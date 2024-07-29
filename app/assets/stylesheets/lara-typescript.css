@@ -3852,9 +3852,15 @@ button.bigButton svg {
   display: flex;
   flex: 1;
   border-top: solid 1.5px #979797;
+  align-items: center;
 }
 .rubricContainer .rubricTable .rubricTableGroup .rubricTableRows .rubricTableRow:first-child {
   border: none;
+}
+.rubricContainer .rubricTable .rubricTableGroup .rubricTableRows .rubricTableRow img {
+  max-width: 24px;
+  max-height: 24px;
+  padding-left: 10px;
 }
 .rubricContainer .rubricTable .rubricTableGroup .rubricTableRows .rubricTableRow .rubricDescription {
   padding: 5px 10px;
@@ -3992,6 +3998,10 @@ button.bigButton svg {
 }
 .rubric-criterion .rubric-criterion-body .rubric-criterion-body-row label {
   font-weight: bold;
+}
+.rubric-criterion .rubric-criterion-body .rubric-criterion-body-row input[type=text] {
+  width: 700px;
+  box-sizing: border-box;
 }
 .rubric-criterion .rubric-criterion-body .rubric-criterion-body-row .rubric-checkboxes {
   display: flex;

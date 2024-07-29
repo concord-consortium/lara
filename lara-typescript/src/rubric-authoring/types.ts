@@ -11,6 +11,7 @@ export interface IRubricCriterion {
   nonApplicableRatings: string[];
   ratingDescriptions: Record<string, string>;
   ratingDescriptionsForStudent: Record<string, string>;
+  iconUrl: string;
 }
 
 export interface IRubricRating {

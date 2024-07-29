@@ -40,6 +40,11 @@
         font-weight: bold;
       }
 
+      input[type=text] {
+        width: 700px;
+        box-sizing: border-box;
+      }
+
       .rubric-checkboxes {
         display: flex;
         align-items: center;
