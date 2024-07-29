@@ -3758,6 +3758,145 @@ button.bigButton svg {
 .rubric-panel .rubric-panel-body.rubric-panel-body-expanded {
   display: block;
 }
+.rubricContainer {
+  border: solid 1.5px #979797;
+  border-radius: 8px;
+  background-color: white;
+  margin: 10px;
+  font-size: 14px;
+  overflow: hidden;
+}
+.rubricContainer .columnHeaders {
+  height: 45px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  text-align: center;
+  font-weight: bold;
+}
+.rubricContainer .columnHeaders .rubricDescriptionHeader {
+  display: flex;
+  align-items: center;
+  flex: auto;
+}
+.rubricContainer .columnHeaders .rubricDescriptionHeader .scoringGuideArea {
+  width: 100px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.rubricContainer .columnHeaders .rubricDescriptionHeader .scoringGuideArea .launchButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  height: 30px;
+  width: 30px;
+  margin: 0 11px;
+  background-color: #e5f1e7;
+  border: solid 1.5px #979797;
+  border-radius: 8px 0;
+  box-sizing: border-box;
+}
+.rubricContainer .columnHeaders .rubricDescriptionHeader .scoringGuideArea .launchButton:hover {
+  background-color: #c9e2cd;
+}
+.rubricContainer .columnHeaders .rubricDescriptionHeader .scoringGuideArea .launchButton:active {
+  color: white;
+  background-color: #4ea15a;
+}
+.rubricContainer .columnHeaders .rubricDescriptionHeader .scoringGuideArea .launchButton:active .icon {
+  fill: white;
+}
+.rubricContainer .columnHeaders .rubricDescriptionHeader .scoringGuideArea .launchButton .icon {
+  width: 24px;
+  height: 24px;
+  pointer-events: none;
+  fill: #4ea15a;
+}
+.rubricContainer .columnHeaders .rubricDescriptionHeader .rubricDescriptionTitle {
+  justify-content: center;
+  width: 75%;
+}
+.rubricContainer .columnHeaders .rubricScoreHeader {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 92px;
+  flex-grow: 0;
+  flex-shrink: 0;
+  height: 100%;
+  border-left: solid 1.5px #979797;
+}
+.rubricContainer .rubricTable .rubricTableRow {
+  display: flex;
+  border-top: solid 1.5px #979797;
+}
+.rubricContainer .rubricTable .rubricTableRow .rubricDescription {
+  padding: 5px 10px;
+  font-weight: normal;
+  flex: auto;
+}
+.rubricContainer .rubricTable .rubricTableRow .rubricDescription li {
+  margin-left: 20px;
+  list-style-type: disc;
+}
+.rubricContainer .rubricTable .rubricTableRow .ratingsGroup {
+  display: flex;
+  min-height: 45px;
+}
+.rubricContainer .rubricTable .rubricTableRow .ratingsGroup .rubricScoreBox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 92px;
+  flex-grow: 0;
+  flex-shrink: 0;
+  border-left: solid 1.5px #979797;
+}
+.rubricContainer .rubricTable .rubricTableRow .ratingsGroup .rubricScoreBox .rubricButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  margin: 5px;
+  cursor: pointer;
+}
+.rubricContainer .rubricTable .rubricTableRow .ratingsGroup .rubricScoreBox .rubricButton:hover .outerCircle {
+  background-color: white;
+}
+.rubricContainer .rubricTable .rubricTableRow .ratingsGroup .rubricScoreBox .rubricButton:hover .outerCircle:hover .innerCircle {
+  background-color: #c9e2cd;
+}
+.rubricContainer .rubricTable .rubricTableRow .ratingsGroup .rubricScoreBox .rubricButton:active .outerCircle {
+  background-color: #4ea15a;
+}
+.rubricContainer .rubricTable .rubricTableRow .ratingsGroup .rubricScoreBox .rubricButton:active .outerCircle:active .innerCircle {
+  background-color: white;
+}
+.rubricContainer .rubricTable .rubricTableRow .ratingsGroup .rubricScoreBox .rubricButton .outerCircle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: solid 1.5px #979797;
+  background-color: white;
+  cursor: pointer;
+  margin: 0;
+}
+.rubricContainer .rubricTable .rubricTableRow .ratingsGroup .rubricScoreBox .rubricButton .outerCircle .innerCircle {
+  width: 12px;
+  height: 12px;
+  background-color: white;
+  border-radius: 50%;
+}
+.rubricContainer .rubricTable .rubricTableRow .ratingsGroup .rubricScoreBox .rubricButton .outerCircle .innerCircle.selected {
+  background-color: #4ea15a;
+}
 .rubric-ratings table {
   border-collapse: separate;
   border-spacing: 10px;

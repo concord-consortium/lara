@@ -1,14 +1,14 @@
 import * as React from "react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { RubricSettings, UpdateSettingsParams } from "./rubric-settings";
 import { RubricGeneralOptions } from "./rubric-general-options";
 import { RubricPanel } from "./rubric-panel";
+import { RubricContext, useRubricValue } from "./use-rubric";
+import { RubricTableContainer } from "./rubric-table";
 import { RubricRatings } from "./rubric-ratings";
 import { RubricCriteria } from "./rubric-criteria";
 
 import "./rubric-form.scss";
-import { IRubricCriterion, IRubricRating } from "./types";
-import { RubricContext, useRubricValue } from "./use-rubric";
 
 export interface RubricProject {
   id: number;
@@ -69,7 +69,7 @@ export const RubricForm = (props: IRubricFormProps) => {
     return (
       <>
         <RubricPanel title="Rubric Preview" backgroundColor={"#e2f4f8"}>
-          TBD
+          <RubricTableContainer rubric={rubricContextValue.rubric} />
         </RubricPanel>
 
         <RubricPanel title="General Options">
