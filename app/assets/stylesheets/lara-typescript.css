@@ -3748,6 +3748,8 @@ button.bigButton svg {
   color: var(--teal);
   cursor: pointer;
   display: flex;
+  align-items: center;
+  gap: 10px;
 }
 .rubric-panel .rubric-panel-body {
   display: none;
@@ -3829,24 +3831,47 @@ button.bigButton svg {
   height: 100%;
   border-left: solid 1.5px #979797;
 }
-.rubricContainer .rubricTable .rubricTableRow {
+.rubricContainer .rubricTable .rubricTableGroup {
   display: flex;
   border-top: solid 1.5px #979797;
 }
-.rubricContainer .rubricTable .rubricTableRow .rubricDescription {
+.rubricContainer .rubricTable .rubricTableGroup .rubricTableGroupLabel {
+  writing-mode: vertical-rl;
+  padding: 20px 40px;
+  border-left: solid 1.5px #979797;
+  transform: rotate(180deg);
+  text-align: center;
+  font-weight: bold;
+}
+.rubricContainer .rubricTable .rubricTableGroup .rubricTableRows {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+.rubricContainer .rubricTable .rubricTableGroup .rubricTableRows .rubricTableRow {
+  display: flex;
+  flex: 1;
+  border-top: solid 1.5px #979797;
+}
+.rubricContainer .rubricTable .rubricTableGroup .rubricTableRows .rubricTableRow:first-child {
+  border: none;
+}
+.rubricContainer .rubricTable .rubricTableGroup .rubricTableRows .rubricTableRow .rubricDescription {
   padding: 5px 10px;
   font-weight: normal;
+  display: flex;
+  align-items: center;
   flex: auto;
 }
-.rubricContainer .rubricTable .rubricTableRow .rubricDescription li {
+.rubricContainer .rubricTable .rubricTableGroup .rubricTableRows .rubricTableRow .rubricDescription li {
   margin-left: 20px;
   list-style-type: disc;
 }
-.rubricContainer .rubricTable .rubricTableRow .ratingsGroup {
+.rubricContainer .rubricTable .rubricTableGroup .rubricTableRows .rubricTableRow .ratingsGroup {
   display: flex;
   min-height: 45px;
 }
-.rubricContainer .rubricTable .rubricTableRow .ratingsGroup .rubricScoreBox {
+.rubricContainer .rubricTable .rubricTableGroup .rubricTableRows .rubricTableRow .ratingsGroup .rubricScoreBox {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -3855,7 +3880,7 @@ button.bigButton svg {
   flex-shrink: 0;
   border-left: solid 1.5px #979797;
 }
-.rubricContainer .rubricTable .rubricTableRow .ratingsGroup .rubricScoreBox .rubricButton {
+.rubricContainer .rubricTable .rubricTableGroup .rubricTableRows .rubricTableRow .ratingsGroup .rubricScoreBox .rubricButton {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -3864,19 +3889,19 @@ button.bigButton svg {
   margin: 5px;
   cursor: pointer;
 }
-.rubricContainer .rubricTable .rubricTableRow .ratingsGroup .rubricScoreBox .rubricButton:hover .outerCircle {
+.rubricContainer .rubricTable .rubricTableGroup .rubricTableRows .rubricTableRow .ratingsGroup .rubricScoreBox .rubricButton:hover .outerCircle {
   background-color: white;
 }
-.rubricContainer .rubricTable .rubricTableRow .ratingsGroup .rubricScoreBox .rubricButton:hover .outerCircle:hover .innerCircle {
+.rubricContainer .rubricTable .rubricTableGroup .rubricTableRows .rubricTableRow .ratingsGroup .rubricScoreBox .rubricButton:hover .outerCircle:hover .innerCircle {
   background-color: #c9e2cd;
 }
-.rubricContainer .rubricTable .rubricTableRow .ratingsGroup .rubricScoreBox .rubricButton:active .outerCircle {
+.rubricContainer .rubricTable .rubricTableGroup .rubricTableRows .rubricTableRow .ratingsGroup .rubricScoreBox .rubricButton:active .outerCircle {
   background-color: #4ea15a;
 }
-.rubricContainer .rubricTable .rubricTableRow .ratingsGroup .rubricScoreBox .rubricButton:active .outerCircle:active .innerCircle {
+.rubricContainer .rubricTable .rubricTableGroup .rubricTableRows .rubricTableRow .ratingsGroup .rubricScoreBox .rubricButton:active .outerCircle:active .innerCircle {
   background-color: white;
 }
-.rubricContainer .rubricTable .rubricTableRow .ratingsGroup .rubricScoreBox .rubricButton .outerCircle {
+.rubricContainer .rubricTable .rubricTableGroup .rubricTableRows .rubricTableRow .ratingsGroup .rubricScoreBox .rubricButton .outerCircle {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -3888,14 +3913,27 @@ button.bigButton svg {
   cursor: pointer;
   margin: 0;
 }
-.rubricContainer .rubricTable .rubricTableRow .ratingsGroup .rubricScoreBox .rubricButton .outerCircle .innerCircle {
+.rubricContainer .rubricTable .rubricTableGroup .rubricTableRows .rubricTableRow .ratingsGroup .rubricScoreBox .rubricButton .outerCircle .innerCircle {
   width: 12px;
   height: 12px;
   background-color: white;
   border-radius: 50%;
 }
-.rubricContainer .rubricTable .rubricTableRow .ratingsGroup .rubricScoreBox .rubricButton .outerCircle .innerCircle.selected {
+.rubricContainer .rubricTable .rubricTableGroup .rubricTableRows .rubricTableRow .ratingsGroup .rubricScoreBox .rubricButton .outerCircle .innerCircle.selected {
   background-color: #4ea15a;
+}
+.rubric-ratings button {
+  background-color: #e2f4f8;
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: bold;
+  color: #333;
+  border-radius: 3px;
+  border: solid 1px #333;
+  margin: 0;
+  display: flex;
+  gap: 5px;
+  align-items: center;
 }
 .rubric-ratings table {
   border-collapse: separate;
@@ -3908,7 +3946,12 @@ button.bigButton svg {
 .rubric-ratings table td {
   vertical-align: middle;
 }
-.rubric-ratings button {
+.rubric-criterion {
+  background-color: #eee;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+.rubric-criterion button {
   background-color: #e2f4f8;
   text-transform: uppercase;
   font-size: 12px;
@@ -3916,71 +3959,53 @@ button.bigButton svg {
   color: #333;
   border-radius: 3px;
   border: solid 1px #333;
-  margin: 0 0 0 10px;
+  margin: 0;
   display: flex;
   gap: 5px;
   align-items: center;
 }
-.rubric-criteria .rubric-criteria-item {
-  background-color: #eee;
-  padding: 10px;
-  margin-bottom: 10px;
-}
-.rubric-criteria .rubric-criteria-item .rubric-criteria-item-header {
+.rubric-criterion .rubric-criterion-header {
   display: flex;
   gap: 10px;
   align-items: center;
 }
-.rubric-criteria .rubric-criteria-item .rubric-criteria-item-header div {
+.rubric-criterion .rubric-criterion-header div {
   font-weight: bold;
   font-size: 18px;
 }
-.rubric-criteria .rubric-criteria-item .rubric-criteria-item-body {
+.rubric-criterion .rubric-criterion-body {
   margin: 10px 0;
 }
-.rubric-criteria .rubric-criteria-item .rubric-criteria-item-body .rubric-criteria-item-body-row {
+.rubric-criterion .rubric-criterion-body .rubric-criterion-body-row {
   display: flex;
   justify-content: space-between;
   margin: 10px 0;
   gap: 10px;
 }
-.rubric-criteria .rubric-criteria-item .rubric-criteria-item-body .rubric-criteria-item-body-row > div {
+.rubric-criterion .rubric-criterion-body .rubric-criterion-body-row > div {
   flex: 1;
 }
-.rubric-criteria .rubric-criteria-item .rubric-criteria-item-body .rubric-criteria-item-body-row .rubric-criteria-item-body-row-label {
+.rubric-criterion .rubric-criterion-body .rubric-criterion-body-row .rubric-criterion-body-row-label {
   display: flex;
   gap: 10px;
   align-items: center;
 }
-.rubric-criteria .rubric-criteria-item .rubric-criteria-item-body .rubric-criteria-item-body-row label {
+.rubric-criterion .rubric-criterion-body .rubric-criterion-body-row label {
   font-weight: bold;
 }
-.rubric-criteria .rubric-criteria-item .rubric-criteria-item-body .rubric-criteria-item-body-row .rubric-checkboxes {
+.rubric-criterion .rubric-criterion-body .rubric-criterion-body-row .rubric-checkboxes {
   display: flex;
   align-items: center;
 }
-.rubric-criteria .rubric-criteria-item .rubric-criteria-item-body .rubric-criteria-item-body-row .rubric-checkboxes div {
+.rubric-criterion .rubric-criterion-body .rubric-criterion-body-row .rubric-checkboxes div {
   display: flex;
   align-items: center;
 }
-.rubric-criteria .rubric-criteria-item .rubric-criteria-item-body .rubric-criteria-item-body-row .react-mde {
+.rubric-criterion .rubric-criterion-body .rubric-criterion-body-row .react-mde {
   margin-top: 5px;
 }
-.rubric-criteria .rubric-criteria-item .rubric-criteria-item-body .rubric-criteria-item-body-row .react-mde .mde-preview h1 {
+.rubric-criterion .rubric-criterion-body .rubric-criterion-body-row .react-mde .mde-preview h1 {
   color: black;
-}
-.rubric-criteria button {
-  background-color: #e2f4f8;
-  text-transform: uppercase;
-  font-size: 12px;
-  font-weight: bold;
-  color: #333;
-  border-radius: 3px;
-  border: solid 1px #333;
-  margin: 0 0 0 10px;
-  display: flex;
-  gap: 5px;
-  align-items: center;
 }
 @charset "UTF-8";
 .mde-header {
@@ -4308,6 +4333,50 @@ ul.mde-suggestions li:last-child {
 ul.mde-suggestions li:hover, ul.mde-suggestions li[aria-selected=true] {
   color: white;
   background-color: #0366d6;
+}
+.rubric-criteria-group button {
+  background-color: #e2f4f8;
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: bold;
+  color: #333;
+  border-radius: 3px;
+  border: solid 1px #333;
+  margin: 0;
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+.rubric-criteria-group .rubric-criteria-group-input {
+  margin-bottom: 10px;
+}
+.rubric-criteria-group .rubric-criteria-group-input label {
+  width: 250px;
+  display: inline-block;
+  text-align: right;
+  margin-right: 10px;
+}
+.rubric-criteria-group .rubric-criteria-group-input input[type=text], .rubric-criteria-group .rubric-criteria-group-input select {
+  width: 700px;
+  box-sizing: border-box;
+}
+.rubric-criteria button {
+  background-color: #e2f4f8;
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: bold;
+  color: #333;
+  border-radius: 3px;
+  border: solid 1px #333;
+  margin: 0;
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+.rubric-criteria h2 {
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 10px;
 }
 .rubric-form-container {
   font-family: "Lato", helvetica, verdana, sans-serif;

@@ -37,42 +37,33 @@ export const RubricRatingsItem = ({index, rating, onDelete, onUpdate}: IRubricRa
 };
 
 export const RubricRatings = () => {
-  const { rubric, setRubric } = useRubric();
-
-  if (!rubric) {
-    return null;
-  }
-
-  const { ratings } = rubric;
+  const { rubric: { ratings }, setRubric } = useRubric();
 
   const handleDelete = (index: number) => {
     if (confirm("Are you sure you want to delete this rating?")) {
-      setRubric(prev => {
-        const ratingId = prev.ratings[index].id;
-        const newRatings = [...prev.ratings];
-        newRatings.splice(index, 1);
-        const newCriteria = [...prev.criteria];
-        newCriteria.forEach(c => {
-          delete c.ratingDescriptions[ratingId];
-          delete c.ratingDescriptionsForStudent[ratingId];
-          c.nonApplicableRatings = c.nonApplicableRatings.filter(nar => nar !== ratingId);
+      setRubric(draft => {
+        const ratingId = draft.ratings[index].id;
+        draft.ratings.splice(index, 1);
+        draft.criteriaGroups.forEach(group => {
+          group.criteria.forEach(criterion => {
+            delete criterion.ratingDescriptions[ratingId];
+            delete criterion.ratingDescriptionsForStudent[ratingId];
+            criterion.nonApplicableRatings = criterion.nonApplicableRatings.filter(nar => nar !== ratingId);
+          });
         });
-        return {...prev, ratings: newRatings, criteria: newCriteria};
       });
     }
   };
 
   const handleUpdate = (index: number, rating: IRubricRating) => {
-    setRubric(prev => {
-      const next = [...prev.ratings];
-      next[index] = rating;
-      return {...prev, ratings: next};
+    setRubric(draft => {
+      draft.ratings[index] = rating;
     });
   };
 
   const handleAdd = () => {
-    setRubric(prev => {
-      return {...prev, ratings: [...prev.ratings, {id: `R${prev.ratings.length + 1}`, label: "", score: 0}]};
+    setRubric(draft => {
+      draft.ratings.push({id: `R${draft.ratings.length + 1}`, label: "", score: 0});
     });
   };
 

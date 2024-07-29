@@ -11,7 +11,7 @@ interface IProps {
 }
 
 export const RubricTableContainer = ({rubric}: IProps) => {
-  const { ratings, criteria, referenceURL } = rubric;
+  const { ratings, criteriaGroups, referenceURL } = rubric;
 
   const renderColumnHeaders = () => {
     return (
@@ -93,14 +93,21 @@ export const RubricTableContainer = ({rubric}: IProps) => {
     <div className="rubricContainer" data-cy="rubric-table">
       {renderColumnHeaders()}
       <div className="rubricTable">
-        {criteria.map((crit: any) =>
-          <div className="rubricTableRow" key={crit.id} id={crit.id}>
-            <div className="rubricDescription">
-              <Markdown>{crit.description}</Markdown>
+        {criteriaGroups.map((criteriaGroup, index) => (
+          <div className="rubricTableGroup" key={index}>
+            {criteriaGroup.label.length > 0 && <div className="rubricTableGroupLabel">{criteriaGroup.label}</div>}
+            <div className="rubricTableRows">
+              {criteriaGroup.criteria.map((crit) =>
+                <div className="rubricTableRow" key={crit.id}>
+                  <div className="rubricDescription">
+                    <Markdown>{crit.description}</Markdown>
+                  </div>
+                  {renderRatings(crit)}
+                </div>
+              )}
             </div>
-            {renderRatings(crit)}
           </div>
-        )}
+        ))}
       </div>
     </div>
   );

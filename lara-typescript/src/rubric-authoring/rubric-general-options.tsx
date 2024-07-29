@@ -1,30 +1,24 @@
 import * as React from "react";
 import { useRubric } from "./use-rubric";
-import { IRubric } from "./types";
 
 import "./rubric-general-options.scss";
 
-type IRubricOptions = Omit<IRubric, "ratings" | "criteria">;
-type IRubricOptionKey = keyof IRubricOptions;
+type IRubricOptionKey = "referenceURL" | "criteriaLabel" | "criteriaLabelForStudent" | "feedbackLabelForStudent";
 type IRubricOptionBooleanKey = "showRatingDescriptions" | "scoreUsingPoints" | "hideRubricFromStudentsInStudentReport";
 
 export const RubricGeneralOptions = () => {
-  const { rubric, setRubric } = useRubric();
-
-  if (!rubric) {
-    return null;
-  }
+  const { setRubric } = useRubric();
 
   const handleUpdateString = (key: IRubricOptionKey) => (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    setRubric(prev => {
-      return {...prev, [key]: value};
+    setRubric(draft => {
+      draft[key] = value;
     });
   };
   const handleUpdateCheckbox = (key: IRubricOptionBooleanKey) => (e: React.ChangeEvent<HTMLInputElement>) => {
     const checked = e.target.checked;
-    setRubric(prev => {
-      return {...prev, [key]: checked};
+    setRubric(draft => {
+      draft[key] = checked;
     });
   };
 

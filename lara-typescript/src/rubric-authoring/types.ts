@@ -1,3 +1,9 @@
+export interface IRubricCriteriaGroup {
+  label: string;
+  labelForStudent: string;
+  criteria: IRubricCriterion[];
+}
+
 export interface IRubricCriterion {
   id: string;
   description: string;
@@ -13,9 +19,9 @@ export interface IRubricRating {
   score: number;
 }
 
-export interface IRubric {
+export interface IRubricV110 {
   id: string;
-  version: string;
+  version: "1.0.0" | "1.1.0";
   versionNumber: string;
   updatedMsUTC: number;
   originUrl: string;
@@ -29,3 +35,8 @@ export interface IRubric {
   criteria: IRubricCriterion[];
   ratings: IRubricRating[];
 }
+
+export type IRubric = Omit<IRubricV110, "version" | "criteria"> & {
+  version: "1.2.0";
+  criteriaGroups: IRubricCriteriaGroup[];
+};
