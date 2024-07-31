@@ -3831,6 +3831,9 @@ button.bigButton svg {
   height: 100%;
   border-left: solid 1.5px #979797;
 }
+.rubricContainer .rubricTable code {
+  font-family: monospace;
+}
 .rubricContainer .rubricTable .rubricTableGroup {
   display: flex;
   border-top: solid 1.5px #979797;
@@ -3852,15 +3855,10 @@ button.bigButton svg {
   display: flex;
   flex: 1;
   border-top: solid 1.5px #979797;
-  align-items: center;
+  align-items: stretch;
 }
 .rubricContainer .rubricTable .rubricTableGroup .rubricTableRows .rubricTableRow:first-child {
   border: none;
-}
-.rubricContainer .rubricTable .rubricTableGroup .rubricTableRows .rubricTableRow img {
-  max-width: 24px;
-  max-height: 24px;
-  padding-left: 10px;
 }
 .rubricContainer .rubricTable .rubricTableGroup .rubricTableRows .rubricTableRow .rubricDescription {
   padding: 5px 10px;
@@ -3868,6 +3866,11 @@ button.bigButton svg {
   display: flex;
   align-items: center;
   flex: auto;
+}
+.rubricContainer .rubricTable .rubricTableGroup .rubricTableRows .rubricTableRow .rubricDescription img {
+  max-width: 24px;
+  max-height: 24px;
+  padding-right: 10px;
 }
 .rubricContainer .rubricTable .rubricTableGroup .rubricTableRows .rubricTableRow .rubricDescription li {
   margin-left: 20px;

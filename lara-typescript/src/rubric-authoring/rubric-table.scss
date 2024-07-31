@@ -80,6 +80,10 @@
 
   .rubricTable {
 
+    code {
+      font-family: monospace;
+    }
+
     .rubricTableGroup {
       display: flex;
       border-top: solid 1.5px #979797;
@@ -106,13 +110,8 @@
           display: flex;
           flex: 1;
           border-top: solid 1.5px #979797;
-          align-items: center;
+          align-items: stretch;
 
-          img {
-            max-width: 24px;
-            max-height: 24px;
-            padding-left: 10px;
-          }
 
           .rubricDescription {
             padding: 5px 10px;
@@ -120,6 +119,12 @@
             display: flex;
             align-items: center;
             flex: auto;
+
+            img {
+              max-width: 24px;
+              max-height: 24px;
+              padding-right: 10px;
+            }
 
             li {
               margin-left: 20px;
