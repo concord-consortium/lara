@@ -13,12 +13,29 @@ interface IProps {
 export const RubricTableContainer = ({rubric}: IProps) => {
   const { ratings, criteriaGroups, referenceURL } = rubric;
 
+  const checkReferenceUrl = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    if (!/^https?/.test(referenceURL)) {
+      if (referenceURL.trim().length > 0) {
+        alert(`Invalid Scoring Guide URL: ${referenceURL.trim()}`);
+      }
+      e.preventDefault();
+      e.stopPropagation();
+      return;
+    }
+  };
+
   const renderColumnHeaders = () => {
     return (
       <div className="columnHeaders">
         <div className="rubricDescriptionHeader">
           <div className="scoringGuideArea">
-            <a className="launchButton" href={referenceURL} target="_blank" data-cy="scoring-guide-launch-icon">
+            <a
+              className="launchButton"
+              href={referenceURL}
+              target="_blank"
+              data-cy="scoring-guide-launch-icon"
+              onClick={checkReferenceUrl}
+            >
               <LaunchIcon />
             </a>
             Scoring Guide
@@ -99,8 +116,8 @@ export const RubricTableContainer = ({rubric}: IProps) => {
             <div className="rubricTableRows">
               {criteriaGroup.criteria.map((crit) =>
                 <div className="rubricTableRow" key={crit.id}>
-                  {crit.iconUrl && <img src={crit.iconUrl} />}
                   <div className="rubricDescription">
+                    {crit.iconUrl && <img src={crit.iconUrl} />}
                     <Markdown>{crit.description}</Markdown>
                   </div>
                   {renderRatings(crit)}
