@@ -190,6 +190,7 @@ LightweightStandalone::Application.routes.draw do
         end
       end
 
+      resources :authored_contents, :controller => 'authored_contents', only: [:show, :update]
       resources :glossaries, :controller => 'glossaries', only: [:show, :update]
       resources :rubrics, :controller => 'rubrics', only: [:show, :update]
 

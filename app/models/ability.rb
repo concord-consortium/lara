@@ -14,6 +14,10 @@ class Ability
       can :manage, :all
 
     elsif user.is_project_admin?
+      can :update, AuthoredContent do |authored_content|
+        user.id == authored_content.user_id || user.can?(:update, authored_content.container)
+      end
+
       can :create, Glossary
       can :duplicate, Glossary
       can :export, Glossary
@@ -84,6 +88,8 @@ class Ability
 
     elsif user.author?
       # Authors can do the following, organized by model
+      can :update, AuthoredContent, :user_id => user.id
+
       can :create, Glossary
       can :duplicate, Glossary
       can :export, Glossary
@@ -124,6 +130,9 @@ class Ability
       can :import, Sequence
       can :manage, Sequence, :user_id => user.id
     end
+
+    # anyone can read authored content
+    can :read, AuthoredContent
 
     # Everyone (author and regular user) can update glossaries they own.
     can :update, Glossary do |glossary|

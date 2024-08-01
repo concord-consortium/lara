@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20240718182117) do
+ActiveRecord::Schema.define(:version => 20240801100443) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "kind"
@@ -44,6 +44,16 @@ ActiveRecord::Schema.define(:version => 20240718182117) do
 
   add_index "authentications", ["uid", "provider"], :name => "index_authentications_on_uid_and_provider", :unique => true
   add_index "authentications", ["user_id", "provider"], :name => "index_authentications_on_user_id_and_provider", :unique => true
+
+  create_table "authored_contents", :force => true do |t|
+    t.string   "content_type"
+    t.string   "url"
+    t.integer  "user_id"
+    t.integer  "container_id"
+    t.string   "container_type"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
+  end
 
   create_table "c_rater_feedback_items", :force => true do |t|
     t.text     "answer_text"
