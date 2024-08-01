@@ -1,4 +1,6 @@
 .rubric-form-container {
+  @import "shared";
+
   font-family: 'Lato', helvetica, verdana, sans-serif;
 
   .rubric-header {
@@ -13,9 +15,16 @@
       margin: 20px 0px 20px 0px;
     }
 
-    .rubric-dev-note {
+    .rubric-save-status {
       font-weight: bold;
       color: red;
+      text-transform: uppercase;
+    }
+
+    .rubric-header-buttons {
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
 
     .rubric-edit-settings {
