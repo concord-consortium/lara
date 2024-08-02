@@ -6,7 +6,7 @@ services:
       dockerfile: Dockerfile-dev
     command: docker/dev/run.sh
     environment:
-      # Look at the docker/dev/docker-compose-*.yml files for configuratio of
+      # Look at the docker/dev/docker-compose-*.yml files for configuration of
       # additional variables.
       C_RATER_FAKE:
       DB_HOST: db
@@ -42,6 +42,11 @@ services:
       ENABLE_DANGEROUS_GLOSSARY_LINKING_ON_IMPORT:
       # set to "true" to disable auto publishing on saves of activities and sequences
       DISABLE_AUTO_PUBLISHING:
+      # authored content settings
+      AUTHORED_CONTENT_S3_ACCESS_KEY_ID:
+      AUTHORED_CONTENT_S3_SECRET_ACCESS_KEY:
+      AUTHORED_CONTENT_S3_BUCKET:
+      AUTHORED_CONTENT_SOURCE:
 
       VIRTUAL_HOST: "${LARA_HOST:-app.lara.docker}"
 
