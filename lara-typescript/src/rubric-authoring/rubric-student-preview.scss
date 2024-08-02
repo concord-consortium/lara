@@ -1,0 +1,61 @@
+.rubricStudentPreview {
+
+  .unscored, .hidden {
+    border: solid 1.5px #979797;
+    border-radius: 8px;
+    background-color: white;
+    margin: 10px;
+    font-size: 14px;
+    overflow: hidden;
+
+    padding: 10px;
+    text-align: center;
+    font-weight: bold;
+  }
+
+  .scored {
+    margin: 10px;
+
+    table {
+      width: 100%;
+      background-color: white;
+      border-collapse: collapse;
+
+      table, th, td {
+        border: 1px solid #333;
+      }
+
+      table {
+        border-radius: 5px;
+      }
+
+      th, td {
+        padding: 5px;
+      }
+
+      th {
+        font-weight: bold;
+      }
+
+      td {
+        vertical-align: top;
+
+        div {
+          display: flex;
+          align-items: center;
+          gap: 5px;
+
+          img {
+            max-width: 24px;
+            max-height: 24px;
+          }
+
+          li {
+            margin-left: 20px;
+            list-style-type: disc;
+          }
+        }
+      }
+    }
+  }
+}

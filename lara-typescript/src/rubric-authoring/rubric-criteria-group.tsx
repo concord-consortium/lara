@@ -26,7 +26,7 @@ export const RubricCriteriaGroup = ({criteriaGroup, groupIndex}: IRubricCriteria
   const handleAdd = () => {
     setRubric(draft => {
       draft.criteriaGroups[groupIndex].criteria.push({
-        id: `C${draft.criteriaGroups[groupIndex].criteria.length + 1}`,
+        id: `${groupIndex}_C${draft.criteriaGroups[groupIndex].criteria.length + 1}`,
         description: "",
         descriptionForStudent: "",
         nonApplicableRatings: [],
