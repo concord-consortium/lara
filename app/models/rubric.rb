@@ -5,7 +5,7 @@ class Rubric < ActiveRecord::Base
 
   belongs_to :user
   belongs_to :project
-  belongs_to :authored_content
+  has_one :authored_content, :as => :container
   has_many :lightweight_activities
 
   after_create :create_authored_content
