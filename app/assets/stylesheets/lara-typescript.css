@@ -4394,6 +4394,19 @@ ul.mde-suggestions li:hover, ul.mde-suggestions li[aria-selected=true] {
 .rubric-form-container {
   font-family: "Lato", helvetica, verdana, sans-serif;
 }
+.rubric-form-container button {
+  background-color: #e2f4f8;
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: bold;
+  color: #333;
+  border-radius: 3px;
+  border: solid 1px #333;
+  margin: 0;
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
 .rubric-form-container .rubric-header {
   display: flex;
   justify-content: space-between;
@@ -4405,9 +4418,15 @@ ul.mde-suggestions li:hover, ul.mde-suggestions li[aria-selected=true] {
   font-weight: 700;
   margin: 20px 0px 20px 0px;
 }
-.rubric-form-container .rubric-header .rubric-dev-note {
+.rubric-form-container .rubric-header .rubric-save-status {
   font-weight: bold;
   color: red;
+  text-transform: uppercase;
+}
+.rubric-form-container .rubric-header .rubric-header-buttons {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 .rubric-form-container .rubric-header .rubric-edit-settings {
   cursor: pointer;

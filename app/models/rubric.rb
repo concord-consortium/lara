@@ -1,11 +1,14 @@
 class Rubric < ActiveRecord::Base
-  attr_accessible :name, :user_id, :project_id, :project
+  attr_accessible :name, :user_id, :project_id, :project, :authored_content_id, :authored_content
   validates :name, presence: true
   validates :user_id, presence: true
 
   belongs_to :user
   belongs_to :project
+  has_one :authored_content, :as => :container
   has_many :lightweight_activities
+
+  after_create :create_authored_content
 
   # scope :public, self.scoped # all rubrics are public
   scope :none, where("1 = 0") # used to return "my rubrics" to no user
@@ -52,6 +55,14 @@ class Rubric < ActiveRecord::Base
       false
     else
       user.id == self.user_id || user.admin? || user.project_admin_of?(self.project)
+    end
+  end
+
+  def create_authored_content
+    if !self.authored_content
+      self.authored_content = AuthoredContent.create_for_container(self, user, "application/json")
+      self.save!
+      self.reload
     end
   end
 

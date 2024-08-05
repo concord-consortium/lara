@@ -45,7 +45,6 @@ services:
       # authored content settings
       AUTHORED_CONTENT_S3_ACCESS_KEY_ID:
       AUTHORED_CONTENT_S3_SECRET_ACCESS_KEY:
-      AUTHORED_CONTENT_S3_BUCKET:
       AUTHORED_CONTENT_SOURCE:
 
       VIRTUAL_HOST: "${LARA_HOST:-app.lara.docker}"

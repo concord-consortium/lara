@@ -22,5 +22,6 @@
       updateSettingsUrl: "#{j api_v1_rubric_url(@rubric.id)}",
       project: #{@project.to_json},
       projects: #{@projects.to_json},
+      authoredContentUrl: "#{j api_v1_authored_content_url(@rubric.authored_content)}",
     });
   });

@@ -7,7 +7,7 @@ type IRubricOptionKey = "referenceURL" | "criteriaLabel" | "criteriaLabelForStud
 type IRubricOptionBooleanKey = "showRatingDescriptions" | "scoreUsingPoints" | "hideRubricFromStudentsInStudentReport";
 
 export const RubricGeneralOptions = () => {
-  const { setRubric } = useRubric();
+  const { rubric, setRubric } = useRubric();
 
   const handleUpdateString = (key: IRubricOptionKey) => (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -32,11 +32,11 @@ export const RubricGeneralOptions = () => {
           </tr>
           <tr>
             <td><label htmlFor="referenceURL">Reference URL (Scoring Guide):</label></td>
-            <td><input name="referenceURL" type="text" onChange={handleUpdateString("referenceURL")} /></td>
+            <td><input name="referenceURL" type="text" value={rubric.referenceURL} onChange={handleUpdateString("referenceURL")} /></td>
           </tr>
           <tr>
             <td><label htmlFor="criteriaLabel">Criteria Header Label for Teacher:</label></td>
-            <td><input name="criteriaLabel" type="text" onChange={handleUpdateString("criteriaLabel")} /></td>
+            <td><input name="criteriaLabel" type="text" value={rubric.criteriaLabel} onChange={handleUpdateString("criteriaLabel")} /></td>
           </tr>
           <tr>
             <td><label htmlFor="criteriaLabelForStudent">Criteria Header Label for Student:</label></td>
@@ -44,6 +44,7 @@ export const RubricGeneralOptions = () => {
               <input
                 name="criteriaLabelForStudent"
                 type="text"
+                value={rubric.criteriaLabelForStudent}
                 onChange={handleUpdateString("criteriaLabelForStudent")}
               />
             </td>
@@ -54,6 +55,7 @@ export const RubricGeneralOptions = () => {
               <input
                 name="feedbackLabelForStudent"
                 type="text"
+                value={rubric.feedbackLabelForStudent}
                 onChange={handleUpdateString("feedbackLabelForStudent")}
               />
             </td>
@@ -64,7 +66,7 @@ export const RubricGeneralOptions = () => {
               <input
                 type="checkbox"
                 name="showRatingDescriptions"
-                value="true"
+                checked={rubric.showRatingDescriptions}
                 onChange={handleUpdateCheckbox("showRatingDescriptions")}
               /> Show rating descriptions
             </td>
@@ -75,7 +77,7 @@ export const RubricGeneralOptions = () => {
               <input
                 type="checkbox"
                 name="scoreUsingPoints"
-                value="true"
+                checked={rubric.scoreUsingPoints}
                 onChange={handleUpdateCheckbox("scoreUsingPoints")}
               /> Score using points
             </td>
@@ -86,7 +88,7 @@ export const RubricGeneralOptions = () => {
               <input
                 type="checkbox"
                 name="hideRubricFromStudentsInStudentReport"
-                value="true"
+                checked={rubric.hideRubricFromStudentsInStudentReport}
                 onChange={handleUpdateCheckbox("hideRubricFromStudentsInStudentReport")}
               />
               Hide rubric from students in Student Report

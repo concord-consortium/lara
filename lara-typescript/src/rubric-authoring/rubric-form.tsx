@@ -20,13 +20,15 @@ export interface IRubricFormProps {
   updateSettingsUrl: string;
   project: RubricProject|null;
   projects: RubricProject[];
+  authoredContentUrl: string;
 }
 
 export const RubricForm = (props: IRubricFormProps) => {
   const [name, setName] = useState(props.name);
   const [project, setProject] = useState(props.project);
   const [showSettings, setShowSettings] = useState(false);
-  const rubricContextValue = useRubricValue();
+  const rubricContextValue = useRubricValue(props.authoredContentUrl);
+  const {loadStatus, saveStatus, isDirty, rubric, saveRubric} = rubricContextValue;
 
   /* for use later for debugging
   useEffect(() => {
@@ -57,19 +59,21 @@ export const RubricForm = (props: IRubricFormProps) => {
     });
   };
 
+  const handleSaveRubric = () => saveRubric();
+
   const renderRubricPanels = () => {
-    if (rubricContextValue.loadStatus === "loading") {
+    if (loadStatus === "loading") {
       return <div>Loading...</div>;
     }
 
-    if (rubricContextValue.loadStatus === "error") {
+    if (loadStatus === "error") {
       return <div>Error loading rubric!</div>;
     }
 
     return (
       <>
         <RubricPanel title="Rubric Preview" backgroundColor={"#e2f4f8"}>
-          <RubricTableContainer rubric={rubricContextValue.rubric} />
+          <RubricTableContainer rubric={rubric} />
         </RubricPanel>
 
         <RubricPanel title="General Options">
@@ -90,8 +94,13 @@ export const RubricForm = (props: IRubricFormProps) => {
       <div className="rubric-form-container">
         <div className="rubric-header">
           <h1>Edit Rubric: {name}</h1>
-          <div className="rubric-dev-note">Dev Note: Saving is not implemented yet.</div>
-          <button className="rubric-edit-settings" onClick={handleToggleShowSettings}>Edit Settings</button>
+          <div className="rubric-save-status">
+            {isDirty && saveStatus}
+          </div>
+          <div className="rubric-header-buttons">
+            <button className="rubric-edit-settings" onClick={handleToggleShowSettings}>Edit Settings</button>
+            <button className="rubric-save" onClick={handleSaveRubric} disabled={!isDirty}>Save</button>
+          </div>
         </div>
 
         {showSettings &&
