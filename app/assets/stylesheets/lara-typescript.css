@@ -3727,6 +3727,12 @@ button.bigButton svg {
   width: 750px;
   box-sizing: border-box;
 }
+.general-options input#showRatingDescriptions {
+  margin-left: 20px;
+}
+.general-options span#showRatingDescriptionsLabel.disabled {
+  color: rgba(0, 0, 0, 0.3137254902);
+}
 .rubric-panel {
   margin-bottom: 10px;
 }

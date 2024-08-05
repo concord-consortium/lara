@@ -50,7 +50,7 @@ export const RubricTeacherPreview = ({scoring, setScoring}: IProps) => {
         {rubric.ratings.map((rating: any) =>
           <div className="rubricScoreHeader" key={rating.id}>
             <div className="rubricScoreLevel">{rating.label}</div>
-            {rubric.scoreUsingPoints && <div className="rubricScoreNumber">({rating.score})</div>}
+            <div className="rubricScoreNumber">({rating.score})</div>
           </div>
         )}
       </div>

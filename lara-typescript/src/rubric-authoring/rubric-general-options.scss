@@ -22,4 +22,13 @@
     width: 750px;
     box-sizing: border-box;
   }
+
+  input#showRatingDescriptions {
+    margin-left: 20px;
+  }
+  span#showRatingDescriptionsLabel {
+    &.disabled {
+      color:  #00000050;
+    }
+  }
 }

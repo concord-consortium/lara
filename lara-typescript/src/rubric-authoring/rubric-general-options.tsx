@@ -1,10 +1,11 @@
 import * as React from "react";
 import { useRubric } from "./use-rubric";
+import classNames from "classnames";
 
 import "./rubric-general-options.scss";
 
 type IRubricOptionKey = "referenceURL" | "criteriaLabel" | "criteriaLabelForStudent" | "feedbackLabelForStudent";
-type IRubricOptionBooleanKey = "showRatingDescriptions" | "scoreUsingPoints" | "hideRubricFromStudentsInStudentReport";
+type IRubricOptionBooleanKey = "showRatingDescriptions" | "hideRubricFromStudentsInStudentReport";
 
 export const RubricGeneralOptions = () => {
   const { rubric, setRubric } = useRubric();
@@ -65,33 +66,29 @@ export const RubricGeneralOptions = () => {
             <td className="rubric-checkbox">
               <input
                 type="checkbox"
-                name="showRatingDescriptions"
-                checked={rubric.showRatingDescriptions}
-                onChange={handleUpdateCheckbox("showRatingDescriptions")}
-              /> Show rating descriptions
-            </td>
-          </tr>
-          <tr>
-            <td/>
-            <td className="rubric-checkbox">
-              <input
-                type="checkbox"
-                name="scoreUsingPoints"
-                checked={rubric.scoreUsingPoints}
-                onChange={handleUpdateCheckbox("scoreUsingPoints")}
-              /> Score using points
-            </td>
-          </tr>
-          <tr>
-            <td/>
-            <td className="rubric-checkbox">
-              <input
-                type="checkbox"
                 name="hideRubricFromStudentsInStudentReport"
                 checked={rubric.hideRubricFromStudentsInStudentReport}
                 onChange={handleUpdateCheckbox("hideRubricFromStudentsInStudentReport")}
               />
               Hide rubric from students in Student Report
+            </td>
+          </tr>
+          <tr>
+            <td/>
+            <td className="rubric-checkbox">
+              <input
+                type="checkbox"
+                id="showRatingDescriptions"
+                name="showRatingDescriptions"
+                disabled={rubric.hideRubricFromStudentsInStudentReport}
+                checked={rubric.showRatingDescriptions}
+                onChange={handleUpdateCheckbox("showRatingDescriptions")}
+              />
+              <span
+                id="showRatingDescriptionsLabel"
+                className={classNames({disabled: rubric.hideRubricFromStudentsInStudentReport})}>
+                Show rating descriptions
+              </span>
             </td>
           </tr>
         </tbody>
