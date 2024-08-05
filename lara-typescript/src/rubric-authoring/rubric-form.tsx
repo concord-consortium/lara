@@ -4,7 +4,7 @@ import { RubricSettings, UpdateSettingsParams } from "./rubric-settings";
 import { RubricGeneralOptions } from "./rubric-general-options";
 import { RubricPanel } from "./rubric-panel";
 import { RubricContext, useRubricValue } from "./use-rubric";
-import { RubricTableContainer } from "./rubric-table";
+import { RubricPreview } from "./rubric-preview";
 import { RubricRatings } from "./rubric-ratings";
 import { RubricCriteria } from "./rubric-criteria";
 
@@ -73,7 +73,7 @@ export const RubricForm = (props: IRubricFormProps) => {
     return (
       <>
         <RubricPanel title="Rubric Preview" backgroundColor={"#e2f4f8"}>
-          <RubricTableContainer rubric={rubric} />
+          <RubricPreview />
         </RubricPanel>
 
         <RubricPanel title="General Options">

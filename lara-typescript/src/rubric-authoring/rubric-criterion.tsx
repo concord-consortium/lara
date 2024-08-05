@@ -43,7 +43,8 @@ export interface RubricCriterionProps {
 }
 
 export const RubricCriterion = ({index, groupIndex, criterion, onDelete}: RubricCriterionProps) => {
-  const {id} = criterion;
+  // remove group index from id
+  const displayId = criterion.id.includes("_") ? criterion.id.split("_")[1] : criterion.id;
   const { rubric: { ratings }, setRubric } = useRubric();
 
   const handleDelete = () => onDelete(index);
@@ -83,7 +84,7 @@ export const RubricCriterion = ({index, groupIndex, criterion, onDelete}: Rubric
   return (
     <div className="rubric-criterion">
       <div className="rubric-criterion-header">
-        <div>Criterion: {id}</div>
+        <div>Criterion: {displayId}</div>
         <button onClick={handleDelete}><Trash /> <span>Remove Criterion</span></button>
       </div>
       <div className="rubric-criterion-body">
@@ -100,12 +101,12 @@ export const RubricCriterion = ({index, groupIndex, criterion, onDelete}: Rubric
 
         <div className="rubric-criterion-body-row">
           <div>
-            <label htmlFor="description">{id} Teacher Description</label>
+            <label htmlFor="description">{displayId} Teacher Description</label>
             <MarkdownEditor content={criterion.description} onChange={handleCriteriaMarkdownUpdate("description")} />
           </div>
           <div>
             <div className="rubric-criterion-body-row-label">
-              <label htmlFor="descriptionForStudent">{id} Student Description</label>
+              <label htmlFor="descriptionForStudent">{displayId} Student Description</label>
               (Leave blank to use teacher description)
             </div>
             <MarkdownEditor content={criterion.descriptionForStudent} onChange={handleCriteriaMarkdownUpdate("descriptionForStudent")} />
@@ -115,7 +116,7 @@ export const RubricCriterion = ({index, groupIndex, criterion, onDelete}: Rubric
           <>
             <div className="rubric-criterion-body-row">
               <div className="rubric-criterion-body-row-label" style={{flex: "initial"}}>
-                <label htmlFor="description">Non-applicable Ratings for {id}:</label>
+                <label htmlFor="description">Non-applicable Ratings for {displayId}:</label>
                 <div className="rubric-checkboxes">{ratings.map(r => (
                   <div key={r.id}>
                     <input
@@ -129,7 +130,7 @@ export const RubricCriterion = ({index, groupIndex, criterion, onDelete}: Rubric
               </div>
             </div>
             <div className="rubric-criterion-body-row">
-              <label>{id} Rating Descriptions</label>
+              <label>{displayId} Rating Descriptions</label>
             </div>
             {ratings.map(r => (
               <div className="rubric-criterion-body-row" key={r.id}>

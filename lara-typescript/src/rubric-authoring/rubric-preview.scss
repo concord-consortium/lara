@@ -1,0 +1,32 @@
+.rubricPreview {
+  .rubricPreviewSwitcher {
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: center;
+
+    > div {
+      padding: 10px;
+      background-color: #ddd;
+      border: 1px solid #000;
+      border-radius: 3px;
+      font-weight: bold;
+      font-size: 14px;
+      color: #3f3f3f;
+      cursor: pointer;
+
+      &.rubricPreviewActive {
+        background-color: #95bcf2;
+      }
+
+      &:first-child {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+      }
+      &:last-child {
+        border-left: none;
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+      }
+    }
+  }
+}
