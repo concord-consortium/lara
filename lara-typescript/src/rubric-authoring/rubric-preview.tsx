@@ -8,7 +8,11 @@ import { RubricStudentPreview } from "./rubric-student-preview";
 
 import "./rubric-preview.scss";
 
-export const RubricPreview = () => {
+interface IProps {
+  referenceURL: string;
+}
+
+export const RubricPreview = ({referenceURL}: IProps) => {
   const { rubric } = useRubric();
   const [view, setView] = useState<"teacher"|"student">("teacher");
   const [scoring, setScoring] = useState<Record<string, string>>({});
@@ -45,8 +49,12 @@ export const RubricPreview = () => {
           Student View
         </div>
       </div>
-      {view === "teacher" && <RubricTeacherPreview scoring={scoring} setScoring={setScoring} />}
-      {view === "student" && <RubricStudentPreview scored={scored} scoring={scoring} setScoring={setScoring} />}
+      {view === "teacher" &&
+        <RubricTeacherPreview scoring={scoring} setScoring={setScoring} referenceURL={referenceURL} />
+      }
+      {view === "student" &&
+        <RubricStudentPreview scored={scored} scoring={scoring} setScoring={setScoring} />
+      }
     </div>
   );
 };

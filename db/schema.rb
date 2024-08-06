@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20240801164851) do
+ActiveRecord::Schema.define(:version => 20240806145141) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "kind"
@@ -679,6 +679,7 @@ ActiveRecord::Schema.define(:version => 20240801164851) do
     t.datetime "created_at",          :null => false
     t.datetime "updated_at",          :null => false
     t.integer  "authored_content_id"
+    t.string   "doc_url"
   end
 
   create_table "runs", :force => true do |t|

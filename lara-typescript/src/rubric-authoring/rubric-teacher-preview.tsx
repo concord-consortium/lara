@@ -8,15 +8,19 @@ import { useRubric } from "./use-rubric";
 import { IRubricCriterion, IRubricRating } from "./types";
 
 import "./rubric-teacher-preview.scss";
+import { useMemo } from "react";
 
 interface IProps {
   scoring: Record<string, string>;
   setScoring: React.Dispatch<React.SetStateAction<Record<string, string>>>;
+  referenceURL: string;
 }
 
-export const RubricTeacherPreview = ({scoring, setScoring}: IProps) => {
+export const RubricTeacherPreview = ({scoring, setScoring, referenceURL}: IProps) => {
   const { rubric } = useRubric();
-  const { ratings, criteriaGroups, referenceURL } = rubric;
+  const { ratings, criteriaGroups } = rubric;
+
+  const hasReferenceUrl = useMemo(() => referenceURL.trim().length > 0, [referenceURL]);
 
   const checkReferenceUrl = (e: React.MouseEvent<HTMLAnchorElement>) => {
     if (!/^https?/.test(referenceURL)) {
@@ -33,7 +37,7 @@ export const RubricTeacherPreview = ({scoring, setScoring}: IProps) => {
     return (
       <div className="columnHeaders">
         <div className="rubricDescriptionHeader">
-          <div className="scoringGuideArea">
+          {hasReferenceUrl && <div className="scoringGuideArea">
             <a
               className="launchButton"
               href={referenceURL}
@@ -44,7 +48,7 @@ export const RubricTeacherPreview = ({scoring, setScoring}: IProps) => {
               <LaunchIcon />
             </a>
             Scoring Guide
-          </div>
+          </div>}
           <div className="rubricDescriptionTitle">{rubric.criteriaLabel}</div>
         </div>
         {rubric.ratings.map((rating: any) =>

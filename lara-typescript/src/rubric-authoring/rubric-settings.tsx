@@ -6,11 +6,13 @@ import "./rubric-settings.scss";
 
 export interface UpdateSettingsParams {
   name: string;
+  referenceUrl: string;
   project: RubricProject|null;
 }
 
 export interface IRubricSettingsProps {
   name: string;
+  referenceUrl: string;
   project: RubricProject|null;
   projects: RubricProject[];
   update: (settings: UpdateSettingsParams) => void;
@@ -21,11 +23,16 @@ export const RubricSettings = (props: IRubricSettingsProps) => {
   const {projects, update, cancel} = props;
   const [name, setName] = useState(props.name);
   const [project, setProject] = useState(props.project);
+  const [referenceUrl, setReferenceUrl] = useState(props.referenceUrl);
 
   const formDisabled = useMemo(() => name.trim().length === 0, [name]);
 
   const handleChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value);
+  };
+
+  const handleChangeReferenceUrl = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setReferenceUrl(e.target.value);
   };
 
   const handleChangeProject = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -38,9 +45,9 @@ export const RubricSettings = (props: IRubricSettingsProps) => {
     e.preventDefault();
 
     if (!formDisabled) {
-      update({name, project});
+      update({name, project, referenceUrl});
     }
-  }, [update, formDisabled, name, project]);
+  }, [update, formDisabled, name, project, referenceUrl]);
 
   return (
     <div className="rubric-settings">
@@ -49,6 +56,10 @@ export const RubricSettings = (props: IRubricSettingsProps) => {
         <div>
           <label htmlFor="name">Name:</label>
           <input type="text" name="name" value={name} onChange={handleChangeName} autoFocus={true}/>
+        </div>
+        <div>
+          <label htmlFor="name">Reference URL (Scoring Guide):</label>
+          <input type="text" name="referenceUrl" value={referenceUrl} onChange={handleChangeReferenceUrl} />
         </div>
         <div>
           <label htmlFor="project">Project:</label>

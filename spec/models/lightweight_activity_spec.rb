@@ -1,11 +1,15 @@
 require 'spec_helper'
 
 describe LightweightActivity do
-  let(:thumbnail_url) { "http://fake.url.com/image" }
-  let(:author)        { FactoryGirl.create(:author) }
-  let(:glossary)      { nil }
-  let(:act_opts)      { {thumbnail_url: thumbnail_url, glossary: glossary, hide_read_aloud: true, hide_question_numbers: true, font_size: "large"} }
-  let(:activity)      {
+  let(:thumbnail_url)    { "http://fake.url.com/image" }
+  let(:rubric_url)       { "https://example.com/1" }
+  let(:rubric_doc_url)   { "http://example.com/doc_url" }
+  let(:author)           { FactoryGirl.create(:author) }
+  let(:glossary)         { nil }
+  let(:authored_content) { FactoryGirl.create(:authored_content, user: author, content_type: "application/json", url: rubric_url) }
+  let(:rubric)           { FactoryGirl.create(:rubric, user: author, name: "Test Rubric", doc_url: rubric_doc_url, authored_content: authored_content)}
+  let(:act_opts)         { {thumbnail_url: thumbnail_url, glossary: glossary, hide_read_aloud: true, hide_question_numbers: true, font_size: "large", rubric: rubric } }
+  let(:activity)         {
     activity = FactoryGirl.create(:activity, act_opts)
     activity.user = author
     activity.save
@@ -504,6 +508,8 @@ describe LightweightActivity do
         "author_url"             => author_url,
         "print_url"              => print_url,
         "thumbnail_url"          => thumbnail_url,
+        "rubric_doc_url"         => rubric_doc_url,
+        "rubric_url"             => rubric_url,
         "student_report_enabled" => activity_player_activity.student_report_enabled,
         "show_submit_button"     => true,
         "is_locked"              => false,
@@ -531,6 +537,8 @@ describe LightweightActivity do
         "author_url"             => author_url,
         "print_url"              => print_url,
         "thumbnail_url"          => thumbnail_url,
+        "rubric_doc_url"         => rubric_doc_url,
+        "rubric_url"             => rubric_url,
         "student_report_enabled" => activity_player_activity.student_report_enabled,
         "show_submit_button"     => true,
         "is_locked"              => false,

@@ -11,7 +11,10 @@
 
     .field
       = f.label :name
-      = f.text_field :name, autofocus: true
+      = f.text_field :name, autofocus: true, :style => 'width: 90%'
+    .field
+      = f.label :doc_url, 'Reference URL (Scoring Guide)'
+      = f.text_field :doc_url, :style => 'width: 90%'
     .field
       = f.label :project_id, 'Project'
       = f.select :project_id, options_from_collection_for_select(Project.visible_to_user(current_user), 'id', 'title', @rubric.project_id), { :include_blank => true }

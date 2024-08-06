@@ -21,10 +21,12 @@ export interface IRubricFormProps {
   project: RubricProject|null;
   projects: RubricProject[];
   authoredContentUrl: string;
+  referenceURL: string;
 }
 
 export const RubricForm = (props: IRubricFormProps) => {
   const [name, setName] = useState(props.name);
+  const [referenceURL, setReferenceURL] = useState(props.referenceURL);
   const [project, setProject] = useState(props.project);
   const [showSettings, setShowSettings] = useState(false);
   const rubricContextValue = useRubricValue(props.authoredContentUrl);
@@ -49,6 +51,7 @@ export const RubricForm = (props: IRubricFormProps) => {
     }).then((resp) => {
       if (resp.status === 200) {
         setName(saveSettings.name);
+        setReferenceURL(saveSettings.referenceUrl);
         setProject(saveSettings.project);
         handleToggleShowSettings();
       } else {
@@ -73,7 +76,7 @@ export const RubricForm = (props: IRubricFormProps) => {
     return (
       <>
         <RubricPanel title="Rubric Preview" backgroundColor={"#e2f4f8"}>
-          <RubricPreview />
+          <RubricPreview referenceURL={referenceURL} />
         </RubricPanel>
 
         <RubricPanel title="General Options">
@@ -106,6 +109,7 @@ export const RubricForm = (props: IRubricFormProps) => {
         {showSettings &&
           <RubricSettings
             name={name}
+            referenceUrl={referenceURL}
             project={project}
             projects={props.projects}
             update={handleUpdateSettings}

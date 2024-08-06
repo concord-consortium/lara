@@ -26,7 +26,6 @@ export interface IRubricV110 {
   versionNumber: string;
   updatedMsUTC: number;
   originUrl: string;
-  referenceURL: string;
   showRatingDescriptions: boolean;
   hideRubricFromStudentsInStudentReport: boolean;
   criteriaLabel: string;

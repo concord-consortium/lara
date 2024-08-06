@@ -4,7 +4,7 @@ import classNames from "classnames";
 
 import "./rubric-general-options.scss";
 
-type IRubricOptionKey = "referenceURL" | "criteriaLabel" | "criteriaLabelForStudent" | "feedbackLabelForStudent";
+type IRubricOptionKey = "criteriaLabel" | "criteriaLabelForStudent" | "feedbackLabelForStudent";
 type IRubricOptionBooleanKey = "showRatingDescriptions" | "hideRubricFromStudentsInStudentReport";
 
 export const RubricGeneralOptions = () => {
@@ -27,10 +27,6 @@ export const RubricGeneralOptions = () => {
     <div className="general-options">
       <table>
         <tbody>
-          <tr>
-            <td><label htmlFor="referenceURL">Reference URL (Scoring Guide):</label></td>
-            <td><input name="referenceURL" type="text" value={rubric.referenceURL} onChange={handleUpdateString("referenceURL")} /></td>
-          </tr>
           <tr>
             <td><label htmlFor="criteriaLabel">Criteria Header Label for Teacher:</label></td>
             <td><input name="criteriaLabel" type="text" value={rubric.criteriaLabel} onChange={handleUpdateString("criteriaLabel")} /></td>
