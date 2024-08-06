@@ -2,12 +2,15 @@
   // toggle enabled/disabled fields based on runtime environment
   $(function() {
     var $glossary_id = $("#lightweight_activity_glossary_id")
+    var $rubric_id = $("#lightweight_activity_rubric_id")
     var $runtime = $('#lightweight_activity_runtime')
     var $view_edit_glossary = $('#view_edit_glossary')
+    var $view_edit_rubric = $('#view_edit_rubric')
 
     function toggleFields(isLara) {
       $glossary_id.attr("disabled", isLara);
       $view_edit_glossary.attr("disabled", isLara || !$glossary_id.val());
+      $view_edit_rubric.attr("disabled", isLara || !$rubric_id.val());
 
       // reset the dropdowns to "None"
       if (isLara) {
@@ -25,6 +28,11 @@
       $view_edit_glossary.attr("disabled", isNone);
     })
 
+    $rubric_id.on('change', function(e) {
+      var isNone = !e.target.value;
+      $view_edit_rubric.attr("disabled", isNone);
+    })
+
     $view_edit_glossary.on('click', function (e) {
       // -1 is a placeholder for the glossary id in the url generated when the page is served
       // and is replaced at runtime below with the current selected glossary id from the select
@@ -32,6 +40,15 @@
       e.preventDefault()
       e.stopPropagation()
       window.open(edit_url.replace("-1", $glossary_id.val()), "_blank")
+    })
+
+    $view_edit_rubric.on('click', function (e) {
+      // -1 is a placeholder for the rubric id in the url generated when the page is served
+      // and is replaced at runtime below with the current selected rubric id from the select
+      var edit_url = "#{edit_rubric_path(-1)}"
+      e.preventDefault()
+      e.stopPropagation()
+      window.open(edit_url.replace("-1", $rubric_id.val()), "_blank")
     })
 
     toggleFields($runtime.val() === "LARA")
