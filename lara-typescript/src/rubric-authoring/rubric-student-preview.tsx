@@ -10,6 +10,10 @@ interface IProps {
   setScoring: React.Dispatch<React.SetStateAction<Record<string, string>>>;
 }
 
+const getStringValue = (value: string, fallbackValue: string): string => {
+  return value.trim().length > 0 ? value : fallbackValue;
+};
+
 export const RubricStudentPreview = ({scored, scoring, setScoring}: IProps) => {
   const { rubric } = useRubric();
   const hide = rubric.hideRubricFromStudentsInStudentReport;
@@ -35,6 +39,7 @@ export const RubricStudentPreview = ({scored, scoring, setScoring}: IProps) => {
     const hasGroupLabel = rubric.criteriaGroups.reduce((acc, cur) => {
       return acc || cur.labelForStudent.trim().length > 0;
     }, false);
+    const criteriaLabel = getStringValue(rubric.criteriaLabelForStudent, rubric.criteriaLabel);
 
     return (
       <div className="scored">
@@ -42,7 +47,7 @@ export const RubricStudentPreview = ({scored, scoring, setScoring}: IProps) => {
           <thead>
             <tr>
               <th colSpan={hasGroupLabel ? 2 : 1}>
-                { rubric.criteriaLabelForStudent }</th><th>{ rubric.feedbackLabelForStudent }
+                { criteriaLabel }</th><th>{ rubric.feedbackLabelForStudent }
               </th>
             </tr>
           </thead>
@@ -51,22 +56,39 @@ export const RubricStudentPreview = ({scored, scoring, setScoring}: IProps) => {
               return criteriaGroup.criteria.map((criteria, index) => {
                 const showLabel = index === 0 && hasGroupLabel;
                 const ratingId = scoring[criteria.id];
-                const description = criteria.ratingDescriptionsForStudent[ratingId];
+                const label = getStringValue(
+                  criteriaGroup.labelForStudent,
+                  criteriaGroup.label
+                );
+                const description = getStringValue(
+                  criteria.descriptionForStudent,
+                  criteria.description
+                );
+                const ratingDescription = getStringValue(
+                  criteria.ratingDescriptionsForStudent[ratingId],
+                  criteria.ratingDescriptions[ratingId]
+                );
                 const rating = rubric.ratings.find(r => r.id === ratingId);
                 const ratingLabel = rating?.label.toUpperCase() ?? "";
 
                 return (
                   <tr key={criteria.id}>
-                    {showLabel && <td rowSpan={criteriaGroup.criteria.length}>{criteriaGroup.labelForStudent}</td>}
+                    {showLabel &&
+                      <td
+                        rowSpan={criteriaGroup.criteria.length}
+                        className="groupLabel">
+                        {label}
+                      </td>
+                    }
                     <td>
                       <div>
                         {criteria.iconUrl && <img src={criteria.iconUrl} />}
-                        <Markdown>{criteria.descriptionForStudent}</Markdown>
+                        <Markdown>{description}</Markdown>
                       </div>
                     </td>
                     <td>
                       { rubric.showRatingDescriptions
-                        ? `${ratingLabel} – ${description}`
+                        ? `${ratingLabel} – ${ratingDescription}`
                         : ratingLabel
                       }
                     </td>
