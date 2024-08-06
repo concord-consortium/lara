@@ -38,7 +38,6 @@ export const useRubricValue = (authoredContentUrl: string): IRubricContext => {
             originUrl: "",
             referenceURL: "",
             showRatingDescriptions: false,
-            scoreUsingPoints: false,
             hideRubricFromStudentsInStudentReport: false,
             criteriaLabel: "",
             criteriaLabelForStudent: "",
