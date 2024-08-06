@@ -50,6 +50,7 @@ class LightweightActivity < ActiveRecord::Base
   has_many :runs, :foreign_key => 'activity_id', :dependent => :destroy
   belongs_to :project
   belongs_to :glossary
+  belongs_to :rubric
 
   has_many :imports, as: :import_item
 
@@ -284,6 +285,15 @@ class LightweightActivity < ActiveRecord::Base
   def serialize_for_portal_basic(host)
     local_url = "#{host}#{Rails.application.routes.url_helpers.activity_path(self)}"
 
+    rubric_url = ""
+    rubric_doc_url = ""
+    if self.rubric
+      rubric_doc_url = self.rubric.doc_url
+      if self.rubric.authored_content
+        rubric_url = self.rubric.authored_content.url
+      end
+    end
+
     data = {
       "type" => "Activity",
       "name" => self.name,
@@ -295,7 +305,9 @@ class LightweightActivity < ActiveRecord::Base
       "is_locked" => self.is_locked,
       "url" => activity_player_url(host),
       "tool_id" => "https://activity-player.concord.org",
-      "append_auth_token" => true
+      "append_auth_token" => true,
+      "rubric_url" => rubric_url,
+      "rubric_doc_url" => rubric_doc_url,
     }
 
     data

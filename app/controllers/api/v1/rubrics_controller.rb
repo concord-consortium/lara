@@ -16,6 +16,9 @@ class Api::V1::RubricsController < API::APIController
     if params[:name]
       rubric.name = params[:name]
     end
+    if params[:referenceUrl]
+      rubric.doc_url = params[:referenceUrl]
+    end
     if params.has_key?(:project)
       if params[:project].nil?
         rubric.project_id = nil
@@ -28,7 +31,7 @@ class Api::V1::RubricsController < API::APIController
     rescue => e
       error(e.message)
     else
-      render :json => {id: rubric.id, name: rubric.name, project: Project.id_and_title(rubric.project)}
+      render :json => {id: rubric.id, name: rubric.name, doc_url: rubric.doc_url, project: Project.id_and_title(rubric.project)}
     end
   end
 end

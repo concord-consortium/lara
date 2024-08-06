@@ -1,5 +1,10 @@
 require 'spec_helper'
 describe PublicationsController do
+  let(:rubric_url)       { "https://example.com/1" }
+  let(:rubric_doc_url)   { "http://example.com/doc_url" }
+  let(:author)           { FactoryGirl.create(:author) }
+  let(:authored_content) { FactoryGirl.create(:authored_content, user: author, content_type: "application/json", url: rubric_url) }
+  let(:rubric)           { FactoryGirl.create(:rubric, user: author, name: "Test Rubric", doc_url: rubric_doc_url, authored_content: authored_content)}
   let(:act) { FactoryGirl.create(:public_activity) }
   let(:private_act) { FactoryGirl.create(:activity)}
   let(:ar)  { FactoryGirl.create(:run, :activity_id => act.id) }
@@ -29,6 +34,7 @@ describe PublicationsController do
       :description => 'Activity One Description',
       :publication_status => 'public',
       :thumbnail_url    => 'thumbnail',
+      :rubric_id => rubric.id
     })
     activity.user = @user
     activity.save
@@ -41,6 +47,7 @@ describe PublicationsController do
       :description => 'Activity Two Description',
       :publication_status => 'public',
       :thumbnail_url    => 'thumbnail',
+      :rubric_id => rubric.id
     })
     activity.user = @user
     activity.save
@@ -70,6 +77,8 @@ describe PublicationsController do
         "create_url"    =>"http://test.host/activities/#{act_one.id}",
         "author_email"  => @user.email,
         "description"   =>"Activity One Description",
+        "rubric_url"    => rubric_url,
+        "rubric_doc_url" => rubric_doc_url,
         "sections"      => [
            {"name"  => "Activity One Section",
             "pages" => []
@@ -89,7 +98,9 @@ describe PublicationsController do
         "is_locked"     =>false,
         "url"           =>"#{ENV["ACTIVITY_PLAYER_URL"]}?activity=http%3A%2F%2Ftest.host%2Fapi%2Fv1%2Factivities%2F#{act_two.id}.json",
         "tool_id"       => "https://activity-player.concord.org",
-        "append_auth_token" => true
+        "append_auth_token" => true,
+        "rubric_url"    => rubric_url,
+        "rubric_doc_url" => rubric_doc_url
       }
     end
     let(:good_body) { activity_hash.to_json }

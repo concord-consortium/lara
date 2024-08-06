@@ -3671,7 +3671,7 @@ button.bigButton svg {
   margin: 10px 0;
 }
 .rubric-settings .rubric-settings-form label {
-  width: 150px;
+  width: 200px;
   display: inline-block;
   text-align: right;
   margin-right: 10px;
@@ -3824,7 +3824,7 @@ button.bigButton svg {
 }
 .rubricTeacherPreview .columnHeaders .rubricDescriptionHeader .rubricDescriptionTitle {
   justify-content: center;
-  width: 75%;
+  width: 100%;
 }
 .rubricTeacherPreview .columnHeaders .rubricScoreHeader {
   display: flex;

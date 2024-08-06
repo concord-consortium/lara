@@ -1,5 +1,5 @@
 class Rubric < ActiveRecord::Base
-  attr_accessible :name, :user_id, :project_id, :project, :authored_content_id, :authored_content
+  attr_accessible :name, :user_id, :project_id, :project, :authored_content_id, :authored_content, :doc_url
   validates :name, presence: true
   validates :user_id, presence: true
 
@@ -20,6 +20,7 @@ class Rubric < ActiveRecord::Base
       name: self.name,
       project: self.project ? self.project.export : nil,
       user_id: self.user_id,
+      doc_url: self.doc_url,
       can_edit: self.can_edit(user)
     }
   end
@@ -29,7 +30,8 @@ class Rubric < ActiveRecord::Base
       id: self.id,
       name: self.name,
       project: self.project,
-      user_id: self.user_id
+      user_id: self.user_id,
+      doc_url: self.doc_url
     }
   end
 
@@ -39,6 +41,7 @@ class Rubric < ActiveRecord::Base
       name: self.name,
       project: self.project,
       user_id: self.user_id,
+      doc_url: self.doc_url,
       type: "Rubric"
     }
   end

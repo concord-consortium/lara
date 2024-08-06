@@ -7,7 +7,7 @@ RSpec.describe Rubric do
   let(:project)     { FactoryGirl.create(:project) }
 
   let(:rubric)      {
-    rubric = FactoryGirl.create(:rubric, name: "Rubric 1", user: author, project: project)
+    rubric = FactoryGirl.create(:rubric, name: "Rubric 1", user: author, project: project, doc_url: "https://example.com")
     rubric.save!
     rubric
   }
@@ -18,6 +18,7 @@ RSpec.describe Rubric do
       expect(rubric.export(author)).to eq({
         id: rubric.id,
         name: rubric.name,
+        doc_url: rubric.doc_url,
         project: project.export(),
         user_id: rubric.user_id,
         can_edit: true
@@ -120,6 +121,7 @@ RSpec.describe Rubric do
     expect(rubric.to_hash).to eq({
       id: rubric.id,
       name: rubric.name,
+      doc_url: rubric.doc_url,
       project: rubric.project,
       user_id: rubric.user_id
     })
@@ -129,6 +131,7 @@ RSpec.describe Rubric do
     expect(rubric.to_export_hash).to eq({
       id: rubric.id,
       name: rubric.name,
+      doc_url: rubric.doc_url,
       project: rubric.project,
       user_id: rubric.user_id,
       type: "Rubric"
@@ -139,6 +142,7 @@ RSpec.describe Rubric do
     expect(rubric.duplicate(author2).to_hash).to eq({
       id: nil,
       name: "Copy of #{rubric.name}",
+      doc_url: rubric.doc_url,
       project: rubric.project,
       user_id: author2.id
     })
