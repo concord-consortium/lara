@@ -47,6 +47,12 @@
   %button#view_edit_glossary{style: "margin-top: 0; margin-left: 20px;"} View or Edit
   .hint
     Select a glossary from the list to add to this activity. If you do not wish to associate a glossary with this activity, select "None."
+.field
+  = f.label :rubric_id, 'Rubric'
+  = f.select :rubric_id, rubric_options_for_select(@activity, current_user), { :include_blank => "None" }
+  %button#view_edit_rubric{style: "margin-top: 0; margin-left: 20px;"} View or Edit
+  .hint
+    Select a rubric from the list to add to this activity. If you do not wish to associate a rubric with this activity, select "None."
 - if current_user.is_admin || @is_project_admin
   .field
     = f.label :project_id, 'Project'

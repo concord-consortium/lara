@@ -117,4 +117,19 @@ module LightweightActivityHelper
       glossaries.map {|g| ["#{g.name} (#{g.user.email})", g.id] }
     end
   end
+
+  def rubric_options_for_select(activity, user)
+    grouped_options_for_select([
+      ['My Rubrics', rubric_options(Rubric.by_author(user))],
+      ['Other Rubrics', rubric_options(Rubric.by_others(user))]
+    ], activity.rubric_id)
+  end
+
+  def rubric_options(rubrics)
+    if rubrics.length == 0
+      [["None", nil]]
+    else
+      rubrics.map {|r| ["#{r.name} (#{r.user.email})", r.id] }
+    end
+  end
 end
