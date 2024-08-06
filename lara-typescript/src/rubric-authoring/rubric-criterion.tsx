@@ -46,6 +46,8 @@ export const RubricCriterion = ({index, groupIndex, criterion, onDelete}: Rubric
   // remove group index from id
   const displayId = criterion.id.includes("_") ? criterion.id.split("_")[1] : criterion.id;
   const { rubric: { ratings }, setRubric } = useRubric();
+  const isNonApplicableRating = (rating: IRubricRating) => criterion.nonApplicableRatings.includes(rating.id);
+  const applicableRatings = ratings.filter(r => !isNonApplicableRating(r));
 
   const handleDelete = () => onDelete(index);
 
@@ -121,7 +123,7 @@ export const RubricCriterion = ({index, groupIndex, criterion, onDelete}: Rubric
                   <div key={r.id}>
                     <input
                       type="checkbox"
-                      checked={criterion.nonApplicableRatings.includes(r.id)}
+                      checked={isNonApplicableRating(r)}
                       onChange={handleNonApplicableRatingChange(r)}
                     /> {r.id} ({r.label})
                   </div>))}
@@ -132,7 +134,7 @@ export const RubricCriterion = ({index, groupIndex, criterion, onDelete}: Rubric
             <div className="rubric-criterion-body-row">
               <label>{displayId} Rating Descriptions</label>
             </div>
-            {ratings.map(r => (
+            {applicableRatings.map(r => (
               <div className="rubric-criterion-body-row" key={r.id}>
                 <div>
                   <label htmlFor="description">{r.id} ({r.label}) Teacher Description</label>
