@@ -28,10 +28,6 @@ export const RubricGeneralOptions = () => {
       <table>
         <tbody>
           <tr>
-            <td><label htmlFor="id">ID:</label></td>
-            <td><input name="id" type="text" disabled={true} /></td>
-          </tr>
-          <tr>
             <td><label htmlFor="referenceURL">Reference URL (Scoring Guide):</label></td>
             <td><input name="referenceURL" type="text" value={rubric.referenceURL} onChange={handleUpdateString("referenceURL")} /></td>
           </tr>
