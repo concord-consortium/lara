@@ -3972,6 +3972,11 @@ button.bigButton svg {
   margin-left: 20px;
   list-style-type: disc;
 }
+.rubricStudentPreview .scored table td.groupLabel {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  text-align: center;
+}
 .rubricPreview .rubricPreviewSwitcher {
   margin-bottom: 10px;
   display: flex;
