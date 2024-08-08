@@ -287,9 +287,9 @@ class LightweightActivity < ActiveRecord::Base
 
     rubric_url = ""
     rubric_doc_url = ""
-    if self.rubric
+    if self.rubric != nil
       rubric_doc_url = self.rubric.doc_url
-      if self.rubric.authored_content
+      if self.rubric.authored_content != nil
         rubric_url = self.rubric.authored_content.url
       end
     end
