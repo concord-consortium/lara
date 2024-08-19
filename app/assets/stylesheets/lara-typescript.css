@@ -3874,8 +3874,6 @@ button.bigButton svg {
   flex: auto;
 }
 .rubricTeacherPreview .rubricTable .rubricTableGroup .rubricTableRows .rubricTableRow .rubricDescription img {
-  max-width: 24px;
-  max-height: 24px;
   padding-right: 10px;
 }
 .rubricTeacherPreview .rubricTable .rubricTableGroup .rubricTableRows .rubricTableRow .rubricDescription li {
@@ -3963,10 +3961,6 @@ button.bigButton svg {
   display: flex;
   align-items: center;
   gap: 5px;
-}
-.rubricStudentPreview .scored table td div img {
-  max-width: 24px;
-  max-height: 24px;
 }
 .rubricStudentPreview .scored table td div li {
   margin-left: 20px;
