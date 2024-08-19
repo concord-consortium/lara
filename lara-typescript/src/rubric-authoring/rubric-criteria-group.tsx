@@ -18,7 +18,7 @@ export const RubricCriteriaGroup = ({criteriaGroup, groupIndex}: IRubricCriteria
   const handleDelete = (index: number) => {
     if (confirm("Are you sure you want to delete this criterion?")) {
       setRubric(draft => {
-        draft.criteriaGroups[index].criteria.splice(index, 1);
+        draft.criteriaGroups[groupIndex].criteria.splice(index, 1);
       });
     }
   };
