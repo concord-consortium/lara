@@ -10,7 +10,7 @@ interface IProps {
   setScoring: React.Dispatch<React.SetStateAction<Record<string, string>>>;
 }
 
-const getStringValue = (value: string, fallbackValue: string): string => {
+const getStringValue = (value: string = "", fallbackValue: string = ""): string => {
   return value.trim().length > 0 ? value : fallbackValue;
 };
 
