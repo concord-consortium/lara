@@ -61,6 +61,10 @@ class Rubric < ActiveRecord::Base
     end
   end
 
+  def can_delete()
+    self.lightweight_activities.length == 0
+  end
+
   def create_authored_content
     if !self.authored_content
       self.authored_content = AuthoredContent.create_for_container(self, user, "application/json")

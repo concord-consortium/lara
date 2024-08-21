@@ -37,7 +37,9 @@ class RubricsController < ApplicationController
 
   def destroy
     authorize! :destroy, @rubric
-    @rubric.destroy
+    if @rubric.can_delete()
+      @rubric.destroy
+    end
     redirect_to rubrics_url
   end
 

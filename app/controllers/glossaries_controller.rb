@@ -38,7 +38,9 @@ class GlossariesController < ApplicationController
 
   def destroy
     authorize! :destroy, @glossary
-    @glossary.destroy
+    if @glossary.can_delete()
+      @glossary.destroy
+    end
     redirect_to glossaries_url
   end
 
