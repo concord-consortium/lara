@@ -37,7 +37,7 @@ export const RubricStudentPreview = ({scored, scoring, setScoring}: IProps) => {
 
   const renderScored = () => {
     const hasGroupLabel = rubric.criteriaGroups.reduce((acc, cur) => {
-      return acc || cur.labelForStudent.trim().length > 0;
+      return acc || getStringValue(cur.labelForStudent, cur.label).trim().length > 0;
     }, false);
     const criteriaLabel = getStringValue(rubric.criteriaLabelForStudent, rubric.criteriaLabel);
 
