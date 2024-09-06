@@ -23,14 +23,19 @@ export const RubricRatingsItem = ({index, rating, onDelete, onUpdate}: IRubricRa
     onUpdate(index, {...rating, label: e.target.value});
   }, [rating]);
   const handleScoreUpdate = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    onUpdate(index, {...rating, score: parseInt(e.target.value, 10)});
+    // don't allow scores less than 1
+    let newScore = parseInt(e.target.value, 10);
+    if (isNaN(newScore) || newScore < 1) {
+      newScore = 1;
+    }
+    onUpdate(index, {...rating, score: newScore});
   }, [rating]);
 
   return (
     <tr>
       <td><input value={id} type="text" disabled={true} /></td>
       <td><input value={label} type="text" autoFocus={true} onChange={handleLabelUpdate} /></td>
-      <td><input value={score} type="number" onChange={handleScoreUpdate} /></td>
+      <td><input value={score} type="number" onChange={handleScoreUpdate} min={1} /></td>
       <td><Trash onClick={handleDelete} /></td>
     </tr>
   );
@@ -63,7 +68,7 @@ export const RubricRatings = () => {
 
   const handleAdd = () => {
     setRubric(draft => {
-      draft.ratings.push({id: `R${draft.ratings.length + 1}`, label: "", score: 0});
+      draft.ratings.push({id: `R${draft.ratings.length + 1}`, label: "", score: 1});
     });
   };
 
