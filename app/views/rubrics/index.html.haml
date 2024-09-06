@@ -15,9 +15,10 @@
   - if can? :create, Rubric
     %a{ :href => new_rubric_path }
       %button=t("NEW_RUBRIC_BUTTON")
-  - if can? :import, Rubric
-    %a{ :href => import_status_path, 'data-remote'=>"true" }
-      %button=t("IMPORT")
+  -# import disabled as export doesn't contain the S3 file info to import
+  -#- if can? :import, Rubric
+  -#  %a{ :href => import_status_path, 'data-remote'=>"true" }
+  -#    %button=t("IMPORT")
 
 #official_listing_heading.pagination_heading
   %h1 Rubrics

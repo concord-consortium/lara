@@ -5,10 +5,11 @@
       = rubric.name
     %div.action_menu_header_right
       %ul.menu
-        - if can? :export, rubric
-          %li.copy= link_to "Export", export_rubric_path(rubric)
-        - if can? :duplicate, rubric
-          %li.copy= link_to "Copy", duplicate_rubric_path(rubric)
+        -# disable export and copy for now since the underlying S3 file is not exported or copied
+        -#- if can? :export, rubric
+        -#  %li.copy= link_to "Export", export_rubric_path(rubric)
+        -# - if can? :duplicate, rubric
+        -#  %li.copy= link_to "Copy", duplicate_rubric_path(rubric)
         %li.edit= link_to rubric.can_edit(current_user) ? "Edit" : "View", edit_rubric_path(rubric)
         - if can?(:update, rubric) && rubric.can_delete()
           %li.delete= link_to 'Delete', rubric_path(rubric), method: :delete, data: { confirm: "Are you sure you want to delete this rubric? It is currently being used in #{pluralize(rubric.lightweight_activities.length, 'activity')}. You will not be able to undo this action." }

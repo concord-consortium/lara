@@ -1,6 +1,6 @@
 .import_activity_sequence
   .header
-    %span.title Import Activity/Sequence/Glossary/Rubric
+    %span.title Import Activity/Sequence/Glossary
     %span.close.close_link
       close (✖)
 
@@ -13,8 +13,8 @@
             =file_field 'import', 'import', accept: 'application/json', class: 'import_file'
     .buttons
       -#= link_to "Import", import_activities_path, {:remote => true, :class => 'btn btn-primary'}
-      =submit_tag "import", class: "import btn btn-primary"
+      =submit_tag "Import", class: "import btn btn-primary"
       %a.btn.btn-primary.close
-        cancel
+        Cancel
     .message
       =@message
