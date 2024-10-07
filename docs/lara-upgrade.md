@@ -1,0 +1,298 @@
+# LARA Upgrade
+
+The purpose of this document is to both plan and track upgrading LARA to the latest Rails+Ruby combo.
+
+## Starting Point
+
+When this document was created LARA used Rails 3.2.22 and Ruby 2.3.7.  The current latest Rails is 7.2.1 which requires Ruby >= 3.1.0.  The latest Ruby version is 3.3.5.  The current minimum Rails community supported LTS version is 7.0.8.4 which requires Ruby >= 2.7.0.  [More info here](https://endoflife.date/rails).
+
+## Goal
+
+The goal of this work is to stop paying for private LTS support and get to Rails 7.1.4 which requires Ruby >= 2.7.0 which has community support until October 1, 2025.  It is the last Rails version that doesn't require Ruby >= 3.1.0 (which will probably break a lot of gems).  At the end we should be using the `ruby27` branch for the `FROM` image with the `Gemfile` setting the Rails version to 7.1.4 (see the "How the versions are interdependent" section for more info).  As a fallback we could release with 7.0.8.4 which requires Ruby >= 2.7.0 but Rails 7.0 will soon go out of community LTS support on April 1, 2025.  As a paid fallback we could use the private LTS version of 6.1.7.19 which requires Ruby >= 2.5.0.
+
+To reduce the amount of code changes need another goal is to keep this a "Rails 3" app that runs in Rails 7.  This means not updating to things like `Webpacker` (a new Javascript build system) as Rails has gone through several updates or update things like file uploading.  The only code changes should be the ones required per the upgrade steps.
+
+## Non-Goals
+
+Initially it was thought we could reduce the amount of upgrade work by deleting as much now dead LARA runtime code (handled now by the Activity Player) as we could.  However we don't have great test coverage of the repo (and no time to add more) so this seems now too risky.  We will not be deleting any code as part of the upgrade **UNLESS** it is code that is dead **AND** requires gems that can't be upgraded.
+
+### How the versions are interdependent
+
+The Rails version is set in the `Gemfile` while the Ruby version is set using the `FROM` image in the Dockerfile (both Dockerfile for production and Dockerfile-dev for development).  The `FROM` image is built from a [GitHub repo](https://github.com/concord-consortium/docker-rails-base) that is currently private as it uses the [Paid Rails LTS](https://railslts.com/) version which requires a basic auth password to pull the gems.  **NOTE**: there are multiple branches in that repo that define different Rails/Ruby combos.  We are using `ruby23` when this document was started.  Here are existing branches for newer pairs:
+
+- `ruby23-rails42`: Ruby 2.3.7 / Rails 4.2.11.17 (still using private LTS gems)
+- `ruby25`: Ruby 2.5.9 / Rails 3.2.22.19 (still using private LTS gems)
+- `ruby26`: Ruby 2.6 / Rails 6.1.3.2
+- `ruby27`: Ruby 2.7 / Rails 6.1.3.2
+
+NOTE: the Rails version in the image can be overridden by the version in the `Gemfile`.  We should not be adding new branches during the upgrade but instead use the branch with the required Ruby version and then use the `Gemfile` to update the Rails version.
+
+## Development Methodology
+
+All work will be done will be merged into the `lara-upgrade` feature branch in case a LARA bug fix needs to be deployed to production during development AND in case we don't reach a usable upgraded version by the end of the development time.  Care should be taken to ensure that the `lara-upgrade` branch always builds which means no broken PRs should be merged into the branch.
+
+Each version upgrade step will be a separate PT story with multiple tasks in the story created from the tasks in the [Rails Upgrade Guide](https://guides.rubyonrails.org/upgrading_ruby_on_rails.html).  When this work was first added to PT last year a story was created for each task but this resulted in an avalanche of stories.
+
+This document should be updated as the upgrade continues to track the tasks as they are completed along with any notes that may be useful in the future.
+
+## Supplemental Docs
+
+In the Portal Rails upgrade we kept Markdown docs for each major upgrade.  These might be valuable to look at if you get stuck:
+
+- [Portal Rails 4 Upgrade](https://github.com/concord-consortium/rigse/blob/master/docs/rails-4-upgrade.md)
+- [Portal Rails 5 Upgrade](https://github.com/concord-consortium/rigse/blob/master/docs/rails-5-upgrade.md)
+- [Portal Rails 6 Upgrade](https://github.com/concord-consortium/rigse/blob/master/docs/rails-6-upgrade.md)
+
+## Upgrade Steps
+
+Mark each step with 🚧 when started and with ✅ when completed.  Add a `X` in the Markdown checkbox per task as they are completed to make sure everything is covered, even if no change was needed.
+
+### Organize Gems
+
+To make upgrading the gems in each step easier do the following:
+
+1. Create a `organize-gems` branch off the `lara-upgrade` branch.
+2. Place the `source 'https://gems.railslts.com' do ... end` block at the top
+3. Sort the remaining gems (inside and outside the groups) in alphabetical order as it will make it easy to see how they are related to each other.
+4. Find and comment out all unused development and test gems with a comment block saying why they were commented out.  This will be a combination of looking up what each gem does and figuring out if it is still referenced in the code or deployments.  An example of gems that are no longer used are the `capistrano` gems for deployment.  This step may take a while but it should greatly reduce the upgrade issues due to (dead) gems not supporting newer Rails/Ruby versions.  This should also give a good intro to what all the gems are used for in the code.
+
+### Upgrade To Rails 4.0.13
+
+1. Create a `upgrade-to-rails-4.0` branch off the `lara-upgrade` branch.
+2. Upgrade rails gems in `Gemfile` to last 4.0 version: `gem 'rails', '~> 4.0.13'`.  No Ruby upgrade is required.
+3. Inside running Docker image run `bundle update rails`
+4. Resolve gem dependency issues until the bundle update succeeds.  This will most likely descend into dependency hell as bundler is very slow to resolve versions and many gems depend on other gems.  The best bet is to pin the gems using the current major version in the `Gemfile`, eg change `gem "omniauth", "~> 1.3.2"` to `gem "omniauth", "~> 1"` to give bundler as much leeway to pick a final version.  A fallback is to comment out the gems that have dependency issues to get the rails gem upgraded and then one by one re-enable them by setting them to the current major version and running `bundle update <gem>` where `<gem>` is the gem to upgrade.  You may also see better bundler performance if you pass all the gems that you change on the command line instead of just `rails`.  You can also delete the `Gemfile.lock` file in some instances as that *may* speed up version resolution.  This all really depends on how complex the web of dependencies is in the upgrade and what the weather is like Riverside, Iowa.
+5. Complete upgrade tasks in the [3.2 to 4.0 upgrade guide](https://guides.rubyonrails.org/upgrading_ruby_on_rails.html#upgrading-from-rails-3-2-to-rails-4-0).  Many of these tasks may not require any changes but mark them complete anyway (and maybe make a note no change was required).
+
+- [ ] HTTP PATCH
+- [ ] Gemfile
+- [ ] vendor/plugins
+- [ ] Active Record
+- [ ] Active Resource
+- [ ] Active Model
+- [ ] Action Pack
+- [ ] Active Support
+- [ ] Helpers Loading Order
+- [ ] Active Record Observer and Action Controller Sweeper
+- [ ] sprockets-rails
+- [ ] sass-rails
+
+6. Create a PR and insure all the tests pass.
+7. After review/approval merge the branch into the `lara-upgrade` branch.
+
+### Upgrade To Rails 4.1.16
+
+1. Create a `upgrade-to-rails-4.1` branch off the `lara-upgrade` branch.
+2. Upgrade rails gems in `Gemfile` to last 4.1 version: `gem 'rails', '~> 4.1.16'`.  No Ruby upgrade is required.
+3. Inside running Docker image run `bundle update rails`
+4. Resolve gem dependency issues until the bundle update succeeds.
+5. Complete upgrade tasks in the [4.0 to 4.1 upgrade guide](https://guides.rubyonrails.org/upgrading_ruby_on_rails.html#upgrading-from-rails-4-0-to-rails-4-1)
+
+- [ ] CSRF protection from remote <script> tags
+- [ ] Spring
+- [ ] config/secrets.yml
+- [ ] Changes to test helper
+- [ ] Cookies serializer
+- [ ] Flash structure changes
+- [ ] Changes in JSON handling
+- [ ] Usage of return within inline callback blocks
+- [ ] Methods defined in Active Record fixtures
+- [ ] I18n enforcing available locales
+- [ ] Mutator methods called on Relation
+- [ ] Changes on Default Scopes
+- [ ] Rendering content from string
+- [ ] PostgreSQL JSON and hstore datatypes
+- [ ] Explicit block use for ActiveSupport::Callbacks
+
+6. Create a PR and insure all the tests pass.
+7. After review/approval merge the branch into the `lara-upgrade` branch.
+
+### Upgrade To Rails 4.2.11.3
+
+1. Create a `upgrade-to-rails-4.2` branch off the `lara-upgrade` branch.
+2. Upgrade rails gems in `Gemfile` to last 4.2 version: `gem 'rails', '~> 4.2.11.3'`.  No Ruby upgrade is required.
+3. Inside running Docker image run `bundle update rails`
+4. Resolve gem dependency issues until the bundle update succeeds.
+5. Complete upgrade tasks in the [4.1 to 4.2 upgrade guide](https://guides.rubyonrails.org/upgrading_ruby_on_rails.html#upgrading-from-rails-4-1-to-rails-4-2)
+
+- [ ] Web Console
+- [ ] Responders
+- [ ] Error handling in transaction callbacks
+- [ ] Ordering of test cases
+- [ ] Serialized attributes
+- [ ] Production log level
+- [ ] after_bundle in Rails templates
+- [ ] Rails HTML Sanitizer
+- [ ] Rails DOM Testing
+- [ ] Masked Authenticity Tokens
+- [ ] Action Mailer
+- [ ] Foreign Key Support
+
+6. Create a PR and insure all the tests pass.
+7. After review/approval merge the branch into the `lara-upgrade` branch.
+
+### Upgrade To Rails 5.0.7.2
+
+1. Create a `upgrade-to-rails-5.0` branch off the `lara-upgrade` branch.
+2. Upgrade rails gems in `Gemfile` to last 5.0 version: `gem 'rails', '~> 5.0.7.2'`.  No Ruby upgrade is required.
+3. Inside running Docker image run `bundle update rails`
+4. Resolve gem dependency issues until the bundle update succeeds.
+5. Complete upgrade tasks in the [4.2 to 5.0 upgrade guide](https://guides.rubyonrails.org/upgrading_ruby_on_rails.html#upgrading-from-rails-4-2-to-rails-5-0)
+
+- [ ] Ruby 2.2.2+ required (THIS IS ALREADY DONE AS WE ARE ON 2.3.7)
+- [ ] Active Record Models Now Inherit from ApplicationRecord by Default
+- [ ] Halting Callback Chains via throw(:abort)
+- [ ] ActiveJob Now Inherits from ApplicationJob by Default
+- [ ] Rails Controller Testing
+- [ ] Autoloading is Disabled After Booting in the Production Environment
+- [ ] XML Serialization
+- [ ] Removed Support for Legacy mysql Database Adapter
+- [ ] Removed Support for Debugger
+- [ ] Use bin/rails for running tasks and tests
+- [ ] ActionController::Parameters No Longer Inherits from HashWithIndifferentAccess
+- [ ] protect_from_forgery Now Defaults to prepend: false
+- [ ] Default Template Handler is Now RAW
+- [ ] Added Wildcard Matching for Template Dependencies
+- [ ] ActionView::Helpers::RecordTagHelper moved to external gem (record_tag_helper)
+- [ ] Removed Support for protected_attributes Gem
+- [ ] Removed support for activerecord-deprecated_finders gem
+- [ ] ActiveSupport::TestCase Default Test Order is Now Random
+- [ ] ActionController::Live became a Concern
+- [ ] New Framework Defaults
+- [ ] Changes with JSON/JSONB serialization
+
+6. Create a PR and insure all the tests pass.
+7. After review/approval merge the branch into the `lara-upgrade` branch.
+
+### Upgrade To Rails 5.1.7
+
+1. Create a `upgrade-to-rails-5.1` branch off the `lara-upgrade` branch.
+2. Upgrade rails gems in `Gemfile` to last 5.1 version: `gem 'rails', '~> 5.1.7'`.  No Ruby upgrade is required.
+3. Inside running Docker image run `bundle update rails`
+4. Resolve gem dependency issues until the bundle update succeeds.
+5. Complete upgrade tasks in the [5.0 to 5.1 upgrade guide](https://guides.rubyonrails.org/upgrading_ruby_on_rails.html#upgrading-from-rails-5-0-to-rails-5-1)
+
+- [ ] Top-level HashWithIndifferentAccess is soft-deprecated
+- [ ] application.secrets now loaded with all keys as symbols
+- [ ] Removed deprecated support to :text and :nothing in render
+- [ ] Removed deprecated support of redirect_to :back
+
+6. Create a PR and insure all the tests pass.
+7. After review/approval merge the branch into the `lara-upgrade` branch.
+
+### Upgrade To Rails 5.2.8.1
+
+1. Create a `upgrade-to-rails-5.2` branch off the `lara-upgrade` branch.
+2. Upgrade rails gems in `Gemfile` to last 5.2 version: `gem 'rails', '~> 5.2.8.1'`.  No Ruby upgrade is required.
+3. Inside running Docker image run `bundle update rails`
+4. Resolve gem dependency issues until the bundle update succeeds.
+5. Complete upgrade tasks in the [5.1 to 5.2 upgrade guide](https://guides.rubyonrails.org/upgrading_ruby_on_rails.html#upgrading-from-rails-5-1-to-rails-5-2)
+
+- [ ] Bootsnap
+- [ ] Expiry in signed or encrypted cookie is now embedded in the cookies values
+
+6. Create a PR and insure all the tests pass.
+7. After review/approval merge the branch into the `lara-upgrade` branch.
+
+### Upgrade To Rails 6.0.6.1
+
+1. Create a `upgrade-to-rails-6.0` branch off the `lara-upgrade` branch.
+2. **A Ruby upgrade to 2.5 IS required**. Using the `ruby25` branch in [docker-rails-base](https://github.com/concord-consortium/docker-rails-base) create a [new GitHub package](https://github.com/orgs/concord-consortium/packages/container/docker-rails-base-private/versions?filters%5Bversion_type%5D=tagged) (Aden only created the initial one) called `ruby-2.5.9-rails-3.2.22.19`.  You may need Scott or Doug's permissions to do this.
+3. Change `Dockerfile` and `Dockerfile-dev` to use `ruby-2.5.9-rails-3.2.22.19` in the `FROM` url.
+4. Upgrade rails gems in `Gemfile` to last 6.0 version: `gem 'rails', '~> 6.0.6.1'`.
+5. Inside running Docker image run `bundle update rails`
+6. Resolve gem dependency issues until the bundle update succeeds.
+7. Complete upgrade tasks in the [5.2 to 6.0 upgrade guide](https://guides.rubyonrails.org/upgrading_ruby_on_rails.html#upgrading-from-rails-5-2-to-rails-6-0)
+
+- [ ] Using Webpacker (SKIP THIS STEP - WEBPACKER IS REPLACED IN LATER RAILS VERSIONS)
+- [ ] Force SSL
+- [ ] Purpose and expiry metadata is now embedded inside signed and encrypted cookies for increased security
+- [ ] All npm packages have been moved to the @rails scope
+- [ ] Action Cable JavaScript API Changes
+- [ ] ActionDispatch::Response#content_type now returns the Content-Type header without modification
+- [ ] New config.hosts setting
+- [ ] Autoloading
+- [ ] Active Storage assignment behavior change
+- [ ] Custom exception handling applications
+
+6. Create a PR and insure all the tests pass.
+7. After review/approval merge the branch into the `lara-upgrade` branch.
+
+### Upgrade To Rails 6.1.7.8
+
+1. Create a `upgrade-to-rails-6.1` branch off the `lara-upgrade` branch.
+2. Upgrade rails gems in `Gemfile` to last 6.1 version: `gem 'rails', '~> 6.1.7.8 '`.  No Ruby upgrade is required.
+3. Inside running Docker image run `bundle update rails`
+4. Resolve gem dependency issues until the bundle update succeeds.
+5. Complete upgrade tasks in the [6.0 to 6.1 upgrade guide](https://guides.rubyonrails.org/upgrading_ruby_on_rails.html#upgrading-from-rails-6-0-to-rails-6-1)
+
+- [ ] Rails.application.config_for return value no longer supports access with String keys.
+- [ ] Response's Content-Type when using respond_to#any
+- [ ] ActiveSupport::Callbacks#halted_callback_hook now receive a second argument
+- [ ] The helper class method in controllers uses String#constantize
+- [ ] Redirection to HTTPS from HTTP will now use the 308 HTTP status code
+- [ ] Active Storage now requires Image Processing
+- [ ] New ActiveModel::Error class
+
+6. Create a PR and insure all the tests pass.
+7. After review/approval merge the branch into the `lara-upgrade` branch.
+
+### Upgrade To Rails 7.0.8.4
+
+1. Create a `upgrade-to-rails-7.0` branch off the `lara-upgrade` branch.
+2. **A Ruby upgrade to 2.7 IS required**. Using the `ruby27` branch in [docker-rails-base](https://github.com/concord-consortium/docker-rails-base) create a [new GitHub package](https://github.com/orgs/concord-consortium/packages/container/docker-rails-base-private/versions?filters%5Bversion_type%5D=tagged) (Aden only created the initial one) called `ruby-2.7.0-rails-6.1.3.2`.  You may need Scott or Doug's permissions to do this.
+3. Change `Dockerfile` and `Dockerfile-dev` to use `ruby-2.7.0-rails-6.1.3.2` in the `FROM` url.
+4. Upgrade rails gems in `Gemfile` to last 7.0 version: `gem 'rails', '~> 7.0.8.4'`.
+5. Inside running Docker image run `bundle update rails`
+6. Resolve gem dependency issues until the bundle update succeeds.
+7. Complete upgrade tasks in the [6.1 to 7.0 upgrade guide](https://guides.rubyonrails.org/upgrading_ruby_on_rails.html#upgrading-from-rails-6-1-to-rails-7-0)
+
+- [ ] ActionView::Helpers::UrlHelper#button_to changed behavior
+- [ ] Spring
+- [ ] Sprockets is now an optional dependency
+- [ ] Applications need to run in zeitwerk mode
+- [ ] The setter config.autoloader= has been deleted
+- [ ] ActiveSupport::Dependencies private API has been deleted
+- [ ] Autoloading during initialization
+- [ ] Ability to configure config.autoload_once_paths
+- [ ] ActionDispatch::Request#content_type now returns Content-Type header as it is.
+- [ ] Key generator digest class change requires a cookie rotator
+- [ ] Digest class for ActiveSupport::Digest changing to SHA256
+- [ ] New ActiveSupport::Cache serialization format
+- [ ] Active Storage video preview image generation
+- [ ] Active Storage default variant processor changed to :vips
+- [ ] Rails version is now included in the Active Record schema dump
+
+6. Create a PR and insure all the tests pass.
+7. After review/approval merge the branch into the `lara-upgrade` branch.
+
+### Upgrade To Rails 7.1.4
+
+1. Create a `upgrade-to-rails-7.1` branch off the `lara-upgrade` branch.
+2. Upgrade rails gems in `Gemfile` to last 7.1 version: `gem 'rails', '~> 7.1.4 '`.  No Ruby upgrade is required.
+3. Inside running Docker image run `bundle update rails`
+4. Resolve gem dependency issues until the bundle update succeeds.
+5. Complete upgrade tasks in the [7.0 to 7.1 upgrade guide](https://guides.rubyonrails.org/upgrading_ruby_on_rails.html#upgrading-from-rails-7-0-to-rails-7-1)
+
+- [ ] Development and test environments secret_key_base file changed
+- [ ] Autoloaded paths are no longer in $LOAD_PATH
+- [ ] config.autoload_lib and config.autoload_lib_once
+- [ ] ActiveStorage::BaseController no longer includes the streaming concern
+- [ ] MemCacheStore and RedisCacheStore now use connection pooling by default
+- [ ] SQLite3Adapter now configured to be used in a strict strings mode
+- [ ] Support multiple preview paths for ActionMailer::Preview
+- [ ] config.i18n.raise_on_missing_translations = true now raises on any missing translation.
+- [ ] bin/rails test now runs test:prepare task
+- [ ] Import syntax from @rails/ujs is modified
+- [ ] Rails.logger now returns an ActiveSupport::BroadcastLogger instance
+- [ ] Active Record Encryption algorithm changes
+- [ ] New ways to handle exceptions in Controller Tests, Integration Tests, and System Tests
+
+6. **Create a final FROM package**. Using the `ruby27` branch in [docker-rails-base](https://github.com/concord-consortium/docker-rails-base) create a [new GitHub package](https://github.com/orgs/concord-consortium/packages/container/docker-rails-base-private/versions?filters%5Bversion_type%5D=tagged) called `ruby-2.7.0-rails-7.1.4`.  You may need Scott or Doug's permissions to do this.
+7. Change `Dockerfile` and `Dockerfile-dev` to use `ruby-2.7.0-rails-7.1.4` in the `FROM` url.
+8. Create a PR and insure all the tests pass.
+9. After review/approval merge the branch into the `lara-upgrade` branch.
+
+### Upgrade To Rails 7.2.x
+
+This step will not be taken as it requires Ruby 3 which will likely break gems.  **IF THERE IS TIME** it would be good to try out an upgrade to see how much breaks and document what does break.
