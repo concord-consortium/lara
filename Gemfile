@@ -100,7 +100,7 @@ gem "jquery-ui-rails", "~> 4.1"
 gem "multi_json", "~> 1.11"
 gem "mysql2", "~> 0.3"
 gem "nested_form", "~> 0.3"
-# gem 'newrelic_rpm', '~> 4.6', '>= 4.6.0.338'
+gem 'newrelic_rpm', '~> 4.6', '>= 4.6.0.338'
 gem "nokogiri", ">= 1.8.5"
 gem "omniauth", "~> 1.3.2"
 gem "omniauth-oauth2", "~> 1.1", {:git=>"https://github.com/intridea/omniauth-oauth2.git"}
