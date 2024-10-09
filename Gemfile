@@ -44,11 +44,11 @@ group :development do
   # gem "capistrano", "~> 2.15"
   # gem "capistrano-autoscaling", "~> 0.0", {:git=>"https://github.com/concord-consortium/capistrano-autoscaling.git", :branch=>"concord"}
   # gem "capistrano-cowboy", "~> 0.1"
-  gem "guard-rspec", "~> 4.6", {:require=>false}
-  gem "lol_dba", "~> 1.6", {:require=>false}
-  gem "quiet_assets", "~> 1.1"
-  gem "request-log-analyzer", "~> 1.12", {:require=>false}
-  gem "sextant", "~> 0.2"
+  # gem "guard-rspec", "~> 4.6", {:require=>false}
+  # gem "lol_dba", "~> 1.6", {:require=>false}
+  # gem "quiet_assets", "~> 1.1"
+  # gem "request-log-analyzer", "~> 1.12", {:require=>false}
+  # gem "sextant", "~> 0.2"
   # gem "webrick", "~> 1.3"
   # gem "xray-rails", "~> 0.1"
 end
@@ -100,7 +100,7 @@ gem "jquery-ui-rails", "~> 4.1"
 gem "multi_json", "~> 1.11"
 gem "mysql2", "~> 0.3"
 gem "nested_form", "~> 0.3"
-gem 'newrelic_rpm', '~> 4.6', '>= 4.6.0.338'
+# gem 'newrelic_rpm', '~> 4.6', '>= 4.6.0.338'
 gem "nokogiri", ">= 1.8.5"
 gem "omniauth", "~> 1.3.2"
 gem "omniauth-oauth2", "~> 1.1", {:git=>"https://github.com/intridea/omniauth-oauth2.git"}
@@ -111,7 +111,7 @@ gem 'rake', '< 11'
 gem "ribbons-rails", "~> 0.0", {:git=>"https://github.com/concord-consortium/ribbons-rails.git"}
 gem "safe_yaml", "~> 1.0"
 gem "spreadsheet", "~> 1.0"
-gem "sqlite3", "~> 1.3"
+# gem "sqlite3", "~> 1.3"
 # gem "test-unit", "~> 3.0"
 gem "tinymce-rails", "~> 4.7"
 gem "useragent", "~> 0.10"
