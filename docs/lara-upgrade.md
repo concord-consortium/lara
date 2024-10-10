@@ -58,10 +58,10 @@ To make upgrading the gems in each step easier do the following:
 
 ### Upgrade To Rails 4.0.13
 
-1. Create a `upgrade-to-rails-4.0` branch off the `lara-upgrade` branch.
-2. Upgrade rails gems in `Gemfile` to last 4.0 version: `gem 'rails', '~> 4.0.13'`.  No Ruby upgrade is required.
-3. Inside running Docker image run `bundle update rails`
-4. Resolve gem dependency issues until the bundle update succeeds.  This will most likely descend into dependency hell as bundler is very slow to resolve versions and many gems depend on other gems.  The best bet is to pin the gems using the current major version in the `Gemfile`, eg change `gem "omniauth", "~> 1.3.2"` to `gem "omniauth", "~> 1"` to give bundler as much leeway to pick a final version.  A fallback is to comment out the gems that have dependency issues to get the rails gem upgraded and then one by one re-enable them by setting them to the current major version and running `bundle update <gem>` where `<gem>` is the gem to upgrade.  You may also see better bundler performance if you pass all the gems that you change on the command line instead of just `rails`.  You can also delete the `Gemfile.lock` file in some instances as that *may* speed up version resolution.  This all really depends on how complex the web of dependencies is in the upgrade and what the weather is like Riverside, Iowa.
+1. Create a `upgrade-to-rails-4.0` branch off the `lara-upgrade` branch.✅
+2. Upgrade rails gems in `Gemfile` to last 4.0 version: `gem 'rails', '~> 4.0.13'`.  No Ruby upgrade is required. ✅
+3. Inside running Docker image run `bundle update rails` ✅
+4. Resolve gem dependency issues until the bundle update succeeds.  This will most likely descend into dependency hell as bundler is very slow to resolve versions and many gems depend on other gems.  The best bet is to pin the gems using the current major version in the `Gemfile`, eg change `gem "omniauth", "~> 1.3.2"` to `gem "omniauth", "~> 1"` to give bundler as much leeway to pick a final version.  A fallback is to comment out the gems that have dependency issues to get the rails gem upgraded and then one by one re-enable them by setting them to the current major version and running `bundle update <gem>` where `<gem>` is the gem to upgrade.  You may also see better bundler performance if you pass all the gems that you change on the command line instead of just `rails`.  You can also delete the `Gemfile.lock` file in some instances as that *may* speed up version resolution.  This all really depends on how complex the web of dependencies is in the upgrade and what the weather is like Riverside, Iowa. ✅
 5. Complete upgrade tasks in the [3.2 to 4.0 upgrade guide](https://guides.rubyonrails.org/upgrading_ruby_on_rails.html#upgrading-from-rails-3-2-to-rails-4-0).  Many of these tasks may not require any changes but mark them complete anyway (and maybe make a note no change was required).
 
 - [ ] HTTP PATCH
