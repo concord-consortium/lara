@@ -137,6 +137,7 @@ describe ManagedInteractive do
         native_width: managed_interactive.native_width,
         native_height: managed_interactive.native_height,
         enable_learner_state: managed_interactive.enable_learner_state,
+        hide_question_number: managed_interactive.hide_question_number,
         show_delete_data_button: managed_interactive.show_delete_data_button,
         has_report_url: managed_interactive.has_report_url,
         click_to_play: managed_interactive.click_to_play,
