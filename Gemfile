@@ -40,7 +40,7 @@ group :development do
   gem "better_errors", "~> 2.10", ">= 2.10.1"
   # gem "binding_of_caller", "~> 0.7"
   # gem "brakeman", "~> 2.4", {:require=>false}
-  gem 'bullet', "~> 7.2"
+  gem 'bullet', "~> 4.14.10"
   # gem "capistrano", "~> 2.15"
   # gem "capistrano-autoscaling", "~> 0.0", {:git=>"https://github.com/concord-consortium/capistrano-autoscaling.git", :branch=>"concord"}
   # gem "capistrano-cowboy", "~> 0.1"
@@ -71,7 +71,7 @@ group :test, :development do
   # gem 'pry-byebug'
   # gem "rb-fsevent", "~> 0.9"
   gem "rspec-activemodel-mocks", '~> 1.2', '>= 1.2.1'
-  gem "rspec-rails", '~> 1.3', '>= 1.3.4'
+  gem "rspec-rails", '~> 3.8'
   gem "spring", "~> 1.7", ">= 1.7.2"
   gem "spring-commands-rspec", "~> 1.0", ">= 1.0.4"
   gem "test-unit", "~> 3.6", ">= 3.6.2"
@@ -96,14 +96,15 @@ gem "haml", "~> 6.3.0"
 gem "highline", "~> 2.1"
 gem "httparty", "~> 0.21"
 gem "jquery-rails", '~> 3.1', '>= 3.1.5'
-gem "jquery-ui-rails", '~> 7.0'
+gem "jquery-ui-rails", '~> 4.2.1'
 gem "multi_json", "~> 1.15"
-gem "mysql2", "~> 0.5.6"
+gem "mysql2", "~> 0.3"
 gem "nested_form", "~> 0.3.2"
 gem 'newrelic_rpm', '~> 8.16'
 gem "nokogiri", ">= 1.10.10"
 gem "omniauth", "~> 1.4.2"
 gem "omniauth-oauth2", "1.3"
+gem 'protected_attributes'
 gem "rack-cors", "~> 1.0.3", {:require => 'rack/cors'}
 gem "rack-environmental"#, "~> 1.3"
 gem 'rack-secure_samesite_cookies', {:git => 'https://github.com/concord-consortium/secure-samesite-cookies.git', :tag => 'v1.0.2'}
@@ -113,7 +114,7 @@ gem "safe_yaml", "~> 1.0.5"
 gem "spreadsheet", "~> 1.3.1"
 # # gem "sqlite3", "~> 1.3"
 # # gem "test-unit", "~> 3.0"
-gem "tinymce-rails", '~> 7.4', '>= 7.4.1'
+gem "tinymce-rails", '~> 4.9.11.1'
 gem "useragent", "~> 0.16.10"
 gem "uuidtools", "~> 2.2"
 gem "will_paginate", "~> 4.0.1"
