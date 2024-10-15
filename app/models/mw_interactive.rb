@@ -116,7 +116,7 @@ class MwInteractive < ActiveRecord::Base
   end
 
   def reportable?
-    enable_learner_state
+    enable_learner_state && !hide_question_number
   end
 
   def reportable_in_iframe?

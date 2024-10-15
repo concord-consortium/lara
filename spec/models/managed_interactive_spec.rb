@@ -3,6 +3,9 @@ require 'spec_helper'
 describe ManagedInteractive do
   it_behaves_like "a base interactive", :managed_interactive
 
+  let(:enable_learner_state) { true }
+  let(:hide_question_number) { false }
+
   let(:library_interactive) { FactoryGirl.create(:library_interactive,
                                                  :name => 'Test Library managed_Interactive',
                                                  :base_url => 'http://concord.org/',
@@ -13,7 +16,8 @@ describe ManagedInteractive do
                                                  :full_window => true,
                                                  :click_to_play_prompt => "base click_to_play_prompt",
                                                  :image_url => "http://base.url/image",
-                                                 :enable_learner_state => true,
+                                                 :enable_learner_state => enable_learner_state,
+                                                 :hide_question_number => hide_question_number,
                                                  :show_delete_data_button => false,
                                                  :has_report_url => true,
                                                  :no_snapshots => true,
@@ -407,6 +411,43 @@ describe ManagedInteractive do
       managed_interactive.save!
       managed_interactive.reload
       expect(managed_interactive.linked_interactive).to eq mw_interactive2
+    end
+  end
+
+  describe "reportable?" do
+    describe "when enable_learner_state=false and hide_question_number=false" do
+      let(:enable_learner_state) { false }
+      let(:hide_question_number) { false }
+
+      it "returns false" do
+        expect(managed_interactive.reportable?).to eq false
+      end
+    end
+
+    describe "when enable_learner_state=false and hide_question_number=true" do
+      let(:enable_learner_state) { false }
+      let(:hide_question_number) { true }
+
+      it "returns false" do
+        expect(managed_interactive.reportable?).to eq false
+      end
+    end
+
+    describe "when enable_learner_state=true and hide_question_number=false" do
+      let(:enable_learner_state) { true }
+      let(:hide_question_number) { false }
+
+      it "returns true" do
+        expect(managed_interactive.reportable?).to eq true
+      end
+    end
+
+    describe "when enable_learner_state=true and hide_question_number=true" do
+      let(:enable_learner_state) { true }
+      let(:hide_question_number) { true }
+      it "returns false" do
+        expect(managed_interactive.reportable?).to eq false
+      end
     end
   end
 end

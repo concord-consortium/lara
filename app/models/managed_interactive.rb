@@ -261,7 +261,7 @@ class ManagedInteractive < ActiveRecord::Base
   # this can't be moved into BaseInteractive as enable_learner_state is defined as a method in
   # this class and that causes reportable? not to be defined correctly for outside callers
   def reportable?
-    enable_learner_state
+    enable_learner_state && !hide_question_number
   end
 
   def reportable_in_iframe?
