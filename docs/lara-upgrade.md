@@ -56,12 +56,102 @@ To make upgrading the gems in each step easier do the following:
 3. Sort the remaining gems (inside and outside the groups) in alphabetical order as it will make it easy to see how they are related to each other. ✅
 4. Find and comment out all unused development and test gems with a comment block saying why they were commented out.  This will be a combination of looking up what each gem does and figuring out if it is still referenced in the code or deployments.  An example of gems that are no longer used are the `capistrano` gems for deployment.  This step may take a while but it should greatly reduce the upgrade issues due to (dead) gems not supporting newer Rails/Ruby versions.  This should also give a good intro to what all the gems are used for in the code. ✅
 
+### Gem Versions
+
+The table below outlines the active gems in the system with their status code, initial version, current version and max version. The initial and current versions are taken from the Gemfile.lock.  The max gem version was taken from the gem version list at https://rubygems.org/gems/<gem-name>/versions
+
+The table is sorted by rails first, then gems that need upgrading followed by gems that are AM (at max) and don't need upgrading.  You should keep the table sorted this way as it is updated to keep track of changes. The goal is to have all the gems at max with the upgrade confirmed.
+
+Each gem that is upgraded needs to be checked to see if any code changes are needed.  The rails gem changes are already outlined as tasks.  Minor versions normally don't but major version upgrades often break APIs.  In each case the gem's changelog (if available) needs to be examined or other documentation that is available for the gem.  It is best to start with the rubygems.org page for the gem and then check the source code, which is almost always hosted on github, linked to from the rubygems.org page for the gem.
+
+The status codes are:
+
+- AM: at max - gem migrated to max version
+- NC: no change
+- CU!: confirm major upgrade - check if major gem upgrade breaks API or requires code changes
+- CU*: confirm minor upgrade - check if minor gem upgrade requires code changes
+- UC!: major upgrade confirmed - all major gem upgrade code changes needed are confirmed
+- UC*: minor upgrade confirmed - all minor gem upgrade code changes needed are confirmed
+- NU: no upgrade available - gem can't be upgraded
+- DG?: gem downgraded - why? this should not happen
+
+(add more status codes as needed)
+
+| Gem                          | Status       | Initial Version | Current Version | Max Version |
+|------------------------------|--------------|-----------------|-----------------|-------------|
+| rails (+ rails core...)      |          CU! |          3.2.22 |          4.0.13 |       7.1.4 |
+| *GEMS AT MAX*                |              |                 |                 |             |
+| cancancan                    |       CU! AM |          1.10.1 |           3.6.1 |       3.6.1 |
+| better_errors                |       CU! AM |           1.1.0 |          2.10.1 |      2.10.1 |
+| chosen-rails                 |       CU* AM |           1.0.1 |          1.10.0 |      1.10.0 |
+| ci_reporter                  |       CU! AM |           1.7.3 |           2.1.0 |       2.1.0 |
+| compass-blueprint            |        NC AM |           1.0.0 |           1.0.0 |       1.0.0 |
+| compass-rails                |       CU! AM |           3.1.0 |           4.0.0 |       4.0.0 |
+| daemons                      |       CU* AM |           1.1.9 |           1.4.1 |       1.4.1 |
+| delayed_job_active_record    |       CU* AM |           4.0.0 |          4.1.10 |      4.1.10 |
+| delayed_job_web              |       CU* AM |           1.2.5 |           1.4.4 |       1.4.4 |
+| factory_girl_rails           |       CU* AM |           4.3.0 |           4.9.0 |       4.9.0 |
+| font-awesome-rails           |       CU* AM |         4.3.0.0 |         4.7.0.8 |     4.7.0.8 |
+| gon                          |       CU! AM |           5.2.3 |           6.4.0 |       6.4.0 |
+| haml                         |       CU! AM |           4.0.5 |           6.3.0 |       6.3.0 |
+| jasmine-jquery-rails         |        NC AM |           2.0.3 |           2.0.3 |       2.0.3 |
+| multi_json                   |       CU* AM |          1.13.1 |          1.15.0 |      1.15.0 |
+| nested_form                  |        NC AM |           0.3.2 |           0.3.2 |       0.3.2 |
+| omniauth-oauth2              |       CU* AM |           1.1.1 |           1.3.0 |       1.8.0 |
+| poltergeist                  |       CU* AM |           1.5.1 |          1.18.1 |      1.18.1 |
+| protected_attributes         |           AM |             n/a |           1.1.4 |       1.1.4 |
+| rack-environmental           |       CU* AM |           1.3.1 |           1.3.2 |       1.3.2 |
+| rack-secure_samesite_cookies |        NC AM |           1.0.2 |           1.0.2 |       1.0.2 |
+| rake                         |       CU! AM |          10.5.0 |          13.2.1 |      13.2.1 |
+| ribbons-rails                |        NC AM |           0.0.1 |           0.0.1 |       0.0.1 |
+| rspec-activemodel-mocks      |       CU* AM |           1.0.1 |           1.2.1 |       1.2.1 |
+| safe_yaml                    |       CU* AM |           1.0.4 |           1.0.5 |       1.0.5 |
+| spreadsheet                  |       CU* AM |           1.0.3 |           1.3.1 |       1.3.1 |
+| spring-commands-rspec        |        NC AM |           1.0.4 |           1.0.4 |       1.0.4 |
+| test-unit                    |       CU* AM |           3.2.3 |           3.6.2 |       3.6.2 |
+| timecop                      |       CU* AM |           0.6.3 |          0.9.10 |      0.9.10 |
+| turbo-sprockets-rails4       |           AM |             n/a |           1.2.5 |       1.2.5 |
+| useragent                    |       CU* AM |          0.10.0 |         0.16.10 |     0.16.10 |
+| uuidtools                    |       CU* AM |           2.1.4 |           2.2.0 |       2.2.0 |
+| will_paginate                |       CU! AM |           3.0.7 |           4.0.1 |       4.0.1 |
+| *GEMS THAT CAN BE UPGRADED*  |              |                 |                 |             |
+| acts_as_list                 |          CU* |           0.3.0 |          0.9.19 |       1.2.3 |
+| aws-sdk                      |          CU! |          1.66.0 |           3.1.0 |       3.2.0 |
+| aws-ses                      |           NC |           0.7.1 |           0.7.1 |       0.7.3 |
+| bullet                       |          DG? |           5.4.3 |         4.14.10 |       7.2.0 |
+| capybara                     |          CU* |           2.4.4 |          2.18.0 |      3.40.0 |
+| coffee-rails                 |          CU! |           3.2.2 |           4.2.2 |       5.0.0 |
+| default_value_for            |          CU! |           2.0.3 |           3.6.0 |       4.0.0 |
+| devise                       |          CU* |           3.0.1 |          3.5.10 |       4.9.4 |
+| dynamic_form                 |          CU* |           1.1.4 |           1.2.0 |       1.3.1 |
+| exception_notification       |          CU* |           4.0.1 |           4.4.3 |       4.5.0 |
+| faker                        |          CU! |           1.2.0 |           2.2.1 |       3.4.2 |
+| highline                     |          CU! |          1.6.21 |           2.1.0 |       3.1.1 |
+| httparty                     |          CU* |          0.12.0 |          0.21.0 |      0.22.0 |
+| jasmine                      |          CU! |           2.2.0 |           3.8.0 |      3.99.0 |
+| jquery-rails                 |           NC |           3.1.5 |           3.1.5 |       4.6.0 |
+| jquery-ui-rails              |          CU* |           4.1.0 |           4.3.1 |       7.0.0 |
+| launchy                      |          CU* |           2.4.0 |           2.5.2 |       3.0.1 |
+| mysql2                       |           NC |          0.3.21 |          0.3.21 |       0.5.6 |
+| newrelic_rpm                 |          CU! |       4.6.0.338 |          8.16.0 |      9.14.0 |
+| nokogiri                     |          CU* |          1.10.3 |         1.10.10 |      1.16.7 |
+| omniauth                     |          CU* |           1.3.2 |           1.4.2 |       2.1.2 |
+| rack-cors                    |          CU! |           0.4.1 |           1.0.3 |       2.0.2 |
+| rspec-rails                  |          CU* |           3.8.2 |           3.9.1 |       7.0.1 |
+| sass-rails                   |          CU! |           3.2.6 |           5.0.7 |       6.0.0 |
+| simplecov                    |          CU* |          0.16.1 |          0.17.1 |      0.22.0 |
+| spring                       |          CU* |           1.2.0 |           1.7.2 |       4.2.1 |
+| tinymce-rails                |          CU* |           4.7.9 |        4.9.11.1 |       7.4.1 |
+| uglifier                     |          CU* |           4.1.8 |           4.2.0 |       4.2.1 |
+| unicorn                      |          CU! |           5.0.1 |           6.1.0 |       6.1.0 |
+| webmock                      |          CU! |          1.24.6 |          3.18.1 |      3.24.0 |
+
 ### Upgrade To Rails 4.0.13
 
 1. Create a `upgrade-to-rails-4.0` branch off the `lara-upgrade` branch.✅
 2. Upgrade rails gems in `Gemfile` to last 4.0 version: `gem 'rails', '~> 4.0.13'`.  No Ruby upgrade is required. ✅
 3. Inside running Docker image run `bundle update rails` ✅
-4. Resolve gem dependency issues until the bundle update succeeds.  This will most likely descend into dependency hell as bundler is very slow to resolve versions and many gems depend on other gems.  The best bet is to pin the gems using the current major version in the `Gemfile`, eg change `gem "omniauth", "~> 1.3.2"` to `gem "omniauth", "~> 1"` to give bundler as much leeway to pick a final version.  A fallback is to comment out the gems that have dependency issues to get the rails gem upgraded and then one by one re-enable them by setting them to the current major version and running `bundle update <gem>` where `<gem>` is the gem to upgrade.  You may also see better bundler performance if you pass all the gems that you change on the command line instead of just `rails`.  You can also delete the `Gemfile.lock` file in some instances as that *may* speed up version resolution.  This all really depends on how complex the web of dependencies is in the upgrade and what the weather is like Riverside, Iowa. ✅
+4. Using the gem table in this doc resolve gem dependency issues until the bundle update succeeds AND THEN verify that any code changes needed for the upgraded gems are made.  IT IS BEST to stay within the same major version is you are able.  This will most likely descend into dependency hell as bundler is very slow to resolve versions and many gems depend on other gems.  The best bet is to pin the gems using the current major version in the `Gemfile`, eg change `gem "omniauth", "~> 1.3.2"` to `gem "omniauth", "~> 1"` to give bundler as much leeway to pick a final version.  A fallback is to comment out the gems that have dependency issues to get the rails gem upgraded and then one by one re-enable them by setting them to the current major version and running `bundle update <gem>` where `<gem>` is the gem to upgrade.  You may also see better bundler performance if you pass all the gems that you change on the command line instead of just `rails`.  You can also delete the `Gemfile.lock` file in some instances as that *may* speed up version resolution.  This all really depends on how complex the web of dependencies is in the upgrade and what the weather is like Riverside, Iowa.
 5. Complete upgrade tasks in the [3.2 to 4.0 upgrade guide](https://guides.rubyonrails.org/upgrading_ruby_on_rails.html#upgrading-from-rails-3-2-to-rails-4-0).  Many of these tasks may not require any changes but mark them complete anyway (and maybe make a note no change was required).
 
 - [ ] HTTP PATCH
