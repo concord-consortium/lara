@@ -4,7 +4,7 @@
   <title><%= yield :title %></title>
   <link href='//fonts.googleapis.com/css?family=Lato:400,500,700' rel='stylesheet' type='text/css'>
   <%= stylesheet_link_tag    "application", :media => "all" %>
-  <%= include_gon %>
+  <%= Gon::Base.render_data %>
   <%= javascript_include_tag "application" %>
   <%= csrf_meta_tags %>
 </head>

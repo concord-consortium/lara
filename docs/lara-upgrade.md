@@ -74,6 +74,7 @@ The status codes are:
 - UC*: minor upgrade confirmed - all minor gem upgrade code changes needed are confirmed
 - NU: no upgrade available - gem can't be upgraded
 - DG?: gem downgraded - why? this should not happen
+- RG: gem removed
 
 (add more status codes as needed)
 
@@ -82,30 +83,30 @@ The status codes are:
 | rails (+ rails core...)      |          CU! |          3.2.22 |          4.0.13 |       7.1.4 |
 | *GEMS AT MAX*                |              |                 |                 |             |
 | cancancan                    |          UC* |          1.10.1 |          1.17.0 |       3.6.1 |
-| better_errors                |       CU! AM |           1.1.0 |          2.10.1 |      2.10.1 |
-| chosen-rails                 |       CU* AM |           1.0.1 |          1.10.0 |      1.10.0 |
-| ci_reporter                  |       CU! AM |           1.7.3 |           2.1.0 |       2.1.0 |
+| better_errors                |          UC! |           1.1.0 |           2.0.0 |      2.10.1 |
+| chosen-rails                 |       UC* AM |           1.0.1 |          1.10.0 |      1.10.0 |
+| ci_reporter                  |           RM |           1.7.3 |               - |       2.1.0 |
 | compass-blueprint            |        NC AM |           1.0.0 |           1.0.0 |       1.0.0 |
-| compass-rails                |       CU! AM |           3.1.0 |           4.0.0 |       4.0.0 |
-| daemons                      |       CU* AM |           1.1.9 |           1.4.1 |       1.4.1 |
-| delayed_job_active_record    |       CU* AM |           4.0.0 |          4.1.10 |      4.1.10 |
-| delayed_job_web              |       CU* AM |           1.2.5 |           1.4.4 |       1.4.4 |
-| factory_girl_rails           |       CU* AM |           4.3.0 |           4.9.0 |       4.9.0 |
-| font-awesome-rails           |       CU* AM |         4.3.0.0 |         4.7.0.8 |     4.7.0.8 |
-| gon                          |       CU! AM |           5.2.3 |           6.4.0 |       6.4.0 |
-| haml                         |       CU! AM |           4.0.5 |           6.3.0 |       6.3.0 |
+| compass-rails                |           NC |           3.1.0 |           3.1.0 |       4.0.0 |
+| daemons                      |       UC* AM |           1.1.9 |           1.4.1 |       1.4.1 |
+| delayed_job_active_record    |       UC* AM |           4.0.0 |          4.1.10 |      4.1.10 |
+| delayed_job_web              |       UC* AM |           1.2.5 |           1.4.4 |       1.4.4 |
+| factory_girl_rails           |          UC* |           4.3.0 |           4.5.0 |       6.4.3 |
+| font-awesome-rails           |       UC* AM |         4.3.0.0 |         4.7.0.8 |     4.7.0.8 |
+| gon                          |       UC! AM |           5.2.3 |           6.4.0 |       6.4.0 |
+| haml                         |       UC* AM |           4.0.5 |           4.0.7 |       6.3.0 |
 | jasmine-jquery-rails         |        NC AM |           2.0.3 |           2.0.3 |       2.0.3 |
-| multi_json                   |       CU* AM |          1.13.1 |          1.15.0 |      1.15.0 |
+| multi_json                   |       UC* AM |          1.13.1 |          1.15.0 |      1.15.0 |
 | nested_form                  |        NC AM |           0.3.2 |           0.3.2 |       0.3.2 |
-| omniauth-oauth2              |       CU* AM |           1.1.1 |           1.3.0 |       1.8.0 |
-| poltergeist                  |       CU* AM |           1.5.1 |          1.18.1 |      1.18.1 |
+| omniauth-oauth2              |       UC* AM |           1.1.1 |           1.3.0 |       1.8.0 |
+| poltergeist                  |       UC* AM |           1.5.1 |          1.18.1 |      1.18.1 |
 | protected_attributes         |           AM |             n/a |           1.1.4 |       1.1.4 |
-| rack-environmental           |       CU* AM |           1.3.1 |           1.3.2 |       1.3.2 |
+| rack-environmental           |       UC* AM |           1.3.1 |           1.3.2 |       1.3.2 |
 | rack-secure_samesite_cookies |        NC AM |           1.0.2 |           1.0.2 |       1.0.2 |
-| rake                         |       CU! AM |          10.5.0 |          13.2.1 |      13.2.1 |
+| rake                         |       UC! AM |          10.5.0 |          13.2.1 |      13.2.1 |
 | ribbons-rails                |        NC AM |           0.0.1 |           0.0.1 |       0.0.1 |
-| rspec-activemodel-mocks      |       CU* AM |           1.0.1 |           1.2.1 |       1.2.1 |
-| safe_yaml                    |       CU* AM |           1.0.4 |           1.0.5 |       1.0.5 |
+| rspec-activemodel-mocks      |       UC* AM |           1.0.1 |           1.2.1 |       1.2.1 |
+| safe_yaml                    |       UC* AM |           1.0.4 |           1.0.5 |       1.0.5 |
 | spreadsheet                  |       CU* AM |           1.0.3 |           1.3.1 |       1.3.1 |
 | spring-commands-rspec        |        NC AM |           1.0.4 |           1.0.4 |       1.0.4 |
 | test-unit                    |       CU* AM |           3.2.3 |           3.6.2 |       3.6.2 |

@@ -19,7 +19,7 @@ end
 group :assets do
   gem "coffee-rails", '~> 4.2', '>= 4.2.2'
   gem "compass-blueprint", "~> 1.0"
-  gem "compass-rails", "~> 4.0.0"
+  gem "compass-rails", "~> 3.1.0"
   gem "sass-rails", "~> 5.0", ">= 5.0.7"
   gem "turbo-sprockets-rails4", "~> 1.2.5"
   gem "uglifier", "~> 4.2"
@@ -37,7 +37,7 @@ end
 # end
 
 group :development do
-  gem "better_errors", "~> 2.10", ">= 2.10.1"
+  gem "better_errors", "~> 2.0.0", ">= 2.0.0"
   # gem "binding_of_caller", "~> 0.7"
   # gem "brakeman", "~> 2.4", {:require=>false}
   gem 'bullet', "~> 4.14.10"
@@ -60,8 +60,8 @@ end
 
 group :test, :development do
   gem "capybara", "~> 2.18"
-  gem "ci_reporter", "~> 2.1"
-  gem "factory_girl_rails", "~> 4.9", :require=>false
+  # gem "ci_reporter", "~> 1.9.2"
+  gem "factory_girl_rails", "~> 4.5", ">= 4.5.0", :require=>false
   gem "faker", "~> 2.2", ">= 2.2.1"
   gem "jasmine", "~> 3.8"
   gem "jasmine-jquery-rails", "~> 2.0", ">= 2.0.3"
@@ -92,7 +92,7 @@ gem "dynamic_form", "~> 1.2"
 gem "exception_notification", '~> 4.4', '>= 4.4.3'
 gem "font-awesome-rails", '~> 4.7', '>= 4.7.0.8'
 gem "gon", "~> 6.4.0"
-gem "haml", "~> 6.3.0"
+gem "haml", "~> 4.0.7"
 gem "highline", "~> 2.1"
 gem "httparty", "~> 0.21"
 gem "jquery-rails", '~> 3.1', '>= 3.1.5'
