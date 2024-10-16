@@ -3,8 +3,6 @@ module Embeddable
     include Answer
     include CRater::FeedbackFunctionality
 
-    attr_accessible :answer_text, :run, :question, :is_dirty, :is_final
-
     belongs_to :question,
       :class_name => 'Embeddable::OpenResponse',
       :foreign_key => "open_response_id"

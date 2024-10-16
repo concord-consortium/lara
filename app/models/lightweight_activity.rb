@@ -26,12 +26,6 @@ class LightweightActivity < ActiveRecord::Base
     ['ITSI', ITSI_EDITOR_MODE]
   ]
 
-  attr_accessible :name, :user_id, :pages, :related, :description, :defunct,
-                  :time_to_complete, :is_locked, :notes, :thumbnail_url, :project_id,
-                  :portal_run_count, :layout, :editor_mode, :publication_hash, :copied_from_id,
-                  :student_report_enabled, :show_submit_button, :project, :background_image,
-                  :glossary_id, :hide_read_aloud, :font_size, :hide_question_numbers, :rubric_id
-
   belongs_to :user # Author
   belongs_to :changed_by, :class_name => 'User'
 

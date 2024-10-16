@@ -81,7 +81,7 @@ end
 gem "acts_as_list", '~> 0.9.19'
 gem "aws-sdk", "~> 3.1"
 gem "aws-ses", "0.7.1", git: "https://github.com/zebitex/aws-ses.git", ref: "78-sigv4-problem"
-gem "cancancan", "~> 3.6", ">= 3.6.1"
+gem "cancancan", "~> 1.17"
 gem "chosen-rails", "~> 1.10"
 gem "daemons", "~> 1.4", ">= 1.4.1"
 gem "default_value_for", "~> 3.6"

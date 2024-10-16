@@ -3,11 +3,18 @@ class Embeddable::EmbeddablesController < ApplicationController
     respond_with_edit_form
   end
 
+  def update_params
+    params.require(:embeddable.class.name_as_param).permit(
+      :plugin, :approved_script_id, :description, :author_data,
+      :is_half_width, :is_hidden, :component_label, :name, :label, :url
+    )
+  end
+
   # PUT /Embeddable/xhtmls/1
   # PUT /Embeddable/xhtmls/1.xml
   def update
     cancel = params[:commit] == "Cancel"
-    if updated = @embeddable.update_attributes(params[@embeddable.class.name_as_param])
+    if updated = @embeddable.update_attributes(update_params)
       update_activity_changed_by(@embeddable.activity) unless @embeddable.activity.nil?
       @embeddable.reload
     end
