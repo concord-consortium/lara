@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20240806145141) do
+ActiveRecord::Schema.define(:version => 20241011123743) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "kind"
@@ -430,6 +430,7 @@ ActiveRecord::Schema.define(:version => 20240806145141) do
     t.boolean  "authorable",              :default => false
     t.text     "report_item_url"
     t.boolean  "official",                :default => false
+    t.boolean  "hide_question_number",    :default => false
   end
 
   add_index "library_interactives", ["export_hash"], :name => "library_interactives_export_hash_idx"
@@ -564,6 +565,7 @@ ActiveRecord::Schema.define(:version => 20240806145141) do
     t.string   "aspect_ratio_method",              :default => "DEFAULT"
     t.string   "linked_interactive_type"
     t.text     "report_item_url"
+    t.boolean  "hide_question_number",             :default => false
   end
 
   add_index "mw_interactives", ["linked_interactive_id"], :name => "index_mw_interactives_on_linked_interactive_id"

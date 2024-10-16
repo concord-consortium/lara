@@ -11,6 +11,7 @@ describe LibraryInteractivesController do
       :click_to_play_prompt => "valid click_to_play_prompt",
       :description => "valid description",
       :enable_learner_state => false,
+      :hide_question_number => false,
       :full_window => false,
       :has_report_url => false,
       :image_url => "http://example.com/image_url.jpg",

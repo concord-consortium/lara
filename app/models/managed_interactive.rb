@@ -96,6 +96,10 @@ class ManagedInteractive < ActiveRecord::Base
     library_interactive  ? library_interactive.enable_learner_state : false
   end
 
+  def hide_question_number
+    library_interactive  ? library_interactive.hide_question_number : false
+  end
+
   def show_delete_data_button
     library_interactive ? library_interactive.show_delete_data_button : true
   end
@@ -182,6 +186,7 @@ class ManagedInteractive < ActiveRecord::Base
       native_width: native_width,
       native_height: native_height,
       enable_learner_state: enable_learner_state,
+      hide_question_number: hide_question_number,
       show_delete_data_button: show_delete_data_button,
       has_report_url: has_report_url,
       click_to_play: click_to_play,
@@ -261,7 +266,7 @@ class ManagedInteractive < ActiveRecord::Base
   # this can't be moved into BaseInteractive as enable_learner_state is defined as a method in
   # this class and that causes reportable? not to be defined correctly for outside callers
   def reportable?
-    enable_learner_state
+    enable_learner_state && !hide_question_number
   end
 
   def reportable_in_iframe?

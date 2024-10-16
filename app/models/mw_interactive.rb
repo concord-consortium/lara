@@ -8,7 +8,7 @@ class MwInteractive < ActiveRecord::Base
     :click_to_play_prompt, :image_url, :is_hidden, :linked_interactive_id, :linked_interactive_type,
     :full_window, :model_library_url, :authored_state, :no_snapshots,
     :show_delete_data_button, :show_in_featured_question_report, :is_half_width,
-    :aspect_ratio_method, :linked_interactive_item_id, :report_item_url
+    :aspect_ratio_method, :linked_interactive_item_id, :report_item_url, :hide_question_number
 
   default_value_for :native_width, ASPECT_RATIO_DEFAULT_WIDTH
   default_value_for :native_height, ASPECT_RATIO_DEFAULT_HEIGHT
@@ -57,6 +57,7 @@ class MwInteractive < ActiveRecord::Base
       native_width: native_width,
       native_height: native_height,
       enable_learner_state: enable_learner_state,
+      hide_question_number: hide_question_number,
       show_delete_data_button: show_delete_data_button,
       has_report_url: has_report_url,
       click_to_play: click_to_play,
@@ -81,7 +82,7 @@ class MwInteractive < ActiveRecord::Base
   end
 
   def duplicate
-    # Remove linked_interactives from the hash since it can't be mapped to a database column like the other 
+    # Remove linked_interactives from the hash since it can't be mapped to a database column like the other
     # properties in the hash can, and so causes an error when we try to create the duplicate interactive.
     new_interactive_hash = self.to_hash.except!(:linked_interactives)
     # Generate a new object with those values
@@ -95,6 +96,7 @@ class MwInteractive < ActiveRecord::Base
                               :native_width,
                               :native_height,
                               :enable_learner_state,
+                              :hide_question_number,
                               :show_delete_data_button,
                               :has_report_url,
                               :click_to_play,
@@ -116,7 +118,7 @@ class MwInteractive < ActiveRecord::Base
   end
 
   def reportable?
-    enable_learner_state
+    enable_learner_state && !hide_question_number
   end
 
   def reportable_in_iframe?
