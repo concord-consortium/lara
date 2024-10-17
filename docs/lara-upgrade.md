@@ -107,14 +107,14 @@ The status codes are:
 | ribbons-rails                |        NC AM |           0.0.1 |           0.0.1 |       0.0.1 |
 | rspec-activemodel-mocks      |       UC* AM |           1.0.1 |           1.2.1 |       1.2.1 |
 | safe_yaml                    |       UC* AM |           1.0.4 |           1.0.5 |       1.0.5 |
-| spreadsheet                  |       CU* AM |           1.0.3 |           1.3.1 |       1.3.1 |
+| spreadsheet                  |       UC* AM |           1.0.3 |           1.1.2 |       1.1.2 |
 | spring-commands-rspec        |        NC AM |           1.0.4 |           1.0.4 |       1.0.4 |
-| test-unit                    |       CU* AM |           3.2.3 |           3.6.2 |       3.6.2 |
-| timecop                      |       CU* AM |           0.6.3 |          0.9.10 |      0.9.10 |
+| test-unit                    |       UC* AM |           3.2.3 |           3.6.2 |       3.6.2 |
+| timecop                      |       UC* AM |           0.6.3 |          0.9.10 |      0.9.10 |
 | turbo-sprockets-rails4       |           AM |             n/a |           1.2.5 |       1.2.5 |
-| useragent                    |       CU* AM |          0.10.0 |         0.16.10 |     0.16.10 |
-| uuidtools                    |       CU* AM |           2.1.4 |           2.2.0 |       2.2.0 |
-| will_paginate                |       CU! AM |           3.0.7 |           4.0.1 |       4.0.1 |
+| useragent                    |       UC* AM |          0.10.0 |         0.16.10 |     0.16.10 |
+| uuidtools                    |       UC* AM |           2.1.4 |           2.1.5 |       2.2.0 |
+| will_paginate                |       UC! AM |           3.0.7 |           4.0.1 |       4.0.1 |
 | *GEMS THAT CAN BE UPGRADED*  |              |                 |                 |             |
 | acts_as_list                 |          CU* |           0.3.0 |          0.9.19 |       1.2.3 |
 | aws-sdk                      |          CU! |          1.66.0 |           3.1.0 |       3.2.0 |

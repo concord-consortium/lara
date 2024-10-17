@@ -111,10 +111,10 @@ gem 'rack-secure_samesite_cookies', {:git => 'https://github.com/concord-consort
 gem 'rake', '~> 13.2', '>= 13.2.1'
 gem "ribbons-rails", "~> 0.0", {:git=>"https://github.com/concord-consortium/ribbons-rails.git"}
 gem "safe_yaml", "~> 1.0.5"
-gem "spreadsheet", "~> 1.3.1"
+gem "spreadsheet", "~> 1.1.2", "= 1.1.2"
 # # gem "sqlite3", "~> 1.3"
 # # gem "test-unit", "~> 3.0"
 gem "tinymce-rails", '~> 4.9.11.1'
 gem "useragent", "~> 0.16.10"
-gem "uuidtools", "~> 2.2"
+gem "uuidtools", "~> 2.1.5", "= 2.1.5"
 gem "will_paginate", "~> 4.0.1"
