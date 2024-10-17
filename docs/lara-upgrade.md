@@ -82,23 +82,17 @@ The status codes are:
 |------------------------------|--------------|-----------------|-----------------|-------------|
 | rails (+ rails core...)      |          CU! |          3.2.22 |          4.0.13 |       7.1.4 |
 | *GEMS AT MAX*                |              |                 |                 |             |
-| cancancan                    |          UC* |          1.10.1 |          1.17.0 |       3.6.1 |
-| better_errors                |          UC! |           1.1.0 |           2.0.0 |      2.10.1 |
+| aws-ses                      |        NC AM |           0.7.1 |           0.7.1 |       0.7.1 |
 | chosen-rails                 |       UC* AM |           1.0.1 |          1.10.0 |      1.10.0 |
-| ci_reporter                  |           RM |           1.7.3 |               - |       2.1.0 |
 | compass-blueprint            |        NC AM |           1.0.0 |           1.0.0 |       1.0.0 |
-| compass-rails                |           NC |           3.1.0 |           3.1.0 |       4.0.0 |
 | daemons                      |       UC* AM |           1.1.9 |           1.4.1 |       1.4.1 |
 | delayed_job_active_record    |       UC* AM |           4.0.0 |          4.1.10 |      4.1.10 |
 | delayed_job_web              |       UC* AM |           1.2.5 |           1.4.4 |       1.4.4 |
-| factory_girl_rails           |          UC* |           4.3.0 |           4.5.0 |       6.4.3 |
 | font-awesome-rails           |       UC* AM |         4.3.0.0 |         4.7.0.8 |     4.7.0.8 |
 | gon                          |       UC! AM |           5.2.3 |           6.4.0 |       6.4.0 |
-| haml                         |       UC* AM |           4.0.5 |           4.0.7 |       6.3.0 |
 | jasmine-jquery-rails         |        NC AM |           2.0.3 |           2.0.3 |       2.0.3 |
 | multi_json                   |       UC* AM |          1.13.1 |          1.15.0 |      1.15.0 |
 | nested_form                  |        NC AM |           0.3.2 |           0.3.2 |       0.3.2 |
-| omniauth-oauth2              |       UC* AM |           1.1.1 |           1.3.0 |       1.8.0 |
 | poltergeist                  |       UC* AM |           1.5.1 |          1.18.1 |      1.18.1 |
 | protected_attributes         |           AM |             n/a |           1.1.4 |       1.1.4 |
 | rack-environmental           |       UC* AM |           1.3.1 |           1.3.2 |       1.3.2 |
@@ -113,39 +107,45 @@ The status codes are:
 | timecop                      |       UC* AM |           0.6.3 |          0.9.10 |      0.9.10 |
 | turbo-sprockets-rails4       |           AM |             n/a |           1.2.5 |       1.2.5 |
 | useragent                    |       UC* AM |          0.10.0 |         0.16.10 |     0.16.10 |
-| uuidtools                    |       UC* AM |           2.1.4 |           2.1.5 |       2.2.0 |
 | will_paginate                |       UC! AM |           3.0.7 |           4.0.1 |       4.0.1 |
 | *GEMS THAT CAN BE UPGRADED*  |              |                 |                 |             |
-| acts_as_list                 |          CU* |           0.3.0 |          0.9.19 |       1.2.3 |
-| aws-sdk                      |          CU! |          1.66.0 |           3.1.0 |       3.2.0 |
-| aws-ses                      |           NC |           0.7.1 |           0.7.1 |       0.7.3 |
-| bullet                       |          DG? |           5.4.3 |         4.14.10 |       7.2.0 |
-| capybara                     |          CU* |           2.4.4 |          2.18.0 |      3.40.0 |
-| coffee-rails                 |          CU! |           3.2.2 |           4.2.2 |       5.0.0 |
-| default_value_for            |          CU! |           2.0.3 |           3.6.0 |       4.0.0 |
-| devise                       |          CU* |           3.0.1 |          3.5.10 |       4.9.4 |
-| dynamic_form                 |          CU* |           1.1.4 |           1.2.0 |       1.3.1 |
-| exception_notification       |          CU* |           4.0.1 |           4.4.3 |       4.5.0 |
-| faker                        |          CU! |           1.2.0 |           2.2.1 |       3.4.2 |
-| highline                     |          CU! |          1.6.21 |           2.1.0 |       3.1.1 |
-| httparty                     |          CU* |          0.12.0 |          0.21.0 |      0.22.0 |
-| jasmine                      |          CU! |           2.2.0 |           3.8.0 |      3.99.0 |
+| acts_as_list                 |          UC* |           0.3.0 |          0.9.19 |       1.2.3 |
+| aws-sdk                      |           NC |          1.66.0 |          1.66.0 |       3.2.0 |
+| better_errors                |          UC! |           1.1.0 |           2.0.0 |      2.10.1 |
+| bullet                       |           NC |           5.4.3 |           5.4.3 |       7.2.0 |
+| cancancan                    |          UC* |          1.10.1 |          1.17.0 |       3.6.1 |
+| capybara                     |          UC* |           2.4.4 |          2.18.0 |      3.40.0 |
+| ci_reporter                  |           RM |           1.7.3 |               - |       2.1.0 |
+| coffee-rails                 |          UC! |           3.2.2 |           4.2.2 |       5.0.0 |
+| compass-rails                |           NC |           3.1.0 |           3.1.0 |       4.0.0 |
+| default_value_for            |          UC! |           2.0.3 |           3.6.0 |       4.0.0 |
+| devise                       |          UC* |           3.0.1 |          3.5.10 |       4.9.4 |
+| dynamic_form                 |          UC* |           1.1.4 |           1.2.0 |       1.3.1 |
+| exception_notification       |          UC* |           4.0.1 |           4.4.3 |       4.5.0 |
+| factory_girl_rails           |          UC* |           4.3.0 |           4.5.0 |       6.4.3 |
+| faker                        |          UC! |           1.2.0 |           2.2.1 |       3.4.2 |
+| haml                         |          UC* |           4.0.5 |           4.0.7 |       6.3.0 |
+| highline                     |          UC* |          1.6.21 |           1.7.3 |       3.1.1 |
+| httparty                     |          UC* |          0.12.0 |          0.21.0 |      0.22.0 |
+| jasmine                      |          UC* |           2.2.0 |          2.99.0 |      3.99.0 |
 | jquery-rails                 |           NC |           3.1.5 |           3.1.5 |       4.6.0 |
-| jquery-ui-rails              |          CU* |           4.1.0 |           4.3.1 |       7.0.0 |
-| launchy                      |          CU* |           2.4.0 |           2.5.2 |       3.0.1 |
+| jquery-ui-rails              |          UC* |           4.1.0 |           4.2.1 |       7.0.0 |
+| launchy                      |          UC* |           2.4.0 |           2.5.2 |       3.0.1 |
 | mysql2                       |           NC |          0.3.21 |          0.3.21 |       0.5.6 |
-| newrelic_rpm                 |          CU! |       4.6.0.338 |          8.16.0 |      9.14.0 |
-| nokogiri                     |          CU* |          1.10.3 |         1.10.10 |      1.16.7 |
-| omniauth                     |          CU* |           1.3.2 |           1.4.2 |       2.1.2 |
-| rack-cors                    |          CU! |           0.4.1 |           1.0.3 |       2.0.2 |
-| rspec-rails                  |          CU* |           3.8.2 |           3.9.1 |       7.0.1 |
-| sass-rails                   |          CU! |           3.2.6 |           5.0.7 |       6.0.0 |
-| simplecov                    |          CU* |          0.16.1 |          0.17.1 |      0.22.0 |
-| spring                       |          CU* |           1.2.0 |           1.7.2 |       4.2.1 |
-| tinymce-rails                |          CU* |           4.7.9 |        4.9.11.1 |       7.4.1 |
-| uglifier                     |          CU* |           4.1.8 |           4.2.0 |       4.2.1 |
-| unicorn                      |          CU! |           5.0.1 |           6.1.0 |       6.1.0 |
-| webmock                      |          CU! |          1.24.6 |          3.18.1 |      3.24.0 |
+| newrelic_rpm                 |          UC* |       4.6.0.338 |       4.8.0.341 |      9.14.0 |
+| nokogiri                     |          UC* |          1.10.3 |         1.10.10 |      1.16.7 |
+| omniauth                     |          UC* |           1.3.2 |           1.4.2 |       2.1.2 |
+| omniauth-oauth2              |          UC* |           1.1.1 |           1.3.0 |       1.8.0 |
+| rack-cors                    |          UC! |           0.4.1 |           1.0.3 |       2.0.2 |
+| rspec-rails                  |          UC* |           3.8.2 |           3.9.1 |       7.0.1 |
+| sass-rails                   |          UC! |           3.2.6 |           5.0.7 |       6.0.0 |
+| simplecov                    |          UC* |          0.16.1 |          0.17.1 |      0.22.0 |
+| spring                       |          UC* |           1.2.0 |           1.7.2 |       4.2.1 |
+| tinymce-rails                |          UC* |           4.7.9 |           4.9.4 |       7.4.1 |
+| uglifier                     |          UC* |           4.1.8 |           4.2.0 |       4.2.1 |
+| unicorn                      |          UC! |           5.0.1 |           6.1.0 |       6.1.0 |
+| uuidtools                    |          UC* |           2.1.4 |           2.1.5 |       2.2.0 |
+| webmock                      |          UC! |          1.24.6 |           3.8.3 |      3.24.0 |
 
 ### Upgrade To Rails 4.0.13
 

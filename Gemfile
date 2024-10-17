@@ -40,7 +40,7 @@ group :development do
   gem "better_errors", "~> 2.0.0", ">= 2.0.0"
   # gem "binding_of_caller", "~> 0.7"
   # gem "brakeman", "~> 2.4", {:require=>false}
-  gem 'bullet', "~> 4.14.10"
+  gem 'bullet', "~> 5.4.3"
   # gem "capistrano", "~> 2.15"
   # gem "capistrano-autoscaling", "~> 0.0", {:git=>"https://github.com/concord-consortium/capistrano-autoscaling.git", :branch=>"concord"}
   # gem "capistrano-cowboy", "~> 0.1"
@@ -55,7 +55,7 @@ end
 
 group :test do
   gem 'simplecov', require: false
-  gem "webmock", "~> 3.18", ">= 3.18.1"
+  gem "webmock", "~> 3.8.3", "= 3.8.3"
 end
 
 group :test, :development do
@@ -63,7 +63,7 @@ group :test, :development do
   # gem "ci_reporter", "~> 1.9.2"
   gem "factory_girl_rails", "~> 4.5", ">= 4.5.0", :require=>false
   gem "faker", "~> 2.2", ">= 2.2.1"
-  gem "jasmine", "~> 3.8"
+  gem "jasmine", "~> 2.99.0"
   gem "jasmine-jquery-rails", "~> 2.0", ">= 2.0.3"
   gem "launchy", "~> 2.5", ">= 2.5.2"
   gem "poltergeist", "~> 1.18", ">= 1.18.1"
@@ -79,7 +79,7 @@ group :test, :development do
 end
 
 gem "acts_as_list", '~> 0.9.19'
-gem "aws-sdk", "~> 3.1"
+gem "aws-sdk", "~> 1.66.0"
 gem "aws-ses", "0.7.1", git: "https://github.com/zebitex/aws-ses.git", ref: "78-sigv4-problem"
 gem "cancancan", "~> 1.17"
 gem "chosen-rails", "~> 1.10"
@@ -93,14 +93,14 @@ gem "exception_notification", '~> 4.4', '>= 4.4.3'
 gem "font-awesome-rails", '~> 4.7', '>= 4.7.0.8'
 gem "gon", "~> 6.4.0"
 gem "haml", "~> 4.0.7"
-gem "highline", "~> 2.1"
+gem "highline", "~> 1.7.3"
 gem "httparty", "~> 0.21"
 gem "jquery-rails", '~> 3.1', '>= 3.1.5'
 gem "jquery-ui-rails", '~> 4.2.1'
 gem "multi_json", "~> 1.15"
-gem "mysql2", "~> 0.3"
+gem "mysql2", "= 0.3.21"
 gem "nested_form", "~> 0.3.2"
-gem 'newrelic_rpm', '~> 8.16'
+gem 'newrelic_rpm', '= 4.8.0.341'
 gem "nokogiri", ">= 1.10.10"
 gem "omniauth", "~> 1.4.2"
 gem "omniauth-oauth2", "1.3"
@@ -114,7 +114,7 @@ gem "safe_yaml", "~> 1.0.5"
 gem "spreadsheet", "~> 1.1.2", "= 1.1.2"
 # # gem "sqlite3", "~> 1.3"
 # # gem "test-unit", "~> 3.0"
-gem "tinymce-rails", '~> 4.9.11.1'
+gem "tinymce-rails", '~> 4.9.4', "= 4.9.4"
 gem "useragent", "~> 0.16.10"
 gem "uuidtools", "~> 2.1.5", "= 2.1.5"
 gem "will_paginate", "~> 4.0.1"
