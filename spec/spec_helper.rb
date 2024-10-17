@@ -11,6 +11,7 @@ require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
 require 'factory_girl_rails'
 require 'webmock/rspec'
+require 'rspec/active_model/mocks'
 
 # This breaks on travis, but works for me locally
 # require 'ruby-debug'

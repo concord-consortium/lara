@@ -9,10 +9,14 @@ class SettingsController < ApplicationController
     # the update action should handle any new settings added here automatically
   end
 
+  def update_params
+    params.require(:settings).permit(:key, :value)
+  end
+
   def update
     authorize! :manage, Setting
 
-    settings = params["settings"]
+    settings = update_params
     if settings.present?
       settings.each do |key, value|
         Setting.set(key, value)

@@ -24,6 +24,10 @@ class PluginsController < ApplicationController
     end
   end
 
+  def update_params
+    params.require(:plugin).permit(:description, :author_data, :approved_script_id, :approved_script, :shared_learner_state_key, :component_label)
+  end
+
   # PUT /plugins/1
   def update
     cancel = params[:commit] == "Cancel"
@@ -31,7 +35,7 @@ class PluginsController < ApplicationController
     @plugin = Plugin.find(params[:id])
     authorize! :manage, @plugin
     if !cancel
-      @plugin.update_attributes(params['plugin'])
+      @plugin.update_attributes(update_params)
     end
 
     redirect_to(request.env['HTTP_REFERER'].sub(/\?.+/, ''))

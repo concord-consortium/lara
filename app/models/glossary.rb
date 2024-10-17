@@ -1,5 +1,4 @@
 class Glossary < ActiveRecord::Base
-  attr_accessible :name, :json, :user_id, :legacy_glossary_resource_id, :project_id, :project
   validates :name, presence: true
   validates :user_id, presence: true
 
@@ -8,8 +7,8 @@ class Glossary < ActiveRecord::Base
   has_many :lightweight_activities
 
   # scope :public, self.scoped # all glossaries are public
-  scope :none, where("1 = 0") # used to return "my glossaries" to no user
-  scope :newest, order("updated_at DESC")
+  scope :none, -> { where("1 = 0") } # used to return "my glossaries" to no user
+  scope :newest, -> { order(updated_at: :desc) }
 
   def export(user)
     {

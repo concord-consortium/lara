@@ -4,27 +4,22 @@ class User < ActiveRecord::Base
   # :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable, :timeoutable,
-         :token_authenticatable, :bearer_token_authenticatable
+         # :token_authenticatable,
+         :bearer_token_authenticatable
   devise :omniauthable, :omniauth_providers => Concord::AuthPortal.all_strategy_names
 
   has_many :activities, :class_name => LightweightActivity
   has_many :sequences
   has_many :runs
   has_many :imports
-  has_many :glossaries, order: :name
-  has_many :rubrics, order: :name
+  has_many :glossaries, -> { order(:name) }
+  has_many :rubrics, -> { order(:name) }
   has_many :project_admins
   has_many :admined_projects, through: :project_admins, :source => :project
 
-  # Setup accessible (or protected) attributes for your model
-  attr_accessible :email, :password, :password_confirmation, :remember_me,
-    :is_admin, :is_author, :first_name, :last_name,
-    :provider, :uid, :authentication_token, :api_key, :has_api_key, :admined_project_ids
-  # attr_accessible :title, :body
-
   has_many :authentications, :dependent => :delete_all
 
-  self.token_authentication_key = "api_key"
+  # self.token_authentication_key = "api_key"
 
   def self.find_for_token_authentication(condition)
     self.where(condition).first

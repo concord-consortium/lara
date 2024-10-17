@@ -1,5 +1,4 @@
 class Rubric < ActiveRecord::Base
-  attr_accessible :name, :user_id, :project_id, :project, :authored_content_id, :authored_content, :doc_url
   validates :name, presence: true
   validates :user_id, presence: true
 
@@ -11,8 +10,8 @@ class Rubric < ActiveRecord::Base
   after_create :create_authored_content
 
   # scope :public, self.scoped # all rubrics are public
-  scope :none, where("1 = 0") # used to return "my rubrics" to no user
-  scope :newest, order("updated_at DESC")
+  scope :none, -> { where("1 = 0") } # used to return "my rubrics" to no user
+  scope :newest, -> { order(updated_at: :desc) }
 
   def export(user)
     {

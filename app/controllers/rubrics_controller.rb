@@ -30,9 +30,21 @@ class RubricsController < ApplicationController
     @projects = Project.visible_to_user(current_user).map {|p| Project.id_and_title(p)}
   end
 
+  def update_params
+    params.require(:rubric).permit(:name, :user_id, :project_id, :project, :authored_content_id, :authored_content, :doc_url)
+  end
+
   def update
     authorize! :update, @rubric
-    simple_update(@rubric)
+    respond_to do |format|
+      if @rubric.update_attributes(update_params)
+        format.html { redirect_to edit_polymorphic_url(@rubric), notice: "Rubric was successfully updated." }
+        format.json { head :no_content }
+      else
+        format.html { render action: "edit" }
+        format.json { render json: @rubric.errors, status: :unprocessable_entity }
+      end
+    end
   end
 
   def destroy

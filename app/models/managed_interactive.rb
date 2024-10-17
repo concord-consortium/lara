@@ -6,25 +6,6 @@ class ManagedInteractive < ActiveRecord::Base
   include Embeddable
   include HasAspectRatio
 
-  attr_accessible :library_interactive_id,
-    :name,
-    :url_fragment,
-    :is_half_width,
-    :show_in_featured_question_report,
-    :authored_state,
-    :is_hidden,
-    :linked_interactive_id, :linked_interactive_type,
-    :inherit_aspect_ratio_method, :custom_aspect_ratio_method,
-    :inherit_native_width, :custom_native_width,
-    :inherit_native_height, :custom_native_height,
-    :inherit_click_to_play, :custom_click_to_play,
-    :inherit_full_window, :custom_full_window,
-    :inherit_click_to_play_prompt, :custom_click_to_play_prompt,
-    :inherit_image_url, :custom_image_url,
-    :linked_interactive_item_id,
-    :legacy_ref_id,
-    :legacy_ref_type
-
   default_value_for :custom_native_width, ASPECT_RATIO_DEFAULT_WIDTH
   default_value_for :custom_native_height, ASPECT_RATIO_DEFAULT_HEIGHT
 
