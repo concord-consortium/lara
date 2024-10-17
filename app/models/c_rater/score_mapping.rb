@@ -2,9 +2,9 @@ class CRater::ScoreMapping < ActiveRecord::Base
   serialize :mapping
   belongs_to :user
   belongs_to :changed_by, :class_name => 'User'
-  
-  scope :public, self.all
-  scope :newest, order("updated_at DESC")
+
+  scope :public, -> { self.all }
+  scope :newest, -> { order(updated_at: :desc) }
 
   scope :rationale,   -> { where('description LIKE ?', '%[rationale]%').order('created_at ASC') }
   scope :explanation, -> { where('description LIKE ?', '%[explanation]%').order('created_at ASC') }
@@ -50,13 +50,13 @@ class CRater::ScoreMapping < ActiveRecord::Base
       super
     end
   end
-  
+
   def self.my(user)
     where(:user_id => user.id)
   end
-  
+
   def self.visible(user)
     self.scoped
   end
-  
+
 end

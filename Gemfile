@@ -16,14 +16,14 @@ group :production do
   gem "unicorn"
 end
 
-group :assets do
+# group :assets do
   gem "coffee-rails", '~> 4.2', '>= 4.2.2'
   gem "compass-blueprint", "~> 1.0"
   gem "compass-rails", "~> 3.1.0"
   gem "sass-rails", "~> 5.0", ">= 5.0.7"
   gem "turbo-sprockets-rails4", "~> 1.2.5"
   gem "uglifier", "~> 4.2"
-end
+# end
 
 # 2021-11-01 -- NP: rails-assets.org SSL certificate has expired.
 # For now we have just put the JS and CSS files for drawing tool and its deps
