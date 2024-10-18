@@ -1,5 +1,6 @@
 class CRater::ScoreMapping < ActiveRecord::Base
   serialize :mapping
+  attr_accessible :mapping, :description
   belongs_to :user
   belongs_to :changed_by, :class_name => 'User'
 

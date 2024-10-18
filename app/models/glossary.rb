@@ -1,4 +1,5 @@
 class Glossary < ActiveRecord::Base
+  attr_accessible :name, :json, :user_id, :legacy_glossary_resource_id, :project_id, :project
   validates :name, presence: true
   validates :user_id, presence: true
 
