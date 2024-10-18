@@ -70,7 +70,9 @@ describe ManagedInteractive do
         inherit_image_url: managed_interactive.inherit_image_url,
         custom_image_url: managed_interactive.custom_image_url,
         linked_interactives: [],
-        linked_interactive_item_id: nil
+        linked_interactive_item_id: nil,
+        inherit_hide_question_number: managed_interactive.inherit_hide_question_number,
+        custom_hide_question_number: managed_interactive.custom_hide_question_number,
        }
       expect(managed_interactive.to_hash).to eq(expected)
     end
@@ -127,7 +129,9 @@ describe ManagedInteractive do
         inherit_click_to_play_prompt: managed_interactive.inherit_click_to_play_prompt,
         custom_click_to_play_prompt: managed_interactive.custom_click_to_play_prompt,
         inherit_image_url: managed_interactive.inherit_image_url,
-        custom_image_url: managed_interactive.custom_image_url
+        custom_image_url: managed_interactive.custom_image_url,
+        inherit_hide_question_number: managed_interactive.inherit_hide_question_number,
+        custom_hide_question_number: managed_interactive.custom_hide_question_number,
       })
     end
   end
@@ -295,6 +299,18 @@ describe ManagedInteractive do
       expect(managed_interactive.click_to_play).to eq library_interactive.click_to_play
       managed_interactive.library_interactive = nil
       expect(managed_interactive.click_to_play).to eq !library_interactive.click_to_play
+    end
+
+    it "returns hide_question_number" do
+      expect(managed_interactive.hide_question_number).to eq library_interactive.hide_question_number
+      managed_interactive.custom_hide_question_number = !library_interactive.hide_question_number
+      expect(managed_interactive.hide_question_number).to eq library_interactive.hide_question_number
+      managed_interactive.inherit_hide_question_number = false
+      expect(managed_interactive.hide_question_number).to eq !library_interactive.hide_question_number
+      managed_interactive.inherit_hide_question_number = true
+      expect(managed_interactive.hide_question_number).to eq library_interactive.hide_question_number
+      managed_interactive.library_interactive = nil
+      expect(managed_interactive.hide_question_number).to eq !library_interactive.hide_question_number
     end
 
     it "returns full_window" do

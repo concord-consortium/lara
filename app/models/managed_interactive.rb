@@ -23,7 +23,8 @@ class ManagedInteractive < ActiveRecord::Base
     :inherit_image_url, :custom_image_url,
     :linked_interactive_item_id,
     :legacy_ref_id,
-    :legacy_ref_type
+    :legacy_ref_type,
+    :inherit_hide_question_number, :custom_hide_question_number
 
   default_value_for :custom_native_width, ASPECT_RATIO_DEFAULT_WIDTH
   default_value_for :custom_native_height, ASPECT_RATIO_DEFAULT_HEIGHT
@@ -91,13 +92,13 @@ class ManagedInteractive < ActiveRecord::Base
     inherit_image_url && library_interactive ? library_interactive.image_url : custom_image_url
   end
 
+  def hide_question_number
+    inherit_hide_question_number && library_interactive  ? library_interactive.hide_question_number : custom_hide_question_number
+  end
+
   # getters for proxied attributes
   def enable_learner_state
     library_interactive  ? library_interactive.enable_learner_state : false
-  end
-
-  def hide_question_number
-    library_interactive  ? library_interactive.hide_question_number : false
   end
 
   def show_delete_data_button
@@ -151,7 +152,9 @@ class ManagedInteractive < ActiveRecord::Base
       inherit_image_url: inherit_image_url,
       custom_image_url: custom_image_url,
       linked_interactives: linked_interactives_list,
-      linked_interactive_item_id: linked_interactive_item_id
+      linked_interactive_item_id: linked_interactive_item_id,
+      inherit_hide_question_number: inherit_hide_question_number,
+      custom_hide_question_number: custom_hide_question_number
     }
   end
 
@@ -175,7 +178,7 @@ class ManagedInteractive < ActiveRecord::Base
   # inherit_native_width, custom_native_width, inherit_native_height, custom_native_height,
   # inherit_click_to_play, custom_click_to_play, inherit_full_window, custom_full_window,
   # inherit_click_to_play_prompt, custom_click_to_play_prompt, inherit_image_url, custom_image_url,
-  # linked_interactives
+  # linked_interactives, inherit_hide_question_number, custom_question_number
 
   def to_interactive
     # NOTE: model_library_url is missing as there is no analog
