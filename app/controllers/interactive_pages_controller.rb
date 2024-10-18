@@ -67,11 +67,19 @@ class InteractivePagesController < ApplicationController
     gon.publication_details = PublicationDetails.new(@activity).to_json
   end
 
+  def update_params
+    params.require(:interactive_page).permit(
+      :lightweight_activity, :name, :position, :layout, :sidebar, :show_header,
+      :show_sidebar, :show_interactive, :show_info_assessment, :toggle_info_assessment,
+      :embeddable_display_mode, :sidebar_title, :is_hidden, :additional_sections, :is_completion
+    )
+  end
+
   def update
     authorize! :update, @page
     respond_to do |format|
       if request.xhr?
-        if @page.update_attributes(params[:interactive_page])
+        if @page.update_attributes(update_params)
           # *** respond with the new value ***
           update_activity_changed_by
           format.html { render :text => params[:interactive_page].values.first }
@@ -82,7 +90,7 @@ class InteractivePagesController < ApplicationController
         format.json { render :json => @page.to_json }
       else
         format.html do
-          if @page.update_attributes(params[:interactive_page])
+          if @page.update_attributes(update_params)
             @page.reload # In case it's the name we updated
             update_activity_changed_by
             flash[:notice] = "Page #{@page.name} was updated."

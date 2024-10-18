@@ -4,15 +4,16 @@ class User < ActiveRecord::Base
   # :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable, :timeoutable,
-         :token_authenticatable, :bearer_token_authenticatable
+         # :token_authenticatable,
+         :bearer_token_authenticatable
   devise :omniauthable, :omniauth_providers => Concord::AuthPortal.all_strategy_names
 
   has_many :activities, :class_name => LightweightActivity
   has_many :sequences
   has_many :runs
   has_many :imports
-  has_many :glossaries, order: :name
-  has_many :rubrics, order: :name
+  has_many :glossaries, -> { order(:name) }
+  has_many :rubrics, -> { order(:name) }
   has_many :project_admins
   has_many :admined_projects, through: :project_admins, :source => :project
 
@@ -24,7 +25,7 @@ class User < ActiveRecord::Base
 
   has_many :authentications, :dependent => :delete_all
 
-  self.token_authentication_key = "api_key"
+  # self.token_authentication_key = "api_key"
 
   def self.find_for_token_authentication(condition)
     self.where(condition).first

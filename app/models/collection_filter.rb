@@ -26,7 +26,7 @@ class CollectionFilter
       # used by glossary model to filter out glossaries when the user isn't an author or admin
       results = @klass.public_for_user(@user)
     else
-      results = @klass.public
+      results = @klass.is_public
     end
     results.limit(self.limit) if @limit and results.respond_to? :limit
     results.newest

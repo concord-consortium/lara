@@ -14,25 +14,30 @@ class Api::V1::GlossariesController < API::APIController
     end
   end
 
+  def update_params
+    params.require(:glossary).permit(:name, :json, :user_id, :legacy_glossary_resource_id, :project_id, :project)
+  end
+
   def update
     glossary = Glossary.find(params[:id])
     authorize! :manage, glossary
+    safe_params = update_params
     if params[:name]
-      glossary.name = params[:name]
+      glossary.name = safe_params[:name]
     end
     if params[:json]
       # handle either a string or an object, saving as a string to the model
       if params[:json].kind_of?(String)
-        glossary.json = params[:json]
+        glossary.json = safe_params[:json]
       else
-        glossary.json = params[:json].to_json
+        glossary.json = safe_params[:json].to_json
       end
     end
     if params.has_key?(:project)
       if params[:project].nil?
         glossary.project_id = nil
       else
-        glossary.project_id = params[:project]["id"]
+        glossary.project_id = safe_params[:project]["id"]
       end
     end
     begin

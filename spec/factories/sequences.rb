@@ -7,7 +7,7 @@ FactoryGirl.define do
     abstract "short abstract"
 
     factory :sequence_with_activity do
-      ignore do
+      transient do
         pages_count 2
         activities_count 2
       end

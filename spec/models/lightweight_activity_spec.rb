@@ -730,8 +730,8 @@ describe LightweightActivity do
     end
     describe "the public scope" do
       it "should return 5 public activities" do
-        expect(subject.public.size).to eq(5)
-        subject.public.each { |a| expect(a.publication_status).to eq('public')}
+        expect(subject.is_public.size).to eq(5)
+        subject.is_public.each { |a| expect(a.publication_status).to eq('public')}
       end
     end
     describe "my_or_public  scope" do
