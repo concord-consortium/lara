@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20241011123743) do
+ActiveRecord::Schema.define(:version => 20241018134619) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "kind"
@@ -528,6 +528,8 @@ ActiveRecord::Schema.define(:version => 20241011123743) do
     t.string   "linked_interactive_type"
     t.integer  "legacy_ref_id"
     t.string   "legacy_ref_type"
+    t.boolean  "inherit_hide_question_number",     :default => true
+    t.boolean  "custom_hide_question_number",      :default => false
   end
 
   add_index "managed_interactives", ["legacy_ref_id", "legacy_ref_type"], :name => "managed_interactive_legacy_idx"
