@@ -12,7 +12,7 @@ class LibraryInteractive < ActiveRecord::Base
   validates :name, presence: true
 
   url_format = {
-    with: /^https?:\/\//i,
+    with: /\Ahttps?:\/\//i,
     message: "include protocol (http[s]://)"
   }
   optional_url_format = url_format.merge({allow_blank: true})
