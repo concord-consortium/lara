@@ -152,12 +152,12 @@ The status codes are:
 1. Create a `upgrade-to-rails-4.0` branch off the `lara-upgrade` branch.✅
 2. Upgrade rails gems in `Gemfile` to last 4.0 version: `gem 'rails', '~> 4.0.13'`.  No Ruby upgrade is required. ✅
 3. Inside running Docker image run `bundle update rails` ✅
-4. Using the gem table in this doc resolve gem dependency issues until the bundle update succeeds AND THEN verify that any code changes needed for the upgraded gems are made.  IT IS BEST to stay within the same major version is you are able.  This will most likely descend into dependency hell as bundler is very slow to resolve versions and many gems depend on other gems.  The best bet is to pin the gems using the current major version in the `Gemfile`, eg change `gem "omniauth", "~> 1.3.2"` to `gem "omniauth", "~> 1"` to give bundler as much leeway to pick a final version.  A fallback is to comment out the gems that have dependency issues to get the rails gem upgraded and then one by one re-enable them by setting them to the current major version and running `bundle update <gem>` where `<gem>` is the gem to upgrade.  You may also see better bundler performance if you pass all the gems that you change on the command line instead of just `rails`.  You can also delete the `Gemfile.lock` file in some instances as that *may* speed up version resolution.  This all really depends on how complex the web of dependencies is in the upgrade and what the weather is like Riverside, Iowa.
-5. Complete upgrade tasks in the [3.2 to 4.0 upgrade guide](https://guides.rubyonrails.org/upgrading_ruby_on_rails.html#upgrading-from-rails-3-2-to-rails-4-0).  Many of these tasks may not require any changes but mark them complete anyway (and maybe make a note no change was required).
+4. Using the gem table in this doc resolve gem dependency issues until the bundle update succeeds AND THEN verify that any code changes needed for the upgraded gems are made.  IT IS BEST to stay within the same major version is you are able.  This will most likely descend into dependency hell as bundler is very slow to resolve versions and many gems depend on other gems.  The best bet is to pin the gems using the current major version in the `Gemfile`, eg change `gem "omniauth", "~> 1.3.2"` to `gem "omniauth", "~> 1"` to give bundler as much leeway to pick a final version.  A fallback is to comment out the gems that have dependency issues to get the rails gem upgraded and then one by one re-enable them by setting them to the current major version and running `bundle update <gem>` where `<gem>` is the gem to upgrade.  You may also see better bundler performance if you pass all the gems that you change on the command line instead of just `rails`.  You can also delete the `Gemfile.lock` file in some instances as that *may* speed up version resolution.  This all really depends on how complex the web of dependencies is in the upgrade and what the weather is like Riverside, Iowa. ✅
+5. Complete upgrade tasks in the [3.2 to 4.0 upgrade guide](https://guides.rubyonrails.org/upgrading_ruby_on_rails.html#upgrading-from-rails-3-2-to-rails-4-0).  Many of these tasks may not require any changes but mark them complete anyway (and maybe make a note no change was required). ✅
 
-- [x] HTTP PATCH
+- [x] HTTP PATCH (no change required)
 - [x] Gemfile
-- [x] vendor/plugins
+- [x] vendor/plugins (no change required)
 - [x] Active Record
   - NOTE: Updates not were made to accomodate the following deprecations:
     - Rails 4.0 has deprecated the old-style hash-based finder API. This means that methods which previously accepted "finder options" no longer do. For example, Book.find(:all, conditions: { name: '1984' }) has been deprecated in favor of Book.where(name: '1984')
@@ -170,11 +170,11 @@ The status codes are:
 - [x] Active Resource
 - [x] Active Model
 - [x] Action Pack
-- [x] Active Support
-- [x] Helpers Loading Order
-- [x] Active Record Observer and Action Controller Sweeper
+- [x] Active Support (no change required)
+- [x] Helpers Loading Order (no change required)
+- [x] Active Record Observer and Action Controller Sweeper  (no change required)
 - [x] sprockets-rails
-- [x] sass-rails
+- [x] sass-rails (no change required)
 
 6. Create a PR and insure all the tests pass.
 7. After review/approval merge the branch into the `lara-upgrade` branch.
