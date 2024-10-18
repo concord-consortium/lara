@@ -4,7 +4,7 @@ class CRater::ScoreMapping < ActiveRecord::Base
   belongs_to :user
   belongs_to :changed_by, :class_name => 'User'
 
-  scope :public, -> { self.all }
+  scope :is_public, -> { self.all }
   scope :newest, -> { order(updated_at: :desc) }
 
   scope :rationale,   -> { where('description LIKE ?', '%[rationale]%').order('created_at ASC') }

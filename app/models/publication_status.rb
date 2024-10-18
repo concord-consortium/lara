@@ -15,7 +15,7 @@ module PublicationStatus
       attr_accessible :publication_status, :is_official
 
       # * Find all public activities
-      scope :public, -> { where(publication_status: 'public')}
+      scope :is_public, -> { where(publication_status: 'public')}
       scope :newest, -> { order(updated_at: :desc) }
       scope :official, -> { where(is_official: true) }
       scope :community, -> { where(is_official: false) }
