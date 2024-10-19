@@ -31,11 +31,6 @@
       %div{:class => "checkbox_note"}
         %em Warning:
         Please do not select this unless your interactive contains a serializable data set.
-      = f.check_box :hide_question_number, :id => "hide_question_number_#{@library_interactive.id}"
-      = f.label :hide_question_number, 'Hide Question Number'
-      %div{:class => "checkbox_note"}
-        %em Note:
-        This is only used when 'Save Interactive State' is also enabled.
       .indent{:id => "enable_learner_state_indent_#{@library_interactive.id}"}
         = f.check_box :show_delete_data_button, :id => "show_delete_data_button_#{@library_interactive.id}"
         = f.label :show_delete_data_button, 'Show "Clear & start over" button'
@@ -90,6 +85,12 @@
         %div{:class => "image_url", :style => "margin-top: 10px"}
           = f.label :image_url, :id => "image_url_label_#{@library_interactive.id}", :text => 'Image URL'
           = f.text_field :image_url, :id => "image_url_#{@library_interactive.id}"
+      = field_set_tag 'Other Options' do
+        = f.check_box :hide_question_number, :id => "hide_question_number_#{@library_interactive.id}"
+        = f.label :hide_question_number, 'Hide Question Number'
+        %div{:class => "checkbox_note"}
+          %em Note:
+          This is only used when 'Save Interactive State' is also enabled.
 
   %p
     .actions
