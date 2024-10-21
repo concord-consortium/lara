@@ -1,8 +1,8 @@
 # Read about factories at https://github.com/thoughtbot/factory_girl
 
 FactoryGirl.define do
-  sequence(:prompt) { Faker::Lorem.sentence(8) }
-  sequence(:choice) { Faker::Lorem.sentence(2) }
+  sequence(:prompt) { Faker::Lorem.sentence(word_count: 8) }
+  sequence(:choice) { Faker::Lorem.sentence(word_count: 2) }
 
   factory :mc_embeddable, :class => Embeddable::MultipleChoice do
     name    { generate(:name) }
