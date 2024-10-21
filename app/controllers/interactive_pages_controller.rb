@@ -184,7 +184,7 @@ class InteractivePagesController < ApplicationController
     params[:embeddable].each do |e|
       # Format: embeddable[]=17.Embeddable::OpenResponse&embeddable[]=20.Embeddable::Xhtml&embeddable[]=19.Embeddable::OpenResponse&embeddable[]=19.Embeddable::Xhtml&embeddable[]=17.Embeddable::MultipleChoice&embeddable[]=16.Embeddable::OpenResponse
       embeddable_id, embeddable_type = e.split('.')
-      pi = PageItem.find(:first, :conditions => { :embeddable_id => embeddable_id, :embeddable_type => embeddable_type })
+      pi = PageItem.find(:conditions => { :embeddable_id => embeddable_id, :embeddable_type => embeddable_type }).first
       # If we move everything to the bottom in order, the first one should be at the top
       pi.move_to_bottom
     end

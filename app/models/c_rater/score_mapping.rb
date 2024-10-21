@@ -57,7 +57,7 @@ class CRater::ScoreMapping < ActiveRecord::Base
   end
 
   def self.visible(user)
-    self.scoped
+    self.all
   end
 
 end

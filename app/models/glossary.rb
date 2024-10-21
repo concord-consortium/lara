@@ -108,7 +108,7 @@ class Glossary < ActiveRecord::Base
     if user
       self.where("user_id != ?", user.id).eager_load(:user).order(:name)
     else
-      self.scoped.eager_load(:user).order(:name)
+      self.all.eager_load(:user).order(:name)
     end
   end
 
@@ -121,7 +121,7 @@ class Glossary < ActiveRecord::Base
 
   def self.can_see(user)
     # all users can see all glossaries
-    self.scoped
+    self.all
   end
 
   def self.visible(user)
@@ -134,7 +134,7 @@ class Glossary < ActiveRecord::Base
 
   def self.public_for_user(user)
     if user && (user.admin? || user.author? || user.project_admin_of?(self.project))
-      self.scoped
+      self.all
     else
       self.none
     end
