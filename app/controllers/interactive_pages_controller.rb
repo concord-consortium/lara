@@ -236,7 +236,7 @@ class InteractivePagesController < ApplicationController
 
   def set_page
     if params[:activity_id]
-      @activity = LightweightActivity.includes(pages).find(params[:activity_id])
+      @activity = LightweightActivity.includes(:pages).find(params[:activity_id])
       @page = @activity.pages.find(params[:id])
       # TODO: Exception handling if the ID'd Page doesn't belong to the ID'd Activity
     elsif params[:page_item_id]
