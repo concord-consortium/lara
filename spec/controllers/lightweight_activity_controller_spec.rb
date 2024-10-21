@@ -170,10 +170,10 @@ describe LightweightActivitiesController do
       end
 
       it 'creates LightweightActivities owned by the current_user' do
-        existing_activities = LightweightActivity.count(:conditions => {:user_id => author.id})
+        existing_activities = LightweightActivity.where(user_id: author.id).count
         post :create, {:lightweight_activity => {:name => 'Owned Activity', :description => "Test Activity's description", :user_id => 10}}
 
-        expect(LightweightActivity.count(:conditions => {:user_id => author.id})).to equal existing_activities + 1
+        expect(LightweightActivity.where(user_id: author.id).count).to equal existing_activities + 1
       end
 
       it 'returns to the form with an error message when submitted with invalid data' do
