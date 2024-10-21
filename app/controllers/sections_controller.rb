@@ -102,7 +102,7 @@ class SectionsController < ApplicationController
 
   def set_page
     if params[:page_id]
-      @page = InteractivePage.find(params[:id], :include => :lightweight_activity)
+      @page = InteractivePage.includes(:lightweight_activity).find(params[:id])
       @activity = @page.lightweight_activity
     else
       @section = Section.find_by_id(params[:id])

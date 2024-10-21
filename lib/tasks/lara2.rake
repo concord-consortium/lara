@@ -15,7 +15,7 @@ namespace :lara2 do
 
     plugins.each do |plugin|
       puts "Loading lightweight activity ##{plugin.plugin_scope_id}"
-      activity = LightweightActivity.find(plugin.plugin_scope_id, :include => :glossary)
+      activity = LightweightActivity.includes(:glossary).find(plugin.plugin_scope_id)
       if activity.glossary
         puts "Glossary id already set for lightweight activity"
       else
@@ -29,7 +29,7 @@ namespace :lara2 do
             activity.glossary = glossary
             activity.save!
 
-            # NOTE: we don't delete the plugin here - there is a seperate task below to do that once we are 
+            # NOTE: we don't delete the plugin here - there is a seperate task below to do that once we are
             # happy with the migration results
           else
             puts "No glossary with legacy_glossary_resource_id of #{glossary_resource_id} found"
@@ -47,7 +47,7 @@ namespace :lara2 do
     if STDIN.gets.chomp == "YES"
       puts "Deleting glossary plugins used in lightweight activities"
       Plugin.delete_all(component_label: "glossary", plugin_scope_type: "LightweightActivity")
-    else 
+    else
       puts "Aborting deleting glossary plugins used in lightweight activities"
     end
   end

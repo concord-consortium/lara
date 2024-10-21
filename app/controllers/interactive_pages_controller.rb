@@ -236,7 +236,7 @@ class InteractivePagesController < ApplicationController
 
   def set_page
     if params[:activity_id]
-      @activity = LightweightActivity.find(params[:activity_id], :include => :pages)
+      @activity = LightweightActivity.includes(pages).find(params[:activity_id])
       @page = @activity.pages.find(params[:id])
       # TODO: Exception handling if the ID'd Page doesn't belong to the ID'd Activity
     elsif params[:page_item_id]
@@ -249,7 +249,7 @@ class InteractivePagesController < ApplicationController
       @activity = @page.lightweight_activity
     else
       # I don't like this method much.
-      @page = InteractivePage.find(params[:id], :include => :lightweight_activity)
+      @page = InteractivePage.includes(:lightweight_activity).find(params[:id])
       @activity = @page.lightweight_activity
     end
   end
