@@ -21,6 +21,7 @@ end
   gem "compass-blueprint", "~> 1.0"
   gem "compass-rails", "~> 3.1.0"
   gem "sass-rails", "~> 5.0", ">= 5.0.7"
+  gem "sassc", "~> 2.1.0"
   gem "turbo-sprockets-rails4", "~> 1.2.5"
   gem "uglifier", "~> 4.2"
 # end

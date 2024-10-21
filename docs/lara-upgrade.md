@@ -139,6 +139,7 @@ The status codes are:
 | rack-cors                    |          UC! |           0.4.1 |           1.0.3 |       2.0.2 |
 | rspec-rails                  |          UC* |           3.8.2 |           3.9.1 |       7.0.1 |
 | sass-rails                   |          UC! |           3.2.6 |           5.0.7 |       6.0.0 |
+| sassc                        |         n/a  |             n/a |           2.1.0 |       2.4.0 |
 | simplecov                    |          UC* |          0.16.1 |          0.17.1 |      0.22.0 |
 | spring                       |          UC* |           1.2.0 |           1.7.2 |       4.2.1 |
 | tinymce-rails                |          UC* |           4.7.9 |           4.9.4 |       7.4.1 |
