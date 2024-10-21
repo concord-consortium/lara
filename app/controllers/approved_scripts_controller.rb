@@ -54,13 +54,17 @@ class ApprovedScriptsController < ApplicationController
     end
   end
 
+  def update_params
+    params.require(:approved_script).permit(:name, :url, :label, :description, :version, :json_url, :authoring_metadata)
+  end
+
   # PUT /approved_scripts/1
   # PUT /approved_scripts/1.json
   def update
     @approved_script = ApprovedScript.find(params[:id])
 
     respond_to do |format|
-      if @approved_script.update_attributes(params[:approved_script])
+      if @approved_script.update_attributes(update_params)
         format.html { redirect_to approved_scripts_url, notice: 'Approved script was successfully updated.' }
         format.json { head :no_content }
       else

@@ -30,7 +30,7 @@
 
   <!-- Scripts -->
   <%= render partial: 'shared/rollbar' %>
-  <%= include_gon %>
+  <%= Gon::Base.render_data %>
   <!--[if IE 8 ]>
   <%= javascript_include_tag 'respond' %>
 	<![endif]-->

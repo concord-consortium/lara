@@ -65,6 +65,15 @@ class Admin::UsersController < ApplicationController
     end
   end
 
+  def update_params
+    params.require(:user).permit(
+      :email, :password, :password_confirmation, :remember_me,
+      :is_admin, :is_author, :first_name, :last_name,
+      :provider, :uid, :authentication_token, :api_key,
+      :has_api_key, :admined_project_ids
+    )
+  end
+
   # PUT /admin/users/1
   # PUT /admin/users/1.json
   def update
@@ -76,7 +85,7 @@ class Admin::UsersController < ApplicationController
     end
 
     respond_to do |format|
-      if @user.update_attributes(params[:user])
+      if @user.update_attributes(update_params)
         format.html { redirect_to edit_admin_user_path(@user), notice: 'User was successfully updated.' }
         format.json { head :no_content }
       else

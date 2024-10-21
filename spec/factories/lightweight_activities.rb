@@ -22,7 +22,7 @@ FactoryGirl.define do
   end
 
   factory :activity_with_pages, :class => LightweightActivity do
-    ignore do
+    transient do
       pages_count 3
     end
     name { generate(:name) }

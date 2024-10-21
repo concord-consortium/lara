@@ -200,14 +200,14 @@ LightweightStandalone::Application.routes.draw do
       match 'question_trackers/find_by_sequence/:sequence_id' =>  "question_trackers#find_by_sequence", via: ['get'], defaults: { format: 'json' }
 
       # For HASBOT C-Rater reports aka HAS Dashboard
-      match 'dashboard_runs' => "dashboard#runs", defaults: { format: 'json' }
-      match 'dashboard_runs_all' => "dashboard#runs_all", defaults: { format: 'json' }
-      match 'dashboard_toc/:runnable_type/:runnable_id' => "dashboard#toc",  defaults: { format: 'json' }
+      match 'dashboard_runs' => "dashboard#runs", :via => 'get', defaults: { format: 'json' }
+      match 'dashboard_runs_all' => "dashboard#runs_all", :via => 'get', defaults: { format: 'json' }
+      match 'dashboard_toc/:runnable_type/:runnable_id' => "dashboard#toc", :via => 'get',  defaults: { format: 'json' }
 
       match "interactive_run_states/:key" => 'interactive_run_states#show', :as => 'show_interactive_run_state', :via => 'get'
       match "interactive_run_states/:key" => 'interactive_run_states#update', :as => 'update_interactive_run_state', :via => 'put'
 
-      match "user_check" => 'user_check#index', defaults: { format: 'json' }
+      match "user_check" => 'user_check#index', :via => 'get', defaults: { format: 'json' }
 
       match 'get_firebase_jwt(/:run_id)' => 'jwt#get_firebase_jwt', :as => 'get_firebase_jwt', :via => 'post'
       match 'get_portal_jwt(/:run_id)' => 'jwt#get_portal_jwt', :as => 'get_portal_jwt', :via => 'post'
@@ -257,11 +257,11 @@ LightweightStandalone::Application.routes.draw do
     end
   end
 
-  match "/publications/show_status/:publishable_type/:publishable_id"=> 'publications#show_status', :as => 'publication_show_status'
-  match "/publications/autopublishing_status/:publishable_type/:publishable_id"=> 'publications#autopublishing_status', :as => 'publication_autopublishing_status'
-  match "/publications/add/:publishable_type/:publishable_id"=> 'publications#add_portal', :as => 'publication_add_portal'
-  match "/publications/publish/:publishable_type/:publishable_id"=> 'publications#publish', :as => 'publication_publish'
-  match "/publications/publish_to_other_portals/:publishable_type/:publishable_id"=> 'publications#publish_to_other_portals', :as => 'publication_publish_to_other_portals'
+  match "/publications/show_status/:publishable_type/:publishable_id"=> 'publications#show_status', :as => 'publication_show_status', :via => 'get'
+  match "/publications/autopublishing_status/:publishable_type/:publishable_id"=> 'publications#autopublishing_status', :as => 'publication_autopublishing_status', :via => 'get'
+  match "/publications/add/:publishable_type/:publishable_id"=> 'publications#add_portal', :as => 'publication_add_portal', :via => 'get'
+  match "/publications/publish/:publishable_type/:publishable_id"=> 'publications#publish', :as => 'publication_publish', :via => 'get'
+  match "/publications/publish_to_other_portals/:publishable_type/:publishable_id"=> 'publications#publish_to_other_portals', :as => 'publication_publish_to_other_portals', :via => 'get'
   match "/import" => 'import#import_status', :as => 'import_status', :via => 'get'
   match "/import" => 'import#import', :as => 'import', :via => 'post'
   match "/import/import_portal_activity" => 'import#import_portal_activity', :as => 'import_portal_activity', :via => 'post', :defaults => { format: 'json' }
@@ -288,17 +288,17 @@ LightweightStandalone::Application.routes.draw do
   get "/sequences/:id/sequence_run/:sequence_run_key" => 'sequences#show', :as => 'sequence_with_sequence_run_key', :constraints => { :id => /\d+/, :sequence_id => /\d+/, :activity_id => /\d+/, :run_key => /[-\w]{36}/ }
   # TODO: Depricate this older dashboard route
   get "/runs/dashboard" => 'api/v1/dashboard#runs'
-  match "/runs/fix_broken_portal_runs/:run_id" => 'runs#fix_broken_portal_runs', :as => 'fix_broken_portal_runs'
-  match "/runs/run_info/:run_id" => 'runs#run_info', :as => 'run_info'
+  match "/runs/fix_broken_portal_runs/:run_id" => 'runs#fix_broken_portal_runs', :as => 'fix_broken_portal_runs', :via => 'get'
+  match "/runs/run_info/:run_id" => 'runs#run_info', :as => 'run_info', :via => 'get'
 
 
   # Simple image proxy used by Drawing Tool.
-  match "/image-proxy" => 'image_proxy#get'
-  match "/home/bad_browser" => "home#bad_browser"
-  match "/print_headers" => "home#print_headers"
+  match "/image-proxy" => 'image_proxy#get', :via => 'get'
+  match "/home/bad_browser" => "home#bad_browser", :via => 'get'
+  match "/print_headers" => "home#print_headers", :via => 'get'
 
   # Remote duplicate
-  match "/remote_duplicate" => "home#remote_duplicate"
+  match "/remote_duplicate" => "home#remote_duplicate", :via => 'get'
 
   # Web interface to show the delayed jobs for admins
   # unfortunately this route has caused other route constraints to stop working?
@@ -307,8 +307,8 @@ LightweightStandalone::Application.routes.draw do
     warden.user && warden.user.admin?
   }
 
-  match "/dev/test_argblock" => 'dev#test_argblock', :as => 'test_argblock'
-  match "/dev/test_mail" => 'dev#test_mail', :as => 'test_mail'
-  match "/dev/test_exception" => 'dev#test_error', :as => 'test_exception'
-  match "/dev/test_error" => 'dev#test_error', :as => 'test_error'
+  match "/dev/test_argblock" => 'dev#test_argblock', :as => 'test_argblock', :via => 'get'
+  match "/dev/test_mail" => 'dev#test_mail', :as => 'test_mail', :via => 'get'
+  match "/dev/test_exception" => 'dev#test_error', :as => 'test_exception', :via => 'get'
+  match "/dev/test_error" => 'dev#test_error', :as => 'test_error', :via => 'get'
 end

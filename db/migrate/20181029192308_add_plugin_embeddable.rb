@@ -5,6 +5,6 @@ class AddPluginEmbeddable < ActiveRecord::Migration
       t.timestamps
     end
 
-    add_index :embeddable_plugins, [:plugin_id], uniq: true
+    add_index :embeddable_plugins, [:plugin_id], unique: true
   end
 end

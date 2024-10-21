@@ -36,14 +36,13 @@ class LightweightActivity < ActiveRecord::Base
   belongs_to :changed_by, :class_name => 'User'
 
   has_many :plugins, as: :plugin_scope, :dependent => :destroy
-  has_many :pages,
-    :foreign_key => 'lightweight_activity_id',
-    :class_name => 'InteractivePage',
-    :order => :position,
-    :dependent => :destroy,
-    :inverse_of => :lightweight_activity
-  has_many :visible_pages, :foreign_key => 'lightweight_activity_id', :class_name => 'InteractivePage', :order => :position,
-             :conditions => {interactive_pages: {is_hidden: false}}
+  has_many :pages, -> { order(:position) },
+    foreign_key: 'lightweight_activity_id',
+    class_name: 'InteractivePage',
+    dependent: :destroy,
+    inverse_of: :lightweight_activity
+  has_many :visible_pages, -> { where(interactive_pages: {is_hidden: false}).order(:position) }, 
+         foreign_key: 'lightweight_activity_id', class_name: 'InteractivePage'
 
   has_many :lightweight_activities_sequences, :dependent => :destroy
   has_many :sequences, :through => :lightweight_activities_sequences

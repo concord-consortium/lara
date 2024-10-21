@@ -7,6 +7,6 @@ class AddSettingsModel < ActiveRecord::Migration
       t.timestamps
     end
 
-    add_index :settings, [:key], uniq: true
+    add_index :settings, [:key], unique: true
   end
 end

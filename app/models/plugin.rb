@@ -2,7 +2,7 @@
 class Plugin < ActiveRecord::Base
 
   attr_accessible :description, :author_data, :approved_script_id, :approved_script, :shared_learner_state_key, :component_label
-
+  
   belongs_to :approved_script
   belongs_to :plugin_scope, polymorphic: true
 
