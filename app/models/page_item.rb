@@ -12,7 +12,7 @@ class PageItem < ActiveRecord::Base
   COLUMN_PRIMARY ="primary"
   COLUMN_SECONDARY ="secondary"
 
-  default_scope order('position ASC')
+  default_scope {order('position ASC')}
 
   def toggle_hideshow_embeddable
     embeddable.is_hidden = !embeddable.is_hidden

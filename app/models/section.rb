@@ -5,7 +5,7 @@ class Section < ActiveRecord::Base
   belongs_to :interactive_page
   has_many :page_items, -> { order(:position) }, dependent: :destroy
 
-  default_scope order('position ASC')
+  default_scope{order('position ASC')}
 
   HEADER_BLOCK = 'header_block'
   INTERACTIVE_BOX = 'interactive_box'
