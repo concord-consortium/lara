@@ -6,7 +6,7 @@
   gem 'activeresource',   :require => false
   gem 'activesupport', :require => false
   gem 'rails', '~> 4.0.13'
-  gem 'railslts-version', :require => false
+  gem 'railslts-version', "= 3.2.22.2", :require => false
   gem 'railties', :require => false
 # end
 
