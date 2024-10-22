@@ -31,9 +31,13 @@ class CRater::ScoreMappingsController < ApplicationController
     end
   end
 
+  def update_params
+    params.require(:c_rater_score_mapping).permit(:mapping, :description)
+  end
+
   def update
-    score_mapping = { mapping: params[:c_rater_score_mapping].slice(:score0,:score1,:score2,:score3,:score4,:score5,:score6)}
-    @score_mapping.description = params[:c_rater_score_mapping][:description]
+    score_mapping = { mapping: update_params.slice(:score0,:score1,:score2,:score3,:score4,:score5,:score6)}
+    @score_mapping.description = update_params[:description]
     @score_mapping.update_attributes(score_mapping)
     @score_mapping.changed_by = current_user
     @score_mapping.save!

@@ -11,6 +11,7 @@ require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
 require 'factory_girl_rails'
 require 'webmock/rspec'
+require 'rspec/active_model/mocks'
 
 # This breaks on travis, but works for me locally
 # require 'ruby-debug'
@@ -24,7 +25,7 @@ SafeYAML::OPTIONS[:deserialize_symbols] = true
 
 Capybara.javascript_driver = :poltergeist
 # Capybars default wait of 2s is too slow for some of our tests in travis
-Capybara.default_wait_time = 5
+Capybara.default_max_wait_time = 5
 
 # this is necessary so shutterbug is correctly initialized in the app that is being tested by Capybara
 # otherwise Capybara or poltergeist will fail not being able to load shutterbug.js

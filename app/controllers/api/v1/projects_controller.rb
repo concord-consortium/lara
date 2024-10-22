@@ -31,9 +31,17 @@ class Api::V1::ProjectsController < API::APIController
     end
   end
 
+  def update_params
+    params.require(:project).permit(
+      :footer, :logo_lara, :logo_ap, :title, :url, :about, :project_key, :copyright,
+      :copyright_image_url, :collaborators, :funders_image_url, :collaborators_image_url,
+      :contact_email, :admin_ids
+    )
+  end
+
   # POST /api/v1/projects/1.json
   def update
-    @updated_project_hash = params[:project]
+    @updated_project_hash = update_params
     @project = Project.find(@updated_project_hash[:id]);
     authorize! :update, @project
 

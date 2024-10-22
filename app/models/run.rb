@@ -50,9 +50,7 @@ class Run < ActiveRecord::Base
   before_validation :check_key
   after_create :update_activity_portal_run_count
 
-  scope :by_key, lambda { |k|
-      {:conditions => { :key => k } }
-    }
+  scope :by_key, ->(k) { where(key: k) }
 
   validates :key,
     :format => { :with => /\A[a-zA-Z0-9\-]*\z/ },

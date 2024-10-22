@@ -3,7 +3,7 @@ class Section < ActiveRecord::Base
   acts_as_list scope: :interactive_page
 
   belongs_to :interactive_page
-  has_many :page_items, order: :position, dependent: :destroy
+  has_many :page_items, -> { order(:position) }, dependent: :destroy
 
   default_scope order('position ASC')
 

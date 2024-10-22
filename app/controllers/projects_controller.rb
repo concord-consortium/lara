@@ -32,10 +32,26 @@ class ProjectsController < ApplicationController
     end
   end
 
+  def update_params
+    params.require(:project).permit(
+      :footer, :logo_lara, :logo_ap, :title, :url, :about, :project_key, :copyright,
+      :copyright_image_url, :collaborators, :funders_image_url, :collaborators_image_url,
+      :contact_email, :admin_ids
+    )
+  end
+
   # PUT /projects/1
   # PUT /projects/1.json
   def update
-    simple_update(@project)
+    respond_to do |format|
+      if @project.update_attributes(update_params)
+        format.html { redirect_to edit_polymorphic_url(@project), notice: "Project was successfully updated." }
+        format.json { head :no_content }
+      else
+        format.html { render action: "edit" }
+        format.json { render json: @project.errors, status: :unprocessable_entity }
+      end
+    end
   end
 
   # DELETE /projects/1

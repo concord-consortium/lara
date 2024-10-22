@@ -14,7 +14,7 @@ FactoryGirl.define do
     show_info_assessment 1
     is_hidden 0
 
-    ignore do
+    transient do
       interactives []
       embeddables []
     end

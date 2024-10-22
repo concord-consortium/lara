@@ -31,9 +31,22 @@ class GlossariesController < ApplicationController
     @projects = Project.visible_to_user(current_user).map {|p| Project.id_and_title(p)}
   end
 
+
+  def update_params
+    params.require(:glossary).permit(:name, :json, :user_id, :legacy_glossary_resource_id, :project_id, :project)
+  end
+
   def update
     authorize! :update, @glossary
-    simple_update(@glossary)
+    respond_to do |format|
+      if @glossary.update_attributes(update_params)
+        format.html { redirect_to edit_polymorphic_url(@glossary), notice: "Glossary was successfully updated." }
+        format.json { head :no_content }
+      else
+        format.html { render action: "edit" }
+        format.json { render json: @glossary.errors, status: :unprocessable_entity }
+      end
+    end
   end
 
   def destroy

@@ -131,11 +131,21 @@ class LightweightActivitiesController < ApplicationController
     end
   end
 
+  def update_params
+    params.require(:lightweight_activity).permit(
+      :name, :user_id, :pages, :related, :description, :defunct,
+      :time_to_complete, :is_locked, :notes, :thumbnail_url, :project_id,
+      :portal_run_count, :layout, :editor_mode, :publication_hash, :copied_from_id,
+      :student_report_enabled, :show_submit_button, :project, :background_image,
+      :glossary_id, :hide_read_aloud, :font_size, :hide_question_numbers, :rubric_id
+    )
+  end
+
   def update
     authorize! :update, @activity
     update_activity_changed_by
     respond_to do |format|
-      if @activity.update_attributes(params[:lightweight_activity])
+      if @activity.update_attributes(update_params)
         format.json { render json: @activity }
         format.html {
           flash[:notice] = "Activity #{@activity.name} was updated."

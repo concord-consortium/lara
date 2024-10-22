@@ -3,13 +3,16 @@ require_dependency "application_controller"
 class SectionsController < ApplicationController
   before_filter :set_page
 
+  def update_params
+    params.require(:section).permit(:title, :position, :show, :layout, :interactive_page, :interactive_page_id, :can_collapse_small, :name)
+  end
 
   def update
     authorize! :update, @page
     puts params[:section]
     respond_to do |format|
       if request.xhr?
-        if @section.update_attributes(params[:section])
+        if @section.update_attributes(update_params)
           # *** respond with the new value ***
           update_activity_changed_by
           format.html { render :text => params[:section].values.first }
@@ -20,7 +23,7 @@ class SectionsController < ApplicationController
         format.json { render :json => @section.to_json }
       else
         format.html do
-          if @section.update_attributes(params[:section])
+          if @section.update_attributes(update_params)
             @section.reload # In case it's the name we updated
             update_activity_changed_by
             flash[:notice] = "Page #{@section.name} was updated."

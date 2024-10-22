@@ -21,7 +21,7 @@ class RemoveDuplicatePluginId < ActiveRecord::Migration
 
   def down
     add_column :embeddable_plugins, :plugin_id, :integer
-    add_index :embeddable_plugins, [:plugin_id], uniq: true
+    add_index :embeddable_plugins, [:plugin_id], unique: true
 
     # go through all EmbeddablePlugins and set a plugin_id for each associated Plugin
     execute <<-SQL

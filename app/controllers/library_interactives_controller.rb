@@ -45,13 +45,21 @@ class LibraryInteractivesController < ApplicationController
     end
   end
 
+  def update_params
+    params.require(:library_interactive).permit(
+      :aspect_ratio_method, :authoring_guidance, :base_url, :click_to_play, :click_to_play_prompt, :description,
+      :enable_learner_state, :full_window, :has_report_url, :image_url, :name, :native_height, :native_width,
+      :no_snapshots, :show_delete_data_button, :thumbnail_url, :export_hash, :customizable, :authorable, :data,
+      :report_item_url, :official
+    )
+  end
   # PUT /library_interactives/1
   # PUT /library_interactives/1.json
   def update
     @library_interactive = LibraryInteractive.find(params[:id])
 
     respond_to do |format|
-      if @library_interactive.update_attributes(params[:library_interactive])
+      if @library_interactive.update_attributes(update_params)
         format.html { redirect_to library_interactives_url, notice: 'Library interactive was successfully updated.' }
         format.json { head :no_content }
       else

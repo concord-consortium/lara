@@ -139,7 +139,7 @@ module Publishable
   def self.included(clazz)
     clazz.class_eval do
 
-      has_many :portal_publications, :as => :publishable, :order => :updated_at
+      has_many :portal_publications, -> { order(:updated_at) }, as: :publishable
 
       # all changes will be queued for auto publishing
       after_update :queue_publish
