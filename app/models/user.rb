@@ -63,7 +63,7 @@ class User < ActiveRecord::Base
     # TODO: token expiration
     auth = nil
     if provider
-      auth = authentications.find_last_by_provider provider
+      auth = authentications.where(provider: provider).last
     else
       auth = most_recent_authentication
     end

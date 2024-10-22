@@ -49,6 +49,6 @@ class Embeddable::MultipleChoicesController < Embeddable::EmbeddablesController
 
   private
   def set_embeddable
-    @embeddable = Embeddable::MultipleChoice.find(params[:id], :include => :choices)
+    @embeddable = Embeddable::MultipleChoice.includes(:choices).find(params[:id])
   end
 end

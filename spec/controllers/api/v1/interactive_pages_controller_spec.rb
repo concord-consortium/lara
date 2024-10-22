@@ -865,7 +865,7 @@ describe Api::V1::InteractivePagesController do
 
   describe "#get_portal_list" do
     it "returns an array of OAuth portals including each portal's name and authorization path" do
-      Api::V1::InteractivePagesController.any_instance.stub(:user_omniauth_authorize_path).and_return('/auth/foo')
+      allow_any_instance_of(Api::V1::InteractivePagesController).to receive(:user_omniauth_authorize_path).and_return('/auth/foo')
       xhr :get, "get_portal_list"
       expect(response.status).to eq(200)
       expect(response.body).to eql({

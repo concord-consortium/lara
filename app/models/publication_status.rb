@@ -33,8 +33,7 @@ module PublicationStatus
       # * Find all activities visible (readable) to the given user
       def self.can_see(user)
         if user.can?(:manage, self)
-          self.scoped # (like all but it keeps a relation, instead of an array)
-        else
+          self.all
           self.my_or_public(user)
         end
       end

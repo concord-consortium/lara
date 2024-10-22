@@ -2,7 +2,7 @@ module LightweightActivityHelper
   # include ReportService::Sender
 
   def toggle_all(label='all', id_prefix='details_')
-    link_to_function("show/hide #{label}", "$('div[id^=#{id_prefix}]').toggle();")
+    link_to("show/hide #{label}", '#', onclick: "$('div[id^=#{id_prefix}]').toggle(); return false;")
   end
 
   def has_good_content(value)

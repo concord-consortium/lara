@@ -111,7 +111,7 @@ class RunsController < ApplicationController
   private
 
   def set_run
-    @run = Run.find_or_create_by_key_and_activity_id(params[:id], params[:activity_id])
+    @run = Run.find_or_create_by(key: params[:id], activity_id: params[:activity_id])
   end
 
   def remote_info(run)

@@ -207,10 +207,10 @@ The status codes are:
 6. Create a PR and insure all the tests pass.
 7. After review/approval merge the branch into the `lara-upgrade` branch.
 
-### Upgrade To Rails 4.2.11.3
+### Upgrade To Rails 4.2.11.38
 
 1. Create a `upgrade-to-rails-4.2` branch off the `lara-upgrade` branch.
-2. Upgrade rails gems in `Gemfile` to last 4.2 version: `gem 'rails', '~> 4.2.11.3'`.  No Ruby upgrade is required.
+2. Upgrade rails gems in `Gemfile` to last 4.2 version: `gem 'rails', '~> 4.2.11.38'`.  No Ruby upgrade is required.
 3. Inside running Docker image run `bundle update rails`
 4. Resolve gem dependency issues until the bundle update succeeds.
 5. Complete upgrade tasks in the [4.1 to 4.2 upgrade guide](https://guides.rubyonrails.org/upgrading_ruby_on_rails.html#upgrading-from-rails-4-1-to-rails-4-2)

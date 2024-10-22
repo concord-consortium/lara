@@ -33,4 +33,5 @@
  *= require lara-typescript
  *= require styled-admin-forms
  *= require project-editing
+ *= require shared/_loading
  */

@@ -184,7 +184,7 @@ class InteractivePagesController < ApplicationController
     params[:embeddable].each do |e|
       # Format: embeddable[]=17.Embeddable::OpenResponse&embeddable[]=20.Embeddable::Xhtml&embeddable[]=19.Embeddable::OpenResponse&embeddable[]=19.Embeddable::Xhtml&embeddable[]=17.Embeddable::MultipleChoice&embeddable[]=16.Embeddable::OpenResponse
       embeddable_id, embeddable_type = e.split('.')
-      pi = PageItem.find(:first, :conditions => { :embeddable_id => embeddable_id, :embeddable_type => embeddable_type })
+      pi = PageItem.where(embeddable_idL embeddable_id, embeddable_type: embeddable_type).first
       # If we move everything to the bottom in order, the first one should be at the top
       pi.move_to_bottom
     end
@@ -236,7 +236,7 @@ class InteractivePagesController < ApplicationController
 
   def set_page
     if params[:activity_id]
-      @activity = LightweightActivity.find(params[:activity_id], :include => :pages)
+      @activity = LightweightActivity.includes(:pages).find(params[:activity_id])
       @page = @activity.pages.find(params[:id])
       # TODO: Exception handling if the ID'd Page doesn't belong to the ID'd Activity
     elsif params[:page_item_id]
@@ -249,7 +249,7 @@ class InteractivePagesController < ApplicationController
       @activity = @page.lightweight_activity
     else
       # I don't like this method much.
-      @page = InteractivePage.find(params[:id], :include => :lightweight_activity)
+      @page = InteractivePage.includes(:lightweight_activity).find(params[:id])
       @activity = @page.lightweight_activity
     end
   end
