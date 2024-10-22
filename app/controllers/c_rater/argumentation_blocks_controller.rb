@@ -99,11 +99,11 @@ class CRater::ArgumentationBlocksController < ApplicationController
                                             hint: CLAIM_HINT,
                                             enable_check_answer: false)
     mc1.create_default_choices
-    page.add_embeddable(mc1, 0, CRater::ARG_SECTION_NAME)
+    page.add_embeddable(mc1, 1, CRater::ARG_SECTION_NAME)
 
     or1 = Embeddable::OpenResponse.create(prompt: I18n.t('ARG_BLOCK.EXPLANATION_PROMPT'),
                                           hint: EXPLANATION_HINT)
-    page.add_embeddable(or1, 1, CRater::ARG_SECTION_NAME)
+    page.add_embeddable(or1, 2, CRater::ARG_SECTION_NAME)
 
     or1_c_rater_settings = CRater::ItemSettings.new(item_id: 'HENRY001')
     or1_c_rater_settings.score_mapping = CRater::ScoreMapping.explanation.last
@@ -119,11 +119,11 @@ class CRater::ArgumentationBlocksController < ApplicationController
     mc2.add_choice('(3)')
     mc2.add_choice('(4)')
     mc2.add_choice("(5) #{I18n.t('ARG_BLOCK.VERY_CERTAIN')}")
-    page.add_embeddable(mc2, 2, CRater::ARG_SECTION_NAME)
+    page.add_embeddable(mc2, 3, CRater::ARG_SECTION_NAME)
 
     or2 = Embeddable::OpenResponse.create(prompt: I18n.t('ARG_BLOCK.RATIONALE_PROMPT'),
                                           hint: CERTAINTY_RATIONALE_HINT)
-    page.add_embeddable(or2, 3, CRater::ARG_SECTION_NAME)
+    page.add_embeddable(or2, 4, CRater::ARG_SECTION_NAME)
 
     or2_c_rater_settings = CRater::ItemSettings.new(item_id: 'HENRY001')
     or2_c_rater_settings.score_mapping = CRater::ScoreMapping.rationale.last

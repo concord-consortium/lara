@@ -10,6 +10,8 @@ describe 'lightweight_activities/print_blank' do
   before(:each) do
     assign(:activity, activity)
     assign(:pages, [page1, page2])
+    allow(page1).to receive(:lightweight_activity).and_return(activity)
+    allow(page2).to receive(:lightweight_activity).and_return(activity)
   end
 
   it 'shows the activity name' do

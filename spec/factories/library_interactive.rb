@@ -10,5 +10,7 @@ FactoryGirl.define do
     base_url  { generate(:li_url) }
     image_url  { generate(:li_url) }
     thumbnail_url  { generate(:li_url) }
+    created_at { Time.now.change(usec: 0) }
+    updated_at { Time.now.change(usec: 0) }
   end
 end

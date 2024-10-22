@@ -35,7 +35,7 @@ class SequenceRun < ActiveRecord::Base
     # there will be multipe runs that match without a user and we won't know which one
     # so without a user we always create one
     if user
-      seq_run = self.where(conditions: conditions).first
+      seq_run = self.where(conditions).first
     end
 
     if seq_run.nil?
