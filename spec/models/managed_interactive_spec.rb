@@ -49,6 +49,8 @@ describe ManagedInteractive do
     it 'has useful values' do
       expected = {
         library_interactive_id: managed_interactive.library_interactive_id,
+        library_interactive_name: managed_interactive.library_interactive.name,
+        library_interactive_base_url: managed_interactive.library_interactive.base_url,
         name: managed_interactive.name,
         url_fragment: managed_interactive.url_fragment,
         authored_state: managed_interactive.authored_state,

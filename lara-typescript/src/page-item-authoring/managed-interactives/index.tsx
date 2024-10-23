@@ -9,9 +9,9 @@ import { useCurrentUser } from "../common/hooks/use-current-user";
 import { AuthoredState } from "../common/components/authored-state";
 import { AuthoringApiUrls } from "../common/types";
 import { ILinkedInteractive } from "../../interactive-api-client";
+import { useAuthoringPreview } from "../common/hooks/use-authoring-preview";
 
 import "react-tabs/style/react-tabs.css";
-import { useAuthoringPreview } from "../common/hooks/use-authoring-preview";
 
 interface Props {
   managedInteractive: IManagedInteractive;
@@ -25,6 +25,8 @@ interface Props {
 export interface IManagedInteractive {
   id: number;
   library_interactive_id: number;
+  library_interactive_name: string;
+  library_interactive_base_url: string;
   name: string;
   url_fragment: string;
   authored_state: string;
@@ -90,6 +92,14 @@ export const ManagedInteractiveAuthoring: React.FC<Props> = (props) => {
       <div className="interactiveItemID">
         InteractiveID: {managedInteractive.interactive_item_id}
       </div>
+
+      <div
+        title={managedInteractive.library_interactive_base_url}
+        style={{margin: "1rem 0", fontWeight: "bold", fontSize: "1rem"}}
+      >
+        {managedInteractive.library_interactive_name} (#{managedInteractive.library_interactive_id})
+      </div>
+
       <fieldset>
         <label htmlFor="name">Name</label>
         <input
