@@ -164,6 +164,7 @@ LightweightStandalone::Application.routes.draw do
         post :add_choice
       end
     end
+    resources :image_question
     resources :xhtmls
     resources :external_scripts
     resources :embeddable_plugins

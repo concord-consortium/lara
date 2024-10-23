@@ -17,5 +17,7 @@ FactoryGirl.define do
     project_key { generate(:project_key) }
     title "MyString"
     url "MyString"
+    created_at { Time.now.change(usec: 0) }
+    updated_at { Time.now.change(usec: 0) }
   end
 end

@@ -42,15 +42,14 @@ class Api::V1::ProjectsController < API::APIController
   # POST /api/v1/projects/1.json
   def update
     @updated_project_hash = update_params
-    @project = Project.find(@updated_project_hash[:id]);
+    @project = Project.find(params[:id]);
     authorize! :update, @project
 
     # extract the ids from the passed admin objects and remove any extra admins in the update that
     # are not in the original, to ensure we can only remove and not add project admins
-    @updated_project_hash[:admin_ids] = (@updated_project_hash[:admins] || [])
+    @updated_project_hash[:admin_ids] = (params[:project][:admins] || [])
       .select { |admin| @project.admin_ids.include?(admin[:id].to_i) }
       .map { |admin| admin[:id] }
-    @updated_project_hash.delete(:admins)
 
     if @project.update_attributes(@updated_project_hash)
       render json: {success: true, project: @project, admins: admin_json(@project)}, status: :ok
