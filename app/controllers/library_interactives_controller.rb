@@ -5,7 +5,7 @@ class LibraryInteractivesController < ApplicationController
   # GET /library_interactives
   # GET /library_interactives.json
   def index
-    @library_interactives = LibraryInteractive.all
+    @library_interactives = LibraryInteractive.order('name ASC, id ASC')
 
     respond_to do |format|
       format.html # index.html.erb
@@ -64,8 +64,8 @@ class LibraryInteractivesController < ApplicationController
   # GET /library_interactives/1/migrate
   # POST /library_interactives/1/migrate
   def migrate
-    @library_interactive = LibraryInteractive.find(params[:id]) 
-    
+    @library_interactive = LibraryInteractive.find(params[:id])
+
     if params[:new_library_interactive_id]
       @mi_count = 0
       ManagedInteractive.where("library_interactive_id = #{params[:id]}").find_each do |mi|
