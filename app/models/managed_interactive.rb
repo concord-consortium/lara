@@ -131,6 +131,8 @@ class ManagedInteractive < ActiveRecord::Base
     # Deliberately ignoring user (will be set in duplicate)
     {
       library_interactive_id: library_interactive_id,
+      library_interactive_name: library_interactive ? library_interactive.name : nil,
+      library_interactive_base_url: library_interactive ? library_interactive.base_url : nil,
       name: name,
       url_fragment: url_fragment,
       authored_state: authored_state,
@@ -211,7 +213,8 @@ class ManagedInteractive < ActiveRecord::Base
   def duplicate
     # Remove linked_interactives from the hash since it can't be mapped to a database column like the other
     # properties in the hash can, and so causes an error when we try to create the duplicate interactive.
-    new_interactive_hash = self.to_hash.except!(:linked_interactives)
+    # Also remove the library interactive name and base url which are only used by the authoring interface.
+    new_interactive_hash = self.to_hash.except!(:linked_interactives, :library_interactive_name, :library_interactive_base_url)
     # Generate a new object with those values
     ManagedInteractive.new(new_interactive_hash)
     # N.B. the duplicate hasn't been saved yet
@@ -229,7 +232,8 @@ class ManagedInteractive < ActiveRecord::Base
   def export
     # Remove linked_interactives from the hash so we don't export linked embeddables. The export method
     # in LaraSerializationHelper provides special handling for this value. See comment there for more.
-    hash = to_hash().except!(:linked_interactives)
+    # Also remove the library interactive name and base url which are only used by the authoring interface.
+    hash = to_hash().except!(:linked_interactives, :library_interactive_name, :library_interactive_base_url)
     hash.delete(:library_interactive_id)
     hash[:library_interactive] = library_interactive ? {
       data: library_interactive.to_hash()
