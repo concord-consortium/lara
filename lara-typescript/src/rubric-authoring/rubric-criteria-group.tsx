@@ -33,6 +33,7 @@ export const RubricCriteriaGroup = ({criteriaGroup, groupIndex}: IRubricCriteria
         ratingDescriptions: {},
         ratingDescriptionsForStudent: {},
         iconUrl: "",
+        iconPhrase: "",
       });
     });
   };

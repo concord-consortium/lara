@@ -12,6 +12,7 @@ export interface IRubricCriterion {
   ratingDescriptions: Record<string, string>;
   ratingDescriptionsForStudent: Record<string, string>;
   iconUrl: string;
+  iconPhrase: string;
 }
 
 export interface IRubricRating {

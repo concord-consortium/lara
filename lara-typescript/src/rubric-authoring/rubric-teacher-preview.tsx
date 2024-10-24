@@ -129,7 +129,7 @@ export const RubricTeacherPreview = ({scoring, setScoring, referenceURL}: IProps
               {criteriaGroup.criteria.map((crit) =>
                 <div className="rubricTableRow" key={crit.id}>
                   <div className="rubricDescription">
-                    {crit.iconUrl && <img src={crit.iconUrl} />}
+                    {crit.iconUrl && <img src={crit.iconUrl} title={crit.iconPhrase} />}
                     <Markdown>{crit.description}</Markdown>
                   </div>
                   {renderRatings(crit)}
