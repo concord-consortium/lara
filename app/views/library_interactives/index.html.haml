@@ -35,7 +35,7 @@
             %li.delete= link_to 'Delete', library_interactive_path(library_interactive), method: :delete, data: { confirm: 'Are you sure?' } if can? :update, library_interactive
       %div.tiny
         %p
-          = link_to library_interactive.base_url, library_interactive.base_url
+          = link_to library_interactive.base_url, library_interactive.base_url, :target => "_blank"
         %p
           Embeddables using this: #{library_interactive.use_count}
         %p
