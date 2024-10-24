@@ -12,13 +12,15 @@ export interface IRubricContext {
 }
 
 const migrate = (rubric: IRubric ) => {
-  // right now there are no explicit version migrations BUT iconPhrase was added without a version bump
-  // so ensure that it is an empty string if it is undefined
+  // right now there are no explicit version migrations BUT iconPhrase and tagSummaryDisplay were
+  // added without a version bump so ensure they have a default value if they are undefined
   rubric.criteriaGroups.forEach(criteriaGroup => {
     criteriaGroup.criteria.forEach(criteria => {
       criteria.iconPhrase = criteria.iconPhrase ?? "";
     });
   });
+  rubric.tagSummaryDisplay = rubric.tagSummaryDisplay ?? "none";
+
   return rubric;
 };
 
@@ -56,6 +58,7 @@ export const useRubricValue = (authoredContentUrl: string): IRubricContext => {
             feedbackLabelForStudent: "",
             criteriaGroups: [],
             ratings: [],
+            tagSummaryDisplay: "none"
           });
         }
         setLoadStatus("loaded");
