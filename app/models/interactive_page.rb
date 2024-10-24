@@ -283,7 +283,7 @@ class InteractivePage < ActiveRecord::Base
     }
   end
 
-  def set_list_position(index)
+  def set_list_position(index, raise_exception_if_save_fails = false)
     # Overloads the acts_as_list version
     self.position = index
     self.save!(:validate => false) # This is the part we need to override
