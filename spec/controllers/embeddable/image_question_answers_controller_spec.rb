@@ -1,5 +1,5 @@
-require 'spec_helper'
+# require 'spec_helper'
 
-describe Embeddable::ImageQuestionAnswersController do
+# describe Embeddable::ImageQuestionAnswersController do
 
-end
+# end
