@@ -92,7 +92,7 @@ export const RubricCriterion = ({index, groupIndex, criterion, onDelete}: Rubric
       <div className="rubric-criterion-body">
         <div className="rubric-criterion-body-row">
           <div className="rubric-criterion-body-row-label" style={{flex: "initial"}}>
-            <label htmlFor="iconUrl">Icon URL:</label>
+            <label htmlFor="iconUrl">Tag Icon URL:</label>
             <input
               type="text"
               value={criterion.iconUrl}
