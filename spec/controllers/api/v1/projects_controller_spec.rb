@@ -59,7 +59,7 @@ describe Api::V1::ProjectsController do
     it "returns a success message and a JSON string when a project is updated" do
       prev_updated_at = project1.updated_at
       admins = project1.admins.map {|a| {id: a.id, email: a.email} }
-      xhr :post, "update", {project: {id: project1.id, title: "New Project Title", admins: admins}}
+      xhr :post, "update", {id: project1.id, project: {title: "New Project Title", admins: admins}}
       expect(response.status).to eq(200)
       expect(response.content_type).to eq("application/json")
       response_body = JSON.parse(response.body, symbolize_names: true)
@@ -71,7 +71,7 @@ describe Api::V1::ProjectsController do
 
     it "allows removing project admins" do
       expect(project1.admins.length).to eq(1)
-      xhr :post, "update", {project: {id: project1.id, title: "New Project Title", admins: []}}
+      xhr :post, "update", {id: project1.id, project: {title: "New Project Title", admins: []}}
       expect(response.status).to eq(200)
       expect(response.content_type).to eq("application/json")
       response_body = JSON.parse(response.body, symbolize_names: true)
@@ -82,7 +82,7 @@ describe Api::V1::ProjectsController do
     it "filters out admins that are not already set" do
       admins = project1.admins.map {|a| {id: a.id, email: a.email} }
       admins.push({id: user2.id, email: user2.email})
-      xhr :post, "update", {project: {id: project1.id, title: "New Project Title", admins: admins}}
+      xhr :post, "update", {id: project1.id, project: {title: "New Project Title", admins: admins}}
       expect(response.status).to eq(200)
       expect(response.content_type).to eq("application/json")
       response_body = JSON.parse(response.body, symbolize_names: true)

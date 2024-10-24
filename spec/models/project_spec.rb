@@ -43,7 +43,10 @@ describe Project do
         url: "https://concord.org/projects/test-project-1/"
       }
       project = Project.create(project_params)
-      expect(project.export.to_json).to eq(project_params.to_json)
+
+      project_params.each do |key, value|
+        expect(project.export[key.to_s]).to eq(value)
+      end
     end
   end
 

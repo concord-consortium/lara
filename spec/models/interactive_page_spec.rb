@@ -597,7 +597,7 @@ describe InteractivePage do
     describe "specifying the section to add to" do
       it "should put everything in the same section" do
         s = page.sections.create({title: "some random section"})
-        embeddables.each { |e| page.add_embeddable(e, 0, s) }
+        embeddables.each { |e| page.add_embeddable(e, 1, s) }
         page.visible_embeddables.each do |e|
           expect(e.page_section).to eq(s.title)
         end
@@ -608,7 +608,7 @@ describe InteractivePage do
     describe "specifying the section to add to by name" do
       it "should put everything in the same section" do
         s = page.sections.create({title: "some random section"})
-        embeddables.each { |e| page.add_embeddable(e, 0, s.title) }
+        embeddables.each { |e| page.add_embeddable(e, 1, s.title) }
         page.visible_embeddables.each do |e|
           expect(e.page_section).to eq(s.title)
         end
@@ -620,7 +620,7 @@ describe InteractivePage do
       it "should put everything in its own section" do
         embeddables.each_with_index do |e, i|
           s = page.sections.create({title: "section #{i}"})
-          page.add_embeddable(e, 0, s.title)
+          page.add_embeddable(e, 1, s.title)
         end
         expect(page.sections.length).to eq(5)
         expect(page.sections.map(&:title)).to include("section 0")

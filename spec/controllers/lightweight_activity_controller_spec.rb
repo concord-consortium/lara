@@ -114,7 +114,7 @@ describe LightweightActivitiesController do
 
     it_behaves_like "runnable resource not launchable by the portal", Run do
       let(:action) { :single_page }
-      let(:resource_template) { 'lightweight_activities/single' }
+      let(:resource_template) { 'lightweight_activities/single_page' }
       let(:base_params) { {id: act.id } }
       let(:base_factory_params) { {activity_id: act.id }}
       let(:run_path_helper) { :activity_single_page_with_run_path }

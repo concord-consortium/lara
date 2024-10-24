@@ -76,7 +76,7 @@ describe SequencesController do
       get :edit, {:id => sequence.to_param}
       expect(assigns(:sequence)).to eq(sequence)
       # User is an admin, so we should see all activities
-      expect(assigns(:activities)).to eq(LightweightActivity.all)
+      expect(assigns(:activities).inspect).to eq(LightweightActivity.all.inspect)
     end
   end
 
@@ -161,8 +161,8 @@ describe SequencesController do
         # specifies that the Sequence created on the previous line
         # receives the :update_attributes message with whatever params are
         # submitted in the request.
-        expect_any_instance_of(Sequence).to receive(:update_attributes).with({'these' => 'params'})
-        put :update, {:id => sequence.to_param, :sequence => {'these' => 'params'}}
+        expect_any_instance_of(Sequence).to receive(:update_attributes).with({'title' => 'New Title'})
+        put :update, {:id => sequence.to_param, :sequence => {'title' => 'New Title'}}
       end
 
       it "assigns the requested sequence as @sequence" do

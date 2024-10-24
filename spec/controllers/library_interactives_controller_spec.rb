@@ -250,7 +250,7 @@ describe LibraryInteractivesController do
 
       describe "GET #index" do
         it "returns a success response" do
-          model = LibraryInteractive.create! valid_attributes
+          model = FactoryGirl.create(:library_interactive, valid_attributes)
           get :index, {}
           expect(response.content_type).to eq("application/json")
           expect(response).to be_successful

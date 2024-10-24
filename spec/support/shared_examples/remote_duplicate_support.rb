@@ -31,11 +31,11 @@ shared_examples "remote duplicate support" do
       let(:fake_portal) { fake_portal_struct.new(portal_name, portal_url, portal_url, secret) }
       let(:user_email) { 'test@email.com' }
       let(:self_url) { "#{request.protocol}#{request.host_with_port}" }
-      let(:headers) { { 'Authorization' => "Bearer #{secret}" } }
+      let(:headers) { { 'HTTP_AUTHORIZATION' => "Bearer #{secret}" } }
 
       before(:each) do
         allow(Concord::AuthPortal).to receive(:all).and_return({ test: fake_portal })
-        @request.env['Authorization'] = "Bearer #{secret}"
+        @request.env['HTTP_AUTHORIZATION'] = "Bearer #{secret}"
         resource.user = user
         resource.save
       end
@@ -49,7 +49,8 @@ shared_examples "remote duplicate support" do
       end
 
       def get_copy
-        owner = User.find_by_email(user_email)
+        owner = User.find_by(email: user_email)
+        puts
         resource.class.where(user_id: owner.id).first
       end
 

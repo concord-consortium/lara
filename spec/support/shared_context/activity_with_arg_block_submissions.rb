@@ -16,10 +16,10 @@ shared_context "activity with arg block submissions" do
     @q4 = FactoryGirl.create(:open_response, prompt: 'q4')
     allow_any_instance_of(InteractivePage).to receive(:show_arg_block).and_return(true)
     page.show_arg_block
-    page.add_embeddable(@q1, 0, 'arg_block')
-    page.add_embeddable(@q2, 1, 'arg_block')
-    page.add_embeddable(@q3, 2, 'arg_block')
-    page.add_embeddable(@q4, 3, 'arg_block')
+    page.add_embeddable(@q1, 1, 'arg_block')
+    page.add_embeddable(@q2, 2, 'arg_block')
+    page.add_embeddable(@q3, 3, 'arg_block')
+    page.add_embeddable(@q4, 4, 'arg_block')
     # Setup answers.
     # Note that we can ignore actual answer text, as it will be provided in fake feedback items.
     @a1 = FactoryGirl.create(:multiple_choice_answer, run: @run, question: @q1)

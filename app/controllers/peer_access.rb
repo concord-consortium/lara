@@ -9,11 +9,10 @@ module PeerAccess
   protected
 
   def get_auth_token(request)
-    header = request.headers["Authorization"]
+    header = request.headers["HTTP_AUTHORIZATION"] || request.headers["Authorization"] || request.headers["authorization"]
     if header && header =~ /^Bearer (.*)$/
       return $1
     end
-    ""
   end
 
   def verified_json_request?

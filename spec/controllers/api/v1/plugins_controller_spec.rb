@@ -66,10 +66,10 @@ describe Api::V1::PluginsController do
     end
 
     context 'at the embeddable level' do
-      let(:plugin_scope) { embeddable_plugin }
 
       describe 'to load author data' do
         it "they should get a not authorized error" do
+          embeddable_plugin.plugin = plugin
           post :load_author_data, plugin_id: plugin_id
           expect(response.status).to eq(403)
         end
@@ -77,6 +77,7 @@ describe Api::V1::PluginsController do
 
       describe 'to save author data' do
         it "they should get a not authorized error" do
+          embeddable_plugin.plugin = plugin
           post :save_author_data, plugin_id: plugin_id, author_data: "new_author_data"
           expect(response.status).to eq(403)
         end
@@ -111,10 +112,10 @@ describe Api::V1::PluginsController do
     end
 
     context 'at the embeddable level' do
-      let(:plugin_scope) { embeddable_plugin }
 
       describe 'to load author data' do
         it "they should get the author data" do
+          embeddable_plugin.plugin = plugin
           post :load_author_data, plugin_id: plugin_id
           expect(response.status).to eq(200)
           expect(json_response_body['author_data']).to eq(author_data)
@@ -123,6 +124,7 @@ describe Api::V1::PluginsController do
 
       describe 'to save author data' do
         it "they should save the author data" do
+          embeddable_plugin.plugin = plugin
           post :save_author_data, plugin_id: plugin_id, author_data: "new_author_data"
           expect(response.status).to eq(200)
           expect(json_response_body['author_data']).to eq("new_author_data")

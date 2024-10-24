@@ -3,7 +3,11 @@ class PageItem < ActiveRecord::Base
   acts_as_list :scope => :section
 
   belongs_to :section
-  belongs_to :embeddable, :polymorphic => true, :dependent => :destroy
+  belongs_to :embeddable, :polymorphic => true
+
+  # Explicitly destroy the embeddable when the page item is destroyed. We previously relied on
+  # :dependent => :destroy, but that began causing recursion issues after upgrading from Rails 3 to 4.
+  after_destroy :destroy_related_embeddable
 
   has_many :primary_linked_items, :foreign_key => :primary_id, :class_name => LinkedPageItem, :dependent => :destroy
   has_many :secondary_linked_items, :foreign_key => :secondary_id, :class_name => LinkedPageItem, :dependent => :destroy
@@ -110,5 +114,9 @@ class PageItem < ActiveRecord::Base
     export_hash[:column] = column
     export_hash[:position] = position
     export_hash
+  end
+
+  def destroy_related_embeddable
+    embeddable.destroy if embeddable.present?
   end
 end

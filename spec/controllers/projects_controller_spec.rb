@@ -103,8 +103,8 @@ describe ProjectsController do
         # specifies that the Project created on the previous line
         # receives the :update_attributes message with whatever params are
         # submitted in the request.
-        expect_any_instance_of(Project).to receive(:update_attributes).with({'these' => 'params'})
-        put :update, {:id => project.id, :project => {'these' => 'params'}}
+        expect_any_instance_of(Project).to receive(:update_attributes).with({'title' => 'New Title'})
+        put :update, {:id => project.id, :project => {'title' => 'New Title'}}
       end
 
       it "assigns the requested project as @project" do
