@@ -169,7 +169,11 @@ describe InteractivePagesController do
       page3
       get :show, :id => act.pages.first.id, :run_key => ar.key
 
-      expect(response.body).to match /<a href="\/activities\/#{act.id}\/pages\/#{act.pages.first.id}\/#{ar.key}" class="pagination-link selected">1<\/a>/
+      # This regex checks for an 'a' tag with the classes 'pagination-link' and 'selected' classes, and should match
+      # regardless of the attributes order in the tag. This replaces a regex that assumed the `class` attribute would
+      # always appear after the `href` which doesn't appear to be the case after we upgraded to Rails 4 from Rails 3.
+      # There is probably a more robust way to approach the problem, but I believe we're checking dead code here.
+      expect(response.body).to match(/<a[^>]*class="[^"]*\bpagination-link\b[^"]*\bselected\b[^"]*"[^>]*href="\/activities\/#{act.id}\/pages\/#{act.pages.first.id}\/#{ar.key}">1<\/a>/)
     end
 
     it 'renders pagination links if it is the only page' do
@@ -325,11 +329,7 @@ describe InteractivePagesController do
       end
 
       it 'does not route with no ID' do
-        begin
-          post :destroy, { :_method => 'delete' }
-          throw "Should not have been able to route with no id"
-        rescue ActiveRecord::RecordNotFound
-        end
+        expect {post :destroy, {:_method => 'delete'}}.to raise_error(ActionController::UrlGenerationError)
       end
     end
 
