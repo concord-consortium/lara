@@ -8,7 +8,7 @@ class CreatePlugin < ActiveRecord::Migration
       t.text    :description
       t.timestamps
     end
- 
-    add_index :plugins, [:plugin_scope_id, :plugin_scope_type], name: 'plugin_scopes', unique: true
+
+    add_index :plugins, [:plugin_scope_id, :plugin_scope_type], name: 'plugin_scopes', unique: false
   end
 end

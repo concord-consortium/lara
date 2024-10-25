@@ -133,7 +133,6 @@ shared_examples "runnable launched with run_key" do |run_type, portal_launchable
         end
 
         it 'renders the resource' do
-          puts response.inspect
           expect(response).to render_template(resource_template)
         end
 

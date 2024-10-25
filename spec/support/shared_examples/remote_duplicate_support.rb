@@ -50,7 +50,6 @@ shared_examples "remote duplicate support" do
 
       def get_copy
         owner = User.find_by(email: user_email)
-        puts
         resource.class.where(user_id: owner.id).first
       end
 
