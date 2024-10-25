@@ -134,10 +134,8 @@ class Glossary < ActiveRecord::Base
   end
 
   def self.public_for_user(user)
-    if user && (user.admin? || user.author?)
+    if user && (user.admin? || user.author? || user.project_admin_of?(self.project))
       self.all
-    elsif user
-      self.select { |glossary| user.project_admin_of?(glossary.project) }
     else
       self.none
     end
