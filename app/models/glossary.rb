@@ -8,6 +8,7 @@ class Glossary < ActiveRecord::Base
   has_many :lightweight_activities
 
   # scope :public, self.scoped # all glossaries are public
+  scope :is_public, -> { self.all }
   scope :none, -> { where("1 = 0") } # used to return "my glossaries" to no user
   scope :newest, -> { order(updated_at: :desc) }
 
@@ -133,8 +134,10 @@ class Glossary < ActiveRecord::Base
   end
 
   def self.public_for_user(user)
-    if user && (user.admin? || user.author? || user.project_admin_of?(self.project))
+    if user && (user.admin? || user.author?)
       self.all
+    elsif user
+      self.select { |glossary| user.project_admin_of?(glossary.project) }
     else
       self.none
     end

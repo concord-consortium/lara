@@ -11,6 +11,7 @@ class Rubric < ActiveRecord::Base
   after_create :create_authored_content
 
   # scope :public, self.scoped # all rubrics are public
+  scope :is_public, -> { self.all }
   scope :none, -> { where("1 = 0") } # used to return "my rubrics" to no user
   scope :newest, -> { order(updated_at: :desc) }
 
@@ -126,8 +127,10 @@ class Rubric < ActiveRecord::Base
   end
 
   def self.public_for_user(user)
-    if user && (user.admin? || user.author? || user.project_admin_of?(self.project))
+    if user && (user.admin? || user.author?)
       self.all
+    elsif user
+      self.select { |rubric| user.project_admin_of?(rubric.project) }
     else
       self.none
     end
