@@ -300,8 +300,6 @@ LightweightStandalone::Application.routes.draw do
 
   # Remote duplicate
   match "/remote_duplicate" => "home#remote_duplicate", :via => 'post'
-  # match "/remote_duplicate" => "home#remote_duplicate", :via => 'post', as: :remote_duplicate
-
 
   # Web interface to show the delayed jobs for admins
   # unfortunately this route has caused other route constraints to stop working?
