@@ -11,21 +11,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20240806145141) do
+ActiveRecord::Schema.define(version: 20241018134619) do
 
   create_table "admin_events", force: true do |t|
     t.string   "kind"
     t.text     "message"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "approved_scripts", force: true do |t|
     t.string   "name"
     t.string   "url"
     t.text     "description"
-    t.datetime "created_at",                                              null: false
-    t.datetime "updated_at",                                              null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string   "label"
     t.decimal  "version",            precision: 10, scale: 0, default: 1
     t.string   "json_url"
@@ -38,8 +38,8 @@ ActiveRecord::Schema.define(version: 20240806145141) do
     t.string   "provider"
     t.string   "uid"
     t.string   "token"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "authentications", ["uid", "provider"], name: "index_authentications_on_uid_and_provider", unique: true, using: :btree
@@ -51,8 +51,8 @@ ActiveRecord::Schema.define(version: 20240806145141) do
     t.integer  "user_id"
     t.integer  "container_id"
     t.string   "container_type"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "c_rater_feedback_items", force: true do |t|
@@ -64,8 +64,8 @@ ActiveRecord::Schema.define(version: 20240806145141) do
     t.integer  "score"
     t.text     "feedback_text"
     t.text     "response_info"
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "feedback_submission_id"
     t.string   "feedback_submission_type"
   end
@@ -75,8 +75,8 @@ ActiveRecord::Schema.define(version: 20240806145141) do
 
   create_table "c_rater_feedback_submissions", force: true do |t|
     t.integer  "usefulness_score"
-    t.datetime "created_at",           null: false
-    t.datetime "updated_at",           null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "interactive_page_id"
     t.integer  "run_id"
     t.integer  "collaboration_run_id"
@@ -91,17 +91,17 @@ ActiveRecord::Schema.define(version: 20240806145141) do
     t.integer  "score_mapping_id"
     t.integer  "provider_id"
     t.string   "provider_type"
-    t.datetime "created_at",       null: false
-    t.datetime "updated_at",       null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "c_rater_item_settings", ["provider_id", "provider_type"], name: "c_rat_set_prov_idx", using: :btree
-  add_index "c_rater_item_settings", ["score_mapping_id"], name: "index_c_rater_settings_on_score_mapping_id", using: :btree
+  add_index "c_rater_item_settings", ["score_mapping_id"], name: "index_c_rater_item_settings_on_score_mapping_id", using: :btree
 
   create_table "c_rater_score_mappings", force: true do |t|
     t.text     "mapping"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string   "description"
     t.integer  "user_id"
     t.integer  "changed_by_id"
@@ -110,8 +110,8 @@ ActiveRecord::Schema.define(version: 20240806145141) do
   create_table "collaboration_runs", force: true do |t|
     t.integer  "user_id"
     t.string   "collaborators_data_url"
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "collaboration_runs", ["collaborators_data_url"], name: "collaboration_runs_endpoint_idx", using: :btree
@@ -126,8 +126,8 @@ ActiveRecord::Schema.define(version: 20240806145141) do
     t.datetime "failed_at"
     t.string   "locked_by"
     t.string   "queue"
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "delayed_jobs", ["priority", "run_at"], name: "delayed_jobs_priority", using: :btree
@@ -136,9 +136,11 @@ ActiveRecord::Schema.define(version: 20240806145141) do
     t.integer  "approved_script_id"
     t.text     "configuration"
     t.text     "description"
-    t.datetime "created_at",         null: false
-    t.datetime "updated_at",         null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
+
+  add_index "embeddable_external_scripts", ["approved_script_id"], name: "index_embeddable_external_scripts_on_approved_script_id", using: :btree
 
   create_table "embeddable_feedback_items", force: true do |t|
     t.integer  "answer_id"
@@ -146,8 +148,8 @@ ActiveRecord::Schema.define(version: 20240806145141) do
     t.integer  "score"
     t.text     "feedback_text"
     t.text     "answer_text"
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "feedback_submission_id"
     t.string   "feedback_submission_type"
   end
@@ -160,8 +162,8 @@ ActiveRecord::Schema.define(version: 20240806145141) do
     t.text     "answer_text"
     t.string   "image_url"
     t.integer  "image_question_id"
-    t.datetime "created_at",                                             null: false
-    t.datetime "updated_at",                                             null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.text     "annotation",          limit: 2147483647
     t.string   "annotated_image_url"
     t.boolean  "is_dirty",                               default: false
@@ -175,8 +177,8 @@ ActiveRecord::Schema.define(version: 20240806145141) do
   create_table "embeddable_image_questions", force: true do |t|
     t.string   "name"
     t.text     "prompt"
-    t.datetime "created_at",                                                null: false
-    t.datetime "updated_at",                                                null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string   "bg_source",                        default: "Shutterbug"
     t.string   "bg_url"
     t.text     "drawing_prompt"
@@ -196,16 +198,16 @@ ActiveRecord::Schema.define(version: 20240806145141) do
     t.integer  "run_id"
     t.integer  "labbook_id"
     t.boolean  "is_dirty",   default: false
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "embeddable_labbook_answers", ["labbook_id"], name: "index_embeddable_labbook_answers_on_labbook_id", using: :btree
   add_index "embeddable_labbook_answers", ["run_id"], name: "index_embeddable_labbook_answers_on_run_id", using: :btree
 
   create_table "embeddable_labbooks", force: true do |t|
-    t.datetime "created_at",                                       null: false
-    t.datetime "updated_at",                                       null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "action_type",                      default: 0,     null: false
     t.string   "name"
     t.text     "prompt"
@@ -224,8 +226,8 @@ ActiveRecord::Schema.define(version: 20240806145141) do
   create_table "embeddable_multiple_choice_answers", force: true do |t|
     t.integer  "run_id"
     t.integer  "multiple_choice_id"
-    t.datetime "created_at",                         null: false
-    t.datetime "updated_at",                         null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.boolean  "is_dirty",           default: false
     t.boolean  "is_final",           default: false
   end
@@ -237,8 +239,8 @@ ActiveRecord::Schema.define(version: 20240806145141) do
     t.integer  "multiple_choice_id"
     t.text     "choice"
     t.boolean  "is_correct"
-    t.datetime "created_at",         null: false
-    t.datetime "updated_at",         null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.text     "prompt"
   end
 
@@ -247,8 +249,8 @@ ActiveRecord::Schema.define(version: 20240806145141) do
   create_table "embeddable_multiple_choices", force: true do |t|
     t.string   "name"
     t.text     "prompt"
-    t.datetime "created_at",                                                null: false
-    t.datetime "updated_at",                                                null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.boolean  "custom",                           default: false
     t.boolean  "enable_check_answer",              default: true
     t.boolean  "multi_answer",                     default: false
@@ -268,8 +270,8 @@ ActiveRecord::Schema.define(version: 20240806145141) do
     t.text     "answer_text"
     t.integer  "run_id"
     t.integer  "open_response_id"
-    t.datetime "created_at",                       null: false
-    t.datetime "updated_at",                       null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.boolean  "is_dirty",         default: false
     t.boolean  "is_final",         default: false
   end
@@ -281,8 +283,8 @@ ActiveRecord::Schema.define(version: 20240806145141) do
   create_table "embeddable_open_responses", force: true do |t|
     t.string   "name"
     t.text     "prompt"
-    t.datetime "created_at",                                                null: false
-    t.datetime "updated_at",                                                null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.boolean  "is_prediction",                    default: false
     t.boolean  "give_prediction_feedback",         default: false
     t.text     "prediction_feedback"
@@ -295,8 +297,8 @@ ActiveRecord::Schema.define(version: 20240806145141) do
   end
 
   create_table "embeddable_plugins", force: true do |t|
-    t.datetime "created_at",                      null: false
-    t.datetime "updated_at",                      null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "embeddable_id"
     t.string   "embeddable_type"
     t.boolean  "is_hidden",       default: false
@@ -306,8 +308,8 @@ ActiveRecord::Schema.define(version: 20240806145141) do
   create_table "embeddable_xhtmls", force: true do |t|
     t.string   "name"
     t.text     "content"
-    t.datetime "created_at",                    null: false
-    t.datetime "updated_at",                    null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.boolean  "is_hidden",     default: false
     t.boolean  "is_half_width", default: false
     t.boolean  "is_callout",    default: true
@@ -316,8 +318,8 @@ ActiveRecord::Schema.define(version: 20240806145141) do
   create_table "global_interactive_states", force: true do |t|
     t.integer  "run_id"
     t.text     "raw_data"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "global_interactive_states", ["run_id"], name: "index_global_interactive_states_on_run_id", using: :btree
@@ -326,8 +328,8 @@ ActiveRecord::Schema.define(version: 20240806145141) do
     t.string   "name"
     t.text     "json",                        limit: 16777215
     t.integer  "user_id"
-    t.datetime "created_at",                                   null: false
-    t.datetime "updated_at",                                   null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string   "legacy_glossary_resource_id"
     t.integer  "project_id"
   end
@@ -336,8 +338,8 @@ ActiveRecord::Schema.define(version: 20240806145141) do
     t.string   "url"
     t.text     "caption"
     t.text     "credit"
-    t.datetime "created_at",                                null: false
-    t.datetime "updated_at",                                null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.boolean  "show_lightbox",    default: true
     t.string   "credit_url"
     t.boolean  "is_hidden",        default: false
@@ -350,8 +352,8 @@ ActiveRecord::Schema.define(version: 20240806145141) do
     t.integer  "user_id"
     t.integer  "import_item_id"
     t.string   "import_item_type"
-    t.datetime "created_at",       null: false
-    t.datetime "updated_at",       null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "interactive_items", force: true do |t|
@@ -359,8 +361,8 @@ ActiveRecord::Schema.define(version: 20240806145141) do
     t.integer  "interactive_id"
     t.string   "interactive_type"
     t.integer  "position"
-    t.datetime "created_at",          null: false
-    t.datetime "updated_at",          null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "interactive_items", ["interactive_id", "interactive_type"], name: "interactive_items_interactive_idx", using: :btree
@@ -370,8 +372,8 @@ ActiveRecord::Schema.define(version: 20240806145141) do
     t.string   "name"
     t.integer  "lightweight_activity_id"
     t.integer  "position"
-    t.datetime "created_at",                                        null: false
-    t.datetime "updated_at",                                        null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.text     "sidebar"
     t.boolean  "show_sidebar",            default: false
     t.boolean  "show_interactive",        default: false
@@ -394,8 +396,8 @@ ActiveRecord::Schema.define(version: 20240806145141) do
     t.string   "interactive_type"
     t.integer  "run_id"
     t.text     "raw_data",         limit: 16777215
-    t.datetime "created_at",                                        null: false
-    t.datetime "updated_at",                                        null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.text     "learner_url"
     t.boolean  "is_dirty",                          default: false
     t.string   "key"
@@ -423,13 +425,14 @@ ActiveRecord::Schema.define(version: 20240806145141) do
     t.string   "aspect_ratio_method",     default: "DEFAULT"
     t.integer  "native_width"
     t.integer  "native_height"
-    t.datetime "created_at",                                  null: false
-    t.datetime "updated_at",                                  null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string   "export_hash"
     t.boolean  "customizable",            default: false
     t.boolean  "authorable",              default: false
     t.text     "report_item_url"
     t.boolean  "official",                default: false
+    t.boolean  "hide_question_number",    default: false
   end
 
   add_index "library_interactives", ["export_hash"], name: "library_interactives_export_hash_idx", using: :btree
@@ -438,8 +441,8 @@ ActiveRecord::Schema.define(version: 20240806145141) do
     t.string   "name"
     t.integer  "user_id"
     t.string   "publication_status",                  default: "private"
-    t.datetime "created_at",                                                   null: false
-    t.datetime "updated_at",                                                   null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "offerings_count"
     t.text     "related"
     t.text     "description"
@@ -480,8 +483,8 @@ ActiveRecord::Schema.define(version: 20240806145141) do
     t.integer  "lightweight_activity_id", default: 1, null: false
     t.integer  "sequence_id",             default: 1, null: false
     t.integer  "position",                default: 1
-    t.datetime "created_at",                          null: false
-    t.datetime "updated_at",                          null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "lightweight_activities_sequences", ["lightweight_activity_id"], name: "index_activities_sequence_join_by_activity", using: :btree
@@ -491,8 +494,8 @@ ActiveRecord::Schema.define(version: 20240806145141) do
     t.integer  "primary_id"
     t.integer  "secondary_id"
     t.string   "label"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "linked_page_items", ["primary_id", "secondary_id", "label"], name: "index_linked_page_items_unique", unique: true, using: :btree
@@ -522,11 +525,13 @@ ActiveRecord::Schema.define(version: 20240806145141) do
     t.integer  "linked_interactive_id"
     t.boolean  "is_half_width",                    default: false
     t.boolean  "show_in_featured_question_report", default: true
-    t.datetime "created_at",                                       null: false
-    t.datetime "updated_at",                                       null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string   "linked_interactive_type"
     t.integer  "legacy_ref_id"
     t.string   "legacy_ref_type"
+    t.boolean  "inherit_hide_question_number",     default: true
+    t.boolean  "custom_hide_question_number",      default: false
   end
 
   add_index "managed_interactives", ["legacy_ref_id", "legacy_ref_type"], name: "managed_interactive_legacy_idx", using: :btree
@@ -543,8 +548,8 @@ ActiveRecord::Schema.define(version: 20240806145141) do
   create_table "mw_interactives", force: true do |t|
     t.string   "name"
     t.text     "url"
-    t.datetime "created_at",                                           null: false
-    t.datetime "updated_at",                                           null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "native_width"
     t.integer  "native_height"
     t.boolean  "enable_learner_state",             default: false
@@ -564,6 +569,7 @@ ActiveRecord::Schema.define(version: 20240806145141) do
     t.string   "aspect_ratio_method",              default: "DEFAULT"
     t.string   "linked_interactive_type"
     t.text     "report_item_url"
+    t.boolean  "hide_question_number",             default: false
   end
 
   add_index "mw_interactives", ["linked_interactive_id"], name: "index_mw_interactives_on_linked_interactive_id", using: :btree
@@ -573,8 +579,8 @@ ActiveRecord::Schema.define(version: 20240806145141) do
     t.integer  "embeddable_id"
     t.string   "embeddable_type"
     t.integer  "position"
-    t.datetime "created_at",          null: false
-    t.datetime "updated_at",          null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string   "old_section"
     t.integer  "section_id"
     t.string   "column"
@@ -586,8 +592,8 @@ ActiveRecord::Schema.define(version: 20240806145141) do
 
   create_table "pending_portal_publications", force: true do |t|
     t.integer  "portal_publication_id"
-    t.datetime "created_at",            null: false
-    t.datetime "updated_at",            null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "pending_portal_publications", ["portal_publication_id"], name: "unique_publications_per_portal", unique: true, using: :btree
@@ -597,8 +603,8 @@ ActiveRecord::Schema.define(version: 20240806145141) do
     t.integer  "user_id"
     t.integer  "run_id"
     t.string   "shared_learner_state_key"
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.text     "state"
   end
 
@@ -612,13 +618,13 @@ ActiveRecord::Schema.define(version: 20240806145141) do
     t.string   "plugin_scope_type"
     t.text     "author_data"
     t.text     "description"
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string   "shared_learner_state_key"
     t.string   "component_label"
   end
 
-  add_index "plugins", ["plugin_scope_id", "plugin_scope_type"], name: "plugin_scopes", using: :btree
+  add_index "plugins", ["plugin_scope_id", "plugin_scope_type"], name: "plugin_scopes", unique: false, using: :btree
 
   create_table "portal_publications", force: true do |t|
     t.string   "portal_url"
@@ -626,8 +632,8 @@ ActiveRecord::Schema.define(version: 20240806145141) do
     t.boolean  "success"
     t.integer  "publishable_id"
     t.string   "publishable_type"
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string   "publication_hash", limit: 40
     t.integer  "publication_time"
     t.text     "sent_data"
@@ -638,19 +644,21 @@ ActiveRecord::Schema.define(version: 20240806145141) do
   create_table "project_admins", force: true do |t|
     t.integer  "user_id"
     t.integer  "project_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
+  add_index "project_admins", ["project_id"], name: "index_project_admins_on_project_id", using: :btree
   add_index "project_admins", ["user_id", "project_id"], name: "index_project_admins_on_user_id_and_project_id", unique: true, using: :btree
+  add_index "project_admins", ["user_id"], name: "index_project_admins_on_user_id", using: :btree
 
   create_table "projects", force: true do |t|
     t.string   "title"
     t.string   "logo_lara"
     t.string   "url"
     t.text     "footer"
-    t.datetime "created_at",              null: false
-    t.datetime "updated_at",              null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.text     "about"
     t.string   "logo_ap"
     t.string   "project_key"
@@ -672,12 +680,15 @@ ActiveRecord::Schema.define(version: 20240806145141) do
     t.integer "user_id"
   end
 
+  add_index "question_trackers", ["master_question_id", "master_question_type"], name: "index_question_trackers_on_master_question", using: :btree
+  add_index "question_trackers", ["user_id"], name: "index_question_trackers_on_user_id", using: :btree
+
   create_table "rubrics", force: true do |t|
     t.string   "name"
     t.integer  "user_id"
     t.integer  "project_id"
-    t.datetime "created_at",          null: false
-    t.datetime "updated_at",          null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "authored_content_id"
     t.string   "doc_url"
   end
@@ -685,8 +696,8 @@ ActiveRecord::Schema.define(version: 20240806145141) do
   create_table "runs", force: true do |t|
     t.integer  "user_id"
     t.integer  "run_count"
-    t.datetime "created_at",                           null: false
-    t.datetime "updated_at",                           null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string   "key"
     t.integer  "activity_id"
     t.string   "remote_id"
@@ -723,8 +734,8 @@ ActiveRecord::Schema.define(version: 20240806145141) do
     t.integer  "position"
     t.integer  "interactive_page_id"
     t.boolean  "can_collapse_small"
-    t.datetime "created_at",          null: false
-    t.datetime "updated_at",          null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string   "name"
   end
 
@@ -735,8 +746,8 @@ ActiveRecord::Schema.define(version: 20240806145141) do
     t.integer  "sequence_id"
     t.string   "remote_id"
     t.string   "remote_endpoint"
-    t.datetime "created_at",       null: false
-    t.datetime "updated_at",       null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string   "key"
     t.string   "context_id"
     t.string   "class_info_url"
@@ -752,8 +763,8 @@ ActiveRecord::Schema.define(version: 20240806145141) do
   create_table "sequences", force: true do |t|
     t.string   "title"
     t.text     "description"
-    t.datetime "created_at",                                                   null: false
-    t.datetime "updated_at",                                                   null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "user_id"
     t.integer  "project_id"
     t.text     "logo"
@@ -782,17 +793,20 @@ ActiveRecord::Schema.define(version: 20240806145141) do
   create_table "settings", force: true do |t|
     t.string   "key"
     t.text     "value"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
-  add_index "settings", ["key"], name: "index_settings_on_key", using: :btree
+  add_index "settings", ["key"], name: "index_settings_on_key", unique: true, using: :btree
 
   create_table "tracked_questions", force: true do |t|
     t.integer "question_tracker_id"
     t.integer "question_id"
     t.string  "question_type"
   end
+
+  add_index "tracked_questions", ["question_id", "question_type"], name: "index_tracked_questions_on_question_id_and_question_type", using: :btree
+  add_index "tracked_questions", ["question_tracker_id"], name: "index_tracked_questions_on_question_tracker_id", using: :btree
 
   create_table "users", force: true do |t|
     t.string   "email",                              default: "",    null: false
@@ -808,8 +822,8 @@ ActiveRecord::Schema.define(version: 20240806145141) do
     t.string   "confirmation_token"
     t.datetime "confirmed_at"
     t.datetime "confirmation_sent_at"
-    t.datetime "created_at",                                         null: false
-    t.datetime "updated_at",                                         null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.boolean  "is_admin",                           default: false
     t.boolean  "is_author",                          default: false
     t.text     "api_key"
@@ -825,8 +839,8 @@ ActiveRecord::Schema.define(version: 20240806145141) do
     t.string   "poster_url"
     t.text     "caption"
     t.text     "credit"
-    t.datetime "created_at",                                null: false
-    t.datetime "updated_at",                                null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "width",            default: 556,            null: false
     t.integer  "height",           default: 240,            null: false
     t.boolean  "is_hidden",        default: false
@@ -838,8 +852,8 @@ ActiveRecord::Schema.define(version: 20240806145141) do
     t.string   "url",                  null: false
     t.string   "format",               null: false
     t.integer  "video_interactive_id"
-    t.datetime "created_at",           null: false
-    t.datetime "updated_at",           null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "video_sources", ["video_interactive_id"], name: "index_video_sources_on_video_interactive_id", using: :btree

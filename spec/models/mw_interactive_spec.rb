@@ -29,6 +29,7 @@ describe MwInteractive do
         native_width: interactive.native_width,
         native_height: interactive.native_height,
         enable_learner_state: interactive.enable_learner_state,
+        hide_question_number: interactive.hide_question_number,
         show_delete_data_button: interactive.show_delete_data_button,
         has_report_url: interactive.has_report_url,
         click_to_play: interactive.click_to_play,
@@ -219,5 +220,50 @@ describe MwInteractive do
       end
     end
 
+  end
+
+
+  describe "reportable?" do
+    let(:enable_learner_state) { false }
+    let(:hide_question_number) { false }
+    let(:mw_interactive) { FactoryGirl.create(:mw_interactive,
+      :enable_learner_state => enable_learner_state,
+      :hide_question_number => hide_question_number
+    )}
+
+    describe "when enable_learner_state=false and hide_question_number=false" do
+      let(:enable_learner_state) { false }
+      let(:hide_question_number) { false }
+
+      it "returns false" do
+        expect(mw_interactive.reportable?).to eq false
+      end
+    end
+
+    describe "when enable_learner_state=false and hide_question_number=true" do
+      let(:enable_learner_state) { false }
+      let(:hide_question_number) { true }
+
+      it "returns false" do
+        expect(mw_interactive.reportable?).to eq false
+      end
+    end
+
+    describe "when enable_learner_state=true and hide_question_number=false" do
+      let(:enable_learner_state) { true }
+      let(:hide_question_number) { false }
+
+      it "returns true" do
+        expect(mw_interactive.reportable?).to eq true
+      end
+    end
+
+    describe "when enable_learner_state=true and hide_question_number=true" do
+      let(:enable_learner_state) { true }
+      let(:hide_question_number) { true }
+      it "returns false" do
+        expect(mw_interactive.reportable?).to eq false
+      end
+    end
   end
 end

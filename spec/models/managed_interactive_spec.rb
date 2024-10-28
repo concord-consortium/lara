@@ -3,6 +3,9 @@ require 'spec_helper'
 describe ManagedInteractive do
   it_behaves_like "a base interactive", :managed_interactive
 
+  let(:enable_learner_state) { true }
+  let(:hide_question_number) { false }
+
   let(:library_interactive) { FactoryGirl.create(:library_interactive,
                                                  :name => 'Test Library managed_Interactive',
                                                  :base_url => 'http://concord.org/',
@@ -13,7 +16,8 @@ describe ManagedInteractive do
                                                  :full_window => true,
                                                  :click_to_play_prompt => "base click_to_play_prompt",
                                                  :image_url => "http://base.url/image",
-                                                 :enable_learner_state => true,
+                                                 :enable_learner_state => enable_learner_state,
+                                                 :hide_question_number => hide_question_number,
                                                  :show_delete_data_button => false,
                                                  :has_report_url => true,
                                                  :no_snapshots => true,
@@ -45,6 +49,8 @@ describe ManagedInteractive do
     it 'has useful values' do
       expected = {
         library_interactive_id: managed_interactive.library_interactive_id,
+        library_interactive_name: managed_interactive.library_interactive.name,
+        library_interactive_base_url: managed_interactive.library_interactive.base_url,
         name: managed_interactive.name,
         url_fragment: managed_interactive.url_fragment,
         authored_state: managed_interactive.authored_state,
@@ -66,7 +72,9 @@ describe ManagedInteractive do
         inherit_image_url: managed_interactive.inherit_image_url,
         custom_image_url: managed_interactive.custom_image_url,
         linked_interactives: [],
-        linked_interactive_item_id: nil
+        linked_interactive_item_id: nil,
+        inherit_hide_question_number: managed_interactive.inherit_hide_question_number,
+        custom_hide_question_number: managed_interactive.custom_hide_question_number,
        }
       expect(managed_interactive.to_hash).to eq(expected)
     end
@@ -123,7 +131,9 @@ describe ManagedInteractive do
         inherit_click_to_play_prompt: managed_interactive.inherit_click_to_play_prompt,
         custom_click_to_play_prompt: managed_interactive.custom_click_to_play_prompt,
         inherit_image_url: managed_interactive.inherit_image_url,
-        custom_image_url: managed_interactive.custom_image_url
+        custom_image_url: managed_interactive.custom_image_url,
+        inherit_hide_question_number: managed_interactive.inherit_hide_question_number,
+        custom_hide_question_number: managed_interactive.custom_hide_question_number,
       })
     end
   end
@@ -137,6 +147,7 @@ describe ManagedInteractive do
         native_width: managed_interactive.native_width,
         native_height: managed_interactive.native_height,
         enable_learner_state: managed_interactive.enable_learner_state,
+        hide_question_number: managed_interactive.hide_question_number,
         show_delete_data_button: managed_interactive.show_delete_data_button,
         has_report_url: managed_interactive.has_report_url,
         click_to_play: managed_interactive.click_to_play,
@@ -292,6 +303,18 @@ describe ManagedInteractive do
       expect(managed_interactive.click_to_play).to eq !library_interactive.click_to_play
     end
 
+    it "returns hide_question_number" do
+      expect(managed_interactive.hide_question_number).to eq library_interactive.hide_question_number
+      managed_interactive.custom_hide_question_number = !library_interactive.hide_question_number
+      expect(managed_interactive.hide_question_number).to eq library_interactive.hide_question_number
+      managed_interactive.inherit_hide_question_number = false
+      expect(managed_interactive.hide_question_number).to eq !library_interactive.hide_question_number
+      managed_interactive.inherit_hide_question_number = true
+      expect(managed_interactive.hide_question_number).to eq library_interactive.hide_question_number
+      managed_interactive.library_interactive = nil
+      expect(managed_interactive.hide_question_number).to eq !library_interactive.hide_question_number
+    end
+
     it "returns full_window" do
       expect(managed_interactive.full_window).to eq library_interactive.full_window
       managed_interactive.custom_full_window = !library_interactive.full_window
@@ -407,6 +430,43 @@ describe ManagedInteractive do
       managed_interactive.save!
       managed_interactive.reload
       expect(managed_interactive.linked_interactive).to eq mw_interactive2
+    end
+  end
+
+  describe "reportable?" do
+    describe "when enable_learner_state=false and hide_question_number=false" do
+      let(:enable_learner_state) { false }
+      let(:hide_question_number) { false }
+
+      it "returns false" do
+        expect(managed_interactive.reportable?).to eq false
+      end
+    end
+
+    describe "when enable_learner_state=false and hide_question_number=true" do
+      let(:enable_learner_state) { false }
+      let(:hide_question_number) { true }
+
+      it "returns false" do
+        expect(managed_interactive.reportable?).to eq false
+      end
+    end
+
+    describe "when enable_learner_state=true and hide_question_number=false" do
+      let(:enable_learner_state) { true }
+      let(:hide_question_number) { false }
+
+      it "returns true" do
+        expect(managed_interactive.reportable?).to eq true
+      end
+    end
+
+    describe "when enable_learner_state=true and hide_question_number=true" do
+      let(:enable_learner_state) { true }
+      let(:hide_question_number) { true }
+      it "returns false" do
+        expect(managed_interactive.reportable?).to eq false
+      end
     end
   end
 end
