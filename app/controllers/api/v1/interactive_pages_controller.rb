@@ -287,7 +287,11 @@ class Api::V1::InteractivePagesController < API::APIController
 
   def data_update_params
     params[:page_item].require(:data).permit(
+      :aspect_ratio_method,
       :authored_state,
+      :click_to_play,
+      :click_to_play_prompt,
+      :content,
       :custom_aspect_ratio_method,
       :custom_click_to_play,
       :custom_click_to_play_prompt,
@@ -296,6 +300,10 @@ class Api::V1::InteractivePagesController < API::APIController
       :custom_image_url,
       :custom_native_height,
       :custom_native_width,
+      :enable_learner_state,
+      :full_window,
+      :has_report_url,
+      :hide_question_number,
       :inherit_aspect_ratio_method,
       :inherit_click_to_play,
       :inherit_click_to_play_prompt,
@@ -304,6 +312,8 @@ class Api::V1::InteractivePagesController < API::APIController
       :inherit_native_height,
       :inherit_native_width,
       :inherit_image_url,
+      :image_url,
+      :is_callout,
       :is_half_width,
       :is_hidden,
       :legacy_ref_id,
@@ -313,8 +323,15 @@ class Api::V1::InteractivePagesController < API::APIController
       :linked_interactive_item_id,
       :linked_interactive_type,
       :linked_interactives,
+      :model_library_url,
       :name,
+      :native_height,
+      :native_width,
+      :no_snapshots,
+      :report_item_url,
+      :show_delete_data_button,
       :show_in_featured_question_report,
+      :url,
       :url_fragment
     )
   end
@@ -322,7 +339,7 @@ class Api::V1::InteractivePagesController < API::APIController
   def update_page_item
     authorize! :update, @interactive_page
 
-    return error("Missing page_item parameter") if page_item_params.nil?
+    return error("Missing page_item parameter") if params["page_item"].nil?
 
     # verify the parameters
     page_item_id = params["page_item"]["id"]
@@ -338,14 +355,9 @@ class Api::V1::InteractivePagesController < API::APIController
 
     page_item = PageItem.find(page_item_id)
     if page_item
-      new_attr = {
-        column: column,
-        position: position
-      }
       page_item.update_attributes(page_item_params)
       embeddable_type = type.constantize
       embeddable = embeddable_type.find(page_item.embeddable_id)
-
       # linked_interactives param follows ISetLinkedInteractives interface format. It isn't a regular attribute.
       # It requires special treatment and should be removed from params before .update_attributes is called.
       if data.has_key? :linked_interactives
