@@ -29,7 +29,8 @@ class ManagedInteractivesController < InteractiveController
       :inherit_image_url, :custom_image_url,
       :linked_interactive_item_id,
       :legacy_ref_id, :legacy_ref_type,
-      :linked_interactives  
+      :linked_interactives,
+      :hide_question_number
     )
   end
 
