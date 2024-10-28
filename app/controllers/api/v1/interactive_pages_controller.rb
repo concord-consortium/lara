@@ -279,22 +279,61 @@ class Api::V1::InteractivePagesController < API::APIController
     render json: result.to_json
   end
 
+  def page_item_params
+    params.require(:page_item).permit(
+      :section, :position, :embeddable, :column
+    )
+  end
+
+  def data_update_params
+    params[:page_item].require(:data).permit(
+      :authored_state,
+      :custom_aspect_ratio_method,
+      :custom_click_to_play,
+      :custom_click_to_play_prompt,
+      :custom_full_window,
+      :custom_hide_question_number,
+      :custom_image_url,
+      :custom_native_height,
+      :custom_native_width,
+      :inherit_aspect_ratio_method,
+      :inherit_click_to_play,
+      :inherit_click_to_play_prompt,
+      :inherit_full_window,
+      :inherit_hide_question_number,
+      :inherit_native_height,
+      :inherit_native_width,
+      :inherit_image_url,
+      :is_half_width,
+      :is_hidden,
+      :legacy_ref_id,
+      :legacy_ref_type,
+      :library_interactive_id,
+      :linked_interactive_id,
+      :linked_interactive_item_id,
+      :linked_interactive_type,
+      :linked_interactives,
+      :name,
+      :show_in_featured_question_report,
+      :url_fragment
+    )
+  end
+
   def update_page_item
     authorize! :update, @interactive_page
 
-    page_item_params = params["page_item"]
     return error("Missing page_item parameter") if page_item_params.nil?
 
     # verify the parameters
-    page_item_id = page_item_params["id"]
+    page_item_id = params["page_item"]["id"]
     return error("Missing page_item[id] parameter") if page_item_id.nil?
     column = page_item_params["column"]
     return error("Missing page_item[column] parameter") if column.nil?
-    position = page_item_params["position"]
+    position = params["page_item"]["position"]
     return error("Missing page_item[position] parameter") if position.nil?
-    data = page_item_params["data"]
+    data = params["page_item"]["data"]
     return error("Missing page_item[data] parameter") if data.nil?
-    type = page_item_params["type"]
+    type = params["page_item"]["type"]
     return error("Missing page_item[type] parameter") if type.nil?
 
     page_item = PageItem.find(page_item_id)
@@ -303,9 +342,10 @@ class Api::V1::InteractivePagesController < API::APIController
         column: column,
         position: position
       }
-      page_item.update_attributes(new_attr)
+      page_item.update_attributes(page_item_params)
       embeddable_type = type.constantize
       embeddable = embeddable_type.find(page_item.embeddable_id)
+
       # linked_interactives param follows ISetLinkedInteractives interface format. It isn't a regular attribute.
       # It requires special treatment and should be removed from params before .update_attributes is called.
       if data.has_key? :linked_interactives
@@ -315,7 +355,7 @@ class Api::V1::InteractivePagesController < API::APIController
         end
       end
       if embeddable
-        embeddable.update_attributes(data)
+        embeddable.update_attributes(data_update_params)
       end
     end
     @interactive_page.reload
