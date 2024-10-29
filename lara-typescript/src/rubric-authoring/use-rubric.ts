@@ -11,6 +11,19 @@ export interface IRubricContext {
   saveRubric: () => void;
 }
 
+const migrate = (rubric: IRubric ) => {
+  // right now there are no explicit version migrations BUT iconPhrase and tagSummaryDisplay were
+  // added without a version bump so ensure they have a default value if they are undefined
+  rubric.criteriaGroups.forEach(criteriaGroup => {
+    criteriaGroup.criteria.forEach(criteria => {
+      criteria.iconPhrase = criteria.iconPhrase ?? "";
+    });
+  });
+  rubric.tagSummaryDisplay = rubric.tagSummaryDisplay ?? "none";
+
+  return rubric;
+};
+
 export const useRubricValue = (authoredContentUrl: string): IRubricContext => {
   const [rubric, _setRubric] = useImmer<IRubric>({} as IRubric);
   const [loadStatus, setLoadStatus] = useState<IRubricContext["loadStatus"]>("loading");
@@ -28,7 +41,9 @@ export const useRubricValue = (authoredContentUrl: string): IRubricContext => {
       try {
         const {url} = await (await fetch(authoredContentUrl)).json();
         if (url) {
-          _setRubric(await (await fetch(url)).json());
+          const unmigratedRubric = await (await fetch(url)).json();
+          const migratedRubric = migrate(unmigratedRubric);
+          _setRubric(migratedRubric);
         } else {
           _setRubric({
             id: "",
@@ -43,6 +58,7 @@ export const useRubricValue = (authoredContentUrl: string): IRubricContext => {
             feedbackLabelForStudent: "",
             criteriaGroups: [],
             ratings: [],
+            tagSummaryDisplay: "none"
           });
         }
         setLoadStatus("loaded");

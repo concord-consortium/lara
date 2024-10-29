@@ -1,6 +1,7 @@
 import * as React from "react";
-import { useRubric } from "./use-rubric";
 import classNames from "classnames";
+import { useRubric } from "./use-rubric";
+import { ITagSummaryDisplay, tagSummaryDisplayLabels, tagSummaryDisplayValues } from "./types";
 
 import "./rubric-general-options.scss";
 
@@ -20,6 +21,12 @@ export const RubricGeneralOptions = () => {
     const checked = e.target.checked;
     setRubric(draft => {
       draft[key] = checked;
+    });
+  };
+  const handleUpdateTagSummaryDisplay = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const tagSummaryDisplay = e.target.value as ITagSummaryDisplay;
+    setRubric(draft => {
+      draft.tagSummaryDisplay = tagSummaryDisplay;
     });
   };
 
@@ -51,6 +58,20 @@ export const RubricGeneralOptions = () => {
                 value={rubric.feedbackLabelForStudent}
                 onChange={handleUpdateString("feedbackLabelForStudent")}
               />
+            </td>
+          </tr>
+          <tr>
+            <td><label htmlFor="tagSummaryDisplay">Tag Summary Display:</label></td>
+            <td>
+              <select
+                name="tagSummaryDisplay"
+                value={rubric.tagSummaryDisplay}
+                onChange={handleUpdateTagSummaryDisplay}
+              >
+                {tagSummaryDisplayValues.map(value => (
+                  <option value={value} key={value}>{tagSummaryDisplayLabels[value]}</option>
+                ))}
+              </select>
             </td>
           </tr>
           <tr>
