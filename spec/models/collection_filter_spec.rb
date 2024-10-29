@@ -44,7 +44,7 @@ describe CollectionFilter do
         let(:user) { nil }
         it "should return a sorted public collection" do
           expect(fake_class).not_to receive(:my)
-          expect(fake_class).to receive(:public).and_return(items)
+          expect(fake_class).to receive(:is_public).and_return(items)
           expect(items).to receive(:newest).and_return([1,2,3])
           expect(subject.collection).to be_a_kind_of(Array)
         end

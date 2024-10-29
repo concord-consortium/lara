@@ -11,6 +11,7 @@ class Rubric < ActiveRecord::Base
   after_create :create_authored_content
 
   # scope :public, self.scoped # all rubrics are public
+  scope :is_public, -> { self.all }
   scope :none, -> { where("1 = 0") } # used to return "my rubrics" to no user
   scope :newest, -> { order(updated_at: :desc) }
 

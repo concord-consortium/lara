@@ -34,6 +34,7 @@ module PublicationStatus
       def self.can_see(user)
         if user.can?(:manage, self)
           self.all
+        else
           self.my_or_public(user)
         end
       end

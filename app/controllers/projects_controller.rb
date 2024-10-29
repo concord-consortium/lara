@@ -33,11 +33,12 @@ class ProjectsController < ApplicationController
   end
 
   def update_params
-    params.require(:project).permit(
-      :footer, :logo_lara, :logo_ap, :title, :url, :about, :project_key, :copyright,
-      :copyright_image_url, :collaborators, :funders_image_url, :collaborators_image_url,
-      :contact_email, :admin_ids
-    )
+    params.fetch(:project)
+          .permit(
+            :footer, :logo_lara, :logo_ap, :title, :url, :about, :project_key, :copyright,
+            :copyright_image_url, :collaborators, :funders_image_url, :collaborators_image_url,
+            :contact_email, :admin_ids
+          )
   end
 
   # PUT /projects/1

@@ -1,0 +1,25 @@
+.print-warning {
+  box-sizing: border-box;
+  margin: 1em auto;
+  width: 700px;
+  padding: 10px;
+  text-align: center;
+  background-color: hsl(200, 0%, 95%);
+  border-radius: 6px;
+  font-size: 12pt;
+  overflow: hidden;
+
+  .submit {
+    width: auto;
+  }
+
+  img {
+    max-width: 380px;
+    margin-bottom: 1em;
+  }
+}
+
+div.activity-mod,
+div.site-width {
+  background: none;
+}

@@ -164,6 +164,7 @@ LightweightStandalone::Application.routes.draw do
         post :add_choice
       end
     end
+    resources :image_question
     resources :xhtmls
     resources :external_scripts
     resources :embeddable_plugins
@@ -298,7 +299,7 @@ LightweightStandalone::Application.routes.draw do
   match "/print_headers" => "home#print_headers", :via => 'get'
 
   # Remote duplicate
-  match "/remote_duplicate" => "home#remote_duplicate", :via => 'get'
+  match "/remote_duplicate" => "home#remote_duplicate", :via => 'post'
 
   # Web interface to show the delayed jobs for admins
   # unfortunately this route has caused other route constraints to stop working?

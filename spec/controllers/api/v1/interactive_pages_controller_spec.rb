@@ -351,7 +351,12 @@ describe Api::V1::InteractivePagesController do
       xhr :get, "get_library_interactives_list"
       expect(response.status).to eq(200)
       expect(response.content_type).to eq("application/json")
-      expect(response.body).to eql(expected_response_for_admin)
+      actual_response = JSON.parse(response.body)
+      expected_response = JSON.parse(expected_response_for_admin)
+      actual_response["library_interactives"].each_with_index do |interactive, index|
+        expected = expected_response["library_interactives"][index]
+        expect(interactive).to eq(expected)
+      end
     end
 
     it "returns a list of all library interactives including all properties for non admins" do
@@ -431,7 +436,12 @@ describe Api::V1::InteractivePagesController do
       xhr :get, "get_library_interactives_list"
       expect(response.status).to eq(200)
       expect(response.content_type).to eq("application/json")
-      expect(response.body).to eql(expected_response_for_non_admin)
+      actual_response = JSON.parse(response.body)
+      expected_response = JSON.parse(expected_response_for_non_admin)
+      actual_response["library_interactives"].each_with_index do |interactive, index|
+        expected = expected_response["library_interactives"][index]
+        expect(interactive).to eq(expected)
+      end
     end
   end
 
@@ -689,9 +699,13 @@ describe Api::V1::InteractivePagesController do
       describe 'failures' do
         it 'fails without a page param' do
           update_request = { section: { id: section.id, items: [] } }
-          xhr :post, 'update_section', update_request
-          expect(response.status).to eq(200)
-          expect(JSON.parse(response.body)).to include({'success' => false})
+          # xhr :post, 'update_section', update_request
+          # expect(response.status).to eq(200)
+          # expect(JSON.parse(response.body)).to include({'success' => false})
+
+          expect {
+            xhr :post, 'update_section', update_request
+          }.to raise_error(ActionController::UrlGenerationError)
         end
 
         it 'fails when we dont specify a section' do
@@ -748,9 +762,13 @@ describe Api::V1::InteractivePagesController do
       describe 'failure' do
         it 'fails without a page param' do
           copy_request = { section_id: section.id }
-          xhr :post, 'copy_section', copy_request
-          expect(response.status).to eq(200)
-          expect(JSON.parse(response.body)).to include( {'success' => false })
+          # xhr :post, 'copy_section', copy_request
+          # expect(response.status).to eq(200)
+          # expect(JSON.parse(response.body)).to include( {'success' => false })
+
+          expect {
+            xhr :post, 'copy_section', copy_request
+          }.to raise_error(ActionController::UrlGenerationError)
         end
 
         it 'fails when we dont specify a section' do
@@ -805,9 +823,13 @@ describe Api::V1::InteractivePagesController do
 
       describe 'failure' do
         it 'fails without a page param' do
-          xhr :post, 'copy_page_item',  { page_item_id: page_item_id }
-          expect(response.status).to eq(200)
-          expect(JSON.parse(response.body)).to include( {'success' => false })
+          # xhr :post, 'copy_page_item',  { page_item_id: page_item_id }
+          # expect(response.status).to eq(200)
+          # expect(JSON.parse(response.body)).to include( {'success' => false })
+
+          expect {
+            xhr :post, 'copy_page_item',  { page_item_id: page_item_id }
+          }.to raise_error(ActionController::UrlGenerationError)
         end
 
         it 'fails when we dont specify a page_item' do

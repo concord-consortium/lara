@@ -33,7 +33,7 @@
 
 shared_examples "runnable launched without run_key" do |run_type|
   let (:running_user) { FactoryGirl.create(:user) }
-  let (:run_factory_type) { run_type.model_name.underscore.to_sym}
+  let (:run_factory_type) { run_type.model_name.to_s.underscore.to_sym}
   describe "when the user is anonymous" do
     it "redirects with a #{run_type} key in the URL" do
       result = get action, base_params
@@ -97,7 +97,7 @@ end
 
 shared_examples "runnable launched with run_key" do |run_type, portal_launchable|
   let (:running_user) { FactoryGirl.create(:user) }
-  let (:run_factory_type) { run_type.model_name.underscore.to_sym}
+  let (:run_factory_type) { run_type.model_name.to_s.underscore.to_sym}
   describe "when there is no #{run_type} with this key" do
     it "returns 404" do
       params_with_invalid_run_key = base_params.clone()
@@ -233,7 +233,7 @@ shared_examples "runnable launched with run_key" do |run_type, portal_launchable
 end
 
 shared_examples "runnable launched with portal parameters" do |run_type|
-  let (:run_factory_type) { run_type.model_name.underscore.to_sym}
+  let (:run_factory_type) { run_type.model_name.to_s.underscore.to_sym}
   let (:running_user) { FactoryGirl.create(:user) }
   let (:request_params_with_portal_properties) {
     base_params.merge(returnUrl: 'https:/example.com', externalId: 1)

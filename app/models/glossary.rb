@@ -8,6 +8,7 @@ class Glossary < ActiveRecord::Base
   has_many :lightweight_activities
 
   # scope :public, self.scoped # all glossaries are public
+  scope :is_public, -> { self.all }
   scope :none, -> { where("1 = 0") } # used to return "my glossaries" to no user
   scope :newest, -> { order(updated_at: :desc) }
 

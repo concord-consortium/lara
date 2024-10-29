@@ -28,12 +28,13 @@ class ManagedInteractivesController < InteractiveController
       :inherit_click_to_play_prompt, :custom_click_to_play_prompt,
       :inherit_image_url, :custom_image_url,
       :linked_interactive_item_id,
-      :legacy_ref_id, :legacy_ref_type     
+      :legacy_ref_id, :legacy_ref_type,
+      :linked_interactives  
     )
   end
 
   def get_interactive_params
-    @input_params = params[update_params]
+    @input_params = update_params
   end
 end
 

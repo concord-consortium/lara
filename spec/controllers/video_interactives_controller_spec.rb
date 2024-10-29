@@ -28,7 +28,7 @@ describe VideoInteractivesController do
           get :edit, :id => int.id
 
           expect(response.body).to match /<form[^>]+action="\/video_interactives\/#{int.id}"[^<]+method="post"[^<]*>/
-          expect(response.body).to match /<input[^<]+name="_method"[^<]+type="hidden"[^<]+value="put"[^<]+\/>/
+          expect(response.body).to match /<input[^<]+name="_method"[^<]+type="hidden"[^<]+value="patch"[^<]+\/>/
 
           expect(response.body).to match /<input[^<]+id="video_interactive_poster_url"[^<]+name="video_interactive\[poster_url\]"[^<]+type="text"[^>]+value="#{int.poster_url}"[^<]*\/>/
           expect(response.body).to match /<textarea[^<]+id="video_interactive_caption"[^<]+name="video_interactive\[caption\]"[^<]*>#{int.caption}/
