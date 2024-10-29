@@ -12,7 +12,7 @@ class Rubric < ActiveRecord::Base
 
   # scope :public, self.scoped # all rubrics are public
   scope :is_public, -> { self.all }
-  scope :none, -> { where("1 = 0") } # used to return "my rubrics" to no user
+  scope :no_rubrics, -> { where("1 = 0") } # used to return "my rubrics" to no user
   scope :newest, -> { order(updated_at: :desc) }
 
   def export(user)
@@ -93,7 +93,7 @@ class Rubric < ActiveRecord::Base
     if user
       self.where(user_id: user.id).eager_load(:user).order(:name)
     else
-      self.none
+      self.no_rubrics
     end
   end
 
@@ -130,7 +130,7 @@ class Rubric < ActiveRecord::Base
     if user && (user.admin? || user.author? || user.project_admin_of?(self.project))
       self.all
     else
-      self.none
+      self.no_rubrics
     end
   end
 end

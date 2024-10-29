@@ -337,8 +337,8 @@ RSpec.describe Glossary do
   end
 
   describe "scopes" do
-    it "should support none" do
-      expect(Glossary.none).to eq ([])
+    it "should support no_glossaries" do
+      expect(Glossary.no_glossaries).to eq ([])
     end
 
     it "should support newest" do

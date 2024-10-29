@@ -82,10 +82,10 @@ class InteractivePagesController < ApplicationController
         if @page.update_attributes(update_params)
           # *** respond with the new value ***
           update_activity_changed_by
-          format.html { render :text => params[:interactive_page].values.first }
+          format.html { render :plain => params[:interactive_page].values.first }
         else
           # *** respond with the old value ***
-          format.html { render :text => @page[params[:interactive_page].keys.first] }
+          format.html { render :plain => @page[params[:interactive_page].keys.first] }
         end
         format.json { render :json => @page.to_json }
       else

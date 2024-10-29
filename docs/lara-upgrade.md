@@ -182,27 +182,27 @@ The status codes are:
 
 ### Upgrade To Rails 4.1.16
 
-1. Create a `upgrade-to-rails-4.1` branch off the `lara-upgrade` branch.
-2. Upgrade rails gems in `Gemfile` to last 4.1 version: `gem 'rails', '~> 4.1.16'`.  No Ruby upgrade is required.
-3. Inside running Docker image run `bundle update rails`
-4. Resolve gem dependency issues until the bundle update succeeds.
+1. Create a `upgrade-to-rails-4.1` branch off the `lara-upgrade` branch. ✅
+2. Upgrade rails gems in `Gemfile` to last 4.1 version: `gem 'rails', '~> 4.1.16'`.  No Ruby upgrade is required. ✅
+3. Inside running Docker image run `bundle update rails` ✅
+4. Resolve gem dependency issues until the bundle update succeeds. ✅
 5. Complete upgrade tasks in the [4.0 to 4.1 upgrade guide](https://guides.rubyonrails.org/upgrading_ruby_on_rails.html#upgrading-from-rails-4-0-to-rails-4-1)
 
-- [ ] CSRF protection from remote <script> tags
-- [ ] Spring
-- [ ] config/secrets.yml
-- [ ] Changes to test helper
-- [ ] Cookies serializer
-- [ ] Flash structure changes
-- [ ] Changes in JSON handling
-- [ ] Usage of return within inline callback blocks
-- [ ] Methods defined in Active Record fixtures
-- [ ] I18n enforcing available locales
-- [ ] Mutator methods called on Relation
-- [ ] Changes on Default Scopes
-- [ ] Rendering content from string
-- [ ] PostgreSQL JSON and hstore datatypes
-- [ ] Explicit block use for ActiveSupport::Callbacks
+- [x] CSRF protection from remote <script> tags
+- [x] Spring
+- [x] config/secrets.yml
+- [x] Changes to test helper
+- [x] Cookies serializer
+- [x] Flash structure changes
+- [x] Changes in JSON handling
+- [x] Usage of return within inline callback blocks
+- [x] Methods defined in Active Record fixtures
+- [x] I18n enforcing available locales
+- [x] Mutator methods called on Relation
+- [x] Changes on Default Scopes
+- [x] Rendering content from string
+- [x] PostgreSQL JSON and hstore datatypes
+- [x] Explicit block use for ActiveSupport::Callbacks
 
 6. Create a PR and insure all the tests pass.
 7. After review/approval merge the branch into the `lara-upgrade` branch.

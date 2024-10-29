@@ -9,7 +9,7 @@ class Glossary < ActiveRecord::Base
 
   # scope :public, self.scoped # all glossaries are public
   scope :is_public, -> { self.all }
-  scope :none, -> { where("1 = 0") } # used to return "my glossaries" to no user
+  scope :no_glossaries, -> { where("1 = 0") } # used to return "my glossaries" to no user
   scope :newest, -> { order(updated_at: :desc) }
 
   def export(user)
@@ -100,7 +100,7 @@ class Glossary < ActiveRecord::Base
     if user
       self.where(user_id: user.id).eager_load(:user).order(:name)
     else
-      self.none
+      self.no_glossaries
     end
   end
 
@@ -137,7 +137,7 @@ class Glossary < ActiveRecord::Base
     if user && (user.admin? || user.author? || user.project_admin_of?(self.project))
       self.all
     else
-      self.none
+      self.no_glossaries
     end
   end
 end

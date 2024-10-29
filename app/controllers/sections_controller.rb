@@ -15,10 +15,10 @@ class SectionsController < ApplicationController
         if @section.update_attributes(update_params)
           # *** respond with the new value ***
           update_activity_changed_by
-          format.html { render :text => params[:section].values.first }
+          format.html { render :plain => params[:section].values.first }
         else
           # *** respond with the old value ***
-          format.html { render :text => @section[params[:section].keys.first] }
+          format.html { render :plain => @section[params[:section].keys.first] }
         end
         format.json { render :json => @section.to_json }
       else

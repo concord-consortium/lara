@@ -214,8 +214,8 @@ RSpec.describe Rubric do
   end
 
   describe "scopes" do
-    it "should support none" do
-      expect(Rubric.none).to eq ([])
+    it "should support no_rubrics" do
+      expect(Rubric.no_rubrics).to eq ([])
     end
 
     it "should support newest" do
