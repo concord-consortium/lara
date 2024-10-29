@@ -13,6 +13,7 @@ describe LibraryInteractive do
         click_to_play_prompt: library_interactive.click_to_play_prompt,
         description: library_interactive.description,
         enable_learner_state: library_interactive.enable_learner_state,
+        hide_question_number: library_interactive.hide_question_number,
         full_window: library_interactive.full_window,
         has_report_url: library_interactive.has_report_url,
         image_url: library_interactive.image_url,

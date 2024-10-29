@@ -10,6 +10,7 @@ export interface ILibraryInteractive {
   click_to_play_prompt: string;
   description: string;
   enable_learner_state: boolean;
+  hide_question_number: boolean;
   export_hash: string;
   full_window: boolean;
   has_report_url: boolean;

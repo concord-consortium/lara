@@ -23,7 +23,7 @@ class MwInteractivesController < InteractiveController
       :full_window, :model_library_url, :authored_state, :no_snapshots,
       :show_delete_data_button, :show_in_featured_question_report, :is_half_width,
       :aspect_ratio_method, :linked_interactive_item_id, :report_item_url,
-      :linked_interactives
+      :linked_interactives, :hide_question_number
     )
   end
 

@@ -4068,9 +4068,10 @@ button.bigButton svg {
 }
 .rubric-criterion .rubric-criterion-body .rubric-criterion-body-row label {
   font-weight: bold;
+  white-space: nowrap;
 }
 .rubric-criterion .rubric-criterion-body .rubric-criterion-body-row input[type=text] {
-  width: 700px;
+  width: 100%;
   box-sizing: border-box;
 }
 .rubric-criterion .rubric-criterion-body .rubric-criterion-body-row .rubric-checkboxes {

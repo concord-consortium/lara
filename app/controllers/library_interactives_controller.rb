@@ -5,7 +5,7 @@ class LibraryInteractivesController < ApplicationController
   # GET /library_interactives
   # GET /library_interactives.json
   def index
-    @library_interactives = LibraryInteractive.all
+    @library_interactives = LibraryInteractive.order('name ASC, id ASC')
 
     respond_to do |format|
       format.html # index.html.erb
@@ -50,7 +50,7 @@ class LibraryInteractivesController < ApplicationController
       :aspect_ratio_method, :authoring_guidance, :base_url, :click_to_play, :click_to_play_prompt, :description,
       :enable_learner_state, :full_window, :has_report_url, :image_url, :name, :native_height, :native_width,
       :no_snapshots, :show_delete_data_button, :thumbnail_url, :export_hash, :customizable, :authorable, :data,
-      :report_item_url, :official
+      :report_item_url, :official, :hide_question_number
     )
   end
   # PUT /library_interactives/1
@@ -72,8 +72,8 @@ class LibraryInteractivesController < ApplicationController
   # GET /library_interactives/1/migrate
   # POST /library_interactives/1/migrate
   def migrate
-    @library_interactive = LibraryInteractive.find(params[:id]) 
-    
+    @library_interactive = LibraryInteractive.find(params[:id])
+
     if params[:new_library_interactive_id]
       @mi_count = 0
       ManagedInteractive.where("library_interactive_id = #{params[:id]}").find_each do |mi|

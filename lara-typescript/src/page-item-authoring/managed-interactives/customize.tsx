@@ -32,7 +32,9 @@ export const CustomizeManagedInteractive: React.FC<Props> = (props) => {
     inherit_image_url,
     custom_image_url,
     show_in_featured_question_report,
-    linked_interactive_item_id
+    linked_interactive_item_id,
+    inherit_hide_question_number,
+    custom_hide_question_number
   } = managedInteractive;
 
   const [inheritAspectRatio, setInheritAspectRatio] = useState(inherit_aspect_ratio_method);
@@ -47,6 +49,8 @@ export const CustomizeManagedInteractive: React.FC<Props> = (props) => {
   const [inheritFullWindow, setInheritFullWindow] = useState(inherit_full_window);
   const [inheritImageUrl, setInheritImageUrl] = useState(inherit_image_url);
   const [customImageUrl, setCustomImageUrl] = useState(custom_image_url);
+  const [inheritHideQuestionNumber, setInheritHideQuestionNumber] = useState(inherit_hide_question_number);
+  const [customHideQuestionNumber, setCustomHideQuestionNumber] = useState(custom_hide_question_number);
 
   const handleBooleanOption = (setter: (value: boolean) => void) => {
     return (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -67,6 +71,8 @@ export const CustomizeManagedInteractive: React.FC<Props> = (props) => {
   const handleChangeCustomClickToPlay = handleBooleanOption(setCustomClickToPlay);
   const handleChangeCustomClickToPlayPrompt = handleStringOption(setCustomClickToPlayPrompt);
   const handleChangeCustomImageUrl = handleStringOption(setCustomImageUrl);
+  const handleChangeHideQuestionNumber = handleBooleanOption(setInheritHideQuestionNumber);
+  const handleChangeCustomHideQuestionNumber = handleBooleanOption(setCustomHideQuestionNumber);
 
   const clickToPlayEnabled = (inheritClickToPlay && libraryInteractive.click_to_play) ||
                              (!inheritClickToPlay && customClickToPlay);
@@ -317,5 +323,54 @@ export const CustomizeManagedInteractive: React.FC<Props> = (props) => {
         </div>
       </div>
     </fieldset>
+
+    {libraryInteractive.enable_learner_state &&
+    <fieldset>
+      <legend>Hide Question Number</legend>
+      <div className="option_group">
+        <div className="customizable-option">
+          <input
+            type="radio"
+            id="inherit-hide-question-number"
+            name="inherit_hide_question_number"
+            value="true"
+            defaultChecked={inheritHideQuestionNumber}
+            onChange={handleChangeHideQuestionNumber}
+          />
+          <label htmlFor="inherit-hide-question-number" className="radioLabel">
+            Use default: <strong>{libraryInteractive.hide_question_number ? "Enabled" : "Disabled"}</strong>
+          </label>
+        </div>
+        <div className="customizable-option">
+          <input
+            type="radio"
+            id="inherit-hide-question-number"
+            name="inherit_hide_question_number"
+            value="false"
+            defaultChecked={!inheritHideQuestionNumber}
+            onChange={handleChangeHideQuestionNumber}
+          />
+          <label htmlFor="inherit-hide-question-number" className="radioLabel">
+            Customize
+          </label>
+          {!inheritHideQuestionNumber &&
+            <div className="customizable-option-setting">
+              <input
+                id="custom-hide-question-number"
+                type="checkbox"
+                name="custom_hide_question_number"
+                value="true"
+                defaultChecked={customHideQuestionNumber}
+                onChange={handleChangeCustomHideQuestionNumber}
+              />
+              <label htmlFor="custom-hide-question-number">
+                Enabled
+              </label>
+            </div>
+          }
+        </div>
+      </div>
+    </fieldset>
+    }
   </>;
 };

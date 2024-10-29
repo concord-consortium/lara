@@ -82,7 +82,7 @@ export const RubricStudentPreview = ({scored, scoring, setScoring}: IProps) => {
                     }
                     <td>
                       <div>
-                        {criteria.iconUrl && <img src={criteria.iconUrl} />}
+                        {criteria.iconUrl && <img src={criteria.iconUrl} title={criteria.iconPhrase} />}
                         <Markdown>{description}</Markdown>
                       </div>
                     </td>
