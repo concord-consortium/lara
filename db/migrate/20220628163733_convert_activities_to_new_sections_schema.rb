@@ -1,6 +1,6 @@
 class ConvertActivitiesToNewSectionsSchema < ActiveRecord::Migration
   class InteractivePage < ActiveRecord::Base
-    has_many :sections, order: :position, include: [:page_items]
+    has_many :sections, -> { include(:page_items).order(:position) }
     has_many :page_items
   end
 
@@ -11,7 +11,7 @@ class ConvertActivitiesToNewSectionsSchema < ActiveRecord::Migration
   class Section < ActiveRecord::Base
     attr_accessible :interactive_page_id, :layout, :position, :show
     belongs_to :interactive_page
-    has_many :page_items, order: :position, dependent: :destroy
+    has_many :page_items, -> { order(:position) }, dependent: :destroy
   end
 
   def create_section(page_id, layout, position, show)

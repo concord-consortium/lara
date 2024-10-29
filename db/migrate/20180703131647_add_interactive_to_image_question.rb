@@ -20,7 +20,7 @@ module Embeddable
 end
 
 class InteractivePage < ActiveRecord::Base
-  has_many :page_items, :order => [:section, :position]
+  has_many :page_items, -> { order(:section, :position) }
 
   def embeddables
     page_items.collect{ |qi| qi.embeddable }
