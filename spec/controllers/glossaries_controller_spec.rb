@@ -109,8 +109,8 @@ describe GlossariesController do
         # specifies that the Glossary created on the previous line
         # receives the :update_attributes message with whatever params are
         # submitted in the request.
-        expect_any_instance_of(Glossary).to receive(:update_attributes).with({'these' => 'params'})
-        put :update, {:id => glossary.id, :glossary => {'these' => 'params'}}
+        expect_any_instance_of(Glossary).to receive(:update_attributes).with({'name' => 'New Name'})
+        put :update, {:id => glossary.id, :glossary => {'name' => 'New Name'}}
       end
 
       it "assigns the requested glossary as @glossary" do
