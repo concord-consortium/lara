@@ -33,7 +33,7 @@ class GlossariesController < ApplicationController
 
 
   def update_params
-    params.fetch(:glossary, {}).permit!
+    params.fetch(:glossary).permit(:name, :json, :user_id, :legacy_glossary_resource_id, :project_id, :project)
   end
 
   def update
