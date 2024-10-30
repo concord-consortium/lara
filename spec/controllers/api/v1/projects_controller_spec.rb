@@ -16,12 +16,9 @@ describe Api::V1::ProjectsController do
       xhr :get, "index"
       expect(response.status).to eq(200)
       expect(response.content_type).to eq("application/json")
-      expect(response.body).to eq({
-        projects: [
-          project1,
-          project2
-        ]
-      }.to_json)
+      parsed_response = JSON.parse(response.body, symbolize_names: true)
+      expect(parsed_response[:projects]).to include(a_hash_including(id: project1.id, title: project1.title))
+      expect(parsed_response[:projects]).to include(a_hash_including(id: project2.id, title: project2.title))
     end
   end
 

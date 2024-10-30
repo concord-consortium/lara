@@ -1,6 +1,6 @@
 class FixupPagePositions < ActiveRecord::Migration
   class LightweightActivity < ActiveRecord::Base
-    has_many :pages, :foreign_key => 'lightweight_activity_id', :class_name => 'InteractivePage', :order => :position
+    has_many :pages, -> { order(:position) }, :foreign_key => 'lightweight_activity_id', :class_name => 'InteractivePage'
   end
 
   class InteractivePage < ActiveRecord::Base

@@ -12,7 +12,7 @@ class CopyPageIntroToNewHeaderTextbox < ActiveRecord::Migration
   end
 
   class InteractivePage < ActiveRecord::Base
-    has_many :page_items, order: [:section, :position]
+    has_many :page_items, -> { order(:section, :position) }
   end
 
   class PageItem < ActiveRecord::Base

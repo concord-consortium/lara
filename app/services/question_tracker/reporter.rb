@@ -17,8 +17,8 @@ class QuestionTracker::Reporter
     runs = []
 
     master_question = self.question_tracker.master_question
-    foreign_key = master_question.reflections[:answers].foreign_key.to_sym
-    answer_class_name = master_question.reflections[:answers].class_name
+    foreign_key = master_question._reflections[:answers].foreign_key.to_sym
+    answer_class_name = master_question._reflections[:answers].class_name
     answer_class = answer_class_name.constantize
 
     question_ids = self.question_tracker.tracked_questions.pluck(:question_id)

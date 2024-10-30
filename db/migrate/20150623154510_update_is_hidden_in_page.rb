@@ -1,6 +1,6 @@
 class UpdateIsHiddenInPage < ActiveRecord::Migration
   def up
-    InteractivePage.update_all({:is_hidden => false}, {:is_hidden => nil})
+    InteractivePage.update_all({is_hidden: false, is_hidden: nil})
     change_column :interactive_pages, :is_hidden, :boolean, :default => false, :null => false
   end
 
