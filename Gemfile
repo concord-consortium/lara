@@ -3,7 +3,6 @@ source 'https://gems.railslts.com' do
   gem 'actionpack', "= 4.2.11.23", :require => false
   gem 'activemodel', "= 4.2.11.23", :require => false
   gem 'activerecord', "= 4.2.11.23", :require => false
-  gem 'activeresource', :require => false
   gem 'activesupport', "= 4.2.11.23", :require => false
   gem 'rails', '~> 4.2.11.23'
   gem 'railslts-version', "= 4.2.11.23", :require => false
