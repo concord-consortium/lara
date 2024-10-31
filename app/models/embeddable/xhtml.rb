@@ -1,6 +1,6 @@
 module Embeddable
-  class Xhtml < ActiveRecord::Base
-    attr_accessible :name, :content, :is_hidden, :is_half_width, :is_callout
+  class Xhtml < ApplicationRecord
+    # attr_accessible :name, :content, :is_hidden, :is_half_width, :is_callout
 
     include Embeddable
 

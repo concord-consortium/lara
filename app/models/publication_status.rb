@@ -12,7 +12,7 @@ module PublicationStatus
     clazz.class_eval do
       validates :publication_status, :inclusion => { :in => PUB_STATUSES }
       default_value_for :publication_status, 'private'
-      attr_accessible :publication_status, :is_official
+      # attr_accessible :publication_status, :is_official
 
       # * Find all public activities
       scope :is_public, -> { where(publication_status: 'public')}

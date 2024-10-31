@@ -1,4 +1,4 @@
-class LightweightActivitiesSequence < ActiveRecord::Base
+class LightweightActivitiesSequence < ApplicationRecord
   belongs_to :lightweight_activity
   belongs_to :sequence
 

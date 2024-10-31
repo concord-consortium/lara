@@ -8,7 +8,7 @@ class ApplicationController < ActionController::Base
 
   # Run authorization on all actions
   # check_authorization
-  protect_from_forgery
+  protect_from_forgery prepend: true
 
   # What to do if authorization fails
   rescue_from CanCan::AccessDenied do |exception|

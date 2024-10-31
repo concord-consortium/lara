@@ -1,6 +1,6 @@
 module Embeddable
-  class MultipleChoiceChoice < ActiveRecord::Base
-    attr_accessible :multiple_choice, :choice, :prompt, :is_correct
+  class MultipleChoiceChoice < ApplicationRecord
+    # attr_accessible :multiple_choice, :choice, :prompt, :is_correct
 
     belongs_to :multiple_choice, :class_name => "Embeddable::MultipleChoice"
 

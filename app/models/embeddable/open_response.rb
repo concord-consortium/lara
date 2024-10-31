@@ -1,10 +1,10 @@
 module Embeddable
-  class OpenResponse < ActiveRecord::Base
+  class OpenResponse < ApplicationRecord
     include Embeddable
 
 
-    attr_accessible :name, :prompt, :hint, :is_prediction, :show_in_featured_question_report, :give_prediction_feedback, :prediction_feedback,
-      :default_text, :is_hidden, :is_half_width
+    # attr_accessible :name, :prompt, :hint, :is_prediction, :show_in_featured_question_report, :give_prediction_feedback, :prediction_feedback,
+    #   :default_text, :is_hidden, :is_half_width
 
     # PageItem instances are join models, so if the embeddable is gone the join should go too.
     has_many :page_items, :as => :embeddable, :dependent => :destroy

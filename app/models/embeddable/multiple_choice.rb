@@ -1,5 +1,5 @@
 module Embeddable
-  class MultipleChoice < ActiveRecord::Base
+  class MultipleChoice < ApplicationRecord
 
     include Embeddable
 
@@ -26,9 +26,9 @@ module Embeddable
       :foreign_key => 'multiple_choice_id',
       :dependent => :destroy
 
-    attr_accessible :name, :prompt, :hint, :custom, :choices_attributes,
-      :enable_check_answer, :multi_answer, :show_as_menu, :is_prediction, :is_half_width,
-      :show_in_featured_question_report, :give_prediction_feedback, :prediction_feedback, :layout, :is_hidden
+    # attr_accessible :name, :prompt, :hint, :custom, :choices_attributes,
+    #   :enable_check_answer, :multi_answer, :show_as_menu, :is_prediction, :is_half_width,
+    #   :show_in_featured_question_report, :give_prediction_feedback, :prediction_feedback, :layout, :is_hidden
     accepts_nested_attributes_for :choices, :allow_destroy => true
 
     has_one :tracked_question, :as => :question, :dependent => :delete

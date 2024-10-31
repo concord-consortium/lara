@@ -1,9 +1,9 @@
 class FixupPageItemPositions < ActiveRecord::Migration
-  class InteractivePage < ActiveRecord::Base
+  class InteractivePage < ApplicationRecord
     has_many :page_items, -> { order(:section, :position) }
   end
 
-  class PageItem < ActiveRecord::Base
+  class PageItem < ApplicationRecord
     acts_as_list :scope => :interactive_page
     belongs_to :interactive_page
   end

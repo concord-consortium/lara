@@ -1,5 +1,5 @@
-class PageItem < ActiveRecord::Base
-  attr_accessible :section, :position, :embeddable, :column
+class PageItem < ApplicationRecord
+  # attr_accessible :section, :position, :embeddable, :column
   acts_as_list :scope => :section
 
   belongs_to :section
@@ -53,7 +53,7 @@ class PageItem < ActiveRecord::Base
   def set_linked_interactives(options)
     source_page_item_id = id
 
-    ActiveRecord::Base.transaction do
+    ApplicationRecord.transaction do
       if options.has_key?("linkedInteractives")
         linked_interactives = options["linkedInteractives"]
         # clear the existing links

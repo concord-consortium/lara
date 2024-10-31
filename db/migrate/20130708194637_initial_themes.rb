@@ -1,7 +1,7 @@
 class InitialThemes < ActiveRecord::Migration
 
-  class Theme < ActiveRecord::Base
-    attr_accessible :name, :css_file
+  class Theme < ApplicationRecord
+    # attr_accessible :name, :css_file
   end
 
   def up

@@ -1,8 +1,8 @@
 class AddPolymorphicLinkedInteractive < ActiveRecord::Migration
 
-  class MwInteractive < ActiveRecord::Base
+  class MwInteractive < ApplicationRecord
   end
-  class ManagedInteractive < ActiveRecord::Base
+  class ManagedInteractive < ApplicationRecord
   end
 
   def up

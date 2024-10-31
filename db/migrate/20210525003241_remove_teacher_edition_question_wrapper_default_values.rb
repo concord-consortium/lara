@@ -1,5 +1,5 @@
 class RemoveTeacherEditionQuestionWrapperDefaultValues < ActiveRecord::Migration
-  class Plugin < ActiveRecord::Base
+  class Plugin < ApplicationRecord
   end
 
   def valid_json(json) 

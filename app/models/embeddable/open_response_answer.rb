@@ -1,9 +1,9 @@
 module Embeddable
-  class OpenResponseAnswer < ActiveRecord::Base
+  class OpenResponseAnswer < ApplicationRecord
     include Answer
     include CRater::FeedbackFunctionality
 
-    attr_accessible :answer_text, :run, :question, :is_dirty, :is_final
+    # attr_accessible :answer_text, :run, :question, :is_dirty, :is_final
 
     belongs_to :question,
       :class_name => 'Embeddable::OpenResponse',

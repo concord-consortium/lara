@@ -1,9 +1,9 @@
-class Embeddable::ImageQuestion < ActiveRecord::Base
+class Embeddable::ImageQuestion < ApplicationRecord
   include Embeddable
   include AttachedToInteractive
 
-  attr_accessible :name, :prompt, :hint, :bg_source, :bg_url, :drawing_prompt, :is_half_width,
-    :is_prediction, :show_in_featured_question_report, :give_prediction_feedback, :prediction_feedback, :is_hidden
+  # attr_accessible :name, :prompt, :hint, :bg_source, :bg_url, :drawing_prompt, :is_half_width,
+  #   :is_prediction, :show_in_featured_question_report, :give_prediction_feedback, :prediction_feedback, :is_hidden
 
   has_many :page_items, :as => :embeddable, :dependent => :destroy
   has_many :sections, through: :page_items

@@ -1,14 +1,14 @@
-class MwInteractive < ActiveRecord::Base
+class MwInteractive < ApplicationRecord
   include BaseInteractive
   include Embeddable
   include HasAspectRatio
 
-  attr_accessible :name, :url, :native_width, :native_height,
-    :enable_learner_state, :has_report_url, :click_to_play,
-    :click_to_play_prompt, :image_url, :is_hidden, :linked_interactive_id, :linked_interactive_type,
-    :full_window, :model_library_url, :authored_state, :no_snapshots,
-    :show_delete_data_button, :show_in_featured_question_report, :is_half_width,
-    :aspect_ratio_method, :linked_interactive_item_id, :report_item_url, :hide_question_number
+  # attr_accessible :name, :url, :native_width, :native_height,
+  #   :enable_learner_state, :has_report_url, :click_to_play,
+  #   :click_to_play_prompt, :image_url, :is_hidden, :linked_interactive_id, :linked_interactive_type,
+  #   :full_window, :model_library_url, :authored_state, :no_snapshots,
+  #   :show_delete_data_button, :show_in_featured_question_report, :is_half_width,
+  #   :aspect_ratio_method, :linked_interactive_item_id, :report_item_url, :hide_question_number
 
   default_value_for :native_width, ASPECT_RATIO_DEFAULT_WIDTH
   default_value_for :native_height, ASPECT_RATIO_DEFAULT_HEIGHT

@@ -4,7 +4,7 @@ module AttachedToInteractive
       # That requires model that includes this module to have interactive_id (integer) and interactive_type (string) attributes.
       belongs_to :interactive, :polymorphic => true
 
-      attr_accessible :interactive_select_value
+      # attr_accessible :interactive_select_value
       attr_writer :interactive_select_value
 
       before_validation :parse_interactive_select_value

@@ -93,7 +93,7 @@ SQL
 SQL
 
     sql = selects.join("\n UNION\n") + order_by + ";"
-    result = ActiveRecord::Base.connection.exec_query(sql)
+    result = ApplicationRecord.connection.exec_query(sql)
     result_columns = result.columns.map &:to_sym
     result_row_indices = indices_by_element(result_columns)
 

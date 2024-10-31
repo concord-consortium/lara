@@ -1,9 +1,9 @@
 module Embeddable
-  class MultipleChoiceAnswer < ActiveRecord::Base
+  class MultipleChoiceAnswer < ApplicationRecord
     include Answer # Common methods for Answer models
     include FeedbackFunctionality
 
-    attr_accessible :answers, :run, :question, :is_dirty, :is_final
+    # attr_accessible :answers, :run, :question, :is_dirty, :is_final
 
     belongs_to :question,
       :class_name  => 'Embeddable::MultipleChoice',

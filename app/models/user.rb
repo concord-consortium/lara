@@ -1,4 +1,4 @@
-class User < ActiveRecord::Base
+class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable,
   # :lockable, :timeoutable and :omniauthable
@@ -18,9 +18,11 @@ class User < ActiveRecord::Base
   has_many :admined_projects, through: :project_admins, :source => :project
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :email, :password, :password_confirmation, :remember_me,
-    :is_admin, :is_author, :first_name, :last_name,
-    :provider, :uid, :authentication_token, :api_key, :has_api_key, :admined_project_ids
+  # attr_accessible :email, :password, :password_confirmation, :remember_me,
+  #   :is_admin, :is_author, :first_name, :last_name,
+  #   :provider, :uid, :authentication_token, :api_key, :has_api_key, :admined_project_ids
+
+  ## these were commented out already?
   # attr_accessible :title, :body
 
   has_many :authentications, :dependent => :delete_all

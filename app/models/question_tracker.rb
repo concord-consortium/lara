@@ -1,7 +1,7 @@
 # encoding: UTF-8
 
-class QuestionTracker < ActiveRecord::Base
-  attr_accessible :master_question, :questions, :name, :description, :user
+class QuestionTracker < ApplicationRecord
+  # attr_accessible :master_question, :questions, :name, :description, :user
   
   belongs_to :master_question, polymorphic: true
   has_many :tracked_questions

@@ -1,5 +1,5 @@
-class CollaborationRun < ActiveRecord::Base
-  attr_accessible :user, :collaborators_data_url, :runs
+class CollaborationRun < ApplicationRecord
+  # attr_accessible :user, :collaborators_data_url, :runs
 
   belongs_to :user
   has_many :runs

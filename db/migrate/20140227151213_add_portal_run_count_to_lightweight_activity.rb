@@ -1,11 +1,11 @@
 class AddPortalRunCountToLightweightActivity < ActiveRecord::Migration
-  class Tun < ActiveRecord::Base
+  class Tun < ApplicationRecord
    self.table_name = 'runs'
   end 
 
-  class Act < ActiveRecord::Base
+  class Act < ApplicationRecord
     self.table_name = 'lightweight_activities'
-    attr_accessible :portal_run_count
+    # attr_accessible :portal_run_count
     has_many :runs, :foreign_key => 'activity_id', :class_name => Tun
   end
 

@@ -1,6 +1,6 @@
 class UpdateExistingLibraryInteractivesExportHashes < ActiveRecord::Migration
 
-  class LibraryInteractive < ActiveRecord::Base
+  class LibraryInteractive < ApplicationRecord
   end
 
   def export(li)

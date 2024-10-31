@@ -1,6 +1,6 @@
-class Import < ActiveRecord::Base
+class Import < ApplicationRecord
 
-  attr_accessible :export_site
+  # attr_accessible :export_site
   belongs_to :user
   belongs_to :import_item, polymorphic: true
 

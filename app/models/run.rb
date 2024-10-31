@@ -1,4 +1,4 @@
-class Run < ActiveRecord::Base
+class Run < ApplicationRecord
 
   # NOTE: additional status flags should use bitmask values (0x2, 0x4, etc) so that multiple flags can be set at the same time
   SentToReportServiceStatusFlag = 0x1
@@ -7,9 +7,9 @@ class Run < ActiveRecord::Base
   class PortalUpdateIncomplete < StandardError; end
   class InvalidJobState < StandardError; end
 
-  attr_accessible :run_count, :user_id, :key, :activity, :user, :page_id,
-  :remote_id, :remote_endpoint, :activity_id, :sequence_id, :context_id,
-  :class_info_url, :platform_id, :platform_user_id, :resource_link_id, :status
+  # attr_accessible :run_count, :user_id, :key, :activity, :user, :page_id,
+  # :remote_id, :remote_endpoint, :activity_id, :sequence_id, :context_id,
+  # :class_info_url, :platform_id, :platform_user_id, :resource_link_id, :status
 
   belongs_to :activity, :class_name => LightweightActivity
 

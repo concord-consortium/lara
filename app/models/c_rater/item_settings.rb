@@ -1,7 +1,7 @@
-class CRater::ItemSettings < ActiveRecord::Base
+class CRater::ItemSettings < ApplicationRecord
   belongs_to :provider, polymorphic: true
   belongs_to :score_mapping
-  attr_accessible :item_id, :score_mapping_id
+  # attr_accessible :item_id, :score_mapping_id
   
   delegate :max_score, to: :score_mapping, allow_nil: true
   def to_hash

@@ -1,7 +1,7 @@
-class PortalPublication < ActiveRecord::Base
+class PortalPublication < ApplicationRecord
 
-  attr_accessible :portal_url, :response, :success, :publishable, :publication_hash,
-    :publication_time, :sent_data
+  # attr_accessible :portal_url, :response, :success, :publishable, :publication_hash,
+  #   :publication_time, :sent_data
   # Assuming portals aren't a first-class model - representing them by their URLs
 
   # What got published - usually one of these, not both

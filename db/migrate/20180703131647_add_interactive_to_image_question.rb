@@ -13,13 +13,13 @@ module Embeddable
     'embeddable_'
   end
 
-  class ImageQuestion < ActiveRecord::Base
+  class ImageQuestion < ApplicationRecord
     has_many :page_items, :as => :embeddable, :dependent => :destroy
     has_many :interactive_pages, :through => :page_items
   end
 end
 
-class InteractivePage < ActiveRecord::Base
+class InteractivePage < ApplicationRecord
   has_many :page_items, -> { order(:section, :position) }
 
   def embeddables
@@ -35,7 +35,7 @@ class InteractivePage < ActiveRecord::Base
   end
 end
 
-class PageItem < ActiveRecord::Base
+class PageItem < ApplicationRecord
   acts_as_list :scope => :interactive_page
   belongs_to :interactive_page
 

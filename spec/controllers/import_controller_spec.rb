@@ -24,7 +24,7 @@ describe ImportController do
       let(:params1) do
             {
                import:{
-                 import:ActionDispatch::Http::UploadedFile.new(tempfile: valid_activity_import_json, filename: File.basename(valid_activity_import_json), content_type: "application/json")
+                 import:Rack::Test::UploadedFile.new(tempfile: valid_activity_import_json, filename: File.basename(valid_activity_import_json), content_type: "application/json")
                }
             }
       end
@@ -32,7 +32,7 @@ describe ImportController do
       let(:params2) do
             {
                import:{
-                 import:ActionDispatch::Http::UploadedFile.new(tempfile: invalid_activity_import_json, filename: File.basename(invalid_activity_import_json), content_type: "application/json")
+                 import:Rack::Test::UploadedFile.new(tempfile: invalid_activity_import_json, filename: File.basename(invalid_activity_import_json), content_type: "application/json")
                }
             }
       end
@@ -57,7 +57,7 @@ describe ImportController do
       let(:params1) do
             {
                import:{
-                 import:ActionDispatch::Http::UploadedFile.new(tempfile: valid_sequence_import_json, filename: File.basename(valid_sequence_import_json), content_type: "application/json")
+                 import:Rack::Test::UploadedFile.new(tempfile: valid_sequence_import_json, filename: File.basename(valid_sequence_import_json), content_type: "application/json")
                }
             }
       end
@@ -65,7 +65,7 @@ describe ImportController do
       let(:params2) do
             {
                import:{
-                 import:ActionDispatch::Http::UploadedFile.new(tempfile: invalid_sequence_import_json, filename: File.basename(invalid_sequence_import_json), content_type: "application/json")
+                 import:Rack::Test::UploadedFile.new(tempfile: invalid_sequence_import_json, filename: File.basename(invalid_sequence_import_json), content_type: "application/json")
                }
             }
       end
@@ -89,7 +89,7 @@ describe ImportController do
       let(:params1) do
             {
                import:{
-                 import:ActionDispatch::Http::UploadedFile.new(tempfile: valid_glossary_import_json, filename: File.basename(valid_glossary_import_json), content_type: "application/json")
+                 import:Rack::Test::UploadedFile.new(tempfile: valid_glossary_import_json, filename: File.basename(valid_glossary_import_json), content_type: "application/json")
                }
             }
       end
@@ -97,7 +97,7 @@ describe ImportController do
       let(:params2) do
             {
                import:{
-                 import:ActionDispatch::Http::UploadedFile.new(tempfile: invalid_glossary_import_json, filename: File.basename(invalid_glossary_import_json), content_type: "application/json")
+                 import:Rack::Test::UploadedFile.new(tempfile: invalid_glossary_import_json, filename: File.basename(invalid_glossary_import_json), content_type: "application/json")
                }
             }
       end

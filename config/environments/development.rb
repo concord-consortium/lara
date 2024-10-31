@@ -24,9 +24,6 @@ LightweightStandalone::Application.configure do
   # Only use best-standards-support built into browsers
   config.action_dispatch.best_standards_support = :builtin
 
-  # Raise exception on mass assignment protection for Active Record models
-  config.active_record.mass_assignment_sanitizer = :strict
-
   # Do not compress assets
   config.assets.js_compressor = false
 
@@ -63,7 +60,7 @@ LightweightStandalone::Application.configure do
 
   if ENV["RAILS_STDOUT_LOGGING"].present?
     # Disable logging to file. It might have performance impact while using Docker for Mac (slow filesystem sync).
-    config.logger = Logger.new(STDOUT)
+    config.logger = ActiveSupport::TaggedLogging.new(Logger.new(STDOUT))
   end
 end
 

@@ -1,5 +1,5 @@
-class AuthoredContent < ActiveRecord::Base
-  attr_accessible :user, :container, :content_type, :url
+class AuthoredContent < ApplicationRecord
+  # attr_accessible :user, :container, :content_type, :url
 
   belongs_to :user
   belongs_to :container, polymorphic: true

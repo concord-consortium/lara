@@ -1,9 +1,9 @@
 class FixupPagePositions < ActiveRecord::Migration
-  class LightweightActivity < ActiveRecord::Base
+  class LightweightActivity < ApplicationRecord
     has_many :pages, -> { order(:position) }, :foreign_key => 'lightweight_activity_id', :class_name => 'InteractivePage'
   end
 
-  class InteractivePage < ActiveRecord::Base
+  class InteractivePage < ApplicationRecord
     belongs_to :lightweight_activity, :class_name => 'LightweightActivity', :touch => true
     acts_as_list :scope => :lightweight_activity
   end

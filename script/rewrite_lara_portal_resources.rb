@@ -25,7 +25,7 @@ LARA_COLUMNS_TO_SEARCH = {
 
 def execute(sql)
   puts sql
-  ActiveRecord::Base.connection.execute(sql)
+  ApplicationRecord.connection.execute(sql)
 end
 
 # Only use this when setting up a QA environment.

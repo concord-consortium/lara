@@ -1,7 +1,7 @@
-class InteractivePage < ActiveRecord::Base
-  attr_accessible :lightweight_activity, :name, :position, :layout, :sidebar, :show_header,
-                  :show_sidebar, :show_interactive, :show_info_assessment, :toggle_info_assessment,
-                  :embeddable_display_mode, :sidebar_title, :is_hidden, :additional_sections, :is_completion
+class InteractivePage < ApplicationRecord
+  # attr_accessible :lightweight_activity, :name, :position, :layout, :sidebar, :show_header,
+  #                 :show_sidebar, :show_interactive, :show_info_assessment, :toggle_info_assessment,
+  #                 :embeddable_display_mode, :sidebar_title, :is_hidden, :additional_sections, :is_completion
 
   serialize :additional_sections
 
@@ -75,7 +75,7 @@ class InteractivePage < ActiveRecord::Base
     @registered_sections.push(s)
     @registered_additional_sections.push(s)
     # Let client code use .update_attributes methods (and similar) to set show_<section_name>.
-    attr_accessible "show_#{s[:name]}"
+    # attr_accessible "show_#{s[:name]}"
     # show_<section_name> getter:
     define_method("show_#{s[:name]}") do
       additional_sections && additional_sections[s[:name]]

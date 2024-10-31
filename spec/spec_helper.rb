@@ -122,7 +122,7 @@ RSpec.configure do |config|
   config.include Haml::Helpers, type: :helper
 end
 
-class ActiveRecord::Base
+class ApplicationRecord
   mattr_accessor :shared_connection
   @@shared_connection = nil
 
@@ -133,7 +133,7 @@ end
 
 # Forces all threads to share the same connection. This works on
 # Capybara because it starts the web server in a thread.
-ActiveRecord::Base.shared_connection = ActiveRecord::Base.connection
+ApplicationRecord.shared_connection = ApplicationRecord.connection
 
 def wait_for_ajax
   counter = 0

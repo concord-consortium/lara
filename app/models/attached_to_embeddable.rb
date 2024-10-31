@@ -4,7 +4,7 @@ module AttachedToEmbeddable
       # That requires model that includes this module to have embeddable_id (integer) and embeddable_type (string) attributes.
       belongs_to :embeddable, :polymorphic => true
 
-      attr_accessible :embeddable_select_value
+      # attr_accessible :embeddable_select_value
       attr_writer :embeddable_select_value
 
       before_validation :parse_embeddable_select_value

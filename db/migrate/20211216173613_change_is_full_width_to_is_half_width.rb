@@ -1,23 +1,23 @@
 class ChangeIsFullWidthToIsHalfWidth < ActiveRecord::Migration
-  class Embeddable::ImageQuestion < ActiveRecord::Base
+  class Embeddable::ImageQuestion < ApplicationRecord
   end
-  class Embeddable::Labbook < ActiveRecord::Base
+  class Embeddable::Labbook < ApplicationRecord
   end
-  class Embeddable::MultipleChoice < ActiveRecord::Base
+  class Embeddable::MultipleChoice < ApplicationRecord
   end
-  class Embeddable::OpenResponse < ActiveRecord::Base
+  class Embeddable::OpenResponse < ApplicationRecord
   end
-  class Embeddable::EmbeddablePlugin < ActiveRecord::Base
+  class Embeddable::EmbeddablePlugin < ApplicationRecord
   end
-  class Embeddable::Xhtml < ActiveRecord::Base
+  class Embeddable::Xhtml < ApplicationRecord
   end
-  class ImageInteractive < ActiveRecord::Base
+  class ImageInteractive < ApplicationRecord
   end
-  class ManagedInteractive < ActiveRecord::Base
+  class ManagedInteractive < ApplicationRecord
   end
-  class MwInteractive < ActiveRecord::Base
+  class MwInteractive < ApplicationRecord
   end
-  class VideoInteractive < ActiveRecord::Base
+  class VideoInteractive < ApplicationRecord
   end
 
   def up

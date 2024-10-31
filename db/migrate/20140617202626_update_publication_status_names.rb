@@ -1,9 +1,9 @@
 class UpdatePublicationStatusNames < ActiveRecord::Migration
 
-  class Sequence < ActiveRecord::Base
+  class Sequence < ApplicationRecord
   end
 
-  class LightweightActivity < ActiveRecord::Base
+  class LightweightActivity < ApplicationRecord
   end
 
   def up

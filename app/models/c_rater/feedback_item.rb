@@ -6,7 +6,7 @@ class CRater::FeedbackItem < Embeddable::FeedbackItem
   STATUS_ERROR = 'error'
 
   # Additional fields:
-  attr_accessible :status, :item_id, :response_info
+  # attr_accessible :status, :item_id, :response_info
   serialize :response_info
 
   def successful?
