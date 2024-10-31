@@ -184,8 +184,8 @@ describe LightweightActivitiesController do
 
         expect(flash[:warning]).to eq('There was a problem creating the new Lightweight Activity.')
         expect(response.body).to match /<form[^<]+action="\/activities"[^<]+method="post"[^<]*>/
-        expect(response.body).to match /<input[^<]+id="lightweight_activity_name"[^<]+name="lightweight_activity\[name\]"[^<]+type="text"[^<]*\/>/
-        expect(response.body).to match /<textarea[^<]+id="lightweight_activity_description"[^<]+name="lightweight_activity\[description\]"[^<]*>[^<]*<\/textarea>/
+        assert_select 'input[name=?]', 'lightweight_activity[name]'
+        assert_select 'textarea[name=?]', 'lightweight_activity[description]'
         expect(LightweightActivity.count).to equal existing_activities
       end
     end

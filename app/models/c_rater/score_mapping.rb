@@ -33,7 +33,7 @@ class CRater::ScoreMapping < ActiveRecord::Base
 
   # The maximum score is inferred from mapping
   def max_score
-    mapping.select{ |x,v| v.present? }.keys.map { |k| k.gsub(/#{MAP_KEY}/,'').to_i }.max || -1
+    mapping.select{ |x,v| v.present? }.keys.map { |k| k.to_s.gsub(/#{MAP_KEY}/,'').to_i }.max || -1
   end
 
   def method_missing(method_sym, *arguments, &block)
@@ -58,6 +58,12 @@ class CRater::ScoreMapping < ActiveRecord::Base
 
   def self.visible(user)
     self.all
+  end
+
+  def self.create_mapping(mapping)
+    puts "Creating mapping: #{mapping}"
+    self.new(mapping)
+    self.save
   end
 
 end
