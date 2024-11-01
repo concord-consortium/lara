@@ -1,11 +1,11 @@
 
 class SequencesController < ApplicationController
-  before_filter :set_sequence, :except => [:index, :new, :create]
-  before_filter :find_or_create_sequence_run, :only => [:show]
+  before_action :set_sequence, :except => [:index, :new, :create]
+  before_action :find_or_create_sequence_run, :only => [:show]
 
-  before_filter :enable_js_logger, :only => [:show]
+  before_action :enable_js_logger, :only => [:show]
 
-  before_filter :setup_abilities, :only => [:new, :edit]
+  before_action :setup_abilities, :only => [:new, :edit]
 
   # Adds remote_duplicate handler (POST remote_duplicate)
   include RemoteDuplicateSupport
@@ -76,7 +76,7 @@ class SequencesController < ApplicationController
   end
 
   def update_params
-    params.fetch(:sequence)
+    params.fetch(:sequence, {})
           .permit(
             :description, :title, :project_id, :defunct, :user_id, :logo, :display_title, :thumbnail_url,
             :abstract, :publication_hash, :project, :background_image, :hide_read_aloud, :font_size,

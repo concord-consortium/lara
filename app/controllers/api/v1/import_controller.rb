@@ -1,5 +1,5 @@
 class Api::V1::ImportController < API::APIController
-  skip_before_filter :verify_authenticity_token, :only => :import
+  skip_before_action :verify_authenticity_token, :only => :import
   def import
     authorize! :create, LightweightActivity
     json_object = JSON.parse request.body.read, :symbolize_names => true

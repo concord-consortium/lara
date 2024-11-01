@@ -228,7 +228,7 @@ describe LightweightActivitiesController do
       it 'should change single attributes in response to XHR-submitted data' do
         act
         request.accept = "application/json"
-        xhr :post, :update, {:id => act.id, "lightweight_activity" => { "name" => "I'm editing this name with an Ajax request" } }
+        xhr :put, :update, params: {:id => act.id, "lightweight_activity" => { "name" => "I'm editing this name with an Ajax request" } }
 
         expect(response.body).to match /I'm editing this name with an Ajax request/
       end

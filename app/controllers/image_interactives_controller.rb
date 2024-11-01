@@ -1,5 +1,5 @@
 class ImageInteractivesController < InteractiveController
-  before_filter :set_interactive, :except => [:new, :create]
+  before_action :set_interactive, :except => [:new, :create]
 
   private
   def set_interactive

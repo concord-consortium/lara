@@ -1,5 +1,5 @@
 class CRater::ItemSettingsController < ApplicationController
-  before_filter :set_settings
+  before_action :set_settings
 
   def edit
     respond_with_edit_form

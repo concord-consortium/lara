@@ -3,7 +3,7 @@ class Admin::UsersController < ApplicationController
   # GET /admin/users.json
 
   def user_params
-    params.require(:user).permit(
+    params.fetch(:user, {}).permit(
       :admined_project_ids, :api_key, :authentication_token, :email, :first_name,
       :has_api_key, :is_admin, :is_author, :last_name, :password, :password_confirmation,
       :provider, :remember_me, :uid
@@ -60,7 +60,7 @@ class Admin::UsersController < ApplicationController
   # POST /admin/users
   # POST /admin/users.json
   def create
-    @user = User.new(user_params[:user])
+    @user = User.new(user_params)
     authorize! :create, User
 
     respond_to do |format|
@@ -80,8 +80,8 @@ class Admin::UsersController < ApplicationController
     @user = User.find(params[:id])
     authorize! :update, @user
 
-    if !params[:user]&.[](:admined_project_ids).present?
-      params[:user][:admined_project_ids] = []
+    if !user_params[:admined_project_ids].present?
+      user_params[:admined_project_ids] = []
     end
 
     respond_to do |format|

@@ -1,5 +1,5 @@
 class VideoInteractivesController < InteractiveController
-  before_filter :set_interactive, :except => [:new, :create]
+  before_action :set_interactive, :except => [:new, :create]
 
   def edit
     if @interactive.sources.length < 1
@@ -53,6 +53,7 @@ class VideoInteractivesController < InteractiveController
   end
 
   def get_interactive_params
-    @input_params = params[:video_interactive]
+    @input_params = params.require(:video_interactive).permit(:poster_url, :caption, :credit,
+      :height, :width, :is_half_width, :is_hidden, :sources)
   end
 end

@@ -1,8 +1,8 @@
 class Embeddable::EmbeddableAnswersController < ApplicationController
   class << self; attr_accessor :embeddable_type end
 
-  before_filter :set_answer
-  before_filter :authorize_run_access
+  before_action :set_answer
+  before_action :authorize_run_access
 
   private
 

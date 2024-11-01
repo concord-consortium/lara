@@ -1,5 +1,5 @@
 class Api::V1::AuthoredContentsController < API::APIController
-  skip_before_filter :verify_authenticity_token, :only => :update
+  skip_before_action :verify_authenticity_token, :only => :update
 
   def show
     authored_content = AuthoredContent.find(params[:id])

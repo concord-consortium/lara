@@ -1,6 +1,6 @@
 class RunsController < ApplicationController
   layout false, :except => [:dirty, :details]
-  before_filter :set_run, :except => [:index, :fix_broken_portal_runs, :dashboard]
+  before_action :set_run, :except => [:index, :fix_broken_portal_runs, :dashboard]
 
   def index
     # This is actually a special case of show - create an Run and show it
@@ -11,7 +11,7 @@ class RunsController < ApplicationController
   end
 
   def show
-    render :json => @run.to_json(:methods => [:last_page, :storage_keys, :responses])
+    render :json => @run.to_json(:methods => [:last_page, :responses])
   end
 
   # we dont bulk-update a run currently. We might want to later.

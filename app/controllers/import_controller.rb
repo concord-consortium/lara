@@ -2,7 +2,7 @@ class ImportController < ApplicationController
 
   include PeerAccess
 
-  skip_before_filter :verify_authenticity_token, :only => :import
+  skip_before_action :verify_authenticity_token, :only => :import
 
   def import_status
     @message = params[:message] || ''

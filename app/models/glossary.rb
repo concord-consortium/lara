@@ -52,7 +52,7 @@ class Glossary < ApplicationRecord
   end
 
   def duplicate(new_owner)
-    new_glossary = Glossary.new(self.to_hash)
+    new_glossary = Glossary.new(self.to_hash.except(:id))
     new_glossary.name = "Copy of #{new_glossary.name}"
     new_glossary.legacy_glossary_resource_id = nil
     new_glossary.user = new_owner

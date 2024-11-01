@@ -1,6 +1,6 @@
 class GlobalInteractiveStatesController < ApplicationController
-  before_filter :set_run
-  before_filter :authorize_run_access
+  before_action :set_run
+  before_action :authorize_run_access
 
   # POST /runs/:run_id/global_interactive_state
   # Expected parameter: raw_data

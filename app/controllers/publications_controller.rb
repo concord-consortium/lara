@@ -1,5 +1,5 @@
 class PublicationsController < ApplicationController
-  before_filter :setup
+  before_action :setup
   # simplest object for rendering our views.  TODO: move elsewhere?
   class PortalStatus
     def initialize(concord_portal,publishable)

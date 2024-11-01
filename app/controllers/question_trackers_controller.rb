@@ -2,7 +2,7 @@
 
 class QuestionTrackersController < ApplicationController
   load_and_authorize_resource
-  before_filter :record_qt_origin
+  before_action :record_qt_origin
 
   def index
     @question_trackers = QuestionTracker.all # TODO Limit by user.

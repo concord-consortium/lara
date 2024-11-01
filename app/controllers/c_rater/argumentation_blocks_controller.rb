@@ -36,8 +36,8 @@ class CRater::ArgumentationBlocksController < ApplicationController
   </ul>
   """
 
-  before_filter :set_page_and_authorize, only: [:create_embeddables, :remove_embeddables]
-  skip_before_filter :verify_authenticity_token, only: [:report]
+  before_action :set_page_and_authorize, only: [:create_embeddables, :remove_embeddables]
+  skip_before_action :verify_authenticity_token, only: [:report]
 
   def create_embeddables
     create_arg_block_embeddables(@page)

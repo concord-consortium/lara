@@ -1,7 +1,7 @@
 require_dependency "application_controller"
 
 class SectionsController < ApplicationController
-  before_filter :set_page
+  before_action :set_page
 
   def update_params
     params.require(:section).permit(:title, :position, :show, :layout, :interactive_page, :interactive_page_id, :can_collapse_small, :name)

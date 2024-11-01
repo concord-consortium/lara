@@ -1,5 +1,5 @@
 class Embeddable::EmbeddablePluginsController < Embeddable::EmbeddablesController
-  before_filter :set_embeddable
+  before_action :set_embeddable
 
   def edit
     respond_with_edit_form("allow-full-width", "opaque-background")

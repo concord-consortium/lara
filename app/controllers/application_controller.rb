@@ -36,13 +36,13 @@ class ApplicationController < ActionController::Base
     raise ActionController::RoutingError.new('Not Found')
   end
 
-  before_filter :log_session_before
-  before_filter :portal_login
-  before_filter :reject_old_browsers, :except => [:bad_browser]
-  before_filter :set_locale
-  before_filter :store_auto_publish_url # to enable auto publishing to build an url from the request object
-  before_filter :intialize_gon
-  after_filter :log_session_after
+  before_action :log_session_before
+  before_action :portal_login
+  before_action :reject_old_browsers, :except => [:bad_browser]
+  before_action :set_locale
+  before_action :store_auto_publish_url # to enable auto publishing to build an url from the request object
+  before_action :intialize_gon
+  after_action :log_session_after
 
   helper_method :resource_name
 
@@ -173,7 +173,7 @@ class ApplicationController < ActionController::Base
     @run_key = @run.key
   end
 
-  # Exports logger configuration and data. Note that you have to explicitly specify 'enable_js_logger' as before_filter
+  # Exports logger configuration and data. Note that you have to explicitly specify 'enable_js_logger' as before_action
   # for every action which should have logging enabled.
   def enable_js_logger
     unless params[:logging].nil?

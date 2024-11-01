@@ -1,7 +1,7 @@
 class Api::V1::JwtController < ApplicationController
   layout false
 
-  skip_before_filter :verify_authenticity_token, :only => [:get_firebase_jwt, :get_portal_jwt]
+  skip_before_action :verify_authenticity_token, :only => [:get_firebase_jwt, :get_portal_jwt]
 
   def get_firebase_jwt
     handle_jwt_request "/api/v1/jwt/firebase"

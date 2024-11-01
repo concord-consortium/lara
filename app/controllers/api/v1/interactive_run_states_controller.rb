@@ -1,8 +1,8 @@
 class Api::V1::InteractiveRunStatesController < ApplicationController
   layout false
-  before_filter :set_interactive_run
+  before_action :set_interactive_run
 
-  skip_before_filter :verify_authenticity_token, :only => :update
+  skip_before_action :verify_authenticity_token, :only => :update
 
   def show
     begin

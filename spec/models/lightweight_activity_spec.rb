@@ -554,9 +554,9 @@ describe LightweightActivity do
     describe 'pages section' do
       describe 'for the Activity Player' do
         before(:each) do
-          activity_player_activity.pages << FactoryGirl.create(:page, name: 'page 1', position: 0)
-          activity_player_activity.pages << FactoryGirl.create(:page, name: 'page 2', position: 1)
-          activity_player_activity.pages << FactoryGirl.create(:page, name: 'hidden page', is_hidden: true, position: 2)
+          activity_player_activity.pages << FactoryGirl.create(:page, name: 'page 1', position: 1)
+          activity_player_activity.pages << FactoryGirl.create(:page, name: 'page 2', position: 2)
+          activity_player_activity.pages << FactoryGirl.create(:page, name: 'hidden page', is_hidden: true, position: 3)
           activity_player_activity.reload
         end
 
@@ -572,10 +572,10 @@ describe LightweightActivity do
     end
 
     describe 'pages section with hidden embeddables & reportable interactives' do
-      let(:page1) { FactoryGirl.create(:interactive_page_with_or, name: 'page 1', position: 0) }
-      let(:page2) { FactoryGirl.create(:interactive_page_with_hidden_or, name: 'page 2', position: 1) }
-      let(:page3) { FactoryGirl.create(:interactive_page_with_or, name: 'page 3', position: 2) }
-      let(:page4) { FactoryGirl.create(:interactive_page_with_or, name: 'page 4', position: 3) }
+      let(:page1) { FactoryGirl.create(:interactive_page_with_or, name: 'page 1', position: 1) }
+      let(:page2) { FactoryGirl.create(:interactive_page_with_hidden_or, name: 'page 2', position: 2) }
+      let(:page3) { FactoryGirl.create(:interactive_page_with_or, name: 'page 3', position: 3) }
+      let(:page4) { FactoryGirl.create(:interactive_page_with_or, name: 'page 4', position: 4) }
 
       let(:non_reportable_interactive) {
         FactoryGirl.create(:mw_interactive, enable_learner_state: false, has_report_url: false)
@@ -643,9 +643,9 @@ describe LightweightActivity do
       activity_player_page_pattern = /https:\/\/activity-player.concord.org\/.*&page=page_\d+/
 
       before(:each) do
-        activity.pages << FactoryGirl.create(:page, name: 'page 1', position: 0)
-        activity.pages << FactoryGirl.create(:page, name: 'page 2', position: 1)
-        activity.pages << FactoryGirl.create(:page, name: 'hidden page', is_hidden: true, position: 2)
+        activity.pages << FactoryGirl.create(:page, name: 'page 1', position: 1)
+        activity.pages << FactoryGirl.create(:page, name: 'page 2', position: 2)
+        activity.pages << FactoryGirl.create(:page, name: 'hidden page', is_hidden: true, position: 3)
         activity.reload
       end
 
@@ -675,10 +675,10 @@ describe LightweightActivity do
     end
 
     describe 'pages section with hidden embeddables & reportable interactives' do
-      let(:page1) { FactoryGirl.create(:interactive_page_with_or, name: 'page 1', position: 0) }
-      let(:page2) { FactoryGirl.create(:interactive_page_with_hidden_or, name: 'page 2', position: 1) }
-      let(:page3) { FactoryGirl.create(:interactive_page_with_or, name: 'page 3', position: 2) }
-      let(:page4) { FactoryGirl.create(:interactive_page_with_or, name: 'page 4', position: 3) }
+      let(:page1) { FactoryGirl.create(:interactive_page_with_or, name: 'page 1', position: 1) }
+      let(:page2) { FactoryGirl.create(:interactive_page_with_hidden_or, name: 'page 2', position: 2) }
+      let(:page3) { FactoryGirl.create(:interactive_page_with_or, name: 'page 3', position: 3) }
+      let(:page4) { FactoryGirl.create(:interactive_page_with_or, name: 'page 4', position: 4) }
 
       let(:non_reportable_interactive) {
         FactoryGirl.create(:mw_interactive, enable_learner_state: false, has_report_url: false)

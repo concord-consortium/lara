@@ -1,6 +1,6 @@
 class Api::V1::PageItemsController < API::APIController
   layout false
-  before_filter :set_page_item
+  before_action :set_page_item
 
   def export_page_item_embeddable
     results = (LaraSerializationHelper.new).export(@page_item.embeddable).to_json

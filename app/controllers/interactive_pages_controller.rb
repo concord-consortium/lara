@@ -1,12 +1,12 @@
 require_dependency "application_controller"
 
 class InteractivePagesController < ApplicationController
-  before_filter :set_page, :except => [:new, :create]
-  before_filter :only => [:show, :preview] { set_run_key(portal_launchable: false) }
-  before_filter :set_sequence, :only => [:show]
-  before_filter :check_if_hidden, :only => [:show, :preview]
+  before_action :set_page, :except => [:new, :create]
+  before_action :only => [:show, :preview] { set_run_key(portal_launchable: false) }
+  before_action :set_sequence, :only => [:show]
+  before_action :check_if_hidden, :only => [:show, :preview]
 
-  before_filter :enable_js_logger, :only => [:show, :preview]
+  before_action :enable_js_logger, :only => [:show, :preview]
 
   layout 'runtime', :only => [:show, :preview]
 

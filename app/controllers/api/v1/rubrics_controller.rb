@@ -1,5 +1,5 @@
 class Api::V1::RubricsController < API::APIController
-  skip_before_filter :verify_authenticity_token, :only => :update
+  skip_before_action :verify_authenticity_token, :only => :update
 
   # GET /api/v1/rubrics/1.json
   def show

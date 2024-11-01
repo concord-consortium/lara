@@ -24,7 +24,7 @@ describe ImportController do
       let(:params1) do
             {
                import:{
-                 import:Rack::Test::UploadedFile.new(tempfile: valid_activity_import_json, filename: File.basename(valid_activity_import_json), content_type: "application/json")
+                import: Rack::Test::UploadedFile.new(valid_activity_import_json.path, "application/json")
                }
             }
       end
@@ -32,19 +32,19 @@ describe ImportController do
       let(:params2) do
             {
                import:{
-                 import:Rack::Test::UploadedFile.new(tempfile: invalid_activity_import_json, filename: File.basename(invalid_activity_import_json), content_type: "application/json")
+                import: Rack::Test::UploadedFile.new(invalid_activity_import_json.path, "application/json")
                }
             }
       end
 
       it "can import a lightweight activity from a valid lightweight activity json and redirect to edit page" do
-        xhr :post, "import", params1
+        xhr :post, "import", params: params1
         expect(response.content_type).to eq("text/javascript")
         expect(response.body).to eq("window.location.href = '/activities/#{LightweightActivity.last.id}/edit';")
       end
 
       it "response status 500 error if import fails" do
-        xhr :post, "import", params2
+        xhr :post, "import", params: params2
         response.status == 500
         expect(response.body).to eq("{\"error\":\"Import failed: unknown type\"}")
       end
@@ -57,7 +57,7 @@ describe ImportController do
       let(:params1) do
             {
                import:{
-                 import:Rack::Test::UploadedFile.new(tempfile: valid_sequence_import_json, filename: File.basename(valid_sequence_import_json), content_type: "application/json")
+                 import:Rack::Test::UploadedFile.new(valid_sequence_import_json.path, content_type: "application/json")
                }
             }
       end
@@ -65,7 +65,7 @@ describe ImportController do
       let(:params2) do
             {
                import:{
-                 import:Rack::Test::UploadedFile.new(tempfile: invalid_sequence_import_json, filename: File.basename(invalid_sequence_import_json), content_type: "application/json")
+                import:Rack::Test::UploadedFile.new(invalid_sequence_import_json.path, content_type: "application/json")
                }
             }
       end
@@ -89,7 +89,7 @@ describe ImportController do
       let(:params1) do
             {
                import:{
-                 import:Rack::Test::UploadedFile.new(tempfile: valid_glossary_import_json, filename: File.basename(valid_glossary_import_json), content_type: "application/json")
+                 import:Rack::Test::UploadedFile.new(valid_glossary_import_json.path, content_type: "application/json")
                }
             }
       end
@@ -97,7 +97,7 @@ describe ImportController do
       let(:params2) do
             {
                import:{
-                 import:Rack::Test::UploadedFile.new(tempfile: invalid_glossary_import_json, filename: File.basename(invalid_glossary_import_json), content_type: "application/json")
+                 import:Rack::Test::UploadedFile.new(invalid_glossary_import_json.path, content_type: "application/json")
                }
             }
       end

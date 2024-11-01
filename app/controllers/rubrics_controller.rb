@@ -1,5 +1,5 @@
 class RubricsController < ApplicationController
-  before_filter :set_rubric, :except => [:index, :new, :create]
+  before_action :set_rubric, :except => [:index, :new, :create]
 
   def index
     @filter  = CollectionFilter.new(current_user, Rubric, params[:filter] || {})

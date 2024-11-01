@@ -162,11 +162,11 @@ describe SequencesController do
         # receives the :update_attributes message with whatever params are
         # submitted in the request.
         expect_any_instance_of(Sequence).to receive(:update_attributes).with({'title' => 'New Title'})
-        put :update, {:id => sequence.to_param, :sequence => {'title' => 'New Title'}}
+        put :update, params: {:id => sequence.to_param, :sequence => {'title' => 'New Title'}}
       end
 
       it "assigns the requested sequence as @sequence" do
-        put :update, {:id => sequence.to_param, :sequence => valid_attributes}
+        put :update, params: {id: sequence.to_param, sequence: valid_attributes}
         expect(assigns(:sequence)).to eq(sequence)
       end
 

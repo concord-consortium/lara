@@ -1,5 +1,5 @@
 class Embeddable::MultipleChoicesController < Embeddable::EmbeddablesController
-  before_filter :set_embeddable, :except => [:check, :remove_choice]
+  before_action :set_embeddable, :except => [:check, :remove_choice]
 
   def check
     @multiple_choice = Embeddable::MultipleChoiceAnswer.find(params[:id]).question

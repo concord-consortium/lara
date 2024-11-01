@@ -48,7 +48,7 @@ class Rubric < ApplicationRecord
   end
 
   def duplicate(new_owner)
-    new_rubric = Rubric.new(self.to_hash)
+    new_rubric = Rubric.new(self.to_hash.except(:id))
     new_rubric.name = "Copy of #{new_rubric.name}"
     new_rubric.user = new_owner
     new_rubric

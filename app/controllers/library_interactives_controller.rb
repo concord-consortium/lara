@@ -1,6 +1,6 @@
 class LibraryInteractivesController < ApplicationController
-  before_filter :can_use_index, :only => :index
-  before_filter :can_manage, :except => :index
+  before_action :can_use_index, :only => :index
+  before_action :can_manage, :except => :index
 
   # GET /library_interactives
   # GET /library_interactives.json

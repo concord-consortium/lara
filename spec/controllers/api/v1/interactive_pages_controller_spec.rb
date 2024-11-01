@@ -35,7 +35,7 @@ describe Api::V1::InteractivePagesController do
 
     describe "on an unknown page" do
       it "returns an error" do
-        xhr :get, "get_interactive_list", {id: 0}
+        get :get_interactive_list, params: {id: 0}
         expect(response.status).to eq(200)
         expect(response.content_type).to eq("application/json")
         expect(response.body).to eql({
@@ -47,7 +47,7 @@ describe Api::V1::InteractivePagesController do
 
     describe "using an invalid scope" do
       it "returns an error" do
-        xhr :get, "get_interactive_list", {id: page.id, scope: "flarm"}
+        get :get_interactive_list, params: {id: page.id, scope: "flarm"}
         expect(response.status).to eq(200)
         expect(response.content_type).to eq("application/json")
         expect(response.body).to eql({
@@ -61,7 +61,7 @@ describe Api::V1::InteractivePagesController do
       let (:publication_status) { "private" }
 
       it "returns an error" do
-        xhr :get, "get_interactive_list", {id: page.id}
+        get :get_interactive_list, params: {id: page.id}
         expect(response.status).to eq(200)
         expect(response.content_type).to eq("application/json")
         expect(response.body).to eql({
@@ -73,7 +73,7 @@ describe Api::V1::InteractivePagesController do
 
     describe "on a page with no interactives" do
       it "returns an empty list" do
-        xhr :get, "get_interactive_list", {id: page.id}
+        get :get_interactive_list, params: {id: page.id}
         expect(response.status).to eq(200)
         expect(response.content_type).to eq("application/json")
         expect(response.body).to eql({
@@ -95,7 +95,7 @@ describe Api::V1::InteractivePagesController do
       end
 
       it "returns the list of all interactives when no supportsSnapshots param is present" do
-        xhr :get, "get_interactive_list", {id: page.id}
+        get :get_interactive_list, params: {id: page.id}
         expect(response.status).to eq(200)
         expect(response.content_type).to eq("application/json")
         expect(response.body).to eql({
@@ -111,7 +111,7 @@ describe Api::V1::InteractivePagesController do
       end
 
       it "returns the correct list of all interactives when supportsSnapshots param is true" do
-        xhr :get, "get_interactive_list", {id: page.id, supportsSnapshots: "true"}
+        get :get_interactive_list, params: {id: page.id, supportsSnapshots: "true"}
         expect(response.status).to eq(200)
         expect(response.content_type).to eq("application/json")
         expect(response.body).to eql({
@@ -125,7 +125,7 @@ describe Api::V1::InteractivePagesController do
       end
 
       it "returns the correct list of all interactives when supportsSnapshots param is false" do
-        xhr :get, "get_interactive_list", {id: page.id, supportsSnapshots: "false"}
+        get :get_interactive_list, params: {id: page.id, supportsSnapshots: "false"}
         expect(response.status).to eq(200)
         expect(response.content_type).to eq("application/json")
         expect(response.body).to eql({
@@ -148,28 +148,28 @@ describe Api::V1::InteractivePagesController do
 
     describe "fails" do
       it "without a page_item parameter" do
-        xhr :post, "create_page_item", {id: page.id}
+        post :create_page_item, params: {id: page.id}
         expect(response.status).to eq(500)
         expect(response.content_type).to eq("application/json")
         expect(response.body).to include "Missing page_item parameter"
       end
 
       it "without a section_id parameter" do
-        xhr :post, "create_page_item", {id: page.id, page_item: {}}
+        post :create_page_item, params: {id: page.id, page_item: {position: 2}}
         expect(response.status).to eq(500)
         expect(response.content_type).to eq("application/json")
         expect(response.body).to include "Missing page_item[section_id] parameter"
       end
 
       it "with an invalid section_id parameter" do
-        xhr :post, "create_page_item", {id: page.id, page_item: {section_id: 0}}
+        post :create_page_item, params: {id: page.id, page_item: {section_id: 0}}
         expect(response.status).to eq(500)
         expect(response.content_type).to eq("application/json")
         expect(response.body).to include "Invalid page_item[section_id] parameter"
       end
 
       it "fails with a missing embeddable parameter" do
-        xhr :post, "create_page_item", {id: page.id, page_item: {
+        post :create_page_item, params: {id: page.id, page_item: {
           section_id: section.id,
           position: 1,
           section_position: 1,
@@ -182,7 +182,7 @@ describe Api::V1::InteractivePagesController do
       end
 
       it "fails with an invalid type parameter" do
-        xhr :post, "create_page_item", {id: page.id, page_item: {
+        post :create_page_item, params: {id: page.id, page_item: {
           section_id: section.id,
           embeddable: "Invalid_1",
           position: 1,
@@ -195,7 +195,7 @@ describe Api::V1::InteractivePagesController do
       end
 
       it "fails with an invalid library interactive parameter" do
-        xhr :post, "create_page_item", {id: page.id, page_item: {
+        post :create_page_item, params: {id: page.id, page_item: {
           section_id: section.id,
           embeddable: "LibraryInteractive_0",
           position: 1,
@@ -209,7 +209,7 @@ describe Api::V1::InteractivePagesController do
     end
 
     it "succeeds with valid LibraryInteractive parameters" do
-      xhr :post, "create_page_item", {id: page.id, page_item: {
+      post :create_page_item, params: {id: page.id, page_item: {
         section_id: section.id,
         embeddable: library_interactive1.serializeable_id,
         position: 1,
@@ -221,7 +221,7 @@ describe Api::V1::InteractivePagesController do
     end
 
     it "succeeds with valid MWInteractive parameters" do
-      xhr :post, "create_page_item", {id: page.id, page_item: {
+      post :create_page_item, params: {id: page.id, page_item: {
         section_id: section.id,
         embeddable: "MwInteractive",
         position: 1,
@@ -233,7 +233,7 @@ describe Api::V1::InteractivePagesController do
     end
 
     it "succeeds with valid windowshade plugin parameters" do
-      xhr :post, "create_page_item", {id: page.id, page_item: {
+      post :create_page_item, params: {id: page.id, page_item: {
         section_id: section.id,
         embeddable: "Plugin_1::windowShade",
         position: 1,
@@ -245,7 +245,7 @@ describe Api::V1::InteractivePagesController do
     end
 
     it "succeeds with valid question wrapper plugin parameters" do
-      xhr :post, "create_page_item", {id: page.id, page_item: {
+      post :create_page_item, params: {id: page.id, page_item: {
         section_id: section.id,
         embeddable: "Plugin_1::questionWrapper",
         position: 1,
@@ -257,7 +257,7 @@ describe Api::V1::InteractivePagesController do
     end
 
     it "succeeds with valid side tip plugin parameters" do
-      xhr :post, "create_page_item", {id: page.id, page_item: {
+      post :create_page_item, params: {id: page.id, page_item: {
         section_id: section.id,
         embeddable: "Plugin_1::sideTip",
         position: 1,
@@ -350,7 +350,7 @@ describe Api::V1::InteractivePagesController do
         plugins: []
       }.to_json
 
-      xhr :get, "get_library_interactives_list"
+      get :get_library_interactives_list, params: {}
       expect(response.status).to eq(200)
       expect(response.content_type).to eq("application/json")
       actual_response = JSON.parse(response.body)
@@ -437,7 +437,7 @@ describe Api::V1::InteractivePagesController do
         plugins: []
       }.to_json
 
-      xhr :get, "get_library_interactives_list"
+      get :get_library_interactives_list, params: {}
       expect(response.status).to eq(200)
       expect(response.content_type).to eq("application/json")
       actual_response = JSON.parse(response.body)
@@ -463,21 +463,21 @@ describe Api::V1::InteractivePagesController do
 
     describe "fails" do
       it "without a page_item parameter" do
-        xhr :post, "update_page_item", {id: page.id}
+        post :update_page_item, params: {id: page.id}
         expect(response.status).to eq(500)
         expect(response.content_type).to eq("application/json")
         expect(response.body).to include "Missing page_item parameter"
       end
 
       it "without an id parameter" do
-        xhr :post, "update_page_item", {id: page.id, page_item: {}}
+        post :update_page_item, params: {id: page.id, page_item: {column: 2}}
         expect(response.status).to eq(500)
         expect(response.content_type).to eq("application/json")
         expect(response.body).to include "Missing page_item[id] parameter"
       end
 
       it "without a column parameter" do
-        xhr :post, "update_page_item", {id: page.id, page_item: {
+        post :update_page_item, params: {id: page.id, page_item: {
           id: page_item.id
         }}
         expect(response.status).to eq(500)
@@ -486,7 +486,7 @@ describe Api::V1::InteractivePagesController do
       end
 
       it "without a position parameter" do
-        xhr :post, "update_page_item", {id: page.id, page_item: {
+        post :update_page_item, params: {id: page.id, page_item: {
           id: page_item.id,
           column: page_item.column
         }}
@@ -496,7 +496,7 @@ describe Api::V1::InteractivePagesController do
       end
 
       it "without a data parameter" do
-        xhr :post, "update_page_item", {id: page.id, page_item: {
+        post :update_page_item, params: {id: page.id, page_item: {
           id: page_item.id,
           column: page_item.column,
           position: page_item.position
@@ -507,7 +507,7 @@ describe Api::V1::InteractivePagesController do
       end
 
       it "without a type parameter" do
-        xhr :post, "update_page_item", {id: page.id, page_item: {
+        post :update_page_item, params: {id: page.id, page_item: {
           id: page_item.id,
           column: page_item.column,
           position: page_item.position,
@@ -520,7 +520,7 @@ describe Api::V1::InteractivePagesController do
     end
 
     it "succeeds with valid parameters" do
-      xhr :post, "update_page_item", {id: page.id, page_item: {
+      post :update_page_item, params: {id: page.id, page_item: {
         id: page_item.id,
         column: page_item.column,
         position: page_item.position,
