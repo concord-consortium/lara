@@ -13,6 +13,14 @@ class SequencesController < ApplicationController
   # Adds append_white_list_params support
   include ApplicationHelper
 
+  def sequence_params
+    params.fetch(:sequence, {})
+      .permit(
+        :abstract, :background_image, :defunct, :description, :display_title, :font_size, :hide_question_numbers,
+        :hide_read_aloud, :layout_override, :logo, :project, :project_id, :publication_hash, :thumbnail_url, :title, :user_id
+      )
+  end
+
   # GET /sequences
   # GET /sequences.json
   def index
@@ -75,21 +83,12 @@ class SequencesController < ApplicationController
     end
   end
 
-  def update_params
-    params.fetch(:sequence, {})
-          .permit(
-            :description, :title, :project_id, :defunct, :user_id, :logo, :display_title, :thumbnail_url,
-            :abstract, :publication_hash, :project, :background_image, :hide_read_aloud, :font_size,
-            :layout_override, :hide_question_numbers
-          )
-  end
-
   # PUT /sequences/1
   # PUT /sequences/1.json
   def update
     authorize! :update, @sequence
     respond_to do |format|
-      if @sequence.update_attributes(update_params)
+      if @sequence.update_attributes(sequence_params.to_h)
         format.html {
           flash[:notice] = "Sequence was successfully updated."
           redirect_to edit_sequence_path(@sequence)

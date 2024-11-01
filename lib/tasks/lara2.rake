@@ -46,7 +46,7 @@ namespace :lara2 do
     puts "Are you sure you want to PERMANENTLY delete glossary plugins in ALL lightweight activities? Enter 'YES' to confirm:"
     if STDIN.gets.chomp == "YES"
       puts "Deleting glossary plugins used in lightweight activities"
-      Plugin.delete_all(component_label: "glossary", plugin_scope_type: "LightweightActivity")
+      Plugin.where(component_label: "glossary", plugin_scope_type: "LightweightActivity").delete_all
     else
       puts "Aborting deleting glossary plugins used in lightweight activities"
     end

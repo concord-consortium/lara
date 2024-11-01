@@ -16,13 +16,13 @@ describe MwInteractivesController do
 
   describe 'edit' do
     it 'shows a form which renders the React-based MW Interactive editor' do
-      get :edit, :id => int.id
+      get :edit, params: { id: int.id }
       expect(response.body).to match /LARA.PageItemAuthoring.renderMWInteractiveAuthoring/
     end
 
     it 'responds to js-format requests with JSON' do
       page
-      get :edit, :id => int.id, :page_id => page.id, :format => 'js'
+      get :edit, params: { id: int.id, page_id: page.id, format: 'js' }
 
       expect(response.headers['Content-Type']).to match /text\/json/
       value_hash = JSON.parse(response.body)
@@ -35,7 +35,7 @@ describe MwInteractivesController do
     it 'raises an error when update fails' do
       expect {
         new_values_hash = { :native_width => 'Ha!' }
-        post :update, :id => int.id, :page_id => page.id, :mw_interactive => new_values_hash
+        post :update, params: { id: int.id, page_id: page.id, mw_interactive: new_values_hash }
       }.to raise_error ActiveRecord::RecordInvalid
     end
   end

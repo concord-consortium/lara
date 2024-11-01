@@ -81,8 +81,8 @@ RSpec.configure do |config|
   config.infer_base_class_for_anonymous_controllers = false
 
   # Include Devise helpers
-  config.include Devise::TestHelpers, :type => :controller
-  config.include Devise::TestHelpers, :type => :view
+  config.include Devise::Test::ControllerHelpers, :type => :controller
+  config.include Devise::Test::ControllerHelpers, :type => :view
 
   # this really doesn't seem like it should be necessary, so I wonder about
   # wether the require capybara/rspec is working or needed above

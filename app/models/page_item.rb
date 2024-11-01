@@ -57,7 +57,7 @@ class PageItem < ApplicationRecord
       if options.has_key?("linkedInteractives")
         linked_interactives = options["linkedInteractives"]
         # clear the existing links
-        LinkedPageItem.delete_all(primary_id: source_page_item_id)
+        LinkedPageItem.where(primary_id: source_page_item_id).delete_all
 
         # convert {0: {id:...}, 1: {id: ...}} to [{id:...}, {id:...}]
         if linked_interactives.is_a? Hash

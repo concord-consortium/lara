@@ -1,9 +1,5 @@
 class Sequence < ApplicationRecord
 
-  # attr_accessible :description, :title, :project_id, :defunct,
-  #   :user_id, :logo, :display_title, :thumbnail_url, :abstract, :publication_hash,
-  #   :project, :background_image, :hide_read_aloud, :font_size, :layout_override, :hide_question_numbers
-
   include Publishable # defines methods to publish to portals
   include PublicationStatus # defines publication status scopes and helpers
   include FixedWidthLayout # defines fixed width options

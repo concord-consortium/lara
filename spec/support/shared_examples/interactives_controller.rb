@@ -9,7 +9,7 @@ shared_examples "interactives controller" do
     # But I don't really see how this would work. I think there's no authorization at this moment (or I miss something).
     it 'replaces the values of the interactive to match submitted values' do
       new_values_hash = { :name => 'Edited name' }
-      post :update, :id => int.id, :page_id => page.id, interactive_label => new_values_hash
+      post :update, params: { id: int.id, page_id: page.id, interactive_label => new_values_hash }
 
       int.reload
       expect(int.name).to eq(new_values_hash[:name])
@@ -17,7 +17,7 @@ shared_examples "interactives controller" do
 
     it 'returns to the edit page when there are no errors' do
       new_values_hash = { :name => 'Edited name' }
-      post :update, :id => int.id, :page_id => page.id, interactive_label => new_values_hash
+      post :update, params: { id: int.id, page_id: page.id, interactive_label => new_values_hash }
       expect(response).to redirect_to(edit_activity_page_path(activity, page))
     end
 
@@ -47,7 +47,7 @@ shared_examples "interactives controller" do
             linkedState: int3.interactive_item_id
           }.to_json
           }
-          post :update, :id => int.id, :page_id => page.id, interactive_label => new_values_hash
+          post :update, params: { id: int.id, page_id: page.id, interactive_label => new_values_hash }
 
           int.reload
           expect(LinkedPageItem.count).to eql(1)
@@ -64,7 +64,7 @@ shared_examples "interactives controller" do
             linkedState: int3.interactive_item_id
           }.to_json
           }
-          post :update, :id => int.id, :page_id => page.id, interactive_label => new_values_hash
+          post :update, params: { id: int.id, page_id: page.id, interactive_label => new_values_hash }
 
           int.reload
           expect(LinkedPageItem.count).to eql(2)
@@ -87,7 +87,7 @@ shared_examples "interactives controller" do
               linkedState: nil
             }.to_json
             }
-            post :update, :id => int.id, :page_id => page.id, interactive_label => new_values_hash
+            post :update, params: { id: int.id, page_id: page.id, interactive_label => new_values_hash }
 
             int.reload
             expect(LinkedPageItem.count).to eql(0)

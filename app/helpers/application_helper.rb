@@ -211,8 +211,15 @@ module ApplicationHelper
     #
     # yields:
     #      `?foo=xx&bar=yy` (activity and bam are missing)
-    current_params = params.select { |key| whitelist.include?(key) }
-    if current_params.length > 0
+    
+    # If `params` is an instance of `ActionController::Parameters`, use `permit`
+    current_params = if params.is_a?(ActionController::Parameters)
+      params.permit(whitelist).to_h
+    else
+      params.slice(*whitelist)
+    end
+
+    if current_params.any?
       parsed_url = URI.parse(url_or_path)
       parsed_url_params = Rack::Utils.parse_nested_query(parsed_url.query || '')
       parsed_url.query = current_params.merge(parsed_url_params).to_query
