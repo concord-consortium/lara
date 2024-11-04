@@ -49,7 +49,7 @@ describe Api::V1::LightweightActivitiesController do
       if user
         sign_in user
       end
-      delete, "destroy", params: { id: activity.id }, xhr: true
+      delete "destroy", params: { id: activity.id }, xhr: true
       expect(LightweightActivity.exists?(activity.id)).to eq(false)
       expect(response.status).to eq(200)
       expect(response.content_type).to eq("application/json")
@@ -62,7 +62,7 @@ describe Api::V1::LightweightActivitiesController do
       if user
         sign_in user
       end
-      delete, "destroy", params: { id: activity.id }, xhr: true
+      delete "destroy", params: { id: activity.id }, xhr: true
       expect(LightweightActivity.exists?(activity.id)).to eq(true)
       expect(response.status).to eq(403)
       expect(response.content_type).to eq("application/json")

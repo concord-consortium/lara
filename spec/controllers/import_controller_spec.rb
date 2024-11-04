@@ -38,13 +38,13 @@ describe ImportController do
       end
 
       it "can import a lightweight activity from a valid lightweight activity json and redirect to edit page" do
-        post, "import", params: params1, xhr: true
+        post "import", params: params1, xhr: true
         expect(response.content_type).to eq("text/javascript")
         expect(response.body).to eq("window.location.href = '/activities/#{LightweightActivity.last.id}/edit';")
       end
 
       it "response status 500 error if import fails" do
-        post, "import", params: params2, xhr: true
+        post "import", params: params2, xhr: true
         response.status == 500
         expect(response.body).to eq("{\"error\":\"Import failed: unknown type\"}")
       end
@@ -71,13 +71,13 @@ describe ImportController do
       end
 
       it "can import a sequence from a valid sequence json and redirect to edit page" do
-        post, "import", params: params1, xhr: true
+        post "import", params: params1, xhr: true
         expect(response.content_type).to eq("text/javascript")
         expect(response.body).to eq("window.location.href = '/sequences/#{Sequence.last.id}/edit';")
       end
 
       it "response status 500 error if import fails" do
-        post, "import", params: params2, xhr: true
+        post "import", params: params2, xhr: true
         response.status == 500
         expect(response.body).to eq("{\"error\":\"Import failed: unknown type\"}")
       end
@@ -103,13 +103,13 @@ describe ImportController do
       end
 
       it "can import a glossary from a valid glossary json and redirect to edit page" do
-        post, "import", params: params1, xhr: true
+        post "import", params: params1, xhr: true
         expect(response.content_type).to eq("text/javascript")
         expect(response.body).to eq("window.location.href = '/glossaries/#{Glossary.last.id}/edit';")
       end
 
       it "response status 500 error if import fails" do
-        post, "import", params: params2, xhr: true
+        post "import", params: params2, xhr: true
         response.status == 500
         expect(response.body).to eq("{\"error\":\"Import failed: unknown type\"}")
       end
