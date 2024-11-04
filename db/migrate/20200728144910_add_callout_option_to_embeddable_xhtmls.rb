@@ -2,7 +2,6 @@ class AddCalloutOptionToEmbeddableXhtmls < ActiveRecord::Migration
 
   module Embeddable
     class Embeddable::Xhtml < ApplicationRecord
-      attr_accessible :name, :content, :is_hidden, :is_full_width, :is_callout
       has_many :page_items, as: :embeddable, dependent: :destroy
       has_many :interactive_pages, through: :page_items
     end
