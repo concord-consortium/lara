@@ -40,7 +40,7 @@ group :development do
   gem "better_errors", "~> 2.0.0", ">= 2.0.0"
   # gem "binding_of_caller", "~> 0.7"
   # gem "brakeman", "~> 2.4", {:require=>false}
-  gem 'bullet', "~> 5.4.3"
+  gem 'bullet', "~> 5.5.1"
   # gem "capistrano", "~> 2.15"
   # gem "capistrano-autoscaling", "~> 0.0", {:git=>"https://github.com/concord-consortium/capistrano-autoscaling.git", :branch=>"concord"}
   # gem "capistrano-cowboy", "~> 0.1"
