@@ -231,7 +231,7 @@ class LightweightActivitiesController < ApplicationController
     @page = @activity.pages.find(params[:id])
     @page.move_higher
     update_activity_changed_by
-    redirect_to :back
+    redirect_back
   end
 
   def move_down
@@ -239,7 +239,7 @@ class LightweightActivitiesController < ApplicationController
     @page = @activity.pages.find(params[:id])
     @page.move_lower
     update_activity_changed_by
-    redirect_to :back
+    redirect_back
   end
 
   def reorder_pages
@@ -270,7 +270,7 @@ class LightweightActivitiesController < ApplicationController
     # Kick off a resubmit
     answers.last.send_to_portal
     flash[:notice] = "#{answers.length} #{'answer'.pluralize(answers.length)} requeued for submission."
-    redirect_to :back
+    redirect_back
   end
 
   def add_plugin

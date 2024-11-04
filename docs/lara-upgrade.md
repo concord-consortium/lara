@@ -270,16 +270,16 @@ For now we will stay at 4.2.11.23 instead of upgrading to 4.2.11.38
 
 ### Upgrade To Rails 5.1.7
 
-1. Create a `upgrade-to-rails-5.1` branch off the `lara-upgrade` branch.
+1. Create a `upgrade-to-rails-5.1` branch off the `lara-upgrade` branch. ✅
 2. Upgrade rails gems in `Gemfile` to last 5.1 version: `gem 'rails', '~> 5.1.7'`.  No Ruby upgrade is required.
-3. Inside running Docker image run `bundle update rails`
-4. Resolve gem dependency issues until the bundle update succeeds.
+3. Inside running Docker image run `bundle update rails`  ✅
+4. Resolve gem dependency issues until the bundle update succeeds.  ✅
 5. Complete upgrade tasks in the [5.0 to 5.1 upgrade guide](https://guides.rubyonrails.org/upgrading_ruby_on_rails.html#upgrading-from-rails-5-0-to-rails-5-1)
 
-- [ ] Top-level HashWithIndifferentAccess is soft-deprecated
-- [ ] application.secrets now loaded with all keys as symbols
-- [ ] Removed deprecated support to :text and :nothing in render
-- [ ] Removed deprecated support of redirect_to :back
+- [x] Top-level HashWithIndifferentAccess is soft-deprecated
+- [x] application.secrets now loaded with all keys as symbols
+- [x] Removed deprecated support to :text and :nothing in render
+- [x] Removed deprecated support of redirect_to :back
 
 6. Create a PR and insure all the tests pass.
 7. After review/approval merge the branch into the `lara-upgrade` branch.
