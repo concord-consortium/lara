@@ -38,10 +38,11 @@
 
       label {
         font-weight: bold;
+        white-space: nowrap;
       }
 
       input[type=text] {
-        width: 700px;
+        width: 100%;
         box-sizing: border-box;
       }
 
