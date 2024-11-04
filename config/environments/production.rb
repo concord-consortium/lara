@@ -87,4 +87,10 @@ LightweightStandalone::Application.configure do
 
   # Send deprecation notices to registered listeners
   config.active_support.deprecation = :notify
+
+  config.active_record.belongs_to_required_by_default = false
+  config.action_controller.per_form_csrf_tokens = false
+  config.action_controller.forgery_protection_origin_check = false
+  config.ssl_options = { hsts: { subdomains: false } }
+  ActiveSupport.to_time_preserves_timezone = false
 end

@@ -46,4 +46,10 @@ LightweightStandalone::Application.configure do
 
   # Execute tests in random order
   config.active_support.test_order = :order
+
+  config.active_record.belongs_to_required_by_default = false
+  config.action_controller.per_form_csrf_tokens = false
+  config.action_controller.forgery_protection_origin_check = false
+  config.ssl_options = { hsts: { subdomains: false } }
+  ActiveSupport.to_time_preserves_timezone = false
 end
