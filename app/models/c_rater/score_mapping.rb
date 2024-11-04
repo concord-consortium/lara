@@ -60,10 +60,4 @@ class CRater::ScoreMapping < ActiveRecord::Base
     self.all
   end
 
-  def self.create_mapping(mapping)
-    puts "Creating mapping: #{mapping}"
-    self.new(mapping)
-    self.save
-  end
-
 end
