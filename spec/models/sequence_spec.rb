@@ -10,13 +10,13 @@ describe Sequence do
       sequence
     }
   let (:activity1) {
-     activity = FactoryGirl.create(:activity, :time_to_complete => 45)
+     activity = FactoryGirl.create(:activity, time_to_complete: 45)
      activity.user = user
      activity.save
      activity
     }
   let (:activity2) {
-     activity = FactoryGirl.create(:activity, :time_to_complete => 40)
+     activity = FactoryGirl.create(:activity, time_to_complete: 40)
      activity.user = user
      activity.save
      activity
@@ -261,7 +261,7 @@ describe Sequence do
     let(:host)          { 'http://test.host' }
 
     it 'returns json of a sequence' do
-      data = JSON.parse(sequence.export(host), :symbolize_names => true)
+      data = JSON.parse(sequence.export(host), symbolize_names: true)
       imported = Sequence.import(data, owner)
       expect(imported.thumbnail_url).to eq(thumbnail_url)
       expect(imported.logo).to eq(logo)

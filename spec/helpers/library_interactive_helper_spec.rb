@@ -2,14 +2,14 @@ require "spec_helper"
 
 describe LibraryInteractiveHelper do
   let (:library_interactive1) { FactoryGirl.create(:library_interactive,
-       :name => 'Test Library Interactive 1',
-       :base_url => 'http://foo.com/',
-       :thumbnail_url => nil
+       name: 'Test Library Interactive 1',
+       base_url: 'http://foo.com/',
+       thumbnail_url: nil
       ) }
   let (:library_interactive2) { FactoryGirl.create(:library_interactive,
-       :name => 'Test Library Interactive 2',
-       :base_url => 'http://bar.com/',
-       :thumbnail_url => nil
+       name: 'Test Library Interactive 2',
+       base_url: 'http://bar.com/',
+       thumbnail_url: nil
       ) }
 
   describe "#migrate_library_interactive_options" do

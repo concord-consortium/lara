@@ -12,20 +12,20 @@ FactoryGirl.define do
       authentications {
         [ FactoryGirl.create(
         :authentication,
-        :uid      => 'fake_concord_user',
-        :provider => 'concord_portal')
+        uid: 'fake_concord_user',
+        provider: 'concord_portal')
       ]}
     end
   end
 
-  factory :admin, :class => User do
+  factory :admin, class: User do
     email { generate(:email) }
     password 'admin...'
     password_confirmation 'admin...'
     is_admin true
   end
 
-  factory :author, :class => User do
+  factory :author, class: User do
     email { generate(:email) }
     password 'author..'
     password_confirmation 'author..'

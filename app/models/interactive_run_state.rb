@@ -5,7 +5,7 @@ class InteractiveRunState < ApplicationRecord
   # attr_accessible :interactive_id, :interactive_type, :run_id, :raw_data, :interactive, :run, :key, :metadata
 
   belongs_to :run
-  belongs_to :interactive, :polymorphic => true
+  belongs_to :interactive, polymorphic: true
 
   after_update :maybe_send_to_portal
   after_update :propagate_to_collaborators

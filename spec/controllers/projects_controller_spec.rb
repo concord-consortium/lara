@@ -137,14 +137,14 @@ describe ProjectsController do
 
   describe "DELETE destroy" do
     it "destroys the requested project" do
-      project = Project.create(:project_key => "something-unique-123-abc")
+      project = Project.create(project_key: "something-unique-123-abc")
       expect {
         delete :destroy, params: { id: project.id }
       }.to change(Project, :count).by(-1)
     end
 
     it "redirects to the projects list" do
-      project = Project.create(:project_key => "something-unique-123-abc")
+      project = Project.create(project_key: "something-unique-123-abc")
       delete :destroy, params: { id: project.id }
       expect(response).to redirect_to(projects_url)
     end

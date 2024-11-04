@@ -8,6 +8,6 @@ class CreateMwInteractives < ActiveRecord::Migration
       t.timestamps
     end
 
-    add_index :mw_interactives, :user_id, :name => 'mw_interactives_user_idx'
+    add_index :mw_interactives, :user_id, name: 'mw_interactives_user_idx'
   end
 end

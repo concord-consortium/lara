@@ -6,16 +6,16 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :trackable, :validatable, :timeoutable,
          # :token_authenticatable,
          :bearer_token_authenticatable
-  devise :omniauthable, :omniauth_providers => Concord::AuthPortal.all_strategy_names
+  devise :omniauthable, omniauth_providers: Concord::AuthPortal.all_strategy_names
 
-  has_many :activities, :class_name => LightweightActivity
+  has_many :activities, class_name: LightweightActivity
   has_many :sequences
   has_many :runs
   has_many :imports
   has_many :glossaries, -> { order(:name) }
   has_many :rubrics, -> { order(:name) }
   has_many :project_admins
-  has_many :admined_projects, through: :project_admins, :source => :project
+  has_many :admined_projects, through: :project_admins, source: :project
 
   # Setup accessible (or protected) attributes for your model
   # attr_accessible :email, :password, :password_confirmation, :remember_me,
@@ -25,7 +25,7 @@ class User < ApplicationRecord
   ## these were commented out already?
   # attr_accessible :title, :body
 
-  has_many :authentications, :dependent => :delete_all
+  has_many :authentications, dependent: :delete_all
 
   # self.token_authentication_key = "api_key"
 
@@ -39,7 +39,7 @@ class User < ApplicationRecord
   def ability
     @ability ||= Ability.new(self)
   end
-  delegate :can?, :cannot?, :to => :ability
+  delegate :can?, :cannot?, to: :ability
 
   def admin?
     return is_admin

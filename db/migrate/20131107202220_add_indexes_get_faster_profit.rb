@@ -24,8 +24,8 @@ class AddIndexesGetFasterProfit < ActiveRecord::Migration
 
     add_index :video_sources, :video_interactive_id
 
-    add_index :lightweight_activities_sequences, :lightweight_activity_id, :name => 'index_activities_sequence_join_by_activity'
-    add_index :lightweight_activities_sequences, :sequence_id, :name => 'index_activities_sequence_join_by_sequence'
+    add_index :lightweight_activities_sequences, :lightweight_activity_id, name: 'index_activities_sequence_join_by_activity'
+    add_index :lightweight_activities_sequences, :sequence_id, name: 'index_activities_sequence_join_by_sequence'
 
     # Tread lightly
     add_index :runs, :key

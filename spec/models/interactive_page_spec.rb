@@ -6,9 +6,9 @@ end
 
 describe InteractivePage do
   let(:page) do
-    p = FactoryGirl.create(:page, :sidebar_title => "sidebar")
+    p = FactoryGirl.create(:page, sidebar_title: "sidebar")
     [3,1,2].each do |i|
-      embed = FactoryGirl.create(:xhtml, :name => "embeddable #{i}", :content => "This is the #{ActiveSupport::Inflector.ordinalize(i)} embeddable")
+      embed = FactoryGirl.create(:xhtml, name: "embeddable #{i}", content: "This is the #{ActiveSupport::Inflector.ordinalize(i)} embeddable")
       p.add_embeddable(embed, i)
     end
     p
@@ -67,7 +67,7 @@ describe InteractivePage do
 
     it 'has a header block to which an embeddable can be added' do
       embed_text = "This is an embeddable in the header block."
-      embed = FactoryGirl.create(:xhtml, :name => "", :content => embed_text)
+      embed = FactoryGirl.create(:xhtml, name: "", content: embed_text)
       page.add_embeddable(embed, 1, Section::HEADER_BLOCK)
       page.reload # We have to reload to get the order of page_items correct.
       expect(page.embeddables.size).to eq(4)
@@ -113,7 +113,7 @@ describe InteractivePage do
   it 'has interactives in the correct order' do
     # We're adding these with a "position" parameter, so they're being added as 3, 1, 2 but the order should be 1, 2, 3
     [3,1,2].each do |i|
-      inter = FactoryGirl.create(:mw_interactive, :name => "inter #{i}", :url => "http://www.concord.org/#{i}")
+      inter = FactoryGirl.create(:mw_interactive, name: "inter #{i}", url: "http://www.concord.org/#{i}")
       page.add_interactive(inter, i)
     end
     page.reload
@@ -133,7 +133,7 @@ describe InteractivePage do
 
   it 'inserts embeddables at the end if position is not provided' do
     embed_count = page.sections[0].embeddables.length
-    embed4 = FactoryGirl.create(:xhtml, :name => 'Embeddable 4')
+    embed4 = FactoryGirl.create(:xhtml, name: 'Embeddable 4')
     page.add_embeddable(embed4)
     page.reload
 
@@ -434,7 +434,7 @@ describe InteractivePage do
       JSON.parse(File.read(
         Rails.root +
         "spec/import_examples/#{example_json_file}.json"),
-        :symbolize_names => true)
+        symbolize_names: true)
     end
 
     describe "from a valid_lightweight_activity" do
@@ -497,7 +497,7 @@ describe InteractivePage do
     let(:image_interactive) { FactoryGirl.create(:image_interactive) }
 
     let(:or_question) { FactoryGirl.create(:or_embeddable) }
-    let(:im_question) { FactoryGirl.create(:image_question, :prompt => "draw your answer") }
+    let(:im_question) { FactoryGirl.create(:image_question, prompt: "draw your answer") }
     let(:mc_question) { FactoryGirl.create(:mc_with_choices) }
     let(:labbook_question) { FactoryGirl.create(:labbook, interactive: reportable_interactive) }
     let(:xhtml) { FactoryGirl.create(:xhtml) }
@@ -567,7 +567,7 @@ describe InteractivePage do
 
     describe "#to_hash" do
       it "should respect the _is_completion property" do
-        expect(page.to_hash).to include({:is_completion => true})
+        expect(page.to_hash).to include({is_completion: true})
       end
     end
 

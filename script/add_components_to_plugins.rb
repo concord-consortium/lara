@@ -4,7 +4,7 @@ ApprovedScript.where({version: 3}).each do |as|
   if as.url =~ /teacher-edition-tips-plugin/
     Plugin.where({approved_script_id: as.id}).each do |p|
       begin
-        author_data = JSON.parse(p.author_data, :symbolize_names => true)
+        author_data = JSON.parse(p.author_data, symbolize_names: true)
         if author_data && author_data[:tipType] && p.component_label.blank?
           # the component label is the same as the tip type in the teacher tips manifest
           p.component_label = author_data[:tipType]
@@ -15,7 +15,7 @@ ApprovedScript.where({version: 3}).each do |as|
       end
     end
   elsif (as.url =~ /lara-sharing-plugin/) || (as.url =~ /glossary-plugin/) || (as.url =~ /model-feedback/)
-    metadata = JSON.parse(as.authoring_metadata, :symbolize_names => true)
+    metadata = JSON.parse(as.authoring_metadata, symbolize_names: true)
     # lara sharing, glossary and model-feedback only have 1 component
     component_label = metadata[:components][0][:label]
     Plugin.where({approved_script_id: as.id}).each do |p|

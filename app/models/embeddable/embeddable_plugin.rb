@@ -12,7 +12,7 @@ module Embeddable
 
     has_one :plugin, as: :plugin_scope, autosave: true
 
-    has_many :page_items, :as => :embeddable, :dependent => :destroy
+    has_many :page_items, as: :embeddable, dependent: :destroy
     has_many :sections, through: :page_items
     has_many :interactive_pages, through: :sections
     has_many :embeddable_plugins, class_name: "Embeddable::EmbeddablePlugin", as: :embeddable

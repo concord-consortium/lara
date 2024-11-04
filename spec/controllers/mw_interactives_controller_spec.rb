@@ -8,7 +8,7 @@ describe MwInteractivesController do
   render_views
   let (:activity) { FactoryGirl.create(:activity_with_page) }
   let (:page) { activity.pages.first }
-  let (:int) { FactoryGirl.create(:mw_interactive, :name => 'Test Interactive') }
+  let (:int) { FactoryGirl.create(:mw_interactive, name: 'Test Interactive') }
 
   before(:each) {
     page.add_embeddable(int)
@@ -34,7 +34,7 @@ describe MwInteractivesController do
   describe 'update', :skip do
     it 'raises an error when update fails' do
       expect {
-        new_values_hash = { :native_width => 'Ha!' }
+        new_values_hash = { native_width: 'Ha!' }
         post :update, params: { id: int.id, page_id: page.id, mw_interactive: new_values_hash }
       }.to raise_error ActiveRecord::RecordInvalid
     end

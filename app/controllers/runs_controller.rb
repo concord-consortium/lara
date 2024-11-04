@@ -1,17 +1,17 @@
 class RunsController < ApplicationController
-  layout false, :except => [:dirty, :details]
-  before_action :set_run, :except => [:index, :fix_broken_portal_runs, :dashboard]
+  layout false, except: [:dirty, :details]
+  before_action :set_run, except: [:index, :fix_broken_portal_runs, :dashboard]
 
   def index
     # This is actually a special case of show - create an Run and show it
     # - so we'll do that work here and redirect there
     @activity = LightweightActivity.find(params[:activity_id])
-    @run = Run.create(:activity => @activity, :user => current_user)
+    @run = Run.create(activity: @activity, user: current_user)
     redirect_to activity_run_url(@activity, @run)
   end
 
   def show
-    render :json => @run.to_json(:methods => [:last_page, :responses])
+    render json: @run.to_json(methods: [:last_page, :responses])
   end
 
   # we dont bulk-update a run currently. We might want to later.
@@ -26,7 +26,7 @@ class RunsController < ApplicationController
       format.html do
         authorize! :manage, :all # admins
       end
-      format.json { render :json => { :dirty_runs => @runs.length }.to_json }
+      format.json { render json: { dirty_runs: @runs.length }.to_json }
     end
   end
 
@@ -77,10 +77,10 @@ class RunsController < ApplicationController
       endpoint_base  = "#{endpoint_base}/#{path_rgx}"
       learners       =  params['learners'].split(",")
       endpoints      = learners.map { |l| "#{endpoint_base}/#{l}" }
-      @runs = Run.where(:remote_endpoint => endpoints).includes(:activity,:user)
+      @runs = Run.where(remote_endpoint: endpoints).includes(:activity,:user)
       @students = @runs.map { |r| @student_learner_map[r.remote_id] }
       @runs = @runs.group_by { |r| r.sequence }
-      render :layout => 'wide'
+      render layout: 'wide'
     else
       redirect_to url_for(params.merge(origin: request.referrer))
     end
@@ -122,7 +122,7 @@ class RunsController < ApplicationController
       dst = "/admin/learner_detail/"
       info_url = run.remote_endpoint.gsub(src,dst) << ".txt"
       response = HTTParty.get(info_url,
-        :headers => {"Authorization" => run.lara_to_portal_secret_auth, "Content-Type" => 'text/plain'}, :timeout => 5)
+        headers: {"Authorization" => run.lara_to_portal_secret_auth, "Content-Type" => 'text/plain'}, timeout: 5)
     rescue
       return ""
     end

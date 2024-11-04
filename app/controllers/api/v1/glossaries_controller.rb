@@ -1,5 +1,5 @@
 class Api::V1::GlossariesController < API::APIController
-  skip_before_action :verify_authenticity_token, :only => :update
+  skip_before_action :verify_authenticity_token, only: :update
 
   # GET /api/v1/glossaries/1.json
   def show
@@ -47,7 +47,7 @@ class Api::V1::GlossariesController < API::APIController
     rescue => e
       error(e.message)
     else
-      render :json => {id: glossary.id, name: glossary.name, project: Project.id_and_title(glossary.project), json: glossary.export_json_only}
+      render json: {id: glossary.id, name: glossary.name, project: Project.id_and_title(glossary.project), json: glossary.export_json_only}
     end
   end
 end

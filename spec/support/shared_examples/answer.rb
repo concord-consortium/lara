@@ -17,13 +17,13 @@ shared_examples "an answer" do
     it "strips the content from any HTML `i` containers in the prompt" do
       test_html = "<h1> this is a test</h1> <p> <i>with</i> italics </p>"
       expected  = "<h1> this is a test</h1> <p> <i></i> italics </p>"
-      allow(answer).to receive_messages(:prompt => test_html)
+      allow(answer).to receive_messages(prompt: test_html)
       expect(answer.prompt_no_itals).to eq(expected)
     end
 
     it "should work for two consecutive calls on different objects" do
-      allow(answer_a).to receive_messages(:prompt => '<i>Prompt</i> A')
-      allow(answer_b).to receive_messages(:prompt => '<i>Prompt</i> B')
+      allow(answer_a).to receive_messages(prompt: '<i>Prompt</i> A')
+      allow(answer_b).to receive_messages(prompt: '<i>Prompt</i> B')
       expect(answer_a.prompt_no_itals).to eq('<i></i> A')
       expect(answer_b.prompt_no_itals).to eq('<i></i> B')
     end
@@ -32,7 +32,7 @@ shared_examples "an answer" do
   describe "send_to_portal" do
     describe "with a run" do
       it "should call run.send_to_portal(self, nil)" do
-        allow(answer).to receive_messages(:run => run)
+        allow(answer).to receive_messages(run: run)
         expect(run).to receive(:queue_for_portal)
         answer.send_to_portal
         expect(answer).to be_dirty
@@ -48,7 +48,7 @@ shared_examples "an answer" do
   end
 
   describe "reset_to_clean" do
-    let(:answer) { described_class.create(:is_dirty => true) }
+    let(:answer) { described_class.create(is_dirty: true) }
     it "should remove the is_dirty flag without invoking callbacks" do
       expect(answer).not_to receive(:queue_for_portal)
       answer.mark_clean

@@ -39,10 +39,10 @@ describe Api::V1::InteractiveRunStatesController do
 
   describe 'routing' do
     it 'recognizes and generates #show' do
-      expect({:get => "api/v1/interactive_run_states/foo"}).to route_to(:controller => 'api/v1/interactive_run_states', :action => 'show', :key => "foo")
+      expect({get: "api/v1/interactive_run_states/foo"}).to route_to(controller: 'api/v1/interactive_run_states', action: 'show', key: "foo")
     end
     it 'recognizes and generates #update' do
-      expect({:put => "api/v1/interactive_run_states/foo"}).to route_to(:controller => 'api/v1/interactive_run_states', :action => 'update', :key => "foo")
+      expect({put: "api/v1/interactive_run_states/foo"}).to route_to(controller: 'api/v1/interactive_run_states', action: 'update', key: "foo")
     end
   end
 
@@ -50,7 +50,7 @@ describe Api::V1::InteractiveRunStatesController do
 
     it 'renders 404 when the interactive run state does not exist' do
       begin
-        get :show, params: { :key => 'bar' }
+        get :show, params: { key: 'bar' }
       rescue ActiveRecord::RecordNotFound
       end
     end
@@ -61,14 +61,14 @@ describe Api::V1::InteractiveRunStatesController do
         let(:run) { FactoryGirl.create(:run, {activity: activity, user: nil})}
 
         it 'can be opened' do
-          get :show, params: { :key => 'foo' }
+          get :show, params: { key: 'foo' }
           expect_response_has_valid_data(response)
         end
       end
 
       describe 'owned documents' do
         it 'cannot be opened' do
-          get :show, params: { :key => 'foo' }
+          get :show, params: { key: 'foo' }
           expect_response_is_not_authorized(response, "logged in", "get")
         end
       end
@@ -84,14 +84,14 @@ describe Api::V1::InteractiveRunStatesController do
         let(:run) { FactoryGirl.create(:run, {activity: activity, user: nil})}
 
         it 'can be opened' do
-          get :show, params: { :key => 'foo' }
+          get :show, params: { key: 'foo' }
           expect_response_has_valid_data(response)
         end
       end
 
       describe 'owned documents that the user owns' do
         it 'can be opened' do
-          get :show, params: { :key => 'foo' }
+          get :show, params: { key: 'foo' }
           expect_response_has_valid_data(response)
         end
       end
@@ -101,7 +101,7 @@ describe Api::V1::InteractiveRunStatesController do
         let(:run)   { FactoryGirl.create(:run, {activity: activity, user: user2})}
 
         it 'cannot be opened' do
-          get :show, params: { :key => 'foo' }
+          get :show, params: { key: 'foo' }
           expect_response_is_not_authorized(response, "the owner or an admin or a collaborator", "get")
         end
       end
@@ -119,7 +119,7 @@ describe Api::V1::InteractiveRunStatesController do
         let(:run2)  { FactoryGirl.create(:run, {activity: activity, user: user})}
 
         it 'can be opened' do
-          get :show, params: { :key => 'foo' }
+          get :show, params: { key: 'foo' }
           expect_response_has_valid_data(response)
         end
       end
@@ -136,14 +136,14 @@ describe Api::V1::InteractiveRunStatesController do
         let(:run) { FactoryGirl.create(:run, {activity: activity, user: nil})}
 
         it 'can be opened' do
-          get :show, params: { :key => 'foo' }
+          get :show, params: { key: 'foo' }
           expect_response_has_valid_data(response)
         end
       end
 
       describe 'owned documents that the user owns' do
         it 'can be opened' do
-          get :show, params: { :key => 'foo' }
+          get :show, params: { key: 'foo' }
           expect_response_has_valid_data(response)
         end
       end
@@ -153,7 +153,7 @@ describe Api::V1::InteractiveRunStatesController do
         let(:run)    { FactoryGirl.create(:run, {activity: activity, user: user2})}
 
         it 'can be opened' do
-          get :show, params: { :key => 'foo' }
+          get :show, params: { key: 'foo' }
           expect_response_has_valid_data(response)
         end
       end
@@ -164,7 +164,7 @@ describe Api::V1::InteractiveRunStatesController do
 
     it 'renders 404 when the interactive run state does not exist' do
       begin
-        put :update, params: { :key => 'bar' }
+        put :update, params: { key: 'bar' }
       rescue ActiveRecord::RecordNotFound
       end
     end

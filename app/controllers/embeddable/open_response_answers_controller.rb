@@ -11,9 +11,9 @@ class Embeddable::OpenResponseAnswersController < Embeddable::EmbeddableAnswersC
   def update
     respond_to do |format|
       if @answer.update_attributes(update_params)
-        format.json { render :json => @answer.to_json }
+        format.json { render json: @answer.to_json }
       else
-        format.json { render :json => @answer.errors }
+        format.json { render json: @answer.errors }
       end
     end
   end

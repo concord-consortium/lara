@@ -14,8 +14,8 @@ module Embeddable
   end
 
   class ImageQuestion < ApplicationRecord
-    has_many :page_items, :as => :embeddable, :dependent => :destroy
-    has_many :interactive_pages, :through => :page_items
+    has_many :page_items, as: :embeddable, dependent: :destroy
+    has_many :interactive_pages, through: :page_items
   end
 end
 
@@ -36,10 +36,10 @@ class InteractivePage < ApplicationRecord
 end
 
 class PageItem < ApplicationRecord
-  acts_as_list :scope => :interactive_page
+  acts_as_list scope: :interactive_page
   belongs_to :interactive_page
 
-  belongs_to :embeddable, :polymorphic => true, dependent: :destroy
+  belongs_to :embeddable, polymorphic: true, dependent: :destroy
 end
 
 class AddInteractiveToImageQuestion < ActiveRecord::Migration

@@ -6,6 +6,6 @@ class RemoveIntroductionTextFromInteractivePage < ActiveRecord::Migration
 
   def down
     add_column :interactive_pages, :text, :text
-    add_column :interactive_pages, :show_introduction, :boolean, :default => false
+    add_column :interactive_pages, :show_introduction, :boolean, default: false
   end
 end

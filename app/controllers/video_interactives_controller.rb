@@ -1,5 +1,5 @@
 class VideoInteractivesController < InteractiveController
-  before_action :set_interactive, :except => [:new, :create]
+  before_action :set_interactive, except: [:new, :create]
 
   def edit
     if @interactive.sources.length < 1
@@ -9,12 +9,12 @@ class VideoInteractivesController < InteractiveController
   end
 
   def add_source
-    @source = VideoSource.new(:video_interactive => @interactive)
+    @source = VideoSource.new(video_interactive: @interactive)
     @interactive.reload
     update_activity_changed_by(@interactive.activity) unless @interactive.activity.nil?
     respond_to do |format|
       if request.xhr?
-        format.js { render :json => { :html => render_to_string('edit')}, :content_type => 'text/json' }
+        format.js { render json: { html: render_to_string('edit')}, content_type: 'text/json' }
       else
         flash[:notice] = 'New source was added.'
         format.html { redirect_to(:back) }
@@ -30,7 +30,7 @@ class VideoInteractivesController < InteractiveController
     update_activity_changed_by(@interactive.activity) unless @interactive.activity.nil?
     respond_to do |format|
       if request.xhr?
-        format.js { render :json => { :html => render_to_string('edit')}, :content_type => 'text/json' }
+        format.js { render json: { html: render_to_string('edit')}, content_type: 'text/json' }
       else
         flash[:notice] = 'Source removed.'
         format.html { redirect_to(:back) }

@@ -1,7 +1,7 @@
 set :domain, "authoring-demo.concord.org"
 
 server domain, :app, :web
-role :db, domain, :primary => true
+role :db, domain, primary: true
 
 # set(:autoscaling_instance_type, "c3.large")
 # set(:autoscaling_min_size, 1)

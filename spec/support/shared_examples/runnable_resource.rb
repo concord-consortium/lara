@@ -260,7 +260,7 @@ shared_examples "runnable launched with portal parameters" do |run_type|
       # the order of the params gets reversed so we are just adding one fakeParam here
       # instead of the two normal portal params
       get action, params: base_params.merge(domain: domain, fakeParam: 'testing-pass-through')
-      expect(response).to redirect_to user_omniauth_authorize_path(auth_path, :origin => request.url)
+      expect(response).to redirect_to user_omniauth_authorize_path(auth_path, origin: request.url)
     end
   end
 

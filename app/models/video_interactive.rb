@@ -1,21 +1,21 @@
 class VideoInteractive < ApplicationRecord
   include Embeddable
 
-  has_many :page_items, :as => :embeddable, :dependent => :destroy
+  has_many :page_items, as: :embeddable, dependent: :destroy
   # PageItem is a join model; if this is deleted, that instance should go too
-  has_many :interactive_pages, :through => :page_items
-  has_many :sources, :class_name => 'VideoSource',
-           :foreign_key => 'video_interactive_id',
-           :dependent => :destroy # If we delete this video we should dump its sources
+  has_many :interactive_pages, through: :page_items
+  has_many :sources, class_name: 'VideoSource',
+           foreign_key: 'video_interactive_id',
+           dependent: :destroy # If we delete this video we should dump its sources
   has_many :embeddable_plugins, class_name: "Embeddable::EmbeddablePlugin", as: :embeddable
   has_one :converted_interactive, class_name: "ManagedInteractive", as: :legacy_ref
 
   # TODO: Not sure if labbooks work with video interactives.
-  has_one :labbook, :as => :interactive, :class_name => 'Embeddable::Labbook'
+  has_one :labbook, as: :interactive, class_name: 'Embeddable::Labbook'
 
   # attr_accessible :poster_url, :caption, :credit, :height, :width, :sources_attributes, :is_hidden, :is_half_width
 
-  accepts_nested_attributes_for :sources, :allow_destroy => true
+  accepts_nested_attributes_for :sources, allow_destroy: true
 
   validates_numericality_of :height, :width
 

@@ -6,29 +6,29 @@ module Embeddable
     # attr_accessible :answers, :run, :question, :is_dirty, :is_final
 
     belongs_to :question,
-      :class_name  => 'Embeddable::MultipleChoice',
-      :foreign_key => 'multiple_choice_id'
+      class_name: 'Embeddable::MultipleChoice',
+      foreign_key: 'multiple_choice_id'
 
     belongs_to :run
 
     has_and_belongs_to_many :answers,
-      :class_name => 'Embeddable::MultipleChoiceChoice',
-      :join_table => 'mc_answer_choices',
-      :foreign_key => 'answer_id',
-      :association_foreign_key => 'choice_id'
+      class_name: 'Embeddable::MultipleChoiceChoice',
+      join_table: 'mc_answer_choices',
+      foreign_key: 'answer_id',
+      association_foreign_key: 'choice_id'
 
-    delegate :choices,             :to  => :question
-    delegate :enable_check_answer, :to  => :question
-    delegate :multi_answer,        :to  => :question
-    delegate :show_as_menu,        :to  => :question
-    delegate :is_likert,           :to  => :question
-    delegate :layout,              :to  => :question
+    delegate :choices,             to: :question
+    delegate :enable_check_answer, to: :question
+    delegate :multi_answer,        to: :question
+    delegate :show_as_menu,        to: :question
+    delegate :is_likert,           to: :question
+    delegate :layout,              to: :question
 
     after_update :send_to_portal
     after_update :propagate_to_collaborators
 
     def self.by_question(q)
-      where(:multiple_choice_id => q.id)
+      where(multiple_choice_id: q.id)
     end
 
     # render the text of the answers

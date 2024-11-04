@@ -10,7 +10,7 @@ describe InteractiveRunHelper do
 
   let(:project)      { FactoryGirl.create(:project) }
   let(:activity)     { FactoryGirl.create(:public_activity, project: project ) }
-  let(:page)         { FactoryGirl.create(:page, :lightweight_activity => activity) }
+  let(:page)         { FactoryGirl.create(:page, lightweight_activity: activity) }
   let(:run)          { FactoryGirl.create(:run, run_stubs) }
   let(:sequence_run) { nil }
   let(:interactive)  { FactoryGirl.create(:mw_interactive, authored_state: "{}", name: "test" ) }

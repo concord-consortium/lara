@@ -4,7 +4,7 @@ class FixupPageItemPositions < ActiveRecord::Migration
   end
 
   class PageItem < ApplicationRecord
-    acts_as_list :scope => :interactive_page
+    acts_as_list scope: :interactive_page
     belongs_to :interactive_page
   end
 

@@ -68,21 +68,21 @@ class ProjectsController < ApplicationController
 
   def about
     respond_to do |format|
-      format.js{ render :json => { :html => render_to_string('about')}, :content_type => 'text/json' }
+      format.js{ render json: { html: render_to_string('about')}, content_type: 'text/json' }
       format.html {}
     end
   end
 
   def help
     respond_to do |format|
-      format.js{ render :json => { :html => render_to_string('help')}, :content_type => 'text/json' }
+      format.js{ render json: { html: render_to_string('help')}, content_type: 'text/json' }
       format.html {}
     end
   end
 
   def contact_us
     respond_to do |format|
-      format.js{ render :json => { :html => render_to_string('shared/_contact_us')}, :content_type => 'text/json' }
+      format.js{ render json: { html: render_to_string('shared/_contact_us')}, content_type: 'text/json' }
       format.html {}
     end
   end

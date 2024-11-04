@@ -1,11 +1,11 @@
 class FixupPagePositions < ActiveRecord::Migration
   class LightweightActivity < ApplicationRecord
-    has_many :pages, -> { order(:position) }, :foreign_key => 'lightweight_activity_id', :class_name => 'InteractivePage'
+    has_many :pages, -> { order(:position) }, foreign_key: 'lightweight_activity_id', class_name: 'InteractivePage'
   end
 
   class InteractivePage < ApplicationRecord
-    belongs_to :lightweight_activity, :class_name => 'LightweightActivity', :touch => true
-    acts_as_list :scope => :lightweight_activity
+    belongs_to :lightweight_activity, class_name: 'LightweightActivity', touch: true
+    acts_as_list scope: :lightweight_activity
   end
 
   def up
@@ -13,7 +13,7 @@ class FixupPagePositions < ActiveRecord::Migration
       act.pages.each_with_index do |page,index|
         new_position = index + 1
         next if page.position == new_position
-        page.update_attributes(:position => new_position)
+        page.update_attributes(position: new_position)
       end
     end
   end

@@ -1,19 +1,19 @@
 # encoding: UTF-8
 module ApplicationHelper
-  def edit_menu_for(component, form, options={:omit_cancel => true}, scope=false)
+  def edit_menu_for(component, form, options={omit_cancel: true}, scope=false)
     component = (component.respond_to? :embeddable) ? component.embeddable : component
     capture_haml do
-      haml_tag :div, :class => 'action_menu' do
-        haml_tag :div, :class => 'action_menu_header_left' do
-          haml_tag(:h3,{:class => 'menu'}) do
-            haml_concat title_for_component(component, :id_prefix => 'edit')
+      haml_tag :div, class: 'action_menu' do
+        haml_tag :div, class: 'action_menu_header_left' do
+          haml_tag(:h3,{class: 'menu'}) do
+            haml_concat title_for_component(component, id_prefix: 'edit')
           end
         end
-        haml_tag :div, :class => 'action_menu_header_right' do
-          haml_tag :ul, {:class => 'menu'} do
+        haml_tag :div, class: 'action_menu_header_right' do
+          haml_tag :ul, {class: 'menu'} do
             #if (component.changeable?(current_user))
-            haml_tag(:li, {:class => 'menu'}) { haml_concat form.submit("Save") }
-            haml_tag(:li, {:class => 'menu'}) { haml_concat form.submit("Cancel") } unless options[:omit_cancel]
+            haml_tag(:li, {class: 'menu'}) { haml_concat form.submit("Save") }
+            haml_tag(:li, {class: 'menu'}) { haml_concat form.submit("Cancel") } unless options[:omit_cancel]
             #end
           end
         end

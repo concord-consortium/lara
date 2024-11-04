@@ -8,6 +8,6 @@ class CreateGlossaries < ActiveRecord::Migration
       t.timestamps
     end
 
-    add_column :lightweight_activities, :glossary_id, :integer, :null => true
+    add_column :lightweight_activities, :glossary_id, :integer, null: true
   end
 end

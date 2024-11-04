@@ -5,11 +5,11 @@ describe Api::V1::PageItemsController do
   let (:project) { FactoryGirl.create(:project) }
   let (:publication_status) { "public" }
   let (:act) { FactoryGirl.create(:public_activity, project: project, publication_status: publication_status, user: author ) }
-  let (:page) { FactoryGirl.create(:page, :lightweight_activity => act) }
+  let (:page) { FactoryGirl.create(:page, lightweight_activity: act) }
   let (:library_interactive1) { FactoryGirl.create(:library_interactive,
-                                                   :name => 'Test Library Interactive 1',
-                                                   :base_url => 'http://foo.com/',
-                                                   :thumbnail_url => nil
+                                                   name: 'Test Library Interactive 1',
+                                                   base_url: 'http://foo.com/',
+                                                   thumbnail_url: nil
                                                   ) }
   let (:interactive1) { FactoryGirl.create(:mw_interactive) }
 

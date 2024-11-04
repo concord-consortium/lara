@@ -39,4 +39,4 @@ module BearerTokenAuthenticatable
 end
 
 Warden::Strategies.add(:bearer_token_authenticatable, BearerTokenAuthenticatable::BearerToken)
-Devise.add_module :bearer_token_authenticatable, :strategy => true
+Devise.add_module :bearer_token_authenticatable, strategy: true

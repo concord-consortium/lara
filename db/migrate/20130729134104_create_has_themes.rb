@@ -9,15 +9,15 @@ class CreateHasThemes < ActiveRecord::Migration
     # and in the same execution of db:migrate.
     Theme.reset_column_information
 
-    water = Theme.new(:name => 'HAS National Geographic: Water', :css_file => 'theme-has-ngs-water')
+    water = Theme.new(name: 'HAS National Geographic: Water', css_file: 'theme-has-ngs-water')
     water.save
-    land = Theme.new(:name => 'HAS National Geographic: Land Management', :css_file => 'theme-has-ngs-landmanagement')
+    land = Theme.new(name: 'HAS National Geographic: Land Management', css_file: 'theme-has-ngs-landmanagement')
     land.save
-    frack = Theme.new(:name => 'HAS National Geographic: Hydrofracking', :css_file => 'theme-has-ngs-hydrofracking')
+    frack = Theme.new(name: 'HAS National Geographic: Hydrofracking', css_file: 'theme-has-ngs-hydrofracking')
     frack.save
-    climate = Theme.new(:name => 'HAS National Geographic: Climate', :css_file => 'theme-has-ngs-climate')
+    climate = Theme.new(name: 'HAS National Geographic: Climate', css_file: 'theme-has-ngs-climate')
     climate.save
-    atmosphere = Theme.new(:name => 'HAS National Geographic: Atmosphere', :css_file => 'theme-has-ngs-atmosphere')
+    atmosphere = Theme.new(name: 'HAS National Geographic: Atmosphere', css_file: 'theme-has-ngs-atmosphere')
     atmosphere.save
   end
 

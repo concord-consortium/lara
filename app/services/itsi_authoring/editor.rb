@@ -13,10 +13,10 @@ class ITSIAuthoring::Editor
         .map { |p| section_json(p) },
       active_runs: @activity.active_runs,
       publication_details: {
-        :last_publication_hash => @activity.publication_hash,
-        :latest_publication_portals => @activity.latest_publication_portals,
-        :publish_url => publication_publish_to_other_portals_path(@activity.class, @activity.id),
-        :poll_url => publication_autopublishing_status_path(@activity.class, @activity.id)
+        last_publication_hash: @activity.publication_hash,
+        latest_publication_portals: @activity.latest_publication_portals,
+        publish_url: publication_publish_to_other_portals_path(@activity.class, @activity.id),
+        poll_url: publication_autopublishing_status_path(@activity.class, @activity.id)
       },
       json_list_urls: {
         models: ENV['MODEL_JSON_LIST_URL'],

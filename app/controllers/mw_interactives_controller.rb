@@ -1,7 +1,7 @@
 require_dependency "application_controller"
 
 class MwInteractivesController < InteractiveController
-  before_action :set_interactive, :except => [:new, :create]
+  before_action :set_interactive, except: [:new, :create]
 
   private
   def set_interactive

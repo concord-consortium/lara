@@ -33,7 +33,7 @@ class Api::V1::InteractivePagesController < API::APIController
     pages = activity.pages.map do |page|
       generate_page_json page
     end
-    render :json => pages
+    render json: pages
   end
 
   ## Mutations
@@ -49,7 +49,7 @@ class Api::V1::InteractivePagesController < API::APIController
     activity.reload
     next_page.reload
     update_activity_changed_by(activity)
-    render :json => generate_page_json(next_page)
+    render json: generate_page_json(next_page)
   end
 
   def create_page
@@ -69,7 +69,7 @@ class Api::V1::InteractivePagesController < API::APIController
       generate_page_json page
     end
     update_activity_changed_by(activity)
-    render :json => pages
+    render json: pages
   end
 
   def delete_page
@@ -77,7 +77,7 @@ class Api::V1::InteractivePagesController < API::APIController
     authorize! :update, activity
     @interactive_page.destroy
     update_activity_changed_by(activity)
-    render :json => ({success: true})
+    render json: ({success: true})
   end
 
   def update_page
@@ -104,7 +104,7 @@ class Api::V1::InteractivePagesController < API::APIController
       generate_page_json page
     end
     update_activity_changed_by(activity)
-    render :json => pages
+    render json: pages
   end
 
   def set_sections
@@ -405,10 +405,10 @@ class Api::V1::InteractivePagesController < API::APIController
     Concord::AuthPortal.all.each_pair do |key, portal|
       name = portal.link_name
       path = user_omniauth_authorize_path(portal.strategy_name)
-      portals.push({:name => name, :path => path})
+      portals.push({name: name, path: path})
     end
 
-    render :json => {
+    render json: {
       success: true,
       portals: portals
     }
@@ -423,14 +423,14 @@ class Api::V1::InteractivePagesController < API::APIController
       id = plugin.approved_script_id
       name = plugin.name
       plugins.push({
-        :component_label => component_label,
-        :component_name => component_name,
-        :id => id,
-        :name => name
+        component_label: component_label,
+        component_name: component_name,
+        id: id,
+        name: name
       })
     end
 
-    render :json => {
+    render json: {
       success: true,
       plugins: plugins
     }
@@ -440,7 +440,7 @@ class Api::V1::InteractivePagesController < API::APIController
   def get_teacher_edition_plugins
     required_version = [3]
     required_label = ["teacherEditionTips"]
-    ApprovedScript.where(:version => required_version, :label => required_label)
+    ApprovedScript.where(version: required_version, label: required_label)
   end
 
   private
@@ -471,7 +471,7 @@ class Api::V1::InteractivePagesController < API::APIController
       li_json
     end
 
-    render :json => {
+    render json: {
       success: true,
       library_interactives: library_interactives_list,
       plugins: plugins
@@ -517,12 +517,12 @@ class Api::V1::InteractivePagesController < API::APIController
           }
         end
 
-      render :json => { :success => true, interactives: interactives}
+      render json: { success: true, interactives: interactives}
 
     rescue CanCan::AccessDenied
-      return render :json => { :success => false, :message => "You are not authorized to get the interactive list from the requested page"}
+      return render json: { success: false, message: "You are not authorized to get the interactive list from the requested page"}
     rescue => error
-      return render :json => { :success => false, :message => error.message}
+      return render json: { success: false, message: error.message}
     end
   end
 
@@ -563,14 +563,14 @@ class Api::V1::InteractivePagesController < API::APIController
   end
 
   def render_page_sections_json(page=@interactive)
-    render :json => generate_page_json(@interactive_page)
+    render json: generate_page_json(@interactive_page)
   end
 
   def set_interactive_page
     begin
       @interactive_page = InteractivePage.find(params['id'])
     rescue ActiveRecord::RecordNotFound
-      render :json => { :success => false, :message => "Could not find interactive page ##{params['id']}"}
+      render json: { success: false, message: "Could not find interactive page ##{params['id']}"}
     end
   end
 

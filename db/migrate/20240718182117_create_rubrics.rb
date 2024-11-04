@@ -8,6 +8,6 @@ class CreateRubrics < ActiveRecord::Migration
       t.timestamps
     end
 
-    add_column :lightweight_activities, :rubric_id, :integer, :null => true
+    add_column :lightweight_activities, :rubric_id, :integer, null: true
   end
 end

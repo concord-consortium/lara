@@ -6,8 +6,8 @@ module Embeddable
     # attr_accessible :answer_text, :run, :question, :is_dirty, :is_final
 
     belongs_to :question,
-      :class_name => 'Embeddable::OpenResponse',
-      :foreign_key => "open_response_id"
+      class_name: 'Embeddable::OpenResponse',
+      foreign_key: "open_response_id"
     belongs_to :run
 
     before_save :clear_default_text
@@ -16,7 +16,7 @@ module Embeddable
     after_update :propagate_to_collaborators
 
     def self.by_question(q)
-      where(:open_response_id => q.id)
+      where(open_response_id: q.id)
     end
 
     def copy_answer!(another_answer)

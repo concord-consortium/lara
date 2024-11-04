@@ -4,11 +4,11 @@ class Api::V1::PageItemsController < API::APIController
 
   def export_page_item_embeddable
     results = (LaraSerializationHelper.new).export(@page_item.embeddable).to_json
-    render :json => results
+    render json: results
   end
 
   def get_embeddable_metadata
-    render :json => {
+    render json: {
       success: true,
       embeddable_id: @page_item.embeddable_id,
       embeddable_type: @page_item.embeddable_type
@@ -21,14 +21,14 @@ class Api::V1::PageItemsController < API::APIController
     page_item_plugins.each do |plugin|
       plugin_page_item = plugin.page_items.first
       plugins.push({
-        :embeddable_id => @page_item.embeddable_id,
-        :id => plugin.id,
-        :name => plugin.name,
-        :section_item_id => plugin_page_item.id
+        embeddable_id: @page_item.embeddable_id,
+        id: plugin.id,
+        name: plugin.name,
+        section_item_id: plugin_page_item.id
       })
     end
 
-    render :json => {
+    render json: {
       plugins: plugins
     }
   end
@@ -39,7 +39,7 @@ class Api::V1::PageItemsController < API::APIController
     begin
       @page_item = PageItem.find(params['id'])
     rescue ActiveRecord::RecordNotFound
-      render :json => { :success => false, :message => "Could not find page item ##{params['id']}"}
+      render json: { success: false, message: "Could not find page item ##{params['id']}"}
     end
   end
 end

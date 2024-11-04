@@ -37,7 +37,7 @@ describe CRater::ItemSettings do
   
   describe '#import' do
     it 'imports item_settings from json' do
-      activity_json = JSON.parse(File.read(Rails.root + 'spec/import_examples/valid_lightweight_activity_import_v1.json'), :symbolize_names => true)
+      activity_json = JSON.parse(File.read(Rails.root + 'spec/import_examples/valid_lightweight_activity_import_v1.json'), symbolize_names: true)
       activity_json[:pages].each do |p|
         if p[:sections]
           p[:sections].each do |sec|

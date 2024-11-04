@@ -8,10 +8,10 @@ describe ImportController do
 
   describe 'routing' do
     it 'recognizes and generates #import_status' do
-      expect({:get => "/import"}).
+      expect({get: "/import"}).
         to route_to({
-          :controller       => 'import',
-          :action           => 'import_status'
+          controller: 'import',
+          action: 'import_status'
       })
     end
   end
@@ -20,7 +20,7 @@ describe ImportController do
 
     context "lightweight activity" do
 
-      valid_activity_import_json = File.new(Rails.root + 'spec/import_examples/valid_lightweight_activity_import_v2.json', :symbolize_names => true)
+      valid_activity_import_json = File.new(Rails.root + 'spec/import_examples/valid_lightweight_activity_import_v2.json', symbolize_names: true)
       let(:params1) do
             {
                import:{
@@ -28,7 +28,7 @@ describe ImportController do
                }
             }
       end
-      invalid_activity_import_json = File.new(Rails.root + 'spec/import_examples/invalid_lightweight_activity_import.json', :symbolize_names => true)
+      invalid_activity_import_json = File.new(Rails.root + 'spec/import_examples/invalid_lightweight_activity_import.json', symbolize_names: true)
       let(:params2) do
             {
                import:{

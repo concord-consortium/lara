@@ -37,7 +37,7 @@ class CreateCollaboration
   def get_collaborators_data
     response = HTTParty.get(
       @collaborators_data_url, {
-        :headers => {
+        headers: {
           "Authorization" => Concord::AuthPortal.auth_token_for_url(@portal_url),
           "Content-Type" => 'application/json'
         }

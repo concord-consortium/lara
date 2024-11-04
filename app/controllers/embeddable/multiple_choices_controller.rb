@@ -1,5 +1,5 @@
 class Embeddable::MultipleChoicesController < Embeddable::EmbeddablesController
-  before_action :set_embeddable, :except => [:check, :remove_choice]
+  before_action :set_embeddable, except: [:check, :remove_choice]
 
   def check
     @multiple_choice = Embeddable::MultipleChoiceAnswer.find(params[:id]).question
@@ -7,10 +7,10 @@ class Embeddable::MultipleChoicesController < Embeddable::EmbeddablesController
 
     respond_to do |format|
       if request.xhr?
-        format.js { render :json => @response.to_json }
+        format.js { render json: @response.to_json }
       else
         format.html { redirect_to interactive_page_path(@multiple_choice.interactive_pages.last) unless @multiple_choice.interactive_pages.last.nil? }
-        format.json { render :json => @response.to_json }
+        format.json { render json: @response.to_json }
       end
     end
   end
@@ -21,7 +21,7 @@ class Embeddable::MultipleChoicesController < Embeddable::EmbeddablesController
     respond_to do |format|
       if request.xhr?
         @embeddable.reload
-        format.js { render :json => { :html => render_to_string('edit')}, :content_type => 'text/json' }
+        format.js { render json: { html: render_to_string('edit')}, content_type: 'text/json' }
       else
         flash[:notice] = 'New choice was added.'
         format.html { redirect_to(:back) }
@@ -37,7 +37,7 @@ class Embeddable::MultipleChoicesController < Embeddable::EmbeddablesController
     update_activity_changed_by(@embeddable.activity) unless @embeddable.activity.nil?
     respond_to do |format|
       if request.xhr?
-        format.js { render :json => { :html => render_to_string('edit')}, :content_type => 'text/json' }
+        format.js { render json: { html: render_to_string('edit')}, content_type: 'text/json' }
       else
         flash[:notice] = 'Choice was removed.'
         format.html { redirect_to(:back) }

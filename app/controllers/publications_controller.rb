@@ -42,17 +42,17 @@ class PublicationsController < ApplicationController
   def show_status
     @message = params[:message] || ''
     respond_to do |format|
-      format.js { render :json => { :html => render_to_string('show_status')}, :content_type => 'text/json' }
+      format.js { render json: { html: render_to_string('show_status')}, content_type: 'text/json' }
       format.html
     end
   end
 
   def autopublishing_status
     status = {
-      :last_publication_hash => @publishable.publication_hash,
-      :latest_publication_portals => @publishable.latest_publication_portals
+      last_publication_hash: @publishable.publication_hash,
+      latest_publication_portals: @publishable.latest_publication_portals
     }
-    render :json => status, :content_type => 'text/json'
+    render json: status, content_type: 'text/json'
   end
 
   def remove_portal
@@ -67,17 +67,17 @@ class PublicationsController < ApplicationController
     @message = ''
     req_url = "#{request.protocol}#{request.host_with_port}"
     @publishable.portal_publish(current_user,@portal,req_url)
-    redirect_to :action => 'show_status'
+    redirect_to action: 'show_status'
   end
 
   def publish
     req_url = "#{request.protocol}#{request.host_with_port}"
     @publishable.publish_to_portals(req_url)
-    redirect_to :action => 'show_status'
+    redirect_to action: 'show_status'
   end
 
   def publish_to_other_portals
-    redirect_to :action => 'show_status'
+    redirect_to action: 'show_status'
   end
 
   private

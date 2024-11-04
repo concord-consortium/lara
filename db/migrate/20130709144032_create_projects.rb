@@ -17,11 +17,11 @@ class CreateProjects < ActiveRecord::Migration
       t.timestamps
     end
 
-    mw = CreateProjects::Project.new(:title => 'Molecular Workbench', :logo => 'mw-logo.png', :url => 'http://mw.concord.org/nextgen')
+    mw = CreateProjects::Project.new(title: 'Molecular Workbench', logo: 'mw-logo.png', url: 'http://mw.concord.org/nextgen')
     mw_theme = Theme.find_by_name('NextGen MW')
     mw.footer = mw_theme.footer
     mw.save
-    has = CreateProjects::Project.new(:title => 'High Adventure Science', :url => 'http://has.concord.org')
+    has = CreateProjects::Project.new(title: 'High Adventure Science', url: 'http://has.concord.org')
     has.save
     remove_column :themes, :footer
 

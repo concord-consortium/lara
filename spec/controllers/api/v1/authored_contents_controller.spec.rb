@@ -16,15 +16,15 @@ describe Api::V1::AuthoredContentsController do
 
   describe "#show" do
     it "recognizes and generates #show" do
-      expect({:get => "api/v1/authored_contents/#{authored_content.id}"}).to route_to(
-        :controller => "api/v1/authored_contents",
-        :action => "show",
-        :id => "#{authored_content.id}"
+      expect({get: "api/v1/authored_contents/#{authored_content.id}"}).to route_to(
+        controller: "api/v1/authored_contents",
+        action: "show",
+        id: "#{authored_content.id}"
       )
     end
 
     it "returns content type and url" do
-      get :show, params: { :id => authored_content.id, :format => :json }
+      get :show, params: { id: authored_content.id, format: :json }
 
       expect(response.status).to eq(200)
       json_response = JSON.parse(response.body)

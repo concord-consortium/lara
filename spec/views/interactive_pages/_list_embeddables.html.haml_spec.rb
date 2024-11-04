@@ -18,7 +18,7 @@ describe "interactive_pages/_list_embeddables.html.haml" do
     describe "when the labbook has an interactive" do
       let(:labbook)         { stub_model(Embeddable::Labbook, interactive: interactive) }
       it "should show the labbook answer" do
-        render :partial => "interactive_pages/list_embeddables", :locals => {embeddables: embeddables}
+        render partial: "interactive_pages/list_embeddables", locals: {embeddables: embeddables}
         expect(rendered).to have_css('.question-bd.labbook')
       end
     end

@@ -33,9 +33,9 @@ class LightweightActivity < ApplicationRecord
   #                 :glossary_id, :hide_read_aloud, :font_size, :hide_question_numbers, :rubric_id
 
   belongs_to :user # Author
-  belongs_to :changed_by, :class_name => 'User'
+  belongs_to :changed_by, class_name: 'User'
 
-  has_many :plugins, as: :plugin_scope, :dependent => :destroy
+  has_many :plugins, as: :plugin_scope, dependent: :destroy
   has_many :pages, -> { order(:position) },
     foreign_key: 'lightweight_activity_id',
     class_name: 'InteractivePage',
@@ -44,27 +44,27 @@ class LightweightActivity < ApplicationRecord
   has_many :visible_pages, -> { where(interactive_pages: {is_hidden: false}).order(:position) }, 
          foreign_key: 'lightweight_activity_id', class_name: 'InteractivePage'
 
-  has_many :lightweight_activities_sequences, :dependent => :destroy
-  has_many :sequences, :through => :lightweight_activities_sequences
-  has_many :runs, :foreign_key => 'activity_id', :dependent => :destroy
+  has_many :lightweight_activities_sequences, dependent: :destroy
+  has_many :sequences, through: :lightweight_activities_sequences
+  has_many :runs, foreign_key: 'activity_id', dependent: :destroy
   belongs_to :project
   belongs_to :glossary
   belongs_to :rubric
 
   has_many :imports, as: :import_item
 
-  belongs_to :copied_from_activity, :class_name => "LightweightActivity", :foreign_key => "copied_from_id"
+  belongs_to :copied_from_activity, class_name: "LightweightActivity", foreign_key: "copied_from_id"
 
   # has_many :offerings, :dependent => :destroy, :as => :runnable, :class_name => "Portal::Offering"
 
   # validates_length_of :name, :maximum => 50
-  validates :description, :related, :html => true
+  validates :description, :related, html: true
 
   # Just a way of getting self.visible_pages with the embeddables eager-loaded
   def visible_pages_with_embeddables
     InteractivePage
       .includes(sections: {page_items:  :embeddable})
-      .where(:lightweight_activity_id => self.id, :is_hidden => false)
+      .where(lightweight_activity_id: self.id, is_hidden: false)
       .order(:position)
   end
 
@@ -262,7 +262,7 @@ class LightweightActivity < ApplicationRecord
     glossary_plugin_object = activity_json_object[:plugins].find { |p| p[:approved_script_label] == "glossary" }
     return unless glossary_plugin_object && glossary_plugin_object[:author_data]
 
-    author_data = JSON.parse(glossary_plugin_object[:author_data], :symbolize_names => true)
+    author_data = JSON.parse(glossary_plugin_object[:author_data], symbolize_names: true)
     return unless author_data && author_data[:s3Url]
 
     # this purposefully ignores the domain of the original glossary url

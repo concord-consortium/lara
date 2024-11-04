@@ -228,8 +228,8 @@ describe SequencesController do
   end
 
   describe 'GET reorder_activities' do
-    let (:a1) { stub_model(LightweightActivity, id: 1001, :name => 'Activity One')}
-    let (:a2) { stub_model(LightweightActivity, id: 1002, :name => 'Activity Two')}
+    let (:a1) { stub_model(LightweightActivity, id: 1001, name: 'Activity One')}
+    let (:a2) { stub_model(LightweightActivity, id: 1002, name: 'Activity Two')}
 
     before (:each) do
       unless sequence.lightweight_activities.length > 1
@@ -249,7 +249,7 @@ describe SequencesController do
       expect(response).to redirect_to edit_sequence_path(sequence)
     end
 
-    it 'returns nothing to xhr requests', :slow => true do
+    it 'returns nothing to xhr requests', slow: true do
       skip "This takes forever and isn't terribly important"
       xhr :get, :reorder_activities, params: { id: sequence.to_param, item_lightweight_activities_sequence: sequence.lightweight_activities_sequences.map { |a| a.id }.reverse }
       expect(response).to eq('')

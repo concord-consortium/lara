@@ -1,9 +1,9 @@
 class GlossariesController < ApplicationController
-  before_action :set_glossary, :except => [:index, :new, :create]
+  before_action :set_glossary, except: [:index, :new, :create]
 
   def index
     @filter  = CollectionFilter.new(current_user, Glossary, params[:filter] || {})
-    @glossaries = @filter.collection.includes(:user).paginate(:page => params['page'], :per_page => 20)
+    @glossaries = @filter.collection.includes(:user).paginate(page: params['page'], per_page: 20)
   end
 
   def new

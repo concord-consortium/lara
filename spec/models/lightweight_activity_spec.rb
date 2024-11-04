@@ -52,7 +52,7 @@ describe LightweightActivity do
 
   it 'should have InteractivePages in the correct order' do
     [3,1,2].each do |i|
-      page = FactoryGirl.create(:page, :name => "page #{i}", :position => i)
+      page = FactoryGirl.create(:page, name: "page #{i}", position: i)
       activity.pages << page
     end
     activity.reload
@@ -139,7 +139,7 @@ describe LightweightActivity do
 
     before :each do
       [3,1,2].each do |i|
-        page = FactoryGirl.create(:page, :name => "page #{i}", :position => i)
+        page = FactoryGirl.create(:page, name: "page #{i}", position: i)
         activity.pages << page
       end
       activity.reload
@@ -451,7 +451,7 @@ describe LightweightActivity do
     let(:new_owner) { FactoryGirl.create(:user) }
 
     it 'should return an activity' do
-      json = JSON.parse(File.read(Rails.root + 'spec/import_examples/valid_lightweight_activity_import_v2.json'), :symbolize_names => true)
+      json = JSON.parse(File.read(Rails.root + 'spec/import_examples/valid_lightweight_activity_import_v2.json'), symbolize_names: true)
       imported_activity_url = "http://foo.com/"
       act = LightweightActivity.import(json,new_owner,imported_activity_url)
       expect(act.user).to be new_owner
@@ -719,7 +719,7 @@ describe LightweightActivity do
       # 5 public activities
       make_collection_with_rand_modication_time(:public_activity, 5)
       # 5 of my activities
-      make_collection_with_rand_modication_time(:activity, 5, {:user => author })
+      make_collection_with_rand_modication_time(:activity, 5, {user: author })
     end
 
     describe "the newest scope" do

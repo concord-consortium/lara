@@ -8,13 +8,13 @@ class CreateLibraryInteractives < ActiveRecord::Migration
       t.string :thumbnail_url
       t.string :image_url
       t.string :click_to_play_prompt
-      t.boolean :click_to_play,                    :default => false
-      t.boolean :no_snapshots,                     :default => false
-      t.boolean :enable_learner_state,             :default => false
-      t.boolean :has_report_url,                   :default => false
-      t.boolean :show_delete_data_button,          :default => true
-      t.boolean :full_window,                      :default => false
-      t.string :aspect_ratio_method,               :default => "DEFAULT"
+      t.boolean :click_to_play,                    default: false
+      t.boolean :no_snapshots,                     default: false
+      t.boolean :enable_learner_state,             default: false
+      t.boolean :has_report_url,                   default: false
+      t.boolean :show_delete_data_button,          default: true
+      t.boolean :full_window,                      default: false
+      t.string :aspect_ratio_method,               default: "DEFAULT"
       t.integer :native_width
       t.integer :native_height
 

@@ -6,13 +6,13 @@ end
 
 describe "interactive_pages/show" do
 
-  let(:activity)  { stub_model(LightweightActivity, :id => 1)}
+  let(:activity)  { stub_model(LightweightActivity, id: 1)}
 
   let (:page) do
-    p = FactoryGirl.create(:page, :name => "fake page", :lightweight_activity => activity, :embeddable_display_mode => 'carousel')
-    allow(p).to receive_messages(:last? => true)
+    p = FactoryGirl.create(:page, name: "fake page", lightweight_activity: activity, embeddable_display_mode: 'carousel')
+    allow(p).to receive_messages(last?: true)
     [3,1,2].each do |i|
-      embed = FactoryGirl.create(:xhtml, :name => "embeddable #{i}", :content => "This is the #{ActiveSupport::Inflector.ordinalize(i)} embeddable")
+      embed = FactoryGirl.create(:xhtml, name: "embeddable #{i}", content: "This is the #{ActiveSupport::Inflector.ordinalize(i)} embeddable")
       p.add_embeddable(embed, i)
     end
     p
@@ -35,7 +35,7 @@ describe "interactive_pages/show" do
   end
 
   describe "when the activity has a completed related content section" do
-    let(:activity) { stub_model(LightweightActivity, :id => 1, :related => "related content")}
+    let(:activity) { stub_model(LightweightActivity, id: 1, related: "related content")}
     it "should render the related section" do
       render
       expect(rendered).to match related_section_rgx
@@ -43,7 +43,7 @@ describe "interactive_pages/show" do
   end
 
   describe "when the activity has an empty related content section" do
-    let(:activity) { stub_model(LightweightActivity, :id => 1, :related => "")}
+    let(:activity) { stub_model(LightweightActivity, id: 1, related: "")}
     it "shouldn't render the related section" do
       render
       expect(rendered).not_to match related_section_rgx
@@ -51,7 +51,7 @@ describe "interactive_pages/show" do
   end
 
   describe "when the activity has a white-space only related content section" do
-    let(:activity) { stub_model(LightweightActivity, :id => 1, :related => " \n")}
+    let(:activity) { stub_model(LightweightActivity, id: 1, related: " \n")}
     it "shouldn't render the related section" do
       render
       expect(rendered).not_to match related_section_rgx
@@ -59,7 +59,7 @@ describe "interactive_pages/show" do
   end
 
   describe "when the activity has only <br/> entities only related content section" do
-    let(:activity) { stub_model(LightweightActivity, :id => 1, :related => "<br/><p>\n")}
+    let(:activity) { stub_model(LightweightActivity, id: 1, related: "<br/><p>\n")}
     it "shouldn't render the related section" do
       render
       expect(rendered).not_to match related_section_rgx
@@ -67,7 +67,7 @@ describe "interactive_pages/show" do
   end
 
   describe "when the activity has no related content" do
-    let(:activity) { stub_model(LightweightActivity, :id => 1, :related => nil)}
+    let(:activity) { stub_model(LightweightActivity, id: 1, related: nil)}
     it "shouldn't render the related section" do
       render
       expect(rendered).not_to match related_section_rgx
@@ -92,19 +92,19 @@ describe "interactive_pages/show" do
       assign(:activity, activity)
     end
     let (:page) do
-      p = FactoryGirl.create(:page, :name => "fake page", :lightweight_activity => activity, :is_completion => completion_flag)
-      allow(p).to receive_messages(:last? => true)
+      p = FactoryGirl.create(:page, name: "fake page", lightweight_activity: activity, is_completion: completion_flag)
+      allow(p).to receive_messages(last?: true)
       p
     end
     describe "when the page is a a completion page" do
       let(:completion_flag) { true }
       it 'should render the completion template' do
         render
-        expect(rendered).to render_template(:partial => 'interactive_pages/_show_completion')
+        expect(rendered).to render_template(partial: 'interactive_pages/_show_completion')
       end
       it 'should not render the regular show template' do
         render
-        expect(rendered).not_to render_template(:partial => 'interactive_pages/_show')
+        expect(rendered).not_to render_template(partial: 'interactive_pages/_show')
       end
       it 'should include a congratulations message' do
         render
@@ -115,11 +115,11 @@ describe "interactive_pages/show" do
       let(:completion_flag) { false }
       it 'should render the normal show template' do
         render
-        expect(rendered).to render_template(:partial => 'interactive_pages/_show')
+        expect(rendered).to render_template(partial: 'interactive_pages/_show')
       end
       it 'should not render the completion template' do
         render
-        expect(rendered).not_to render_template(:partial => 'interactive_pages/_show_completion')
+        expect(rendered).not_to render_template(partial: 'interactive_pages/_show_completion')
       end
     end
   end

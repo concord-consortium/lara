@@ -1,16 +1,16 @@
 class PageItem < ApplicationRecord
   # attr_accessible :section, :position, :embeddable, :column
-  acts_as_list :scope => :section
+  acts_as_list scope: :section
 
   belongs_to :section
-  belongs_to :embeddable, :polymorphic => true
+  belongs_to :embeddable, polymorphic: true
 
   # Explicitly destroy the embeddable when the page item is destroyed. We previously relied on
   # :dependent => :destroy, but that began causing recursion issues after upgrading from Rails 3 to 4.
   after_destroy :destroy_related_embeddable
 
-  has_many :primary_linked_items, :foreign_key => :primary_id, :class_name => LinkedPageItem, :dependent => :destroy
-  has_many :secondary_linked_items, :foreign_key => :secondary_id, :class_name => LinkedPageItem, :dependent => :destroy
+  has_many :primary_linked_items, foreign_key: :primary_id, class_name: LinkedPageItem, dependent: :destroy
+  has_many :secondary_linked_items, foreign_key: :secondary_id, class_name: LinkedPageItem, dependent: :destroy
   has_one :interactive_page, through: :section
 
   COLUMN_PRIMARY ="primary"

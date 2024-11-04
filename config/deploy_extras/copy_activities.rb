@@ -17,7 +17,7 @@ end
 
 
 namespace :lara do
-  task :copy_data, :roles => :db do
+  task :copy_data, roles: :db do
     timestamp = Time.now.strftime "%Y-%m-%d"
     filename  = "#{timestamp}-lara.sql"
 

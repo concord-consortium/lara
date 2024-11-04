@@ -2,13 +2,13 @@ shared_examples "interactives controller" do
   # interactive_label is provided by main test file
   let (:activity) { FactoryGirl.create(:activity_with_page) }
   let (:page) { activity.pages.first }
-  let (:int) { FactoryGirl.create(interactive_label, :name => 'Test Interactive') }
+  let (:int) { FactoryGirl.create(interactive_label, name: 'Test Interactive') }
 
   describe 'update' do
     # PJ 11/03/2020: Old comment said that "authorization is tested in spec/models/user_spec.rb"
     # But I don't really see how this would work. I think there's no authorization at this moment (or I miss something).
     it 'replaces the values of the interactive to match submitted values' do
-      new_values_hash = { :name => 'Edited name' }
+      new_values_hash = { name: 'Edited name' }
       post :update, params: { id: int.id, page_id: page.id, interactive_label => new_values_hash }
 
       int.reload
@@ -16,15 +16,15 @@ shared_examples "interactives controller" do
     end
 
     it 'returns to the edit page when there are no errors' do
-      new_values_hash = { :name => 'Edited name' }
+      new_values_hash = { name: 'Edited name' }
       post :update, params: { id: int.id, page_id: page.id, interactive_label => new_values_hash }
       expect(response).to redirect_to(edit_activity_page_path(activity, page))
     end
 
     describe "when linked_interactives param is present" do
       describe "on a page with interactives" do
-        let (:int2) { FactoryGirl.create(interactive_label, :name => 'Test Interactive 2') }
-        let (:int3) { FactoryGirl.create(interactive_label, :name => 'Test Interactive 3') }
+        let (:int2) { FactoryGirl.create(interactive_label, name: 'Test Interactive 2') }
+        let (:int3) { FactoryGirl.create(interactive_label, name: 'Test Interactive 3') }
 
         def add_interactive_to_section(page, interactive, section)
           page.add_embeddable(interactive, nil, section)

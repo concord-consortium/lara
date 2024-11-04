@@ -8,7 +8,7 @@ feature "Admin edits approved scripts" do
 
   scenario "and loads the form" do
 
-    login_as user, :scope => :user
+    login_as user, scope: :user
     visit url
 
     expect(page).to have_field("Json url", with: approved_script[:json_url])

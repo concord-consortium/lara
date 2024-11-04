@@ -2,12 +2,12 @@ class ImportController < ApplicationController
 
   include PeerAccess
 
-  skip_before_action :verify_authenticity_token, :only => :import
+  skip_before_action :verify_authenticity_token, only: :import
 
   def import_status
     @message = params[:message] || ''
     respond_to do |format|
-      format.js { render :json => { :html => render_to_string('import')}, :content_type => 'text/json' }
+      format.js { render json: { html: render_to_string('import')}, content_type: 'text/json' }
       format.html
     end
   end
@@ -20,10 +20,10 @@ class ImportController < ApplicationController
                import_result[:type] === "Glossary" ? edit_glossary_path(import_result[:import_item]) :
                import_result[:type] === "Rubric" ? edit_rubric_path(import_result[:import_item]) :
                                                      edit_activity_path(import_result[:import_item])
-        format.js { render :js => "window.location.href = '#{path}';" }
+        format.js { render js: "window.location.href = '#{path}';" }
       else
         flash[:warning] = import_result[:error]
-        format.js { render :json => { :error => import_result[:error] }, :status => 500 }
+        format.js { render json: { error: import_result[:error] }, status: 500 }
       end
     end
   end
@@ -31,7 +31,7 @@ class ImportController < ApplicationController
   def import_portal_activity
     authorize_peer!
 
-    request_json = JSON.parse "#{request.body.read}", :symbolize_names => true
+    request_json = JSON.parse "#{request.body.read}", symbolize_names: true
 
     unless User.find_by_email request_json[:activity][:user_email]
       user = User.create(
@@ -56,16 +56,16 @@ class ImportController < ApplicationController
         response_code = response_publish.code
       else
         import_activity.destroy
-        response.headers["data"] = {:response_code => response_code}.to_json
-        render :nothing => true and return
+        response.headers["data"] = {response_code: response_code}.to_json
+        render nothing: true and return
       end
 
-      response_body = JSON.parse "#{response_publish.body}", :symbolize_names => true
-      response.headers["data"] = {:external_activity_id => response_body[:activity_id],
-                                  :response_code => response_code}.to_json
+      response_body = JSON.parse "#{response_publish.body}", symbolize_names: true
+      response.headers["data"] = {external_activity_id: response_body[:activity_id],
+                                  response_code: response_code}.to_json
     else
-      response.headers["data"] = {:response_code => 401}.to_json
+      response.headers["data"] = {response_code: 401}.to_json
     end
-    render :nothing => true
+    render nothing: true
   end
 end

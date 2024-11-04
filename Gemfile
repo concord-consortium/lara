@@ -1,12 +1,12 @@
 #source 'https://gems.railslts.com' do
-  gem 'actionmailer', '~> 5.0.7.2', :require => false
-  gem 'actionpack', '~> 5.0.7.2', :require => false
-  gem 'activemodel', '~> 5.0.7.2', :require => false
-  gem 'activerecord', '~> 5.0.7.2', :require => false
-  gem 'activesupport', '~> 5.0.7.2', :require => false
+  gem 'actionmailer', '~> 5.0.7.2', require: false
+  gem 'actionpack', '~> 5.0.7.2', require: false
+  gem 'activemodel', '~> 5.0.7.2', require: false
+  gem 'activerecord', '~> 5.0.7.2', require: false
+  gem 'activesupport', '~> 5.0.7.2', require: false
   gem 'rails', '~> 5.0.7.2'
   # gem 'railslts-version', :require => false
-  gem 'railties', '~> 5.0.7.2', :require => false
+  gem 'railties', '~> 5.0.7.2', require: false
 #end
 
 source "https://rubygems.org"
@@ -62,7 +62,7 @@ end
 group :test, :development do
   gem "capybara", "~> 2.18"
   # gem "ci_reporter", "~> 1.9.2"
-  gem "factory_girl_rails", "~> 4.5", ">= 4.5.0", :require=>false
+  gem "factory_girl_rails", "~> 4.5", ">= 4.5.0", require: false
   gem "faker", "= 2.2.1"
   gem "jasmine", "~> 2.99.0"
   gem "jasmine-jquery-rails", "~> 2.0", ">= 2.0.3"
@@ -110,12 +110,12 @@ gem "nokogiri", "~> 1.10.10"
 gem "omniauth", "= 1.4.2"
 gem "omniauth-oauth2", "1.3"
 # gem 'protected_attributes'
-gem "rack-cors", "~> 1.0.3", {:require => 'rack/cors'}
+gem "rack-cors", "~> 1.0.3", {require: 'rack/cors'}
 gem "rack-environmental"#, "~> 1.3"
-gem 'rack-secure_samesite_cookies', {:git => 'https://github.com/concord-consortium/secure-samesite-cookies.git', :tag => 'v1.0.2'}
+gem 'rack-secure_samesite_cookies', {git: 'https://github.com/concord-consortium/secure-samesite-cookies.git', tag: 'v1.0.2'}
 gem 'rake', '~> 13.2', '>= 13.2.1'
 gem "responders", "~> 2.0"
-gem "ribbons-rails", "~> 0.0", {:git=>"https://github.com/concord-consortium/ribbons-rails.git"}
+gem "ribbons-rails", "~> 0.0", {git: "https://github.com/concord-consortium/ribbons-rails.git"}
 gem "safe_yaml", "~> 1.0.5"
 gem "spreadsheet", "~> 1.1.2", "= 1.1.2"
 # # gem "sqlite3", "~> 1.3"

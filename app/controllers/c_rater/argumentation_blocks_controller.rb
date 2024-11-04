@@ -82,7 +82,7 @@ class CRater::ArgumentationBlocksController < ApplicationController
     book = CRater::ArgumentationBlocksReport.generate(arg_block_buckets)
     sio = StringIO.new
     book.write sio
-    send_data sio.string, :type => "application/vnd.ms.excel", :filename => "arg-block-report.xls"
+    send_data sio.string, type: "application/vnd.ms.excel", filename: "arg-block-report.xls"
   end
 
   private

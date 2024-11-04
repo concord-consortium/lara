@@ -13,7 +13,7 @@ class Setting < ApplicationRecord
     if setting
       setting.value = value
     else
-      setting = Setting.new({:key => key, :value => value})
+      setting = Setting.new({key: key, value: value})
     end
     setting.save
   end

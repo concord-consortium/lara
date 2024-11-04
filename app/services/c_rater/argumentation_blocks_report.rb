@@ -21,16 +21,16 @@ module CRater::ArgumentationBlocksReport
 
     select_params = [
       {
-        :question_type => Embeddable::OpenResponse,
-        :answer_type => Embeddable::OpenResponseAnswer,
-        :question_foreign_key => "open_response_id",
-        :feedback_type => CRater::FeedbackItem
+        question_type: Embeddable::OpenResponse,
+        answer_type: Embeddable::OpenResponseAnswer,
+        question_foreign_key: "open_response_id",
+        feedback_type: CRater::FeedbackItem
       },
       {
-        :question_type => Embeddable::MultipleChoice,
-        :answer_type => Embeddable::MultipleChoiceAnswer,
-        :question_foreign_key => "multiple_choice_id",
-        :feedback_type => Embeddable::FeedbackItem
+        question_type: Embeddable::MultipleChoice,
+        answer_type: Embeddable::MultipleChoiceAnswer,
+        question_foreign_key: "multiple_choice_id",
+        feedback_type: Embeddable::FeedbackItem
       }
     ]
 
@@ -139,23 +139,23 @@ SQL
     # All buckets are filled and all question indices are found; we can populate the spreadsheet
 
     header_name_for_sql_column = {
-      :permission_forms => "Permission Form(s)",
-      :teachers_name    => "Teacher Name",
-      :school_name      => "School Name",
-      :class_name       => "Class Name",
-      :class_id         => "Class ID",
-      :student_id       => "Student ID",
-      :submission_time  => "Submission Date & Time",
-      :activity_name    => "Activity Name",
-      :activity_id      => "Activity ID",
-      :page_name        => "Page Name",
-      :page_id          => "Page ID",
-      :question_id      => "Question ID",
-      :prompt           => "Prompt",
-      :answer           => "Answer",
-      :score            => "Score",
-      :feedback         => "Feedback",
-      :usefulness_score => "Usefulness Score"
+      permission_forms: "Permission Form(s)",
+      teachers_name: "Teacher Name",
+      school_name: "School Name",
+      class_name: "Class Name",
+      class_id: "Class ID",
+      student_id: "Student ID",
+      submission_time: "Submission Date & Time",
+      activity_name: "Activity Name",
+      activity_id: "Activity ID",
+      page_name: "Page Name",
+      page_id: "Page ID",
+      question_id: "Question ID",
+      prompt: "Prompt",
+      answer: "Answer",
+      score: "Score",
+      feedback: "Feedback",
+      usefulness_score: "Usefulness Score"
     }
 
     header_name = Proc.new do |column|
@@ -174,7 +174,7 @@ SQL
 
     # Create a spreadsheet and the main ("long format", i.e., not broken-out) worksheet within it
     book = Spreadsheet::Workbook.new
-    sheet = book.create_worksheet :name => 'Long Format'
+    sheet = book.create_worksheet name: 'Long Format'
 
     # Add header row
     header_row = sheet.row(0)

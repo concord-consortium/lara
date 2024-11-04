@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Api::V1::JwtController do
   let(:endpoint_url)  { "http://fake.blarg.com/blarg/1" }
   let(:stubbed_token) { 'foo' }
-  let(:user)          { stub_model(User, :is_admin => false) }
+  let(:user)          { stub_model(User, is_admin: false) }
   let(:activity)      { FactoryGirl.create(:activity) }
   let(:run) {
     r = FactoryGirl.create(:run, remote_endpoint: endpoint_url, user: user)
@@ -23,14 +23,14 @@ describe Api::V1::JwtController do
   shared_examples 'a JWT request handler' do |jwt_request_action|
     describe 'with a run' do
       it "should fail with 404 if the run is not found" do
-        post jwt_request_action, :run_id => run.id + 1
+        post jwt_request_action, run_id: run.id + 1
         expect(response.status).to eq(404)
       end
 
       describe 'with no endpoint' do
         let(:endpoint_url)    { nil }
         it "should fail with 500" do
-          post jwt_request_action, :run_id => run.id
+          post jwt_request_action, run_id: run.id
           expect(response.status).to eq(500)
           json_response = JSON.parse(response.body)
           expect(json_response["response_type"]).to eq('ERROR')
@@ -43,7 +43,7 @@ describe Api::V1::JwtController do
           allow(controller).to receive(:current_user).and_return(nil)
         end
         it "should fail with 500" do
-          post jwt_request_action, :run_id => run.id
+          post jwt_request_action, run_id: run.id
           expect(response.status).to eq(500)
           json_response = JSON.parse(response.body)
           expect(json_response["response_type"]).to eq('ERROR')
@@ -52,12 +52,12 @@ describe Api::V1::JwtController do
       end
 
       describe 'with a different non-admin current user' do
-        let(:different_user) { stub_model(User, :is_admin => false) }
+        let(:different_user) { stub_model(User, is_admin: false) }
         before(:each) do
           allow(controller).to receive(:current_user).and_return(different_user)
         end
         it "should fail with 500" do
-          post jwt_request_action, :run_id => run.id
+          post jwt_request_action, run_id: run.id
           expect(response.status).to eq(500)
           json_response = JSON.parse(response.body)
           expect(json_response["response_type"]).to eq('ERROR')
@@ -70,7 +70,7 @@ describe Api::V1::JwtController do
           allow(Concord::AuthPortal).to receive(:auth_token_for_url).and_raise("No portal!")
         end
         it "should fail with 500" do
-          post jwt_request_action, :run_id => run.id
+          post jwt_request_action, run_id: run.id
           expect(response.status).to eq(500)
           json_response = JSON.parse(response.body)
           expect(json_response["response_type"]).to eq('ERROR')
@@ -80,7 +80,7 @@ describe Api::V1::JwtController do
 
       describe 'with the current user owning the run' do
         it "should succeed" do
-          post jwt_request_action, :run_id => run.id
+          post jwt_request_action, run_id: run.id
           expect(response.status).to eq(200)
           json_response = JSON.parse(response.body)
           expect(json_response["token"]).to eq('fake-token')
@@ -88,13 +88,13 @@ describe Api::V1::JwtController do
       end
 
       describe 'with an admin user not owning a run' do
-        let(:admin_user) { stub_model(User, :is_admin => true) }
+        let(:admin_user) { stub_model(User, is_admin: true) }
         before(:each) do
           allow(controller).to receive(:current_user).and_return(admin_user)
         end
 
         it "should succeed" do
-          post jwt_request_action, :run_id => run.id
+          post jwt_request_action, run_id: run.id
           expect(response.status).to eq(200)
           json_response = JSON.parse(response.body)
           expect(json_response["token"]).to eq('fake-token')

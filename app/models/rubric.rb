@@ -5,7 +5,7 @@ class Rubric < ApplicationRecord
 
   belongs_to :user
   belongs_to :project
-  has_one :authored_content, :as => :container
+  has_one :authored_content, as: :container
   has_many :lightweight_activities
 
   after_create :create_authored_content
@@ -110,7 +110,7 @@ class Rubric < ApplicationRecord
   # These somewhat mirror the class methods injects by the PublicationStatus model, except they remove
   # the checks for publication status
   def self.my(user)
-    where(:user_id => user.id)
+    where(user_id: user.id)
   end
 
   def self.can_see(user)

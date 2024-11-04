@@ -5,7 +5,7 @@ class VideoSource < ApplicationRecord
   
   validates_presence_of :url
   validates_presence_of :format
-  validates :format, :inclusion => { :in => SUPPORTED_MIME_TYPES }
+  validates :format, inclusion: { in: SUPPORTED_MIME_TYPES }
 
   belongs_to :video_interactive
 

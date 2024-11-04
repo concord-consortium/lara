@@ -23,7 +23,7 @@ FactoryGirl.define do
     end
   end
 
-  factory :activity_player_sequence, :class => Sequence do
+  factory :activity_player_sequence, class: Sequence do
     title "MyString"
     description "MyText"
     abstract "short abstract"

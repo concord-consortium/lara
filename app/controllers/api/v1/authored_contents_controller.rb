@@ -1,5 +1,5 @@
 class Api::V1::AuthoredContentsController < API::APIController
-  skip_before_action :verify_authenticity_token, :only => :update
+  skip_before_action :verify_authenticity_token, only: :update
 
   def show
     authored_content = AuthoredContent.find(params[:id])
@@ -38,7 +38,7 @@ class Api::V1::AuthoredContentsController < API::APIController
   end
 
   def s3_put(s3_config, key, contents)
-    s3 = AWS::S3.new(:access_key_id => s3_config[:access_key_id], :secret_access_key => s3_config[:secret_access_key])
+    s3 = AWS::S3.new(access_key_id: s3_config[:access_key_id], secret_access_key: s3_config[:secret_access_key])
     s3.buckets[s3_config[:bucket_name]].objects.create(key, contents)
   end
 
@@ -59,6 +59,6 @@ class Api::V1::AuthoredContentsController < API::APIController
   end
 
   def render_result(authored_content)
-    render :json => authored_content, only: [:id, :content_type, :url]
+    render json: authored_content, only: [:id, :content_type, :url]
   end
 end

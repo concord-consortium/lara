@@ -2,7 +2,7 @@ module AttachedToEmbeddable
   def self.included(clazz)
     clazz.class_eval do
       # That requires model that includes this module to have embeddable_id (integer) and embeddable_type (string) attributes.
-      belongs_to :embeddable, :polymorphic => true
+      belongs_to :embeddable, polymorphic: true
 
       # attr_accessible :embeddable_select_value
       attr_writer :embeddable_select_value

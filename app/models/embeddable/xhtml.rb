@@ -4,7 +4,7 @@ module Embeddable
 
     include Embeddable
 
-    has_many :page_items, :as => :embeddable, :dependent => :destroy
+    has_many :page_items, as: :embeddable, dependent: :destroy
     # PageItem instances are join models, so if the embeddable is gone
     # the join should go too.
     has_one :converted_interactive, class_name: "ManagedInteractive", as: :legacy_ref
@@ -13,7 +13,7 @@ module Embeddable
     has_many :interactive_pages, through: :sections
     has_many :embeddable_plugins, class_name: "Embeddable::EmbeddablePlugin", as: :embeddable
 
-    validates :content, :html => true
+    validates :content, html: true
 
     def to_hash
       {

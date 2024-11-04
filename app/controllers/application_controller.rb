@@ -239,7 +239,7 @@ class ApplicationController < ActionController::Base
       # the referer and that is not changed during redirects. More info:
       # https://github.com/intridea/omniauth/wiki/Saving-User-Location
       strategy_name = Concord::AuthPortal.strategy_name_for_url(params[:domain])
-      redirect_to user_omniauth_authorize_path(strategy_name, :origin => uri.to_s)
+      redirect_to user_omniauth_authorize_path(strategy_name, origin: uri.to_s)
     end
   end
 
@@ -342,10 +342,10 @@ class ApplicationController < ActionController::Base
     end
 
     {
-      :user => user,
-      :className => className,
-      :id => resource && resource.respond_to?(:id) ? resource.id : 'n/a',
-      :message => message
+      user: user,
+      className: className,
+      id: resource && resource.respond_to?(:id) ? resource.id : 'n/a',
+      message: message
     }
   end
 

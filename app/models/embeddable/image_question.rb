@@ -5,20 +5,20 @@ class Embeddable::ImageQuestion < ApplicationRecord
   # attr_accessible :name, :prompt, :hint, :bg_source, :bg_url, :drawing_prompt, :is_half_width,
   #   :is_prediction, :show_in_featured_question_report, :give_prediction_feedback, :prediction_feedback, :is_hidden
 
-  has_many :page_items, :as => :embeddable, :dependent => :destroy
+  has_many :page_items, as: :embeddable, dependent: :destroy
   has_many :sections, through: :page_items
   has_many :interactive_pages, through: :sections
   has_many :embeddable_plugins, as: :embeddable
   has_one :converted_interactive, class_name: "ManagedInteractive", as: :legacy_ref
 
   has_many :answers,
-    :class_name  => 'Embeddable::ImageQuestionAnswer',
-    :foreign_key => 'image_question_id',
-    :dependent   => :destroy
+    class_name: 'Embeddable::ImageQuestionAnswer',
+    foreign_key: 'image_question_id',
+    dependent: :destroy
 
-  has_one :tracked_question, :as => :question, :dependent => :delete
-  has_one :question_tracker, :through => :tracked_question
-  has_one :master_for_tracker, :class_name => 'QuestionTracker', :as => :master_question
+  has_one :tracked_question, as: :question, dependent: :delete
+  has_one :question_tracker, through: :tracked_question
+  has_one :master_for_tracker, class_name: 'QuestionTracker', as: :master_question
 
   default_value_for :prompt, "why does ..."
 

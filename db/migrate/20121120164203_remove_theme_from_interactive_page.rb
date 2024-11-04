@@ -4,6 +4,6 @@ class RemoveThemeFromInteractivePage < ActiveRecord::Migration
   end
 
   def down
-    add_column :interactive_pages, :theme, :string, :default => "default"
+    add_column :interactive_pages, :theme, :string, default: "default"
   end
 end

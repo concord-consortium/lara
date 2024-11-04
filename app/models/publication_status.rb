@@ -10,7 +10,7 @@ module PublicationStatus
   def self.included(clazz)
     ## add before_save hooks
     clazz.class_eval do
-      validates :publication_status, :inclusion => { :in => PUB_STATUSES }
+      validates :publication_status, inclusion: { in: PUB_STATUSES }
       default_value_for :publication_status, 'private'
       # attr_accessible :publication_status, :is_official
 
@@ -22,7 +22,7 @@ module PublicationStatus
 
       # * Find all activities for one user (regardless of publication status)
       def self.my(user)
-        where(:user_id => user.id)
+        where(user_id: user.id)
       end
 
       # * Find a users activities and the public activities

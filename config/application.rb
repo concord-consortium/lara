@@ -6,7 +6,7 @@ require_relative '../lib/rack/response_logger'
 
 if defined?(Bundler)
   # If you precompile assets before deploying to production, use this line
-  Bundler.require(*Rails.groups(:assets => %w(development test)))
+  Bundler.require(*Rails.groups(assets: %w(development test)))
   # If you want your assets lazily compiled in production, use this line
   # Bundler.require(:default, :assets, Rails.env)
 end
@@ -63,19 +63,19 @@ module LightweightStandalone
 
     # Configuration for rack-environmental middleware, see https://github.com/techiferous/rack-environmental
     config.middleware.use Rack::Environmental,
-                            :delayed_job => { :url => /delayed_job/,
-                                              :style => :none},
-                            :staging     => { :url => /staging\..+$/,
-                                              :color => "blueviolet" },
-                            :test        => { :url => /jasmine/,
-                                              :style => :none },
-                            :development => { :url => /^localhost.+$/,
-                                              :color => "red"        }
+                            delayed_job: { url: /delayed_job/,
+                                              style: :none},
+                            staging: { url: /staging\..+$/,
+                                              color: "blueviolet" },
+                            test: { url: /jasmine/,
+                                              style: :none },
+                            development: { url: /^localhost.+$/,
+                                              color: "red"        }
     config.middleware.insert_before 0, Rack::Cors do
       allow do
         origins '*'
-        resource '/api/*', :headers => :any, :methods => [:get, :post, :put, :options]
-        resource '/image-proxy', :headers => :any, :methods => [:get, :options]
+        resource '/api/*', headers: :any, methods: [:get, :post, :put, :options]
+        resource '/image-proxy', headers: :any, methods: [:get, :options]
       end
     end
 

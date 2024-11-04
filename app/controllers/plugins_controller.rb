@@ -17,7 +17,7 @@ class PluginsController < ApplicationController
     @plugin = @activity.plugins.create()
     respond_to do |format|
       format.js {
-        render :json => {
+        render json: {
           html: _form(@plugin, false)
         }
       }

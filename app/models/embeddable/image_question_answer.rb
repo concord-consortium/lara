@@ -6,22 +6,22 @@ module Embeddable
     #   :annotated_image_url, :is_dirty, :is_final
 
     belongs_to :question,
-      :class_name => 'Embeddable::ImageQuestion',
-      :foreign_key => "image_question_id"
+      class_name: 'Embeddable::ImageQuestion',
+      foreign_key: "image_question_id"
 
     belongs_to :run
 
-    delegate :drawing_prompt, :to => :question
-    delegate :is_shutterbug?, :to => :question
-    delegate :is_drawing?,    :to => :question
-    delegate :is_upload?,     :to => :question
-    delegate :interactive,    :to => :question
+    delegate :drawing_prompt, to: :question
+    delegate :is_shutterbug?, to: :question
+    delegate :is_drawing?,    to: :question
+    delegate :is_upload?,     to: :question
+    delegate :interactive,    to: :question
 
     after_update :send_to_portal
     after_update :propagate_to_collaborators
 
     def self.by_question(q)
-      where(:image_question_id => q.id)
+      where(image_question_id: q.id)
     end
 
     def has_snapshot?

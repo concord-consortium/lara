@@ -2,13 +2,13 @@ class Api::V1::InteractiveRunStatesController < ApplicationController
   layout false
   before_action :set_interactive_run
 
-  skip_before_action :verify_authenticity_token, :only => :update
+  skip_before_action :verify_authenticity_token, only: :update
 
   def show
     begin
       authorize! :show, @interactive_run_state
 
-      render :json => @interactive_run_state.to_runtime_json(request.protocol, request.host_with_port)
+      render json: @interactive_run_state.to_runtime_json(request.protocol, request.host_with_port)
     rescue CanCan::AccessDenied
       authorization_error("get")
     end
@@ -34,9 +34,9 @@ class Api::V1::InteractiveRunStatesController < ApplicationController
         @interactive_run_state.metadata = metadata.to_json
       end
       if @interactive_run_state.save
-        render :json => @interactive_run_state.to_runtime_json(request.protocol, request.host_with_port)
+        render json: @interactive_run_state.to_runtime_json(request.protocol, request.host_with_port)
       else
-        render :json => { :success => false }
+        render json: { success: false }
       end
     rescue CanCan::AccessDenied
       authorization_error("update")
@@ -60,6 +60,6 @@ class Api::V1::InteractiveRunStatesController < ApplicationController
 
   def authorization_error(action)
     reason = current_user ? "the owner or an admin or a collaborator" : "logged in"
-    render :json => { :success => false, :message => "You are not authorized to #{action} the requested owned interactive run state because you are not #{reason}."}
+    render json: { success: false, message: "You are not authorized to #{action} the requested owned interactive run state because you are not #{reason}."}
   end
 end

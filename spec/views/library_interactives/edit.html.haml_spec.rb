@@ -3,23 +3,23 @@ require 'spec_helper'
 describe "library_interactives/edit" do
   before(:each) do
     @library_interactive = assign(:library_interactive, LibraryInteractive.create!(
-      :name => "MyString",
-      :description => "MyText",
-      :base_url => "http://example.com",
-      :thumbnail_url => "http://example.com",
-      :authoring_guidance => "MyText",
-      :no_snapshots => false,
-      :enable_learner_state => false,
-      :hide_question_number => false,
-      :has_report_url => false,
-      :show_delete_data_button => false,
-      :aspect_ratio_method => "MyString",
-      :native_width => 1,
-      :native_height => 1,
-      :click_to_play => false,
-      :full_window => false,
-      :click_to_play_prompt => "MyString",
-      :image_url => "http://example.com"
+      name: "MyString",
+      description: "MyText",
+      base_url: "http://example.com",
+      thumbnail_url: "http://example.com",
+      authoring_guidance: "MyText",
+      no_snapshots: false,
+      enable_learner_state: false,
+      hide_question_number: false,
+      has_report_url: false,
+      show_delete_data_button: false,
+      aspect_ratio_method: "MyString",
+      native_width: 1,
+      native_height: 1,
+      click_to_play: false,
+      full_window: false,
+      click_to_play_prompt: "MyString",
+      image_url: "http://example.com"
     ))
   end
 

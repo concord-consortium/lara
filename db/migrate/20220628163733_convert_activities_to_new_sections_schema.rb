@@ -16,10 +16,10 @@ class ConvertActivitiesToNewSectionsSchema < ActiveRecord::Migration
 
   def create_section(page_id, layout, position, show)
     Section.create(
-      :interactive_page_id => page_id,
-      :layout => layout,
-      :position => position,
-      :show => show
+      interactive_page_id: page_id,
+      layout: layout,
+      position: position,
+      show: show
     )
   end
 
@@ -29,7 +29,7 @@ class ConvertActivitiesToNewSectionsSchema < ActiveRecord::Migration
       item.section_id = section_id
       item.column = column
       item.section_position = section_position
-      item.save(:validate => false)
+      item.save(validate: false)
       section_position += 1
     end
   end

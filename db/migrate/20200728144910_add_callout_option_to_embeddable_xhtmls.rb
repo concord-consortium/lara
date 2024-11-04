@@ -25,7 +25,7 @@ class AddCalloutOptionToEmbeddableXhtmls < ActiveRecord::Migration
   end
 
   def up
-    add_column :embeddable_xhtmls, :is_callout, :boolean, :default => true
+    add_column :embeddable_xhtmls, :is_callout, :boolean, default: true
 
     InteractivePage
       .select("interactive_pages.id")

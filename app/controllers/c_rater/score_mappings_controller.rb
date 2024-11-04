@@ -1,6 +1,6 @@
 class CRater::ScoreMappingsController < ApplicationController
   load_and_authorize_resource
-  skip_load_resource :only => [:index, :create]
+  skip_load_resource only: [:index, :create]
 
   def index
     @filter = CollectionFilter.new(current_user, CRater::ScoreMapping, params[:filter] || {})
@@ -9,7 +9,7 @@ class CRater::ScoreMappingsController < ApplicationController
 
   def new
     respond_to do |format|
-      format.js { render :json => { :html => render_to_string('new'), :css_class => "feedback-set" }, :content_type => 'text/json' }
+      format.js { render json: { html: render_to_string('new'), css_class: "feedback-set" }, content_type: 'text/json' }
       format.html
     end
   end
@@ -26,7 +26,7 @@ class CRater::ScoreMappingsController < ApplicationController
 
   def edit
     respond_to do |format|
-      format.js { render :json => { :html => render_to_string('edit'), :css_class => "feedback-set"}, :content_type => 'text/json' }
+      format.js { render json: { html: render_to_string('edit'), css_class: "feedback-set"}, content_type: 'text/json' }
       format.html
     end
   end

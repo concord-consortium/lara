@@ -54,7 +54,7 @@ describe GlossariesController do
 
   describe "GET edit" do
     it "assigns the requested glossary as @glossary" do
-      get :edit, params: { :id => glossary.id }
+      get :edit, params: { id: glossary.id }
       expect(assigns(:glossary)).to eq(glossary)
     end
   end
@@ -63,23 +63,23 @@ describe GlossariesController do
     describe "with valid params" do
       it "creates a new Glossary" do
         expect {
-          post :create, params: { :glossary => {
-            :name => "Test Glossary A"
+          post :create, params: { glossary: {
+            name: "Test Glossary A"
           } }
         }.to change(Glossary, :count).by(1)
       end
 
       it "assigns a newly created glossary as @glossary" do
-        post :create, params: { :glossary => {
-          :name => "Test Glossary B"
+        post :create, params: { glossary: {
+          name: "Test Glossary B"
         } }
         expect(assigns(:glossary)).to be_a(Glossary)
         expect(assigns(:glossary)).to be_persisted
       end
 
       it "redirects to the created glossary" do
-        post :create, params: { :glossary => {
-          :name => "Test Glossary C"
+        post :create, params: { glossary: {
+          name: "Test Glossary C"
         } }
         expect(response).to redirect_to(edit_glossary_url(Glossary.last))
       end
@@ -89,14 +89,14 @@ describe GlossariesController do
       it "assigns a newly created but unsaved glossary as @glossary" do
         # Trigger the behavior that occurs when invalid params are submitted
         allow_any_instance_of(Glossary).to receive(:save).and_return(false)
-        post :create, params: { :glossary => {} }
+        post :create, params: { glossary: {} }
         expect(assigns(:glossary)).to be_a_new(Glossary)
       end
 
       it "re-renders the 'new' template" do
         # Trigger the behavior that occurs when invalid params are submitted
         allow_any_instance_of(Glossary).to receive(:save).and_return(false)
-        post :create, params: { :glossary => {} }
+        post :create, params: { glossary: {} }
         expect(response).to render_template("new")
       end
     end
@@ -110,16 +110,16 @@ describe GlossariesController do
         # receives the :update_attributes message with whatever params are
         # submitted in the request.
         expect_any_instance_of(Glossary).to receive(:update_attributes).with({'name' => 'New Name'})
-        put :update, params: { :id => glossary.id, :glossary => {'name' => 'New Name'} }
+        put :update, params: { id: glossary.id, glossary: {'name' => 'New Name'} }
       end
 
       it "assigns the requested glossary as @glossary" do
-        put :update, params: { :id => glossary.id, :glossary => {} }
+        put :update, params: { id: glossary.id, glossary: {} }
         expect(assigns(:glossary)).to eq(glossary)
       end
 
       it "redirects to the glossary" do
-        put :update, params: { :id => glossary.id, :glossary => {} }
+        put :update, params: { id: glossary.id, glossary: {} }
         expect(response).to redirect_to(edit_glossary_url(glossary))
       end
     end
@@ -128,14 +128,14 @@ describe GlossariesController do
       it "assigns the glossary as @glossary" do
         # Trigger the behavior that occurs when invalid params are submitted
         allow_any_instance_of(Glossary).to receive(:save).and_return(false)
-        put :update, params: { :id => glossary.id, :glossary => {} }
+        put :update, params: { id: glossary.id, glossary: {} }
         expect(assigns(:glossary)).to eq(glossary)
       end
 
       it "re-renders the 'edit' template" do
         # Trigger the behavior that occurs when invalid params are submitted
         allow_any_instance_of(Glossary).to receive(:save).and_return(false)
-        put :update, params: { :id => glossary.id, :glossary => {} }
+        put :update, params: { id: glossary.id, glossary: {} }
         expect(response).to render_template("edit")
       end
     end
@@ -144,12 +144,12 @@ describe GlossariesController do
   describe "DELETE destroy" do
     it "destroys the requested glossary" do
       expect {
-        delete :destroy, params: { :id => glossary.id }
+        delete :destroy, params: { id: glossary.id }
       }.to change(Glossary, :count).by(-1)
     end
 
     it "redirects to the glossaries list" do
-      delete :destroy, params: { :id => glossary.id }
+      delete :destroy, params: { id: glossary.id }
       expect(response).to redirect_to(glossaries_url)
     end
   end
@@ -157,20 +157,20 @@ describe GlossariesController do
   describe "duplicate" do
     it "duplicates the requested glossary" do
       expect {
-        get :duplicate, params: { :id => glossary.id }
+        get :duplicate, params: { id: glossary.id }
       }.to change(Glossary, :count).by(1)
       expect(assigns(:new_glossary).id).not_to eq(glossary.id)
     end
 
     it "redirects to the glossary edit for duplicate" do
-      post :duplicate, params: { :id => glossary.id }
+      post :duplicate, params: { id: glossary.id }
       expect(response).to redirect_to(edit_glossary_url(assigns(:new_glossary)))
     end
   end
 
   describe "export" do
     it "exports the requested glossary" do
-      get :export, params: { :id => glossary.id }
+      get :export, params: { id: glossary.id }
       expect(response).to be_success
       json_response = JSON.parse(response.body)
       expect(json_response["type"]).to eq("Glossary")

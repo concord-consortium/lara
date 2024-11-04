@@ -47,7 +47,7 @@ class ApprovedScript < ApplicationRecord
 
   def parsed_authoring_metadata
     begin
-      JSON.parse authoring_metadata, :symbolize_names => true
+      JSON.parse authoring_metadata, symbolize_names: true
     rescue
       {}
     end

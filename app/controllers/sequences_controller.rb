@@ -1,11 +1,11 @@
 
 class SequencesController < ApplicationController
-  before_action :set_sequence, :except => [:index, :new, :create]
-  before_action :find_or_create_sequence_run, :only => [:show]
+  before_action :set_sequence, except: [:index, :new, :create]
+  before_action :find_or_create_sequence_run, only: [:show]
 
-  before_action :enable_js_logger, :only => [:show]
+  before_action :enable_js_logger, only: [:show]
 
-  before_action :setup_abilities, :only => [:new, :edit]
+  before_action :setup_abilities, only: [:new, :edit]
 
   # Adds remote_duplicate handler (POST remote_duplicate)
   include RemoteDuplicateSupport
@@ -25,7 +25,7 @@ class SequencesController < ApplicationController
   # GET /sequences.json
   def index
     @filter  = CollectionFilter.new(current_user, Sequence, params[:filter] || {})
-    @sequences = @filter.collection.includes(:user,:lightweight_activities).paginate(:page => params['page'], :per_page => 20)
+    @sequences = @filter.collection.includes(:user,:lightweight_activities).paginate(page: params['page'], per_page: 20)
 
     respond_to do |format|
       format.html # index.html.erb
@@ -171,7 +171,7 @@ class SequencesController < ApplicationController
   def show_status
     @message = params[:message] || ''
     respond_to do |format|
-      format.js { render :json => { :html => render_to_string('export')}, :content_type => 'text/json' }
+      format.js { render json: { html: render_to_string('export')}, content_type: 'text/json' }
       format.html
     end
   end

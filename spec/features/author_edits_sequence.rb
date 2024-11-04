@@ -17,7 +17,7 @@ feature "Author edits a sequence while it is being used" do
   let(:activity1)    { FactoryGirl.create(:activity, pages: [page1, page2]) }
   let(:activity2)    { FactoryGirl.create(:activity, pages: [page3, page4]) }
   let(:activity3)    { FactoryGirl.create(:activity, pages: [page5, page6]) }
-  let(:sequence)     { FactoryGirl.create(:sequence, :title => 'teacher-edition mode test Sequence', :user_id => author.id, :lightweight_activities => [activity1, activity2], :publication_status => 'public')}
+  let(:sequence)     { FactoryGirl.create(:sequence, title: 'teacher-edition mode test Sequence', user_id: author.id, lightweight_activities: [activity1, activity2], publication_status: 'public')}
   # Note that platform_id is a "platform_info" that we care about. externalId and returnUrl are necessary for
   # sequence run lookup.
   let(:portal_params) { "?platform_id=test_platform&externalId=123&returnUrl=http://return.url" }
@@ -30,7 +30,7 @@ feature "Author edits a sequence while it is being used" do
 
   def execute_test_for_reload_url
     # Ensure that a new activity run is created and platform info is passed down to the new run.
-    login_as user, :scope => :user
+    login_as user, scope: :user
 
     expect(SequenceRun.count).to eq 0
     visit sequence_path(sequence) + portal_params

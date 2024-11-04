@@ -1,20 +1,20 @@
 require 'spec_helper'
 
 describe "interactive_pages/edit" do
-  let(:activity)  { stub_model(LightweightActivity, :id => 1, :name => 'Stub activity')}
+  let(:activity)  { stub_model(LightweightActivity, id: 1, name: 'Stub activity')}
 
   let (:page) do
-    p = FactoryGirl.create(:page, :name => "fake page", :lightweight_activity => activity, :embeddable_display_mode => 'carousel')
-    allow(p).to receive_messages(:last? => true)
+    p = FactoryGirl.create(:page, name: "fake page", lightweight_activity: activity, embeddable_display_mode: 'carousel')
+    allow(p).to receive_messages(last?: true)
     [3,1,2].each do |i|
-      embed = FactoryGirl.create(:xhtml, :name => "embeddable #{i}", :content => "This is the #{ActiveSupport::Inflector.ordinalize(i)} embeddable")
+      embed = FactoryGirl.create(:xhtml, name: "embeddable #{i}", content: "This is the #{ActiveSupport::Inflector.ordinalize(i)} embeddable")
       p.add_embeddable(embed, i)
     end
     p
   end
 
   let (:page1) { page }
-  let (:page2) { FactoryGirl.create(:page, :name => 'Another fake page', :lightweight_activity => activity ) }
+  let (:page2) { FactoryGirl.create(:page, name: 'Another fake page', lightweight_activity: activity ) }
 
   before :each do
     assign(:activity, activity)
