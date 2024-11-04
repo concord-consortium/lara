@@ -232,40 +232,40 @@ For now we will stay at 4.2.11.23 instead of upgrading to 4.2.11.38
 - [x] Action Mailer
 - [x] Foreign Key Support
 
-6. Create a PR and insure all the tests pass.
-7. After review/approval merge the branch into the `lara-upgrade` branch.
+6. Create a PR and insure all the tests pass. ✅
+7. After review/approval merge the branch into the `lara-upgrade` branch. ✅
 
 ### Upgrade To Rails 5.0.7.2
 
-1. Create a `upgrade-to-rails-5.0` branch off the `lara-upgrade` branch.
-2. Upgrade rails gems in `Gemfile` to last 5.0 version: `gem 'rails', '~> 5.0.7.2'`.  No Ruby upgrade is required.
-3. Inside running Docker image run `bundle update rails`
-4. Resolve gem dependency issues until the bundle update succeeds.
-5. Complete upgrade tasks in the [4.2 to 5.0 upgrade guide](https://guides.rubyonrails.org/upgrading_ruby_on_rails.html#upgrading-from-rails-4-2-to-rails-5-0)
+1. Create a `upgrade-to-rails-5.0` branch off the `lara-upgrade` branch. ✅
+2. Upgrade rails gems in `Gemfile` to last 5.0 version: `gem 'rails', '~> 5.0.7.2'`.  No Ruby upgrade is required. ✅
+3. Inside running Docker image run `bundle update rails` ✅
+4. Resolve gem dependency issues until the bundle update succeeds. ✅
+5. Complete upgrade tasks in the [4.2 to 5.0 upgrade guide](https://guides.rubyonrails.org/upgrading_ruby_on_rails.html#upgrading-from-rails-4-2-to-rails-5-0) ✅
 
-- [ ] Ruby 2.2.2+ required (THIS IS ALREADY DONE AS WE ARE ON 2.3.7)
-- [ ] Active Record Models Now Inherit from ApplicationRecord by Default
-- [ ] Halting Callback Chains via throw(:abort)
-- [ ] ActiveJob Now Inherits from ApplicationJob by Default
-- [ ] Rails Controller Testing
-- [ ] Autoloading is Disabled After Booting in the Production Environment
-- [ ] XML Serialization
-- [ ] Removed Support for Legacy mysql Database Adapter
-- [ ] Removed Support for Debugger
-- [ ] Use bin/rails for running tasks and tests
-- [ ] ActionController::Parameters No Longer Inherits from HashWithIndifferentAccess
-- [ ] protect_from_forgery Now Defaults to prepend: false
-- [ ] Default Template Handler is Now RAW
-- [ ] Added Wildcard Matching for Template Dependencies
-- [ ] ActionView::Helpers::RecordTagHelper moved to external gem (record_tag_helper)
-- [ ] Removed Support for protected_attributes Gem
-- [ ] Removed support for activerecord-deprecated_finders gem
-- [ ] ActiveSupport::TestCase Default Test Order is Now Random
-- [ ] ActionController::Live became a Concern
-- [ ] New Framework Defaults
-- [ ] Changes with JSON/JSONB serialization
+- [x] Ruby 2.2.2+ required (THIS IS ALREADY DONE AS WE ARE ON 2.3.7)
+- [x] Active Record Models Now Inherit from ApplicationRecord by Default
+- [x] Halting Callback Chains via throw(:abort)
+- [x] ActiveJob Now Inherits from ApplicationJob by Default
+- [x] Rails Controller Testing
+- [x] Autoloading is Disabled After Booting in the Production Environment
+- [x] XML Serialization
+- [x] Removed Support for Legacy mysql Database Adapter
+- [x] Removed Support for Debugger
+- [x] Use bin/rails for running tasks and tests
+- [x] ActionController::Parameters No Longer Inherits from HashWithIndifferentAccess
+- [x] protect_from_forgery Now Defaults to prepend: false
+- [x] Default Template Handler is Now RAW
+- [x] Added Wildcard Matching for Template Dependencies
+- [x] ActionView::Helpers::RecordTagHelper moved to external gem (record_tag_helper)
+- [x] Removed Support for protected_attributes Gem
+- [x] Removed support for activerecord-deprecated_finders gem
+- [x] ActiveSupport::TestCase Default Test Order is Now Random
+- [x] ActionController::Live became a Concern
+- [x] New Framework Defaults
+- [x] Changes with JSON/JSONB serialization
 
-6. Create a PR and insure all the tests pass.
+6. Create a PR and insure all the tests pass. ✅
 7. After review/approval merge the branch into the `lara-upgrade` branch.
 
 ### Upgrade To Rails 5.1.7
