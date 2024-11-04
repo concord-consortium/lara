@@ -18,7 +18,7 @@ describe RunsController do
     it 'does not route without activity ID' do
       begin
         get :show
-      rescue ActionController::RoutingError
+      rescue ActionController::UrlGenerationError
       end
     end
 

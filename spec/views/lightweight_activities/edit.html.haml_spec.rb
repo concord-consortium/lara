@@ -130,7 +130,7 @@ describe "lightweight_activities/edit" do
 
     it 'should show the current activity name' do
       render
-      expect(rendered).to match /<input[^>]+id="lightweight_activity_name"[^>]+name="lightweight_activity\[name\]"[^>]+type="text"[^<]+value="#{activity.name}"[^<]*\/>/
+      assert_select "input#lightweight_activity_name", :name => "lightweight_activity[name]", :value => activity.name
     end
 
     it 'should show the current activity description' do

@@ -110,7 +110,7 @@ The status codes are:
 | will_paginate                |       UC! AM |           3.0.7 |           4.0.1 |       4.0.1 |
 | *GEMS THAT CAN BE UPGRADED*  |              |                 |                 |             |
 | acts_as_list                 |          UC* |           0.3.0 |          0.9.19 |       1.2.3 |
-| aws-sdk                      |           NC |          1.66.0 |          1.66.0 |       3.2.0 |
+| aws-sdk                      |          CU! |          1.66.0 |          2.0.22 |       3.2.0 |
 | better_errors                |          UC! |           1.1.0 |           2.0.0 |      2.10.1 |
 | bullet                       |           NC |           5.4.3 |           5.4.3 |       7.2.0 |
 | cancancan                    |          UC* |          1.10.1 |          1.17.0 |       3.6.1 |
@@ -177,8 +177,8 @@ The status codes are:
 - [x] sprockets-rails
 - [x] sass-rails (no change required)
 
-6. Create a PR and insure all the tests pass.
-7. After review/approval merge the branch into the `lara-upgrade` branch.
+6. Create a PR and insure all the tests pass. ✅
+7. After review/approval merge the branch into the `lara-upgrade` branch. ✅
 
 ### Upgrade To Rails 4.1.16
 
@@ -204,29 +204,33 @@ The status codes are:
 - [x] PostgreSQL JSON and hstore datatypes
 - [x] Explicit block use for ActiveSupport::Callbacks
 
-6. Create a PR and insure all the tests pass.
-7. After review/approval merge the branch into the `lara-upgrade` branch.
+6. Create a PR and insure all the tests pass. ✅
+7. After review/approval merge the branch into the `lara-upgrade` branch. ✅
 
-### Upgrade To Rails 4.2.11.38
+### Upgrade To Rails ~~4.2.11.38~~ 4.2.11.23
+#### Note:
+There is a change in RailsLTS 4.2.11.24 through 4.2.11.38 that involves serialization and YAML.safe_load, which causes things to break in our code.
+Documentation here: https://makandracards.com/railslts/521762-change-activerecord-deserialization-cve-2022-32224
+For now we will stay at 4.2.11.23 instead of upgrading to 4.2.11.38
 
-1. Create a `upgrade-to-rails-4.2` branch off the `lara-upgrade` branch.
-2. Upgrade rails gems in `Gemfile` to last 4.2 version: `gem 'rails', '~> 4.2.11.38'`.  No Ruby upgrade is required.
-3. Inside running Docker image run `bundle update rails`
-4. Resolve gem dependency issues until the bundle update succeeds.
-5. Complete upgrade tasks in the [4.1 to 4.2 upgrade guide](https://guides.rubyonrails.org/upgrading_ruby_on_rails.html#upgrading-from-rails-4-1-to-rails-4-2)
+1. Create a `upgrade-to-rails-4.2` branch off the `lara-upgrade` branch. ✅
+2. Upgrade rails gems in `Gemfile` to last 4.2 version: `gem 'rails', '~> 4.2.11.23'`.  No Ruby upgrade is required. ✅
+3. Inside running Docker image run `bundle update rails` ✅
+4. Resolve gem dependency issues until the bundle update succeeds. ✅
+5. Complete upgrade tasks in the [4.1 to 4.2 upgrade guide](https://guides.rubyonrails.org/upgrading_ruby_on_rails.html#upgrading-from-rails-4-1-to-rails-4-2) ✅
 
-- [ ] Web Console
-- [ ] Responders
-- [ ] Error handling in transaction callbacks
-- [ ] Ordering of test cases
-- [ ] Serialized attributes
-- [ ] Production log level
-- [ ] after_bundle in Rails templates
-- [ ] Rails HTML Sanitizer
-- [ ] Rails DOM Testing
-- [ ] Masked Authenticity Tokens
-- [ ] Action Mailer
-- [ ] Foreign Key Support
+- [x] Web Console
+- [x] Responders
+- [x] Error handling in transaction callbacks
+- [x] Ordering of test cases
+- [x] Serialized attributes
+- [x] Production log level
+- [x] after_bundle in Rails templates
+- [x] Rails HTML Sanitizer
+- [x] Rails DOM Testing
+- [x] Masked Authenticity Tokens
+- [x] Action Mailer
+- [x] Foreign Key Support
 
 6. Create a PR and insure all the tests pass.
 7. After review/approval merge the branch into the `lara-upgrade` branch.

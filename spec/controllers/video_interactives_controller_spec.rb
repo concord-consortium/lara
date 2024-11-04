@@ -28,11 +28,10 @@ describe VideoInteractivesController do
           get :edit, :id => int.id
 
           expect(response.body).to match /<form[^>]+action="\/video_interactives\/#{int.id}"[^<]+method="post"[^<]*>/
-          expect(response.body).to match /<input[^<]+name="_method"[^<]+type="hidden"[^<]+value="patch"[^<]+\/>/
-
-          expect(response.body).to match /<input[^<]+id="video_interactive_poster_url"[^<]+name="video_interactive\[poster_url\]"[^<]+type="text"[^>]+value="#{int.poster_url}"[^<]*\/>/
-          expect(response.body).to match /<textarea[^<]+id="video_interactive_caption"[^<]+name="video_interactive\[caption\]"[^<]*>#{int.caption}/
-          expect(response.body).to match /<textarea[^<]+id="video_interactive_credit"[^<]+name="video_interactive\[credit\]"[^<]*>#{int.credit}/
+          assert_select 'input[type=hidden][name=_method][value=patch]', 1
+          assert_select 'input[type=text][name="video_interactive[poster_url]"][value=?]', int.poster_url, 1
+          assert_select 'textarea[name="video_interactive[caption]"]', int.caption, 1
+          assert_select 'textarea[name="video_interactive[credit]"]', int.credit, 1
         end
 
         it 'responds to js-format requests with JSON' do

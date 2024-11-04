@@ -23,6 +23,7 @@ describe ReportService::RunSender do
   let(:updated_at)      { created_at + 0.5}
   let(:run_count)       { 0 }
   let(:run_id)          { 1 }
+  let(:unique_id)       { "VhQJQ8we0gr4dc2V05rHyfT5zyikXmjBCLwY" }
   let(:activity_id)     { 2 }
   let(:sequence_id)     { 3 }
   let(:sequence_run_id) { 4 }
@@ -62,7 +63,9 @@ describe ReportService::RunSender do
       platform_user_id: platform_user_id,
       context_id: class_hash,
       resource_link_id: resource_link_id,
-      answers: answers
+      answers: answers,
+      id: unique_id,
+      to_param: unique_id.to_s
     })
   end
 

@@ -50,7 +50,7 @@ describe Api::V1::LightweightActivitiesController do
         sign_in user
       end
       xhr :delete, "destroy", id: activity.id
-      expect(LightweightActivity.exists?(activity)).to eq(false)
+      expect(LightweightActivity.exists?(activity.id)).to eq(false)
       expect(response.status).to eq(200)
       expect(response.content_type).to eq("application/json")
       expect(response.body).to eql({
@@ -63,7 +63,7 @@ describe Api::V1::LightweightActivitiesController do
         sign_in user
       end
       xhr :delete, "destroy", id: activity.id
-      expect(LightweightActivity.exists?(activity)).to eq(true)
+      expect(LightweightActivity.exists?(activity.id)).to eq(true)
       expect(response.status).to eq(403)
       expect(response.content_type).to eq("application/json")
     end

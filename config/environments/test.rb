@@ -23,8 +23,11 @@ LightweightStandalone::Application.configure do
   config.eager_load = true  # normally false unless you use a tool that preloads your test environment
 
   # Configure static asset server for tests with Cache-Control for performance
-  config.serve_static_assets = true
+  config.serve_static_files = true
   config.static_cache_control = "public, max-age=3600"
+
+  config.assets.debug = false
+  config.assets.compile = false
 
   # Show full error reports and disable caching
   config.consider_all_requests_local       = true
@@ -43,4 +46,7 @@ LightweightStandalone::Application.configure do
 
   # Print deprecation notices to the stderr
   config.active_support.deprecation = :stderr
+
+  # Execute tests in random order
+  config.active_support.test_order = :order
 end
