@@ -12,8 +12,6 @@ module Embeddable
       ['Snapshot', SNAPSHOT_ACTION]
     ]
 
-    # attr_accessible :action_type, :name, :prompt, :custom_action_label, :is_hidden,
-    #   :show_in_featured_question_report, :interactive, :hint, :is_half_width
 
     has_many :page_items, as: :embeddable, dependent: :destroy
     has_many :sections, through: :page_items

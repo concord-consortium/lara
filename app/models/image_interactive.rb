@@ -1,7 +1,6 @@
 class ImageInteractive < ApplicationRecord
   include Embeddable
 
-  # attr_accessible :url, :caption, :credit, :show_lightbox, :credit_url, :is_hidden, :is_half_width
 
   has_many :page_items, as: :embeddable, dependent: :destroy
   # PageItem is a join model; if this is deleted, that instance should go too

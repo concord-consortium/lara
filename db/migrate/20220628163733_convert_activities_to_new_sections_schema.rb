@@ -9,7 +9,6 @@ class ConvertActivitiesToNewSectionsSchema < ActiveRecord::Migration
   end
 
   class Section < ApplicationRecord
-    # attr_accessible :interactive_page_id, :layout, :position, :show
     belongs_to :interactive_page
     has_many :page_items, -> { order(:position) }, dependent: :destroy
   end

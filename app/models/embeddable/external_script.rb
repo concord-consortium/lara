@@ -2,7 +2,6 @@ module Embeddable
   class ExternalScript < ApplicationRecord
     include Embeddable
 
-    # attr_accessible :description, :configuration, :approved_script_id
     # PageItem instances are join models, so if the embeddable is gone the join should go too.
     belongs_to :approved_script
     has_many :page_items, as: :embeddable, dependent: :destroy

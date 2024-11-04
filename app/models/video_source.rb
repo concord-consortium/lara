@@ -1,5 +1,4 @@
 class VideoSource < ApplicationRecord
-  # attr_accessible :url, :format
   
   SUPPORTED_MIME_TYPES = ["video/mp4", "video/webm", "video/ogg"] # Quicktime/mov?
   

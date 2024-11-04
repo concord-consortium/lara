@@ -2,7 +2,6 @@ class InteractiveRunState < ApplicationRecord
   alias_method :original_json, :to_json  # make sure we can still generate json of the base model after including Answer
   include Embeddable::Answer # Common methods for Answer models
 
-  # attr_accessible :interactive_id, :interactive_type, :run_id, :raw_data, :interactive, :run, :key, :metadata
 
   belongs_to :run
   belongs_to :interactive, polymorphic: true

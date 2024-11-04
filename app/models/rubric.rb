@@ -1,5 +1,4 @@
 class Rubric < ApplicationRecord
-  # attr_accessible :name, :user_id, :project_id, :project, :authored_content_id, :authored_content, :doc_url
   validates :name, presence: true
   validates :user_id, presence: true
 

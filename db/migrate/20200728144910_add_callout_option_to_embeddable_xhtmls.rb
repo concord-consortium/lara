@@ -17,8 +17,6 @@ class AddCalloutOptionToEmbeddableXhtmls < ActiveRecord::Migration
   end
 
   class PageItem < ApplicationRecord
-    # attr_accessible :interactive_page, :position, :section, :embeddable,
-    #                :interactive_page_id, :embeddable_id, :embeddable_type
     acts_as_list scope: :interactive_page
     belongs_to :interactive_page
     belongs_to :embeddable, polymorphic: true, dependent: :destroy

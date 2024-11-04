@@ -1,6 +1,4 @@
 class CRater::FeedbackSubmission < ApplicationRecord
-  # Provided by student.
-  # attr_accessible :usefulness_score, :interactive_page, :run, :collaboration_run
 
   has_many :c_rater_feedback_items, as: :feedback_submission, class_name: 'CRater::FeedbackItem'
   has_many :embeddable_feedback_items, as: :feedback_submission, class_name: 'Embeddable::FeedbackItem'

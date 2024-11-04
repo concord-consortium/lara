@@ -6,7 +6,6 @@ describe CRater::FeedbackFunctionality do
     # isolated from the class that includes it.
     self.table_name = :embeddable_open_response_answers
     include CRater::FeedbackFunctionality
-    # attr_accessible :answer_text
   end
 
   let(:answer) do

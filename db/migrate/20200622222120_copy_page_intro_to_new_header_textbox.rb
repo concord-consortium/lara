@@ -1,7 +1,6 @@
 class CopyPageIntroToNewHeaderTextbox < ActiveRecord::Migration
   module Embeddable
     class Embeddable::Xhtml < ApplicationRecord
-      # attr_accessible :name, :content, :is_hidden, :is_full_width
       has_many :page_items, as: :embeddable, dependent: :destroy
       has_many :interactive_pages, through: :page_items
     end
@@ -16,8 +15,6 @@ class CopyPageIntroToNewHeaderTextbox < ActiveRecord::Migration
   end
 
   class PageItem < ApplicationRecord
-    # attr_accessible :interactive_page, :position, :section, :embeddable,
-    #                 :interactive_page_id, :embeddable_id, :embeddable_type
     acts_as_list scope: :interactive_page
     belongs_to :interactive_page
     belongs_to :embeddable, polymorphic: true, dependent: :destroy

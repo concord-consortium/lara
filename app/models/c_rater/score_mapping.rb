@@ -1,6 +1,5 @@
 class CRater::ScoreMapping < ApplicationRecord
   serialize :mapping
-  # attr_accessible :mapping, :description
   belongs_to :user
   belongs_to :changed_by, class_name: 'User'
 
@@ -58,12 +57,6 @@ class CRater::ScoreMapping < ApplicationRecord
 
   def self.visible(user)
     self.all
-  end
-
-  def self.create_mapping(mapping)
-    puts "Creating mapping: #{mapping}"
-    self.new(mapping)
-    self.save
   end
 
 end

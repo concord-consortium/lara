@@ -7,9 +7,6 @@ class Run < ApplicationRecord
   class PortalUpdateIncomplete < StandardError; end
   class InvalidJobState < StandardError; end
 
-  # attr_accessible :run_count, :user_id, :key, :activity, :user, :page_id,
-  # :remote_id, :remote_endpoint, :activity_id, :sequence_id, :context_id,
-  # :class_info_url, :platform_id, :platform_user_id, :resource_link_id, :status
 
   belongs_to :activity, class_name: LightweightActivity
 

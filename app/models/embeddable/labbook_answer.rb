@@ -5,7 +5,6 @@ module Embeddable
 
     SOURCE_ID = 'CC_LARA'
 
-    # attr_accessible :run, :question, :is_dirty
 
     belongs_to :run
     belongs_to :question,

@@ -1,10 +1,8 @@
 class CreateProjects < ActiveRecord::Migration
   class Theme < ApplicationRecord
-    # attr_accessible :name, :css_file
   end
 
   class Project < ApplicationRecord
-    # attr_accessible :logo, :title, :url
   end
 
   def up

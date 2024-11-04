@@ -12,8 +12,7 @@ class VideoInteractive < ApplicationRecord
 
   # TODO: Not sure if labbooks work with video interactives.
   has_one :labbook, as: :interactive, class_name: 'Embeddable::Labbook'
-
-  # attr_accessible :poster_url, :caption, :credit, :height, :width, :sources_attributes, :is_hidden, :is_half_width
+  
 
   accepts_nested_attributes_for :sources, allow_destroy: true
 
