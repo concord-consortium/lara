@@ -19,8 +19,9 @@ class AddIndexesGetFasterProfit < ActiveRecord::Migration
     add_index :embeddable_image_question_answers, :image_question_id
     add_index :embeddable_multiple_choice_answers, :multiple_choice_id
     add_index :embeddable_multiple_choice_answers, :run_id
-    add_index :embeddable_open_response_answers, :open_response_id
-    add_index :embeddable_open_response_answers, :run_id
+    # Note: a later migration (20140428133725_rename_is_prediction_to_is_final_in_answers.rb) creates the following indexes:
+    # add_index :embeddable_open_response_answers, :open_response_id
+    # add_index :embeddable_open_response_answers, :run_id
 
     add_index :video_sources, :video_interactive_id
 
