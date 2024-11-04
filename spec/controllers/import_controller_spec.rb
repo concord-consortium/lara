@@ -71,13 +71,13 @@ describe ImportController do
       end
 
       it "can import a sequence from a valid sequence json and redirect to edit page" do
-        xhr :post, "import", params1
+        xhr :post, "import", params: params1
         expect(response.content_type).to eq("text/javascript")
         expect(response.body).to eq("window.location.href = '/sequences/#{Sequence.last.id}/edit';")
       end
 
       it "response status 500 error if import fails" do
-        xhr :post, "import", params2
+        xhr :post, "import", params: params2
         response.status == 500
         expect(response.body).to eq("{\"error\":\"Import failed: unknown type\"}")
       end
@@ -103,13 +103,13 @@ describe ImportController do
       end
 
       it "can import a glossary from a valid glossary json and redirect to edit page" do
-        xhr :post, "import", params1
+        xhr :post, "import", params: params1
         expect(response.content_type).to eq("text/javascript")
         expect(response.body).to eq("window.location.href = '/glossaries/#{Glossary.last.id}/edit';")
       end
 
       it "response status 500 error if import fails" do
-        xhr :post, "import", params2
+        xhr :post, "import", params: params2
         response.status == 500
         expect(response.body).to eq("{\"error\":\"Import failed: unknown type\"}")
       end

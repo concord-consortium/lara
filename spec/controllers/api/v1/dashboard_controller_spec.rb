@@ -8,7 +8,7 @@ describe Api::V1::DashboardController do
   describe 'toc' do
     describe 'called with a sequence' do
       before(:each) do
-        get :toc, :runnable_id => sequence.id, :runnable_type => "sequences"
+        get :toc, params: { :runnable_id => sequence.id, :runnable_type => "sequences" }
       end
       let(:expected_json) { "{\"name\":\"MyString\",\"url\":\"/sequences/#{sequence.id}\",\"activities\":[]}"}
 
@@ -19,7 +19,7 @@ describe Api::V1::DashboardController do
     end
     describe 'called with an activity' do
       before(:each) do
-        get :toc, :runnable_id => activity.id, :runnable_type => "activities"
+        get :toc, params: { :runnable_id => activity.id, :runnable_type => "activities" }
       end
       let(:expected_json) { "{\"name\":\"MyString\",\"url\":\"/sequences/#{sequence.id}\",\"activities\":[]}"}
 

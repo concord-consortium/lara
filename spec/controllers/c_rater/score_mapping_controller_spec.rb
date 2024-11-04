@@ -37,7 +37,7 @@ describe CRater::ScoreMappingsController do
     describe '#create' do
       it 'creates new score_mapping record for current user' do
         score_mapping_count = CRater::ScoreMapping.count
-        post :create, {:c_rater_score_mapping => {:description => 'score_mapping description'}}
+        post :create, params: { :c_rater_score_mapping => {:description => 'score_mapping description'} }
         expect(CRater::ScoreMapping.count).to equal score_mapping_count + 1
         expect(response).to redirect_to "Request referer"
       end
@@ -57,7 +57,7 @@ describe CRater::ScoreMappingsController do
     describe '#update' do
       it 'should change database record of score_mapping' do
         score_map
-        post :update, {:_method => 'put', :id => score_map.id, :c_rater_score_mapping => {:description => 'This score_mapping is edited'}}
+        post :update, params: { :_method => 'put', :id => score_map.id, :c_rater_score_mapping => {:description => 'This score_mapping is edited'} }
         updated_record = CRater::ScoreMapping.find(score_map.id)
         expect(updated_record.description).to eq('This score_mapping is edited')
         expect(response).to redirect_to "Request referer"
@@ -68,7 +68,7 @@ describe CRater::ScoreMappingsController do
       it 'should remove the specified record from database' do
         score_map
         score_mapping_count = CRater::ScoreMapping.count
-        post :destroy, {:_method => 'delete', :id => score_map.id}
+        post :destroy, params: { :_method => 'delete', :id => score_map.id }
         expect(CRater::ScoreMapping.count).to eq(score_mapping_count - 1)
         expect(response).to redirect_to "Request referer"
       end
@@ -79,7 +79,7 @@ describe CRater::ScoreMappingsController do
     describe '#create' do
       it 'should fail' do
         score_mapping_count = CRater::ScoreMapping.count
-        post :create, {:c_rater_score_mapping => {:description => 'score_mapping description'}}
+        post :create, params: { :c_rater_score_mapping => {:description => 'score_mapping description'} }
         expect(CRater::ScoreMapping.count).to equal score_mapping_count
       end
     end

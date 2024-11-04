@@ -30,14 +30,14 @@ describe Api::V1::PluginsController do
 
     describe 'to load author data' do
       it "they should get a not authorized error" do
-        post :load_author_data, plugin_id: plugin_id
+        post :load_author_data, params: { plugin_id: plugin_id }
         expect(response.status).to eq(403)
       end
     end
 
     describe 'to save author data' do
       it "they should get a not authorized error" do
-        post :save_author_data, plugin_id: plugin_id, author_data: "new_author_data"
+        post :save_author_data, params: { plugin_id: plugin_id, author_data: "new_author_data" }
         expect(response.status).to eq(403)
       end
     end
@@ -52,14 +52,14 @@ describe Api::V1::PluginsController do
 
       describe 'to load author data' do
         it "they should get a not authorized error" do
-          post :load_author_data, plugin_id: plugin_id
+          post :load_author_data, params: { plugin_id: plugin_id }
           expect(response.status).to eq(403)
         end
       end
 
       describe 'to save author data' do
         it "they should get a not authorized error" do
-          post :save_author_data, plugin_id: plugin_id, author_data: "new_author_data"
+          post :save_author_data, params: { plugin_id: plugin_id, author_data: "new_author_data" }
           expect(response.status).to eq(403)
         end
       end
@@ -70,14 +70,14 @@ describe Api::V1::PluginsController do
 
       describe 'to load author data' do
         it "they should get a not authorized error" do
-          post :load_author_data, plugin_id: plugin_id
+          post :load_author_data, params: { plugin_id: plugin_id }
           expect(response.status).to eq(403)
         end
       end
 
       describe 'to save author data' do
         it "they should get a not authorized error" do
-          post :save_author_data, plugin_id: plugin_id, author_data: "new_author_data"
+          post :save_author_data, params: { plugin_id: plugin_id, author_data: "new_author_data" }
           expect(response.status).to eq(403)
         end
       end
@@ -95,7 +95,7 @@ describe Api::V1::PluginsController do
 
       describe 'to load author data' do
         it "they should get the author data" do
-          post :load_author_data, plugin_id: plugin_id
+          post :load_author_data, params: { plugin_id: plugin_id }
           expect(response.status).to eq(200)
           expect(json_response_body['author_data']).to eq(author_data)
         end
@@ -103,7 +103,7 @@ describe Api::V1::PluginsController do
 
       describe 'to save author data' do
         it "they should save the author data" do
-          post :save_author_data, plugin_id: plugin_id, author_data: "new_author_data"
+          post :save_author_data, params: { plugin_id: plugin_id, author_data: "new_author_data" }
           expect(response.status).to eq(200)
           expect(json_response_body['author_data']).to eq("new_author_data")
         end
@@ -115,7 +115,7 @@ describe Api::V1::PluginsController do
 
       describe 'to load author data' do
         it "they should get the author data" do
-          post :load_author_data, plugin_id: plugin_id
+          post :load_author_data, params: { plugin_id: plugin_id }
           expect(response.status).to eq(200)
           expect(json_response_body['author_data']).to eq(author_data)
         end
@@ -123,7 +123,7 @@ describe Api::V1::PluginsController do
 
       describe 'to save author data' do
         it "they should save the author data" do
-          post :save_author_data, plugin_id: plugin_id, author_data: "new_author_data"
+          post :save_author_data, params: { plugin_id: plugin_id, author_data: "new_author_data" }
           expect(response.status).to eq(200)
           expect(json_response_body['author_data']).to eq("new_author_data")
         end
@@ -136,7 +136,7 @@ describe Api::V1::PluginsController do
 
     describe 'to load author data' do
       it "they should get the author data" do
-        post :load_author_data, plugin_id: plugin_id
+        post :load_author_data, params: { plugin_id: plugin_id }
         expect(response.status).to eq(200)
         expect(json_response_body['author_data']).to eq(author_data)
       end
@@ -144,7 +144,7 @@ describe Api::V1::PluginsController do
 
     describe 'to save author data' do
       it "they should save the author data" do
-        post :save_author_data, plugin_id: plugin_id, author_data: "new_author_data"
+        post :save_author_data, params: { plugin_id: plugin_id, author_data: "new_author_data" }
         expect(response.status).to eq(200)
         expect(json_response_body['author_data']).to eq("new_author_data")
       end

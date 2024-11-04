@@ -5,7 +5,6 @@ BrowserSpecificiation = Struct.new(:browser, :version)
 class NotAuthorizedRunError < StandardError; end
 
 class ApplicationController < ActionController::Base
-
   # Run authorization on all actions
   # check_authorization
   protect_from_forgery prepend: true
@@ -14,8 +13,8 @@ class ApplicationController < ActionController::Base
   rescue_from CanCan::AccessDenied do |exception|
     response_data = unauthorized_response_data(exception.action, exception.subject)
     respond_to do |format|
-      format.html { render :partial => "shared/unauthorized", :locals => {:message => response_data[:message]}, :status => 403 }
-      format.json { render json: response_data, status: 403}
+      format.html { render partial: "shared/unauthorized", locals: { message: response_data[:message] }, status: 403 }
+      format.json { render json: response_data, status: 403 }
     end
   end
 
@@ -23,7 +22,7 @@ class ApplicationController < ActionController::Base
   rescue_from NotAuthorizedRunError do
     respond_to do |format|
       format.html { render 'runs/unauthorized_run', status: :forbidden }
-      format.json { render nothing: true, status: :forbidden}
+      format.json { render nothing: true, status: :forbidden }
     end
   end
 
@@ -38,7 +37,7 @@ class ApplicationController < ActionController::Base
 
   before_action :log_session_before
   before_action :portal_login
-  before_action :reject_old_browsers, :except => [:bad_browser]
+  before_action :reject_old_browsers, except: [:bad_browser]
   before_action :set_locale
   before_action :store_auto_publish_url # to enable auto publishing to build an url from the request object
   before_action :intialize_gon
@@ -52,14 +51,16 @@ class ApplicationController < ActionController::Base
     I18n.locale = extract_locale_from_accept_language_header
     logger.debug "* Locale set to '#{I18n.locale}'"
   end
+
   private
+
   def extract_locale_from_accept_language_header
     lang_header = request.env['HTTP_ACCEPT_LANGUAGE']
     return "en" unless lang_header
     return lang_header.scan(/^[a-z]{2}/).first
   end
-  public
 
+  public
 
   ### Log some data for 404s
   # This should be temporary, as debugging for an issue where links to an activity return 404 errors for
@@ -81,7 +82,7 @@ class ApplicationController < ActionController::Base
     activity.changed_by = current_user
     begin
       activity.save
-    rescue
+    rescue StandardError
       # We don't want to return a server error if this update fails; it's not important
       # enough to derail the user.
       logger.debug "changed_by update for Activity #{activity.id} failed."
@@ -156,8 +157,8 @@ class ApplicationController < ActionController::Base
       @run = cc.call
     else
       portal = RemotePortal.new(params)
-      if (portal.valid? && !opts[:portal_launchable])
-        raise ActiveRecord::RecordNotFound
+      if portal.valid? && !opts[:portal_launchable]
+        raise(ActiveRecord::RecordNotFound)
       end
 
       # This creates a new key if one didn't exist before
@@ -187,10 +188,10 @@ class ApplicationController < ActionController::Base
     end
 
     data = {
-        application: ENV['LOGGER_APPLICATION_NAME'],
-        session:     session[:session_id],
-        username:    current_user ? "#{session[:portal_user_id]}@#{session[:portal_domain]}" : 'anonymous',
-        url:         request.original_url
+      application: ENV['LOGGER_APPLICATION_NAME'],
+      session: session[:session_id],
+      username: current_user ? "#{session[:portal_user_id]}@#{session[:portal_domain]}" : 'anonymous',
+      url: request.original_url
     }
     if @run
       data[:run_key] = @run.key
@@ -219,7 +220,7 @@ class ApplicationController < ActionController::Base
     gon.loggerConfig = {
       server: ENV['LOGGER_URI'],
       action: "#{controller_name}##{action_name}",
-      data:   data
+      data: data
     }
   end
 
@@ -253,7 +254,6 @@ class ApplicationController < ActionController::Base
     request.env['omniauth.origin'] || stored_location_for(resource) || signed_in_root_path(resource)
   end
 
-
   def after_sign_out_path_for(resource)
     if params[:user_provider]
       provider = params[:user_provider]
@@ -266,7 +266,7 @@ class ApplicationController < ActionController::Base
 
   def respond_with_edit_form(css_class = nil, container_class = nil)
     respond_to do |format|
-      format.js { render :json => { :html => render_to_string('edit'), :css_class => css_class, :container_class => container_class}, :content_type => 'text/json' }
+      format.js { render json: { html: render_to_string('edit'), css_class: css_class, container_class: container_class }, content_type: 'text/json' }
       format.html
     end
   end
@@ -274,8 +274,8 @@ class ApplicationController < ActionController::Base
   def respond_with_nothing
     # This is useful for AJAX actions, because it returns a 200 status code but doesn't bother generating an actual response.
     respond_to do |format|
-      format.js { render :nothing => true }
-      format.html { render :nothing => true }
+      format.js { render nothing: true }
+      format.html { render nothing: true }
     end
   end
 

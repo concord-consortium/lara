@@ -73,6 +73,7 @@ group :test, :development do
   # gem "rb-fsevent", "~> 0.9"
   gem "rspec-activemodel-mocks", '~> 1.2', '>= 1.2.1'
   gem "rspec-rails", '~> 4.1'
+  gem 'rubocop', '= 0.49.1', require: false
   gem "spring", "~> 1.7", ">= 1.7.2"
   gem "spring-commands-rspec", "~> 1.0", ">= 1.0.4"
   gem "test-unit", "~> 3.6", ">= 3.6.2"

@@ -17,7 +17,7 @@ describe Api::V1::SequencesController do
     end
 
     it "when user is anonymous, shows a sequence's json" do
-      get :show, :id => sequence.id, :format => :json
+      get :show, params: { :id => sequence.id, :format => :json }
       expect(response.status).to eq(200)
       json_response = JSON.parse(response.body)
       expect(json_response["title"]).to eq('Test Sequence')
@@ -36,7 +36,7 @@ describe Api::V1::SequencesController do
 
     it "when user is anonymous, shows an the json sent to the report structure" do
 
-      get :report_structure, :id => sequence.id, :format => :json
+      get :report_structure, params: { :id => sequence.id, :format => :json }
       expect(response.status).to eq(200)
       # json_response = JSON.parse(response.body)
       # expect(json_response["token"]).to eq('fake-token')

@@ -56,8 +56,8 @@ describe PublicationsController do
 
   describe "#publish" do
     it "should attempt to publish to the portal" do
-      get :publish, { :publishable_id => act_one.id, :publishable_type => "LightweightActivity" }
-      get :publish, { :publishable_id => act_two.id, :publishable_type => "LightweightActivity" }
+      get :publish, params: { :publishable_id => act_one.id, :publishable_type => "LightweightActivity" }
+      get :publish, params: { :publishable_id => act_two.id, :publishable_type => "LightweightActivity" }
     end
   end
 
@@ -135,20 +135,20 @@ describe PublicationsController do
 
       it "should call 'portal_publish' on the activity" do
         expect(act_two).to receive(:portal_publish).with(@user, mock_portal, "#{request.protocol}#{request.host_with_port}")
-        get :add_portal, { :publishable_id => act_two.id, :publishable_type => "LightweightActivity" }
+        get :add_portal, params: { :publishable_id => act_two.id, :publishable_type => "LightweightActivity" }
         # should be moved to publishable_spec
         # expect(act_two.publication_status).to eq('public')
       end
 
       it 'creates a new PortalPublication record for the activity' do
         old_publication_count = act_two.portal_publications.length
-        get :add_portal, { :publishable_id => act_two.id, :publishable_type => "LightweightActivity" }
+        get :add_portal, params: { :publishable_id => act_two.id, :publishable_type => "LightweightActivity" }
         expect(act_two.reload.portal_publications.length).to eq(old_publication_count + 1)
       end
 
       # this should be moved to publishable_spec
       it "should set publication_status to public for the activity" do
-        get :add_portal, { :publishable_id => act_two.id, :publishable_type => "LightweightActivity" }
+        get :add_portal, params: { :publishable_id => act_two.id, :publishable_type => "LightweightActivity" }
         # expect(act_one.publication_status).to eq('public')
       end
     end

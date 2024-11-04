@@ -36,7 +36,7 @@ describe InteractivePagesController do
 
     it 'renders 404 when the activity does not exist' do
       begin
-        get :show, :id => 34
+        get :show, params: { :id => 34 }
       rescue ActiveRecord::RecordNotFound
       end
     end
@@ -55,7 +55,7 @@ describe InteractivePagesController do
       ar.sequence = sequence
       ar.sequence_run = sequence_run
       ar.save
-      get :show, :id => page1.id, :run_key => ar.key
+      get :show, params: { :id => page1.id, :run_key => ar.key }
       expect(assigns(:sequence)).to eq(sequence)
     end
 
@@ -107,7 +107,7 @@ describe InteractivePagesController do
       page1.add_interactive(interactive)
 
       # get the rendering
-      get :show, :id => page1.id, :run_key => ar.key
+      get :show, params: { :id => page1.id, :run_key => ar.key }
 
       # verify the page is as expected
       expect(response.body).to match /<iframe/m
@@ -127,7 +127,7 @@ describe InteractivePagesController do
       page1
       page2
       page3
-      get :show, :id => act.pages.first.id, :run_key => ar.key
+      get :show, params: { :id => act.pages.first.id, :run_key => ar.key }
 
       expect(response.body).to match /<a[^>]*href="\/activities\/#{act.id}\/pages\/#{act.pages.first.id}\/#{ar.key}"[^>]*>[^<]*1[^<]*<\/a>/
       expect(response.body).to match /<a[^>]*href="\/activities\/#{act.id}\/pages\/#{act.pages[1].id}\/#{ar.key}"[^>]*>[^<]*2[^<]*<\/a>/
@@ -137,7 +137,7 @@ describe InteractivePagesController do
     it 'only renders the forward navigation link on the first page' do
       page1
       page2
-      get :show, :id => act.pages.first.id, :run_key => ar.key
+      get :show, params: { :id => act.pages.first.id, :run_key => ar.key }
 
       expect(response.body).to match /<a class='pagination-link prev disabled'>/
       expect(response.body).to match /<a class='pagination-link'/
@@ -147,7 +147,7 @@ describe InteractivePagesController do
       page1
       page2
       page3
-      get :show, :id => act.pages[1].id, :run_key => ar.key
+      get :show, params: { :id => act.pages[1].id, :run_key => ar.key }
 
       expect(response.body).to match /<a class='pagination-link prev' href='\/activities\/#{act.id}\/pages\/#{act.pages[0].id}\/#{ar.key}'>/
       expect(response.body).to match /<a class='next forward_nav' href='\/activities\/#{act.id}\/pages\/#{act.pages[2].id}\/#{ar.key}'>/
@@ -157,7 +157,7 @@ describe InteractivePagesController do
       page1
       page2
       page3
-      get :show, :id => act.pages.last.id, :run_key => ar.key
+      get :show, params: { :id => act.pages.last.id, :run_key => ar.key }
 
       expect(response.body).to match /<a class='pagination-link prev' href='\/activities\/#{act.id}\/pages\/#{act.pages[act.pages.length-2].id}\/#{ar.key}'>/
       expect(response.body).to match /<a class='pagination-link next forward_nav disabled'>/
@@ -167,7 +167,7 @@ describe InteractivePagesController do
       page1
       page2
       page3
-      get :show, :id => act.pages.first.id, :run_key => ar.key
+      get :show, params: { :id => act.pages.first.id, :run_key => ar.key }
 
       # This regex checks for an 'a' tag with the classes 'pagination-link' and 'selected' classes, and should match
       # regardless of the attributes order in the tag. This replaces a regex that assumed the `class` attribute would
@@ -178,7 +178,7 @@ describe InteractivePagesController do
 
     it 'renders pagination links if it is the only page' do
       page1
-      get :show, :id => page1.id, :run_key => ar.key
+      get :show, params: { :id => page1.id, :run_key => ar.key }
 
       expect(response.body).not_to match /<a class='prev'>/
       expect(response.body).not_to match /<a class='next'>/
@@ -186,7 +186,7 @@ describe InteractivePagesController do
 
     it 'shows related content on the last page' do
       page1
-      get :show, :id => page1.id, :run_key => ar.key
+      get :show, params: { :id => page1.id, :run_key => ar.key }
 
       expect(response.body).to match /<div class='related-mod'>/
     end
@@ -194,18 +194,18 @@ describe InteractivePagesController do
     it 'does not show related content on pages other than the last page' do
       page1
       page2
-      get :show, :id => act.pages.first.id, :run_key => ar.key
+      get :show, params: { :id => act.pages.first.id, :run_key => ar.key }
 
       expect(response.body).not_to match /<div class='related-mod'>/
     end
 
     it 'calls LARA.addSidebar content on pages which have authored sidebar' do
-      get :show, :id => page1.id, :run_key => ar.key
+      get :show, params: { :id => page1.id, :run_key => ar.key }
       # Note that page factory creates a page with sidebar by default.
       expect(response.body).to match /LARA\.addSidebar\({/
       page2.show_sidebar = false
       page2.save
-      get :show, :id => page2.id, :run_key => ar.key
+      get :show, params: { :id => page2.id, :run_key => ar.key }
       expect(response.body).not_to match /LARA\.addSidebar\({/
     end
     # --- Ends section which should go to view spec ---
@@ -222,18 +222,18 @@ describe InteractivePagesController do
         page1
         expect(ar).to receive(:clear_answers)
         expect(Run).to receive(:lookup).and_return(ar)
-        get :preview, :id => page1.id
+        get :preview, params: { :id => page1.id }
       end
 
       it 'renders show' do
-        get :preview, :id => page1.id
+        get :preview, params: { :id => page1.id }
         expect(response).to render_template('interactive_pages/show')
       end
     end
 
     describe 'new' do
       it 'creates a new page and redirects to its edit page' do
-        get :new, :activity_id => act.id
+        get :new, params: { :activity_id => act.id }
 
         expect(response).to redirect_to(edit_activity_page_path(act.id, assigns(:page)))
       end
@@ -243,7 +243,7 @@ describe InteractivePagesController do
       it 'adds an InteractivePage to the current LightweightActivity' do
         activity_page_count = act.pages.length
 
-        post :create, :activity_id => act.id
+        post :create, params: { :activity_id => act.id }
 
         act.reload
         expect(act.pages.length).to eq(activity_page_count + 1)
@@ -255,7 +255,7 @@ describe InteractivePagesController do
     describe 'edit' do
       context 'when editing an existing page' do
         it 'assigns variables' do
-          get :edit, :activity_id => act.id, :id => page1.id
+          get :edit, params: { :activity_id => act.id, :id => page1.id }
           expect(assigns(:page)).to eq(page1)
           expect(assigns(:activity)).to eq(act)
           expect(assigns(:all_pages)).not_to be_nil
@@ -265,7 +265,7 @@ describe InteractivePagesController do
 
     describe 'update' do
       it 'updates the specified Page with provided values' do
-        post :update, {:_method => 'put', :activity_id => act.id, :id => page1.id, :interactive_page => { :sidebar => 'This page now has sidebar text.' }}
+        post :update, params: { :_method => 'put', :activity_id => act.id, :id => page1.id, :interactive_page => { :sidebar => 'This page now has sidebar text.' } }
 
         page1.reload
         expect(page1.sidebar).to eq('This page now has sidebar text.')
@@ -274,7 +274,7 @@ describe InteractivePagesController do
       end
 
       it 'redirects to the edit page with a message confirming success' do
-        post :update, {:_method => 'put', :activity_id => act.id, :id => page1.id, :interactive_page => { :sidebar => 'This page now has sidebar text.' }}
+        post :update, params: { :_method => 'put', :activity_id => act.id, :id => page1.id, :interactive_page => { :sidebar => 'This page now has sidebar text.' } }
 
         expect(flash[:notice]).to eq("Page #{page1.name} was updated.")
         expect(response).to redirect_to(edit_activity_page_path(act, page1))
@@ -282,7 +282,7 @@ describe InteractivePagesController do
 
       it 'redirects to the edit page with a message if there is an error' do
         allow_any_instance_of(InteractivePage).to receive(:save).and_return(false)
-        post :update, {:_method => 'put', :activity_id => act.id, :id => page1.id, :interactive_page => { :sidebar => 'This page now has sidebar text.' }}
+        post :update, params: { :_method => 'put', :activity_id => act.id, :id => page1.id, :interactive_page => { :sidebar => 'This page now has sidebar text.' } }
 
         expect(flash[:warning]).to eq("There was a problem updating Page #{page1.name}.")
         expect(response).to redirect_to(edit_activity_page_path(act, page1))
@@ -290,7 +290,7 @@ describe InteractivePagesController do
 
       context 'when the request is XHR' do
         it 'returns the new text of the first value' do
-          xhr :put, :update, { :activity_id => act.id, :id => page1.id, :interactive_page => { :sidebar => 'This page now has sidebar text.' }}
+          xhr :put, :update, params: { activity_id: act.id, id: page1.id, interactive_page: { :sidebar => 'This page now has sidebar text.' } }
 
           expect(response.body).to match /This page now has sidebar text./
         end
@@ -298,7 +298,7 @@ describe InteractivePagesController do
         it 'returns the old text if the update fails' do
           allow_any_instance_of(InteractivePage).to receive(:update_attributes).and_return(false)
           old_name = page1.name
-          xhr :put, :update, { :activity_id => act.id, :id => page1.id, :interactive_page => { :name => 'This new name will fail.' }}
+          xhr :put, :update, params: { activity_id: act.id, id: page1.id, interactive_page: { :name => 'This new name will fail.' } }
 
           expect(response.body).to match /#{old_name}/
         end
@@ -311,7 +311,7 @@ describe InteractivePagesController do
         page2
         page_count = act.pages.length
 
-        post :destroy, :_method => 'delete', :id => page1.id
+        post :destroy, params: { :_method => 'delete', :id => page1.id }
 
         act.reload
 
@@ -329,7 +329,7 @@ describe InteractivePagesController do
       end
 
       it 'does not route with no ID' do
-        expect {post :destroy, {:_method => 'delete'}}.to raise_error(ActionController::UrlGenerationError)
+        expect {post :destroy, params: { :_method => 'delete' }}.to raise_error(ActionController::UrlGenerationError)
       end
     end
 
@@ -356,7 +356,7 @@ describe InteractivePagesController do
         page1.add_embeddable(mc2, 5)
 
         # Send a reorder request with params to reverse the order
-        xhr :get, :reorder_embeddables, :id => page1.id, :activity_id => act.id, :embeddable => [ "#{mc2.id}.#{mc2.class.to_s}", "#{or2.id}.#{or2.class.to_s}", "#{xhtml1.id}.#{xhtml1.class.to_s}", "#{or1.id}.#{or1.class.to_s}", "#{mc1.id}.#{mc1.class.to_s}" ]
+        xhr :get, :reorder_embeddables, params: { id: page1.id, activity_id: act.id, embeddable: [ "#{mc2.id}.#{mc2.class.to_s}", "#{or2.id}.#{or2.class.to_s}", "#{xhtml1.id}.#{xhtml1.class.to_s}", "#{or1.id}.#{or1.class.to_s}", "#{mc1.id}.#{mc1.class.to_s}" ] }
 
         page1.reload
         expect(page1.embeddables.first).to eq(mc2)
@@ -371,7 +371,7 @@ describe InteractivePagesController do
       it 'creates an arbitrary embeddable and adds it to the page' do
         xhtml_count = Embeddable::Xhtml.count()
         embeddable_count = page1.embeddables.length
-        post :add_embeddable, :activity_id => act.id, :id => page1.id, :embeddable_type => 'Embeddable::Xhtml'
+        post :add_embeddable, params: { :activity_id => act.id, :id => page1.id, :embeddable_type => 'Embeddable::Xhtml' }
 
         page1.reload
 
@@ -381,7 +381,7 @@ describe InteractivePagesController do
 
       it 'raises an error on invalid embeddable_type' do
         begin
-          post :add_embeddable, :activity_id => act.id, :id => page1.id, :embeddable_type => 'Embeddable::Bogus'
+          post :add_embeddable, params: { :activity_id => act.id, :id => page1.id, :embeddable_type => 'Embeddable::Bogus' }
           raise 'Should not have been able to post a bogus embeddable_type'
         rescue ArgumentError
         end
@@ -392,7 +392,7 @@ describe InteractivePagesController do
       it 'creates an arbitrary interactive and adds it to the page' do
         images_count = ImageInteractive.count()
         interactives_count = page1.interactives.length
-        post :add_embeddable, :activity_id => act.id, :id => page1.id, :embeddable_type => 'ImageInteractive'
+        post :add_embeddable, params: { :activity_id => act.id, :id => page1.id, :embeddable_type => 'ImageInteractive' }
         page1.reload
         expect(page1.interactives.count).to eq(interactives_count + 1)
         expect(ImageInteractive.count()).to eq(images_count + 1)
@@ -413,7 +413,7 @@ describe InteractivePagesController do
         VideoInteractive => :edit_video
       }
       embeddable_types.each do |clazz, edit_slug|
-        post :add_embeddable, :activity_id => act.id, :id => page1.id, :embeddable_type => clazz.name
+        post :add_embeddable, params: { :activity_id => act.id, :id => page1.id, :embeddable_type => clazz.name }
         act.reload
         expect(act.changed_by).to eq(@user)
         id = clazz.last.id
@@ -429,7 +429,7 @@ describe InteractivePagesController do
         page1.add_embeddable(embeddable)
         page1.reload
         embed_count = page1.embeddables.length
-        post :remove_page_item, :page_item_id => embeddable.p_item.id
+        post :remove_page_item, params: { :page_item_id => embeddable.p_item.id }
 
         page1.reload
         expect(page1.embeddables.length).to eq(embed_count - 1)
@@ -439,7 +439,7 @@ describe InteractivePagesController do
       it 'redirects to the edit page' do
         embeddable = FactoryGirl.create(:xhtml)
         page1.add_embeddable(embeddable)
-        post :remove_page_item, :page_item_id => embeddable.p_item.id
+        post :remove_page_item, params: { :page_item_id => embeddable.p_item.id }
 
         act.reload
         expect(act.changed_by).to eq(@user)

@@ -36,7 +36,7 @@ shared_examples "runnable launched without run_key" do |run_type|
   let (:run_factory_type) { run_type.model_name.to_s.underscore.to_sym}
   describe "when the user is anonymous" do
     it "redirects with a #{run_type} key in the URL" do
-      result = get action, base_params
+      result = get action, params: base_params
       redirect_params = base_params.clone
       redirect_params[run_key_param_name] = assigns[run_variable_name]
       expect(result).to redirect_to(send(run_path_helper, redirect_params))
@@ -56,7 +56,7 @@ shared_examples "runnable launched without run_key" do |run_type|
         # we save the new_run during creation because sequence runs create
         # activity runs on initialization and that requires a saved model
         expect(run_type).to receive(:create!) { new_run.save; new_run }
-        get action, base_params
+        get action, params: base_params
         expect(assigns[run_variable_name]).to eq(new_run)
       end
     end
@@ -77,7 +77,7 @@ shared_examples "runnable launched without run_key" do |run_type|
       }
       describe "when this #{run_type} has no portal properties" do
         it "finds this existing #{run_type}" do
-          get action, base_params
+          get action, params: base_params
           expect(assigns[run_variable_name]).to eq(owned_run)
         end
       end
@@ -87,7 +87,7 @@ shared_examples "runnable launched without run_key" do |run_type|
 
         it "creates a new #{run_type}, it does not use the existing #{run_type}" do
           expect(run_type).to receive(:create!) { new_run.save; new_run }
-          get action, base_params
+          get action, params: base_params
           expect(assigns[run_variable_name]).to eq(new_run)
         end
       end
@@ -103,7 +103,7 @@ shared_examples "runnable launched with run_key" do |run_type, portal_launchable
       params_with_invalid_run_key = base_params.clone()
       params_with_invalid_run_key[run_key_param_name] = UUIDTools::UUID.random_create.to_s
       expect{
-        get action, params_with_invalid_run_key
+        get action, params: params_with_invalid_run_key
       }.to raise_error(ActiveRecord::RecordNotFound)
     end
   end
@@ -120,7 +120,7 @@ shared_examples "runnable launched with run_key" do |run_type, portal_launchable
 
     describe "when the user is anonymous" do
       before(:each){
-        get action, params_with_existing_run_key
+        get action, params: params_with_existing_run_key
       }
       describe "when this #{run_type} is anonymous" do
         let (:existing_run_factory_params) { base_factory_params.merge(user_id: nil) }
@@ -161,7 +161,7 @@ shared_examples "runnable launched with run_key" do |run_type, portal_launchable
     describe "when a user is signed in" do
       before(:each) do
         sign_in running_user
-        get action, params_with_existing_run_key
+        get action, params: params_with_existing_run_key
       end
       describe "when this #{run_type} is anonymous" do
         let (:existing_run_factory_params) { base_factory_params.merge(user_id: nil) }
@@ -259,7 +259,7 @@ shared_examples "runnable launched with portal parameters" do |run_type|
 
       # the order of the params gets reversed so we are just adding one fakeParam here
       # instead of the two normal portal params
-      get action, base_params.merge(domain: domain, fakeParam: 'testing-pass-through')
+      get action, params: base_params.merge(domain: domain, fakeParam: 'testing-pass-through')
       expect(response).to redirect_to user_omniauth_authorize_path(auth_path, :origin => request.url)
     end
   end
@@ -269,7 +269,7 @@ shared_examples "runnable launched with portal parameters" do |run_type|
     # can fish for valid portal properties
     it "returns 404" do
       expect {
-        get action, request_params_with_portal_properties
+        get action, params: request_params_with_portal_properties
       }.to raise_error(ActiveRecord::RecordNotFound)
     end
   end
@@ -296,7 +296,7 @@ shared_examples "runnable launched with portal parameters" do |run_type|
       }
 
       it "redirects with a #{run_type} key in the URL" do
-        result = get action, request_params_with_portal_properties
+        result = get action, params: request_params_with_portal_properties
         redirect_params = base_params.clone
         redirect_params[run_key_param_name] = assigns[run_variable_name]
         expect(result).to redirect_to(send(run_path_helper, redirect_params))
@@ -304,7 +304,7 @@ shared_examples "runnable launched with portal parameters" do |run_type|
 
       it "creates a #{run_type}" do
         expect(run_type).to receive(:create!) { new_run.save; new_run }
-        get action, request_params_with_portal_properties
+        get action, params: request_params_with_portal_properties
         expect(assigns[run_variable_name]).to eq(new_run)
       end
     end
@@ -316,7 +316,7 @@ shared_examples "runnable launched with portal parameters" do |run_type|
       }
       describe "when this #{run_type} is owned by the current user" do
         it "redirects to a URL with the #{run_type} key" do
-          result = get action, request_params_with_portal_properties
+          result = get action, params: request_params_with_portal_properties
           redirect_params = base_params.clone
           redirect_params[run_key_param_name] = assigns[run_variable_name]
           expect(result).to redirect_to(send(run_path_helper, redirect_params))
@@ -324,7 +324,7 @@ shared_examples "runnable launched with portal parameters" do |run_type|
         it "should call disable_collaboration" do
           allow(run_type).to receive(lookup_method).and_return(matching_run)
           expect(matching_run).to receive(:disable_collaboration)
-          get action, request_params_with_portal_properties
+          get action, params: request_params_with_portal_properties
         end
       end
     end
@@ -339,7 +339,7 @@ shared_examples "runnable launched with portal parameters" do |run_type|
       it "should call CreateCollaboration" do
         allow_any_instance_of(CreateCollaboration).to receive(:call).and_return(collaboration_run)
         expect_any_instance_of(CreateCollaboration).to receive(:call)
-        get action, base_params.merge(collaborators_data_url: "http://example.com/")
+        get action, params: base_params.merge(collaborators_data_url: "http://example.com/")
       end
     end
 
@@ -363,7 +363,7 @@ shared_examples "runnable resource not launchable by the portal" do |run_type|
     it "returns an error" do
       with_portal_params = base_params.merge(returnUrl: 'https:/example.com', externalId: 1)
       expect {
-        get action, with_portal_params
+        get action, params: with_portal_params
       }.to raise_error(ActiveRecord::RecordNotFound)
     end
   end

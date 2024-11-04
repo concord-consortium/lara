@@ -50,21 +50,21 @@ describe Admin::UsersController do
 
   describe "GET show" do
     it "assigns the requested user as @user" do
-      get :show, {:id => target.to_param}, valid_session
+      get :show, params: { :id => target.to_param }, headers: valid_session
       expect(assigns(:user)).to eq(target)
     end
   end
 
   describe "GET new" do
     it "assigns a new user as @user" do
-      get :new, {}, valid_session
+      get :new, headers: valid_session
       expect(assigns(:user)).to be_a_new(User)
     end
   end
 
   describe "GET edit" do
     it "assigns the requested user as @user" do
-      get :edit, {:id => target.to_param}, valid_session
+      get :edit, params: { :id => target.to_param }, headers: valid_session
       expect(assigns(:user)).to eq(target)
     end
   end
@@ -143,13 +143,13 @@ describe Admin::UsersController do
       # Using the let-created user in these specs isn't useful
       user = FactoryGirl.create(:user)
       expect {
-        delete :destroy, {:id => user.to_param}
+        delete :destroy, params: { :id => user.to_param }
       }.to change(User, :count).by(-1)
     end
 
     it "redirects to the admin_users list" do
       user = FactoryGirl.create(:user)
-      delete :destroy, {:id => user.to_param}
+      delete :destroy, params: { :id => user.to_param }
       expect(response).to redirect_to(admin_users_url)
     end
   end

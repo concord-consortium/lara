@@ -24,7 +24,7 @@ describe Api::V1::AuthoredContentsController do
     end
 
     it "returns content type and url" do
-      get :show, :id => authored_content.id, :format => :json
+      get :show, params: { :id => authored_content.id, :format => :json }
 
       expect(response.status).to eq(200)
       json_response = JSON.parse(response.body)
@@ -49,7 +49,7 @@ describe Api::V1::AuthoredContentsController do
 
     describe "#update" do
       it "when user is anonymous, updates are not allowed" do
-        post :update, :id => authored_content.id, :format => :json, 'RAW_POST_DATA' => 'test'
+        post :update, params: { :id => authored_content.id, :format => :json, 'RAW_POST_DATA' => 'test' }
 
         expect(response.status).to eq(403)
         json_response = JSON.parse(response.body)
@@ -61,7 +61,7 @@ describe Api::V1::AuthoredContentsController do
 
       it "when user did not create the authored content, updates are not allowed" do
         sign_in author2
-        post :update, :id => authored_content.id, :format => :json, 'RAW_POST_DATA' => 'test'
+        post :update, params: { :id => authored_content.id, :format => :json, 'RAW_POST_DATA' => 'test' }
 
         expect(response.status).to eq(403)
         json_response = JSON.parse(response.body)
@@ -79,7 +79,7 @@ describe Api::V1::AuthoredContentsController do
           expect(authored_content.url).to eq(initial_url)
 
           sign_in author1
-          post :update, :id => authored_content.id, :format => :json, 'RAW_POST_DATA' => 'test'
+          post :update, params: { :id => authored_content.id, :format => :json, 'RAW_POST_DATA' => 'test' }
 
           expect(response.status).to eq(200)
           json_response = JSON.parse(response.body)
@@ -97,7 +97,7 @@ describe Api::V1::AuthoredContentsController do
       describe "when the user is an admin, " do
         it "it updates" do
           sign_in admin
-          post :update, :id => authored_content.id, :format => :json, 'RAW_POST_DATA' => 'test'
+          post :update, params: { :id => authored_content.id, :format => :json, 'RAW_POST_DATA' => 'test' }
 
           expect(response.status).to eq(200)
         end
@@ -106,7 +106,7 @@ describe Api::V1::AuthoredContentsController do
       describe "when the user is a project admin of the container, " do
         it "it updates" do
           sign_in project_admin1
-          post :update, :id => authored_content.id, :format => :json, 'RAW_POST_DATA' => 'test'
+          post :update, params: { :id => authored_content.id, :format => :json, 'RAW_POST_DATA' => 'test' }
 
           expect(response.status).to eq(200)
         end
@@ -115,7 +115,7 @@ describe Api::V1::AuthoredContentsController do
       describe "when the user is a project admin BUT NOT of the container, " do
         it "it updates" do
           sign_in project_admin2
-          post :update, :id => authored_content.id, :format => :json, 'RAW_POST_DATA' => 'test'
+          post :update, params: { :id => authored_content.id, :format => :json, 'RAW_POST_DATA' => 'test' }
 
           expect(response.status).to eq(403)
           json_response = JSON.parse(response.body)

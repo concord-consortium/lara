@@ -50,7 +50,7 @@ describe Api::V1::InteractiveRunStatesController do
 
     it 'renders 404 when the interactive run state does not exist' do
       begin
-        get :show, :key => 'bar'
+        get :show, params: { :key => 'bar' }
       rescue ActiveRecord::RecordNotFound
       end
     end
@@ -61,14 +61,14 @@ describe Api::V1::InteractiveRunStatesController do
         let(:run) { FactoryGirl.create(:run, {activity: activity, user: nil})}
 
         it 'can be opened' do
-          get :show, :key => 'foo'
+          get :show, params: { :key => 'foo' }
           expect_response_has_valid_data(response)
         end
       end
 
       describe 'owned documents' do
         it 'cannot be opened' do
-          get :show, :key => 'foo'
+          get :show, params: { :key => 'foo' }
           expect_response_is_not_authorized(response, "logged in", "get")
         end
       end
@@ -84,14 +84,14 @@ describe Api::V1::InteractiveRunStatesController do
         let(:run) { FactoryGirl.create(:run, {activity: activity, user: nil})}
 
         it 'can be opened' do
-          get :show, :key => 'foo'
+          get :show, params: { :key => 'foo' }
           expect_response_has_valid_data(response)
         end
       end
 
       describe 'owned documents that the user owns' do
         it 'can be opened' do
-          get :show, :key => 'foo'
+          get :show, params: { :key => 'foo' }
           expect_response_has_valid_data(response)
         end
       end
@@ -101,7 +101,7 @@ describe Api::V1::InteractiveRunStatesController do
         let(:run)   { FactoryGirl.create(:run, {activity: activity, user: user2})}
 
         it 'cannot be opened' do
-          get :show, :key => 'foo'
+          get :show, params: { :key => 'foo' }
           expect_response_is_not_authorized(response, "the owner or an admin or a collaborator", "get")
         end
       end
@@ -119,7 +119,7 @@ describe Api::V1::InteractiveRunStatesController do
         let(:run2)  { FactoryGirl.create(:run, {activity: activity, user: user})}
 
         it 'can be opened' do
-          get :show, :key => 'foo'
+          get :show, params: { :key => 'foo' }
           expect_response_has_valid_data(response)
         end
       end
@@ -136,14 +136,14 @@ describe Api::V1::InteractiveRunStatesController do
         let(:run) { FactoryGirl.create(:run, {activity: activity, user: nil})}
 
         it 'can be opened' do
-          get :show, :key => 'foo'
+          get :show, params: { :key => 'foo' }
           expect_response_has_valid_data(response)
         end
       end
 
       describe 'owned documents that the user owns' do
         it 'can be opened' do
-          get :show, :key => 'foo'
+          get :show, params: { :key => 'foo' }
           expect_response_has_valid_data(response)
         end
       end
@@ -153,7 +153,7 @@ describe Api::V1::InteractiveRunStatesController do
         let(:run)    { FactoryGirl.create(:run, {activity: activity, user: user2})}
 
         it 'can be opened' do
-          get :show, :key => 'foo'
+          get :show, params: { :key => 'foo' }
           expect_response_has_valid_data(response)
         end
       end
@@ -164,7 +164,7 @@ describe Api::V1::InteractiveRunStatesController do
 
     it 'renders 404 when the interactive run state does not exist' do
       begin
-        put :update, :key => 'bar'
+        put :update, params: { :key => 'bar' }
       rescue ActiveRecord::RecordNotFound
       end
     end
@@ -174,14 +174,14 @@ describe Api::V1::InteractiveRunStatesController do
         let(:run) { FactoryGirl.create(:run, {activity: activity, user: nil})}
 
         it 'can be updated' do
-          put :update, {key: 'foo', raw_data: '{"bar": 2}', metadata: '{"shared_with": "context"}', learner_url: 'http://example.com'}
+          put :update, params: { key: 'foo', raw_data: '{"bar": 2}', metadata: '{"shared_with": "context"}', learner_url: 'http://example.com' }
           expect_response_has_valid_updated_data(response)
         end
       end
 
       describe 'owned documents' do
         it 'cannot be updated' do
-          put :update, {key: 'foo', raw_data: '{"bar": 2}', metadata: '{"shared_with": "context"}', learner_url: 'http://example.com'}
+          put :update, params: { key: 'foo', raw_data: '{"bar": 2}', metadata: '{"shared_with": "context"}', learner_url: 'http://example.com' }
           expect_response_is_not_authorized(response, "logged in", "update")
         end
       end
@@ -196,14 +196,14 @@ describe Api::V1::InteractiveRunStatesController do
         let(:run) { FactoryGirl.create(:run, {activity: activity, user: nil})}
 
         it 'can be updated' do
-          put :update, {key: 'foo', raw_data: '{"bar": 2}', metadata: '{"shared_with": "context"}', learner_url: 'http://example.com'}
+          put :update, params: { key: 'foo', raw_data: '{"bar": 2}', metadata: '{"shared_with": "context"}', learner_url: 'http://example.com' }
           expect_response_has_valid_updated_data(response)
         end
       end
 
       describe 'owned documents that the user owns' do
         it 'can be updated' do
-          put :update, {key: 'foo', raw_data: '{"bar": 2}', metadata: '{"shared_with": "context"}', learner_url: 'http://example.com'}
+          put :update, params: { key: 'foo', raw_data: '{"bar": 2}', metadata: '{"shared_with": "context"}', learner_url: 'http://example.com' }
           expect_response_has_valid_updated_data(response)
         end
       end
@@ -213,7 +213,7 @@ describe Api::V1::InteractiveRunStatesController do
         let(:run)   { FactoryGirl.create(:run, {activity: activity, user: user2})}
 
         it 'cannot be updated' do
-          put :update, {key: 'foo', raw_data: '{"bar": 2}', metadata: '{"shared_with": "context"}', learner_url: 'http://example.com'}
+          put :update, params: { key: 'foo', raw_data: '{"bar": 2}', metadata: '{"shared_with": "context"}', learner_url: 'http://example.com' }
           expect_response_is_not_authorized(response, "the owner or an admin or a collaborator", "update")
         end
       end
@@ -231,7 +231,7 @@ describe Api::V1::InteractiveRunStatesController do
         let(:run2)  { FactoryGirl.create(:run, {activity: activity, user: user})}
 
         it 'can be updated' do
-          put :update, {key: 'foo', raw_data: '{"bar": 2}', metadata: '{"shared_with": "context"}', learner_url: 'http://example.com'}
+          put :update, params: { key: 'foo', raw_data: '{"bar": 2}', metadata: '{"shared_with": "context"}', learner_url: 'http://example.com' }
           expect_response_has_valid_updated_data(response)
         end
       end
@@ -248,14 +248,14 @@ describe Api::V1::InteractiveRunStatesController do
         let(:run) { FactoryGirl.create(:run, {activity: activity, user: nil})}
 
         it 'can be updated' do
-          put :update, {key: 'foo', raw_data: '{"bar": 2}', metadata: '{"shared_with": "context"}', learner_url: 'http://example.com'}
+          put :update, params: { key: 'foo', raw_data: '{"bar": 2}', metadata: '{"shared_with": "context"}', learner_url: 'http://example.com' }
           expect_response_has_valid_updated_data(response)
         end
       end
 
       describe 'owned documents that the user owns' do
         it 'can be updated' do
-          put :update, {key: 'foo', raw_data: '{"bar": 2}', metadata: '{"shared_with": "context"}', learner_url: 'http://example.com'}
+          put :update, params: { key: 'foo', raw_data: '{"bar": 2}', metadata: '{"shared_with": "context"}', learner_url: 'http://example.com' }
           expect_response_has_valid_updated_data(response)
         end
       end
@@ -265,7 +265,7 @@ describe Api::V1::InteractiveRunStatesController do
         let(:run)    { FactoryGirl.create(:run, {activity: activity, user: user2})}
 
         it 'can be updated' do
-          put :update, {key: 'foo', raw_data: '{"bar": 2}', metadata: '{"shared_with": "context"}', learner_url: 'http://example.com'}
+          put :update, params: { key: 'foo', raw_data: '{"bar": 2}', metadata: '{"shared_with": "context"}', learner_url: 'http://example.com' }
           expect_response_has_valid_updated_data(response)
         end
       end

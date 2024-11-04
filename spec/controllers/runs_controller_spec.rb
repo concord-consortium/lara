@@ -27,7 +27,7 @@ describe RunsController do
   describe '#index' do
     it 'creates a new object and redirects to #show' do
       existing_responses = Run.count
-      get :index, :activity_id => activity.id
+      get :index, params: { :activity_id => activity.id }
       expect(assigns(:run)).not_to be_nil
       expect(assigns(:run).activity).to be === activity
       expect(response).to redirect_to :action => 'show', :activity_id => activity.id, :id => assigns(:run).key
@@ -59,7 +59,7 @@ describe RunsController do
   describe '#show' do
     context 'with valid ID' do
       it 'returns a JSON object with that ID' do
-        get :show, :id => run.key, :activity_id => activity.id
+        get :show, params: { :id => run.key, :activity_id => activity.id }
         expect(response.code).to eq('200')
         # TODO: what should the body include?
         expect(response.body).to match "multiple_choice_answers"
@@ -70,7 +70,7 @@ describe RunsController do
     context 'with new ID' do
       it 'creates a new object with that key and returns that object' do
         existing_responses = Run.count
-        get :show, :id => '88e0aff5-db3f-4087-8fda-49ec579980ef', :activity_id => activity.id
+        get :show, params: { :id => '88e0aff5-db3f-4087-8fda-49ec579980ef', :activity_id => activity.id }
         expect(response.code).to eq('200')
         # TODO: Check that the response body includes the new key
         expect(Run.count).to eq(existing_responses+1)

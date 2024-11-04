@@ -18,7 +18,7 @@ describe Api::V1::LightweightActivitiesController do
 
     it "when user is anonymous, shows an activity's json" do
 
-      get :show, :id => activity.id, :format => :json
+      get :show, params: { :id => activity.id, :format => :json }
       expect(response.status).to eq(200)
       # json_response = JSON.parse(response.body)
       # expect(json_response["token"]).to eq('fake-token')
@@ -37,7 +37,7 @@ describe Api::V1::LightweightActivitiesController do
 
     it "when user is anonymous, shows an the json sent to the report structure" do
 
-      get :report_structure, :id => activity.id, :format => :json
+      get :report_structure, params: { :id => activity.id, :format => :json }
       expect(response.status).to eq(200)
       # json_response = JSON.parse(response.body)
       # expect(json_response["token"]).to eq('fake-token')
