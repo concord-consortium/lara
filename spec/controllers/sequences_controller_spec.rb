@@ -251,7 +251,7 @@ describe SequencesController do
 
     it 'returns nothing to xhr requests', slow: true do
       skip "This takes forever and isn't terribly important"
-      xhr :get, :reorder_activities, params: { id: sequence.to_param, item_lightweight_activities_sequence: sequence.lightweight_activities_sequences.map { |a| a.id }.reverse }
+      get :reorder_activities, params: { id: sequence.to_param, item_lightweight_activities_sequence: sequence.lightweight_activities_sequences.map { |a| a.id }.reverse }, xhr: true
       expect(response).to eq('')
     end
   end

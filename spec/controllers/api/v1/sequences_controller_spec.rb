@@ -48,7 +48,7 @@ describe Api::V1::SequencesController do
       if user
         sign_in user
       end
-      xhr :delete, "destroy", id: sequence.id
+      delete, "destroy", params: { id: sequence.id }, xhr: true
       expect(Sequence.exists?(sequence.id)).to eq(false)
       expect(response.status).to eq(200)
       expect(response.content_type).to eq("application/json")
@@ -61,7 +61,7 @@ describe Api::V1::SequencesController do
       if user
         sign_in user
       end
-      xhr :delete, "destroy", id: sequence.id
+      delete, "destroy", params: { id: sequence.id }, xhr: true
       expect(Sequence.exists?(sequence.id)).to eq(true)
       expect(response.status).to eq(403)
       expect(response.content_type).to eq("application/json")

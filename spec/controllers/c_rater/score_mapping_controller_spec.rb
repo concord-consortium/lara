@@ -28,7 +28,7 @@ describe CRater::ScoreMappingsController do
 
     describe '#new' do
       it 'should return success' do
-        xhr :get, :new
+        get, :new, xhr: true
         expect(assigns(:score_mapping)).not_to be_nil
         expect(response).to be_success
       end
@@ -46,7 +46,7 @@ describe CRater::ScoreMappingsController do
     describe '#edit' do
       it 'should assign a score_mapping and return success' do
         score_map
-        xhr :get, :edit, {id: score_map.id}
+        get, :edit, params: {id: score_map.id}, xhr: true
 
         expect(assigns(:score_mapping)).not_to be_nil
         expect(assigns(:score_mapping)).to eq(score_map)

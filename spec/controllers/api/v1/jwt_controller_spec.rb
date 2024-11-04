@@ -132,7 +132,7 @@ describe Api::V1::JwtController do
 
       it "should fail with 500 if the auth id is unknown" do
         allow(Concord::AuthPortal).to receive(:portal_for_auth_id).and_return(nil)
-        post jwt_request_action, headers: { auth_id: 1, portal_user_id: "bar" }
+        post jwt_request_action, {}, {auth_id: 1, portal_user_id: "bar"}
         expect(response.status).to eq(500)
         json_response = JSON.parse(response.body)
         expect(json_response["response_type"]).to eq('ERROR')
@@ -141,7 +141,7 @@ describe Api::V1::JwtController do
 
       it "should succeed with a known auth id and portal user id" do
         allow(Concord::AuthPortal).to receive(:portal_for_auth_id).and_return(OpenStruct.new({ url: "http://fake.portal.com" }))
-        post jwt_request_action, headers: { auth_id: 1, portal_user_id: "bar" }
+        post jwt_request_action, {}, {auth_id: 1, portal_user_id: "bar"}
         expect(response.status).to eq(200)
         json_response = JSON.parse(response.body)
         expect(json_response["token"]).to eq('fake-token')

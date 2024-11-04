@@ -290,7 +290,7 @@ describe InteractivePagesController do
 
       context 'when the request is XHR' do
         it 'returns the new text of the first value' do
-          xhr :put, :update, params: { activity_id: act.id, id: page1.id, interactive_page: { sidebar: 'This page now has sidebar text.' } }
+          put, :update, params: { activity_id: act.id, id: page1.id, interactive_page: { sidebar: 'This page now has sidebar text.' } }, xhr: true
 
           expect(response.body).to match /This page now has sidebar text./
         end
@@ -298,7 +298,7 @@ describe InteractivePagesController do
         it 'returns the old text if the update fails' do
           allow_any_instance_of(InteractivePage).to receive(:update_attributes).and_return(false)
           old_name = page1.name
-          xhr :put, :update, params: { activity_id: act.id, id: page1.id, interactive_page: { name: 'This new name will fail.' } }
+          put, :update, params: { activity_id: act.id, id: page1.id, interactive_page: { name: 'This new name will fail.' } }, xhr: true
 
           expect(response.body).to match /#{old_name}/
         end
@@ -356,7 +356,7 @@ describe InteractivePagesController do
         page1.add_embeddable(mc2, 5)
 
         # Send a reorder request with params to reverse the order
-        xhr :get, :reorder_embeddables, params: { id: page1.id, activity_id: act.id, embeddable: [ "#{mc2.id}.#{mc2.class.to_s}", "#{or2.id}.#{or2.class.to_s}", "#{xhtml1.id}.#{xhtml1.class.to_s}", "#{or1.id}.#{or1.class.to_s}", "#{mc1.id}.#{mc1.class.to_s}" ] }
+        get, :reorder_embeddables, params: { id: page1.id, activity_id: act.id, embeddable: [ "#{mc2.id}.#{mc2.class.to_s}", "#{or2.id}.#{or2.class.to_s}", "#{xhtml1.id}.#{xhtml1.class.to_s}", "#{or1.id}.#{or1.class.to_s}", "#{mc1.id}.#{mc1.class.to_s}" ] }, xhr: true
 
         page1.reload
         expect(page1.embeddables.first).to eq(mc2)

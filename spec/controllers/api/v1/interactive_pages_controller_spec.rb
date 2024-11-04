@@ -556,7 +556,7 @@ describe Api::V1::InteractivePagesController do
       it "with an activity_id and pages" do
         pages
         act.reload
-        xhr :get, "get_pages", {activity_id: act.id}
+        get, "get_pages", params: {activity_id: act.id}, xhr: true
         expect(response.status).to eq(200)
         expect(response.content_type).to eq("application/json")
         pages = JSON.parse(response.body)
@@ -566,7 +566,7 @@ describe Api::V1::InteractivePagesController do
 
     describe "fails" do
       it "with invalid activity id" do
-        xhr :get, "get_pages", {activity_id: 234232}
+        get, "get_pages", params: {activity_id: 234232}, xhr: true
         expect(response.status).to eq(404)
       end
     end
@@ -582,7 +582,7 @@ describe Api::V1::InteractivePagesController do
         before_count = act.pages.length
         after_count = act.pages.length + 1
 
-        xhr :post, "create_page", {activity_id: act.id}
+        post, "create_page", params: {activity_id: act.id}, xhr: true
         expect(response.status).to eq(200)
         expect(response.content_type).to eq("application/json")
         pages = JSON.parse(response.body)
@@ -592,7 +592,7 @@ describe Api::V1::InteractivePagesController do
 
     describe "fails" do
       it "when the current user is not the activity author" do
-        xhr :post, "create_page", {activity_id: act.id}
+        post, "create_page", params: {activity_id: act.id}, xhr: true
         expect(response.status).to eq(403)
       end
     end
@@ -613,7 +613,7 @@ describe Api::V1::InteractivePagesController do
         before_count = act.pages.length
         after_count = act.pages.length - 1
 
-        xhr :post, "delete_page", {id: page.id}
+        post, "delete_page", params: {id: page.id}, xhr: true
         expect(response.status).to eq(200)
         expect(response.content_type).to eq("application/json")
         expect(JSON.parse(response.body)).to eq({"success"=> true})
@@ -631,7 +631,7 @@ describe Api::V1::InteractivePagesController do
         before_count = act.pages.length
         after_count = before_count
 
-        xhr :post, "delete_page", {id: page.id}
+        post, "delete_page", params: {id: page.id}, xhr: true
         expect(response.status).to eq(403)
         expect(act.pages.length).to eq(after_count)
       end
@@ -670,7 +670,7 @@ describe Api::V1::InteractivePagesController do
           end
           old_id_order = section.page_items.map(& :id)
           update_request = { id: page.id, section: { id: section.id, items: new_items } }
-          xhr :post, 'update_section', update_request
+          post, 'update_section', params: update_request, xhr: true
           expect(response.status).to eq(200)
           section.reload
           new_id_order = section.page_items.map(& :id)
@@ -682,7 +682,7 @@ describe Api::V1::InteractivePagesController do
           items << extra_item
           expect(section.page_items.length).to eql(3)
           update_request = { id: page.id, section: { id: section.id, items: items.map(&:attributes) } }
-          xhr :post, 'update_section', update_request
+          post, 'update_section', params: update_request, xhr: true
           expect(response.status).to eq(200)
           section.reload
           expect(section.page_items.length).to eql(4)
@@ -692,7 +692,7 @@ describe Api::V1::InteractivePagesController do
           new_items = items[0, 2].map { |i| { id: i.id, column: i.column } }
           expect(section.page_items.length).to eql(3)
           update_request = { id: page.id, section: { id: section.id, items: new_items } }
-          xhr :post, 'update_section', update_request
+          post, 'update_section', params: update_request, xhr: true
           expect(response.status).to eq(200)
           section.reload
           expect(section.page_items.length).to eql(2)
@@ -703,18 +703,18 @@ describe Api::V1::InteractivePagesController do
       describe 'failures' do
         it 'fails without a page param' do
           update_request = { section: { id: section.id, items: [] } }
-          # xhr :post, 'update_section', update_request
+          # post, 'update_section', params: update_request, xhr: true
           # expect(response.status).to eq(200)
           # expect(JSON.parse(response.body)).to include({'success' => false})
 
           expect {
-            xhr :post, 'update_section', update_request
+            post, 'update_section', params: update_request, xhr: true
           }.to raise_error(ActionController::UrlGenerationError)
         end
 
         it 'fails when we dont specify a section' do
           update_request = { id: page.id }
-          xhr :post, 'update_section', update_request
+          post, 'update_section', params: update_request, xhr: true
           expect(response.status).to eq(500)
           expect(response.body).to match(/Missing section/)
         end
@@ -725,7 +725,7 @@ describe Api::V1::InteractivePagesController do
           end
           it "fails with not authorized" do
             update_request = { id: page.id, section: { id: section.id, items: [] } }
-            xhr :post, 'update_section', update_request
+            post, 'update_section', params: update_request, xhr: true
             expect(response.status).to eq(403)
             expect(response.body).to match(/not authorized/i)
           end
@@ -744,7 +744,7 @@ describe Api::V1::InteractivePagesController do
       describe "success" do
         it "creates a copy with copies of the same items" do
           copy_request = { id: page.id, section_id: section.id }
-          xhr :post, 'copy_section', copy_request
+          post, 'copy_section', params: copy_request, xhr: true
           expect(response.status).to eq(200)
           next_pages = JSON.parse(response.body, object_class:OpenStruct)
           expect(next_pages.id).to eq(page.id.to_s)
@@ -766,18 +766,18 @@ describe Api::V1::InteractivePagesController do
       describe 'failure' do
         it 'fails without a page param' do
           copy_request = { section_id: section.id }
-          # xhr :post, 'copy_section', copy_request
+          # post, 'copy_section', params: copy_request, xhr: true
           # expect(response.status).to eq(200)
           # expect(JSON.parse(response.body)).to include( {'success' => false })
 
           expect {
-            xhr :post, 'copy_section', copy_request
+            post, 'copy_section', params: copy_request, xhr: true
           }.to raise_error(ActionController::UrlGenerationError)
         end
 
         it 'fails when we dont specify a section' do
           copy_request = { id: page.id }
-          xhr :post, 'copy_section', copy_request
+          post, 'copy_section', params: copy_request, xhr: true
           expect(response.status).to eq(500)
           expect(response.body).to match(/Missing section/)
         end
@@ -788,7 +788,7 @@ describe Api::V1::InteractivePagesController do
           end
           it "fails with not authorized" do
             copy_request = { id: page.id, section_id: section.id }
-            xhr :post, 'copy_section', copy_request
+            post, 'copy_section', params: copy_request, xhr: true
             expect(response.status).to eq(403)
             expect(response.body).to match(/not authorized/i)
           end
@@ -810,7 +810,7 @@ describe Api::V1::InteractivePagesController do
 
       describe "success" do
         it 'creates a copy with copies of the same items' do
-          xhr :post, 'copy_page_item', { id: page_id, page_item_id: page_item_id }
+          post, 'copy_page_item', params: { id: page_id, page_item_id: page_item_id }, xhr: true
           expect(response.status).to eq(200)
           section.reload
           puts response.body
@@ -827,17 +827,17 @@ describe Api::V1::InteractivePagesController do
 
       describe 'failure' do
         it 'fails without a page param' do
-          # xhr :post, 'copy_page_item',  { page_item_id: page_item_id }
+          # post, 'copy_page_item',  { page_item_id: page_item_id }, xhr: true
           # expect(response.status).to eq(200)
           # expect(JSON.parse(response.body)).to include( {'success' => false })
 
           expect {
-            xhr :post, 'copy_page_item',  { page_item_id: page_item_id }
+            post, 'copy_page_item', params: { page_item_id: page_item_id }, xhr: true
           }.to raise_error(ActionController::UrlGenerationError)
         end
 
         it 'fails when we dont specify a page_item' do
-          xhr :post, 'copy_page_item',  { id: page_id  }
+          post, 'copy_page_item', params: { id: page_id  }, xhr: true
           expect(response.status).to eq(500)
           expect(response.body).to match(/Missing page_item_id/)
         end
@@ -847,7 +847,7 @@ describe Api::V1::InteractivePagesController do
             sign_out author
           end
           it 'fails with not authorized' do
-            xhr :post, 'copy_page_item',  { id: page_id, page_item_id: page_item_id }
+            post, 'copy_page_item', params: { id: page_id, page_item_id: page_item_id }, xhr: true
             expect(response.status).to eq(403)
             expect(response.body).to match(/not authorized/i)
           end
@@ -866,7 +866,7 @@ describe Api::V1::InteractivePagesController do
 
       describe 'success' do
         it 'deletes missing items not present in the items post request' do
-          xhr :post, 'delete_page_item', update_request
+          post, 'delete_page_item', params: update_request, xhr: true
           expect(response.status).to eq(200)
           section.reload
           expect(section.page_items.length).to eq(2)
@@ -880,7 +880,7 @@ describe Api::V1::InteractivePagesController do
             sign_out author
           end
           it "fails with not authorized" do
-            xhr :post, 'update_section', update_request
+            post, 'update_section', params: update_request, xhr: true
             expect(response.status).to eq(403)
             expect(response.body).to match(/not authorized/i)
           end
@@ -892,7 +892,7 @@ describe Api::V1::InteractivePagesController do
   describe "#get_portal_list" do
     it "returns an array of OAuth portals including each portal's name and authorization path" do
       allow_any_instance_of(Api::V1::InteractivePagesController).to receive(:user_omniauth_authorize_path).and_return('/auth/foo')
-      xhr :get, "get_portal_list"
+      get, "get_portal_list", xhr: true
       expect(response.status).to eq(200)
       expect(response.body).to eql({
         success: true,

@@ -16,7 +16,7 @@ describe Api::V1::PageItemsController do
   describe "#get_embeddable_metadata" do
     it "returns JSON for a page item's embeddable" do
       puts interactive1.inspect
-      xhr :get, "get_embeddable_metadata", {id: 1}
+      get, "get_embeddable_metadata", {id: 1}, xhr: true
       expect(response.status).to eq(200)
       expect(response.content_type).to eq("application/json")
     end
