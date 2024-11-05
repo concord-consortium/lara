@@ -91,6 +91,8 @@ module LightweightStandalone
 
     # Set TinyMCE asset compilation method.
     config.tinymce.install = :copy
+
+    config.action_dispatch.use_authenticated_cookie_encryption = true
   end
 end
 

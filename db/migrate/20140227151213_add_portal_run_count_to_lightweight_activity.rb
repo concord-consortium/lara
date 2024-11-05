@@ -5,7 +5,7 @@ class AddPortalRunCountToLightweightActivity < ActiveRecord::Migration
 
   class Act < ApplicationRecord
     self.table_name = 'lightweight_activities'
-    has_many :runs, foreign_key: 'activity_id', class_name: Tun
+    has_many :runs, foreign_key: 'activity_id', class_name: "Tun"
   end
 
   def up

@@ -1,13 +1,13 @@
-#source 'https://gems.railslts.com' do
-  gem 'actionmailer', '~> 5.1.7', require: false
-  gem 'actionpack', '~> 5.1.7', require: false
-  gem 'activemodel', '~> 5.1.7', require: false
-  gem 'activerecord', '~> 5.1.7', require: false
-  gem 'activesupport', '~> 5.1.7', require: false
-  gem 'rails', '~> 5.1.7'
+source 'https://gems.railslts.com' do
+  gem 'actionmailer', '~> 5.2.8.25', require: false
+  gem 'actionpack', '~> 5.2.8.25', require: false
+  gem 'activemodel', '~> 5.2.8.25', require: false
+  gem 'activerecord', '~> 5.2.8.25', require: false
+  gem 'activesupport', '~> 5.2.8.25', require: false
+  gem 'rails', '~> 5.2.8.25'
   # gem 'railslts-version', :require => false
-  gem 'railties', '~> 5.1.7', require: false
-#end
+  gem 'railties', '~> 5.2.8.25', require: false
+end
 
 source "https://rubygems.org"
 
@@ -84,6 +84,7 @@ end
 gem "acts_as_list", '~> 0.9.19'
 gem 'aws-sdk', '= 2.0.22'
 gem "aws-ses", "0.7.1", git: "https://github.com/zebitex/aws-ses.git", ref: "78-sigv4-problem"
+gem "bootsnap"
 gem "cancancan", "~> 2.3"
 gem "chosen-rails", "~> 1.10"
 gem "daemons", "~> 1.4", ">= 1.4.1"
@@ -95,7 +96,7 @@ gem "dynamic_form", "= 1.2"
 gem "exception_notification", '= 4.4.3'
 gem "font-awesome-rails", '~> 4.7', '>= 4.7.0.8'
 gem "gon", "~> 6.4.0"
-gem "haml", "~> 4.0.7"
+gem "haml", "~> 5.2"
 gem "highline", "~> 1.7.3"
 gem "httparty", "= 0.21"
 gem "i18n", "= 1.0.1"
@@ -103,7 +104,7 @@ gem "jquery-rails", '~> 4.1', '>= 4.1.0'
 gem "jquery-ui-rails", '~> 4.2.1'
 gem "loofah", "= 2.19.1"
 gem "multi_json", "~> 1.15"
-gem "mysql2", "= 0.3.21"
+gem "mysql2", "~> 0.5"
 gem "nested_form", "~> 0.3.2"
 gem 'newrelic_rpm', '= 4.8.0.341'
 gem "nokogiri", "~> 1.10.10"

@@ -8,7 +8,7 @@ class User < ApplicationRecord
          :bearer_token_authenticatable
   devise :omniauthable, omniauth_providers: Concord::AuthPortal.all_strategy_names
 
-  has_many :activities, class_name: LightweightActivity
+  has_many :activities, class_name: "LightweightActivity"
   has_many :sequences
   has_many :runs
   has_many :imports
