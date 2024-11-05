@@ -8,10 +8,10 @@ class GlobalInteractiveStatesController < ApplicationController
   def create
     if @run.global_interactive_state
       @run.global_interactive_state.update_attributes!(raw_data: params[:raw_data])
-      render nothing: true, status: 200
+      head :ok
     else
       GlobalInteractiveState.create!(run_id: @run.id, raw_data: params[:raw_data])
-      render nothing: true, status: 201
+      head :created
     end
   end
 
@@ -25,7 +25,7 @@ class GlobalInteractiveStatesController < ApplicationController
     begin
       authorize!(:access, @run)
     rescue
-      render nothing: true, status: :unauthorized
+      head :unauthorized
     end
   end
 end
