@@ -1,4 +1,4 @@
-class CreateAuthentications < ActiveRecord::Migration
+class CreateAuthentications < ActiveRecord::Migration[5.1]
   class User < ApplicationRecord
   end
   class Authentication < ApplicationRecord

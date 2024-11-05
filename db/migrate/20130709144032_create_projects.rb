@@ -1,4 +1,4 @@
-class CreateProjects < ActiveRecord::Migration
+class CreateProjects < ActiveRecord::Migration[5.1]
   class Theme < ApplicationRecord
   end
 

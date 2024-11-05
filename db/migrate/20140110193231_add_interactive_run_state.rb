@@ -1,4 +1,4 @@
-class AddInteractiveRunState < ActiveRecord::Migration
+class AddInteractiveRunState < ActiveRecord::Migration[5.1]
 
   def change
     create_table(:interactive_run_states) do |t|

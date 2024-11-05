@@ -1,4 +1,4 @@
-class CreatePluginLearnerStates < ActiveRecord::Migration
+class CreatePluginLearnerStates < ActiveRecord::Migration[5.1]
   def change
     create_table :plugin_learner_states do |t|
       t.integer :plugin_id

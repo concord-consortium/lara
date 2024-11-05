@@ -1,4 +1,4 @@
-class ChangeIsFullWidthToIsHalfWidth < ActiveRecord::Migration
+class ChangeIsFullWidthToIsHalfWidth < ActiveRecord::Migration[5.1]
   class Embeddable::ImageQuestion < ApplicationRecord
   end
   class Embeddable::Labbook < ApplicationRecord

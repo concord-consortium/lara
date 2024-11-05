@@ -1,4 +1,4 @@
-class CopyPageIntroToNewHeaderTextbox < ActiveRecord::Migration
+class CopyPageIntroToNewHeaderTextbox < ActiveRecord::Migration[5.1]
   module Embeddable
     class Embeddable::Xhtml < ApplicationRecord
       has_many :page_items, as: :embeddable, dependent: :destroy

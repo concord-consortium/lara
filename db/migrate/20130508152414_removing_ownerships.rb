@@ -1,4 +1,4 @@
-class RemovingOwnerships < ActiveRecord::Migration
+class RemovingOwnerships < ActiveRecord::Migration[5.1]
   def up
     remove_column :interactive_pages, :user_id
     remove_column :mw_interactives, :user_id

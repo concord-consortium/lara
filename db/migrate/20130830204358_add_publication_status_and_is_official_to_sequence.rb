@@ -1,4 +1,4 @@
-class AddPublicationStatusAndIsOfficialToSequence < ActiveRecord::Migration
+class AddPublicationStatusAndIsOfficialToSequence < ActiveRecord::Migration[5.1]
   class Sequence < ApplicationRecord
   end
 

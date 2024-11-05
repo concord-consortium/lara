@@ -1,4 +1,4 @@
-class RemoveTeacherEditionQuestionWrapperDefaultValues < ActiveRecord::Migration
+class RemoveTeacherEditionQuestionWrapperDefaultValues < ActiveRecord::Migration[5.1]
   class Plugin < ApplicationRecord
   end
 

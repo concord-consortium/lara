@@ -1,4 +1,4 @@
-class RemoveThemeAndRuntime < ActiveRecord::Migration
+class RemoveThemeAndRuntime < ActiveRecord::Migration[5.1]
   def up
     remove_index :lightweight_activities, [:theme_id]
     remove_index :sequences, [:theme_id]

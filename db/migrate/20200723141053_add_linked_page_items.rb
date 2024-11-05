@@ -1,4 +1,4 @@
-class AddLinkedPageItems < ActiveRecord::Migration
+class AddLinkedPageItems < ActiveRecord::Migration[5.1]
   def change
     create_table :linked_page_items do |t|
       t.integer :primary_id

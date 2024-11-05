@@ -1,4 +1,4 @@
-class AddLegacyRefTypeToManagedInteractives < ActiveRecord::Migration
+class AddLegacyRefTypeToManagedInteractives < ActiveRecord::Migration[5.1]
   def up
     change_column :managed_interactives, :legacy_ref_id, :integer
     add_column :managed_interactives, :legacy_ref_type, :string
