@@ -1,4 +1,4 @@
-class AddQuestionTracker < ActiveRecord::Migration
+class AddQuestionTracker < ActiveRecord::Migration[5.1]
   def change
     create_table :question_trackers do |t|
       t.string :name

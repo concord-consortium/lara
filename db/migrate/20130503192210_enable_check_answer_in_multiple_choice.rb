@@ -1,4 +1,4 @@
-class EnableCheckAnswerInMultipleChoice < ActiveRecord::Migration
+class EnableCheckAnswerInMultipleChoice < ActiveRecord::Migration[5.1]
   def up
     add_column :embeddable_multiple_choices, :enable_check_answer, :boolean, :default => true
   end

@@ -1,4 +1,4 @@
-class CreateGlobalInteractiveStates < ActiveRecord::Migration
+class CreateGlobalInteractiveStates < ActiveRecord::Migration[5.1]
   def change
     create_table :global_interactive_states do |t|
       t.integer :run_id

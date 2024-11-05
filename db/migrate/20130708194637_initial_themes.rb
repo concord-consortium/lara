@@ -1,4 +1,4 @@
-class InitialThemes < ActiveRecord::Migration
+class InitialThemes < ActiveRecord::Migration[5.1]
 
   class Theme < ActiveRecord::Base
     attr_accessible :name, :css_file

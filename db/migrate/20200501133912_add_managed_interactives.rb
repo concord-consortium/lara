@@ -1,4 +1,4 @@
-class AddManagedInteractives < ActiveRecord::Migration
+class AddManagedInteractives < ActiveRecord::Migration[5.1]
   def change
     create_table :managed_interactives do |t|
       t.integer :library_interactive_id

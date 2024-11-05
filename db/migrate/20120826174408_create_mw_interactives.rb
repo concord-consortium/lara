@@ -1,4 +1,4 @@
-class CreateMwInteractives < ActiveRecord::Migration
+class CreateMwInteractives < ActiveRecord::Migration[5.1]
   def change
     create_table :mw_interactives do |t|
       t.string :name

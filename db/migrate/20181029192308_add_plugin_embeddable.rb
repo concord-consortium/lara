@@ -1,4 +1,4 @@
-class AddPluginEmbeddable < ActiveRecord::Migration
+class AddPluginEmbeddable < ActiveRecord::Migration[5.1]
   def change
     create_table :embeddable_plugins do |t|
       t.integer  :plugin_id

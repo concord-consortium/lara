@@ -1,4 +1,4 @@
-class AddInteractiveRunStateKey < ActiveRecord::Migration
+class AddInteractiveRunStateKey < ActiveRecord::Migration[5.1]
   def up
     add_column :interactive_run_states, :key, :string
     add_index :interactive_run_states, :key, :name => 'interactive_run_states_key_idx'

@@ -1,4 +1,4 @@
-class UpdateExistingLibraryInteractivesExportHashes < ActiveRecord::Migration
+class UpdateExistingLibraryInteractivesExportHashes < ActiveRecord::Migration[5.1]
 
   class LibraryInteractive < ActiveRecord::Base
   end

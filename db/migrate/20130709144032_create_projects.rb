@@ -1,6 +1,5 @@
-class CreateProjects < ActiveRecord::Migration
-  class Theme < ActiveRecord::Base
-    attr_accessible :name, :css_file
+class CreateProjects < ActiveRecord::Migration[5.1]
+  class Theme < ApplicationRecord
   end
 
   class Project < ActiveRecord::Base

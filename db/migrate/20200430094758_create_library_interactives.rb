@@ -1,4 +1,4 @@
-class CreateLibraryInteractives < ActiveRecord::Migration
+class CreateLibraryInteractives < ActiveRecord::Migration[5.1]
   def change
     create_table :library_interactives do |t|
       t.string :name

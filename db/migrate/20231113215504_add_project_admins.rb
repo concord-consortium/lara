@@ -1,4 +1,4 @@
-class AddProjectAdmins < ActiveRecord::Migration
+class AddProjectAdmins < ActiveRecord::Migration[5.1]
   def change
     create_table :project_admins do |t|
       t.references :user, index: true

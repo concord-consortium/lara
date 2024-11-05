@@ -1,4 +1,4 @@
-class CreateSequences < ActiveRecord::Migration
+class CreateSequences < ActiveRecord::Migration[5.1]
   def change
     create_table :sequences do |t|
       t.string :title

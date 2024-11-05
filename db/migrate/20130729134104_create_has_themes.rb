@@ -1,6 +1,5 @@
-class CreateHasThemes < ActiveRecord::Migration
-  class Theme < ActiveRecord::Base
-    attr_accessible :name, :css_file
+class CreateHasThemes < ActiveRecord::Migration[5.1]
+  class Theme < ApplicationRecord
   end
 
   def up

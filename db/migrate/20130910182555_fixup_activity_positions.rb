@@ -1,4 +1,4 @@
-class FixupActivityPositions < ActiveRecord::Migration
+class FixupActivityPositions < ActiveRecord::Migration[5.1]
 
   class Sequence < ActiveRecord::Base
     has_many :lightweight_activities_sequences, :order => :position, :dependent => :destroy
