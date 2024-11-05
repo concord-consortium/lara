@@ -12,7 +12,7 @@ class CRater::ItemSettingsController < ApplicationController
   def update
     if @settings.update_attributes(update_params)
       flash[:notice] = "C-Rater Item settings were successfully updated."
-      redirect_to(:back)
+      redirect_back(fallback_location: c_rater_item_settings_path)
     else
       render :edit
     end

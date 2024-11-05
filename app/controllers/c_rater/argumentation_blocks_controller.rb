@@ -41,12 +41,12 @@ class CRater::ArgumentationBlocksController < ApplicationController
 
   def create_embeddables
     create_arg_block_embeddables(@page)
-    redirect_to(:back)
+    redirect_back(fallback_location: edit_activity_path(@activity))
   end
 
   def remove_embeddables
     @page.sections.where(title: CRater::ARG_SECTION_NAME).destroy_all
-    redirect_to(:back)
+    redirect_back(fallback_location: edit_activity_path(@activity))
   end
 
   def save_feedback
@@ -56,7 +56,7 @@ class CRater::ArgumentationBlocksController < ApplicationController
     if request.xhr?
       render json: feedback_info
     else
-      redirect_to(:back)
+      redirect_back(fallback_location: edit_activity_path(page.lightweight_activity))
     end
   end
 
@@ -66,7 +66,7 @@ class CRater::ArgumentationBlocksController < ApplicationController
     if request.xhr?
       head(200)
     else
-      redirect_to(:back)
+      redirect_back(fallback_location: edit_activity_path(submission.page.lightweight_activity))
     end
   end
 

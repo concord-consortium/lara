@@ -21,7 +21,7 @@ class CRater::ScoreMappingsController < ApplicationController
     @score_mapping.user = current_user
     @score_mapping.changed_by = current_user
     @score_mapping.save
-    redirect_to(:back)
+    redirect_back(fallback_location: c_rater_score_mappings_path)
   end
 
   def edit
@@ -41,11 +41,11 @@ class CRater::ScoreMappingsController < ApplicationController
     @score_mapping.update_attributes(score_mapping)
     @score_mapping.changed_by = current_user
     @score_mapping.save!
-    redirect_to(:back)
+    redirect_back(fallback_location: c_rater_score_mappings_path)
   end
 
   def destroy
     @score_mapping.destroy
-    redirect_to(:back)
+    redirect_back(fallback_location: c_rater_score_mappings_path)
   end
 end
