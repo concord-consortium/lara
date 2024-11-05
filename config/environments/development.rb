@@ -30,6 +30,7 @@ LightweightStandalone::Application.configure do
   # Expands the lines which load the assets
   config.assets.debug = true
 
+  config.active_record.use_yaml_unsafe_load = true
   config.active_record.belongs_to_required_by_default = false
   config.action_controller.per_form_csrf_tokens = false
   config.action_controller.forgery_protection_origin_check = false
