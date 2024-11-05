@@ -7,7 +7,7 @@ act.save
 
 ### Page 1 ###
 # This creates a page and adds it to the activity.
-page1 = act.pages.create!(name: "Page 1", text: "This is the main activity text.")
+page1 = act.pages.create!(name: "Page 1")
 # Creates an interactive
 interactive_p1 = MwInteractive.create!(name: "MW model", url: "http://lab.concord.org/embeddable.html#interactives/samples/1-oil-and-water-shake.json")
 # Adds the interactive to the page.
@@ -48,7 +48,7 @@ page1.save
 
 ### page 2 ###
 # This creates a page and adds it to the activity.
-page2 = act.pages.create!(name: "Page 2", text: "This is the main activity text. Sometimes, it just needs to be a bit longer.")
+page2 = act.pages.create!(name: "Page 2")
 # Create another interactive to add to this page. (Interactives can only belong to one page,
 # so for the second page we need another new interactive.)
 interactive_p2 = MwInteractive.create!(name: "MW model", url: "http://lab.concord.org/embeddable.html#interactives/samples/1-oil-and-water-shake.json")
@@ -76,7 +76,7 @@ page2.add_embeddable(or3, 3)
 
 ### page 3 ###
 # This creates a page and adds it to the activity.
-page3 = act.pages.create!(name: "Page 3", text: "This is the last page of the activity! I hope you've enjoyed your time today.")
+page3 = act.pages.create!(name: "Page 3")
 # Create another interactive to add to this page.
 interactive_p3 = MwInteractive.create!(name: "MW model", url: "http://lab.concord.org/embeddable.html#interactives/samples/1-oil-and-water-shake.json")
 page3.add_interactive(interactive_p3)
@@ -108,7 +108,7 @@ act_boiling_point.save
 
 ### Page 1 ###
 # This creates a page and adds it to the activity.
-page_1_boiling_point = act_boiling_point.pages.create!(name: "Page 1", text: "All molecules attract to each other through forces called \"intermolecular attractions.\" The temperature at which many substances boil is determined by intermolecular attractions.")
+page_1_boiling_point = act_boiling_point.pages.create!(name: "Page 1")
 
 ## Add embeddables ##
 # Create an (X)HTML embeddable.
@@ -127,7 +127,7 @@ page_1_boiling_point.save
 
 ## Page 2 ###
 # This creates a page and adds it to the activity.
-page_2_boiling_point = act_boiling_point.pages.create!(name: "Page 2", text: "All molecules attract to each other, but there are different patterns and strengths of attraction. The model shows a bunch of polar and non-polar molecules.")
+page_2_boiling_point = act_boiling_point.pages.create!(name: "Page 2")
 
 # Create an interactive to add to this page. (Interactives can only belong to one page,
 # so for the second page we need another new interactive.)
@@ -155,7 +155,7 @@ page_2_boiling_point.add_embeddable(mc1, 2)
 
 ## Page 3 ###
 # This creates a page and adds it to the activity.
-page_3_boiling_point = act_boiling_point.pages.create!(name: "Page 3", text: "")
+page_3_boiling_point = act_boiling_point.pages.create!(name: "Page 3")
 
 # Create an interactive to add to this page. (Interactives can only belong to one page,
 # so for the second page we need another new interactive.)
@@ -194,7 +194,7 @@ page_3_boiling_point.add_embeddable(or1, 5)
 
 ## Page 4 ###
 # This creates a page and adds it to the activity.
-page_4_boiling_point = act_boiling_point.pages.create!(name: "Page 4", text: "Boiling point is a physical property that is determined by intermolecular attractions.")
+page_4_boiling_point = act_boiling_point.pages.create!(name: "Page 4")
 
 # Create an interactive to add to this page. (Interactives can only belong to one page,
 # so for the second page we need another new interactive.)
@@ -239,7 +239,7 @@ act_solubility = LightweightActivity.create!(name: "Intermolecular Attractions a
 
 ### Page 1 ###
 # This creates a page and adds it to the activity.
-page1_solubility = act_solubility.pages.create!(name: "Page 1", text: "Have you ever wondered why oil and water don't mix? Why does salad dressing need to be shaken up before you pour it on your salad?")
+page1_solubility = act_solubility.pages.create!(name: "Page 1")
 
 # Create an interactive to add to this page. (Interactives can only belong to one page,
 # so for the second page we need another new interactive.)
@@ -270,7 +270,7 @@ page1_solubility.save
 
 ## Page 2 ###
 # This creates a page and adds it to the activity.
-page2_solubility = act_solubility.pages.create!(name: "Page 2", text: "")
+page2_solubility = act_solubility.pages.create!(name: "Page 2")
 
 # Create an interactive to add to this page. (Interactives can only belong to one page,
 # so for the second page we need another new interactive.)
@@ -302,7 +302,7 @@ page2_solubility.add_embeddable(or1, 4)
 
 ## Page 3 ###
 # This creates a page and adds it to the activity.
-page3_solubility = act_solubility.pages.create!(name: "Page 3", text: "")
+page3_solubility = act_solubility.pages.create!(name: "Page 3")
 
 # Create an interactive to add to this page. (Interactives can only belong to one page,
 # so for the second page we need another new interactive.)
