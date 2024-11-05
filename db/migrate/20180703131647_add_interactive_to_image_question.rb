@@ -42,7 +42,7 @@ class PageItem < ApplicationRecord
   belongs_to :embeddable, polymorphic: true, dependent: :destroy
 end
 
-class AddInteractiveToImageQuestion < ActiveRecord::Migration
+class AddInteractiveToImageQuestion < ActiveRecord::Migration[5.1]
   def up
     add_column :embeddable_image_questions, :interactive_id, :integer
     add_column :embeddable_image_questions, :interactive_type, :string

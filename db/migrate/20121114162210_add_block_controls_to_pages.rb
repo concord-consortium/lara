@@ -1,4 +1,4 @@
-class AddBlockControlsToPages < ActiveRecord::Migration
+class AddBlockControlsToPages < ActiveRecord::Migration[5.1]
   def change
     add_column :interactive_pages, :show_introduction, :boolean, default: false
     add_column :interactive_pages, :show_sidebar, :boolean, default: false

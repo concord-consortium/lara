@@ -1,4 +1,4 @@
-class CreateEmbeddableImageQuestionAnswers < ActiveRecord::Migration
+class CreateEmbeddableImageQuestionAnswers < ActiveRecord::Migration[5.1]
   def change
     create_table :embeddable_image_question_answers do |t|
       t.references :run

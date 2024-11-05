@@ -1,4 +1,4 @@
-class CreateExternalScript < ActiveRecord::Migration
+class CreateExternalScript < ActiveRecord::Migration[5.1]
 
   def up
     create_table :embeddable_external_scripts do |t|

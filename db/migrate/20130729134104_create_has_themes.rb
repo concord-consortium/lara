@@ -1,4 +1,4 @@
-class CreateHasThemes < ActiveRecord::Migration
+class CreateHasThemes < ActiveRecord::Migration[5.1]
   class Theme < ApplicationRecord
   end
 

@@ -1,4 +1,4 @@
-class ConvertActivitiesToNewSectionsSchema < ActiveRecord::Migration
+class ConvertActivitiesToNewSectionsSchema < ActiveRecord::Migration[5.1]
   class InteractivePage < ApplicationRecord
     has_many :sections, -> { include(:page_items).order(:position) }
     has_many :page_items

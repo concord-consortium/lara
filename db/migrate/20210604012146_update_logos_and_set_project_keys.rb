@@ -1,4 +1,4 @@
-class UpdateLogosAndSetProjectKeys < ActiveRecord::Migration
+class UpdateLogosAndSetProjectKeys < ActiveRecord::Migration[5.1]
   class Project < ApplicationRecord
   end
 

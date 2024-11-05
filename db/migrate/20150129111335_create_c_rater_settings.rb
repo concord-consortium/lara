@@ -1,4 +1,4 @@
-class CreateCRaterSettings < ActiveRecord::Migration
+class CreateCRaterSettings < ActiveRecord::Migration[5.1]
   def change
     create_table :c_rater_settings do |t|
       t.integer :item_id
