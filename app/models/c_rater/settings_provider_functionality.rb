@@ -6,8 +6,8 @@ module CRater::SettingsProviderFunctionality
 
     base.prepend InstanceMethods
     class << base
-      def import(import_hash)
-        import_embeddable = super(import_hash.except(:item_settings))
+      def import_with_c_rater(import_hash)
+        import_embeddable = self.import_without_c_rater(import_hash.except(:item_settings))
         if import_hash[:item_settings]
           item_settings = CRater::ItemSettings.import(import_hash[:item_settings])
           item_settings.provider = import_embeddable
