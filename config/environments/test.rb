@@ -53,4 +53,12 @@ LightweightStandalone::Application.configure do
   config.action_controller.forgery_protection_origin_check = false
   config.ssl_options = { hsts: { subdomains: false } }
   ActiveSupport.to_time_preserves_timezone = false
+
+  # Disable Bootsnap for the test environment
+  if defined?(Bootsnap)
+    Bootsnap.setup(
+      cache_dir: 'tmp/cache',
+      development_mode: false,
+    )
+  end
 end
