@@ -183,7 +183,8 @@ GEM
       i18n (>= 0.7)
       multi_json
       request_store (>= 1.0)
-    haml (4.0.7)
+    haml (5.2.2)
+      temple (>= 0.8.0)
       tilt
     hashdiff (1.1.1)
     hashie (3.6.0)
@@ -384,6 +385,7 @@ GEM
       actionpack (>= 4.0)
       activesupport (>= 4.0)
       sprockets (>= 3.0.0)
+    temple (0.8.2)
     test-unit (3.6.2)
       power_assert
     thor (1.2.2)
@@ -458,7 +460,7 @@ DEPENDENCIES
   faker (= 2.2.1)
   font-awesome-rails (~> 4.7, >= 4.7.0.8)
   gon (~> 6.4.0)
-  haml (~> 4.0.7)
+  haml (~> 5.2)
   highline (~> 1.7.3)
   httparty (= 0.21)
   i18n (= 1.0.1)

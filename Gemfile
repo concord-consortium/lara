@@ -95,7 +95,7 @@ gem "dynamic_form", "= 1.2"
 gem "exception_notification", '= 4.4.3'
 gem "font-awesome-rails", '~> 4.7', '>= 4.7.0.8'
 gem "gon", "~> 6.4.0"
-gem "haml", "~> 4.0.7"
+gem "haml", "~> 5.2"
 gem "highline", "~> 1.7.3"
 gem "httparty", "= 0.21"
 gem "i18n", "= 1.0.1"
