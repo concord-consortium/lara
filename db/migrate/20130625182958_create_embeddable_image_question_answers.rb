@@ -7,8 +7,6 @@ class CreateEmbeddableImageQuestionAnswers < ActiveRecord::Migration[5.1]
       t.integer :image_question_id
       t.timestamps
     end
-    unless index_exists?(:embeddable_image_question_answers, :run_id)
-      add_index :embeddable_image_question_answers, :run_id
-    end
+    add_index :embeddable_image_question_answers, :run_id
   end
 end

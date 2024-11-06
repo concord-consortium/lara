@@ -7,9 +7,7 @@ class CreateCRaterSettings < ActiveRecord::Migration[5.1]
 
       t.timestamps
     end
-    unless index_exists?(:c_rater_settings, :score_mapping_id)
-      add_index :c_rater_settings, :score_mapping_id
-    end
+    add_index :c_rater_settings, :score_mapping_id
     add_index :c_rater_settings, [:provider_id, :provider_type]
   end
 end
