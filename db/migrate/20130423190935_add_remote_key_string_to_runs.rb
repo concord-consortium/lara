@@ -1,4 +1,4 @@
-class AddRemoteKeyStringToRuns < ActiveRecord::Migration[5.1]
+class AddRemoteKeyStringToRuns < ActiveRecord::Migration
   def change
     add_column :runs, :remote_id, :string
   end

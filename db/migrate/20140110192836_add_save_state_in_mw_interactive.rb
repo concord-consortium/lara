@@ -1,4 +1,4 @@
-class AddSaveStateInMwInteractive < ActiveRecord::Migration[5.1]
+class AddSaveStateInMwInteractive < ActiveRecord::Migration
   def change
      add_column :mw_interactives, :save_state, :boolean, :default => false
   end

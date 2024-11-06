@@ -1,4 +1,4 @@
-class CreateOpenResponseQuestions < ActiveRecord::Migration[5.1]
+class CreateOpenResponseQuestions < ActiveRecord::Migration
   def up
     create_table :embeddable_open_responses do |t|
       t.string :name

@@ -1,5 +1,5 @@
 
-class AddSection < ActiveRecord::Migration[5.1]
+class AddSection < ActiveRecord::Migration
   def up
     create_table :sections do |t|
       t.string :title

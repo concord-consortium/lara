@@ -1,4 +1,4 @@
-class RemoveCanExport < ActiveRecord::Migration[5.1]
+class RemoveCanExport < ActiveRecord::Migration
   def up
     remove_column :users, :can_export
   end

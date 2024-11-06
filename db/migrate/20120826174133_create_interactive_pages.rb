@@ -1,4 +1,4 @@
-class CreateInteractivePages < ActiveRecord::Migration[5.1]
+class CreateInteractivePages < ActiveRecord::Migration
   def change
     create_table :interactive_pages do |t|
       t.string  :name

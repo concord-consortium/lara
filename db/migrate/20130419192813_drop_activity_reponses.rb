@@ -1,4 +1,4 @@
-class DropActivityReponses < ActiveRecord::Migration[5.1]
+class DropActivityReponses < ActiveRecord::Migration
   def up
     # activity_response functionality taken over by runs
     drop_table "activity_responses"

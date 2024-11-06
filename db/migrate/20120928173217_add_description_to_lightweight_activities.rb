@@ -1,4 +1,4 @@
-class AddDescriptionToLightweightActivities < ActiveRecord::Migration[5.1]
+class AddDescriptionToLightweightActivities < ActiveRecord::Migration
   def change
     add_column :lightweight_activities, :description, :text, :null => true
   end

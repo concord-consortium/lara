@@ -1,4 +1,4 @@
-class CreateImports < ActiveRecord::Migration[5.1]
+class CreateImports < ActiveRecord::Migration
   def change
     create_table :imports do |t|
       t.string :export_site

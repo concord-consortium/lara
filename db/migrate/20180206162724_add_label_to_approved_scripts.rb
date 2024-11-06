@@ -1,4 +1,4 @@
-class AddLabelToApprovedScripts < ActiveRecord::Migration[5.1]
+class AddLabelToApprovedScripts < ActiveRecord::Migration
   def change
     add_column :approved_scripts, :label, :string
   end

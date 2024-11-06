@@ -1,4 +1,4 @@
-class AddSequenceLayoutOverride < ActiveRecord::Migration[5.1]
+class AddSequenceLayoutOverride < ActiveRecord::Migration
   def change
     add_column :sequences, :layout_override, :integer, default: 0
   end

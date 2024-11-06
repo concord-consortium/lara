@@ -1,4 +1,4 @@
-class UpdateProjectFields < ActiveRecord::Migration[5.1]
+class UpdateProjectFields < ActiveRecord::Migration
   def change
     rename_column :projects, :logo, :logo_lara
     add_column :projects, :logo_ap, :string

@@ -1,4 +1,4 @@
-class ChangeThemeStringsToIds < ActiveRecord::Migration[5.1]
+class ChangeThemeStringsToIds < ActiveRecord::Migration
   def up
     remove_column :lightweight_activities, :theme
     add_column :lightweight_activities, :theme_id, :integer, :null => true

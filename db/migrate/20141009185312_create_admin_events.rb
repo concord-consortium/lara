@@ -1,4 +1,4 @@
-class CreateAdminEvents < ActiveRecord::Migration[5.1]
+class CreateAdminEvents < ActiveRecord::Migration
   def change
     create_table :admin_events do |t|
       t.string :kind

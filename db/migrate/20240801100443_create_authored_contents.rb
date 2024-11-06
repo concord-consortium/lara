@@ -1,4 +1,4 @@
-class CreateAuthoredContents < ActiveRecord::Migration[5.1]
+class CreateAuthoredContents < ActiveRecord::Migration
   def change
     create_table :authored_contents do |t|
       t.string :content_type

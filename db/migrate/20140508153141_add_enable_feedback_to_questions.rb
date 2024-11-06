@@ -1,4 +1,4 @@
-class AddEnableFeedbackToQuestions < ActiveRecord::Migration[5.1]
+class AddEnableFeedbackToQuestions < ActiveRecord::Migration
   def change
     add_column :embeddable_open_responses, :give_prediction_feedback, :boolean, :default => false
     add_column :embeddable_multiple_choices, :give_prediction_feedback, :boolean, :default => false

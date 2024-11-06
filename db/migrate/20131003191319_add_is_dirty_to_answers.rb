@@ -1,4 +1,4 @@
-class AddIsDirtyToAnswers < ActiveRecord::Migration[5.1]
+class AddIsDirtyToAnswers < ActiveRecord::Migration
   def change
     add_column :embeddable_multiple_choice_answers, :is_dirty, :boolean, default: false
     add_column :embeddable_open_response_answers, :is_dirty, :boolean, default: false

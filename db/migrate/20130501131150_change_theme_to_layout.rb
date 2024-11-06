@@ -1,4 +1,4 @@
-class ChangeThemeToLayout < ActiveRecord::Migration[5.1]
+class ChangeThemeToLayout < ActiveRecord::Migration
   def up
     # We haven't needed this in ages
     remove_column :interactive_pages, :offerings_count

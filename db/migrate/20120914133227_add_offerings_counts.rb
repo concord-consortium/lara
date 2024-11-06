@@ -1,4 +1,4 @@
-class AddOfferingsCounts < ActiveRecord::Migration[5.1]
+class AddOfferingsCounts < ActiveRecord::Migration
   def up
     add_column :lightweight_activities, :offerings_count, :integer
     add_column :interactive_pages, :offerings_count, :integer

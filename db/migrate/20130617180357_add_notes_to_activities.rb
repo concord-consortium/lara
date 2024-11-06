@@ -1,4 +1,4 @@
-class AddNotesToActivities < ActiveRecord::Migration[5.1]
+class AddNotesToActivities < ActiveRecord::Migration
   def change
     add_column :lightweight_activities, :notes, :text
   end

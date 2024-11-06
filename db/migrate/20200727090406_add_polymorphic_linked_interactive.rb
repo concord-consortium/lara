@@ -1,4 +1,4 @@
-class AddPolymorphicLinkedInteractive < ActiveRecord::Migration[5.1]
+class AddPolymorphicLinkedInteractive < ActiveRecord::Migration
 
   class MwInteractive < ActiveRecord::Base
   end

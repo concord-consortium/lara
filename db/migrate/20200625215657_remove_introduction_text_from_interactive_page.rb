@@ -1,4 +1,4 @@
-class RemoveIntroductionTextFromInteractivePage < ActiveRecord::Migration[5.1]
+class RemoveIntroductionTextFromInteractivePage < ActiveRecord::Migration
   def up
     remove_column :interactive_pages, :text
     remove_column :interactive_pages, :show_introduction

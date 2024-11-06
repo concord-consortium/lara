@@ -1,4 +1,4 @@
-class CreateCollaborationRuns < ActiveRecord::Migration[5.1]
+class CreateCollaborationRuns < ActiveRecord::Migration
   def up
     create_table :collaboration_runs do |t|
       t.integer :user_id

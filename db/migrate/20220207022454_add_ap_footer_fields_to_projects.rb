@@ -1,4 +1,4 @@
-class AddApFooterFieldsToProjects < ActiveRecord::Migration[5.1]
+class AddApFooterFieldsToProjects < ActiveRecord::Migration
   def up
     add_column :projects, :copyright, :text
     add_column :projects, :copyright_image_url, :string

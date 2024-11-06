@@ -1,4 +1,4 @@
-class AddIsDirtyToRun < ActiveRecord::Migration[5.1]
+class AddIsDirtyToRun < ActiveRecord::Migration
   def change
     add_column :runs, :is_dirty, :boolean, :default => false
   end

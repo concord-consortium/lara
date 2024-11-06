@@ -1,4 +1,4 @@
-class CreateCRaterScoreMappings < ActiveRecord::Migration[5.1]
+class CreateCRaterScoreMappings < ActiveRecord::Migration
   def change
     create_table :c_rater_score_mappings do |t|
       t.text :mapping

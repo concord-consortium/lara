@@ -1,4 +1,4 @@
-class AddHideQuestionNumber < ActiveRecord::Migration[5.1]
+class AddHideQuestionNumber < ActiveRecord::Migration
   def change
     add_column :library_interactives, :hide_question_number, :boolean, default: false
     add_column :mw_interactives, :hide_question_number, :boolean, default: false

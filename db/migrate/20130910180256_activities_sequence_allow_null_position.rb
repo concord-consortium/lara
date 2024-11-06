@@ -1,4 +1,4 @@
-class ActivitiesSequenceAllowNullPosition < ActiveRecord::Migration[5.1]
+class ActivitiesSequenceAllowNullPosition < ActiveRecord::Migration
   def up
     change_column(:lightweight_activities_sequences, :position, :integer, :null => true)
   end

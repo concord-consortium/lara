@@ -1,4 +1,4 @@
-class AddLogoToSequences < ActiveRecord::Migration[5.1]
+class AddLogoToSequences < ActiveRecord::Migration
   def change
     add_column :sequences, :logo, :text
   end

@@ -1,4 +1,4 @@
-class AddIndexesGetFasterProfit < ActiveRecord::Migration[5.1]
+class AddIndexesGetFasterProfit < ActiveRecord::Migration
   def change
     # Not big wins, but seldom written-to, so probably harmless
     add_index :projects, :theme_id

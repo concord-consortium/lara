@@ -1,4 +1,4 @@
-class ChangeGlossaryJsonSize < ActiveRecord::Migration[5.1]
+class ChangeGlossaryJsonSize < ActiveRecord::Migration
   def up
     change_column :glossaries, :json, :text, :limit => 16777215
   end

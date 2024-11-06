@@ -1,4 +1,4 @@
-class CreateEmbeddableXhtml < ActiveRecord::Migration[5.1]
+class CreateEmbeddableXhtml < ActiveRecord::Migration
   def change
     create_table :embeddable_xhtmls do |t|
       t.string :name

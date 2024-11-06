@@ -1,4 +1,4 @@
-class AddRubricDocUrl < ActiveRecord::Migration[5.1]
+class AddRubricDocUrl < ActiveRecord::Migration
   def change
     add_column :rubrics, :doc_url, :string, :null => true
   end

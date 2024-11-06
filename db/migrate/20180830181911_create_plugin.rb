@@ -1,4 +1,4 @@
-class CreatePlugin < ActiveRecord::Migration[5.1]
+class CreatePlugin < ActiveRecord::Migration
   def change
     create_table :plugins do |t|
       t.string  :approved_script_id

@@ -1,4 +1,4 @@
-class AddSectionName < ActiveRecord::Migration[5.1]
+class AddSectionName < ActiveRecord::Migration
   def change
     add_column :sections, :name, :string
   end

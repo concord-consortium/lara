@@ -1,4 +1,4 @@
-class AddRubricAuthoredContent < ActiveRecord::Migration[5.1]
+class AddRubricAuthoredContent < ActiveRecord::Migration
   def up
     change_table :rubrics do |t|
       t.references :authored_content

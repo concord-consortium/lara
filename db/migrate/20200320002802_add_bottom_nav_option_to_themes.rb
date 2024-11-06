@@ -1,4 +1,4 @@
-class AddBottomNavOptionToThemes < ActiveRecord::Migration[5.1]
+class AddBottomNavOptionToThemes < ActiveRecord::Migration
   def change
     add_column :themes, :footer_nav, :boolean, :default => false
   end

@@ -1,4 +1,4 @@
-class RemoveFullwidthFromInteractive < ActiveRecord::Migration[5.1]
+class RemoveFullwidthFromInteractive < ActiveRecord::Migration
   def up
     remove_column :mw_interactives, :width
     remove_column :mw_interactives, :fullwidth

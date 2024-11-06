@@ -1,5 +1,6 @@
-class AddPublicationStatusAndIsOfficialToSequence < ActiveRecord::Migration[5.1]
-  class Sequence < ApplicationRecord
+class AddPublicationStatusAndIsOfficialToSequence < ActiveRecord::Migration
+  class Sequence < ActiveRecord::Base
+    attr_protected :non_existint_field # make other attrs accessable.
   end
 
   def up

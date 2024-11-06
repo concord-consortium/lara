@@ -1,4 +1,4 @@
-class RemoveExternalReportUrlFromLightWeightActivity < ActiveRecord::Migration[5.1]
+class RemoveExternalReportUrlFromLightWeightActivity < ActiveRecord::Migration
   # Removes columns added in AddExternalReportUrlToLightweightActivity
   # 20160722195644_add_external_report_url_to_lightweight_activity.rb
 

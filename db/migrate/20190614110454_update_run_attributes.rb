@@ -1,4 +1,4 @@
-class UpdateRunAttributes < ActiveRecord::Migration[5.1]
+class UpdateRunAttributes < ActiveRecord::Migration
   def up
     rename_column :runs, :class_hash, :context_id
     add_column :runs, :platform_id, :string

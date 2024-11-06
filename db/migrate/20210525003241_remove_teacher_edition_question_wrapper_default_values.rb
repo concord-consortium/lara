@@ -1,8 +1,8 @@
-class RemoveTeacherEditionQuestionWrapperDefaultValues < ActiveRecord::Migration[5.1]
-  class Plugin < ApplicationRecord
+class RemoveTeacherEditionQuestionWrapperDefaultValues < ActiveRecord::Migration
+  class Plugin < ActiveRecord::Base
   end
 
-  def valid_json(json)
+  def valid_json(json) 
       JSON.parse(json)
       return true
     rescue JSON::ParserError => e

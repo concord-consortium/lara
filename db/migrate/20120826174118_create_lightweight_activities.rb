@@ -1,4 +1,4 @@
-class CreateLightweightActivities < ActiveRecord::Migration[5.1]
+class CreateLightweightActivities < ActiveRecord::Migration
   def change
     create_table :lightweight_activities do |t|
       t.string :name

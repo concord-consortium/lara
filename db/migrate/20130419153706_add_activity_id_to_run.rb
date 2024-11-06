@@ -1,4 +1,4 @@
-class AddActivityIdToRun < ActiveRecord::Migration[5.1]
+class AddActivityIdToRun < ActiveRecord::Migration
   def change
     add_column :runs, :key,         :string
     add_column :runs, :activity_id, :integer

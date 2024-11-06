@@ -1,4 +1,4 @@
-class RemoveThemeFromInteractivePage < ActiveRecord::Migration[5.1]
+class RemoveThemeFromInteractivePage < ActiveRecord::Migration
   def up
     remove_column :interactive_pages, :theme
   end

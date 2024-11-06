@@ -1,4 +1,4 @@
-class AddIndexesToSections < ActiveRecord::Migration[5.1]
+class AddIndexesToSections < ActiveRecord::Migration
   def change
     add_index :sections, [:interactive_page_id, :position]
     add_index :page_items, [:section_id, :position]

@@ -1,4 +1,4 @@
-class ChangeResponseStringToText < ActiveRecord::Migration[5.1]
+class ChangeResponseStringToText < ActiveRecord::Migration
   def up
     change_table :portal_publications do |t|
       t.change :response, :text

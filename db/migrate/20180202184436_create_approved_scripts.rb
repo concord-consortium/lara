@@ -1,4 +1,4 @@
-class CreateApprovedScripts < ActiveRecord::Migration[5.1]
+class CreateApprovedScripts < ActiveRecord::Migration
   def change
     create_table :approved_scripts do |t|
       t.string :name

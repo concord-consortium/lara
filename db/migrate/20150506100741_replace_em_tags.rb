@@ -1,5 +1,5 @@
-class ReplaceEmTags < ActiveRecord::Migration[5.1]
-  class Project < ApplicationRecord
+class ReplaceEmTags < ActiveRecord::Migration
+  class Project < ActiveRecord::Base
   end
 
   def up
@@ -41,7 +41,7 @@ private
     Embeddable::ImageQuestion.find_each do |image|
       image.drawing_prompt = image.drawing_prompt.gsub(current_tag,replacement_tag) unless image.drawing_prompt.blank?
       image.prompt = image.prompt.gsub(current_tag,replacement_tag) unless image.prompt.blank?
-      image.prediction_feedback = image.prediction_feedback.gsub(current_tag,replacement_tag) unless image.prediction_feedback.blank?
+      image.prediction_feedback = image.prediction_feedback.gsub(current_tag,replacement_tag) unless image.prediction_feedback.blank? 
       image.save
     end
 

@@ -1,4 +1,4 @@
-class AddAuthoredStateToMwInteractives < ActiveRecord::Migration[5.1]
+class AddAuthoredStateToMwInteractives < ActiveRecord::Migration
   def change
     add_column :mw_interactives, :authored_state, :text
   end

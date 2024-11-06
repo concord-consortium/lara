@@ -1,4 +1,4 @@
-class AddClassHashToRuns < ActiveRecord::Migration[5.1]
+class AddClassHashToRuns < ActiveRecord::Migration
   def change
     add_column :runs, :class_hash, :string
   end

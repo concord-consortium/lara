@@ -1,4 +1,4 @@
-class AddThumbnailUrlToSequences < ActiveRecord::Migration[5.1]
+class AddThumbnailUrlToSequences < ActiveRecord::Migration
   def change
     add_column :sequences, :thumbnail_url, :string
   end

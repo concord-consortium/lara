@@ -1,4 +1,4 @@
-class AddAdditionalSectionsToInteractivePage < ActiveRecord::Migration[5.1]
+class AddAdditionalSectionsToInteractivePage < ActiveRecord::Migration
   def change
     add_column :interactive_pages, :additional_sections, :text
   end

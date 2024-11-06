@@ -1,4 +1,4 @@
-class SetPagePositionValues < ActiveRecord::Migration[5.1]
+class SetPagePositionValues < ActiveRecord::Migration
   def up
     LightweightActivity.all.each do |act|
       pos = 1

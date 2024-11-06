@@ -1,4 +1,4 @@
-class CreateVideoSources < ActiveRecord::Migration[5.1]
+class CreateVideoSources < ActiveRecord::Migration
   def change
     create_table :video_sources do |t|
       t.string :url, :null => false

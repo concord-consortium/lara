@@ -1,4 +1,4 @@
-class AddRemoteEndpointToRun < ActiveRecord::Migration[5.1]
+class AddRemoteEndpointToRun < ActiveRecord::Migration
   def change
     add_column :runs, :remote_endpoint, :string
   end

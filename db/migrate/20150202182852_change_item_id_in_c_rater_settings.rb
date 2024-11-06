@@ -1,4 +1,4 @@
-class ChangeItemIdInCRaterSettings < ActiveRecord::Migration[5.1]
+class ChangeItemIdInCRaterSettings < ActiveRecord::Migration
   def up
     # Index name too long issue...
     remove_index :c_rater_settings, [:provider_id, :provider_type]

@@ -1,4 +1,4 @@
-class AddStudentReportEnabled < ActiveRecord::Migration[5.1]
+class AddStudentReportEnabled < ActiveRecord::Migration
   def change
     add_column :lightweight_activities, :student_report_enabled, :boolean, :default => true
   end

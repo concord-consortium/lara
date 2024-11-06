@@ -1,7 +1,7 @@
-class AddPortalRunCountToLightweightActivity < ActiveRecord::Migration[5.1]
-  class Tun < ApplicationRecord
-   self.table_name = 'runs'
-  end
+class AddPortalRunCountToLightweightActivity < ActiveRecord::Migration
+  class Tun < ActiveRecord::Base
+   set_table_name :runs
+  end 
 
   class Act < ActiveRecord::Base
     set_table_name :lightweight_activities

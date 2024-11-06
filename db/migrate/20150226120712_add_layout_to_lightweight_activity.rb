@@ -1,4 +1,4 @@
-class AddLayoutToLightweightActivity < ActiveRecord::Migration[5.1]
+class AddLayoutToLightweightActivity < ActiveRecord::Migration
   def change
     add_column :lightweight_activities, :layout, :integer, default: 0
   end

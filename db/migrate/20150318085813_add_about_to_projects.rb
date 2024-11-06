@@ -1,4 +1,4 @@
-class AddAboutToProjects < ActiveRecord::Migration[5.1]
+class AddAboutToProjects < ActiveRecord::Migration
   def change
     add_column :projects, :about, :text
   end

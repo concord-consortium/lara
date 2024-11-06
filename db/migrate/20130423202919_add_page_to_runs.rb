@@ -1,4 +1,4 @@
-class AddPageToRuns < ActiveRecord::Migration[5.1]
+class AddPageToRuns < ActiveRecord::Migration
   def change
     add_column :runs, :page_id, :integer
   end

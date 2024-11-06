@@ -1,4 +1,4 @@
-class CreateEmbeddableFeedbackItems < ActiveRecord::Migration[5.1]
+class CreateEmbeddableFeedbackItems < ActiveRecord::Migration
   def change
     create_table :embeddable_feedback_items do |t|
       t.references :answer, polymorphic: true

@@ -1,4 +1,4 @@
-class CreateMultipleChoiceQuestions < ActiveRecord::Migration[5.1]
+class CreateMultipleChoiceQuestions < ActiveRecord::Migration
   def up
     create_table :embeddable_multiple_choices do |t|
       t.string :name

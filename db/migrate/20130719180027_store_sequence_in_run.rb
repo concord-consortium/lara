@@ -1,4 +1,4 @@
-class StoreSequenceInRun < ActiveRecord::Migration[5.1]
+class StoreSequenceInRun < ActiveRecord::Migration
   def up
     add_column :runs, :sequence_id, :integer, :null => true
   end

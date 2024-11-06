@@ -1,6 +1,6 @@
-class FixupPageItemPositions < ActiveRecord::Migration[5.1]
-  class InteractivePage < ApplicationRecord
-    has_many :page_items, -> { order(:section, :position) }
+class FixupPageItemPositions < ActiveRecord::Migration
+  class InteractivePage < ActiveRecord::Base
+    has_many :page_items, :order => [:section, :position]
   end
 
   class PageItem < ActiveRecord::Base

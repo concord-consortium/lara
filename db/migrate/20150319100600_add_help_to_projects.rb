@@ -1,4 +1,4 @@
-class AddHelpToProjects < ActiveRecord::Migration[5.1]
+class AddHelpToProjects < ActiveRecord::Migration
   def change
     add_column :projects, :help, :text
   end

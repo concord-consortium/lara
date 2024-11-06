@@ -1,4 +1,4 @@
-class UpdatePublicationStatusNames < ActiveRecord::Migration[5.1]
+class UpdatePublicationStatusNames < ActiveRecord::Migration
 
   class Sequence < ActiveRecord::Base
   end

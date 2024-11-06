@@ -1,4 +1,4 @@
-class CreateEmbeddableImageQuestions < ActiveRecord::Migration[5.1]
+class CreateEmbeddableImageQuestions < ActiveRecord::Migration
   def change
     create_table :embeddable_image_questions do |t|
       t.string :name

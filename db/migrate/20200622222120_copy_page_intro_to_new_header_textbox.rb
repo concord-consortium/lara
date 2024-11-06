@@ -1,4 +1,4 @@
-class CopyPageIntroToNewHeaderTextbox < ActiveRecord::Migration[5.1]
+class CopyPageIntroToNewHeaderTextbox < ActiveRecord::Migration
   module Embeddable
     class Embeddable::Xhtml < ActiveRecord::Base
       attr_accessible :name, :content, :is_hidden, :is_full_width

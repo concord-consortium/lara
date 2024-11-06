@@ -1,4 +1,4 @@
-class CreateSequenceRuns < ActiveRecord::Migration[5.1]
+class CreateSequenceRuns < ActiveRecord::Migration
   def change
     create_table :sequence_runs do |t|
       t.integer :user_id

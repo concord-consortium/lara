@@ -1,4 +1,4 @@
-class RenameIsPredictionToIsFinalInAnswers < ActiveRecord::Migration[5.1]
+class RenameIsPredictionToIsFinalInAnswers < ActiveRecord::Migration
   def table_names
     %w[
       embeddable_open_response_answers

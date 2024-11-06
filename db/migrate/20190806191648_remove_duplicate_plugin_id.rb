@@ -1,4 +1,4 @@
-class RemoveDuplicatePluginId < ActiveRecord::Migration[5.1]
+class RemoveDuplicatePluginId < ActiveRecord::Migration
 
   def up
     # need to go through all EmbeddablePlugins and make sure each of their

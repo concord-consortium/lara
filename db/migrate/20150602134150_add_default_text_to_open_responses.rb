@@ -1,4 +1,4 @@
-class AddDefaultTextToOpenResponses < ActiveRecord::Migration[5.1]
+class AddDefaultTextToOpenResponses < ActiveRecord::Migration
   def change
     add_column :embeddable_open_responses, :default_text, :string
   end

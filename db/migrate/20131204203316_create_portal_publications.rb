@@ -1,4 +1,4 @@
-class CreatePortalPublications < ActiveRecord::Migration[5.1]
+class CreatePortalPublications < ActiveRecord::Migration
   def change
     create_table :portal_publications do |t|
       t.string :portal_url

@@ -1,4 +1,4 @@
-class CreateActivityResponses < ActiveRecord::Migration[5.1]
+class CreateActivityResponses < ActiveRecord::Migration
   def change
     create_table :activity_responses do |t|
       t.string :key, :null => false

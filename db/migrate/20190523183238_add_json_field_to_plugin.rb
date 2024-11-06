@@ -1,4 +1,4 @@
-class AddJsonFieldToPlugin < ActiveRecord::Migration[5.1]
+class AddJsonFieldToPlugin < ActiveRecord::Migration
   def change
     add_column :approved_scripts, :json_url, :string
   end

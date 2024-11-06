@@ -1,4 +1,4 @@
-class AddDisplayTitleToSequences < ActiveRecord::Migration[5.1]
+class AddDisplayTitleToSequences < ActiveRecord::Migration
   def change
     add_column :sequences, :display_title, :string
   end
