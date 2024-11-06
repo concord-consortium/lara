@@ -64,3 +64,6 @@ coverage/
 .DS_Store
 lara-typescript/yarn-error.log
 db/backups/
+
+# Ignore master key for decrypting credentials and more.
+/config/master.key
