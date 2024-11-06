@@ -33,6 +33,6 @@ describe 'lightweight_activities/print_blank' do
   it 'has a print button' do
     render
     expect(rendered).to have_css 'input.button[type=submit]'
-    expect(rendered).to match I18n.t("PRINT_BLANK.PRINT", activity: activity.name)
+    assert_select 'input.button[type=submit]', value: I18n.t("PRINT_BLANK.PRINT", activity: activity.name)
   end
 end
