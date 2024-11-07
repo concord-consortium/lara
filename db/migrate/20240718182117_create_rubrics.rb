@@ -1,4 +1,4 @@
-class CreateRubrics < ActiveRecord::Migration
+class CreateRubrics < ActiveRecord::Migration[5.1]
   def change
     create_table :rubrics do |t|
       t.string :name
@@ -8,6 +8,6 @@ class CreateRubrics < ActiveRecord::Migration
       t.timestamps
     end
 
-    add_column :lightweight_activities, :rubric_id, :integer, :null => true
+    add_column :lightweight_activities, :rubric_id, :integer, null: true
   end
 end

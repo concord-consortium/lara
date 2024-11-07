@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'c_rater/api_wrapper'
 
 describe CRater::APIWrapper do
   let(:client_id)     { 'concord' }

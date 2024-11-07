@@ -17,7 +17,7 @@
 
 def count_embeddables(type=nil)
   types = type ? type : @convertable_embeddable_classes
-  embeddables_count = PageItem.where(:embeddable_type => types).length
+  embeddables_count = PageItem.where(embeddable_type: types).length
   puts "There #{embeddables_count == 1 ? "is" : "are"} #{embeddables_count} #{type ? type : "built-in"} embeddables to convert."
 end
 
@@ -100,7 +100,7 @@ def image_question_authored_state(item)
       nil
     end
 
-  target_page_item = background_source == "snapshot" ? PageItem.where(:embeddable_id => item.embeddable.interactive_id, :embeddable_type => item.embeddable.interactive_type).first : nil
+  target_page_item = background_source == "snapshot" ? PageItem.where(embeddable_id: item.embeddable.interactive_id, embeddable_type: item.embeddable.interactive_type).first : nil
   if target_page_item
     new_linked_page_item = LinkedPageItem.new(primary_id: item.id, secondary_id: target_page_item.id, label: "snapshotTarget")
     new_linked_page_item.save!
@@ -180,7 +180,7 @@ end
 def create_new_embeddables(activity_id=nil)
   # Get a list of official Library Interactives so we know which ones to convert to.
   library_interactives = {}
-  LibraryInteractive.where(:official => true).each do |library_interactive|
+  LibraryInteractive.where(official: true).each do |library_interactive|
     @convertable_embeddable_types.each do |question_type|
       if library_interactive.name == question_type
         library_interactives[question_type] = library_interactive
@@ -222,7 +222,7 @@ def create_new_embeddables(activity_id=nil)
           case page_item.embeddable_type
           when "Embeddable::Answer", "Embeddable::AnswerFinder", "Embeddable::FeedbackFunctionality", "Embeddable::FeedbackItem", "Embeddable::LabbookAnswer", "Embeddable::Labbook"
             activity.defunct = true
-            activity.save(:validate => false)
+            activity.save(validate: false)
           when "Embeddable::MultipleChoice"
             library_interactive = library_interactives["Multiple Choice"]
             name = page_item.embeddable.name != "Multiple Choice Question element" ? page_item.embeddable.name : ""
@@ -266,7 +266,7 @@ def create_new_embeddables(activity_id=nil)
       puts "Processed #{activities_processed} of #{activities_to_process} activities."
     end
     activity.migration_status = "in progress"
-    activity.save(:validate => false)
+    activity.save(validate: false)
   end
   puts "Processed #{activities_processed} of #{activities_to_process} activities."
 end
@@ -341,7 +341,7 @@ def replace_old_embeddables(activity_id=nil)
     end
     activity.runtime = "Activity Player"
     activity.migration_status = "migrated"
-    activity.save(:validate => false)
+    activity.save(validate: false)
   end
   puts "Processed #{activities_processed} of #{activities_to_process} activities."
 end
@@ -359,7 +359,7 @@ namespace :convert_embeddables do
   end
 
   desc "Deletes any ManagedInteractive embeddables that are not associated with a PageItem."
-  task :delete_orphaned_new_embeddables => :environment do
+  task delete_orphaned_new_embeddables: :environment do
     delete_orphaned_new_embeddables
   end
 
@@ -369,7 +369,7 @@ namespace :convert_embeddables do
   end
 
   desc "Deletes amy built-in embeddables that are not associated with a PageItem."
-  task :delete_orphaned_old_embeddables => :environment do
+  task delete_orphaned_old_embeddables: :environment do
     delete_orphaned_old_embeddables
   end
 

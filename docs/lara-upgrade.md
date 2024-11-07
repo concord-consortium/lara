@@ -80,7 +80,7 @@ The status codes are:
 
 | Gem                          | Status       | Initial Version | Current Version | Max Version |
 |------------------------------|--------------|-----------------|-----------------|-------------|
-| rails (+ rails core...)      |          CU! |          3.2.22 |          4.0.13 |       7.1.4 |
+| rails (+ rails core...)      |          CU! |          3.2.22 |        5.2.8.25 |       7.1.4 |
 | *GEMS AT MAX*                |              |                 |                 |             |
 | aws-ses                      |        NC AM |           0.7.1 |           0.7.1 |       0.7.1 |
 | chosen-rails                 |       UC* AM |           1.0.1 |          1.10.0 |      1.10.0 |
@@ -97,6 +97,7 @@ The status codes are:
 | protected_attributes         |           AM |             n/a |           1.1.4 |       1.1.4 |
 | rack-environmental           |       UC* AM |           1.3.1 |           1.3.2 |       1.3.2 |
 | rack-secure_samesite_cookies |        NC AM |           1.0.2 |           1.0.2 |       1.0.2 |
+| rails-controller-testing     |          n/a |             n/a |           1.0.5 |       1.0.5 |
 | rake                         |       UC! AM |          10.5.0 |          13.2.1 |      13.2.1 |
 | ribbons-rails                |        NC AM |           0.0.1 |           0.0.1 |       0.0.1 |
 | rspec-activemodel-mocks      |       UC* AM |           1.0.1 |           1.2.1 |       1.2.1 |
@@ -112,40 +113,46 @@ The status codes are:
 | acts_as_list                 |          UC* |           0.3.0 |          0.9.19 |       1.2.3 |
 | aws-sdk                      |          CU! |          1.66.0 |          2.0.22 |       3.2.0 |
 | better_errors                |          UC! |           1.1.0 |           2.0.0 |      2.10.1 |
-| bullet                       |           NC |           5.4.3 |           5.4.3 |       7.2.0 |
-| cancancan                    |          UC* |          1.10.1 |          1.17.0 |       3.6.1 |
+| bootsnap                     |          n/a |             n/a |           1.4.4 |      1.18.4 |
+| bullet                       |           NC |           5.4.3 |           5.7.5 |       7.2.0 |
+| cancancan                    |          UC! |          1.10.1 |           2.3.0 |       3.6.1 |
 | capybara                     |          UC* |           2.4.4 |          2.18.0 |      3.40.0 |
 | ci_reporter                  |           RM |           1.7.3 |               - |       2.1.0 |
 | coffee-rails                 |          UC! |           3.2.2 |           4.2.2 |       5.0.0 |
 | compass-rails                |           NC |           3.1.0 |           3.1.0 |       4.0.0 |
 | default_value_for            |          UC! |           2.0.3 |           3.6.0 |       4.0.0 |
-| devise                       |          UC* |           3.0.1 |          3.5.10 |       4.9.4 |
+| devise                       |          UC! |           3.0.1 |           4.9.4 |       4.9.4 |
 | dynamic_form                 |          UC* |           1.1.4 |           1.2.0 |       1.3.1 |
 | exception_notification       |          UC* |           4.0.1 |           4.4.3 |       4.5.0 |
-| factory_girl_rails           |          UC* |           4.3.0 |           4.5.0 |       6.4.3 |
+| factory_girl_rails           |          UC* |           4.3.0 |           4.9.0 |       6.4.3 |
 | faker                        |          UC! |           1.2.0 |           2.2.1 |       3.4.2 |
-| haml                         |          UC* |           4.0.5 |           4.0.7 |       6.3.0 |
-| highline                     |          UC* |          1.6.21 |           1.7.3 |       3.1.1 |
+| haml                         |          UC! |           4.0.5 |           5.2.2 |       6.3.0 |
+| highline                     |          UC* |          1.6.21 |          1.7.10 |       3.1.1 |
 | httparty                     |          UC* |          0.12.0 |          0.21.0 |      0.22.0 |
+| i18n                         |          n/a |             n/a |           1.0.1 |      1.14.6 |
 | jasmine                      |          UC* |           2.2.0 |          2.99.0 |      3.99.0 |
-| jquery-rails                 |           NC |           3.1.5 |           3.1.5 |       4.6.0 |
+| jquery-rails                 |          UC! |           3.1.5 |           4.6.0 |       4.6.0 |
 | jquery-ui-rails              |          UC* |           4.1.0 |           4.2.1 |       7.0.0 |
 | launchy                      |          UC* |           2.4.0 |           2.5.2 |       3.0.1 |
-| mysql2                       |           NC |          0.3.21 |          0.3.21 |       0.5.6 |
+| loofah                       |          n/a |             n/a |          2.19.1 |      2.23.1 |
+| mysql2                       |          UC* |          0.3.21 |           0.5.6 |       0.5.6 |
 | newrelic_rpm                 |          UC* |       4.6.0.338 |       4.8.0.341 |      9.14.0 |
 | nokogiri                     |          UC* |          1.10.3 |         1.10.10 |      1.16.7 |
 | omniauth                     |          UC* |           1.3.2 |           1.4.2 |       2.1.2 |
 | omniauth-oauth2              |          UC* |           1.1.1 |           1.3.0 |       1.8.0 |
-| rack-cors                    |          UC! |           0.4.1 |           1.0.3 |       2.0.2 |
-| rspec-rails                  |          UC* |           3.8.2 |           3.9.1 |       7.0.1 |
+| rack-cors                    |          UC! |           0.4.1 |           1.0.6 |       2.0.2 |
+| responders                   |          n/a |             n/a |           2.4.1 |       3.1.1 |
+| rspec-rails                  |          UC! |           3.8.2 |           4.1.2 |       7.0.1 |
+| rubocop                      |          n/a |             n/a |          0.49.1 |       1.6.8 |
 | sass-rails                   |          UC! |           3.2.6 |           5.0.7 |       6.0.0 |
-| sassc                        |         n/a  |             n/a |           2.1.0 |       2.4.0 |
+| sassc                        |          n/a |             n/a |           2.1.0 |       2.4.0 |
 | simplecov                    |          UC* |          0.16.1 |          0.17.1 |      0.22.0 |
 | spring                       |          UC* |           1.2.0 |           1.7.2 |       4.2.1 |
 | tinymce-rails                |          UC* |           4.7.9 |           4.9.4 |       7.4.1 |
 | uglifier                     |          UC* |           4.1.8 |           4.2.0 |       4.2.1 |
 | unicorn                      |          UC! |           5.0.1 |           6.1.0 |       6.1.0 |
 | uuidtools                    |          UC* |           2.1.4 |           2.1.5 |       2.2.0 |
+| web-console                  |          n/a |             n/a |           3.7.0 |       4.2.1 |
 | webmock                      |          UC! |          1.24.6 |           3.8.3 |      3.24.0 |
 
 ### Upgrade To Rails 4.0.13
@@ -186,7 +193,7 @@ The status codes are:
 2. Upgrade rails gems in `Gemfile` to last 4.1 version: `gem 'rails', '~> 4.1.16'`.  No Ruby upgrade is required. ✅
 3. Inside running Docker image run `bundle update rails` ✅
 4. Resolve gem dependency issues until the bundle update succeeds. ✅
-5. Complete upgrade tasks in the [4.0 to 4.1 upgrade guide](https://guides.rubyonrails.org/upgrading_ruby_on_rails.html#upgrading-from-rails-4-0-to-rails-4-1)
+5. Complete upgrade tasks in the [4.0 to 4.1 upgrade guide](https://guides.rubyonrails.org/upgrading_ruby_on_rails.html#upgrading-from-rails-4-0-to-rails-4-1) ✅
 
 - [x] CSRF protection from remote <script> tags
 - [x] Spring
@@ -232,70 +239,70 @@ For now we will stay at 4.2.11.23 instead of upgrading to 4.2.11.38
 - [x] Action Mailer
 - [x] Foreign Key Support
 
-6. Create a PR and insure all the tests pass.
-7. After review/approval merge the branch into the `lara-upgrade` branch.
+6. Create a PR and insure all the tests pass. ✅
+7. After review/approval merge the branch into the `lara-upgrade` branch. ✅
 
 ### Upgrade To Rails 5.0.7.2
 
-1. Create a `upgrade-to-rails-5.0` branch off the `lara-upgrade` branch.
-2. Upgrade rails gems in `Gemfile` to last 5.0 version: `gem 'rails', '~> 5.0.7.2'`.  No Ruby upgrade is required.
-3. Inside running Docker image run `bundle update rails`
-4. Resolve gem dependency issues until the bundle update succeeds.
-5. Complete upgrade tasks in the [4.2 to 5.0 upgrade guide](https://guides.rubyonrails.org/upgrading_ruby_on_rails.html#upgrading-from-rails-4-2-to-rails-5-0)
+1. Create a `upgrade-to-rails-5.0` branch off the `lara-upgrade` branch. ✅
+2. Upgrade rails gems in `Gemfile` to last 5.0 version: `gem 'rails', '~> 5.0.7.2'`.  No Ruby upgrade is required. ✅
+3. Inside running Docker image run `bundle update rails` ✅
+4. Resolve gem dependency issues until the bundle update succeeds. ✅
+5. Complete upgrade tasks in the [4.2 to 5.0 upgrade guide](https://guides.rubyonrails.org/upgrading_ruby_on_rails.html#upgrading-from-rails-4-2-to-rails-5-0) ✅
 
-- [ ] Ruby 2.2.2+ required (THIS IS ALREADY DONE AS WE ARE ON 2.3.7)
-- [ ] Active Record Models Now Inherit from ApplicationRecord by Default
-- [ ] Halting Callback Chains via throw(:abort)
-- [ ] ActiveJob Now Inherits from ApplicationJob by Default
-- [ ] Rails Controller Testing
-- [ ] Autoloading is Disabled After Booting in the Production Environment
-- [ ] XML Serialization
-- [ ] Removed Support for Legacy mysql Database Adapter
-- [ ] Removed Support for Debugger
-- [ ] Use bin/rails for running tasks and tests
-- [ ] ActionController::Parameters No Longer Inherits from HashWithIndifferentAccess
-- [ ] protect_from_forgery Now Defaults to prepend: false
-- [ ] Default Template Handler is Now RAW
-- [ ] Added Wildcard Matching for Template Dependencies
-- [ ] ActionView::Helpers::RecordTagHelper moved to external gem (record_tag_helper)
-- [ ] Removed Support for protected_attributes Gem
-- [ ] Removed support for activerecord-deprecated_finders gem
-- [ ] ActiveSupport::TestCase Default Test Order is Now Random
-- [ ] ActionController::Live became a Concern
-- [ ] New Framework Defaults
-- [ ] Changes with JSON/JSONB serialization
+- [x] Ruby 2.2.2+ required (THIS IS ALREADY DONE AS WE ARE ON 2.3.7)
+- [x] Active Record Models Now Inherit from ApplicationRecord by Default
+- [x] Halting Callback Chains via throw(:abort)
+- [x] ActiveJob Now Inherits from ApplicationJob by Default
+- [x] Rails Controller Testing
+- [x] Autoloading is Disabled After Booting in the Production Environment
+- [x] XML Serialization
+- [x] Removed Support for Legacy mysql Database Adapter
+- [x] Removed Support for Debugger
+- [x] Use bin/rails for running tasks and tests
+- [x] ActionController::Parameters No Longer Inherits from HashWithIndifferentAccess
+- [x] protect_from_forgery Now Defaults to prepend: false
+- [x] Default Template Handler is Now RAW
+- [x] Added Wildcard Matching for Template Dependencies
+- [x] ActionView::Helpers::RecordTagHelper moved to external gem (record_tag_helper)
+- [x] Removed Support for protected_attributes Gem
+- [x] Removed support for activerecord-deprecated_finders gem
+- [x] ActiveSupport::TestCase Default Test Order is Now Random
+- [x] ActionController::Live became a Concern
+- [x] New Framework Defaults
+- [x] Changes with JSON/JSONB serialization
 
-6. Create a PR and insure all the tests pass.
+6. Create a PR and insure all the tests pass. ✅
 7. After review/approval merge the branch into the `lara-upgrade` branch.
 
 ### Upgrade To Rails 5.1.7
 
-1. Create a `upgrade-to-rails-5.1` branch off the `lara-upgrade` branch.
+1. Create a `upgrade-to-rails-5.1` branch off the `lara-upgrade` branch. ✅
 2. Upgrade rails gems in `Gemfile` to last 5.1 version: `gem 'rails', '~> 5.1.7'`.  No Ruby upgrade is required.
-3. Inside running Docker image run `bundle update rails`
-4. Resolve gem dependency issues until the bundle update succeeds.
-5. Complete upgrade tasks in the [5.0 to 5.1 upgrade guide](https://guides.rubyonrails.org/upgrading_ruby_on_rails.html#upgrading-from-rails-5-0-to-rails-5-1)
+3. Inside running Docker image run `bundle update rails`  ✅
+4. Resolve gem dependency issues until the bundle update succeeds.  ✅
+5. Complete upgrade tasks in the [5.0 to 5.1 upgrade guide](https://guides.rubyonrails.org/upgrading_ruby_on_rails.html#upgrading-from-rails-5-0-to-rails-5-1) ✅
 
-- [ ] Top-level HashWithIndifferentAccess is soft-deprecated
-- [ ] application.secrets now loaded with all keys as symbols
-- [ ] Removed deprecated support to :text and :nothing in render
-- [ ] Removed deprecated support of redirect_to :back
+- [x] Top-level HashWithIndifferentAccess is soft-deprecated
+- [x] application.secrets now loaded with all keys as symbols
+- [x] Removed deprecated support to :text and :nothing in render
+- [x] Removed deprecated support of redirect_to :back
 
-6. Create a PR and insure all the tests pass.
+6. Create a PR and insure all the tests pass. ✅
 7. After review/approval merge the branch into the `lara-upgrade` branch.
 
 ### Upgrade To Rails 5.2.8.1
 
-1. Create a `upgrade-to-rails-5.2` branch off the `lara-upgrade` branch.
-2. Upgrade rails gems in `Gemfile` to last 5.2 version: `gem 'rails', '~> 5.2.8.1'`.  No Ruby upgrade is required.
-3. Inside running Docker image run `bundle update rails`
-4. Resolve gem dependency issues until the bundle update succeeds.
-5. Complete upgrade tasks in the [5.1 to 5.2 upgrade guide](https://guides.rubyonrails.org/upgrading_ruby_on_rails.html#upgrading-from-rails-5-1-to-rails-5-2)
+1. Create a `upgrade-to-rails-5.2` branch off the `lara-upgrade` branch. ✅
+2. Upgrade rails gems in `Gemfile` to last 5.2 version: `gem 'rails', '~> 5.2.8.1'`.  No Ruby upgrade is required. ✅
+3. Inside running Docker image run `bundle update rails` ✅
+4. Resolve gem dependency issues until the bundle update succeeds. ✅
+5. Complete upgrade tasks in the [5.1 to 5.2 upgrade guide](https://guides.rubyonrails.org/upgrading_ruby_on_rails.html#upgrading-from-rails-5-1-to-rails-5-2) ✅
 
-- [ ] Bootsnap
-- [ ] Expiry in signed or encrypted cookie is now embedded in the cookies values
+- [X] Bootsnap
+- [X] Expiry in signed or encrypted cookie is now embedded in the cookies values
 
-6. Create a PR and insure all the tests pass.
+6. Create a PR and insure all the tests pass. ✅
 7. After review/approval merge the branch into the `lara-upgrade` branch.
 
 ### Upgrade To Rails 6.0.6.1

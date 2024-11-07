@@ -1,21 +1,18 @@
-class Project < ActiveRecord::Base
+class Project < ApplicationRecord
   DefaultName = 'Default Project'
   DefaultKey = 'default-project'
-
-  attr_accessible :footer, :logo_lara, :logo_ap, :title, :url, :about, :project_key, :copyright,
-                  :copyright_image_url, :collaborators, :funders_image_url, :collaborators_image_url, :contact_email, :admin_ids
 
   validates :project_key, uniqueness: true
   has_many :sequences
   has_many :lightweight_activities
   has_many :project_admins
-  has_many :admins, through: :project_admins, :source => :user
+  has_many :admins, through: :project_admins, source: :user
 
   default_scope {order('title')}
 
   protected
   def self.create_default
-    self.create(:title => DefaultName, :logo_lara => '', :url => 'https://concord.org/', :project_key => DefaultKey)
+    self.create(title: DefaultName, logo_lara: '', url: 'https://concord.org/', project_key: DefaultKey)
   end
 
   public
@@ -77,7 +74,7 @@ class Project < ActiveRecord::Base
   end
 
   def self.find_or_create(project_data)
-    existing_project = Project.where(:project_key => project_data[:project_key]).first
+    existing_project = Project.where(project_key: project_data[:project_key]).first
     if existing_project.blank?
       new_project = Project.new(about: project_data[:about],
                                 footer: project_data[:footer],

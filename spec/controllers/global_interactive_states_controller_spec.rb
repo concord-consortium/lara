@@ -20,7 +20,7 @@ describe GlobalInteractiveStatesController do
 
     def basic_create_test
       expect {
-        post :create, run_id: run.key, raw_data: new_state
+        post :create, params: { run_id: run.key, raw_data: new_state }
       }.to change(GlobalInteractiveState, :count).by(1)
       expect(GlobalInteractiveState.first.raw_data).to eql(new_state)
       expect(response.status).to eql(201)
@@ -38,7 +38,7 @@ describe GlobalInteractiveStatesController do
       end
       it 'should update it' do
         expect {
-          post :create, run_id: run.key, raw_data: new_state
+          post :create, params: { run_id: run.key, raw_data: new_state }
         }.to change(GlobalInteractiveState, :count).by(0)
         expect(GlobalInteractiveState.first.raw_data).to eql(new_state)
         expect(response.status).to eql(200)
@@ -51,7 +51,7 @@ describe GlobalInteractiveStatesController do
         let (:run) { FactoryGirl.create(:run, user: different_user) }
         it 'it should fail' do
           expect {
-            post :create, run_id: run.key, raw_data: new_state
+            post :create, params: { run_id: run.key, raw_data: new_state }
           }.to change(GlobalInteractiveState, :count).by(0)
           expect(response.status).to eql(401)
         end

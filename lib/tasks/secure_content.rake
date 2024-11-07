@@ -45,7 +45,7 @@ def fix_item(item,item_columns,to_fix,log_string)
       end
     end
     item.attributes = updates
-    if item.save(:validate=> false)
+    if item.save(validate: false)
       unless updates.length == 0
         log_string << " updating attributes #{updates}."
         rake_logger.info(log_string)
@@ -254,7 +254,7 @@ def scan_learner_data(to_update, log_string)
         insecure_content_count += 1
         if to_update
           runs[:remote_endpoint] = fix_insecure(runs[:remote_endpoint],to_fix)
-          if runs.save(:validate => false)
+          if runs.save(validate: false)
             log_string << "\nRuns #{runs[:id]} :: remote_endpoint : #{runs[:remote_endpoint]}"
           else
             log_string << "\nFailed to update Runs #{runs[:id]}"
@@ -273,7 +273,7 @@ def scan_learner_data(to_update, log_string)
         insecure_content_count += 1
         if to_update
           interactive_run_state[:learner_url] = fix_insecure(interactive_run_state[:learner_url],to_fix)
-          if interactive_run_state.save(:validate=> false)
+          if interactive_run_state.save(validate: false)
             log_string << "\nInteractiveRunState #{interactive_run_state[:id]} :: learner_url : #{interactive_run_state[:learner_url]}"
           else
             log_string << "\n Failed to update InteractiveRunState #{interactive_run_state[:id]}"
@@ -292,7 +292,7 @@ def scan_learner_data(to_update, log_string)
             if to_update
               lara_options["reporting_url"] = fix_insecure(lara_options["reporting_url"],to_fix)
               interactive_run_state[:raw_data] = raw_data
-              if interactive_run_state.save(:validate=> false)
+              if interactive_run_state.save(validate: false)
                 log_string << "\nInteractiveRunState #{interactive_run_state[:id]} :: reporting_url : #{lara_options["reporting_url"]}"
               else
                 log_string << "\n Failed to update InteractiveRunState #{interactive_run_state[:id]}"
@@ -328,7 +328,7 @@ namespace :secure_content do
   require 'highline/import'
   
   desc "Scan activity for insecure content"
-  task :get_insecure_content_activity => :environment do 
+  task get_insecure_content_activity: :environment do 
     
     initialize_scan
       
@@ -356,7 +356,7 @@ namespace :secure_content do
   end
   
   desc "Scan sequence for insecure content"
-  task :get_insecure_content_sequence => :environment do 
+  task get_insecure_content_sequence: :environment do 
     
     initialize_scan
     
@@ -384,17 +384,17 @@ namespace :secure_content do
   end
   
   desc "Scan learner data for insecure content"
-  task :get_insecure_learner_data => :environment do
+  task get_insecure_learner_data: :environment do
     scan_learner_data(false, "\n\nInsecure learner_data is found in the following items.\n")
   end
   
   desc "Fix learner data for insecure content"
-  task :fix_insecure_learner_data => :environment do
+  task fix_insecure_learner_data: :environment do
     scan_learner_data(true,  "\n\nFixed Insecure learner_data for following items.\n")
   end
   
   desc "Fix insecure content of activity"
-  task :fix_insecure_content_activity => :environment do 
+  task fix_insecure_content_activity: :environment do 
     
     initialize_scan
     
@@ -431,7 +431,7 @@ namespace :secure_content do
   end
   
   desc "Fix insecure content of sequence"
-  task :fix_insecure_content_sequence => :environment do 
+  task fix_insecure_content_sequence: :environment do 
     
     initialize_scan
     

@@ -1,4 +1,4 @@
-class CreatePendingPortalPublications < ActiveRecord::Migration
+class CreatePendingPortalPublications < ActiveRecord::Migration[5.1]
   def change
     create_table :pending_portal_publications do |t|
       t.integer :portal_publication_id

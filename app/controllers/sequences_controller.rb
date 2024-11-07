@@ -1,11 +1,11 @@
 
 class SequencesController < ApplicationController
-  before_filter :set_sequence, :except => [:index, :new, :create]
-  before_filter :find_or_create_sequence_run, :only => [:show]
+  before_action :set_sequence, except: [:index, :new, :create]
+  before_action :find_or_create_sequence_run, only: [:show]
 
-  before_filter :enable_js_logger, :only => [:show]
+  before_action :enable_js_logger, only: [:show]
 
-  before_filter :setup_abilities, :only => [:new, :edit]
+  before_action :setup_abilities, only: [:new, :edit]
 
   # Adds remote_duplicate handler (POST remote_duplicate)
   include RemoteDuplicateSupport
@@ -13,11 +13,19 @@ class SequencesController < ApplicationController
   # Adds append_white_list_params support
   include ApplicationHelper
 
+  def sequence_params
+    params.fetch(:sequence, {})
+      .permit(
+        :abstract, :background_image, :defunct, :description, :display_title, :font_size, :hide_question_numbers,
+        :hide_read_aloud, :layout_override, :logo, :project, :project_id, :publication_hash, :thumbnail_url, :title, :user_id
+      )
+  end
+
   # GET /sequences
   # GET /sequences.json
   def index
     @filter  = CollectionFilter.new(current_user, Sequence, params[:filter] || {})
-    @sequences = @filter.collection.includes(:user,:lightweight_activities).paginate(:page => params['page'], :per_page => 20)
+    @sequences = @filter.collection.includes(:user,:lightweight_activities).paginate(page: params['page'], per_page: 20)
 
     respond_to do |format|
       format.html # index.html.erb
@@ -75,21 +83,12 @@ class SequencesController < ApplicationController
     end
   end
 
-  def update_params
-    params.fetch(:sequence)
-          .permit(
-            :description, :title, :project_id, :defunct, :user_id, :logo, :display_title, :thumbnail_url,
-            :abstract, :publication_hash, :project, :background_image, :hide_read_aloud, :font_size,
-            :layout_override, :hide_question_numbers
-          )
-  end
-
   # PUT /sequences/1
   # PUT /sequences/1.json
   def update
     authorize! :update, @sequence
     respond_to do |format|
-      if @sequence.update_attributes(update_params)
+      if @sequence.update_attributes(sequence_params.to_h)
         format.html {
           flash[:notice] = "Sequence was successfully updated."
           redirect_to edit_sequence_path(@sequence)
@@ -172,7 +171,7 @@ class SequencesController < ApplicationController
   def show_status
     @message = params[:message] || ''
     respond_to do |format|
-      format.js { render :json => { :html => render_to_string('export')}, :content_type => 'text/json' }
+      format.js { render json: { html: render_to_string('export')}, content_type: 'text/json' }
       format.html
     end
   end

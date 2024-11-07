@@ -1,4 +1,4 @@
-class CreateLightweightActivities < ActiveRecord::Migration
+class CreateLightweightActivities < ActiveRecord::Migration[5.1]
   def change
     create_table :lightweight_activities do |t|
       t.string :name
@@ -8,7 +8,7 @@ class CreateLightweightActivities < ActiveRecord::Migration
       t.timestamps
     end
 
-    add_index :lightweight_activities, :user_id, :name => 'lightweight_activities_user_idx'
-    add_index :lightweight_activities, :publication_status, :name => 'lightweight_activities_publication_status_idx'
+    add_index :lightweight_activities, :user_id, name: 'lightweight_activities_user_idx'
+    add_index :lightweight_activities, :publication_status, name: 'lightweight_activities_publication_status_idx'
   end
 end

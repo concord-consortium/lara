@@ -1,5 +1,5 @@
 module Embeddable
-  class MultipleChoice < ActiveRecord::Base
+  class MultipleChoice < ApplicationRecord
 
     include Embeddable
 
@@ -10,10 +10,10 @@ module Embeddable
 
 
     has_many :choices,
-      :class_name => 'Embeddable::MultipleChoiceChoice',
-      :foreign_key => 'multiple_choice_id',
-      :dependent => :destroy
-    has_many :page_items, :as => :embeddable, :dependent => :destroy
+      class_name: 'Embeddable::MultipleChoiceChoice',
+      foreign_key: 'multiple_choice_id',
+      dependent: :destroy
+    has_many :page_items, as: :embeddable, dependent: :destroy
     # PageItem instances are join models, so if the embeddable is gone
     # the join should go too.
     has_many :sections, through: :page_items
@@ -22,18 +22,15 @@ module Embeddable
     has_one :converted_interactive, class_name: "ManagedInteractive", as: :legacy_ref
 
     has_many :answers,
-      :class_name => 'Embeddable::MultipleChoiceAnswer',
-      :foreign_key => 'multiple_choice_id',
-      :dependent => :destroy
+      class_name: 'Embeddable::MultipleChoiceAnswer',
+      foreign_key: 'multiple_choice_id',
+      dependent: :destroy
 
-    attr_accessible :name, :prompt, :hint, :custom, :choices_attributes,
-      :enable_check_answer, :multi_answer, :show_as_menu, :is_prediction, :is_half_width,
-      :show_in_featured_question_report, :give_prediction_feedback, :prediction_feedback, :layout, :is_hidden
-    accepts_nested_attributes_for :choices, :allow_destroy => true
+    accepts_nested_attributes_for :choices, allow_destroy: true
 
-    has_one :tracked_question, :as => :question, :dependent => :delete
-    has_one :question_tracker, :through => :tracked_question
-    has_one :master_for_tracker, :class_name => 'QuestionTracker', :as => :master_question
+    has_one :tracked_question, as: :question, dependent: :delete
+    has_one :question_tracker, through: :tracked_question
+    has_one :master_for_tracker, class_name: 'QuestionTracker', as: :master_question
 
     default_value_for :name, "Multiple Choice Question element"
     default_value_for :prompt, "why does ..."
@@ -81,7 +78,7 @@ module Embeddable
     end
 
     def add_choice(choice_name = "new choice")
-      new_choice = Embeddable::MultipleChoiceChoice.create(:choice => choice_name, :multiple_choice => self)
+      new_choice = Embeddable::MultipleChoiceChoice.create(choice: choice_name, multiple_choice: self)
       self.save
       new_choice
     end

@@ -1,5 +1,4 @@
-class ApprovedScript < ActiveRecord::Base
-  attr_accessible :name, :url, :label, :description, :version, :json_url, :authoring_metadata
+class ApprovedScript < ApplicationRecord
   validates :name, presence: true
   validates :label, format: {
     with: /\A([A-Za-z0-9]+)\z/,
@@ -47,7 +46,7 @@ class ApprovedScript < ActiveRecord::Base
 
   def parsed_authoring_metadata
     begin
-      JSON.parse authoring_metadata, :symbolize_names => true
+      JSON.parse authoring_metadata, symbolize_names: true
     rescue
       {}
     end

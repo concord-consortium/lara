@@ -1,4 +1,4 @@
-class User < ActiveRecord::Base
+class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable,
   # :lockable, :timeoutable and :omniauthable
@@ -6,24 +6,19 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable, :timeoutable,
          # :token_authenticatable,
          :bearer_token_authenticatable
-  devise :omniauthable, :omniauth_providers => Concord::AuthPortal.all_strategy_names
+  devise :omniauthable, omniauth_providers: Concord::AuthPortal.all_strategy_names
 
-  has_many :activities, :class_name => LightweightActivity
+  has_many :activities, class_name: "LightweightActivity"
   has_many :sequences
   has_many :runs
   has_many :imports
   has_many :glossaries, -> { order(:name) }
   has_many :rubrics, -> { order(:name) }
   has_many :project_admins
-  has_many :admined_projects, through: :project_admins, :source => :project
+  has_many :admined_projects, through: :project_admins, source: :project
 
-  # Setup accessible (or protected) attributes for your model
-  attr_accessible :email, :password, :password_confirmation, :remember_me,
-    :is_admin, :is_author, :first_name, :last_name,
-    :provider, :uid, :authentication_token, :api_key, :has_api_key, :admined_project_ids
-  # attr_accessible :title, :body
 
-  has_many :authentications, :dependent => :delete_all
+  has_many :authentications, dependent: :delete_all
 
   # self.token_authentication_key = "api_key"
 
@@ -37,7 +32,7 @@ class User < ActiveRecord::Base
   def ability
     @ability ||= Ability.new(self)
   end
-  delegate :can?, :cannot?, :to => :ability
+  delegate :can?, :cannot?, to: :ability
 
   def admin?
     return is_admin

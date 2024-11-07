@@ -1,5 +1,4 @@
-class Embeddable::FeedbackItem < ActiveRecord::Base
-  attr_accessible :answer_id, :answer_type, :answer, :answer_text, :feedback_text, :score
+class Embeddable::FeedbackItem < ApplicationRecord
 
   belongs_to :answer, polymorphic: true
   # Feedback item can be associated (but doesn't have to) with submission action.

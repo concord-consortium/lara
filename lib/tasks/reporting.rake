@@ -78,7 +78,7 @@ namespace :reporting do
   end
 
   desc "publish student runs to report service"
-  task :publish_student_runs => :environment do
+  task publish_student_runs: :environment do
     # limit this to portal runs by default:
     where_query = "remote_endpoint is not null and status & #{Run::SentToReportServiceStatusFlag} = 0"
     # Or specify remote endpoint substring to match:
@@ -92,7 +92,7 @@ namespace :reporting do
   end
 
   desc "publish anonymous runs to report service"
-  task :publish_anonymous_runs => :environment do
+  task publish_anonymous_runs: :environment do
     runs = Run.where("remote_endpoint is null and status & #{Run::SentToReportServiceStatusFlag} = 0")
     env_value = ENV["REPORT_PUSH_RUN_START_DATE"]
     if env_value && env_value.present?
@@ -106,7 +106,7 @@ namespace :reporting do
   # Line Format =  "<clazz_id>, <class_hash>, <learner_id>, <learner_secret_key>"
   # See ClassInfoImportHelper
   desc "import clazz info"
-  task :import_clazz_info => :environment do
+  task import_clazz_info: :environment do
 
     def env_value(var_name, prompt, default)
       cli = HighLine.new

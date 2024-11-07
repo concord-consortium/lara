@@ -95,7 +95,7 @@ describe Import do
     end
 
     it "handles Hash object as an input" do
-      hash = JSON.parse(valid_activity_import_v1_json, :symbolize_names => true)
+      hash = JSON.parse(valid_activity_import_v1_json, symbolize_names: true)
       result = Import.import(hash, user)
       expect(result[:success]).to eq(true)
       expect(result[:import_item]).to be_a(LightweightActivity)

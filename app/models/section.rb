@@ -1,5 +1,4 @@
-class Section < ActiveRecord::Base
-  attr_accessible :title, :position, :show, :layout, :interactive_page, :interactive_page_id, :can_collapse_small, :name
+class Section < ApplicationRecord
   acts_as_list scope: :interactive_page
 
   belongs_to :interactive_page

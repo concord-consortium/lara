@@ -1,4 +1,4 @@
-class CreateInteractivePages < ActiveRecord::Migration
+class CreateInteractivePages < ActiveRecord::Migration[5.1]
   def change
     create_table :interactive_pages do |t|
       t.string  :name
@@ -10,7 +10,7 @@ class CreateInteractivePages < ActiveRecord::Migration
       t.timestamps
     end
 
-    add_index :interactive_pages, :user_id, :name => 'interactive_pages_user_idx'
-    add_index :interactive_pages, [:lightweight_activity_id, :position], :name => 'interactive_pages_by_activity_idx'
+    add_index :interactive_pages, :user_id, name: 'interactive_pages_user_idx'
+    add_index :interactive_pages, [:lightweight_activity_id, :position], name: 'interactive_pages_by_activity_idx'
   end
 end

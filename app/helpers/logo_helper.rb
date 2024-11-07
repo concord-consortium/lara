@@ -4,8 +4,8 @@ module LogoHelper
 
   def logo_tag(png="cc-logo.png", title="The Concord Consortium", url="https://concord.org/")
     id    = png.gsub("-logo","")
-    img   = image_tag(png, :alt => title, :id => id)
-    link_to(img, url, :title => title)
+    img   = image_tag(png, alt: title, id: id)
+    link_to(img, url, title: title)
   end
 
   def project_logo_tag
@@ -32,10 +32,10 @@ module LogoHelper
     end
     title  = @sequence.display_title.blank? ? @sequence.title : @sequence.display_title
     unless title.blank?
-      link = content_tag(:a, title, :class => "sequence_title", :href=> url)
+      link = content_tag(:a, title, class: "sequence_title", href: url)
       buffer << content_tag(:h2, link)
     end
-    return content_tag(:div, buffer, :class => "sequence_logo_block")
+    return content_tag(:div, buffer, class: "sequence_logo_block")
   end
 
   def concord_logo_tag

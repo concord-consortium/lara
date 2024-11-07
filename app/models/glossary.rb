@@ -1,5 +1,4 @@
-class Glossary < ActiveRecord::Base
-  attr_accessible :name, :json, :user_id, :legacy_glossary_resource_id, :project_id, :project
+class Glossary < ApplicationRecord
   validates :name, presence: true
   validates :user_id, presence: true
 
@@ -52,7 +51,7 @@ class Glossary < ActiveRecord::Base
   end
 
   def duplicate(new_owner)
-    new_glossary = Glossary.new(self.to_hash)
+    new_glossary = Glossary.new(self.to_hash.except(:id))
     new_glossary.name = "Copy of #{new_glossary.name}"
     new_glossary.legacy_glossary_resource_id = nil
     new_glossary.user = new_owner
@@ -117,7 +116,7 @@ class Glossary < ActiveRecord::Base
   # These somewhat mirror the class methods injects by the PublicationStatus model, except they remove
   # the checks for publication status
   def self.my(user)
-    where(:user_id => user.id)
+    where(user_id: user.id)
   end
 
   def self.can_see(user)

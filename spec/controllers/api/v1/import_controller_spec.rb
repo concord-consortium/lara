@@ -39,8 +39,7 @@ describe Api::V1::ImportController do
 end
 
 def raw_post(action, params, body)
-  @request.env['RAW_POST_DATA'] = body
-  response = post(action, params)
-  @request.env.delete('RAW_POST_DATA')
+  @request.env['CONTENT_TYPE'] = 'application/json'
+  post(action, params: params, body: body)
   response
 end

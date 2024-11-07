@@ -1,4 +1,4 @@
-class CreateInteractiveItems < ActiveRecord::Migration
+class CreateInteractiveItems < ActiveRecord::Migration[5.1]
   def change
     create_table :interactive_items do |t|
       t.integer :interactive_page_id
@@ -9,7 +9,7 @@ class CreateInteractiveItems < ActiveRecord::Migration
       t.timestamps
     end
 
-    add_index :interactive_items, [:interactive_page_id, :position], :name => 'interactive_items_by_page_idx'
-    add_index :interactive_items, [:interactive_id, :interactive_type], :name => 'interactive_items_interactive_idx'
+    add_index :interactive_items, [:interactive_page_id, :position], name: 'interactive_items_by_page_idx'
+    add_index :interactive_items, [:interactive_id, :interactive_type], name: 'interactive_items_interactive_idx'
   end
 end

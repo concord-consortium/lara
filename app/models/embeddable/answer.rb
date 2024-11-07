@@ -1,20 +1,20 @@
 module Embeddable::Answer
   def self.included base
     base.instance_eval do
-      delegate :user,                     :to => :run, :allow_nil => true
-      delegate :collaboration_run,        :to => :run, :allow_nil => true
-      delegate :name,                     :to => :question
-      delegate :prompt,                   :to => :question
-      delegate :hint,                     :to => :question
-      delegate :default_text,             :to => :question
-      delegate :is_prediction,            :to => :question
-      delegate :give_prediction_feedback, :to => :question
-      delegate :prediction_feedback,      :to => :question
-      delegate :show_in_runtime?,         :to => :question
-      delegate :is_half_width,            :to  => :question
+      delegate :user,                     to: :run, allow_nil: true
+      delegate :collaboration_run,        to: :run, allow_nil: true
+      delegate :name,                     to: :question
+      delegate :prompt,                   to: :question
+      delegate :hint,                     to: :question
+      delegate :default_text,             to: :question
+      delegate :is_prediction,            to: :question
+      delegate :give_prediction_feedback, to: :question
+      delegate :prediction_feedback,      to: :question
+      delegate :show_in_runtime?,         to: :question
+      delegate :is_half_width,            to: :question
 
       def self.by_run(r)
-        where(:run_id => r.id)
+        where(run_id: r.id)
       end
       def self.default_answer(conditions)
         self.create(conditions)

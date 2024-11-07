@@ -1,10 +1,10 @@
-class AddMultipleChoiceAnswerChoice < ActiveRecord::Migration
+class AddMultipleChoiceAnswerChoice < ActiveRecord::Migration[5.1]
   def up
     remove_column :embeddable_multiple_choice_answers, :answer_ids
     remove_column :embeddable_multiple_choice_answers, :answer_texts
 
 
-    create_table :mc_answer_choices, :id => false do |t|
+    create_table :mc_answer_choices, id: false do |t|
         t.references :answer
         t.references :choice
     end

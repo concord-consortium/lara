@@ -3,7 +3,7 @@ class Api::V1::LightweightActivitiesController < API::APIController
     activity = LightweightActivity.find(params[:id])
     authorize! :destroy, activity
     activity.destroy
-    render :json => { success: true }
+    render json: { success: true }
   end
 
   # GET /api/v1/activities/1.json

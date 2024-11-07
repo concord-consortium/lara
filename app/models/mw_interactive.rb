@@ -1,14 +1,8 @@
-class MwInteractive < ActiveRecord::Base
+class MwInteractive < ApplicationRecord
   include BaseInteractive
   include Embeddable
   include HasAspectRatio
 
-  attr_accessible :name, :url, :native_width, :native_height,
-    :enable_learner_state, :has_report_url, :click_to_play,
-    :click_to_play_prompt, :image_url, :is_hidden, :linked_interactive_id, :linked_interactive_type,
-    :full_window, :model_library_url, :authored_state, :no_snapshots,
-    :show_delete_data_button, :show_in_featured_question_report, :is_half_width,
-    :aspect_ratio_method, :linked_interactive_item_id, :report_item_url, :hide_question_number
 
   default_value_for :native_width, ASPECT_RATIO_DEFAULT_WIDTH
   default_value_for :native_height, ASPECT_RATIO_DEFAULT_HEIGHT
@@ -16,20 +10,20 @@ class MwInteractive < ActiveRecord::Base
   validates_numericality_of :native_width
   validates_numericality_of :native_height
 
-  has_one :page_item, :as => :embeddable, :dependent => :destroy
+  has_one :page_item, as: :embeddable, dependent: :destroy
   # PageItem is a join model; if this is deleted, that instance should go too
 
-  has_many :primary_linked_items, :through => :page_item
-  has_many :secondary_linked_items, :through => :page_item
+  has_many :primary_linked_items, through: :page_item
+  has_many :secondary_linked_items, through: :page_item
 
-  has_one :interactive_page, :through => :page_item
-  has_many :interactive_run_states, :as => :interactive, :dependent => :destroy
+  has_one :interactive_page, through: :page_item
+  has_many :interactive_run_states, as: :interactive, dependent: :destroy
 
   has_many :embeddable_plugins, class_name: "Embeddable::EmbeddablePlugin", as: :embeddable
   has_one :converted_interactive, class_name: "ManagedInteractive", as: :legacy_ref
 
-  has_one :labbook, :as => :interactive, :class_name => 'Embeddable::Labbook'
-  belongs_to :linked_interactive, :polymorphic => true
+  has_one :labbook, as: :interactive, class_name: 'Embeddable::Labbook'
+  belongs_to :linked_interactive, polymorphic: true
 
   after_update :update_labbook_options
 
@@ -149,7 +143,7 @@ class MwInteractive < ActiveRecord::Base
         labbook.prompt = I18n.t 'LABBOOK.ITSI.UPLOAD_PROMPT'
         labbook.save!
       else
-        if upload_only_model_urls.include? url_was
+        if upload_only_model_urls.include? url_before_last_save
           labbook.action_type = Embeddable::Labbook::SNAPSHOT_ACTION
           labbook.custom_action_label = nil
           labbook.prompt = I18n.t 'LABBOOK.ITSI.SNAPSHOT_PROMPT'

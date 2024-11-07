@@ -46,7 +46,7 @@ describe ImageInteractive do
   describe "#credit_with_link" do
     let(:credit)     { nil }
     let(:credit_url) { nil }
-    let(:parms)      { {:credit => credit, :credit_url => credit_url } }
+    let(:parms)      { {credit: credit, credit_url: credit_url } }
     let(:link)       { ImageInteractive.new(parms).credit_with_link  }
     describe "With nil values" do
       it "should return an empty string" do

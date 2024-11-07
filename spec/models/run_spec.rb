@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Run do
   let(:activity)        { FactoryGirl.create(:activity) }
-  let(:seq)             { FactoryGirl.create(:sequence, :lightweight_activities => [activity]) }
+  let(:seq)             { FactoryGirl.create(:sequence, lightweight_activities: [activity]) }
   let(:remote_endpoint) { nil }
   let(:run) {
     FactoryGirl.create(:run,
@@ -21,22 +21,22 @@ describe Run do
   }
   let(:user)       { FactoryGirl.create(:user) }
   let(:or_question){ FactoryGirl.create(:or_embeddable) }
-  let(:or_answer)  { FactoryGirl.create(:or_answer, { :answer_text => "the answer", :question => or_question }) }
+  let(:or_answer)  { FactoryGirl.create(:or_answer, { answer_text: "the answer", question: or_question }) }
   let(:or_question2){ FactoryGirl.create(:or_embeddable) }
-  let(:or_answer2)  { FactoryGirl.create(:or_answer, { :answer_text => "the answer", :question => or_question2 }) }
-  let(:image_quest){ FactoryGirl.create(:image_question, :prompt => "draw your answer") }
+  let(:or_answer2)  { FactoryGirl.create(:or_answer, { answer_text: "the answer", question: or_question2 }) }
+  let(:image_quest){ FactoryGirl.create(:image_question, prompt: "draw your answer") }
   let(:iq_answer)  { FactoryGirl.create(:image_question_answer,
-    :answer_text => "the image question answer",
-    :question => image_quest,
-    :image_url => "http://foo.com/bar.jpg") }
-  let(:a1)         { FactoryGirl.create(:multiple_choice_choice, :choice => "answer_one") }
-  let(:a2)         { FactoryGirl.create(:multiple_choice_choice, :choice => "answer_two") }
-  let(:mc_question){ FactoryGirl.create(:multiple_choice, :choices => [a1, a2]) }
-  let(:mc_answer)  { FactoryGirl.create(:multiple_choice_answer, :answers  => [a1], :question => mc_question) }
+    answer_text: "the image question answer",
+    question: image_quest,
+    image_url: "http://foo.com/bar.jpg") }
+  let(:a1)         { FactoryGirl.create(:multiple_choice_choice, choice: "answer_one") }
+  let(:a2)         { FactoryGirl.create(:multiple_choice_choice, choice: "answer_two") }
+  let(:mc_question){ FactoryGirl.create(:multiple_choice, choices: [a1, a2]) }
+  let(:mc_answer)  { FactoryGirl.create(:multiple_choice_answer, answers: [a1], question: mc_question) }
   let(:interactive){ FactoryGirl.create(:mw_interactive)}
   let(:interactive_run_state){ FactoryGirl.create(:interactive_run_state,
-    :interactive => interactive,
-    :raw_data => '{"lara_options": {"reporting_url": "http://concord.org"}}') }
+    interactive: interactive,
+    raw_data: '{"lara_options": {"reporting_url": "http://concord.org"}}') }
 
 
   let(:portal_url)            { "http://portal.concord.org" }
@@ -73,7 +73,7 @@ describe Run do
       let(:remote_endpoint) { "blarg" }
       it "increments the portal_run_count on the activity" do
         last_count = activity.portal_run_count
-        Run.create(:activity => activity, :remote_endpoint => remote_endpoint)
+        Run.create(activity: activity, remote_endpoint: remote_endpoint)
         expect(activity.reload.portal_run_count).to eq(last_count + 1)
       end
     end
@@ -81,7 +81,7 @@ describe Run do
       let(:remote_endpoint) { "" }
       it "The portal_run_count on the activity does not increase" do
         last_count = activity.portal_run_count
-        Run.create(:activity => activity, :remote_endpoint => remote_endpoint)
+        Run.create(activity: activity, remote_endpoint: remote_endpoint)
         expect(activity.reload.portal_run_count).to eq(last_count)
       end
     end
@@ -449,13 +449,13 @@ describe Run do
             # get the payload from the very first protocol version
             payload = PortalSender::Protocol.instance(remote_endpoint).response_for_portal([or_answer,mc_answer])
             stub_http_request(:post, remote_endpoint).to_return(
-              :body   => "OK", # TODO: What returns?
-              :status => 200)
+              body: "OK", # TODO: What returns?
+              status: 200)
             expect(run.send_to_portal([or_answer,mc_answer])).to be_truthy
             expect(WebMock).to have_requested(:post, remote_endpoint).
               with({
-                :body => payload,
-                :headers => {
+                body: payload,
+                headers: {
                   "Authorization" => portal_auth.auth_token,
                   "Content-Type" => 'application/json'
                 }
@@ -466,8 +466,8 @@ describe Run do
         describe "when the server reports an error" do
           it "should fail" do
             stub_http_request(:post, remote_endpoint).to_return(
-              :body   => "boo", # TODO: What returns?
-              :status => 503)
+              body: "boo", # TODO: What returns?
+              status: 503)
             # We now expect the error message to include payload information
             expect {run.send_to_portal([or_answer,mc_answer])}.to raise_error Run::PortalUpdateIncomplete
           end
@@ -494,7 +494,7 @@ describe Run do
           let(:remote_endpoint) { valid_remote_endpoint }
 
           it "returns the enqueued job" do
-            stub_http_request(:post, remote_endpoint).to_return(:body   => "OK", :status => 200)
+            stub_http_request(:post, remote_endpoint).to_return(body: "OK", status: 200)
             run.open_response_answers << or_answer
             expect(run.queue_for_portal).to be_instance_of(Delayed::Backend::ActiveRecord::Job)
           end
@@ -508,14 +508,14 @@ describe Run do
       let(:result_status)   { 200 }
       before(:each) do
         stub_http_request(:post, remote_endpoint).to_return(
-          :body   => "OK", # TODO: What returns?
-          :status => result_status)
+          body: "OK", # TODO: What returns?
+          status: result_status)
         allow_any_instance_of(Run).to receive(:answers).and_return(answers)
         run.mark_dirty
       end
       describe 'when there are no dirty answers' do
         it 'does nothing and returns true' do
-          allow(run).to receive_messages(:answers => answers)
+          allow(run).to receive_messages(answers: answers)
           expect(run.submit_dirty_answers).to be_truthy
         end
       end
@@ -524,7 +524,7 @@ describe Run do
         let(:answers) do
           answers = []
           5.times.map do |i|
-            q = FactoryGirl.create(:image_question_answer, :run => run, :question => FactoryGirl.create(:image_question))
+            q = FactoryGirl.create(:image_question_answer, run: run, question: FactoryGirl.create(:image_question))
             q.mark_dirty
             answers << q
           end
@@ -535,7 +535,7 @@ describe Run do
           let(:result_status) { 200 }
 
           it "calls send_to_portal with the dirty answers as argument" do
-            allow_any_instance_of(Run).to receive_messages(:send_to_portal => true)
+            allow_any_instance_of(Run).to receive_messages(send_to_portal: true)
             expect_any_instance_of(Run).to receive(:send_to_portal).with(answers, instance_of(Time))
             expect(run.submit_dirty_answers).to be_truthy
           end

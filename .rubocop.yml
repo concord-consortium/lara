@@ -5,3 +5,12 @@ Metrics/MethodLength:
   Max: 20
 Style/StringLiterals:
   Enabled: false
+Rails/HttpPositionalArguments:
+  AutocorrectNotice: "Autocorrect applied."
+  Enabled: true
+Style/HashSyntax:
+  AutocorrectNotice: "Autocorrect applied."
+  Enabled: true
+  EnforcedStyle: ruby19
+AllCops:
+  EnabledByDefault: true

@@ -1,7 +1,7 @@
 require_dependency "application_controller"
 
 class SectionsController < ApplicationController
-  before_filter :set_page
+  before_action :set_page
 
   def update_params
     params.require(:section).permit(:title, :position, :show, :layout, :interactive_page, :interactive_page_id, :can_collapse_small, :name)
@@ -15,12 +15,12 @@ class SectionsController < ApplicationController
         if @section.update_attributes(update_params)
           # *** respond with the new value ***
           update_activity_changed_by
-          format.html { render :plain => params[:section].values.first }
+          format.html { render plain: params[:section].values.first }
         else
           # *** respond with the old value ***
-          format.html { render :plain => @section[params[:section].keys.first] }
+          format.html { render plain: @section[params[:section].keys.first] }
         end
-        format.json { render :json => @section.to_json }
+        format.json { render json: @section.to_json }
       else
         format.html do
           if @section.update_attributes(update_params)
@@ -81,7 +81,7 @@ class SectionsController < ApplicationController
     params[:embeddable].each do |e|
       # Format: embeddable[]=17.Embeddable::OpenResponse&embeddable[]=20.Embeddable::Xhtml&embeddable[]=19.Embeddable::OpenResponse&embeddable[]=19.Embeddable::Xhtml&embeddable[]=17.Embeddable::MultipleChoice&embeddable[]=16.Embeddable::OpenResponse
       embeddable_id, embeddable_type = e.split('.')
-      pi = PageItem.find(:conditions => { :embeddable_id => embeddable_id, :embeddable_type => embeddable_type }).first
+      pi = PageItem.find(conditions: { embeddable_id: embeddable_id, embeddable_type: embeddable_type }).first
       # If we move everything to the bottom in order, the first one should be at the top
       pi.move_to_bottom
     end

@@ -6,25 +6,25 @@ describe Api::V1::InteractivePagesController do
   let (:project) { FactoryGirl.create(:project) }
   let (:publication_status) { "public" }
   let (:act) { FactoryGirl.create(:public_activity, project: project, publication_status: publication_status, user: author ) }
-  let (:page) { FactoryGirl.create(:page, :lightweight_activity => act) }
+  let (:page) { FactoryGirl.create(:page, lightweight_activity: act) }
   let (:library_interactive1) { FactoryGirl.create(:library_interactive,
-                                                   :name => 'Test Library Interactive 1',
-                                                   :base_url => 'http://foo.com/',
-                                                   :thumbnail_url => nil,
-                                                   :official => true
+                                                   name: 'Test Library Interactive 1',
+                                                   base_url: 'http://foo.com/',
+                                                   thumbnail_url: nil,
+                                                   official: true
                                                   ) }
   let (:library_interactive2) { FactoryGirl.create(:library_interactive,
-                                                   :name => 'Test Library Interactive 2',
-                                                   :base_url => 'http://bar.com/',
-                                                   :thumbnail_url => 'http://thumbnail.url',
-                                                   :no_snapshots => true,
-                                                   :official => false
+                                                   name: 'Test Library Interactive 2',
+                                                   base_url: 'http://bar.com/',
+                                                   thumbnail_url: 'http://thumbnail.url',
+                                                   no_snapshots: true,
+                                                   official: false
                                                   ) }
   let (:interactive1) { FactoryGirl.create(:mw_interactive) }
-  let (:interactive2) { FactoryGirl.create(:mw_interactive, :no_snapshots => true) }
+  let (:interactive2) { FactoryGirl.create(:mw_interactive, no_snapshots: true) }
   let (:interactive3) { FactoryGirl.create(:mw_interactive) }
-  let (:interactive4) { FactoryGirl.create(:managed_interactive, :library_interactive => library_interactive1, :url_fragment => "test1") }
-  let (:interactive5) { FactoryGirl.create(:managed_interactive, :library_interactive => library_interactive2, :url_fragment => "test2") }
+  let (:interactive4) { FactoryGirl.create(:managed_interactive, library_interactive: library_interactive1, url_fragment: "test1") }
+  let (:interactive5) { FactoryGirl.create(:managed_interactive, library_interactive: library_interactive2, url_fragment: "test2") }
 
   def add_interactive_to_section(page, interactive, section)
     page.add_embeddable(interactive, nil, section)
@@ -35,7 +35,7 @@ describe Api::V1::InteractivePagesController do
 
     describe "on an unknown page" do
       it "returns an error" do
-        xhr :get, "get_interactive_list", {id: 0}
+        get :get_interactive_list, params: {id: 0}
         expect(response.status).to eq(200)
         expect(response.content_type).to eq("application/json")
         expect(response.body).to eql({
@@ -47,7 +47,7 @@ describe Api::V1::InteractivePagesController do
 
     describe "using an invalid scope" do
       it "returns an error" do
-        xhr :get, "get_interactive_list", {id: page.id, scope: "flarm"}
+        get :get_interactive_list, params: {id: page.id, scope: "flarm"}
         expect(response.status).to eq(200)
         expect(response.content_type).to eq("application/json")
         expect(response.body).to eql({
@@ -61,7 +61,7 @@ describe Api::V1::InteractivePagesController do
       let (:publication_status) { "private" }
 
       it "returns an error" do
-        xhr :get, "get_interactive_list", {id: page.id}
+        get :get_interactive_list, params: {id: page.id}
         expect(response.status).to eq(200)
         expect(response.content_type).to eq("application/json")
         expect(response.body).to eql({
@@ -73,7 +73,7 @@ describe Api::V1::InteractivePagesController do
 
     describe "on a page with no interactives" do
       it "returns an empty list" do
-        xhr :get, "get_interactive_list", {id: page.id}
+        get :get_interactive_list, params: {id: page.id}
         expect(response.status).to eq(200)
         expect(response.content_type).to eq("application/json")
         expect(response.body).to eql({
@@ -95,7 +95,7 @@ describe Api::V1::InteractivePagesController do
       end
 
       it "returns the list of all interactives when no supportsSnapshots param is present" do
-        xhr :get, "get_interactive_list", {id: page.id}
+        get :get_interactive_list, params: {id: page.id}
         expect(response.status).to eq(200)
         expect(response.content_type).to eq("application/json")
         expect(response.body).to eql({
@@ -111,7 +111,7 @@ describe Api::V1::InteractivePagesController do
       end
 
       it "returns the correct list of all interactives when supportsSnapshots param is true" do
-        xhr :get, "get_interactive_list", {id: page.id, supportsSnapshots: "true"}
+        get :get_interactive_list, params: {id: page.id, supportsSnapshots: "true"}
         expect(response.status).to eq(200)
         expect(response.content_type).to eq("application/json")
         expect(response.body).to eql({
@@ -125,7 +125,7 @@ describe Api::V1::InteractivePagesController do
       end
 
       it "returns the correct list of all interactives when supportsSnapshots param is false" do
-        xhr :get, "get_interactive_list", {id: page.id, supportsSnapshots: "false"}
+        get :get_interactive_list, params: {id: page.id, supportsSnapshots: "false"}
         expect(response.status).to eq(200)
         expect(response.content_type).to eq("application/json")
         expect(response.body).to eql({
@@ -140,7 +140,7 @@ describe Api::V1::InteractivePagesController do
   end
 
   describe "#create_page_item" do
-    let(:section) { FactoryGirl.create(:section, :interactive_page => page, :layout => Section::LAYOUT_FULL_WIDTH) }
+    let(:section) { FactoryGirl.create(:section, interactive_page: page, layout: Section::LAYOUT_FULL_WIDTH) }
 
     before :each do
       sign_in author
@@ -148,28 +148,28 @@ describe Api::V1::InteractivePagesController do
 
     describe "fails" do
       it "without a page_item parameter" do
-        xhr :post, "create_page_item", {id: page.id}
+        post :create_page_item, params: {id: page.id}
         expect(response.status).to eq(500)
         expect(response.content_type).to eq("application/json")
         expect(response.body).to include "Missing page_item parameter"
       end
 
       it "without a section_id parameter" do
-        xhr :post, "create_page_item", {id: page.id, page_item: {}}
+        post :create_page_item, params: {id: page.id, page_item: {position: 2}}
         expect(response.status).to eq(500)
         expect(response.content_type).to eq("application/json")
         expect(response.body).to include "Missing page_item[section_id] parameter"
       end
 
       it "with an invalid section_id parameter" do
-        xhr :post, "create_page_item", {id: page.id, page_item: {section_id: 0}}
+        post :create_page_item, params: {id: page.id, page_item: {section_id: 0}}
         expect(response.status).to eq(500)
         expect(response.content_type).to eq("application/json")
         expect(response.body).to include "Invalid page_item[section_id] parameter"
       end
 
       it "fails with a missing embeddable parameter" do
-        xhr :post, "create_page_item", {id: page.id, page_item: {
+        post :create_page_item, params: {id: page.id, page_item: {
           section_id: section.id,
           position: 1,
           section_position: 1,
@@ -182,7 +182,7 @@ describe Api::V1::InteractivePagesController do
       end
 
       it "fails with an invalid type parameter" do
-        xhr :post, "create_page_item", {id: page.id, page_item: {
+        post :create_page_item, params: {id: page.id, page_item: {
           section_id: section.id,
           embeddable: "Invalid_1",
           position: 1,
@@ -195,7 +195,7 @@ describe Api::V1::InteractivePagesController do
       end
 
       it "fails with an invalid library interactive parameter" do
-        xhr :post, "create_page_item", {id: page.id, page_item: {
+        post :create_page_item, params: {id: page.id, page_item: {
           section_id: section.id,
           embeddable: "LibraryInteractive_0",
           position: 1,
@@ -209,7 +209,7 @@ describe Api::V1::InteractivePagesController do
     end
 
     it "succeeds with valid LibraryInteractive parameters" do
-      xhr :post, "create_page_item", {id: page.id, page_item: {
+      post :create_page_item, params: {id: page.id, page_item: {
         section_id: section.id,
         embeddable: library_interactive1.serializeable_id,
         position: 1,
@@ -221,7 +221,7 @@ describe Api::V1::InteractivePagesController do
     end
 
     it "succeeds with valid MWInteractive parameters" do
-      xhr :post, "create_page_item", {id: page.id, page_item: {
+      post :create_page_item, params: {id: page.id, page_item: {
         section_id: section.id,
         embeddable: "MwInteractive",
         position: 1,
@@ -233,7 +233,7 @@ describe Api::V1::InteractivePagesController do
     end
 
     it "succeeds with valid windowshade plugin parameters" do
-      xhr :post, "create_page_item", {id: page.id, page_item: {
+      post :create_page_item, params: {id: page.id, page_item: {
         section_id: section.id,
         embeddable: "Plugin_1::windowShade",
         position: 1,
@@ -245,7 +245,7 @@ describe Api::V1::InteractivePagesController do
     end
 
     it "succeeds with valid question wrapper plugin parameters" do
-      xhr :post, "create_page_item", {id: page.id, page_item: {
+      post :create_page_item, params: {id: page.id, page_item: {
         section_id: section.id,
         embeddable: "Plugin_1::questionWrapper",
         position: 1,
@@ -257,7 +257,7 @@ describe Api::V1::InteractivePagesController do
     end
 
     it "succeeds with valid side tip plugin parameters" do
-      xhr :post, "create_page_item", {id: page.id, page_item: {
+      post :create_page_item, params: {id: page.id, page_item: {
         section_id: section.id,
         embeddable: "Plugin_1::sideTip",
         position: 1,
@@ -271,7 +271,7 @@ describe Api::V1::InteractivePagesController do
 
   describe "#get_library_interactives_list" do
     let (:managed_interactive1) { FactoryGirl.create(:managed_interactive,
-      :library_interactive_id => library_interactive1.id
+      library_interactive_id: library_interactive1.id
     )}
 
     it "returns a list of all library interactives including all properties for signed-in admins" do
@@ -350,7 +350,7 @@ describe Api::V1::InteractivePagesController do
         plugins: []
       }.to_json
 
-      xhr :get, "get_library_interactives_list"
+      get :get_library_interactives_list, params: {}
       expect(response.status).to eq(200)
       expect(response.content_type).to eq("application/json")
       actual_response = JSON.parse(response.body)
@@ -437,7 +437,7 @@ describe Api::V1::InteractivePagesController do
         plugins: []
       }.to_json
 
-      xhr :get, "get_library_interactives_list"
+      get :get_library_interactives_list, params: {}
       expect(response.status).to eq(200)
       expect(response.content_type).to eq("application/json")
       actual_response = JSON.parse(response.body)
@@ -450,7 +450,7 @@ describe Api::V1::InteractivePagesController do
   end
 
   describe "#update_page_item" do
-    let(:section) { FactoryGirl.create(:section, :interactive_page => page, :layout => Section::LAYOUT_FULL_WIDTH) }
+    let(:section) { FactoryGirl.create(:section, interactive_page: page, layout: Section::LAYOUT_FULL_WIDTH) }
     let(:data) { { name: "Text Block 1", content: "Some text.", is_callout: false, is_half_width: true, is_hidden: false } }
     let(:new_data) { { name: "Text Block 1v2", content: "I changed my mind.", is_callout: true, is_half_width: false, is_hidden: true } }
     let(:embeddable) { FactoryGirl.create(:xhtml, data)}
@@ -463,21 +463,21 @@ describe Api::V1::InteractivePagesController do
 
     describe "fails" do
       it "without a page_item parameter" do
-        xhr :post, "update_page_item", {id: page.id}
+        post :update_page_item, params: {id: page.id}
         expect(response.status).to eq(500)
         expect(response.content_type).to eq("application/json")
         expect(response.body).to include "Missing page_item parameter"
       end
 
       it "without an id parameter" do
-        xhr :post, "update_page_item", {id: page.id, page_item: {}}
+        post :update_page_item, params: {id: page.id, page_item: {column: 2}}
         expect(response.status).to eq(500)
         expect(response.content_type).to eq("application/json")
         expect(response.body).to include "Missing page_item[id] parameter"
       end
 
       it "without a column parameter" do
-        xhr :post, "update_page_item", {id: page.id, page_item: {
+        post :update_page_item, params: {id: page.id, page_item: {
           id: page_item.id
         }}
         expect(response.status).to eq(500)
@@ -486,7 +486,7 @@ describe Api::V1::InteractivePagesController do
       end
 
       it "without a position parameter" do
-        xhr :post, "update_page_item", {id: page.id, page_item: {
+        post :update_page_item, params: {id: page.id, page_item: {
           id: page_item.id,
           column: page_item.column
         }}
@@ -496,7 +496,7 @@ describe Api::V1::InteractivePagesController do
       end
 
       it "without a data parameter" do
-        xhr :post, "update_page_item", {id: page.id, page_item: {
+        post :update_page_item, params: {id: page.id, page_item: {
           id: page_item.id,
           column: page_item.column,
           position: page_item.position
@@ -507,7 +507,7 @@ describe Api::V1::InteractivePagesController do
       end
 
       it "without a type parameter" do
-        xhr :post, "update_page_item", {id: page.id, page_item: {
+        post :update_page_item, params: {id: page.id, page_item: {
           id: page_item.id,
           column: page_item.column,
           position: page_item.position,
@@ -520,7 +520,7 @@ describe Api::V1::InteractivePagesController do
     end
 
     it "succeeds with valid parameters" do
-      xhr :post, "update_page_item", {id: page.id, page_item: {
+      post :update_page_item, params: {id: page.id, page_item: {
         id: page_item.id,
         column: page_item.column,
         position: page_item.position,
@@ -556,7 +556,7 @@ describe Api::V1::InteractivePagesController do
       it "with an activity_id and pages" do
         pages
         act.reload
-        xhr :get, "get_pages", {activity_id: act.id}
+        get "get_pages", params: {activity_id: act.id}, xhr: true
         expect(response.status).to eq(200)
         expect(response.content_type).to eq("application/json")
         pages = JSON.parse(response.body)
@@ -566,7 +566,7 @@ describe Api::V1::InteractivePagesController do
 
     describe "fails" do
       it "with invalid activity id" do
-        xhr :get, "get_pages", {activity_id: 234232}
+        get "get_pages", params: {activity_id: 234232}, xhr: true
         expect(response.status).to eq(404)
       end
     end
@@ -582,7 +582,7 @@ describe Api::V1::InteractivePagesController do
         before_count = act.pages.length
         after_count = act.pages.length + 1
 
-        xhr :post, "create_page", {activity_id: act.id}
+        post "create_page", params: {activity_id: act.id}, xhr: true
         expect(response.status).to eq(200)
         expect(response.content_type).to eq("application/json")
         pages = JSON.parse(response.body)
@@ -592,7 +592,7 @@ describe Api::V1::InteractivePagesController do
 
     describe "fails" do
       it "when the current user is not the activity author" do
-        xhr :post, "create_page", {activity_id: act.id}
+        post "create_page", params: {activity_id: act.id}, xhr: true
         expect(response.status).to eq(403)
       end
     end
@@ -613,7 +613,7 @@ describe Api::V1::InteractivePagesController do
         before_count = act.pages.length
         after_count = act.pages.length - 1
 
-        xhr :post, "delete_page", {id: page.id}
+        post "delete_page", params: {id: page.id}, xhr: true
         expect(response.status).to eq(200)
         expect(response.content_type).to eq("application/json")
         expect(JSON.parse(response.body)).to eq({"success"=> true})
@@ -631,7 +631,7 @@ describe Api::V1::InteractivePagesController do
         before_count = act.pages.length
         after_count = before_count
 
-        xhr :post, "delete_page", {id: page.id}
+        post "delete_page", params: {id: page.id}, xhr: true
         expect(response.status).to eq(403)
         expect(act.pages.length).to eq(after_count)
       end
@@ -639,7 +639,7 @@ describe Api::V1::InteractivePagesController do
   end
 
   describe "#update_section" do
-    let(:section) { FactoryGirl.create(:section, :interactive_page => page, :layout => Section::LAYOUT_FULL_WIDTH) }
+    let(:section) { FactoryGirl.create(:section, interactive_page: page, layout: Section::LAYOUT_FULL_WIDTH) }
     let(:items)   do
       [
         FactoryGirl.create(:page_item, { section: section, position: 1, column: PageItem::COLUMN_PRIMARY }),
@@ -670,7 +670,7 @@ describe Api::V1::InteractivePagesController do
           end
           old_id_order = section.page_items.map(& :id)
           update_request = { id: page.id, section: { id: section.id, items: new_items } }
-          xhr :post, 'update_section', update_request
+          post 'update_section', params: update_request, xhr: true
           expect(response.status).to eq(200)
           section.reload
           new_id_order = section.page_items.map(& :id)
@@ -682,7 +682,7 @@ describe Api::V1::InteractivePagesController do
           items << extra_item
           expect(section.page_items.length).to eql(3)
           update_request = { id: page.id, section: { id: section.id, items: items.map(&:attributes) } }
-          xhr :post, 'update_section', update_request
+          post 'update_section', params: update_request, xhr: true
           expect(response.status).to eq(200)
           section.reload
           expect(section.page_items.length).to eql(4)
@@ -692,7 +692,7 @@ describe Api::V1::InteractivePagesController do
           new_items = items[0, 2].map { |i| { id: i.id, column: i.column } }
           expect(section.page_items.length).to eql(3)
           update_request = { id: page.id, section: { id: section.id, items: new_items } }
-          xhr :post, 'update_section', update_request
+          post 'update_section', params: update_request, xhr: true
           expect(response.status).to eq(200)
           section.reload
           expect(section.page_items.length).to eql(2)
@@ -703,18 +703,18 @@ describe Api::V1::InteractivePagesController do
       describe 'failures' do
         it 'fails without a page param' do
           update_request = { section: { id: section.id, items: [] } }
-          # xhr :post, 'update_section', update_request
+          # post 'update_section', params: update_request, xhr: true
           # expect(response.status).to eq(200)
           # expect(JSON.parse(response.body)).to include({'success' => false})
 
           expect {
-            xhr :post, 'update_section', update_request
+            post 'update_section', params: update_request, xhr: true
           }.to raise_error(ActionController::UrlGenerationError)
         end
 
         it 'fails when we dont specify a section' do
           update_request = { id: page.id }
-          xhr :post, 'update_section', update_request
+          post 'update_section', params: update_request, xhr: true
           expect(response.status).to eq(500)
           expect(response.body).to match(/Missing section/)
         end
@@ -725,7 +725,7 @@ describe Api::V1::InteractivePagesController do
           end
           it "fails with not authorized" do
             update_request = { id: page.id, section: { id: section.id, items: [] } }
-            xhr :post, 'update_section', update_request
+            post 'update_section', params: update_request, xhr: true
             expect(response.status).to eq(403)
             expect(response.body).to match(/not authorized/i)
           end
@@ -735,7 +735,7 @@ describe Api::V1::InteractivePagesController do
     end
 
     describe "#copy_section" do
-      let(:section) { FactoryGirl.create(:section, :with_items, :interactive_page => page, :layout => Section::LAYOUT_FULL_WIDTH) }
+      let(:section) { FactoryGirl.create(:section, :with_items, interactive_page: page, layout: Section::LAYOUT_FULL_WIDTH) }
 
       before :each do
         sign_in author
@@ -744,7 +744,7 @@ describe Api::V1::InteractivePagesController do
       describe "success" do
         it "creates a copy with copies of the same items" do
           copy_request = { id: page.id, section_id: section.id }
-          xhr :post, 'copy_section', copy_request
+          post 'copy_section', params: copy_request, xhr: true
           expect(response.status).to eq(200)
           next_pages = JSON.parse(response.body, object_class:OpenStruct)
           expect(next_pages.id).to eq(page.id.to_s)
@@ -766,18 +766,18 @@ describe Api::V1::InteractivePagesController do
       describe 'failure' do
         it 'fails without a page param' do
           copy_request = { section_id: section.id }
-          # xhr :post, 'copy_section', copy_request
+          # post 'copy_section', params: copy_request, xhr: true
           # expect(response.status).to eq(200)
           # expect(JSON.parse(response.body)).to include( {'success' => false })
 
           expect {
-            xhr :post, 'copy_section', copy_request
+            post 'copy_section', params: copy_request, xhr: true
           }.to raise_error(ActionController::UrlGenerationError)
         end
 
         it 'fails when we dont specify a section' do
           copy_request = { id: page.id }
-          xhr :post, 'copy_section', copy_request
+          post 'copy_section', params: copy_request, xhr: true
           expect(response.status).to eq(500)
           expect(response.body).to match(/Missing section/)
         end
@@ -788,7 +788,7 @@ describe Api::V1::InteractivePagesController do
           end
           it "fails with not authorized" do
             copy_request = { id: page.id, section_id: section.id }
-            xhr :post, 'copy_section', copy_request
+            post 'copy_section', params: copy_request, xhr: true
             expect(response.status).to eq(403)
             expect(response.body).to match(/not authorized/i)
           end
@@ -798,7 +798,7 @@ describe Api::V1::InteractivePagesController do
 
 
     describe "#copy_page_item" do
-      let(:section) { FactoryGirl.create(:section, :with_items, :interactive_page => page, :layout => Section::LAYOUT_FULL_WIDTH) }
+      let(:section) { FactoryGirl.create(:section, :with_items, interactive_page: page, layout: Section::LAYOUT_FULL_WIDTH) }
       let(:original_item) { section.page_items[0] }
       let(:number_of_items) { section.page_items.length }
       let(:page_id) { page.id }
@@ -810,7 +810,7 @@ describe Api::V1::InteractivePagesController do
 
       describe "success" do
         it 'creates a copy with copies of the same items' do
-          xhr :post, 'copy_page_item', { id: page_id, page_item_id: page_item_id }
+          post 'copy_page_item', params: { id: page_id, page_item_id: page_item_id }, xhr: true
           expect(response.status).to eq(200)
           section.reload
           puts response.body
@@ -827,17 +827,17 @@ describe Api::V1::InteractivePagesController do
 
       describe 'failure' do
         it 'fails without a page param' do
-          # xhr :post, 'copy_page_item',  { page_item_id: page_item_id }
+          # post 'copy_page_item',  { page_item_id: page_item_id }, xhr: true
           # expect(response.status).to eq(200)
           # expect(JSON.parse(response.body)).to include( {'success' => false })
 
           expect {
-            xhr :post, 'copy_page_item',  { page_item_id: page_item_id }
+            post 'copy_page_item', params: { page_item_id: page_item_id }, xhr: true
           }.to raise_error(ActionController::UrlGenerationError)
         end
 
         it 'fails when we dont specify a page_item' do
-          xhr :post, 'copy_page_item',  { id: page_id  }
+          post 'copy_page_item', params: { id: page_id  }, xhr: true
           expect(response.status).to eq(500)
           expect(response.body).to match(/Missing page_item_id/)
         end
@@ -847,7 +847,7 @@ describe Api::V1::InteractivePagesController do
             sign_out author
           end
           it 'fails with not authorized' do
-            xhr :post, 'copy_page_item',  { id: page_id, page_item_id: page_item_id }
+            post 'copy_page_item', params: { id: page_id, page_item_id: page_item_id }, xhr: true
             expect(response.status).to eq(403)
             expect(response.body).to match(/not authorized/i)
           end
@@ -866,7 +866,7 @@ describe Api::V1::InteractivePagesController do
 
       describe 'success' do
         it 'deletes missing items not present in the items post request' do
-          xhr :post, 'delete_page_item', update_request
+          post 'delete_page_item', params: update_request, xhr: true
           expect(response.status).to eq(200)
           section.reload
           expect(section.page_items.length).to eq(2)
@@ -880,7 +880,7 @@ describe Api::V1::InteractivePagesController do
             sign_out author
           end
           it "fails with not authorized" do
-            xhr :post, 'update_section', update_request
+            post 'update_section', params: update_request, xhr: true
             expect(response.status).to eq(403)
             expect(response.body).to match(/not authorized/i)
           end
@@ -892,7 +892,7 @@ describe Api::V1::InteractivePagesController do
   describe "#get_portal_list" do
     it "returns an array of OAuth portals including each portal's name and authorization path" do
       allow_any_instance_of(Api::V1::InteractivePagesController).to receive(:user_omniauth_authorize_path).and_return('/auth/foo')
-      xhr :get, "get_portal_list"
+      get "get_portal_list", xhr: true
       expect(response.status).to eq(200)
       expect(response.body).to eql({
         success: true,

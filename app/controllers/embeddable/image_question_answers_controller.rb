@@ -18,9 +18,9 @@ class Embeddable::ImageQuestionAnswersController < Embeddable::EmbeddableAnswers
           answer_hash = @answer.portal_hash
           # this 'formatting' is duplicated in image_question_answers/_lightweight.html.haml
           answer_hash['answer_html'] = simple_format h(truncate(@answer.answer_text, length:140))
-          render :json => answer_hash.to_json
+          render json: answer_hash.to_json
         else
-          render :json => @answer.errors
+          render json: @answer.errors
         end
       end
     end

@@ -1,13 +1,13 @@
-class FixupActivityPositions < ActiveRecord::Migration
+class FixupActivityPositions < ActiveRecord::Migration[5.1]
 
-  class Sequence < ActiveRecord::Base
-    has_many :lightweight_activities_sequences, -> { order(:position) }, :dependent => :destroy
+  class Sequence < ApplicationRecord
+    has_many :lightweight_activities_sequences, -> { order(:position) }, dependent: :destroy
   end
 
-  class LightweightActivitiesSequence < ActiveRecord::Base
+  class LightweightActivitiesSequence < ApplicationRecord
     belongs_to :lightweight_activity
     belongs_to :sequence
-    acts_as_list :scope => :sequence
+    acts_as_list scope: :sequence
   end
 
   def up
@@ -15,7 +15,7 @@ class FixupActivityPositions < ActiveRecord::Migration
       seq.lightweight_activities_sequences.each_with_index do |act,index|
         new_position = index + 1
         next if act.position == new_position
-        act.update_attributes(:position => new_position)
+        act.update_attributes(position: new_position)
       end
     end
   end

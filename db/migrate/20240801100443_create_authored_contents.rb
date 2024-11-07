@@ -1,8 +1,8 @@
-class CreateAuthoredContents < ActiveRecord::Migration
+class CreateAuthoredContents < ActiveRecord::Migration[5.1]
   def change
     create_table :authored_contents do |t|
       t.string :content_type
-      t.string :url, :null => true
+      t.string :url, null: true
 
       t.references :user
       t.references :container, polymorphic: true

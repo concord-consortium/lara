@@ -45,9 +45,9 @@ def add_fake_authorization(strat_name)
   secret    = "secret"
   strat = Concord::AuthPortal.add(strat_name,url,client_id,secret)
   OmniAuth.config.add_mock(strat.strategy_name, {
-    :uid      => 'fake_concord_user',
-    :provider => strat.strategy_name,
-    :credentials => {:token => 'token'} }
+    uid: 'fake_concord_user',
+    provider: strat.strategy_name,
+    credentials: {token: 'token'} }
   )
 end
 
@@ -81,19 +81,19 @@ RSpec.configure do |config|
   config.infer_base_class_for_anonymous_controllers = false
 
   # Include Devise helpers
-  config.include Devise::TestHelpers, :type => :controller
-  config.include Devise::TestHelpers, :type => :view
+  config.include Devise::Test::ControllerHelpers, type: :controller
+  config.include Devise::Test::ControllerHelpers, type: :view
 
   # this really doesn't seem like it should be necessary, so I wonder about
   # wether the require capybara/rspec is working or needed above
-  config.include Rails.application.routes.url_helpers, :type => :feature
+  config.include Rails.application.routes.url_helpers, type: :feature
 
   Devise.stretches = 1
-  WebMock.disable_net_connect!(:allow_localhost => true)
+  WebMock.disable_net_connect!(allow_localhost: true)
 
   # on Scott's OS X 10.6 machine, phantom needs to visit a simple page before
   # it works reliably
-  config.before(:each, :js => true) {
+  config.before(:each, js: true) {
     ENV['RUNNING_JS_TEST'] = 'true'
     visit '/404.html'
   }
@@ -122,7 +122,7 @@ RSpec.configure do |config|
   config.include Haml::Helpers, type: :helper
 end
 
-class ActiveRecord::Base
+class ApplicationRecord
   mattr_accessor :shared_connection
   @@shared_connection = nil
 
@@ -133,7 +133,7 @@ end
 
 # Forces all threads to share the same connection. This works on
 # Capybara because it starts the web server in a thread.
-ActiveRecord::Base.shared_connection = ActiveRecord::Base.connection
+ApplicationRecord.shared_connection = ApplicationRecord.connection
 
 def wait_for_ajax
   counter = 0
@@ -148,7 +148,7 @@ def stub_temporary_protocol_routes
   # These requests are made when attempting to post to a portal.
   # This code will be removed when versioned learner data is widely deployed to portals.
   stub_request(:any, /.*\/#{PortalSender::Protocol::VersionRoutePrefix}\/.*/)
-  .to_return(:status => [500, "Internal Server Error"])
+  .to_return(status: [500, "Internal Server Error"])
 end
 
 # some ENV vars set on dev machines should be ignored for tests:

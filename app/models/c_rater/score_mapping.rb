@@ -1,8 +1,7 @@
-class CRater::ScoreMapping < ActiveRecord::Base
+class CRater::ScoreMapping < ApplicationRecord
   serialize :mapping
-  attr_accessible :mapping, :description
   belongs_to :user
-  belongs_to :changed_by, :class_name => 'User'
+  belongs_to :changed_by, class_name: 'User'
 
   scope :is_public, -> { self.all }
   scope :newest, -> { order(updated_at: :desc) }
@@ -53,7 +52,7 @@ class CRater::ScoreMapping < ActiveRecord::Base
   end
 
   def self.my(user)
-    where(:user_id => user.id)
+    where(user_id: user.id)
   end
 
   def self.visible(user)

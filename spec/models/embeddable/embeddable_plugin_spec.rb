@@ -83,7 +83,7 @@ describe Embeddable::EmbeddablePlugin do
       JSON.parse(File.read(
         Rails.root +
         "spec/import_examples/#{example_json_file}.json"),
-        :symbolize_names => true)
+        symbolize_names: true)
     end
 
     let(:test_page_index) { 0 }

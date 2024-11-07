@@ -1,14 +1,14 @@
 require_dependency "application_controller"
 
 class InteractivePagesController < ApplicationController
-  before_filter :set_page, :except => [:new, :create]
-  before_filter :only => [:show, :preview] { set_run_key(portal_launchable: false) }
-  before_filter :set_sequence, :only => [:show]
-  before_filter :check_if_hidden, :only => [:show, :preview]
+  before_action :set_page, except: [:new, :create]
+  before_action only: [:show, :preview] { set_run_key(portal_launchable: false) }
+  before_action :set_sequence, only: [:show]
+  before_action :check_if_hidden, only: [:show, :preview]
 
-  before_filter :enable_js_logger, :only => [:show, :preview]
+  before_action :enable_js_logger, only: [:show, :preview]
 
-  layout 'runtime', :only => [:show, :preview]
+  layout 'runtime', only: [:show, :preview]
 
   include PageHelper
 
@@ -47,7 +47,7 @@ class InteractivePagesController < ApplicationController
 
   def create
     @activity = LightweightActivity.find(params[:activity_id])
-    @page = InteractivePage.new(:lightweight_activity => @activity)
+    @page = InteractivePage.new(lightweight_activity: @activity)
     authorize! :create, @page
     @page.save!
     last_idx = @activity.pages.length - 1
@@ -82,12 +82,12 @@ class InteractivePagesController < ApplicationController
         if @page.update_attributes(update_params)
           # *** respond with the new value ***
           update_activity_changed_by
-          format.html { render :plain => params[:interactive_page].values.first }
+          format.html { render plain: params[:interactive_page].values.first }
         else
           # *** respond with the old value ***
-          format.html { render :plain => @page[params[:interactive_page].keys.first] }
+          format.html { render plain: @page[params[:interactive_page].keys.first] }
         end
-        format.json { render :json => @page.to_json }
+        format.json { render json: @page.to_json }
       else
         format.html do
           if @page.update_attributes(update_params)
@@ -204,27 +204,27 @@ class InteractivePagesController < ApplicationController
         unless embeddable.choices.length > 0
           embeddable.create_default_choices
         end
-        param = { :edit_mc => embeddable.id }
+        param = { edit_mc: embeddable.id }
       when Embeddable::OpenResponse
-        param = { :edit_or => embeddable.id }
+        param = { edit_or: embeddable.id }
       when Embeddable::ImageQuestion
-        param = { :edit_iq => embeddable.id }
+        param = { edit_iq: embeddable.id }
       when Embeddable::Labbook
-        param = { :edit_lb => embeddable.id }
+        param = { edit_lb: embeddable.id }
       when Embeddable::Xhtml
-        param = { :edit_xhtml => embeddable.id }
+        param = { edit_xhtml: embeddable.id }
       when Embeddable::ExternalScript
-        param = { :edit_external_script => embeddable.id }
+        param = { edit_external_script: embeddable.id }
       when Embeddable::EmbeddablePlugin
-        param = { :edit_embeddable_plugin => embeddable.id }
+        param = { edit_embeddable_plugin: embeddable.id }
       when MwInteractive
-        param = { :edit_mw_int => embeddable.id }
+        param = { edit_mw_int: embeddable.id }
       when ManagedInteractive
-        param = { :edit_managed_int => embeddable.id }
+        param = { edit_managed_int: embeddable.id }
       when ImageInteractive
-        param = { :edit_image => embeddable.id }
+        param = { edit_image: embeddable.id }
       when VideoInteractive
-        param = { :edit_video => embeddable.id }
+        param = { edit_video: embeddable.id }
     end
     # Add parameter to open new embeddable modal
     redirect_to edit_activity_page_path(@activity, @page, param)

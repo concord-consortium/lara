@@ -21,7 +21,7 @@ module InteractiveRunHelper
 
   def interactive_run_state_url(interactive,run)
     interactive_run = InteractiveRunState.by_run_and_interactive(run,interactive)
-    api_v1_show_interactive_run_state_url(:key => interactive_run.key)
+    api_v1_show_interactive_run_state_url(key: interactive_run.key)
   end
 
   def interactive_data_div(interactive,run)
@@ -64,9 +64,9 @@ module InteractiveRunHelper
     end
 
     opts = {
-      :src => interactive.url,
-      :data => data,
-      :class => 'interactive_data_div'
+      src: interactive.url,
+      data: data,
+      class: 'interactive_data_div'
     }
     capture_haml do
       haml_tag 'span', opts
@@ -89,29 +89,29 @@ module InteractiveRunHelper
     url = interactive.url if url.blank?
 
     data = {
-      :aspect_ratio => interactive.aspect_ratio,
-      :aspect_ratio_method => interactive.aspect_ratio_method,
-      :id => interactive.id,
-      :interactive_item_id => interactive.interactive_item_id,
-      :iframe_mouseover => "false"
+      aspect_ratio: interactive.aspect_ratio,
+      aspect_ratio_method: interactive.aspect_ratio_method,
+      id: interactive.id,
+      interactive_item_id: interactive.interactive_item_id,
+      iframe_mouseover: "false"
     }
 
     opts = {
-      :width => "100%",
-      :frameborder => "no",
-      :scrolling => "no",
-      :allowfullscreen => "true",
-      :webkitallowfullscreen => "true",
-      :mozallowfullscreen => "true",
-      :allow => "geolocation *; microphone *; camera *",
-      :src => iframe_src ? url : nil,
-      :data => data,
+      width: "100%",
+      frameborder: "no",
+      scrolling: "no",
+      allowfullscreen: "true",
+      webkitallowfullscreen: "true",
+      mozallowfullscreen: "true",
+      allow: "geolocation *; microphone *; camera *",
+      src: iframe_src ? url : nil,
+      data: data,
       # Note that iframe is hidden in print mode. It won't have enough time to load anyway.
-      :class => 'interactive screen-only',
+      class: 'interactive screen-only',
       # PJ 10/2/2020: I think this is a bug as IDs might not be unique for MwInteractive and ManagedInteractive.
       # Updating this ID might affect multiple LARA elements - click to play, taking snapshot, etc., so it should
       # be fixed and tested carefully.
-      :id => "interactive_#{interactive.id}"
+      id: "interactive_#{interactive.id}"
     }
     capture_haml do
       haml_tag 'iframe', opts

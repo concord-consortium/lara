@@ -25,8 +25,8 @@ describe HomeController do
 
     before(:each) do
       make_collection_with_rand_modication_time(:public_activity,15)
-      make_collection_with_rand_modication_time(:sequence,15,:publication_status => 'public')
-      make_collection_with_rand_modication_time(:glossary,15,:user => user)
+      make_collection_with_rand_modication_time(:sequence,15,publication_status: 'public')
+      make_collection_with_rand_modication_time(:glossary,15,user: user)
       sign_in user # sign in so user sees their own glossaries
       get :home
     end

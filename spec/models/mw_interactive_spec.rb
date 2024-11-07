@@ -227,8 +227,8 @@ describe MwInteractive do
     let(:enable_learner_state) { false }
     let(:hide_question_number) { false }
     let(:mw_interactive) { FactoryGirl.create(:mw_interactive,
-      :enable_learner_state => enable_learner_state,
-      :hide_question_number => hide_question_number
+      enable_learner_state: enable_learner_state,
+      hide_question_number: hide_question_number
     )}
 
     describe "when enable_learner_state=false and hide_question_number=false" do

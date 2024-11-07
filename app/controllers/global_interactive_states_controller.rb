@@ -1,6 +1,6 @@
 class GlobalInteractiveStatesController < ApplicationController
-  before_filter :set_run
-  before_filter :authorize_run_access
+  before_action :set_run
+  before_action :authorize_run_access
 
   # POST /runs/:run_id/global_interactive_state
   # Expected parameter: raw_data
@@ -8,10 +8,10 @@ class GlobalInteractiveStatesController < ApplicationController
   def create
     if @run.global_interactive_state
       @run.global_interactive_state.update_attributes!(raw_data: params[:raw_data])
-      render nothing: true, status: 200
+      head :ok
     else
       GlobalInteractiveState.create!(run_id: @run.id, raw_data: params[:raw_data])
-      render nothing: true, status: 201
+      head :created
     end
   end
 
@@ -25,7 +25,7 @@ class GlobalInteractiveStatesController < ApplicationController
     begin
       authorize!(:access, @run)
     rescue
-      render nothing: true, status: :unauthorized
+      head :unauthorized
     end
   end
 end

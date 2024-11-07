@@ -22,7 +22,7 @@ class InteractiveController < ApplicationController
     respond_to do |format|
       update_activity_changed_by(@activity)
       format.html { redirect_to edit_activity_page_path(@activity, @page) }
-      format.json { render :json => @interactive.to_json }
+      format.json { render json: @interactive.to_json }
     end
   end
 

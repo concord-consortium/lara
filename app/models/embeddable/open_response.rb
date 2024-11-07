@@ -1,25 +1,22 @@
 module Embeddable
-  class OpenResponse < ActiveRecord::Base
+  class OpenResponse < ApplicationRecord
     include Embeddable
 
 
-    attr_accessible :name, :prompt, :hint, :is_prediction, :show_in_featured_question_report, :give_prediction_feedback, :prediction_feedback,
-      :default_text, :is_hidden, :is_half_width
-
     # PageItem instances are join models, so if the embeddable is gone the join should go too.
-    has_many :page_items, :as => :embeddable, :dependent => :destroy
+    has_many :page_items, as: :embeddable, dependent: :destroy
     has_many :sections, through: :page_items
     has_many :interactive_pages, through: :sections
     has_many :embeddable_plugins, as: :embeddable
     has_one :converted_interactive, class_name: "ManagedInteractive", as: :legacy_ref
     has_many :answers,
-      :class_name  => 'Embeddable::OpenResponseAnswer',
-      :foreign_key => 'open_response_id',
-      :dependent => :destroy
+      class_name: 'Embeddable::OpenResponseAnswer',
+      foreign_key: 'open_response_id',
+      dependent: :destroy
 
-    has_one :tracked_question, :as => :question, :dependent => :delete
-    has_one :question_tracker, :through => :tracked_question
-    has_one :master_for_tracker, :class_name => 'QuestionTracker', :as => :master_question
+    has_one :tracked_question, as: :question, dependent: :delete
+    has_one :question_tracker, through: :tracked_question
+    has_one :master_for_tracker, class_name: 'QuestionTracker', as: :master_question
 
     default_value_for :prompt, "why does ..."
 

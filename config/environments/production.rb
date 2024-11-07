@@ -15,7 +15,7 @@ LightweightStandalone::Application.configure do
   config.action_controller.perform_caching = true
 
   # Disable Rails's static asset server (Apache or nginx will already do this)
-  config.serve_static_files = false
+  config.public_file_server.enabled = false
 
   # Compress JavaScripts and CSS
   config.assets.js_compressor = Uglifier.new(harmony: true)
@@ -87,4 +87,11 @@ LightweightStandalone::Application.configure do
 
   # Send deprecation notices to registered listeners
   config.active_support.deprecation = :notify
+
+  config.active_record.belongs_to_required_by_default = false
+  config.action_controller.per_form_csrf_tokens = false
+  config.action_controller.forgery_protection_origin_check = false
+  config.ssl_options = { hsts: { subdomains: false } }
+  ActiveSupport.to_time_preserves_timezone = false
+  config.active_record.use_yaml_unsafe_load = true
 end

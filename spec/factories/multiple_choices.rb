@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :multiple_choice, :class=> Embeddable::MultipleChoice do |f|
+  factory :multiple_choice, class: Embeddable::MultipleChoice do |f|
   end
 end
 

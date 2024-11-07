@@ -1,16 +1,15 @@
-class PageItem < ActiveRecord::Base
-  attr_accessible :section, :position, :embeddable, :column
-  acts_as_list :scope => :section
+class PageItem < ApplicationRecord
+  acts_as_list scope: :section
 
   belongs_to :section
-  belongs_to :embeddable, :polymorphic => true
+  belongs_to :embeddable, polymorphic: true
 
   # Explicitly destroy the embeddable when the page item is destroyed. We previously relied on
   # :dependent => :destroy, but that began causing recursion issues after upgrading from Rails 3 to 4.
   after_destroy :destroy_related_embeddable
 
-  has_many :primary_linked_items, :foreign_key => :primary_id, :class_name => LinkedPageItem, :dependent => :destroy
-  has_many :secondary_linked_items, :foreign_key => :secondary_id, :class_name => LinkedPageItem, :dependent => :destroy
+  has_many :primary_linked_items, foreign_key: :primary_id, class_name: "LinkedPageItem", dependent: :destroy
+  has_many :secondary_linked_items, foreign_key: :secondary_id, class_name: "LinkedPageItem", dependent: :destroy
   has_one :interactive_page, through: :section
 
   COLUMN_PRIMARY ="primary"
@@ -53,11 +52,11 @@ class PageItem < ActiveRecord::Base
   def set_linked_interactives(options)
     source_page_item_id = id
 
-    ActiveRecord::Base.transaction do
+    ApplicationRecord.transaction do
       if options.has_key?("linkedInteractives")
         linked_interactives = options["linkedInteractives"]
         # clear the existing links
-        LinkedPageItem.delete_all(primary_id: source_page_item_id)
+        LinkedPageItem.where(primary_id: source_page_item_id).delete_all
 
         # convert {0: {id:...}, 1: {id: ...}} to [{id:...}, {id:...}]
         if linked_interactives.is_a? Hash

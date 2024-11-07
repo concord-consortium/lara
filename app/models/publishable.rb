@@ -6,19 +6,19 @@ module Publishable
 
   def latest_publication_portals
     total_counts = portal_publications.group(:portal_url).count
-    success_counts = portal_publications.where(:success => true).group(:portal_url).count
+    success_counts = portal_publications.where(success: true).group(:portal_url).count
     group_select = "id IN (SELECT MAX(id) FROM portal_publications WHERE publishable_id = ? AND publishable_type = ? GROUP BY portal_url)"
     rows = portal_publications.select("portal_url, success, created_at, publication_hash").where([group_select, self.id, self.class.name])
     portals = []
     rows.each do |row|
       portals << {
-        :url => row.portal_url,
-        :domain => row.portal_url.gsub(/https?:\/\/([^\/]*).*/){ |x| $1 },
-        :success => row.success,
-        :total_count => total_counts[row.portal_url] || 0,
-        :success_count => success_counts[row.portal_url] || 0,
-        :publication_hash => row.publication_hash,
-        :date => row.created_at.strftime('%F %R')
+        url: row.portal_url,
+        domain: row.portal_url.gsub(/https?:\/\/([^\/]*).*/){ |x| $1 },
+        success: row.success,
+        total_count: total_counts[row.portal_url] || 0,
+        success_count: success_counts[row.portal_url] || 0,
+        publication_hash: row.publication_hash,
+        date: row.created_at.strftime('%F %R')
       }
     end
     portals
@@ -45,7 +45,7 @@ module Publishable
   end
 
   def publication_details
-    res = self.portal_publications.where(:success => true).group(:portal_url)
+    res = self.portal_publications.where(success: true).group(:portal_url)
     counts = res.size
     return_vals = []
     dates  = res.maximum(:created_at)
@@ -74,8 +74,8 @@ module Publishable
       success_code = republish ? 200 : 201
 
       response = HTTParty.post(url,
-        :body => json,
-        :headers => { "Authorization" => auth_token, "Content-Type" => "application/json" }
+        body: json,
+        headers: { "Authorization" => auth_token, "Content-Type" => "application/json" }
       )
 
       {
@@ -128,7 +128,7 @@ module Publishable
   end
 
   def publish_to_portals(self_url)
-    urls = self.portal_publications.where(:success => true).pluck(:portal_url).uniq
+    urls = self.portal_publications.where(success: true).pluck(:portal_url).uniq
     urls.map { |url| Concord::AuthPortal.portal_for_publishing_url(url)}.each do |portal|
       self.republish_for_portal(portal,self_url)
     end
@@ -165,7 +165,7 @@ module Publishable
 
       def queue_auto_publish_to_portal(auto_publish_url=nil, backoff=1)
 
-        urls = self.portal_publications.where(:success => true).pluck(:portal_url).uniq
+        urls = self.portal_publications.where(success: true).pluck(:portal_url).uniq
         urls.map { |url| Concord::AuthPortal.portal_for_publishing_url(url)}.each do |portal|
           # no portals are defined in test mode
           return if portal.nil?
@@ -177,7 +177,7 @@ module Publishable
           return if last_portal_publication.nil?
 
           # create a new pending publication pointing at the last publication
-          pending_portal_publication = PendingPortalPublication.new :portal_publication_id => last_portal_publication.id
+          pending_portal_publication = PendingPortalPublication.new portal_publication_id: last_portal_publication.id
 
           # try to save it - if there is an existing pending publication for this item it will throw ActiveRecord::StatementInvalid
           # because of the unique index constraint on the table

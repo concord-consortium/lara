@@ -112,8 +112,8 @@ module ReportService
     def send()
       HTTParty.post(
         api_endpoint,
-        :body => to_json,
-        :headers => {
+        body: to_json,
+        headers: {
           'Content-Type' => 'application/json',
           'Authorization' => "Bearer #{Sender::report_service_token}"
         }

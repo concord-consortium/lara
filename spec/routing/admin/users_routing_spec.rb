@@ -12,11 +12,11 @@ describe Admin::UsersController do
     end
 
     it "routes to #show" do
-      expect(get("/admin/users/1")).to route_to("admin/users#show", :id => "1")
+      expect(get("/admin/users/1")).to route_to("admin/users#show", id: "1")
     end
 
     it "routes to #edit" do
-      expect(get("/admin/users/1/edit")).to route_to("admin/users#edit", :id => "1")
+      expect(get("/admin/users/1/edit")).to route_to("admin/users#edit", id: "1")
     end
 
     it "routes to #create" do
@@ -24,11 +24,11 @@ describe Admin::UsersController do
     end
 
     it "routes to #update" do
-      expect(put("/admin/users/1")).to route_to("admin/users#update", :id => "1")
+      expect(put("/admin/users/1")).to route_to("admin/users#update", id: "1")
     end
 
     it "routes to #destroy" do
-      expect(delete("/admin/users/1")).to route_to("admin/users#destroy", :id => "1")
+      expect(delete("/admin/users/1")).to route_to("admin/users#destroy", id: "1")
     end
 
   end

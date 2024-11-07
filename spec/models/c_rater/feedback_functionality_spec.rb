@@ -1,12 +1,11 @@
 require 'spec_helper'
 
 describe CRater::FeedbackFunctionality do
-  class CRaterFeedbackFunctionalityTestClass < ActiveRecord::Base
+  class CRaterFeedbackFunctionalityTestClass < ApplicationRecord
     # Well, it's not pretty, but I don't have idea how to solve that better. The goal is to test FeedbackFunctionality
     # isolated from the class that includes it.
     self.table_name = :embeddable_open_response_answers
     include CRater::FeedbackFunctionality
-    attr_accessible :answer_text
   end
 
   let(:answer) do

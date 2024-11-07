@@ -6,7 +6,7 @@ class Api::V1::PluginLearnerStatesController < ApplicationController
 
   private
   def fail(status, message, err)
-    render :json => {
+    render json: {
         response_type: "ERROR",
         error: "#{message} #{err}"
       }, status: status
@@ -21,7 +21,7 @@ class Api::V1::PluginLearnerStatesController < ApplicationController
   end
 
   def success(state_data)
-    render :json => { state: state_data }, status: STATUS_OK
+    render json: { state: state_data }, status: STATUS_OK
   end
 
   def getPluginState

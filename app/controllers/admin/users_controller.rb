@@ -1,6 +1,15 @@
 class Admin::UsersController < ApplicationController
   # GET /admin/users
   # GET /admin/users.json
+
+  def user_params
+    params.fetch(:user, {}).permit(
+      :admined_project_ids, :api_key, :authentication_token, :email, :first_name,
+      :has_api_key, :is_admin, :is_author, :last_name, :password, :password_confirmation,
+      :provider, :remember_me, :uid
+    )
+  end
+
   def index
     authorize! :manage, User
     page_options = { page: params[:page] || 1 , per_page: 200 }
@@ -51,7 +60,7 @@ class Admin::UsersController < ApplicationController
   # POST /admin/users
   # POST /admin/users.json
   def create
-    @user = User.new(params[:user])
+    @user = User.new(user_params)
     authorize! :create, User
 
     respond_to do |format|
@@ -65,27 +74,18 @@ class Admin::UsersController < ApplicationController
     end
   end
 
-  def update_params
-    params.require(:user).permit(
-      :email, :password, :password_confirmation, :remember_me,
-      :is_admin, :is_author, :first_name, :last_name,
-      :provider, :uid, :authentication_token, :api_key,
-      :has_api_key, :admined_project_ids
-    )
-  end
-
   # PUT /admin/users/1
   # PUT /admin/users/1.json
   def update
     @user = User.find(params[:id])
     authorize! :update, @user
 
-    if !params[:user][:admined_project_ids].present?
-      params[:user][:admined_project_ids] = []
+    if !user_params[:admined_project_ids].present?
+      user_params[:admined_project_ids] = []
     end
 
     respond_to do |format|
-      if @user.update_attributes(update_params)
+      if @user.update_attributes(user_params)
         format.html { redirect_to edit_admin_user_path(@user), notice: 'User was successfully updated.' }
         format.json { head :no_content }
       else

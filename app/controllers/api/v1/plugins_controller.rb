@@ -6,7 +6,7 @@ class Api::V1::PluginsController < ApplicationController
 
   private
   def fail(status, message, err)
-    render :json => {
+    render json: {
         response_type: "ERROR",
         error: "#{message} #{err}"
       }, status: status
@@ -21,7 +21,7 @@ class Api::V1::PluginsController < ApplicationController
   end
 
   def render_author_data(plugin)
-    render :json => { author_data: plugin.author_data }, status: STATUS_OK
+    render json: { author_data: plugin.author_data }, status: STATUS_OK
   end
 
 

@@ -7,28 +7,28 @@ describe ManagedInteractive do
   let(:hide_question_number) { false }
 
   let(:library_interactive) { FactoryGirl.create(:library_interactive,
-                                                 :name => 'Test Library managed_Interactive',
-                                                 :base_url => 'http://concord.org/',
-                                                 :aspect_ratio_method => "base aspect_ratio_method",
-                                                 :native_width => 100,
-                                                 :native_height => 200,
-                                                 :click_to_play => true,
-                                                 :full_window => true,
-                                                 :click_to_play_prompt => "base click_to_play_prompt",
-                                                 :image_url => "http://base.url/image",
-                                                 :enable_learner_state => enable_learner_state,
-                                                 :hide_question_number => hide_question_number,
-                                                 :show_delete_data_button => false,
-                                                 :has_report_url => true,
-                                                 :no_snapshots => true,
-                                                 :report_item_url => ""
+                                                 name: 'Test Library managed_Interactive',
+                                                 base_url: 'http://concord.org/',
+                                                 aspect_ratio_method: "base aspect_ratio_method",
+                                                 native_width: 100,
+                                                 native_height: 200,
+                                                 click_to_play: true,
+                                                 full_window: true,
+                                                 click_to_play_prompt: "base click_to_play_prompt",
+                                                 image_url: "http://base.url/image",
+                                                 enable_learner_state: enable_learner_state,
+                                                 hide_question_number: hide_question_number,
+                                                 show_delete_data_button: false,
+                                                 has_report_url: true,
+                                                 no_snapshots: true,
+                                                 report_item_url: ""
                                                 )}
 
   let(:mw_interactive) { FactoryGirl.create(:mw_interactive) }
   let(:managed_interactive) { FactoryGirl.create(:managed_interactive,
-                                                 :library_interactive => library_interactive,
-                                                 :url_fragment => "test",
-                                                 :linked_interactive => mw_interactive
+                                                 library_interactive: library_interactive,
+                                                 url_fragment: "test",
+                                                 linked_interactive: mw_interactive
                                                 )}
   let (:page) { FactoryGirl.create(:page) }
 

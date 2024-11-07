@@ -3,7 +3,7 @@
 FactoryGirl.define do
   sequence (:li_url) { Faker::Internet.url() }
 
-  factory :library_interactive, :class => LibraryInteractive do
+  factory :library_interactive, class: LibraryInteractive do
     native_width { 100 }
     native_height { 200 }
     name { generate(:name) }

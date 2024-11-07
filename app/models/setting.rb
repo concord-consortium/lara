@@ -1,5 +1,4 @@
-class Setting < ActiveRecord::Base
-  attr_accessible :key, :value
+class Setting < ApplicationRecord
   validates :key, presence: true
   # value may be empty so no validation needed
 
@@ -13,7 +12,7 @@ class Setting < ActiveRecord::Base
     if setting
       setting.value = value
     else
-      setting = Setting.new({:key => key, :value => value})
+      setting = Setting.new({key: key, value: value})
     end
     setting.save
   end

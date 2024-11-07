@@ -1,14 +1,14 @@
 namespace :lara2 do
 
   desc "List all glossaries with legacy glossary resource ids"
-  task :list_glossaries_with_legacy_resource_ids => :environment do
+  task list_glossaries_with_legacy_resource_ids: :environment do
     glossaries = Glossary.where("legacy_glossary_resource_id IS NOT NULL").select([:id, :name, :legacy_glossary_resource_id]).map {|e| {id: e.id, name: e.name, legacy_glossary_resource_id: e.legacy_glossary_resource_id} }
     puts "Found #{glossaries.length} glossaries with legacy glossary resource ids"
     puts JSON.pretty_generate(glossaries)
   end
 
   desc "Replace all lightweight activity glossary plugins with the glossary model based on the legacy glossary resource id"
-  task :migrate_glossary_plugins => :environment do
+  task migrate_glossary_plugins: :environment do
 
     plugins = Plugin.where(component_label: "glossary", plugin_scope_type: "LightweightActivity")
     puts "Found #{plugins.length} glossary plugins used in lightweight activities"
@@ -42,11 +42,11 @@ namespace :lara2 do
   end
 
   desc "Permanently delete glossary_plugins in lightweight activities"
-  task :permanently_delete_glossary_plugins => :environment do
+  task permanently_delete_glossary_plugins: :environment do
     puts "Are you sure you want to PERMANENTLY delete glossary plugins in ALL lightweight activities? Enter 'YES' to confirm:"
     if STDIN.gets.chomp == "YES"
       puts "Deleting glossary plugins used in lightweight activities"
-      Plugin.delete_all(component_label: "glossary", plugin_scope_type: "LightweightActivity")
+      Plugin.where(component_label: "glossary", plugin_scope_type: "LightweightActivity").delete_all
     else
       puts "Aborting deleting glossary plugins used in lightweight activities"
     end

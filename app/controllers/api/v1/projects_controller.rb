@@ -1,6 +1,6 @@
 class Api::V1::ProjectsController < API::APIController
 
-  skip_before_filter :verify_authenticity_token
+  skip_before_action :verify_authenticity_token
 
   # GET /api/v1/projects
   def index
@@ -20,9 +20,17 @@ class Api::V1::ProjectsController < API::APIController
     end
   end
 
+  def project_params
+    params.require(:project).permit(
+      :footer, :logo_lara, :logo_ap, :title, :url, :about, :project_key, :copyright,
+      :copyright_image_url, :collaborators, :funders_image_url, :collaborators_image_url,
+      :contact_email, :admin_ids
+    )
+  end
+
   # POST /api/v1/projects
   def create
-    @project = Project.new(params[:project])
+    @project = Project.new(project_params)
     authorize! :create, @project
     if @project.save
       render json: {success: true, project: @project}, status: :created
@@ -31,17 +39,9 @@ class Api::V1::ProjectsController < API::APIController
     end
   end
 
-  def update_params
-    params.require(:project).permit(
-      :footer, :logo_lara, :logo_ap, :title, :url, :about, :project_key, :copyright,
-      :copyright_image_url, :collaborators, :funders_image_url, :collaborators_image_url,
-      :contact_email, :admin_ids
-    )
-  end
-
   # POST /api/v1/projects/1.json
   def update
-    @updated_project_hash = update_params
+    @updated_project_hash = project_params
     @project = Project.find(params[:id]);
     authorize! :update, @project
 

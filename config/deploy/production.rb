@@ -1,7 +1,7 @@
 set :domain, "authoring.production.concord.org"
 
 server domain, :app, :web
-role :db, domain, :primary => true
+role :db, domain, primary: true
 
 set(:autoscaling_create_image, true)
 set(:autoscaling_create_group, true)

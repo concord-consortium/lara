@@ -1,5 +1,5 @@
 class Embeddable::LabbooksController < Embeddable::EmbeddablesController
-  before_filter :set_embeddable
+  before_action :set_embeddable
 
   private
 

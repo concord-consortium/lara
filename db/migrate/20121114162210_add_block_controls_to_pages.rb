@@ -1,9 +1,9 @@
-class AddBlockControlsToPages < ActiveRecord::Migration
+class AddBlockControlsToPages < ActiveRecord::Migration[5.1]
   def change
-    add_column :interactive_pages, :show_introduction, :boolean, :default => false
-    add_column :interactive_pages, :show_sidebar, :boolean, :default => false
-    add_column :interactive_pages, :show_interactive, :boolean, :default => false
-    add_column :interactive_pages, :show_info_assessment, :boolean, :default => false
+    add_column :interactive_pages, :show_introduction, :boolean, default: false
+    add_column :interactive_pages, :show_sidebar, :boolean, default: false
+    add_column :interactive_pages, :show_interactive, :boolean, default: false
+    add_column :interactive_pages, :show_info_assessment, :boolean, default: false
     InteractivePage.all.each do |page|
       unless page.text.blank?
         page.show_introduction = true

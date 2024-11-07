@@ -1,11 +1,10 @@
-class Rubric < ActiveRecord::Base
-  attr_accessible :name, :user_id, :project_id, :project, :authored_content_id, :authored_content, :doc_url
+class Rubric < ApplicationRecord
   validates :name, presence: true
   validates :user_id, presence: true
 
   belongs_to :user
   belongs_to :project
-  has_one :authored_content, :as => :container
+  has_one :authored_content, as: :container
   has_many :lightweight_activities
 
   after_create :create_authored_content
@@ -48,7 +47,7 @@ class Rubric < ActiveRecord::Base
   end
 
   def duplicate(new_owner)
-    new_rubric = Rubric.new(self.to_hash)
+    new_rubric = Rubric.new(self.to_hash.except(:id))
     new_rubric.name = "Copy of #{new_rubric.name}"
     new_rubric.user = new_owner
     new_rubric
@@ -110,7 +109,7 @@ class Rubric < ActiveRecord::Base
   # These somewhat mirror the class methods injects by the PublicationStatus model, except they remove
   # the checks for publication status
   def self.my(user)
-    where(:user_id => user.id)
+    where(user_id: user.id)
   end
 
   def self.can_see(user)

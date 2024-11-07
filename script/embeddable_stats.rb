@@ -3,7 +3,7 @@
 # It iterates over activities instead of the embeddable models as e.g. on LARA staging there are 300k Labbooks,
 # but only 13k activities. Probably there are many stale objects not assigned to any page/activity.
 def print_embeddable_stats(embeddable_type, host = "authoring.concord.org")
-  ActiveRecord::Base.logger = nil # disable SQL logging
+  ApplicationRecord.logger = nil # disable SQL logging
   stats = {}
   count = 0
   LightweightActivity.find_each do |activity|
@@ -41,7 +41,7 @@ end
 # Another version of the same script, but it iterates directly over selected class. If there only a few instances
 # this might be faster approach.
 def print_embeddable_stats2(embeddable_type, host = "authoring.concord.org")
-  ActiveRecord::Base.logger = nil # disable SQL logging
+  ApplicationRecord.logger = nil # disable SQL logging
   stats = {}
   count = 0
   embeddable_type.classify.safe_constantize.find_each do |lb|

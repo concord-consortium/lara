@@ -37,7 +37,7 @@ after "deploy:restart", "deploy:cleanup"
 namespace :deploy do
   task :start do ; end
   task :stop do ; end
-  task :restart, :roles => :app, :except => { :no_release => true } do
+  task :restart, roles: :app, except: { no_release: true } do
     run "touch #{File.join(current_path,"tmp","restart.txt")}"
   end
 
@@ -99,7 +99,7 @@ require "./config/boot"
 #############################################################
 namespace :deploy do
   namespace :web do
-    task :disable, :roles => :web do
+    task :disable, roles: :web do
 
       on_rollback { delete "#{shared_path}/system/maintenance.html"    }
 
@@ -109,9 +109,9 @@ namespace :deploy do
 
       maintenance = render("./app/views/layouts/maintenance.haml",
                            {
-                             :back_up   => back_up,
-                             :message   => message,
-                             :site_name => site_name
+                             back_up: back_up,
+                             message: message,
+                             site_name: site_name
                            })
 
       # File.open(File.expand_path("~/Desktop/index.html"),"w") do |f|
@@ -119,7 +119,7 @@ namespace :deploy do
       # end
       run "mkdir -p #{shared_path}/system/"
       put maintenance, "#{shared_path}/system/maintenance.html",
-                       :mode => 0644
+                       mode: 0644
     end
   end
 

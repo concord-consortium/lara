@@ -23,8 +23,8 @@ LightweightStandalone::Application.configure do
   config.eager_load = true  # normally false unless you use a tool that preloads your test environment
 
   # Configure static asset server for tests with Cache-Control for performance
-  config.serve_static_files = true
-  config.static_cache_control = "public, max-age=3600"
+  config.public_file_server.enabled = true
+  config.public_file_server.headers = { "Cache-Control" => "public, max-age=3600" }
 
   config.assets.debug = false
   config.assets.compile = false
@@ -41,12 +41,17 @@ LightweightStandalone::Application.configure do
   # ActionMailer::Base.deliveries array.
   config.action_mailer.delivery_method = :test
 
-  # Raise exception on mass assignment protection for Active Record models
-  config.active_record.mass_assignment_sanitizer = :strict
-
   # Print deprecation notices to the stderr
   config.active_support.deprecation = :stderr
 
   # Execute tests in random order
   config.active_support.test_order = :order
+
+  config.active_record.use_yaml_unsafe_load = true
+  config.active_record.belongs_to_required_by_default = false
+  config.action_controller.per_form_csrf_tokens = false
+  config.action_controller.forgery_protection_origin_check = false
+  config.ssl_options = { hsts: { subdomains: false } }
+  ActiveSupport.to_time_preserves_timezone = false
+
 end

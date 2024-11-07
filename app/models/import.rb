@@ -1,6 +1,5 @@
-class Import < ActiveRecord::Base
+class Import < ApplicationRecord
 
-  attr_accessible :export_site
   belongs_to :user
   belongs_to :import_item, polymorphic: true
 
@@ -10,7 +9,7 @@ class Import < ActiveRecord::Base
   def self.import(json_object, user, imported_activity_url = nil)
     begin
       if json_object.instance_of?(String)
-        json_object = JSON.parse json_object, :symbolize_names => true
+        json_object = JSON.parse json_object, symbolize_names: true
       end
       if json_object[:type] == "LightweightActivity"
         @import_item = LightweightActivity.import(json_object, user, imported_activity_url)
@@ -35,7 +34,7 @@ class Import < ActiveRecord::Base
       unless @import_item.valid?
         return {success: false, error: "Import failed, validation issues: #{@import_item.errors}"}
       end
-      if @import_item.save(:validations => false)
+      if @import_item.save(validations: false)
         return {success: true, import_item: @import_item, type: json_object[:type]}
       else
         return {success: false, error: "Import failed: can't save activity"}

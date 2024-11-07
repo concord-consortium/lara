@@ -51,7 +51,7 @@ module Embeddable
       return question if type.nil?
       answer =  self.answer_map[self.question_key(question)]
       if answer.nil?
-        conditions = { :run => self.run, :question => question }
+        conditions = { run: self.run, question: question }
         # If this is an ImageQuestion with an author-defined background image, we want to copy that into the answer.
         if type == Embeddable::ImageQuestionAnswer and !question.is_shutterbug? and !question.bg_url.blank?
           conditions[:image_url] = question.bg_url
