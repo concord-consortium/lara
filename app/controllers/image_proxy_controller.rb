@@ -5,6 +5,6 @@ class ImageProxyController < ActionController::Base
     raise Net::HTTPError if response.code != 200
     send_data response.body, type: response.headers['content-type'], disposition: 'inline'
   rescue
-    render nothing: true, status: 502 # 502 is "bad gateway"
+    head :bad_gateway
   end
 end

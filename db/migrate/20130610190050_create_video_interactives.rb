@@ -1,4 +1,4 @@
-class CreateVideoInteractives < ActiveRecord::Migration
+class CreateVideoInteractives < ActiveRecord::Migration[5.1]
   def change
     create_table :video_interactives do |t|
       t.string :url

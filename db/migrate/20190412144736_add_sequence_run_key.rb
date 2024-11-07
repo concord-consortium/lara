@@ -1,4 +1,4 @@
-class AddSequenceRunKey < ActiveRecord::Migration
+class AddSequenceRunKey < ActiveRecord::Migration[5.1]
   def up
     add_column :sequence_runs, :key, :string
     add_index :sequence_runs, :key, name: 'sequence_runs_key_idx'

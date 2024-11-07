@@ -24,7 +24,7 @@ class Embeddable::MultipleChoicesController < Embeddable::EmbeddablesController
         format.js { render json: { html: render_to_string('edit')}, content_type: 'text/json' }
       else
         flash[:notice] = 'New choice was added.'
-        format.html { redirect_to(:back) }
+        format.html { redirect_back(fallback_location: edit_interactive_path(@interactive)) }
         format.xml  { head :ok }
         format.json
       end
@@ -40,7 +40,7 @@ class Embeddable::MultipleChoicesController < Embeddable::EmbeddablesController
         format.js { render json: { html: render_to_string('edit')}, content_type: 'text/json' }
       else
         flash[:notice] = 'Choice was removed.'
-        format.html { redirect_to(:back) }
+        format.html { redirect_back(fallback_location: edit_interactive_path(@interactive)) }
         format.xml  { head :ok }
         format.json
       end

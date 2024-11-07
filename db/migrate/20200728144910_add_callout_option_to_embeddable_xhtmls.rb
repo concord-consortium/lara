@@ -1,4 +1,4 @@
-class AddCalloutOptionToEmbeddableXhtmls < ActiveRecord::Migration
+class AddCalloutOptionToEmbeddableXhtmls < ActiveRecord::Migration[5.1]
 
   module Embeddable
     class Embeddable::Xhtml < ApplicationRecord

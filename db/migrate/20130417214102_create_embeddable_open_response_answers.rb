@@ -1,4 +1,4 @@
-class CreateEmbeddableOpenResponseAnswers < ActiveRecord::Migration
+class CreateEmbeddableOpenResponseAnswers < ActiveRecord::Migration[5.1]
   def change
     create_table :embeddable_open_response_answers do |t|
       t.text :answer_text

@@ -1,4 +1,4 @@
-class AddRelatedAndSidebarContent < ActiveRecord::Migration
+class AddRelatedAndSidebarContent < ActiveRecord::Migration[5.1]
   def up
     add_column :lightweight_activities, :related, :text, null: true
     add_column :interactive_pages, :sidebar, :text, null: true

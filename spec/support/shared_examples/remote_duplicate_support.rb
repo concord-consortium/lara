@@ -16,7 +16,7 @@ shared_examples "remote duplicate support" do
           user.update_attribute(:api_key, api_key)
         end
         it "should return 403 unauthorized" do
-          post :remote_duplicate, params: { id: resource.id }, headers: headers
+          post :remote_duplicate, params: { id: resource.id, headers: headers }
           expect(response.status).to be(403)
         end
       end

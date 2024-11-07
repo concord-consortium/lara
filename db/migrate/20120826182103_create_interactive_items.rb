@@ -1,4 +1,4 @@
-class CreateInteractiveItems < ActiveRecord::Migration
+class CreateInteractiveItems < ActiveRecord::Migration[5.1]
   def change
     create_table :interactive_items do |t|
       t.integer :interactive_page_id

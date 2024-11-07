@@ -17,7 +17,7 @@ class VideoInteractivesController < InteractiveController
         format.js { render json: { html: render_to_string('edit')}, content_type: 'text/json' }
       else
         flash[:notice] = 'New source was added.'
-        format.html { redirect_to(:back) }
+        format.html { redirect_back(fallback_location: edit_interactive_path(@interactive)) }
         format.xml  { head :ok }
         format.json
       end
@@ -33,7 +33,7 @@ class VideoInteractivesController < InteractiveController
         format.js { render json: { html: render_to_string('edit')}, content_type: 'text/json' }
       else
         flash[:notice] = 'Source removed.'
-        format.html { redirect_to(:back) }
+        format.html { redirect_back(fallback_location: edit_interactive_path(@interactive)) }
         format.xml  { head :ok }
         format.json
       end

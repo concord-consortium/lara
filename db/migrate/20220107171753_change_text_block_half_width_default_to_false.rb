@@ -1,4 +1,4 @@
-class ChangeTextBlockHalfWidthDefaultToFalse < ActiveRecord::Migration
+class ChangeTextBlockHalfWidthDefaultToFalse < ActiveRecord::Migration[5.1]
   class Embeddable::Xhtml < ApplicationRecord
   end
 

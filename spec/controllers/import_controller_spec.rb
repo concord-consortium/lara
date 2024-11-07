@@ -57,7 +57,7 @@ describe ImportController do
       let(:params1) do
             {
                import:{
-                 import:Rack::Test::UploadedFile.new(valid_sequence_import_json.path, content_type: "application/json")
+                 import:Rack::Test::UploadedFile.new(valid_sequence_import_json.path, "application/json")
                }
             }
       end
@@ -65,7 +65,7 @@ describe ImportController do
       let(:params2) do
             {
                import:{
-                import:Rack::Test::UploadedFile.new(invalid_sequence_import_json.path, content_type: "application/json")
+                import:Rack::Test::UploadedFile.new(invalid_sequence_import_json.path, "application/json")
                }
             }
       end
@@ -89,7 +89,7 @@ describe ImportController do
       let(:params1) do
             {
                import:{
-                 import:Rack::Test::UploadedFile.new(valid_glossary_import_json.path, content_type: "application/json")
+                 import:Rack::Test::UploadedFile.new(valid_glossary_import_json.path, "application/json")
                }
             }
       end
@@ -97,7 +97,7 @@ describe ImportController do
       let(:params2) do
             {
                import:{
-                 import:Rack::Test::UploadedFile.new(invalid_glossary_import_json.path, content_type: "application/json")
+                 import:Rack::Test::UploadedFile.new(invalid_glossary_import_json.path, "application/json")
                }
             }
       end

@@ -50,21 +50,21 @@ describe Admin::UsersController do
 
   describe "GET show" do
     it "assigns the requested user as @user" do
-      get :show, params: { id: target.to_param }, headers: valid_session
+      get :show, params: { id: target.to_param, headers: valid_session }
       expect(assigns(:user)).to eq(target)
     end
   end
 
   describe "GET new" do
     it "assigns a new user as @user" do
-      get :new, headers: valid_session
+      get :new, params: { headers: valid_session }
       expect(assigns(:user)).to be_a_new(User)
     end
   end
 
   describe "GET edit" do
     it "assigns the requested user as @user" do
-      get :edit, params: { id: target.to_param }, headers: valid_session
+      get :edit, params: { id: target.to_param, headers: valid_session }
       expect(assigns(:user)).to eq(target)
     end
   end

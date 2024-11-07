@@ -1,4 +1,4 @@
-class AddFillAvailableSpaceToMwInteractives < ActiveRecord::Migration
+class AddFillAvailableSpaceToMwInteractives < ActiveRecord::Migration[5.1]
   ASPECT_RATIO_DEFAULT_WIDTH = 576
   ASPECT_RATIO_DEFAULT_HEIGHT =  435
   ASPECT_RATIO_DEFAULT_METHOD = 'DEFAULT'

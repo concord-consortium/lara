@@ -1,12 +1,12 @@
 #source 'https://gems.railslts.com' do
-  gem 'actionmailer', '~> 5.0.7.2', require: false
-  gem 'actionpack', '~> 5.0.7.2', require: false
-  gem 'activemodel', '~> 5.0.7.2', require: false
-  gem 'activerecord', '~> 5.0.7.2', require: false
-  gem 'activesupport', '~> 5.0.7.2', require: false
-  gem 'rails', '~> 5.0.7.2'
+  gem 'actionmailer', '~> 5.1.7', require: false
+  gem 'actionpack', '~> 5.1.7', require: false
+  gem 'activemodel', '~> 5.1.7', require: false
+  gem 'activerecord', '~> 5.1.7', require: false
+  gem 'activesupport', '~> 5.1.7', require: false
+  gem 'rails', '~> 5.1.7'
   # gem 'railslts-version', :require => false
-  gem 'railties', '~> 5.0.7.2', require: false
+  gem 'railties', '~> 5.1.7', require: false
 #end
 
 source "https://rubygems.org"
@@ -40,7 +40,7 @@ group :development do
   gem "better_errors", "~> 2.0.0", ">= 2.0.0"
   # gem "binding_of_caller", "~> 0.7"
   # gem "brakeman", "~> 2.4", {:require=>false}
-  gem 'bullet', "~> 5.4.3"
+  gem 'bullet', "= 5.7.5"
   # gem "capistrano", "~> 2.15"
   # gem "capistrano-autoscaling", "~> 0.0", {:git=>"https://github.com/concord-consortium/capistrano-autoscaling.git", :branch=>"concord"}
   # gem "capistrano-cowboy", "~> 0.1"
@@ -49,7 +49,7 @@ group :development do
   # gem "quiet_assets", "~> 1.1"
   # gem "request-log-analyzer", "~> 1.12", {:require=>false}
   # gem "sextant", "~> 0.2"
-  gem "web-console", "~> 2.0"
+  gem "web-console", "~> 3.7"
   # gem "webrick", "~> 1.3"
   # gem "xray-rails", "~> 0.1"
 end
@@ -84,7 +84,7 @@ end
 gem "acts_as_list", '~> 0.9.19'
 gem 'aws-sdk', '= 2.0.22'
 gem "aws-ses", "0.7.1", git: "https://github.com/zebitex/aws-ses.git", ref: "78-sigv4-problem"
-gem "cancancan", "~> 1.17"
+gem "cancancan", "~> 2.3"
 gem "chosen-rails", "~> 1.10"
 gem "daemons", "~> 1.4", ">= 1.4.1"
 gem "default_value_for", "~> 3.6"
@@ -95,7 +95,7 @@ gem "dynamic_form", "= 1.2"
 gem "exception_notification", '= 4.4.3'
 gem "font-awesome-rails", '~> 4.7', '>= 4.7.0.8'
 gem "gon", "~> 6.4.0"
-gem "haml", "~> 4.0.7"
+gem "haml", "~> 5.2"
 gem "highline", "~> 1.7.3"
 gem "httparty", "= 0.21"
 gem "i18n", "= 1.0.1"
@@ -109,7 +109,6 @@ gem 'newrelic_rpm', '= 4.8.0.341'
 gem "nokogiri", "~> 1.10.10"
 gem "omniauth", "= 1.4.2"
 gem "omniauth-oauth2", "1.3"
-# gem 'protected_attributes'
 gem "rack-cors", "~> 1.0.3", {require: 'rack/cors'}
 gem "rack-environmental"#, "~> 1.3"
 gem 'rack-secure_samesite_cookies', {git: 'https://github.com/concord-consortium/secure-samesite-cookies.git', tag: 'v1.0.2'}
@@ -118,8 +117,8 @@ gem "responders", "~> 2.0"
 gem "ribbons-rails", "~> 0.0", {git: "https://github.com/concord-consortium/ribbons-rails.git"}
 gem "safe_yaml", "~> 1.0.5"
 gem "spreadsheet", "~> 1.1.2", "= 1.1.2"
-# # gem "sqlite3", "~> 1.3"
-# # gem "test-unit", "~> 3.0"
+# gem "sqlite3", "~> 1.3"
+# gem "test-unit", "~> 3.0"
 gem "tinymce-rails", '~> 4.9.4', "= 4.9.4"
 gem "useragent", "~> 0.16.10"
 gem "uuidtools", "~> 2.1.5", "= 2.1.5"

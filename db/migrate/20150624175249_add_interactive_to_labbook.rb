@@ -1,4 +1,4 @@
-class AddInteractiveToLabbook < ActiveRecord::Migration
+class AddInteractiveToLabbook < ActiveRecord::Migration[5.1]
   def up
      change_table :embeddable_labbooks do |t|
        t.references :interactive, polymorphic: true

@@ -1,4 +1,4 @@
-class CreateRubrics < ActiveRecord::Migration
+class CreateRubrics < ActiveRecord::Migration[5.1]
   def change
     create_table :rubrics do |t|
       t.string :name

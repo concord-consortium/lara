@@ -1,4 +1,4 @@
-class CreateEmbeddableMultipleChoiceAnswers < ActiveRecord::Migration
+class CreateEmbeddableMultipleChoiceAnswers < ActiveRecord::Migration[5.1]
   def change
     create_table :embeddable_multiple_choice_answers do |t|
       t.text :answer_ids

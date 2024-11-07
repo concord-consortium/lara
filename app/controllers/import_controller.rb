@@ -57,7 +57,7 @@ class ImportController < ApplicationController
       else
         import_activity.destroy
         response.headers["data"] = {response_code: response_code}.to_json
-        render nothing: true and return
+        head :ok and return
       end
 
       response_body = JSON.parse "#{response_publish.body}", symbolize_names: true
@@ -66,6 +66,6 @@ class ImportController < ApplicationController
     else
       response.headers["data"] = {response_code: 401}.to_json
     end
-    render nothing: true
+    head :ok
   end
 end

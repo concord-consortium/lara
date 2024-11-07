@@ -1,4 +1,4 @@
-class CreateCRaterFeedbackItems < ActiveRecord::Migration
+class CreateCRaterFeedbackItems < ActiveRecord::Migration[5.1]
   def change
     create_table :c_rater_feedback_items do |t|
       t.text :answer_text

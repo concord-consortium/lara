@@ -1,4 +1,4 @@
-class AddFullWidthToEmbeddables < ActiveRecord::Migration
+class AddFullWidthToEmbeddables < ActiveRecord::Migration[5.1]
   def change
     add_column :embeddable_multiple_choices, :is_full_width, :boolean, default: false
     add_column :embeddable_open_responses, :is_full_width, :boolean, default: false

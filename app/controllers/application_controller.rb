@@ -22,7 +22,7 @@ class ApplicationController < ActionController::Base
   rescue_from NotAuthorizedRunError do
     respond_to do |format|
       format.html { render 'runs/unauthorized_run', status: :forbidden }
-      format.json { render nothing: true, status: :forbidden }
+      format.json { head :forbidden }
     end
   end
 
@@ -274,8 +274,8 @@ class ApplicationController < ActionController::Base
   def respond_with_nothing
     # This is useful for AJAX actions, because it returns a 200 status code but doesn't bother generating an actual response.
     respond_to do |format|
-      format.js { render nothing: true }
-      format.html { render nothing: true }
+      format.js { head :ok }
+      format.html { head :ok }
     end
   end
 

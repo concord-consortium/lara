@@ -82,7 +82,7 @@ describe "plugins/_show.html.haml" do
       ]
 
       activity_level_code.each do |expected_string|
-        expect(rendered).to match(expected_string)
+        expect(CGI.unescapeHTML(rendered)).to match(expected_string)
       end
     end
 
@@ -91,7 +91,7 @@ describe "plugins/_show.html.haml" do
 
       it "should render the javascript" do
         common_plugin_code.each do |expected_string|
-          expect(rendered).to match(expected_string)
+          expect(CGI.unescapeHTML(rendered)).to match(expected_string)
         end
       end
     end
@@ -112,7 +112,7 @@ describe "plugins/_show.html.haml" do
         /embeddablePluginId: 42/
       ]
       page_level_code.each do |expected_string|
-        expect(rendered).to match(expected_string)
+        expect(CGI.unescapeHTML(rendered)).to match(expected_string)
       end
     end
   end
@@ -136,7 +136,7 @@ describe "plugins/_show.html.haml" do
         /embeddablePluginId: 42/
       ]
       page_level_code.each do |expected_string|
-        expect(rendered).to match(expected_string)
+        expect(CGI.unescapeHTML(rendered)).to match(expected_string)
       end
     end
   end

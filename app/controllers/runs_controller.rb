@@ -105,7 +105,7 @@ class RunsController < ApplicationController
       request: request
     }
     UnauthorizedFeedbackMailer.feedback(data).deliver
-    render nothing: true, status: :created
+    head :created
   end
 
   private

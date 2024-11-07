@@ -1,4 +1,4 @@
-class AddFeedbackSubmissionToFeedbackItem < ActiveRecord::Migration
+class AddFeedbackSubmissionToFeedbackItem < ActiveRecord::Migration[5.1]
   def change
     add_column :embeddable_feedback_items, :feedback_submission_id, :integer
     add_column :embeddable_feedback_items, :feedback_submission_type, :string
