@@ -2,6 +2,8 @@
 #  - answer_text (returns string)
 #  - c_rater_settings (should point to CRaterSettings instance if feedback should be obtained, nil otherwise)
 
+require_dependency 'c_rater/api_wrapper'
+
 module CRater::FeedbackFunctionality
   extend ActiveSupport::Concern
   include Embeddable::FeedbackFunctionality
@@ -89,7 +91,7 @@ module CRater::FeedbackFunctionality
 
     # Return an error feedback item if not configured:
     return not_configured unless c_rater_enabled?
-    
+
     # Otherwise call out to scoring service:
     return request_feedback_from_service
   end

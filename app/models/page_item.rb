@@ -8,8 +8,8 @@ class PageItem < ApplicationRecord
   # :dependent => :destroy, but that began causing recursion issues after upgrading from Rails 3 to 4.
   after_destroy :destroy_related_embeddable
 
-  has_many :primary_linked_items, foreign_key: :primary_id, class_name: LinkedPageItem, dependent: :destroy
-  has_many :secondary_linked_items, foreign_key: :secondary_id, class_name: LinkedPageItem, dependent: :destroy
+  has_many :primary_linked_items, foreign_key: :primary_id, class_name: "LinkedPageItem", dependent: :destroy
+  has_many :secondary_linked_items, foreign_key: :secondary_id, class_name: "LinkedPageItem", dependent: :destroy
   has_one :interactive_page, through: :section
 
   COLUMN_PRIMARY ="primary"

@@ -143,7 +143,7 @@ class MwInteractive < ApplicationRecord
         labbook.prompt = I18n.t 'LABBOOK.ITSI.UPLOAD_PROMPT'
         labbook.save!
       else
-        if upload_only_model_urls.include? url_was
+        if upload_only_model_urls.include? url_before_last_save
           labbook.action_type = Embeddable::Labbook::SNAPSHOT_ACTION
           labbook.custom_action_label = nil
           labbook.prompt = I18n.t 'LABBOOK.ITSI.SNAPSHOT_PROMPT'

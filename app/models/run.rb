@@ -8,11 +8,11 @@ class Run < ApplicationRecord
   class InvalidJobState < StandardError; end
 
 
-  belongs_to :activity, class_name: LightweightActivity
+  belongs_to :activity, class_name: "LightweightActivity"
 
   belongs_to :user
 
-  belongs_to :page, class_name: InteractivePage # last page
+  belongs_to :page, class_name: "InteractivePage" # last page
 
   belongs_to :sequence # optional
 
