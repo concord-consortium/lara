@@ -496,6 +496,7 @@ DEPENDENCIES
   rack-secure_samesite_cookies!
   rails (~> 5.2.8.25)!
   rails-controller-testing
+  railslts-version!
   railties (~> 5.2.8.25)!
   rake (~> 13.2, >= 13.2.1)
   responders (~> 2.0)
