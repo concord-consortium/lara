@@ -83,17 +83,17 @@ class Api::V1::InteractivePagesController < API::APIController
   def update_page
     activity = @interactive_page.lightweight_activity
     authorize! :update, activity, @interactive_page
-    page_params = params['page']
+    page_params = params.require("page").permit(:name, :is_completion, :is_hidden, :show_sidebar, :sidebar, :sidebar_title)
     return error("Missing page parameter") if page_params.nil?
 
     if page_params
       change_keys = 'name is_completion is_hidden show_sidebar sidebar sidebar_title'.split
       # Limit the parameters we accept here, remove nil values, and convert
       # snake case to underscore.
-      clean_params = page_params.map { |key, value| [key.to_s.underscore, value] }.to_h
+      clean_params = page_params.to_h.map { |key, value| [key.to_s.underscore, value] }
       clean_params = clean_params.reject { |k, v| v.nil? }
       clean_params = clean_params.select { |k, v| change_keys.include?(k) }
-      @interactive_page.update_attributes(clean_params)
+      @interactive_page.update_attributes(clean_params.to_h)
 
       if page_params['isCompletion']
         @interactive_page.move_to_bottom
@@ -165,9 +165,17 @@ class Api::V1::InteractivePagesController < API::APIController
     render json: generate_item_json(duplicate)
   end
 
+  def safe_section_params
+    params.require(:section).permit(
+      :can_collapse_small, :id, :layout, :name, :position, :show,
+      items: [:id, :position, :column]
+    )
+  end
+
   def update_section
     authorize! :update, @interactive_page
-    section_params = params['section']
+    puts "!!! update_section: #{params.inspect}"
+    section_params = safe_section_params
 
     return error("Missing section parameter") if section_params.nil?
     return error("Missing section[:id] parameter") if section_params['id'].nil?

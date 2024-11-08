@@ -714,9 +714,9 @@ describe Api::V1::InteractivePagesController do
 
         it 'fails when we dont specify a section' do
           update_request = { id: page.id }
-          post 'update_section', params: update_request, xhr: true
-          expect(response.status).to eq(500)
-          expect(response.body).to match(/Missing section/)
+          expect {
+            post 'update_section', params: update_request, xhr: true
+          }.to raise_error(ActionController::ParameterMissing, "param is missing or the value is empty: section")
         end
 
         describe 'when we arent the author' do
