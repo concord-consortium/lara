@@ -174,7 +174,6 @@ class Api::V1::InteractivePagesController < API::APIController
 
   def update_section
     authorize! :update, @interactive_page
-    puts "!!! update_section: #{params.inspect}"
     section_params = safe_section_params
 
     return error("Missing section parameter") if section_params.nil?
