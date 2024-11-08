@@ -6,7 +6,7 @@ class Sequence < ApplicationRecord
   include Accessible # defines font options
 
   has_many :lightweight_activities_sequences, -> { order(:position) }, dependent: :destroy
-  has_many :lightweight_activities, -> { order('lightweight_activities_sequences.position') }, through: :lightweight_activities_sequences
+  has_many :lightweight_activities, through: :lightweight_activities_sequences
   belongs_to :user
   belongs_to :project
 
