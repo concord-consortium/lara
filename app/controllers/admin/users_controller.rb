@@ -4,9 +4,9 @@ class Admin::UsersController < ApplicationController
 
   def user_params
     params.fetch(:user, {}).permit(
-      :admined_project_ids, :api_key, :authentication_token, :email, :first_name,
-      :has_api_key, :is_admin, :is_author, :last_name, :password, :password_confirmation,
-      :provider, :remember_me, :uid
+      :api_key, :authentication_token, :email, :first_name, :has_api_key, :is_admin, :is_author,
+      :last_name, :password, :password_confirmation, :provider, :remember_me, :uid,
+      admined_project_ids: []
     )
   end
 
@@ -80,12 +80,12 @@ class Admin::UsersController < ApplicationController
     @user = User.find(params[:id])
     authorize! :update, @user
 
-    if !user_params[:admined_project_ids].present?
-      user_params[:admined_project_ids] = []
-    end
+    # Convert to a mutable hash and ensure `admined_project_ids` is an empty array if not provided
+    modifiable_params = user_params.to_h
+    modifiable_params[:admined_project_ids] ||= []
 
     respond_to do |format|
-      if @user.update_attributes(user_params)
+      if @user.update_attributes(modifiable_params)
         format.html { redirect_to edit_admin_user_path(@user), notice: 'User was successfully updated.' }
         format.json { head :no_content }
       else
