@@ -68,7 +68,7 @@ class SequencesController < ApplicationController
   # POST /sequences
   # POST /sequences.json
   def create
-    @sequence = Sequence.new(params[:sequence])
+    @sequence = Sequence.new(sequence_params)
     authorize! :create, @sequence
     @sequence.user = current_user
 

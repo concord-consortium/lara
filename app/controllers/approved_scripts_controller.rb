@@ -2,6 +2,11 @@ class ApprovedScriptsController < ApplicationController
   load_and_authorize_resource
   # GET /approved_scripts
   # GET /approved_scripts.json
+
+  def approved_script_params
+    params.require(:approved_script).permit(:name, :url, :label, :description, :version, :json_url, :authoring_metadata)
+  end
+
   def index
     @approved_scripts = ApprovedScript.all
 
@@ -41,7 +46,7 @@ class ApprovedScriptsController < ApplicationController
   # POST /approved_scripts
   # POST /approved_scripts.json
   def create
-    @approved_script = ApprovedScript.new(params[:approved_script])
+    @approved_script = ApprovedScript.new(approved_script_params)
 
     respond_to do |format|
       if @approved_script.save

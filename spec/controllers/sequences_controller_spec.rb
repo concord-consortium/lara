@@ -17,7 +17,7 @@ describe SequencesController do
   # Sequence. As you add validations to Sequence, be sure to
   # update the return value of this method accordingly.
   def valid_attributes
-    {}
+    { title: "New Sequence" }
   end
 
   before(:each) do
