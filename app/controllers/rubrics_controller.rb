@@ -11,9 +11,13 @@ class RubricsController < ApplicationController
     @rubric = Rubric.new()
   end
 
+  def create_params
+    params.require(:rubric).permit(:name, :doc_url, :project_id)
+  end
+
   def create
     authorize! :create, Rubric
-    @rubric = Rubric.new(params[:rubric])
+    @rubric = Rubric.new(create_params)
     @rubric.user = current_user
 
     if @rubric.save
