@@ -53,6 +53,6 @@
     var container = $("#preview-menu")[0];
     LARA.SectionAuthoring.renderPreviewLinks(
       container,
-      { previewLinks: #{activity_preview_options(@activity).to_json}
+      { previewLinks: #{activity_preview_options(@activity).to_json.html_safe}
     });
   });

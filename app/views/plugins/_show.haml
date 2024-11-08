@@ -90,7 +90,7 @@
         interactiveStateUrl: '#{escape_javascript(interactive_state_url)}',
         getFirebaseJwtUrl: getFirebaseJwtUrl,
         wrappedEmbeddableDiv: $('#{wrapped_selector}')[0],
-        wrappedEmbeddableContext: #{wrapped_embedd ? (LaraSerializationHelper.new).export(wrapped_embedd).to_json : 'null'},
+        wrappedEmbeddableContext: #{wrapped_embedd ? (LaraSerializationHelper.new).export(wrapped_embedd).to_json.html_safe : 'null'},
         experimental: {
           clickToPlayId: '#{escape_javascript(click_to_play_id)}'
         }
@@ -152,7 +152,7 @@
       // defined at lara-plugin-api/helpers/embeddable-runtime-context.ts.
       var embeddableContext = #{!wrapped_embedd ? 'null' : "{
         container: $('#{wrapped_selector}')[0],
-        laraJson: #{(LaraSerializationHelper.new).export(wrapped_embedd).to_json},
+        laraJson: #{(LaraSerializationHelper.new).export(wrapped_embedd).to_json.html_safe},
         interactiveStateUrl: #{interactive_state_url ? "'#{escape_javascript(interactive_state_url)}'" : 'null'},
         interactiveAvailable: #{!clickToPlay}
       }"};

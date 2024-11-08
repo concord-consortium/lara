@@ -19,14 +19,14 @@
   $(document).ready(function() {
     // signal the plugin to use the new glossary model authoring
     LARA.GlossaryModelAuthoring = {
-      apiUrl: #{api_v1_glossary_url(@glossary).to_json},
+      apiUrl: #{api_v1_glossary_url(@glossary).to_json.html_safe},
       containerId: "glossary_authoring_form",
       initialData: {
-        id: #{@glossary.id.to_json},
-        name: #{@glossary.name.to_json},
-        project: #{@project.to_json},
-        projects: #{@projects.to_json},
-        json: #{@glossary.export_json_only.to_json},
+        id: #{@glossary.id.to_json.html_safe},
+        name: #{@glossary.name.to_json.html_safe},
+        project: #{@project.to_json.html_safe},
+        projects: #{@projects.to_json.html_safe},
+        json: #{@glossary.export_json_only.to_json.html_safe},
         canEdit: #{@can_edit}
       },
       getFirebaseJwtUrl: function (appName) {

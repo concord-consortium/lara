@@ -4,7 +4,7 @@
   - wrapped_id = "wrapped_embeddable"
   - show_wrapped_embeddable = @embeddable && (plugin.component.scope == "embeddable-decoration") && plugin.component.guiPreview
   - wrapped_embeddable = show_wrapped_embeddable && @embeddable.embeddable
-  - wrapped_embeddable_lara_json = wrapped_embeddable ? (LaraSerializationHelper.new).export(wrapped_embeddable).to_json : 'null'
+  - wrapped_embeddable_lara_json = wrapped_embeddable ? (LaraSerializationHelper.new).export(wrapped_embeddable).to_json.html_safe : 'null'
   - if wrapped_embeddable
     - finder = Embeddable::AnswerFinder.new(Run.new())
     - wrapped_embeddable = Embeddable::is_interactive?(wrapped_embeddable) ? wrapped_embeddable : finder.find_answer(wrapped_embeddable)
@@ -89,8 +89,8 @@
         if ($('#wrapped_embeddable').length > 0) {
           var interactiveContainer = $('#wrapped_embeddable').find('.interactive-container')[0];
           LARA.PageItemAuthoring.renderInteractiveAuthoringPreview(interactiveContainer, {
-            interactive: #{wrapped_embeddable && defined?(wrapped_embeddable.to_authoring_preview_hash) ? wrapped_embeddable.to_authoring_preview_hash().to_json : 'null'},
-            user: #{userInfo.to_json}
+            interactive: #{wrapped_embeddable && defined?(wrapped_embeddable.to_authoring_preview_hash) ? wrapped_embeddable.to_authoring_preview_hash().to_json.html_safe : 'null'},
+            user: #{userInfo.to_json.html_safe}
           });
         }
       };
