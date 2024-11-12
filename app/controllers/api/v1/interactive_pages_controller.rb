@@ -83,7 +83,7 @@ class Api::V1::InteractivePagesController < API::APIController
   def update_page
     activity = @interactive_page.lightweight_activity
     authorize! :update, activity, @interactive_page
-    page_params = params.require("page").permit(:name, :is_completion, :is_hidden, :show_sidebar, :sidebar, :sidebar_title)
+    page_params = params.require("page").permit(:name, :isCompletion, :isHidden, :showSidebar, :sidebar, :sidebarTitle)
     return error("Missing page parameter") if page_params.nil?
 
     if page_params
