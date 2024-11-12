@@ -38,8 +38,8 @@ class Api::V1::AuthoredContentsController < API::APIController
   end
 
   def s3_put(s3_config, key, contents)
-    s3 = AWS::S3.new(access_key_id: s3_config[:access_key_id], secret_access_key: s3_config[:secret_access_key])
-    s3.buckets[s3_config[:bucket_name]].objects.create(key, contents)
+    s3 = Aws::S3::Resource.new(access_key_id: s3_config[:access_key_id], secret_access_key: s3_config[:secret_access_key], region:'us-east-1')
+    s3.bucket(s3_config[:bucket_name]).object(key).put(body: contents)
   end
 
   private
