@@ -301,9 +301,11 @@ class Api::V1::InteractivePagesController < API::APIController
   def data_update_params
     params[:page_item].require(:data).permit(
       :aspect_ratio_method,
+      :author_data,
       :authored_state,
       :click_to_play,
       :click_to_play_prompt,
+      :component_label,
       :content,
       :custom_aspect_ratio_method,
       :custom_click_to_play,
@@ -329,6 +331,7 @@ class Api::V1::InteractivePagesController < API::APIController
       :is_callout,
       :is_half_width,
       :is_hidden,
+      :label,
       :legacy_ref_id,
       :legacy_ref_type,
       :library_interactive_id,
