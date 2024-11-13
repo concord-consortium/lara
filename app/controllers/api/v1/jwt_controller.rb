@@ -36,7 +36,9 @@ class Api::V1::JwtController < ApplicationController
       return error(500, e.message)
     end
 
-    body = params.except(:action, :controller, :run_id).dup()
+    # NOTE: to_unsafe_h() here is used as we need to pass all the passed params (except the excepted params)
+    # but we don't know what the params are in advance so we can't use a permit list
+    body = params.except(:action, :controller, :run_id).to_unsafe_h()
 
     uri = URI.parse(remote_url)
     if run
