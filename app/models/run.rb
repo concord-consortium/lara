@@ -1,4 +1,4 @@
-class Run < ActiveRecord::Base
+class Run < ApplicationRecord
 
   # NOTE: additional status flags should use bitmask values (0x2, 0x4, etc) so that multiple flags can be set at the same time
   SentToReportServiceStatusFlag = 0x1
@@ -7,15 +7,12 @@ class Run < ActiveRecord::Base
   class PortalUpdateIncomplete < StandardError; end
   class InvalidJobState < StandardError; end
 
-  attr_accessible :run_count, :user_id, :key, :activity, :user, :page_id,
-  :remote_id, :remote_endpoint, :activity_id, :sequence_id, :context_id,
-  :class_info_url, :platform_id, :platform_user_id, :resource_link_id, :status
 
-  belongs_to :activity, :class_name => LightweightActivity
+  belongs_to :activity, class_name: "LightweightActivity"
 
   belongs_to :user
 
-  belongs_to :page, :class_name => InteractivePage # last page
+  belongs_to :page, class_name: "InteractivePage" # last page
 
   belongs_to :sequence # optional
 
@@ -24,24 +21,24 @@ class Run < ActiveRecord::Base
   belongs_to :collaboration_run # optional
 
   has_many :multiple_choice_answers,
-    :class_name  => 'Embeddable::MultipleChoiceAnswer',
-    :foreign_key => 'run_id',
-    :dependent   => :destroy
+    class_name: 'Embeddable::MultipleChoiceAnswer',
+    foreign_key: 'run_id',
+    dependent: :destroy
 
   has_many :open_response_answers,
-    :class_name  => 'Embeddable::OpenResponseAnswer',
-    :foreign_key => 'run_id',
-    :dependent => :destroy
+    class_name: 'Embeddable::OpenResponseAnswer',
+    foreign_key: 'run_id',
+    dependent: :destroy
 
   has_many :image_question_answers,
-    :class_name  => 'Embeddable::ImageQuestionAnswer',
-    :foreign_key => 'run_id',
-    :dependent => :destroy
+    class_name: 'Embeddable::ImageQuestionAnswer',
+    foreign_key: 'run_id',
+    dependent: :destroy
 
   has_many :labbook_answers,
-    :class_name  => 'Embeddable::LabbookAnswer',
-    :foreign_key => 'run_id',
-    :dependent => :destroy
+    class_name: 'Embeddable::LabbookAnswer',
+    foreign_key: 'run_id',
+    dependent: :destroy
 
   has_many :interactive_run_states
 
@@ -50,13 +47,11 @@ class Run < ActiveRecord::Base
   before_validation :check_key
   after_create :update_activity_portal_run_count
 
-  scope :by_key, lambda { |k|
-      {:conditions => { :key => k } }
-    }
+  scope :by_key, ->(k) { where(key: k) }
 
   validates :key,
-    :format => { :with => /\A[a-zA-Z0-9\-]*\z/ },
-    :length => { :is => 36 }
+    format: { with: /\A[a-zA-Z0-9\-]*\z/ },
+    length: { is: 36 }
 
   # /app/models/with_class_info.rb for #update_platform_info
   include WithPlatformInfo

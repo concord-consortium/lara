@@ -1,5 +1,4 @@
-class ProjectAdmin < ActiveRecord::Base
-  attr_accessible :user, :project
+class ProjectAdmin < ApplicationRecord
 
   belongs_to :user
   belongs_to :project

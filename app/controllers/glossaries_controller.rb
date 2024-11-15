@@ -1,9 +1,9 @@
 class GlossariesController < ApplicationController
-  before_filter :set_glossary, :except => [:index, :new, :create]
+  before_action :set_glossary, except: [:index, :new, :create]
 
   def index
     @filter  = CollectionFilter.new(current_user, Glossary, params[:filter] || {})
-    @glossaries = @filter.collection.includes(:user).paginate(:page => params['page'], :per_page => 20)
+    @glossaries = @filter.collection.includes(:user).paginate(page: params['page'], per_page: 20)
   end
 
   def new
@@ -11,9 +11,14 @@ class GlossariesController < ApplicationController
     @glossary = Glossary.new()
   end
 
+  def glossary_params
+    params.fetch(:glossary, {})
+          .permit(:name, :json, :user_id, :legacy_glossary_resource_id, :project_id, :project)
+  end
+
   def create
     authorize! :create, Glossary
-    @glossary = Glossary.new(params[:glossary])
+    @glossary = Glossary.new(glossary_params)
     @glossary.user = current_user
 
     if @glossary.save
@@ -33,7 +38,15 @@ class GlossariesController < ApplicationController
 
   def update
     authorize! :update, @glossary
-    simple_update(@glossary)
+    respond_to do |format|
+      if @glossary.update_attributes(glossary_params)
+        format.html { redirect_to edit_polymorphic_url(@glossary), notice: "Glossary was successfully updated." }
+        format.json { head :no_content }
+      else
+        format.html { render action: "edit" }
+        format.json { render json: @glossary.errors, status: :unprocessable_entity }
+      end
+    end
   end
 
   def destroy

@@ -2,7 +2,7 @@ require 'open-uri'
 
 namespace :itsi do
   desc "Update width, height, and image_url of Interactives from the ITSI interactive library."
-  task :update_interactives => :environment do
+  task update_interactives: :environment do
     content = open(ENV['MODEL_JSON_LIST_URL']).read
     models = JSON.parse(content)["models"]
     total_count = 0
@@ -49,7 +49,7 @@ namespace :itsi do
   end
 
   desc "Reword the lab book prompts for itsi. See config/locales/en.yml  and Embeddable::Labbook#update_itsi_prompts"
-  task :update_labbook_prompts => :environment do
+  task update_labbook_prompts: :environment do
     Embeddable::Labbook.update_itsi_prompts
   end
 

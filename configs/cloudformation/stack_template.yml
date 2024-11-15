@@ -111,6 +111,8 @@ Parameters:
     Type: String
   RailsSecretToken:
     Type: String
+  RailsSecretKeyBase:
+    Type: String
   SesKey:
     Type: String
     Description: key to connect to AWS SES for email
@@ -565,6 +567,8 @@ Resources:
               Value: !Ref RollbarsKey
             - Name: SECRET_TOKEN
               Value: !Ref RailsSecretToken
+            - Name: RAILS_SECRET_KEY_BASE
+              Value: !Ref RailsSecretKeyBase
             - Name: SES_KEY
               Value: !Ref SesKey
             - Name: SES_SECRET
@@ -831,6 +835,8 @@ Resources:
               Value: !Ref RollbarsKey
             - Name: SECRET_TOKEN
               Value: !Ref RailsSecretToken
+            - Name: RAILS_SECRET_KEY_BASE
+              Value: !Ref RailsSecretKeyBase
             - Name: SES_KEY
               Value: !Ref SesKey
             - Name: SES_SECRET
@@ -935,6 +941,7 @@ Metadata:
           - NewRelicAppName
           - NewRelicLicenseKey
           - RailsSecretToken
+          - RailsSecretKeyBase
           - RollbarsKey
           - SesKey
           - SesSecret

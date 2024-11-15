@@ -1,4 +1,4 @@
-class CreateEmbeddableLabbookAnswers < ActiveRecord::Migration
+class CreateEmbeddableLabbookAnswers < ActiveRecord::Migration[5.1]
   def change
     create_table :embeddable_labbook_answers do |t|
       t.integer :run_id

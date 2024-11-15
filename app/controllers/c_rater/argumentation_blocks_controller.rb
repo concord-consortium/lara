@@ -36,17 +36,17 @@ class CRater::ArgumentationBlocksController < ApplicationController
   </ul>
   """
 
-  before_filter :set_page_and_authorize, only: [:create_embeddables, :remove_embeddables]
-  skip_before_filter :verify_authenticity_token, only: [:report]
+  before_action :set_page_and_authorize, only: [:create_embeddables, :remove_embeddables]
+  skip_before_action :verify_authenticity_token, only: [:report]
 
   def create_embeddables
     create_arg_block_embeddables(@page)
-    redirect_to(:back)
+    redirect_back(fallback_location: edit_activity_path(@activity))
   end
 
   def remove_embeddables
     @page.sections.where(title: CRater::ARG_SECTION_NAME).destroy_all
-    redirect_to(:back)
+    redirect_back(fallback_location: edit_activity_path(@activity))
   end
 
   def save_feedback
@@ -56,7 +56,7 @@ class CRater::ArgumentationBlocksController < ApplicationController
     if request.xhr?
       render json: feedback_info
     else
-      redirect_to(:back)
+      redirect_back(fallback_location: edit_activity_path(page.lightweight_activity))
     end
   end
 
@@ -66,7 +66,7 @@ class CRater::ArgumentationBlocksController < ApplicationController
     if request.xhr?
       head(200)
     else
-      redirect_to(:back)
+      redirect_back(fallback_location: edit_activity_path(submission.page.lightweight_activity))
     end
   end
 
@@ -82,7 +82,7 @@ class CRater::ArgumentationBlocksController < ApplicationController
     book = CRater::ArgumentationBlocksReport.generate(arg_block_buckets)
     sio = StringIO.new
     book.write sio
-    send_data sio.string, :type => "application/vnd.ms.excel", :filename => "arg-block-report.xls"
+    send_data sio.string, type: "application/vnd.ms.excel", filename: "arg-block-report.xls"
   end
 
   private
@@ -99,11 +99,11 @@ class CRater::ArgumentationBlocksController < ApplicationController
                                             hint: CLAIM_HINT,
                                             enable_check_answer: false)
     mc1.create_default_choices
-    page.add_embeddable(mc1, 0, CRater::ARG_SECTION_NAME)
+    page.add_embeddable(mc1, 1, CRater::ARG_SECTION_NAME)
 
     or1 = Embeddable::OpenResponse.create(prompt: I18n.t('ARG_BLOCK.EXPLANATION_PROMPT'),
                                           hint: EXPLANATION_HINT)
-    page.add_embeddable(or1, 1, CRater::ARG_SECTION_NAME)
+    page.add_embeddable(or1, 2, CRater::ARG_SECTION_NAME)
 
     or1_c_rater_settings = CRater::ItemSettings.new(item_id: 'HENRY001')
     or1_c_rater_settings.score_mapping = CRater::ScoreMapping.explanation.last
@@ -119,11 +119,11 @@ class CRater::ArgumentationBlocksController < ApplicationController
     mc2.add_choice('(3)')
     mc2.add_choice('(4)')
     mc2.add_choice("(5) #{I18n.t('ARG_BLOCK.VERY_CERTAIN')}")
-    page.add_embeddable(mc2, 2, CRater::ARG_SECTION_NAME)
+    page.add_embeddable(mc2, 3, CRater::ARG_SECTION_NAME)
 
     or2 = Embeddable::OpenResponse.create(prompt: I18n.t('ARG_BLOCK.RATIONALE_PROMPT'),
                                           hint: CERTAINTY_RATIONALE_HINT)
-    page.add_embeddable(or2, 3, CRater::ARG_SECTION_NAME)
+    page.add_embeddable(or2, 4, CRater::ARG_SECTION_NAME)
 
     or2_c_rater_settings = CRater::ItemSettings.new(item_id: 'HENRY001')
     or2_c_rater_settings.score_mapping = CRater::ScoreMapping.rationale.last

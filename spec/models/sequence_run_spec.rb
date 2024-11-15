@@ -11,18 +11,18 @@ describe SequenceRun do
 
   let(:portal) do
     double("portal",
-      :remote_endpoint => remote_endpoint,
-      :remote_id       => remote_id,
-      :platform_info   => {},
-      :valid?          => true)
+      remote_endpoint: remote_endpoint,
+      remote_id: remote_id,
+      platform_info: {},
+      valid?: true)
   end
 
   let(:existing_seq_run) do
     SequenceRun.create!(
-      :sequence_id     => sequence.id,
-      :user_id         => user.id,
-      :remote_endpoint => remote_endpoint,
-      :remote_id       => remote_id)
+      sequence_id: sequence.id,
+      user_id: user.id,
+      remote_endpoint: remote_endpoint,
+      remote_id: remote_id)
   end
 
 
@@ -56,10 +56,10 @@ describe SequenceRun do
       describe "when the portal isn't the same as the existing" do
         let(:other_portal) {
           double("portal",
-            :remote_id       => "something_else",
-            :remote_endpoint => remote_endpoint,
-            :platform_info   => {},
-            :valid?          => true) }
+            remote_id: "something_else",
+            remote_endpoint: remote_endpoint,
+            platform_info: {},
+            valid?: true) }
         it "should make a new run" do
           expect(subject.lookup_or_create(sequence, user, other_portal)).not_to eq(existing_seq_run)
         end
@@ -68,10 +68,10 @@ describe SequenceRun do
       describe "when platform info is provided" do
         let(:portal) {
           double("portal",
-            :remote_endpoint => remote_endpoint,
-            :remote_id       => remote_id,
-            :platform_info => { platform_id: "test_platform" },
-            :valid?        => true
+            remote_endpoint: remote_endpoint,
+            remote_id: remote_id,
+            platform_info: { platform_id: "test_platform" },
+            valid?: true
           )
         }
         it "should save it" do
@@ -88,13 +88,13 @@ describe SequenceRun do
     let(:activity2) { FactoryGirl.create(:activity) }
     let(:outside_activity) { FactoryGirl.create(:activity) }
     let(:sequence) { FactoryGirl.create(:sequence,
-      :lightweight_activities => [activity1, activity2])}
+      lightweight_activities: [activity1, activity2])}
     let(:activity_run_in_seq_run) { FactoryGirl.create(:run,
-        :user => user,
-        :activity => activity1,
+        user: user,
+        activity: activity1,
         # TODO:  The current implementation looks up the sequence runs
         # this way.  We may want to look them up using other means.
-        :sequence_run => existing_seq_run)
+        sequence_run: existing_seq_run)
       }
 
     describe "when there is no existing run for an activity in the sequence" do
@@ -125,7 +125,7 @@ describe SequenceRun do
     subject          { existing_seq_run }
 
     let(:activities) { Array(1..4).map { |a| FactoryGirl.create(:activity)} }
-    let(:sequence)   { FactoryGirl.create(:sequence, :lightweight_activities => activities) }
+    let(:sequence)   { FactoryGirl.create(:sequence, lightweight_activities: activities) }
 
     describe "most_recent_run" do
       before(:each) do
@@ -144,17 +144,17 @@ describe SequenceRun do
 
 
     describe "has_been_run" do
-      let(:mock_runs){ Array(1..4).map {|a| double(:has_been_run => false) }}
+      let(:mock_runs){ Array(1..4).map {|a| double(has_been_run: false) }}
       describe "when none of the activities have been run" do
         it "should report false" do
-          allow(subject).to receive_messages(:runs => mock_runs)
+          allow(subject).to receive_messages(runs: mock_runs)
           expect(subject.has_been_run).to be_falsey
         end
       end
       describe "when at least one of the activities has been run" do
         it "should report true" do
-          allow(mock_runs[2]).to receive_messages(:has_been_run => true)
-          allow(subject).to receive_messages(:runs => mock_runs)
+          allow(mock_runs[2]).to receive_messages(has_been_run: true)
+          allow(subject).to receive_messages(runs: mock_runs)
           expect(subject.has_been_run).to be_truthy
         end
       end
@@ -185,7 +185,7 @@ describe SequenceRun do
         subject { existing_seq_run }
 
         before(:each) do
-          activities.each { |act| act.runs<<FactoryGirl.create(:run, :sequence_run => subject)}
+          activities.each { |act| act.runs<<FactoryGirl.create(:run, sequence_run: subject)}
           subject.make_or_update_runs
           activities.each { |act| act.reload }
         end

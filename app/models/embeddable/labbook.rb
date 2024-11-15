@@ -1,6 +1,6 @@
 # Labbook class represents an embeddable item, "question", authorable part of the activity page.
 module Embeddable
-  class Labbook < ActiveRecord::Base
+  class Labbook < ApplicationRecord
     include Embeddable
     include AttachedToInteractive
 
@@ -12,10 +12,8 @@ module Embeddable
       ['Snapshot', SNAPSHOT_ACTION]
     ]
 
-    attr_accessible :action_type, :name, :prompt, :custom_action_label, :is_hidden,
-      :show_in_featured_question_report, :interactive, :hint, :is_half_width
 
-    has_many :page_items, :as => :embeddable, :dependent => :destroy
+    has_many :page_items, as: :embeddable, dependent: :destroy
     has_many :sections, through: :page_items
     has_many :interactive_pages, through: :sections
     has_many :embeddable_plugins, class_name: "Embeddable::EmbeddablePlugin", as: :embeddable
@@ -24,8 +22,8 @@ module Embeddable
     # "Answer" isn't the best word probably, but it fits the rest of names and convention.
     # LabbookAnswer is an instance related to particular activity run and user.
     has_many :answers,
-      :class_name  => 'Embeddable::LabbookAnswer',
-      :dependent => :destroy
+      class_name: 'Embeddable::LabbookAnswer',
+      dependent: :destroy
 
     default_value_for :name, 'Labbook album' # it's used in Portal reports
 

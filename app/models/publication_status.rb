@@ -10,19 +10,18 @@ module PublicationStatus
   def self.included(clazz)
     ## add before_save hooks
     clazz.class_eval do
-      validates :publication_status, :inclusion => { :in => PUB_STATUSES }
+      validates :publication_status, inclusion: { in: PUB_STATUSES }
       default_value_for :publication_status, 'private'
-      attr_accessible :publication_status, :is_official
 
       # * Find all public activities
-      scope :public,    where(:publication_status => 'public')
-      scope :newest,    order("updated_at DESC")
-      scope :official,  where(:is_official => true)
-      scope :community, where(:is_official => false)
+      scope :is_public, -> { where(publication_status: 'public')}
+      scope :newest, -> { order(updated_at: :desc) }
+      scope :official, -> { where(is_official: true) }
+      scope :community, -> { where(is_official: false) }
 
       # * Find all activities for one user (regardless of publication status)
       def self.my(user)
-        where(:user_id => user.id)
+        where(user_id: user.id)
       end
 
       # * Find a users activities and the public activities
@@ -33,7 +32,7 @@ module PublicationStatus
       # * Find all activities visible (readable) to the given user
       def self.can_see(user)
         if user.can?(:manage, self)
-          self.scoped # (like all but it keeps a relation, instead of an array)
+          self.all
         else
           self.my_or_public(user)
         end

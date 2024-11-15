@@ -8,7 +8,7 @@ describe DashboardToc do
   let(:solo_activity)   { FactoryGirl.create(:activity_with_pages, name: 'solo act') }
   let(:activity)        { FactoryGirl.create(:activity, name: 'sequence act') }
   let(:activities)      { [activity] }
-  let(:seq)             { FactoryGirl.create(:sequence, title: 'sequence', :lightweight_activities => activities) }
+  let(:seq)             { FactoryGirl.create(:sequence, title: 'sequence', lightweight_activities: activities) }
   let(:remote_endpoint) { nil }
 
   describe "when created by an activity not part of a sequence" do

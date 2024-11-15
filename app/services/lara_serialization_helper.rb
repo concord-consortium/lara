@@ -39,7 +39,7 @@ class LaraSerializationHelper
     existing_item = lookup_item(item_hash[:ref_id])
     return existing_item if existing_item
 
-    item = item_hash[:type].constantize.import(item_hash.except(:type, :ref_id, :interactive_ref_id, :embeddable_ref_id, :linked_interactive, :linked_interactives))
+    item = item_hash[:type].constantize.import(item_hash.except(:type, :ref_id, :interactive_ref_id, :embeddable_ref_id, :linked_interactive, :linked_interactives, :item_settings))
     item.save!(validate: false)
     unless item_hash[:ref_id]
       # This is only for backward compatibility when not all the embeddables were defining ref_id in export hash.

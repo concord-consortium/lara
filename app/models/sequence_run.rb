@@ -1,6 +1,4 @@
-class SequenceRun < ActiveRecord::Base
-  attr_accessible :remote_endpoint, :remote_id, :user_id, :sequence_id, :key,
-  :class_info_url, :context_id, :platform_id, :platform_user_id, :resource_link_id
+class SequenceRun < ApplicationRecord
 
   has_many :runs
   belongs_to :sequence
@@ -35,7 +33,7 @@ class SequenceRun < ActiveRecord::Base
     # there will be multipe runs that match without a user and we won't know which one
     # so without a user we always create one
     if user
-      seq_run = self.find(:first, :conditions => conditions)
+      seq_run = self.where(conditions).first
     end
 
     if seq_run.nil?

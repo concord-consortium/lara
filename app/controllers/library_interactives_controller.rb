@@ -1,6 +1,6 @@
 class LibraryInteractivesController < ApplicationController
-  before_filter :can_use_index, :only => :index
-  before_filter :can_manage, :except => :index
+  before_action :can_use_index, only: :index
+  before_action :can_manage, except: :index
 
   # GET /library_interactives
   # GET /library_interactives.json
@@ -29,10 +29,20 @@ class LibraryInteractivesController < ApplicationController
     @library_interactive = LibraryInteractive.find(params[:id])
   end
 
+  def library_interactive_params
+    params.require(:library_interactive).permit(
+      :aspect_ratio_method, :authorable, :authoring_guidance, :base_url, :click_to_play,
+      :click_to_play_prompt, :customizable, :data, :description, :enable_learner_state,
+      :export_hash, :hide_question_number, :full_window, :has_report_url, :image_url,
+      :name, :native_height, :native_width, :no_snapshots, :official, :report_item_url,
+      :show_delete_data_button, :thumbnail_url
+    )
+  end
+
   # POST /library_interactives
   # POST /library_interactives.json
   def create
-    @library_interactive = LibraryInteractive.new(params[:library_interactive])
+    @library_interactive = LibraryInteractive.new(library_interactive_params)
 
     respond_to do |format|
       if @library_interactive.save
@@ -51,7 +61,7 @@ class LibraryInteractivesController < ApplicationController
     @library_interactive = LibraryInteractive.find(params[:id])
 
     respond_to do |format|
-      if @library_interactive.update_attributes(params[:library_interactive])
+      if @library_interactive.update_attributes(library_interactive_params)
         format.html { redirect_to library_interactives_url, notice: 'Library interactive was successfully updated.' }
         format.json { head :no_content }
       else

@@ -52,7 +52,7 @@ describe LightweightActivity do
 
   it 'should have InteractivePages in the correct order' do
     [3,1,2].each do |i|
-      page = FactoryGirl.create(:page, :name => "page #{i}", :position => i)
+      page = FactoryGirl.create(:page, name: "page #{i}", position: i)
       activity.pages << page
     end
     activity.reload
@@ -139,7 +139,7 @@ describe LightweightActivity do
 
     before :each do
       [3,1,2].each do |i|
-        page = FactoryGirl.create(:page, :name => "page #{i}", :position => i)
+        page = FactoryGirl.create(:page, name: "page #{i}", position: i)
         activity.pages << page
       end
       activity.reload
@@ -395,14 +395,14 @@ describe LightweightActivity do
     end
 
     it 'has pages in the same order as the source activity' do
-      5.times do
-        activity.pages << FactoryGirl.create(:page)
+      5.times do |i|
+        activity.pages << FactoryGirl.create(:page, position: i + 1)
       end
       duplicate = activity.duplicate(owner)
       duplicate.pages.each_with_index do |p, i|
         expect(activity.pages[i].name).to eq(p.name)
-        expect(activity.pages[i].position).to be(p.position)
-        expect(activity.pages[i].last?).to be(p.last?)
+        expect(activity.pages[i].position).to eq(p.position)
+        expect(activity.pages[i].last?).to eq(p.last?)
       end
     end
 
@@ -451,7 +451,7 @@ describe LightweightActivity do
     let(:new_owner) { FactoryGirl.create(:user) }
 
     it 'should return an activity' do
-      json = JSON.parse(File.read(Rails.root + 'spec/import_examples/valid_lightweight_activity_import_v2.json'), :symbolize_names => true)
+      json = JSON.parse(File.read(Rails.root + 'spec/import_examples/valid_lightweight_activity_import_v2.json'), symbolize_names: true)
       imported_activity_url = "http://foo.com/"
       act = LightweightActivity.import(json,new_owner,imported_activity_url)
       expect(act.user).to be new_owner
@@ -554,9 +554,9 @@ describe LightweightActivity do
     describe 'pages section' do
       describe 'for the Activity Player' do
         before(:each) do
-          activity_player_activity.pages << FactoryGirl.create(:page, name: 'page 1', position: 0)
-          activity_player_activity.pages << FactoryGirl.create(:page, name: 'page 2', position: 1)
-          activity_player_activity.pages << FactoryGirl.create(:page, name: 'hidden page', is_hidden: true, position: 2)
+          activity_player_activity.pages << FactoryGirl.create(:page, name: 'page 1', position: 1)
+          activity_player_activity.pages << FactoryGirl.create(:page, name: 'page 2', position: 2)
+          activity_player_activity.pages << FactoryGirl.create(:page, name: 'hidden page', is_hidden: true, position: 3)
           activity_player_activity.reload
         end
 
@@ -572,10 +572,10 @@ describe LightweightActivity do
     end
 
     describe 'pages section with hidden embeddables & reportable interactives' do
-      let(:page1) { FactoryGirl.create(:interactive_page_with_or, name: 'page 1', position: 0) }
-      let(:page2) { FactoryGirl.create(:interactive_page_with_hidden_or, name: 'page 2', position: 1) }
-      let(:page3) { FactoryGirl.create(:interactive_page_with_or, name: 'page 3', position: 2) }
-      let(:page4) { FactoryGirl.create(:interactive_page_with_or, name: 'page 4', position: 3) }
+      let(:page1) { FactoryGirl.create(:interactive_page_with_or, name: 'page 1', position: 1) }
+      let(:page2) { FactoryGirl.create(:interactive_page_with_hidden_or, name: 'page 2', position: 2) }
+      let(:page3) { FactoryGirl.create(:interactive_page_with_or, name: 'page 3', position: 3) }
+      let(:page4) { FactoryGirl.create(:interactive_page_with_or, name: 'page 4', position: 4) }
 
       let(:non_reportable_interactive) {
         FactoryGirl.create(:mw_interactive, enable_learner_state: false, has_report_url: false)
@@ -643,9 +643,9 @@ describe LightweightActivity do
       activity_player_page_pattern = /https:\/\/activity-player.concord.org\/.*&page=page_\d+/
 
       before(:each) do
-        activity.pages << FactoryGirl.create(:page, name: 'page 1', position: 0)
-        activity.pages << FactoryGirl.create(:page, name: 'page 2', position: 1)
-        activity.pages << FactoryGirl.create(:page, name: 'hidden page', is_hidden: true, position: 2)
+        activity.pages << FactoryGirl.create(:page, name: 'page 1', position: 1)
+        activity.pages << FactoryGirl.create(:page, name: 'page 2', position: 2)
+        activity.pages << FactoryGirl.create(:page, name: 'hidden page', is_hidden: true, position: 3)
         activity.reload
       end
 
@@ -675,10 +675,10 @@ describe LightweightActivity do
     end
 
     describe 'pages section with hidden embeddables & reportable interactives' do
-      let(:page1) { FactoryGirl.create(:interactive_page_with_or, name: 'page 1', position: 0) }
-      let(:page2) { FactoryGirl.create(:interactive_page_with_hidden_or, name: 'page 2', position: 1) }
-      let(:page3) { FactoryGirl.create(:interactive_page_with_or, name: 'page 3', position: 2) }
-      let(:page4) { FactoryGirl.create(:interactive_page_with_or, name: 'page 4', position: 3) }
+      let(:page1) { FactoryGirl.create(:interactive_page_with_or, name: 'page 1', position: 1) }
+      let(:page2) { FactoryGirl.create(:interactive_page_with_hidden_or, name: 'page 2', position: 2) }
+      let(:page3) { FactoryGirl.create(:interactive_page_with_or, name: 'page 3', position: 3) }
+      let(:page4) { FactoryGirl.create(:interactive_page_with_or, name: 'page 4', position: 4) }
 
       let(:non_reportable_interactive) {
         FactoryGirl.create(:mw_interactive, enable_learner_state: false, has_report_url: false)
@@ -719,7 +719,7 @@ describe LightweightActivity do
       # 5 public activities
       make_collection_with_rand_modication_time(:public_activity, 5)
       # 5 of my activities
-      make_collection_with_rand_modication_time(:activity, 5, {:user => author })
+      make_collection_with_rand_modication_time(:activity, 5, {user: author })
     end
 
     describe "the newest scope" do
@@ -730,8 +730,8 @@ describe LightweightActivity do
     end
     describe "the public scope" do
       it "should return 5 public activities" do
-        expect(subject.public.size).to eq(5)
-        subject.public.each { |a| expect(a.publication_status).to eq('public')}
+        expect(subject.is_public.size).to eq(5)
+        subject.is_public.each { |a| expect(a.publication_status).to eq('public')}
       end
     end
     describe "my_or_public  scope" do

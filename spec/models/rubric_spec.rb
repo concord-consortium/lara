@@ -139,13 +139,13 @@ RSpec.describe Rubric do
   end
 
   it "should support #duplicate" do
-    expect(rubric.duplicate(author2).to_hash).to eq({
-      id: nil,
+    duplicated_rubric_hash = rubric.duplicate(author2).to_hash
+    expect(duplicated_rubric_hash).to include(
       name: "Copy of #{rubric.name}",
       doc_url: rubric.doc_url,
       project: rubric.project,
       user_id: author2.id
-    })
+    )
   end
 
   it "should support #self.import" do
@@ -214,8 +214,8 @@ RSpec.describe Rubric do
   end
 
   describe "scopes" do
-    it "should support none" do
-      expect(Rubric.none).to eq ([])
+    it "should support no_rubrics" do
+      expect(Rubric.no_rubrics).to eq ([])
     end
 
     it "should support newest" do

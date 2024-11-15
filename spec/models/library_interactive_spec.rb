@@ -104,24 +104,24 @@ describe LibraryInteractive do
   describe "generate_export_hash" do
     it "returns a hash value based on only certain properties" do
       library_interactives = FactoryGirl.create_list(:library_interactive, 3,
-                                                     :aspect_ratio_method => "DEFAULT",
-                                                     :authoring_guidance => "",
-                                                     :base_url => "https://fake.url",
-                                                     :click_to_play => false,
-                                                     :click_to_play_prompt => nil,
-                                                     :description => "This is my beautiful description.",
-                                                     :enable_learner_state => true,
-                                                     :full_window => false,
-                                                     :has_report_url => false,
-                                                     :image_url => nil,
-                                                     :name => "MC Question",
-                                                     :native_height => 435,
-                                                     :native_width => 576,
-                                                     :no_snapshots => false,
-                                                     :show_delete_data_button => false,
-                                                     :thumbnail_url => "",
-                                                     :customizable => false,
-                                                     :authorable => true
+                                                     aspect_ratio_method: "DEFAULT",
+                                                     authoring_guidance: "",
+                                                     base_url: "https://fake.url",
+                                                     click_to_play: false,
+                                                     click_to_play_prompt: nil,
+                                                     description: "This is my beautiful description.",
+                                                     enable_learner_state: true,
+                                                     full_window: false,
+                                                     has_report_url: false,
+                                                     image_url: nil,
+                                                     name: "MC Question",
+                                                     native_height: 435,
+                                                     native_width: 576,
+                                                     no_snapshots: false,
+                                                     show_delete_data_button: false,
+                                                     thumbnail_url: "",
+                                                     customizable: false,
+                                                     authorable: true
                                                     )
 
       library_interactives[1].description = "This is not my beautiful description."
@@ -143,7 +143,7 @@ describe LibraryInteractive do
     it 'returns the number of managed interactives that use the library interactive' do
       expect(library_interactive.use_count()).to eq(0)
       managed_interactive = FactoryGirl.create(:managed_interactive,
-                                                :library_interactive => library_interactive
+                                                library_interactive: library_interactive
                                                )
       expect(library_interactive.use_count()).to eq(1)
     end

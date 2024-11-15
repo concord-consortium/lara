@@ -1,11 +1,10 @@
 # LabbookAnswer class represents a specific album related to given user, activity run and interactive.
 module Embeddable
-  class LabbookAnswer < ActiveRecord::Base
+  class LabbookAnswer < ApplicationRecord
     include Answer
 
     SOURCE_ID = 'CC_LARA'
 
-    attr_accessible :run, :question, :is_dirty
 
     belongs_to :run
     belongs_to :question,

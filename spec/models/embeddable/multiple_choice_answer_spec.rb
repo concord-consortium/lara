@@ -2,14 +2,14 @@ require 'spec_helper'
 
 describe Embeddable::MultipleChoiceAnswer do
   let(:feedback) { "feedback text" }
-  let(:a1)       { FactoryGirl.create(:multiple_choice_choice, :choice => "answer_one") }
-  let(:a2)       { FactoryGirl.create(:multiple_choice_choice, :choice => "answer_two", :prompt => feedback) }
-  let(:question) { FactoryGirl.create(:multiple_choice, :choices => [a1, a2]) }
-  let(:run)      { FactoryGirl.create(:run, :activity => FactoryGirl.create(:activity) ) }
+  let(:a1)       { FactoryGirl.create(:multiple_choice_choice, choice: "answer_one") }
+  let(:a2)       { FactoryGirl.create(:multiple_choice_choice, choice: "answer_two", prompt: feedback) }
+  let(:question) { FactoryGirl.create(:multiple_choice, choices: [a1, a2]) }
+  let(:run)      { FactoryGirl.create(:run, activity: FactoryGirl.create(:activity) ) }
   let(:answer)   { FactoryGirl.create(:multiple_choice_answer,
-                    :answers  => [a1, a2],
-                    :question => question,
-                    :run => run)
+                    answers: [a1, a2],
+                    question: question,
+                    run: run)
                   }
 
   it_behaves_like "an answer"
@@ -52,8 +52,8 @@ describe Embeddable::MultipleChoiceAnswer do
   describe "#copy_answer!" do
     let(:another_answer) do
       FactoryGirl.create(:multiple_choice_answer,
-        :answers  => [a1],
-        :question => question
+        answers: [a1],
+        question: question
       )
     end
 
@@ -69,19 +69,19 @@ describe Embeddable::MultipleChoiceAnswer do
     end
 
     it 'turns an array of choice IDs into an array of choices' do
-      answer.update_from_form_params( { :answers => [a1.id, a2.id] } )
+      answer.update_from_form_params( { answers: [a1.id, a2.id] } )
       expect(answer.answers).to include a1
       expect(answer.answers).to include a2
     end
 
     it 'turns a single choice ID into an array with one choice' do
-      answer.update_from_form_params( { :answers => a1.id } )
+      answer.update_from_form_params( { answers: a1.id } )
       expect(answer.answers).to include a1
       expect(answer.answers).not_to include a2
     end
 
     it 'turns an empty ID into an empty array' do
-      answer.update_from_form_params( { :answers => nil } )
+      answer.update_from_form_params( { answers: nil } )
       expect(answer.answers).not_to include a1
       expect(answer.answers).not_to include a2
     end

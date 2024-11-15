@@ -88,29 +88,29 @@ class Ability
 
     elsif user.author?
       # Authors can do the following, organized by model
-      can :update, AuthoredContent, :user_id => user.id
+      can :update, AuthoredContent, user_id: user.id
 
       can :create, Glossary
       can :duplicate, Glossary
       can :export, Glossary
       can :import, Glossary
-      can :manage, Glossary, :user_id => user.id
+      can :manage, Glossary, user_id: user.id
       can :read, Glossary
 
       can :create, InteractivePage
-      can :manage, InteractivePage, :lightweight_activity => { :user_id => user.id }
+      can :manage, InteractivePage, lightweight_activity: { user_id: user.id }
 
       can :create, LightweightActivity
-      can :duplicate, LightweightActivity, :is_locked => false, :publication_status => ['public', 'hidden']
-      can :export, LightweightActivity, :is_locked => false, :publication_status => ['public', 'hidden']
+      can :duplicate, LightweightActivity, is_locked: false, publication_status: ['public', 'hidden']
+      can :export, LightweightActivity, is_locked: false, publication_status: ['public', 'hidden']
       can :import, LightweightActivity
-      can :manage, LightweightActivity, :user_id => user.id
+      can :manage, LightweightActivity, user_id: user.id
 
       can :create, LinkedPageItem
-      can :manage, LinkedPageItem, :primary => { :interactive_page => { :interactive_page => { :lightweight_activity => { :user_id => user.id } } } }
+      can :manage, LinkedPageItem, primary: { interactive_page: { interactive_page: { lightweight_activity: { user_id: user.id } } } }
 
       can :create, PageItem
-      can :manage, PageItem, :interactive_page => { :lightweight_activity => { :user_id => user.id } }
+      can :manage, PageItem, interactive_page: { lightweight_activity: { user_id: user.id } }
 
       can :create, Plugin
       can :manage, Plugin do |plugin|
@@ -121,14 +121,14 @@ class Ability
       can :duplicate, Rubric
       can :export, Rubric
       can :import, Rubric
-      can :manage, Rubric, :user_id => user.id
+      can :manage, Rubric, user_id: user.id
       can :read, Rubric
 
       can :create, Sequence
-      can :duplicate, Sequence, :publication_status => ['public', 'hidden']
+      can :duplicate, Sequence, publication_status: ['public', 'hidden']
       can :export, Sequence
       can :import, Sequence
-      can :manage, Sequence, :user_id => user.id
+      can :manage, Sequence, user_id: user.id
     end
 
     # anyone can read authored content

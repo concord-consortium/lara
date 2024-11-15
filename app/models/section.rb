@@ -1,11 +1,10 @@
-class Section < ActiveRecord::Base
-  attr_accessible :title, :position, :show, :layout, :interactive_page, :interactive_page_id, :can_collapse_small, :name
+class Section < ApplicationRecord
   acts_as_list scope: :interactive_page
 
   belongs_to :interactive_page
-  has_many :page_items, order: :position, dependent: :destroy
+  has_many :page_items, -> { order(:position) }, dependent: :destroy
 
-  default_scope order('position ASC')
+  default_scope{order('position ASC')}
 
   HEADER_BLOCK = 'header_block'
   INTERACTIVE_BOX = 'interactive_box'

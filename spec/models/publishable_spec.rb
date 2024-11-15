@@ -7,9 +7,9 @@ describe Publishable do
     Class.new { include Publishable }.new
   end
   let (:authentication_token ) { "fake token" }
-  let (:user) { double(:authentication_token => "fake token") }
+  let (:user) { double(authentication_token: "fake token") }
   let (:portal_url) { "fake portal url" }
-  let (:portal) { double(:strategy_name => 'fake strategy') }
+  let (:portal) { double(strategy_name: 'fake strategy') }
   let (:self_url) { "fake self url"}
   describe "#portal_publish" do
   	it "should handle a portal url string argument" do

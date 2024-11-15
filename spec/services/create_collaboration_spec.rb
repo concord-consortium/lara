@@ -39,9 +39,9 @@ describe CreateCollaboration do
   end
   before(:each) do
     allow(Concord::AuthPortal).to receive(:auth_token_for_url).and_return(stubbed_token)
-    stub_request(:get, collaborators_data_url).with(:headers => headers).to_return(
-      :status => 200,
-      :body => collaboration_params.to_json, :headers => {}
+    stub_request(:get, collaborators_data_url).with(headers: headers).to_return(
+      status: 200,
+      body: collaboration_params.to_json, headers: {}
     )
   end
 

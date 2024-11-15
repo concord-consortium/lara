@@ -1,11 +1,10 @@
-class VideoSource < ActiveRecord::Base
-  attr_accessible :url, :format
+class VideoSource < ApplicationRecord
   
   SUPPORTED_MIME_TYPES = ["video/mp4", "video/webm", "video/ogg"] # Quicktime/mov?
   
   validates_presence_of :url
   validates_presence_of :format
-  validates :format, :inclusion => { :in => SUPPORTED_MIME_TYPES }
+  validates :format, inclusion: { in: SUPPORTED_MIME_TYPES }
 
   belongs_to :video_interactive
 

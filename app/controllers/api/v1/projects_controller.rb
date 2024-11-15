@@ -1,6 +1,6 @@
 class Api::V1::ProjectsController < API::APIController
 
-  skip_before_filter :verify_authenticity_token
+  skip_before_action :verify_authenticity_token
 
   # GET /api/v1/projects
   def index
@@ -20,9 +20,17 @@ class Api::V1::ProjectsController < API::APIController
     end
   end
 
+  def project_params
+    params.require(:project).permit(
+      :footer, :logo_lara, :logo_ap, :title, :url, :about, :project_key, :copyright,
+      :copyright_image_url, :collaborators, :funders_image_url, :collaborators_image_url,
+      :contact_email, :admin_ids
+    )
+  end
+
   # POST /api/v1/projects
   def create
-    @project = Project.new(params[:project])
+    @project = Project.new(project_params)
     authorize! :create, @project
     if @project.save
       render json: {success: true, project: @project}, status: :created
@@ -33,16 +41,15 @@ class Api::V1::ProjectsController < API::APIController
 
   # POST /api/v1/projects/1.json
   def update
-    @updated_project_hash = params[:project]
-    @project = Project.find(@updated_project_hash[:id]);
+    @updated_project_hash = project_params
+    @project = Project.find(params[:id]);
     authorize! :update, @project
 
     # extract the ids from the passed admin objects and remove any extra admins in the update that
     # are not in the original, to ensure we can only remove and not add project admins
-    @updated_project_hash[:admin_ids] = (@updated_project_hash[:admins] || [])
+    @updated_project_hash[:admin_ids] = (params[:project][:admins] || [])
       .select { |admin| @project.admin_ids.include?(admin[:id].to_i) }
       .map { |admin| admin[:id] }
-    @updated_project_hash.delete(:admins)
 
     if @project.update_attributes(@updated_project_hash)
       render json: {success: true, project: @project, admins: admin_json(@project)}, status: :ok

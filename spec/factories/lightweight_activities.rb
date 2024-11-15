@@ -1,11 +1,11 @@
 # Read about factories at https://github.com/thoughtbot/factory_girl
 
 FactoryGirl.define do
-  sequence(:name) { |n| Faker::Lorem.sentence(2)[0..49] }
-  sequence(:related) { |n| Faker::Lorem.sentences(4).join(" ") }
-  sequence(:description) { |n| Faker::Lorem.sentences(4).join(" ") }
+  sequence(:name) { |n| Faker::Lorem.sentence(word_count: 2)[0..49] }
+  sequence(:related) { |n| Faker::Lorem.sentences(number: 4).join(" ") }
+  sequence(:description) { |n| Faker::Lorem.sentences(number: 4).join(" ") }
 
-  factory :activity, :class => LightweightActivity do
+  factory :activity, class: LightweightActivity do
     name { generate(:name) }
     publication_status 'hidden'
     related { generate(:related) }
@@ -13,7 +13,7 @@ FactoryGirl.define do
     project nil
   end
 
-  factory :activity_with_page, :class => LightweightActivity do
+  factory :activity_with_page, class: LightweightActivity do
     name { generate(:name) }
     publication_status 'public'
     related { generate(:related) }
@@ -21,8 +21,8 @@ FactoryGirl.define do
     pages { [FactoryGirl.create(:page)] }
   end
 
-  factory :activity_with_pages, :class => LightweightActivity do
-    ignore do
+  factory :activity_with_pages, class: LightweightActivity do
+    transient do
       pages_count 3
     end
     name { generate(:name) }
@@ -34,7 +34,7 @@ FactoryGirl.define do
     end
   end
 
-  factory :activity_with_page_and_or, :class => LightweightActivity do
+  factory :activity_with_page_and_or, class: LightweightActivity do
     name { generate(:name) }
     publication_status 'public'
     related { generate(:related) }
@@ -42,28 +42,28 @@ FactoryGirl.define do
     pages { [FactoryGirl.create(:interactive_page_with_or)] }
   end
 
-  factory :public_activity, :class => LightweightActivity do
+  factory :public_activity, class: LightweightActivity do
     name { generate(:name) }
     publication_status 'public'
     related { generate(:related) }
     description { generate(:description) }
   end
 
-  factory :archive_activity, :class => LightweightActivity do
+  factory :archive_activity, class: LightweightActivity do
     name { generate(:name) }
     publication_status 'archive'
     related { generate(:related) }
     description { generate(:description) }
   end
 
-  factory :private_activity, :class => LightweightActivity do
+  factory :private_activity, class: LightweightActivity do
     name { generate(:name) }
     publication_status 'private'
     related { generate(:related) }
     description { generate(:description) }
   end
 
-  factory :locked_activity, :class => LightweightActivity do
+  factory :locked_activity, class: LightweightActivity do
     name { generate(:name) }
     publication_status 'public'
     is_locked true
@@ -71,7 +71,7 @@ FactoryGirl.define do
     description { generate(:description) }
   end
 
-  factory :activity_player_activity, :class => LightweightActivity do
+  factory :activity_player_activity, class: LightweightActivity do
     name { generate(:name) }
     publication_status 'public'
     related { generate(:related) }

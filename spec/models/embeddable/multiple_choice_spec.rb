@@ -75,7 +75,7 @@ describe Embeddable::MultipleChoice do
 
     describe 'when the MultipleChoiceChoice is multi-answer' do
       let (:multichoice) do
-        mc = FactoryGirl.create(:multiple_choice, :multi_answer => true)
+        mc = FactoryGirl.create(:multiple_choice, multi_answer: true)
         mc.create_default_choices
         mc.choices[0].is_correct = true
         mc.choices[0].save

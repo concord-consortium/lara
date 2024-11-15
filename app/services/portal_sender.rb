@@ -49,8 +49,8 @@ module PortalSender
         serialized_data = self.send serialization_method_name, answers, start_time
         response = HTTParty.post(
             versioned_endpoint(remote_endpoint), {
-            :body => serialized_data,
-            :headers => {
+            body: serialized_data,
+            headers: {
                 "Authorization" => Concord::AuthPortal.auth_token_for_url(remote_endpoint),
                 "Content-Type" => 'application/json'
             }

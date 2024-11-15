@@ -2,10 +2,11 @@ require File.expand_path('../boot', __FILE__)
 
 require 'rails/all'
 require_relative '../lib/middleware/inject_origin_header_middleware'
+require_relative '../lib/rack/response_logger'
 
 if defined?(Bundler)
   # If you precompile assets before deploying to production, use this line
-  Bundler.require(*Rails.groups(:assets => %w(development test)))
+  Bundler.require(*Rails.groups(assets: %w(development test)))
   # If you want your assets lazily compiled in production, use this line
   # Bundler.require(:default, :assets, Rails.env)
 end
@@ -54,12 +55,6 @@ module LightweightStandalone
     # like if you have constraints or database-specific column types
     # config.active_record.schema_format = :sql
 
-    # Enforce whitelist mode for mass assignment.
-    # This will create an empty whitelist of attributes available for mass-assignment for all models
-    # in your app. As such, your models will need to explicitly whitelist or blacklist accessible
-    # parameters by using an attr_accessible or attr_protected declaration.
-    config.active_record.whitelist_attributes = true
-
     # Enable the asset pipeline
     config.assets.enabled = true
 
@@ -68,34 +63,36 @@ module LightweightStandalone
 
     # Configuration for rack-environmental middleware, see https://github.com/techiferous/rack-environmental
     config.middleware.use Rack::Environmental,
-                            :delayed_job => { :url => /delayed_job/,
-                                              :style => :none},
-                            :staging     => { :url => /staging\..+$/,
-                                              :color => "blueviolet" },
-                            :test        => { :url => /jasmine/,
-                                              :style => :none },
-                            :development => { :url => /^localhost.+$/,
-                                              :color => "red"        }
-    config.middleware.insert_before 0, "Rack::Cors" do
+                            delayed_job: { url: /delayed_job/,
+                                              style: :none},
+                            staging: { url: /staging\..+$/,
+                                              color: "blueviolet" },
+                            test: { url: /jasmine/,
+                                              style: :none },
+                            development: { url: /^localhost.+$/,
+                                              color: "red"        }
+    config.middleware.insert_before 0, Rack::Cors do
       allow do
         origins '*'
-        resource '/api/*', :headers => :any, :methods => [:get, :post, :put, :options]
-        resource '/image-proxy', :headers => :any, :methods => [:get, :options]
+        resource '/api/*', headers: :any, methods: [:get, :post, :put, :options]
+        resource '/image-proxy', headers: :any, methods: [:get, :options]
       end
     end
 
     # Force Rack::Cors to always return Access-Control-Allow-Origin by injecting Origin header if it's missing.
     # It's useful for image-proxy and image caching.
-    config.middleware.insert_before "Rack::Cors", InjectOriginHeaderMiddleware
+    config.middleware.insert_before Rack::Cors, InjectOriginHeaderMiddleware
 
     # Add a middlewere to log more info about the response
-    config.middleware.insert_before 0, "Rack::ResponseLogger"
+    config.middleware.insert_before 0, Rack::ResponseLogger
 
     # do not initialize on precompile so that the Dockerfile can run the precompile
     config.assets.initialize_on_precompile = false
 
     # Set TinyMCE asset compilation method.
     config.tinymce.install = :copy
+
+    config.action_dispatch.use_authenticated_cookie_encryption = true
   end
 end
 

@@ -26,7 +26,7 @@ describe "The standard authoring view of the labbook" do
   describe "When the labbook won't show in the runtime" do
     let(:show_in_runtime) { false }
     it "displays a warning message to authors" do
-      render :partial => "embeddable/labbooks/author", :locals => _locals
+      render partial: "embeddable/labbooks/author", locals: _locals
       expect(rendered).to match (/#{warning_text}/)
       expect(rendered).to have_css(".warning")
     end
@@ -35,7 +35,7 @@ describe "The standard authoring view of the labbook" do
   describe "When the labbok will display in the runtime" do
     let(:show_in_runtime) { true }
     it "does not display a warning message to authors" do
-      render :partial => "embeddable/labbooks/author", :locals => _locals
+      render partial: "embeddable/labbooks/author", locals: _locals
       expect(rendered).not_to match (/#{warning_text}/)
       expect(rendered).not_to have_css(".warning")
     end

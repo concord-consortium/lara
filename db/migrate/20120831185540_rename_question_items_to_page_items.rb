@@ -1,4 +1,4 @@
-class RenameQuestionItemsToPageItems < ActiveRecord::Migration
+class RenameQuestionItemsToPageItems < ActiveRecord::Migration[5.1]
   def change
     rename_table :question_items, :page_items
 

@@ -2,16 +2,16 @@ require_dependency "application_controller"
 
 class LightweightActivitiesController < ApplicationController
 
-  before_filter :set_activity, :except => [:index, :new, :create]
-  before_filter :only => [:summary, :show, :preview, :resubmit_answers, :single_page] {
+  before_action :set_activity, except: [:index, :new, :create]
+  before_action only: [:summary, :show, :preview, :resubmit_answers, :single_page] {
     portal_launchable = (action_name == 'show' && params[:sequence_id].blank?)
     set_run_key(portal_launchable: portal_launchable)
   }
-  before_filter :set_sequence, :only   => [:summary, :show, :single_page, :preview]
+  before_action :set_sequence, only: [:summary, :show, :single_page, :preview]
 
-  before_filter :enable_js_logger, :only => [:summary, :show, :preview, :single_page]
+  before_action :enable_js_logger, only: [:summary, :show, :preview, :single_page]
 
-  before_filter :setup_abilities, :only => [:new, :edit]
+  before_action :setup_abilities, only: [:new, :edit]
 
   layout :set_layout
 
@@ -25,8 +25,8 @@ class LightweightActivitiesController < ApplicationController
     @filter  = CollectionFilter.new(current_user, LightweightActivity, params[:filter] || {})
     @community_activities = @filter.collection.includes(:user,:changed_by,:portal_publications).community
     @official_activities  = @filter.collection.includes(:user,:changed_by,:portal_publications).official
-    @community_activities = @community_activities.paginate(:page => params['community_page_number'], :per_page => 10)
-    @official_activities  = @official_activities.paginate(:page => params['official_page_number'], :per_page => 10)
+    @community_activities = @community_activities.paginate(page: params['community_page_number'], per_page: 10)
+    @official_activities  = @official_activities.paginate(page: params['official_page_number'], per_page: 10)
   end
 
   # These are the runtime (student-facing) actions, show and summary
@@ -54,7 +54,7 @@ class LightweightActivitiesController < ApplicationController
     if @activity.layout == LightweightActivity::LAYOUT_SINGLE_PAGE
       setup_single_page_show
       @labbook_is_under_interactive = true
-      render :single_page, :locals => {:print => params[:print]}
+      render :single_page, locals: {print: params[:print]}
     else
       setup_show
       render :show
@@ -95,8 +95,18 @@ class LightweightActivitiesController < ApplicationController
     authorize! :create, @activity
   end
 
+  def lightweight_activity_params
+    params.require(:lightweight_activity).permit(
+      :name, :user_id, :pages, :related, :description, :defunct,
+      :time_to_complete, :is_locked, :notes, :thumbnail_url, :project_id,
+      :portal_run_count, :layout, :editor_mode, :publication_hash, :copied_from_id,
+      :student_report_enabled, :show_submit_button, :project, :background_image,
+      :glossary_id, :hide_read_aloud, :font_size, :hide_question_numbers, :rubric_id
+    )
+  end
+
   def create
-    @activity = LightweightActivity.new(params[:lightweight_activity])
+    @activity = LightweightActivity.new(lightweight_activity_params)
     authorize! :create, @activity
     @activity.user = current_user
     @activity.changed_by = current_user
@@ -135,14 +145,14 @@ class LightweightActivitiesController < ApplicationController
     authorize! :update, @activity
     update_activity_changed_by
     respond_to do |format|
-      if @activity.update_attributes(params[:lightweight_activity])
+      if @activity.update_attributes(lightweight_activity_params)
         format.json { render json: @activity }
         format.html {
           flash[:notice] = "Activity #{@activity.name} was updated."
           redirect_to edit_activity_path(@activity)
         }
       else
-        format.json { render json: @activity.errors, :status => :unprocessable_entity }
+        format.json { render json: @activity.errors, status: :unprocessable_entity }
         format.html {
           # I'd like to use the activity name here, but what if that's what's the invalid update?
           flash[:warning] = "There was a problem updating your activity."
@@ -172,7 +182,7 @@ class LightweightActivitiesController < ApplicationController
       flash[:warning] = "<p>The duplicated activity had validation issues:</p> #{@new_activity.errors} <p>Work carefully with the new activity.</p>"
     end
 
-    if @new_activity.save(:validations => false) # In case the old activity was invalid
+    if @new_activity.save(validations: false) # In case the old activity was invalid
       # check if we should publish this new activity somewhere
       json_response = nil
       if params['add_to_portal']
@@ -198,7 +208,7 @@ class LightweightActivitiesController < ApplicationController
   def show_status
     @message = params[:message] || ''
     respond_to do |format|
-      format.js { render :json => { :html => render_to_string('export')}, :content_type => 'text/json' }
+      format.js { render json: { html: render_to_string('export')}, content_type: 'text/json' }
       format.html
     end
   end
@@ -221,7 +231,7 @@ class LightweightActivitiesController < ApplicationController
     @page = @activity.pages.find(params[:id])
     @page.move_higher
     update_activity_changed_by
-    redirect_to :back
+    redirect_back(fallback_location: edit_activity_path(@activity))
   end
 
   def move_down
@@ -229,7 +239,7 @@ class LightweightActivitiesController < ApplicationController
     @page = @activity.pages.find(params[:id])
     @page.move_lower
     update_activity_changed_by
-    redirect_to :back
+    redirect_back(fallback_location: edit_activity_path(@activity))
   end
 
   def reorder_pages
@@ -260,7 +270,7 @@ class LightweightActivitiesController < ApplicationController
     # Kick off a resubmit
     answers.last.send_to_portal
     flash[:notice] = "#{answers.length} #{'answer'.pluralize(answers.length)} requeued for submission."
-    redirect_to :back
+    redirect_back(fallback_location: activity_path(@activity))
   end
 
   def add_plugin

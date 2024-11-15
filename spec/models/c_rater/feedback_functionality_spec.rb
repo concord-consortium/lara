@@ -1,12 +1,11 @@
 require 'spec_helper'
 
 describe CRater::FeedbackFunctionality do
-  class CRaterFeedbackFunctionalityTestClass < ActiveRecord::Base
+  class CRaterFeedbackFunctionalityTestClass < ApplicationRecord
     # Well, it's not pretty, but I don't have idea how to solve that better. The goal is to test FeedbackFunctionality
     # isolated from the class that includes it.
     self.table_name = :embeddable_open_response_answers
     include CRater::FeedbackFunctionality
-    attr_accessible :answer_text
   end
 
   let(:answer) do
@@ -76,7 +75,6 @@ describe CRater::FeedbackFunctionality do
       let(:password) { 'password' }
       let(:protocol) { 'https://' }
       let(:url) { 'fake.c-rater.api/api/v1' }
-      let(:mock_url) { "#{protocol}#{username}:#{password}@#{url}" }
       let(:score) { 2 }
       let(:api_key) { 'fakekey' }
       let(:response) do
@@ -105,9 +103,18 @@ describe CRater::FeedbackFunctionality do
                                                              password: password,
                                                              api_key: api_key,
                                                              url: "#{protocol}#{url}")
-        stub_request(:post, "#{protocol}#{username}:#{password}@#{url}").
-          to_return(:status => 200, :body => response,
-                    :headers => {'Content-Type'=>'application/xml; charset=iso-8859-1'})
+
+        stub_request(:post, "#{protocol}#{url}").
+         with(
+           headers: {
+            'Accept'=>'*/*',
+            'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+            'Authorization'=>'Basic Y29uY29yZDpwYXNzd29yZA==', # Base64 encoding of "concord:password"
+            'Content-Type'=>'text/xml; charset=ISO-8859-1',
+            'User-Agent'=>'Ruby',
+            'X-Api-Key'=>'fakekey'
+           }).
+         to_return(status: 200, body: response, headers: {'Content-Type'=>'application/xml; charset=iso-8859-1'})
       end
 
 
@@ -237,7 +244,17 @@ describe CRater::FeedbackFunctionality do
       context 'C-Rater service unavailable' do
         let(:err_resp) { 'Service unavailable' }
         before(:each) do
-          stub_request(:post, mock_url).to_return(status: 500, body: err_resp)
+          stub_request(:post, "#{protocol}#{url}")
+            .with(
+              headers: {
+                'Accept' => '*/*',
+                'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+                'Authorization' => 'Basic Y29uY29yZDpwYXNzd29yZA==', # Base64 encoding of "concord:password"
+                'Content-Type' => 'text/xml; charset=ISO-8859-1',
+                'User-Agent' => 'Ruby',
+                'X-Api-Key' => 'fakekey'
+              }
+            ).to_return(status: 500, body: err_resp)
         end
 
         describe '#save_feedback' do

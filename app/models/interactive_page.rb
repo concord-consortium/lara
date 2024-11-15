@@ -1,21 +1,18 @@
-class InteractivePage < ActiveRecord::Base
-  attr_accessible :lightweight_activity, :name, :position, :layout, :sidebar, :show_header,
-                  :show_sidebar, :show_interactive, :show_info_assessment, :toggle_info_assessment,
-                  :embeddable_display_mode, :sidebar_title, :is_hidden, :additional_sections, :is_completion
+class InteractivePage < ApplicationRecord
 
   serialize :additional_sections
 
-  belongs_to :lightweight_activity, :class_name => 'LightweightActivity', :touch => true,
-    :inverse_of => :pages
+  belongs_to :lightweight_activity, class_name: 'LightweightActivity', touch: true,
+    inverse_of: :pages
 
-  acts_as_list :scope => :lightweight_activity
+  acts_as_list scope: :lightweight_activity
 
-  LAYOUT_OPTIONS = [{ :name => 'Full Width',               :class_val => 'l-full-width' },
-                    { :name => '60-40',                    :class_val => 'l-6040' },
-                    { :name => '70-30',                    :class_val => 'l-7030' },
-                    { :name => '60-40 (interactive left)', :class_val => 'r-4060' },
-                    { :name => '70-30 (interactive left)', :class_val => 'r-3070' },
-                    { :name => 'Responsive', :class_val => 'l-responsive' }]
+  LAYOUT_OPTIONS = [{ name: 'Full Width',               class_val: 'l-full-width' },
+                    { name: '60-40',                    class_val: 'l-6040' },
+                    { name: '70-30',                    class_val: 'l-7030' },
+                    { name: '60-40 (interactive left)', class_val: 'r-4060' },
+                    { name: '70-30 (interactive left)', class_val: 'r-3070' },
+                    { name: 'Responsive', class_val: 'l-responsive' }]
 
   EMBEDDABLE_DISPLAY_OPTIONS = ['stacked','carousel']
 
@@ -23,18 +20,18 @@ class InteractivePage < ActiveRecord::Base
   INTERACTIVE_BOX = Section::INTERACTIVE_BOX
 
   validates :sidebar_title, presence: true
-  validates :layout, :inclusion => { :in => LAYOUT_OPTIONS.map { |l| l[:class_val] } }
-  validates :embeddable_display_mode, :inclusion => { :in => EMBEDDABLE_DISPLAY_OPTIONS }
+  validates :layout, inclusion: { in: LAYOUT_OPTIONS.map { |l| l[:class_val] } }
+  validates :embeddable_display_mode, inclusion: { in: EMBEDDABLE_DISPLAY_OPTIONS }
 
   # Reject invalid HTML inputs
   # See https://www.pivotaltracker.com/story/show/60459320
-  validates :sidebar, :html => true
+  validates :sidebar, html: true
 
   # PageItem is a join model; if this is deleted, it should go too
   # has_many :page_items, :order => [:old_section, :position], :dependent => :destroy, :include => [:embeddable]
 
-  has_many :sections, order: :position, include: [:page_items]
-  has_many :legacy_page_items, :class_name => "PageItem", :conditions => "embeddable_type in ('Embeddable::MultipleChoice','Embeddable::OpenResponse','ImageInteractive','VideoInteractive','Embeddable::ImageQuestion')"
+  has_many :sections, -> { includes(:page_items).order(:position) }
+  has_many :legacy_page_items, -> { where("embeddable_type IN ('Embeddable::MultipleChoice','Embeddable::OpenResponse','ImageInteractive','VideoInteractive','Embeddable::ImageQuestion')") }, class_name: "PageItem"
 
   # NP: 2021-09-01 TODO: This has-many was incorrectly ordering page_items.
   # I don't think it really matters B/C our sections include the page_items.
@@ -75,7 +72,7 @@ class InteractivePage < ActiveRecord::Base
     @registered_sections.push(s)
     @registered_additional_sections.push(s)
     # Let client code use .update_attributes methods (and similar) to set show_<section_name>.
-    attr_accessible "show_#{s[:name]}"
+    
     # show_<section_name> getter:
     define_method("show_#{s[:name]}") do
       additional_sections && additional_sections[s[:name]]
@@ -134,8 +131,8 @@ class InteractivePage < ActiveRecord::Base
       # the activity page.
       primary_right_layouts = ["40-60", "30-70", "responsive-2-columns"]
       if primary_right_layouts.include? section.layout
-        secondary_column_items = section.page_items.where(:column => "secondary").order(:position)
-        primary_column_items = section.page_items.where(:column => "primary").order(:position)
+        secondary_column_items = section.page_items.where(column: "secondary").order(:position)
+        primary_column_items = section.page_items.where(column: "primary").order(:position)
         page_items = secondary_column_items + primary_column_items
         section_embeddables = page_items.map { |i| i.embeddable }
       else
@@ -283,10 +280,10 @@ class InteractivePage < ActiveRecord::Base
     }
   end
 
-  def set_list_position(index)
+  def set_list_position(index, raise_exception_if_save_fails = false)
     # Overloads the acts_as_list version
     self.position = index
-    self.save!(:validate => false) # This is the part we need to override
+    self.save!(validate: false) # This is the part we need to override
   end
 
   def page_number

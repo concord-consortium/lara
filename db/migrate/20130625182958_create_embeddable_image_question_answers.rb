@@ -1,4 +1,4 @@
-class CreateEmbeddableImageQuestionAnswers < ActiveRecord::Migration
+class CreateEmbeddableImageQuestionAnswers < ActiveRecord::Migration[5.1]
   def change
     create_table :embeddable_image_question_answers do |t|
       t.references :run
@@ -7,6 +7,8 @@ class CreateEmbeddableImageQuestionAnswers < ActiveRecord::Migration
       t.integer :image_question_id
       t.timestamps
     end
-    add_index :embeddable_image_question_answers, :run_id
+    unless index_exists?(:embeddable_image_question_answers, :run_id)
+      add_index :embeddable_image_question_answers, :run_id
+    end
   end
 end

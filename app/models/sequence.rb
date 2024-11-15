@@ -1,16 +1,12 @@
-class Sequence < ActiveRecord::Base
-
-  attr_accessible :description, :title, :project_id, :defunct,
-    :user_id, :logo, :display_title, :thumbnail_url, :abstract, :publication_hash,
-    :project, :background_image, :hide_read_aloud, :font_size, :layout_override, :hide_question_numbers
+class Sequence < ApplicationRecord
 
   include Publishable # defines methods to publish to portals
   include PublicationStatus # defines publication status scopes and helpers
   include FixedWidthLayout # defines fixed width options
   include Accessible # defines font options
 
-  has_many :lightweight_activities_sequences, :order => :position, :dependent => :destroy
-  has_many :lightweight_activities, :through => :lightweight_activities_sequences, :order => :position
+  has_many :lightweight_activities_sequences, -> { order(:position) }, dependent: :destroy
+  has_many :lightweight_activities, through: :lightweight_activities_sequences
   belongs_to :user
   belongs_to :project
 

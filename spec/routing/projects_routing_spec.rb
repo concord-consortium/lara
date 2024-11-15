@@ -12,11 +12,11 @@ describe ProjectsController do
     end
 
     it "routes to #show" do
-      expect(get("/projects/1")).to route_to("projects#show", :id => "1")
+      expect(get("/projects/1")).to route_to("projects#show", id: "1")
     end
 
     it "routes to #edit" do
-      expect(get("/projects/1/edit")).to route_to("projects#edit", :id => "1")
+      expect(get("/projects/1/edit")).to route_to("projects#edit", id: "1")
     end
 
     it "routes to #create" do
@@ -24,11 +24,11 @@ describe ProjectsController do
     end
 
     it "routes to #update" do
-      expect(put("/projects/1")).to route_to("projects#update", :id => "1")
+      expect(put("/projects/1")).to route_to("projects#update", id: "1")
     end
 
     it "routes to #destroy" do
-      expect(delete("/projects/1")).to route_to("projects#destroy", :id => "1")
+      expect(delete("/projects/1")).to route_to("projects#destroy", id: "1")
     end
 
   end

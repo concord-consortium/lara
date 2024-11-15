@@ -12,7 +12,7 @@
 :javascript
   $(document).ready( function() {
     LARA.PageItemAuthoring.renderInteractiveAuthoringPreview(document.getElementById("interactive-preview-#{embeddable.embeddable_dom_id}"), {
-      interactive: #{embeddable.to_authoring_preview_hash().to_json},
-      user: #{userInfo.to_json}
+      interactive: #{embeddable.to_authoring_preview_hash().to_json.html_safe},
+      user: #{userInfo.to_json.html_safe}
     });
   });

@@ -63,7 +63,7 @@ describe Api::V1::PluginLearnerStatesController do
     end
     describe 'to load state' do
       it "they should get their state" do
-        post :load, run_id: run_id, plugin_id: plugin_id
+        post :load, params: { run_id: run_id, plugin_id: plugin_id }
         expect(response.status).to eq(200)
         expect(json_response_body['state']).to eq(state)
       end
@@ -71,7 +71,7 @@ describe Api::V1::PluginLearnerStatesController do
 
     describe 'to save state' do
       it "they should save their state" do
-        post :save, run_id: run_id, plugin_id: plugin_id, state: "new_state"
+        post :save, params: { run_id: run_id, plugin_id: plugin_id, state: "new_state" }
         expect(response.status).to eq(200)
         expect(json_response_body['state']).to eq("new_state")
       end
@@ -84,14 +84,14 @@ describe Api::V1::PluginLearnerStatesController do
     end
     describe 'to load state' do
       it "they should not get the state from the other user" do
-        post :load, run_id: run_id, plugin_id: plugin_id
+        post :load, params: { run_id: run_id, plugin_id: plugin_id }
         expect(response.status).to eq(403)
       end
     end
 
     describe 'to save state' do
       it "they should not be able to save over the other users state" do
-        post :save, run_id: run_id, plugin_id: plugin_id, state: "new_state"
+        post :save, params: { run_id: run_id, plugin_id: plugin_id, state: "new_state" }
         expect(response.status).to eq(403)
       end
     end
@@ -104,14 +104,14 @@ describe Api::V1::PluginLearnerStatesController do
 
     describe 'to load state' do
       it "they should be prevented from seeing someone elses state" do
-        post :load, run_id: run_id, plugin_id: plugin_id
+        post :load, params: { run_id: run_id, plugin_id: plugin_id }
         expect(response.status).to eq(403)
       end
     end
 
     describe 'to save state' do
       it "should not allow anonymous user to save over other users state" do
-        post :save, run_id: run_id, plugin_id: plugin_id, state: "new_state"
+        post :save, params: { run_id: run_id, plugin_id: plugin_id, state: "new_state" }
         expect(response.status).to eq(403)
       end
     end
@@ -126,14 +126,14 @@ describe Api::V1::PluginLearnerStatesController do
       end
       describe 'to load state' do
         it "they should be able to load their state" do
-          post :load, run_id: run_id, plugin_id: plugin_id
+          post :load, params: { run_id: run_id, plugin_id: plugin_id }
           expect(response.status).to eq(200)
         end
       end
 
       describe 'to save state' do
         it "they should be able to save their state" do
-          post :save, run_id: run_id, plugin_id: plugin_id, state: "new_state"
+          post :save, params: { run_id: run_id, plugin_id: plugin_id, state: "new_state" }
           expect(response.status).to eq(200)
         end
       end

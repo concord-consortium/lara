@@ -6,7 +6,7 @@ def have_community_listing_section
 end
 
 def have_community_item_count(n)
-  have_css "li.community", :count=> n
+  have_css "li.community", count: n
 end
 
 def have_official_listing_section
@@ -14,7 +14,7 @@ def have_official_listing_section
 end
 
 def have_official_listing_count(n)
-  have_css "li.official", :count=> n
+  have_css "li.official", count: n
 end
 
 def fake_activity(official=false, is_public=true)
@@ -46,7 +46,7 @@ end
 describe "lightweight_activities/index" do
 
 #  let(:activity)  { stub_model(LightweightActivity, :id => 1) }
-  let(:user)       { stub_model(User, :is_admin => false)      }
+  let(:user)       { stub_model(User, is_admin: false)      }
   let(:activities) { [] }
   let(:official)    { [] }
   let(:community)  { [] }

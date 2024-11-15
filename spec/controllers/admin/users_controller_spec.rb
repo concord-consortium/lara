@@ -50,21 +50,21 @@ describe Admin::UsersController do
 
   describe "GET show" do
     it "assigns the requested user as @user" do
-      get :show, {:id => target.to_param}, valid_session
+      get :show, params: { id: target.to_param, headers: valid_session }
       expect(assigns(:user)).to eq(target)
     end
   end
 
   describe "GET new" do
     it "assigns a new user as @user" do
-      get :new, {}, valid_session
+      get :new, params: { headers: valid_session }
       expect(assigns(:user)).to be_a_new(User)
     end
   end
 
   describe "GET edit" do
     it "assigns the requested user as @user" do
-      get :edit, {:id => target.to_param}, valid_session
+      get :edit, params: { id: target.to_param, headers: valid_session }
       expect(assigns(:user)).to eq(target)
     end
   end
@@ -73,18 +73,18 @@ describe Admin::UsersController do
     describe "with valid params" do
       it "creates a new User" do
         expect {
-          post :create, {:user => FactoryGirl.attributes_for(:user)}
+          post :create, params: { user: FactoryGirl.attributes_for(:user) }
         }.to change(User, :count).by(1)
       end
 
       it "assigns a newly created user as @user" do
-        post :create, {:user => FactoryGirl.attributes_for(:user)}
+        post :create, params: {user: FactoryGirl.attributes_for(:user) }
         expect(assigns(:user)).to be_a(User)
         expect(assigns(:user)).to be_persisted
       end
 
       it "redirects to the created user" do
-        post :create, {:user => FactoryGirl.attributes_for(:user)}
+        post :create, params: {user: FactoryGirl.attributes_for(:user) }
         expect(response).to redirect_to(edit_admin_user_path(User.last))
       end
     end
@@ -93,14 +93,14 @@ describe Admin::UsersController do
       it "assigns a newly created but unsaved user as @user" do
         # Trigger the behavior that occurs when invalid params are submitted
         allow_any_instance_of(User).to receive(:save).and_return(false)
-        post :create, {:user => {}}
+        post :create, params: { user: {} }
         expect(assigns(:user)).to be_a_new(User)
       end
 
       it "re-renders the 'new' template" do
         # Trigger the behavior that occurs when invalid params are submitted
         allow_any_instance_of(User).to receive(:save).and_return(false)
-        post :create, {:user => {}}
+        post :create, params: { user: {invalid: "invalid"} }
         expect(response).to render_template("new")
       end
     end
@@ -109,14 +109,14 @@ describe Admin::UsersController do
   describe "PUT update" do
     describe "with valid params" do
       it "assigns the requested user as @user and updates it" do
-        post :update, {:_method => 'put', :id => target.to_param, :user => {:is_admin => true, :is_author => true}}
+        post :update, params: {_method: 'put', id: target.to_param, user: {is_admin: true, is_author: true} }
         expect(assigns(:user)).to eq(target)
         expect(assigns(:user).admin?).to be_truthy
         expect(assigns(:user).author?).to be_truthy
       end
 
       it "redirects to the user edit page" do
-        post :update, {:_method => 'put', :id => target.to_param, :user => valid_attributes}
+        post :update, params: {_method: 'put', id: target.to_param, user: valid_attributes}
         expect(response).to redirect_to(edit_admin_user_path(target))
       end
     end
@@ -125,14 +125,14 @@ describe Admin::UsersController do
       it "assigns the user as @user" do
         # Trigger the behavior that occurs when invalid params are submitted
         allow_any_instance_of(User).to receive(:save).and_return(false)
-        put :update, {:id => target.to_param, :user => {}}
+        put :update, params: { id: target.to_param, user: {invalid: "invalid"} }
         expect(assigns(:user)).to eq(target)
       end
 
       it "re-renders the 'edit' template" do
         # Trigger the behavior that occurs when invalid params are submitted
         allow_any_instance_of(User).to receive(:save).and_return(false)
-        put :update, {:id => target.to_param, :user => {}}
+        put :update, params: {id: target.to_param, user: {invalid: "invalid"} }
         expect(response).to render_template("edit")
       end
     end
@@ -143,13 +143,13 @@ describe Admin::UsersController do
       # Using the let-created user in these specs isn't useful
       user = FactoryGirl.create(:user)
       expect {
-        delete :destroy, {:id => user.to_param}
+        delete :destroy, params: { id: user.to_param }
       }.to change(User, :count).by(-1)
     end
 
     it "redirects to the admin_users list" do
       user = FactoryGirl.create(:user)
-      delete :destroy, {:id => user.to_param}
+      delete :destroy, params: { id: user.to_param }
       expect(response).to redirect_to(admin_users_url)
     end
   end

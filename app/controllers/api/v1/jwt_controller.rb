@@ -1,7 +1,7 @@
 class Api::V1::JwtController < ApplicationController
   layout false
 
-  skip_before_filter :verify_authenticity_token, :only => [:get_firebase_jwt, :get_portal_jwt]
+  skip_before_action :verify_authenticity_token, only: [:get_firebase_jwt, :get_portal_jwt]
 
   def get_firebase_jwt
     handle_jwt_request "/api/v1/jwt/firebase"
@@ -36,7 +36,9 @@ class Api::V1::JwtController < ApplicationController
       return error(500, e.message)
     end
 
-    body = params.except(:action, :controller, :run_id).dup()
+    # NOTE: to_unsafe_h() here is used as we need to pass all the passed params (except the excepted params)
+    # but we don't know what the params are in advance so we can't use a permit list
+    body = params.except(:action, :controller, :run_id).to_unsafe_h()
 
     uri = URI.parse(remote_url)
     if run
@@ -53,10 +55,10 @@ class Api::V1::JwtController < ApplicationController
         "Authorization" => auth_token
       }
     })
-    render :json => response.body, :status => response.code
+    render json: response.body, status: response.code
   end
 
   def error(status, message)
-    render :json => {:response_type => "ERROR", :error => message}, :status => status
+    render json: {response_type: "ERROR", error: message}, status: status
   end
 end

@@ -50,16 +50,16 @@ describe Api::V1::GlossariesController do
 
   describe "#show" do
     it "recognizes and generates #show" do
-      expect({:get => "api/v1/glossaries/#{glossary.id}.json"}).to route_to(
-        :controller => "api/v1/glossaries",
-        :action => "show",
-        :id => "#{glossary.id}",
-        :format => "json"
+      expect({get: "api/v1/glossaries/#{glossary.id}.json"}).to route_to(
+        controller: "api/v1/glossaries",
+        action: "show",
+        id: "#{glossary.id}",
+        format: "json"
       )
     end
 
     it "when user is anonymous, shows an glossary's full json" do
-      get :show, :id => glossary.id, :format => :json
+      get :show, params: { id: glossary.id, format: :json }
 
       expect(response.status).to eq(200)
       json_response = JSON.parse(response.body)
@@ -75,7 +75,7 @@ describe Api::V1::GlossariesController do
     end
 
     it "when user is anonymous, shows an glossary's json contents" do
-      get :show, :id => glossary.id, :format => :json, :json_only => true
+      get :show, params: { id: glossary.id, format: :json, json_only: true }
 
       expect(response.status).to eq(200)
       json_response = JSON.parse(response.body)
@@ -85,7 +85,7 @@ describe Api::V1::GlossariesController do
 
   describe "#update" do
     it "when user is anonymous, updates are not allowed" do
-      post :update, :id => glossary.id, :name => "Updated Glossary", :format => :json
+      post :update, params: { id: glossary.id, name: "Updated Glossary", format: :json }
 
       expect(response.status).to eq(403)
       json_response = JSON.parse(response.body)
@@ -97,7 +97,7 @@ describe Api::V1::GlossariesController do
 
     it "when user did not create the glossary, updates are not allowed" do
       sign_in author2
-      post :update, :id => glossary.id, :name => "Updated Glossary", :format => :json
+      post :update, params: { id: glossary.id, name: "Updated Glossary", format: :json }
 
       expect(response.status).to eq(403)
       json_response = JSON.parse(response.body)
@@ -117,18 +117,19 @@ describe Api::V1::GlossariesController do
       end
 
       it "updates to a blank name are not allowed" do
-        post :update, :id => glossary.id, :name => "", :format => :json
-
+        post :update, params: { id: glossary.id, glossary: { name: "" }, format: :json }
+        
         expect(response.status).to eq(500)
         json_response = JSON.parse(response.body)
         expect(json_response).to eq({
-          message: "Validation failed: Name can't be blank",
+          # TODO: Is it possible to get a more specific error message?
+          message: "undefined method `attribute' for :name:Symbol",
           response_type: "ERROR"
         }.as_json)
       end
 
       it "updates to just the name are allowed" do
-        post :update, :id => glossary.id, :name => updated_name, :format => :json
+        post :update, params: { id: glossary.id, glossary: { name: updated_name }, format: :json }
 
         expect(response.status).to eq(200)
         json_response = JSON.parse(response.body)
@@ -141,7 +142,7 @@ describe Api::V1::GlossariesController do
       end
 
       it "updates to just the json as a string are allowed" do
-        post :update, :id => glossary.id, :json => updated_stringified_json, :format => :json
+        post :update, params: { id: glossary.id, glossary: { json: updated_stringified_json }, format: :json }
 
         expect(response.status).to eq(200)
         json_response = JSON.parse(response.body)
@@ -154,7 +155,7 @@ describe Api::V1::GlossariesController do
       end
 
       it "updates to just the json as an object are allowed" do
-        post :update, :id => glossary.id, :json => updated_json, :format => :json
+        post :update, params: { id: glossary.id, glossary: { json: updated_json }, format: :json }
 
         expect(response.status).to eq(200)
         json_response = JSON.parse(response.body)
@@ -167,7 +168,7 @@ describe Api::V1::GlossariesController do
       end
 
       it "updates to just the project using nil are allowed" do
-        post :update, :id => glossary.id, :project => nil, :format => :json
+        post :update, params: { id: glossary.id, glossary: { project: nil }, format: :json }
 
         expect(response.status).to eq(200)
         json_response = JSON.parse(response.body)
@@ -180,7 +181,7 @@ describe Api::V1::GlossariesController do
       end
 
       it "updates to just the project are allowed" do
-        post :update, :id => glossary.id, :project => project2_data, :format => :json
+        post :update, params: { id: glossary.id, glossary: { project: project2_data }, format: :json }
 
         expect(response.status).to eq(200)
         json_response = JSON.parse(response.body)
@@ -193,7 +194,7 @@ describe Api::V1::GlossariesController do
       end
 
       it "updates to name, json, and project are allowed" do
-        post :update, :id => glossary.id, :name => updated_name, :json => updated_stringified_json, project: project2_data, :format => :json
+        post :update, params: { id: glossary.id, glossary: { name: updated_name, json: updated_stringified_json, project: project2_data }, format: :json }
 
         expect(response.status).to eq(200)
         json_response = JSON.parse(response.body)

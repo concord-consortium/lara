@@ -17,9 +17,7 @@ shared_examples 'an embeddable controller' do |model_factory|
     subject {
       request.env['HTTP_REFERER'] = 'http://example.com'
 
-      post :update, {:id => model.id, model.class.name_as_param => {
-        :name => "updated name"
-      } }
+      patch :update, params: { id: model.id, model.class.name_as_param.to_s => {name: "updated name"} }
     }
 
     it "causes the activity to be republished to the portal" do

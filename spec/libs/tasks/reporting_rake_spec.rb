@@ -19,7 +19,7 @@ describe "reporting:publish_student_runs" do
   end
 
   it "sends a run to the report service, specifying `send_all_answers`" do
-    expected_options = {:send_all_answers=>true}
+    expected_options = {send_all_answers: true}
     expect(ReportService::RunSender).to receive(:new).with(run, expected_options)
     subject.invoke
   end
@@ -42,7 +42,7 @@ describe "reporting:publish_anonymous_runs" do
   end
 
   it "sends a run to the report service, specifying `send_all_answers`" do
-    expected_options = {:send_all_answers=>true}
+    expected_options = {send_all_answers: true}
     expect(ReportService::RunSender).to receive(:new).with(run, expected_options)
     subject.invoke
   end

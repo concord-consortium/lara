@@ -34,20 +34,20 @@ describe User do
       let (:other_user) { FactoryGirl.build(:author) }
       let (:page) { FactoryGirl.create(:page) }
       let (:other_page) { FactoryGirl.create(:page) }
-      let (:self_activity) { stub_model(LightweightActivity, :user_id => user.id, :pages => [page]) }
+      let (:self_activity) { stub_model(LightweightActivity, user_id: user.id, pages: [page]) }
       let (:other_activity) { stub_model(
                                          LightweightActivity,
-                                         :user_id => 15,
-                                         :pages => [other_page],
-                                         :publication_status => 'public'
+                                         user_id: 15,
+                                         pages: [other_page],
+                                         publication_status: 'public'
                                         ) }
-      let (:self_sequence) { stub_model(Sequence, :user_id => user.id) }
-      let (:other_sequence) { stub_model(Sequence, :user_id => 15) }
-      let (:public_sequence) { stub_model(Sequence, :publication_status => "public", :user_id => 15) }
-      let (:hidden_sequence) { stub_model(Sequence, :publication_status => "hidden", :user_id => 15) }
-      let (:private_sequence) { stub_model(Sequence, :publication_status => "private", :user_id => 15) }
-      let (:archive_sequence) { stub_model(Sequence, :publication_status => "archive", :user_id => 15) }
-      let (:self_glossary) { stub_model(Glossary, :user_id => user.id) }
+      let (:self_sequence) { stub_model(Sequence, user_id: user.id) }
+      let (:other_sequence) { stub_model(Sequence, user_id: 15) }
+      let (:public_sequence) { stub_model(Sequence, publication_status: "public", user_id: 15) }
+      let (:hidden_sequence) { stub_model(Sequence, publication_status: "hidden", user_id: 15) }
+      let (:private_sequence) { stub_model(Sequence, publication_status: "private", user_id: 15) }
+      let (:archive_sequence) { stub_model(Sequence, publication_status: "archive", user_id: 15) }
+      let (:self_glossary) { stub_model(Glossary, user_id: user.id) }
       let (:section) { FactoryGirl.create(:section, :on_page, :with_items, interactive_page: page) }
       let (:plugin) { FactoryGirl.create(:plugin, plugin_scope: self_activity) }
       let (:other_plugin) { FactoryGirl.create(:plugin, plugin_scope: other_activity) }
@@ -116,16 +116,16 @@ describe User do
       let (:project) { FactoryGirl.build(:project) }
       let (:other_project) { FactoryGirl.build(:project) }
       let (:page) { FactoryGirl.build(:page) }
-      let (:activity) { stub_model(LightweightActivity, :user_id => 15, :pages => [page], :project => project) }
-      let (:other_activity) { stub_model(LightweightActivity, :user_id => 15, :pages => [page], :publication_status => 'public') }
-      let (:sequence) { stub_model(Sequence, :user_id => 15, :project => project) }
-      let (:public_sequence) { stub_model(Sequence, :publication_status => "public", :user_id => 15, :project => project) }
-      let (:hidden_sequence) { stub_model(Sequence, :publication_status => "hidden", :user_id => 15, :project => project) }
-      let (:private_sequence) { stub_model(Sequence, :publication_status => "private", :user_id => 15, :project => project) }
-      let (:archive_sequence) { stub_model(Sequence, :publication_status => "archive", :user_id => 15, :project => project) }
-      let (:glossary) { stub_model(Glossary, :user_id => 15, :project => project) }
-      let (:no_project_glossary) { stub_model(Glossary, :user_id => 15) }
-      let (:other_project_glossary) { stub_model(Glossary, :user_id => 15, :project => other_project) }
+      let (:activity) { stub_model(LightweightActivity, user_id: 15, pages: [page], project: project) }
+      let (:other_activity) { stub_model(LightweightActivity, user_id: 15, pages: [page], publication_status: 'public') }
+      let (:sequence) { stub_model(Sequence, user_id: 15, project: project) }
+      let (:public_sequence) { stub_model(Sequence, publication_status: "public", user_id: 15, project: project) }
+      let (:hidden_sequence) { stub_model(Sequence, publication_status: "hidden", user_id: 15, project: project) }
+      let (:private_sequence) { stub_model(Sequence, publication_status: "private", user_id: 15, project: project) }
+      let (:archive_sequence) { stub_model(Sequence, publication_status: "archive", user_id: 15, project: project) }
+      let (:glossary) { stub_model(Glossary, user_id: 15, project: project) }
+      let (:no_project_glossary) { stub_model(Glossary, user_id: 15) }
+      let (:other_project_glossary) { stub_model(Glossary, user_id: 15, project: other_project) }
       let (:section) { FactoryGirl.create(:section, :on_page, :with_items, interactive_page: page) }
       let (:plugin) { FactoryGirl.create(:plugin, plugin_scope: activity) }
       let (:interactive) { FactoryGirl.create(:mw_interactive) }
@@ -255,16 +255,16 @@ describe User do
         oa
       end
       let(:own_sequence) do
-        os = FactoryGirl.create(:sequence_with_activity, :publication_status => "private")
+        os = FactoryGirl.create(:sequence_with_activity, publication_status: "private")
         os.user = user
         os.user_id = user.id
         os.save
         os
       end
-      let(:archive_sequence) { FactoryGirl.create(:sequence_with_activity, :publication_status => "archive") }
-      let(:hidden_sequence) { FactoryGirl.create(:sequence_with_activity, :publication_status => "hidden") }
-      let(:public_sequence) { FactoryGirl.create(:sequence_with_activity, :publication_status => "public") }
-      let(:private_sequence) { FactoryGirl.create(:sequence_with_activity, :publication_status => "private") }
+      let(:archive_sequence) { FactoryGirl.create(:sequence_with_activity, publication_status: "archive") }
+      let(:hidden_sequence) { FactoryGirl.create(:sequence_with_activity, publication_status: "hidden") }
+      let(:public_sequence) { FactoryGirl.create(:sequence_with_activity, publication_status: "public") }
+      let(:private_sequence) { FactoryGirl.create(:sequence_with_activity, publication_status: "private") }
       let(:own_run) { FactoryGirl.create(:run, user: user) }
       let(:anon_run) { FactoryGirl.create(:run, user: nil) }
       let(:other_run) { FactoryGirl.create(:run, user: other_user) }
@@ -364,7 +364,7 @@ describe User do
     let(:auth_roles)    { []                     }
 
     let(:auth) do
-      auth_obj = double(:provider => auth_provider, :uid => auth_uid)
+      auth_obj = double(provider: auth_provider, uid: auth_uid)
       allow(auth_obj).to receive_message_chain(:info, :email).and_return(auth_email)
       allow(auth_obj).to receive_message_chain(:extra, :roles).and_return(auth_roles)
       allow(auth_obj).to receive_message_chain(:credentials, :token).and_return(auth_token)
@@ -376,7 +376,7 @@ describe User do
 
         expected = FactoryGirl.create(:user)
         authentication = FactoryGirl.create(:authentication,
-          {:user => expected, :provider => auth_provider, :uid => auth_uid})
+          {user: expected, provider: auth_provider, uid: auth_uid})
 
         expect(User.find_for_concord_portal_oauth(auth)).to eq(expected)
       end
@@ -385,12 +385,12 @@ describe User do
     describe "with matching email address and no provider" do
       it "should return the found user" do
         expected = FactoryGirl.create(:user,
-          { :email => auth_email } )
+          { email: auth_email } )
         expect(User.find_for_concord_portal_oauth(auth)).to eq(expected)
       end
       it "should update the provider and user to match found" do
         expected = FactoryGirl.create(:user,
-          { :email => auth_email } )
+          { email: auth_email } )
         found = User.find_for_concord_portal_oauth(auth)
         expect(found.email).to    eq(expected.email)
         authentication = found.authentications.first
@@ -403,9 +403,9 @@ describe User do
       it "should create a new authentication with the provider and uid" do
 
         expected = FactoryGirl.create(:user,
-          { :email => auth_email }  )
+          { email: auth_email }  )
         authentication = FactoryGirl.create(:authentication,
-          {:user => expected, :provider => 'some other provider', :uid => auth_uid})
+          {user: expected, provider: 'some other provider', uid: auth_uid})
         found = User.find_for_concord_portal_oauth(auth)
         expect(found.email).to                eq(expected.email)
         expect(found.authentications.size).to eq(2)
@@ -419,17 +419,17 @@ describe User do
     describe "with matching email address and wrong uid" do
       it "should throw an exception" do
         expected = FactoryGirl.create(:user,
-          { :email => auth_email}  )
+          { email: auth_email}  )
         authentication = FactoryGirl.create(:authentication,
-          {:user => expected, :provider => auth_provider, :uid => "222"})
+          {user: expected, provider: auth_provider, uid: "222"})
         expect { User.find_for_concord_portal_oauth(auth) }.to raise_error(UncaughtThrowError)
       end
     end
 
     describe '#auth_providers' do
       let(:user) { FactoryGirl.create(:user) }
-      let(:run)  { FactoryGirl.create(:run, :remote_endpoint => 'http://localhost:9000') }
-      let(:auth) { FactoryGirl.create(:authentication, :provider => 'concord_portal') }
+      let(:run)  { FactoryGirl.create(:run, remote_endpoint: 'http://localhost:9000') }
+      let(:auth) { FactoryGirl.create(:authentication, provider: 'concord_portal') }
 
       it 'should return an array of symbols' do
         expect(user.auth_providers).to eq([])

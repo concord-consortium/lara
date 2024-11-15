@@ -6,7 +6,7 @@ shared_examples "remote duplicate support" do
         sign_in user
       end
       it "should return 403 unauthorized" do
-        post :remote_duplicate, { :id => resource.id }
+        post :remote_duplicate, params: { id: resource.id }
         expect(response.status).to be(403)
       end
       describe "Even when the admin has an API token (also uses `Bearer` auth headers)" do
@@ -16,7 +16,7 @@ shared_examples "remote duplicate support" do
           user.update_attribute(:api_key, api_key)
         end
         it "should return 403 unauthorized" do
-          post :remote_duplicate, { :id => resource.id }, headers
+          post :remote_duplicate, params: { id: resource.id, headers: headers }
           expect(response.status).to be(403)
         end
       end
@@ -31,25 +31,25 @@ shared_examples "remote duplicate support" do
       let(:fake_portal) { fake_portal_struct.new(portal_name, portal_url, portal_url, secret) }
       let(:user_email) { 'test@email.com' }
       let(:self_url) { "#{request.protocol}#{request.host_with_port}" }
-      let(:headers) { { 'Authorization' => "Bearer #{secret}" } }
+      let(:headers) { { 'HTTP_AUTHORIZATION' => "Bearer #{secret}" } }
 
       before(:each) do
         allow(Concord::AuthPortal).to receive(:all).and_return({ test: fake_portal })
-        @request.env['Authorization'] = "Bearer #{secret}"
+        @request.env['HTTP_AUTHORIZATION'] = "Bearer #{secret}"
         resource.user = user
         resource.save
       end
 
       def make_request
-        params = { :id => resource.id, :user_email => user_email, :add_to_portal => portal_url }
+        params = { id: resource.id, user_email: user_email, add_to_portal: portal_url }
         if defined?(author_url)
           params[:author_url] = author_url
         end
-        post :remote_duplicate, params
+        post :remote_duplicate, params: params
       end
 
       def get_copy
-        owner = User.find_by_email(user_email)
+        owner = User.find_by(email: user_email)
         resource.class.where(user_id: owner.id).first
       end
 

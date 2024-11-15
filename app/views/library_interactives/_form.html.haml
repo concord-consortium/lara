@@ -99,7 +99,7 @@
 :javascript
   $(document).ready(function() {
     initTinyMCE('.wysiwyg-minimal', window.TinyMCEConfigMinimal);
-    interactive_form_helper(#{ @library_interactive.to_json })
+    interactive_form_helper(#{ @library_interactive.to_json.html_safe })
   });
 
 

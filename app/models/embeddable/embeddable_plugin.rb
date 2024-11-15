@@ -1,5 +1,5 @@
 module Embeddable
-  class EmbeddablePlugin < ActiveRecord::Base
+  class EmbeddablePlugin < ApplicationRecord
     include Embeddable
     include AttachedToEmbeddable
 
@@ -7,12 +7,10 @@ module Embeddable
       'embeddable_plugins'
     end
 
-    attr_accessible :plugin, :approved_script_id, :description, :author_data,
-    :is_half_width, :is_hidden, :component_label, :name, :label, :url
 
     has_one :plugin, as: :plugin_scope, autosave: true
 
-    has_many :page_items, :as => :embeddable, :dependent => :destroy
+    has_many :page_items, as: :embeddable, dependent: :destroy
     has_many :sections, through: :page_items
     has_many :interactive_pages, through: :sections
     has_many :embeddable_plugins, class_name: "Embeddable::EmbeddablePlugin", as: :embeddable

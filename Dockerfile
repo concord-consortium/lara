@@ -42,9 +42,10 @@ RUN ln -sf /dev/stdout /var/log/nginx/access.log && ln -sf /dev/stderr /var/log/
 # set production
 ENV RAILS_ENV=production
 
-# compile the assets - NOTE: config.assets.initialize_on_precompile MUST be set to false in application.rb for this to work
-# otherwise somewhere in the initializers it tries to connect to the database which will fail
-RUN bundle exec rake assets:precompile
+
+# We need to fake an ENV Var for the precompile: https://github.com/rails/rails/issues/32947
+# Run precompile rake task in order to at least generate the manifest file
+RUN SECRET_KEY_BASE=dummy bundle exec rake assets:precompile
 
 # pass in a version while building with --build-arg LARA_VERSION=x.y.z
 ARG LARA_VERSION

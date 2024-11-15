@@ -48,6 +48,9 @@ services:
       AUTHORED_CONTENT_SOURCE:
 
       VIRTUAL_HOST: "${LARA_HOST:-app.lara.docker}"
+      DEVISE_SECRET_KEY: ENV['DEVISE_SECRET_KEY']
+
+      RAILS_SECRET_KEY_BASE: "${RAILS_SECRET_KEY_BASE:-local_dev_only_secret_key_base}"
 
     # no ports are published, see below for details
     depends_on:

@@ -17,7 +17,7 @@ end
 
 namespace :docstore_v2 do
   desc "Migrate the interactive run states that use the v1 docstore api to v2."
-  task :migrate_run_states => :environment do
+  task migrate_run_states: :environment do
 
     # make sure we have the required environment variables
     abort unless require_env_var('DOCSTORE_URL')
@@ -102,9 +102,9 @@ namespace :docstore_v2 do
 
       # generate the access keys on the docstore
       result = HTTParty.post("#{ENV['DOCSTORE_URL']}/v2/documents/create_keys",
-        :body => { :docs => docs,
-                  :api_secret => ENV['DOCSTORE_API_SECRET']}.to_json,
-        :headers => { 'Content-Type' => 'application/json' } )
+        body: { docs: docs,
+                  api_secret: ENV['DOCSTORE_API_SECRET']}.to_json,
+        headers: { 'Content-Type' => 'application/json' } )
 
       # update the raw_data and the MwInteractive
       if result && result["valid"]

@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'c_rater/api_wrapper'
 
 describe CRater::APIWrapper do
   let(:client_id)     { 'concord' }
@@ -69,11 +70,18 @@ describe CRater::APIWrapper do
 
     context 'C-Rater service works as expected' do
       before do
-        stub_request(:post, "#{protocol}#{username}:#{password}@#{url}").
-          with(:body    => xml_req_spec,
-               :headers => {'Content-Type' => 'text/xml; charset=ISO-8859-1'}).
-          to_return(:status  => 200, :body => xml_resp_spec,
-                    :headers => {'Content-Type' => 'text/xml; charset=ISO-8859-1'})
+        stub_request(:post, "#{protocol}#{url}/")
+          .with(
+            body: xml_req_spec,
+            headers: {
+              'Accept' => '*/*',
+              'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+              'Authorization' => 'Basic Y2M6cGFzc3dvcmQ=',  # Base64 encoding of "cc:password"
+              'Content-Type' => 'text/xml; charset=ISO-8859-1',
+              'User-Agent' => 'Ruby',
+              'X-Api-Key' => 'fakekey'
+            }
+          ).to_return(status: 200, body: xml_resp_spec, headers: { 'Content-Type' => 'text/xml; charset=ISO-8859-1' })
       end
 
       it "returns score and additional information" do
@@ -88,10 +96,18 @@ describe CRater::APIWrapper do
 
     context 'C-Rater service returns error' do
       before do
-        stub_request(:post, "#{protocol}#{username}:#{password}@#{url}").
-          with(:body    => xml_req_spec,
-               :headers => {'Content-Type' => 'text/xml; charset=ISO-8859-1'}).
-          to_return(:status => status_code, :body => err_body, :headers => headers)
+        stub_request(:post, "#{protocol}#{url}")
+          .with(
+            body: xml_req_spec,
+            headers: {
+              'Accept' => '*/*',
+              'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+              'Authorization' => 'Basic Y2M6cGFzc3dvcmQ=',  # Base64 encoding of "cc:password"
+              'Content-Type' => 'text/xml; charset=ISO-8859-1',
+              'User-Agent' => 'Ruby',
+              'X-Api-Key' => 'fakekey'
+            }
+          ).to_return(status: status_code, body: err_body, headers: headers)
       end
 
       context 'quota exceeded error' do

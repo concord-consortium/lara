@@ -1,4 +1,4 @@
-class AddTrackedQuestion < ActiveRecord::Migration
+class AddTrackedQuestion < ActiveRecord::Migration[5.1]
   def change
     create_table :tracked_questions do |t|
       t.references :question_tracker, index: true

@@ -2,8 +2,8 @@
 
 FactoryGirl.define do
   # Name is defined in the LightweightActivity factory
-  sequence(:page_sidebar) { |n| Faker::Lorem.sentences(4).join(" ") }
-  sequence(:page_text)    { |n| Faker::Lorem.sentences(6).join(" ") }
+  sequence(:page_sidebar) { |n| Faker::Lorem.sentences(number: 4).join(" ") }
+  sequence(:page_text)    { |n| Faker::Lorem.sentences(number: 6).join(" ") }
 
   factory :page, class: InteractivePage, aliases: [:interactive_page]  do
     name { generate(:name) }
@@ -14,7 +14,7 @@ FactoryGirl.define do
     show_info_assessment 1
     is_hidden 0
 
-    ignore do
+    transient do
       interactives []
       embeddables []
     end

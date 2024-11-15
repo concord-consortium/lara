@@ -82,7 +82,7 @@ describe "SendToReportServiceJob" do
       let(:report_service_response) { { "status" => 400, "success" => false } }
       it "the job should throw an exception to retry the job" do
         expect(sender).not_to receive(:update_column)
-        expect { job.perform }.to raise_exception
+        expect { job.perform }.to raise_exception(SendToReportServiceJob::FailedToSendToReportService)
       end
     end
 

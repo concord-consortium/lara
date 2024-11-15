@@ -1,18 +1,18 @@
-class Rubric < ActiveRecord::Base
-  attr_accessible :name, :user_id, :project_id, :project, :authored_content_id, :authored_content, :doc_url
+class Rubric < ApplicationRecord
   validates :name, presence: true
   validates :user_id, presence: true
 
   belongs_to :user
   belongs_to :project
-  has_one :authored_content, :as => :container
+  has_one :authored_content, as: :container
   has_many :lightweight_activities
 
   after_create :create_authored_content
 
   # scope :public, self.scoped # all rubrics are public
-  scope :none, where("1 = 0") # used to return "my rubrics" to no user
-  scope :newest, order("updated_at DESC")
+  scope :is_public, -> { self.all }
+  scope :no_rubrics, -> { where("1 = 0") } # used to return "my rubrics" to no user
+  scope :newest, -> { order(updated_at: :desc) }
 
   def export(user)
     {
@@ -47,7 +47,7 @@ class Rubric < ActiveRecord::Base
   end
 
   def duplicate(new_owner)
-    new_rubric = Rubric.new(self.to_hash)
+    new_rubric = Rubric.new(self.to_hash.except(:id))
     new_rubric.name = "Copy of #{new_rubric.name}"
     new_rubric.user = new_owner
     new_rubric
@@ -92,7 +92,7 @@ class Rubric < ActiveRecord::Base
     if user
       self.where(user_id: user.id).eager_load(:user).order(:name)
     else
-      self.none
+      self.no_rubrics
     end
   end
 
@@ -101,7 +101,7 @@ class Rubric < ActiveRecord::Base
     if user
       self.where("user_id != ?", user.id).eager_load(:user).order(:name)
     else
-      self.scoped.eager_load(:user).order(:name)
+      self.all.eager_load(:user).order(:name)
     end
   end
 
@@ -109,12 +109,12 @@ class Rubric < ActiveRecord::Base
   # These somewhat mirror the class methods injects by the PublicationStatus model, except they remove
   # the checks for publication status
   def self.my(user)
-    where(:user_id => user.id)
+    where(user_id: user.id)
   end
 
   def self.can_see(user)
     # all users can see all rubrics
-    self.scoped
+    self.all
   end
 
   def self.visible(user)
@@ -127,9 +127,9 @@ class Rubric < ActiveRecord::Base
 
   def self.public_for_user(user)
     if user && (user.admin? || user.author? || user.project_admin_of?(self.project))
-      self.scoped
+      self.all
     else
-      self.none
+      self.no_rubrics
     end
   end
 end

@@ -27,7 +27,7 @@ describe Embeddable::ExternalScript do
     describe 'When the embeddable is added to a page' do
       let(:section) { nil }
       before(:each) do
-        page.add_embeddable(script,0, section)
+        page.add_embeddable(script, 1, section)
         page.reload
         script.reload
       end

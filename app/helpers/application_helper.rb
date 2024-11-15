@@ -1,19 +1,19 @@
 # encoding: UTF-8
 module ApplicationHelper
-  def edit_menu_for(component, form, options={:omit_cancel => true}, scope=false)
+  def edit_menu_for(component, form, options={omit_cancel: true}, scope=false)
     component = (component.respond_to? :embeddable) ? component.embeddable : component
     capture_haml do
-      haml_tag :div, :class => 'action_menu' do
-        haml_tag :div, :class => 'action_menu_header_left' do
-          haml_tag(:h3,{:class => 'menu'}) do
-            haml_concat title_for_component(component, :id_prefix => 'edit')
+      haml_tag :div, class: 'action_menu' do
+        haml_tag :div, class: 'action_menu_header_left' do
+          haml_tag(:h3,{class: 'menu'}) do
+            haml_concat title_for_component(component, id_prefix: 'edit')
           end
         end
-        haml_tag :div, :class => 'action_menu_header_right' do
-          haml_tag :ul, {:class => 'menu'} do
+        haml_tag :div, class: 'action_menu_header_right' do
+          haml_tag :ul, {class: 'menu'} do
             #if (component.changeable?(current_user))
-            haml_tag(:li, {:class => 'menu'}) { haml_concat form.submit("Save") }
-            haml_tag(:li, {:class => 'menu'}) { haml_concat form.submit("Cancel") } unless options[:omit_cancel]
+            haml_tag(:li, {class: 'menu'}) { haml_concat form.submit("Save") }
+            haml_tag(:li, {class: 'menu'}) { haml_concat form.submit("Cancel") } unless options[:omit_cancel]
             #end
           end
         end
@@ -66,7 +66,7 @@ module ApplicationHelper
     prefix = ''
     optional_prefixes.each { |p| prefix << "#{p.to_s}_" }
     class_name = component.class.name.underscore
-    if component.is_a?(ActiveRecord::Base)
+    if component.is_a?(ApplicationRecord)
       id = component.id || Time.now.to_i
     else
       # this will be a temporary id, so it seems unlikely that these type of ids
@@ -211,8 +211,15 @@ module ApplicationHelper
     #
     # yields:
     #      `?foo=xx&bar=yy` (activity and bam are missing)
-    current_params = params.select { |key| whitelist.include?(key) }
-    if current_params.length > 0
+    
+    # If `params` is an instance of `ActionController::Parameters`, use `permit`
+    current_params = if params.is_a?(ActionController::Parameters)
+      params.permit(whitelist).to_h
+    else
+      params.slice(*whitelist)
+    end
+
+    if current_params.any?
       parsed_url = URI.parse(url_or_path)
       parsed_url_params = Rack::Utils.parse_nested_query(parsed_url.query || '')
       parsed_url.query = current_params.merge(parsed_url_params).to_query

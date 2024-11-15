@@ -148,21 +148,21 @@ module Concord
         @display_name = display_name
         option :name, @strategy_name
         option :client_options, {
-          :site             => @site,
-          :authorize_url    => @auth_url,
-          :access_token_url => @access_token_url
+          site: @site,
+          authorize_url: @auth_url,
+          access_token_url: @access_token_url
         }
         uid  { raw_info['id'] }
-        info {{ :email => raw_info['info']['email'] }}
+        info {{ email: raw_info['info']['email'] }}
         extra do
           {
-            :first_name => raw_info['extra']['first_name'],
-            :last_name  => raw_info['extra']['last_name'],
-            :full_name  => raw_info['extra']['full_name'],
-            :username   => raw_info['extra']['username'],
-            :user_id    => raw_info['extra']['user_id'],
-            :roles      => raw_info['extra']['roles'] || [],
-            :domain     => raw_info['extra']['domain']
+            first_name: raw_info['extra']['first_name'],
+            last_name: raw_info['extra']['last_name'],
+            full_name: raw_info['extra']['full_name'],
+            username: raw_info['extra']['username'],
+            user_id: raw_info['extra']['user_id'],
+            roles: raw_info['extra']['roles'] || [],
+            domain: raw_info['extra']['domain']
           }
         end
 

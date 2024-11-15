@@ -6,16 +6,18 @@ LightweightStandalone::Application.configure do
   # Code is not reloaded between requests
   config.cache_classes = true
 
+  # Eager loads all registered config.eager_load_namespaces. This includes your application,
+  # engines, Rails frameworks, and any other registered namespace.
+  config.eager_load = true
+
   # Full error reports are disabled and caching is turned on
   config.consider_all_requests_local       = false
   config.action_controller.perform_caching = true
 
   # Disable Rails's static asset server (Apache or nginx will already do this)
-  config.serve_static_assets = false
+  config.public_file_server.enabled = false
 
   # Compress JavaScripts and CSS
-  config.assets.compress = true
-
   config.assets.js_compressor = Uglifier.new(harmony: true)
 
   # Don't fallback to assets pipeline if a precompiled asset is missed
@@ -34,8 +36,8 @@ LightweightStandalone::Application.configure do
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
   # config.force_ssl = true
 
-  # See everything in the log (default is :info)
-  # config.log_level = :debug
+  # See info messages and above in the log (default is :debug in Rails 5)
+  config.log_level = :info
 
   # Prepend all log lines with the following tags
   # config.log_tags = [ :subdomain, :uuid ]
@@ -86,7 +88,10 @@ LightweightStandalone::Application.configure do
   # Send deprecation notices to registered listeners
   config.active_support.deprecation = :notify
 
-  # Log the query plan for queries taking more than this (works
-  # with SQLite, MySQL, and PostgreSQL)
-  # config.active_record.auto_explain_threshold_in_seconds = 0.5
+  config.active_record.belongs_to_required_by_default = false
+  config.action_controller.per_form_csrf_tokens = false
+  config.action_controller.forgery_protection_origin_check = false
+  config.ssl_options = { hsts: { subdomains: false } }
+  ActiveSupport.to_time_preserves_timezone = false
+  config.active_record.use_yaml_unsafe_load = true
 end

@@ -33,7 +33,7 @@ describe Embeddable::LabbookAnswer do
                      dst_user_id: labbook_answer.labbook_user_id,
                      src_source: Embeddable::LabbookAnswer::SOURCE_ID,
                      src_user_id: another_answer.labbook_user_id}).
-         to_return(:status => 200, :body => "", :headers => {})
+         to_return(status: 200, body: "", headers: {})
     end
 
     it 'should fire off a web request to replace album snapshots' do

@@ -1,5 +1,4 @@
-class PendingPortalPublication < ActiveRecord::Base
-  attr_accessible :portal_publication_id
+class PendingPortalPublication < ApplicationRecord
 
   belongs_to :portal_publication
 end

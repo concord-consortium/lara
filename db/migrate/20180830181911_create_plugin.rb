@@ -1,4 +1,4 @@
-class CreatePlugin < ActiveRecord::Migration
+class CreatePlugin < ActiveRecord::Migration[5.1]
   def change
     create_table :plugins do |t|
       t.string  :approved_script_id
@@ -8,7 +8,7 @@ class CreatePlugin < ActiveRecord::Migration
       t.text    :description
       t.timestamps
     end
- 
-    add_index :plugins, [:plugin_scope_id, :plugin_scope_type], name: 'plugin_scopes', uniq: true
+
+    add_index :plugins, [:plugin_scope_id, :plugin_scope_type], name: 'plugin_scopes', unique: false
   end
 end

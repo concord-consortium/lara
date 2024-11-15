@@ -35,21 +35,21 @@
                 %td
                   not published (failure)
                 %td
-                  =link_to "Try Again", publication_publish_path(@publishable.class, @publishable.id), {:remote => true}, {:class => "not_published"}
+                  =link_to "Try Again", publication_publish_path(@publishable.class, @publishable.id), {:remote => true, :class => "not_published"}
               - when "add_to_fail"
                 %td
                   = portal.url
                 %td
                   not published (failure)
                 %td
-                  =link_to "Try Again", publication_add_portal_path(@publishable.class, @publishable.id, :portal_url => portal.url), {:remote => true}, {:class => "not_published"}
+                  =link_to "Try Again", publication_add_portal_path(@publishable.class, @publishable.id, :portal_url => portal.url), {:remote => true, :class => "not_published"}
               - when "publishable"
                 %td
                   = portal.url
                 %td
                   not published
                 %td
-                  = link_to "Publish", publication_add_portal_path(@publishable.class, @publishable.id, :portal_url => portal.url), {:remote => true}, {:class => "not_published"}
+                  = link_to "Publish", publication_add_portal_path(@publishable.class, @publishable.id, :portal_url => portal.url), {:remote => true, :class => "not_published"}
               - else
                 %td
                   = portal.url

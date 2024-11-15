@@ -45,7 +45,7 @@ describe Api::V1::QuestionTrackersController do
 
   describe 'find_by_activity' do
     it "should return the question tracker" do
-      get :find_by_activity, :activity_id => activity.id
+      get :find_by_activity, params: { activity_id: activity.id }
       expect(response.status).to eq(200)
       json_response = JSON.parse(response.body)
       expect(json_response.length).to eq(1)
@@ -54,7 +54,7 @@ describe Api::V1::QuestionTrackersController do
     end
 
     it "should return a question tracker with the correct report_url" do
-      get :find_by_activity, :activity_id => activity.id
+      get :find_by_activity, params: { activity_id: activity.id }
       tracker_info = JSON.parse(response.body)[0]
       # This worked before(?!) Used to check if the URL include #activity_id (instead of tracker_id), which is wrong.
       expect(tracker_info['report_url']).to match(/\/\/test.host\/api\/v1\/question_trackers\/\d+\/report/)
@@ -64,11 +64,11 @@ describe Api::V1::QuestionTrackersController do
   describe 'report' do
     # need to pass a tracker id and array of run endpoints
     it "should return the question tracker and answers" do
-      get :report, :question_tracker_id => question_tracker.id, :endpoints => [endpoint_url]
+      get :report, params: { question_tracker_id: question_tracker.id, endpoints: [endpoint_url] }
       expect(response.body).to include('question_tracker', 'answers')
     end
     it "should return the answer" do
-      get :report, :question_tracker_id => question_tracker.id, :endpoints => [endpoint_url]
+      get :report, params: { question_tracker_id: question_tracker.id, endpoints: [endpoint_url] }
       json_response = JSON.parse(response.body)
       expect(json_response['answers'][0]['answer_hash']['answer']).to eq(answer_text)
     end

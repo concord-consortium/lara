@@ -12,11 +12,11 @@ describe SequencesController do
     end
 
     it "routes to #show" do
-      expect(get("/sequences/1")).to route_to("sequences#show", :id => "1")
+      expect(get("/sequences/1")).to route_to("sequences#show", id: "1")
     end
 
     it "routes to #edit" do
-      expect(get("/sequences/1/edit")).to route_to("sequences#edit", :id => "1")
+      expect(get("/sequences/1/edit")).to route_to("sequences#edit", id: "1")
     end
 
     it "routes to #create" do
@@ -24,11 +24,11 @@ describe SequencesController do
     end
 
     it "routes to #update" do
-      expect(put("/sequences/1")).to route_to("sequences#update", :id => "1")
+      expect(put("/sequences/1")).to route_to("sequences#update", id: "1")
     end
 
     it "routes to #destroy" do
-      expect(delete("/sequences/1")).to route_to("sequences#destroy", :id => "1")
+      expect(delete("/sequences/1")).to route_to("sequences#destroy", id: "1")
     end
 
   end

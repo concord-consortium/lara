@@ -1,5 +1,4 @@
-class Glossary < ActiveRecord::Base
-  attr_accessible :name, :json, :user_id, :legacy_glossary_resource_id, :project_id, :project
+class Glossary < ApplicationRecord
   validates :name, presence: true
   validates :user_id, presence: true
 
@@ -8,8 +7,9 @@ class Glossary < ActiveRecord::Base
   has_many :lightweight_activities
 
   # scope :public, self.scoped # all glossaries are public
-  scope :none, where("1 = 0") # used to return "my glossaries" to no user
-  scope :newest, order("updated_at DESC")
+  scope :is_public, -> { self.all }
+  scope :no_glossaries, -> { where("1 = 0") } # used to return "my glossaries" to no user
+  scope :newest, -> { order(updated_at: :desc) }
 
   def export(user)
     {
@@ -51,7 +51,7 @@ class Glossary < ActiveRecord::Base
   end
 
   def duplicate(new_owner)
-    new_glossary = Glossary.new(self.to_hash)
+    new_glossary = Glossary.new(self.to_hash.except(:id))
     new_glossary.name = "Copy of #{new_glossary.name}"
     new_glossary.legacy_glossary_resource_id = nil
     new_glossary.user = new_owner
@@ -99,7 +99,7 @@ class Glossary < ActiveRecord::Base
     if user
       self.where(user_id: user.id).eager_load(:user).order(:name)
     else
-      self.none
+      self.no_glossaries
     end
   end
 
@@ -108,7 +108,7 @@ class Glossary < ActiveRecord::Base
     if user
       self.where("user_id != ?", user.id).eager_load(:user).order(:name)
     else
-      self.scoped.eager_load(:user).order(:name)
+      self.all.eager_load(:user).order(:name)
     end
   end
 
@@ -116,12 +116,12 @@ class Glossary < ActiveRecord::Base
   # These somewhat mirror the class methods injects by the PublicationStatus model, except they remove
   # the checks for publication status
   def self.my(user)
-    where(:user_id => user.id)
+    where(user_id: user.id)
   end
 
   def self.can_see(user)
     # all users can see all glossaries
-    self.scoped
+    self.all
   end
 
   def self.visible(user)
@@ -134,9 +134,9 @@ class Glossary < ActiveRecord::Base
 
   def self.public_for_user(user)
     if user && (user.admin? || user.author? || user.project_admin_of?(self.project))
-      self.scoped
+      self.all
     else
-      self.none
+      self.no_glossaries
     end
   end
 end

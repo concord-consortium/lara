@@ -1,5 +1,4 @@
-class GlobalInteractiveState < ActiveRecord::Base
-  attr_accessible :raw_data, :run_id
+class GlobalInteractiveState < ApplicationRecord
 
   belongs_to :run
 end

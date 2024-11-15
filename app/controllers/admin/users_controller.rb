@@ -1,6 +1,15 @@
 class Admin::UsersController < ApplicationController
   # GET /admin/users
   # GET /admin/users.json
+
+  def user_params
+    params.fetch(:user, {}).permit(
+      :api_key, :authentication_token, :email, :first_name, :has_api_key, :is_admin, :is_author,
+      :last_name, :password, :password_confirmation, :provider, :remember_me, :uid,
+      admined_project_ids: []
+    )
+  end
+
   def index
     authorize! :manage, User
     page_options = { page: params[:page] || 1 , per_page: 200 }
@@ -51,7 +60,7 @@ class Admin::UsersController < ApplicationController
   # POST /admin/users
   # POST /admin/users.json
   def create
-    @user = User.new(params[:user])
+    @user = User.new(user_params)
     authorize! :create, User
 
     respond_to do |format|
@@ -71,12 +80,12 @@ class Admin::UsersController < ApplicationController
     @user = User.find(params[:id])
     authorize! :update, @user
 
-    if !params[:user][:admined_project_ids].present?
-      params[:user][:admined_project_ids] = []
-    end
+    # Convert to a mutable hash and ensure `admined_project_ids` is an empty array if not provided
+    modifiable_params = user_params.to_h
+    modifiable_params[:admined_project_ids] ||= []
 
     respond_to do |format|
-      if @user.update_attributes(params[:user])
+      if @user.update_attributes(modifiable_params)
         format.html { redirect_to edit_admin_user_path(@user), notice: 'User was successfully updated.' }
         format.json { head :no_content }
       else

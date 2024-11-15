@@ -1,13 +1,13 @@
 class Api::V1::InteractivePagesController < API::APIController
   layout false
-  before_filter :set_interactive_page, except: [
+  before_action :set_interactive_page, except: [
     :get_library_interactives_list,
     :get_wrapping_plugins_list,
     :get_portal_list,
     :get_pages,
     :create_page
   ]
-  skip_before_filter :verify_authenticity_token
+  skip_before_action :verify_authenticity_token
 
   ## Queries:
   def get_sections
@@ -33,7 +33,7 @@ class Api::V1::InteractivePagesController < API::APIController
     pages = activity.pages.map do |page|
       generate_page_json page
     end
-    render :json => pages
+    render json: pages
   end
 
   ## Mutations
@@ -49,7 +49,7 @@ class Api::V1::InteractivePagesController < API::APIController
     activity.reload
     next_page.reload
     update_activity_changed_by(activity)
-    render :json => generate_page_json(next_page)
+    render json: generate_page_json(next_page)
   end
 
   def create_page
@@ -69,7 +69,7 @@ class Api::V1::InteractivePagesController < API::APIController
       generate_page_json page
     end
     update_activity_changed_by(activity)
-    render :json => pages
+    render json: pages
   end
 
   def delete_page
@@ -77,23 +77,23 @@ class Api::V1::InteractivePagesController < API::APIController
     authorize! :update, activity
     @interactive_page.destroy
     update_activity_changed_by(activity)
-    render :json => ({success: true})
+    render json: ({success: true})
   end
 
   def update_page
     activity = @interactive_page.lightweight_activity
     authorize! :update, activity, @interactive_page
-    page_params = params['page']
+    page_params = params.require("page").permit(:name, :isCompletion, :isHidden, :showSidebar, :sidebar, :sidebarTitle)
     return error("Missing page parameter") if page_params.nil?
 
     if page_params
       change_keys = 'name is_completion is_hidden show_sidebar sidebar sidebar_title'.split
       # Limit the parameters we accept here, remove nil values, and convert
       # snake case to underscore.
-      clean_params = page_params.map { |key, value| [key.to_s.underscore, value] }.to_h
+      clean_params = page_params.to_h.map { |key, value| [key.to_s.underscore, value] }
       clean_params = clean_params.reject { |k, v| v.nil? }
       clean_params = clean_params.select { |k, v| change_keys.include?(k) }
-      @interactive_page.update_attributes(clean_params)
+      @interactive_page.update_attributes(clean_params.to_h)
 
       if page_params['isCompletion']
         @interactive_page.move_to_bottom
@@ -104,7 +104,7 @@ class Api::V1::InteractivePagesController < API::APIController
       generate_page_json page
     end
     update_activity_changed_by(activity)
-    render :json => pages
+    render json: pages
   end
 
   def set_sections
@@ -165,9 +165,16 @@ class Api::V1::InteractivePagesController < API::APIController
     render json: generate_item_json(duplicate)
   end
 
+  def safe_section_params
+    params.require(:section).permit(
+      :can_collapse_small, :id, :layout, :name, :position, :show,
+      items: [:id, :position, :column]
+    )
+  end
+
   def update_section
     authorize! :update, @interactive_page
-    section_params = params['section']
+    section_params = safe_section_params
 
     return error("Missing section parameter") if section_params.nil?
     return error("Missing section[:id] parameter") if section_params['id'].nil?
@@ -205,22 +212,28 @@ class Api::V1::InteractivePagesController < API::APIController
     render_page_sections_json
   end
 
+  def create_page_item_params
+    params.require(:page_item).permit(
+      :section_id, :section, :position, :embeddable, :column,
+      :type, :wrapped_embeddable_id, :wrapped_embeddable_type
+    )
+  end
+
   def create_page_item
     authorize! :update, @interactive_page
 
-    page_item_params = params["page_item"]
-    return error("Missing page_item parameter") if page_item_params.nil?
+    return error("Missing page_item parameter") if params[:page_item].nil?
 
     # verify the parameters
-    section_id = page_item_params["section_id"]
+    section_id = params[:page_item]["section_id"]
     return error("Missing page_item[section_id] parameter") if section_id.nil?
     section = @interactive_page.sections.where(id: section_id).first
     return error("Invalid page_item[section_id] parameter") if section.nil?
-    embeddable_type = page_item_params["embeddable"]
+    embeddable_type = params[:page_item]["embeddable"]
     return error("Missing page_item[embeddable] parameter") if embeddable_type.nil?
-    position = page_item_params["position"]
+    position = params[:page_item]["position"]
     position = position.to_i unless position.nil?
-    column = page_item_params["column"] || PageItem::COLUMN_PRIMARY
+    column = params[:page_item]["column"] || PageItem::COLUMN_PRIMARY
 
     # currently we only support library interactives, iframe interactives, and text blocks, this will change later
     case embeddable_type
@@ -246,8 +259,8 @@ class Api::V1::InteractivePagesController < API::APIController
       regex = /Plugin_(\d+)::#{tip_type}/
       script_id = embeddable_type.match(regex)[1]
       author_data = { tipType: tip_type }.to_json
-      wrapped_embeddable_id = page_item_params["wrapped_embeddable_id"]
-      wrapped_embeddable_type = page_item_params["wrapped_embeddable_type"]
+      wrapped_embeddable_id = params[:page_item]["wrapped_embeddable_id"]
+      wrapped_embeddable_type = params[:page_item]["wrapped_embeddable_type"]
       # I am following the convention I saw in interactive_pages_controller.rb
       embeddable = Embeddable::EmbeddablePlugin.create!
       embeddable.approved_script_id = script_id
@@ -279,31 +292,86 @@ class Api::V1::InteractivePagesController < API::APIController
     render json: result.to_json
   end
 
+  def update_page_params
+    params.require(:page_item).permit(
+      :section, :position, :embeddable, :column, :data
+    )
+  end
+
+  def data_update_params
+    params[:page_item].require(:data).permit(
+      :aspect_ratio_method,
+      :author_data,
+      :authored_state,
+      :click_to_play,
+      :click_to_play_prompt,
+      :component_label,
+      :content,
+      :custom_aspect_ratio_method,
+      :custom_click_to_play,
+      :custom_click_to_play_prompt,
+      :custom_full_window,
+      :custom_hide_question_number,
+      :custom_image_url,
+      :custom_native_height,
+      :custom_native_width,
+      :enable_learner_state,
+      :full_window,
+      :has_report_url,
+      :hide_question_number,
+      :inherit_aspect_ratio_method,
+      :inherit_click_to_play,
+      :inherit_click_to_play_prompt,
+      :inherit_full_window,
+      :inherit_hide_question_number,
+      :inherit_native_height,
+      :inherit_native_width,
+      :inherit_image_url,
+      :image_url,
+      :is_callout,
+      :is_half_width,
+      :is_hidden,
+      :label,
+      :legacy_ref_id,
+      :legacy_ref_type,
+      :library_interactive_id,
+      :linked_interactive_id,
+      :linked_interactive_item_id,
+      :linked_interactive_type,
+      :linked_interactives,
+      :model_library_url,
+      :name,
+      :native_height,
+      :native_width,
+      :no_snapshots,
+      :report_item_url,
+      :show_delete_data_button,
+      :show_in_featured_question_report,
+      :url,
+      :url_fragment
+    )
+  end
+
   def update_page_item
     authorize! :update, @interactive_page
 
-    page_item_params = params["page_item"]
-    return error("Missing page_item parameter") if page_item_params.nil?
+    return error("Missing page_item parameter") if params[:page_item].nil?
 
     # verify the parameters
-    page_item_id = page_item_params["id"]
+    page_item_id = params[:page_item]["id"]
     return error("Missing page_item[id] parameter") if page_item_id.nil?
-    column = page_item_params["column"]
+    column = params[:page_item]["column"]
     return error("Missing page_item[column] parameter") if column.nil?
-    position = page_item_params["position"]
+    position = params[:page_item]["position"]
     return error("Missing page_item[position] parameter") if position.nil?
-    data = page_item_params["data"]
+    data = params[:page_item]["data"]
     return error("Missing page_item[data] parameter") if data.nil?
-    type = page_item_params["type"]
+    type = params[:page_item]["type"]
     return error("Missing page_item[type] parameter") if type.nil?
 
     page_item = PageItem.find(page_item_id)
     if page_item
-      new_attr = {
-        column: column,
-        position: position
-      }
-      page_item.update_attributes(new_attr)
+      page_item.update_attributes(update_page_params)
       embeddable_type = type.constantize
       embeddable = embeddable_type.find(page_item.embeddable_id)
       # linked_interactives param follows ISetLinkedInteractives interface format. It isn't a regular attribute.
@@ -315,7 +383,7 @@ class Api::V1::InteractivePagesController < API::APIController
         end
       end
       if embeddable
-        embeddable.update_attributes(data)
+        embeddable.update_attributes(data_update_params)
       end
     end
     @interactive_page.reload
@@ -347,10 +415,10 @@ class Api::V1::InteractivePagesController < API::APIController
     Concord::AuthPortal.all.each_pair do |key, portal|
       name = portal.link_name
       path = user_omniauth_authorize_path(portal.strategy_name)
-      portals.push({:name => name, :path => path})
+      portals.push({name: name, path: path})
     end
 
-    render :json => {
+    render json: {
       success: true,
       portals: portals
     }
@@ -365,14 +433,14 @@ class Api::V1::InteractivePagesController < API::APIController
       id = plugin.approved_script_id
       name = plugin.name
       plugins.push({
-        :component_label => component_label,
-        :component_name => component_name,
-        :id => id,
-        :name => name
+        component_label: component_label,
+        component_name: component_name,
+        id: id,
+        name: name
       })
     end
 
-    render :json => {
+    render json: {
       success: true,
       plugins: plugins
     }
@@ -382,7 +450,7 @@ class Api::V1::InteractivePagesController < API::APIController
   def get_teacher_edition_plugins
     required_version = [3]
     required_label = ["teacherEditionTips"]
-    ApprovedScript.where(:version => required_version, :label => required_label)
+    ApprovedScript.where(version: required_version, label: required_label)
   end
 
   private
@@ -413,7 +481,7 @@ class Api::V1::InteractivePagesController < API::APIController
       li_json
     end
 
-    render :json => {
+    render json: {
       success: true,
       library_interactives: library_interactives_list,
       plugins: plugins
@@ -459,12 +527,12 @@ class Api::V1::InteractivePagesController < API::APIController
           }
         end
 
-      render :json => { :success => true, interactives: interactives}
+      render json: { success: true, interactives: interactives}
 
     rescue CanCan::AccessDenied
-      return render :json => { :success => false, :message => "You are not authorized to get the interactive list from the requested page"}
+      return render json: { success: false, message: "You are not authorized to get the interactive list from the requested page"}
     rescue => error
-      return render :json => { :success => false, :message => error.message}
+      return render json: { success: false, message: error.message}
     end
   end
 
@@ -505,14 +573,14 @@ class Api::V1::InteractivePagesController < API::APIController
   end
 
   def render_page_sections_json(page=@interactive)
-    render :json => generate_page_json(@interactive_page)
+    render json: generate_page_json(@interactive_page)
   end
 
   def set_interactive_page
     begin
       @interactive_page = InteractivePage.find(params['id'])
     rescue ActiveRecord::RecordNotFound
-      render :json => { :success => false, :message => "Could not find interactive page ##{params['id']}"}
+      render json: { success: false, message: "Could not find interactive page ##{params['id']}"}
     end
   end
 

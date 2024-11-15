@@ -1,5 +1,6 @@
 # spec/lib/class_info_import_helper_spec.rb
 require 'spec_helper'
+require 'class_info_import_helper'
 
 describe ClassInfoImportHelper do
   let(:clazz_id)    { 123 }

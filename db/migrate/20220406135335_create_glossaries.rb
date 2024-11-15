@@ -1,4 +1,4 @@
-class CreateGlossaries < ActiveRecord::Migration
+class CreateGlossaries < ActiveRecord::Migration[5.1]
   def change
     create_table :glossaries do |t|
       t.string :name
@@ -8,6 +8,6 @@ class CreateGlossaries < ActiveRecord::Migration
       t.timestamps
     end
 
-    add_column :lightweight_activities, :glossary_id, :integer, :null => true
+    add_column :lightweight_activities, :glossary_id, :integer, null: true
   end
 end

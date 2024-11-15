@@ -20,7 +20,7 @@ class CreateCollaboration
 
   # Setups collaboration and returns run or sequence run (depending on provided material type).
   def call
-    ActiveRecord::Base.transaction do
+    ApplicationRecord.transaction do
       @collaboration_run = CollaborationRun.create!(
         user: @owner,
         collaborators_data_url: @collaborators_data_url
@@ -37,7 +37,7 @@ class CreateCollaboration
   def get_collaborators_data
     response = HTTParty.get(
       @collaborators_data_url, {
-        :headers => {
+        headers: {
           "Authorization" => Concord::AuthPortal.auth_token_for_url(@portal_url),
           "Content-Type" => 'application/json'
         }

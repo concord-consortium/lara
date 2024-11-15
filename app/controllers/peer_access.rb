@@ -2,18 +2,17 @@ module PeerAccess
 
   def self.included klass
     klass.class_eval do
-      skip_before_filter :verify_authenticity_token, if: :verified_json_request?
+      skip_before_action :verify_authenticity_token, if: :verified_json_request?
     end
   end
 
   protected
 
   def get_auth_token(request)
-    header = request.headers["Authorization"]
+    header = request.headers["HTTP_AUTHORIZATION"] || request.headers["Authorization"] || request.headers["authorization"]
     if header && header =~ /^Bearer (.*)$/
       return $1
     end
-    ""
   end
 
   def verified_json_request?

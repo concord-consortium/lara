@@ -1,25 +1,25 @@
 class Api::V1::QuestionTrackersController < ApplicationController
 
   def index
-    render :json => trackers_json(QuestionTracker.all)
+    render json: trackers_json(QuestionTracker.all)
   end
 
   def find_by_activity
     activity = LightweightActivity.find(params[:activity_id])
     list = QuestionTracker::Reporter.question_trackers_for_activity(activity)
-    render :json => trackers_json(list)
+    render json: trackers_json(list)
   end
 
   def find_by_sequence
     sequence = Sequence.find(params[:sequence_id])
     list = QuestionTracker::Reporter.question_trackers_for_sequence(sequence)
-    render :json => trackers_json(list.flatten)
+    render json: trackers_json(list.flatten)
   end
 
   def report
     tracker = QuestionTracker.find(params[:question_tracker_id])
     reporter = QuestionTracker::Reporter.new(tracker, params[:endpoints])
-    render :json => reporter.report
+    render json: reporter.report
   end
 
   private

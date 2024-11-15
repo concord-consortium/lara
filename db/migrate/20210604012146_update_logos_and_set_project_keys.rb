@@ -1,5 +1,5 @@
-class UpdateLogosAndSetProjectKeys < ActiveRecord::Migration
-  class Project < ActiveRecord::Base
+class UpdateLogosAndSetProjectKeys < ActiveRecord::Migration[5.1]
+  class Project < ApplicationRecord
   end
 
   def up

@@ -2,7 +2,7 @@
 
 class QuestionTrackersController < ApplicationController
   load_and_authorize_resource
-  before_filter :record_qt_origin
+  before_action :record_qt_origin
 
   def index
     @question_trackers = QuestionTracker.all # TODO Limit by user.
@@ -31,13 +31,16 @@ class QuestionTrackersController < ApplicationController
     # renders edit form for @question_tracker
   end
 
+  def update_params
+    params.require(:question_tracker).permit(:master_question, :questions, :name, :description, :user)
+  end
 
   def update
     respond_to do |format|
       # no support for html.
       format.json do
         render json: QuestionTracker::Editor.new(@question_tracker)
-          .update(params['question_tracker'])
+          .update(update_params)
           .to_json
       end
     end

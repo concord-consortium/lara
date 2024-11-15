@@ -1,5 +1,5 @@
-class ReplaceEmTags < ActiveRecord::Migration
-  class Project < ActiveRecord::Base
+class ReplaceEmTags < ActiveRecord::Migration[5.1]
+  class Project < ApplicationRecord
   end
 
   def up

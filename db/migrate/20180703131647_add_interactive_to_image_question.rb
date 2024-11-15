@@ -13,14 +13,14 @@ module Embeddable
     'embeddable_'
   end
 
-  class ImageQuestion < ActiveRecord::Base
-    has_many :page_items, :as => :embeddable, :dependent => :destroy
-    has_many :interactive_pages, :through => :page_items
+  class ImageQuestion < ApplicationRecord
+    has_many :page_items, as: :embeddable, dependent: :destroy
+    has_many :interactive_pages, through: :page_items
   end
 end
 
-class InteractivePage < ActiveRecord::Base
-  has_many :page_items, :order => [:section, :position]
+class InteractivePage < ApplicationRecord
+  has_many :page_items, -> { order(:section, :position) }
 
   def embeddables
     page_items.collect{ |qi| qi.embeddable }
@@ -35,14 +35,14 @@ class InteractivePage < ActiveRecord::Base
   end
 end
 
-class PageItem < ActiveRecord::Base
-  acts_as_list :scope => :interactive_page
+class PageItem < ApplicationRecord
+  acts_as_list scope: :interactive_page
   belongs_to :interactive_page
 
-  belongs_to :embeddable, :polymorphic => true, dependent: :destroy
+  belongs_to :embeddable, polymorphic: true, dependent: :destroy
 end
 
-class AddInteractiveToImageQuestion < ActiveRecord::Migration
+class AddInteractiveToImageQuestion < ActiveRecord::Migration[5.1]
   def up
     add_column :embeddable_image_questions, :interactive_id, :integer
     add_column :embeddable_image_questions, :interactive_type, :string

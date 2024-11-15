@@ -1,6 +1,6 @@
 namespace :lightweight do
   desc "Make the most-recently-created user an admin. For security reasons, works only in development environment."
-  task :admin_last_user => :environment do
+  task admin_last_user: :environment do
     begin
       raise SecurityError unless Rails.env == 'development'
       u = User.last
@@ -12,7 +12,7 @@ namespace :lightweight do
   end
 
   desc "Create an admin user, works only in development environment."
-  task :create_admin_user => :environment do
+  task create_admin_user: :environment do
     begin
       raise SecurityError unless Rails.env == 'development'
       u = User.create(

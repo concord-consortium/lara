@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Embeddable::FeedbackFunctionality do
-  class EmbeddableFeedbackFunctionalityTestClass < ActiveRecord::Base
+  class EmbeddableFeedbackFunctionalityTestClass < ApplicationRecord
     # Well, it's not pretty, but I don't have idea how to solve that better. The goal is to test FeedbackFunctionality
     # isolated from the class that includes it.
     self.table_name = :embeddable_open_response_answers

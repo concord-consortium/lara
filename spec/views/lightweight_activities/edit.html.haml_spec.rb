@@ -19,8 +19,8 @@ end
 
 describe "lightweight_activities/edit" do
 
-  let(:activity)  { stub_model(LightweightActivity, :id => 1, :name => 'Activity name', :defunct => false, :hide_read_aloud => false, :hide_question_numbers => false, :font_size => "normal") }
-  let(:user)      { stub_model(User, :is_admin => false)      }
+  let(:activity)  { stub_model(LightweightActivity, id: 1, name: 'Activity name', defunct: false, hide_read_aloud: false, hide_question_numbers: false, font_size: "normal") }
+  let(:user)      { stub_model(User, is_admin: false)      }
 
   before(:each) do
     allow(view).to receive(:current_user).and_return(user)
@@ -28,11 +28,11 @@ describe "lightweight_activities/edit" do
   end
 
   describe "the form" do
-    let (:user) { stub_model(User, :is_admin => true)}
+    let (:user) { stub_model(User, is_admin: true)}
 
     describe "defunct checkbox" do
       context "when the current user is an admin" do
-        let (:user) { stub_model(User, :is_admin => true)}
+        let (:user) { stub_model(User, is_admin: true)}
         it "should show the checkbox" do
           render
           expect(rendered).to have_xpath defunct_checkbox
@@ -40,7 +40,7 @@ describe "lightweight_activities/edit" do
       end
 
       context "when the current user is not an admin" do
-        let (:user) { stub_model(User, :is_admin => false)}
+        let (:user) { stub_model(User, is_admin: false)}
         it "should not show the checkbox" do
           render
           expect(rendered).not_to have_xpath defunct_checkbox
@@ -50,7 +50,7 @@ describe "lightweight_activities/edit" do
 
     describe "hide_read_aloud checkbox" do
       context "when the current user is an admin" do
-        let (:user) { stub_model(User, :is_admin => true)}
+        let (:user) { stub_model(User, is_admin: true)}
         it "should show the checkbox" do
           render
           expect(rendered).to have_xpath hide_read_aloud_checkbox
@@ -58,7 +58,7 @@ describe "lightweight_activities/edit" do
       end
 
       context "when the current user is not an admin" do
-        let (:user) { stub_model(User, :is_admin => false)}
+        let (:user) { stub_model(User, is_admin: false)}
         it "should not show the checkbox" do
           render
           expect(rendered).to have_xpath hide_read_aloud_checkbox
@@ -68,7 +68,7 @@ describe "lightweight_activities/edit" do
 
     describe "hide_question_numbers checkbox" do
       context "when the current user is an admin" do
-        let (:user) { stub_model(User, :is_admin => true)}
+        let (:user) { stub_model(User, is_admin: true)}
         it "should show the checkbox" do
           render
           expect(rendered).to have_xpath hide_question_numbers_checkbox
@@ -76,7 +76,7 @@ describe "lightweight_activities/edit" do
       end
 
       context "when the current user is an author" do
-        let (:user) { stub_model(User, :is_author => true)}
+        let (:user) { stub_model(User, is_author: true)}
         it "should show the checkbox" do
           render
           expect(rendered).to have_xpath hide_question_numbers_checkbox
@@ -84,7 +84,7 @@ describe "lightweight_activities/edit" do
       end
 
       context "when the current user is not an admin or author" do
-        let (:user) { stub_model(User, :is_admin => false, :is_author => false)}
+        let (:user) { stub_model(User, is_admin: false, is_author: false)}
         it "should not show the checkbox" do
           render
           expect(rendered).to have_xpath hide_question_numbers_checkbox
@@ -94,7 +94,7 @@ describe "lightweight_activities/edit" do
 
     describe "font_size select" do
       context "when the current user is an admin" do
-        let (:user) { stub_model(User, :is_admin => true)}
+        let (:user) { stub_model(User, is_admin: true)}
         it "should show the select" do
           render
           expect(rendered).to have_xpath font_size_select
@@ -102,7 +102,7 @@ describe "lightweight_activities/edit" do
       end
 
       context "when the current user is not an admin" do
-        let (:user) { stub_model(User, :is_admin => false)}
+        let (:user) { stub_model(User, is_admin: false)}
         it "should show the select" do
           render
           expect(rendered).to have_xpath font_size_select
@@ -112,7 +112,7 @@ describe "lightweight_activities/edit" do
 
     describe "is_official checkbox" do
       context "when the current user is an admin" do
-        let (:user) { stub_model(User, :is_admin => true)}
+        let (:user) { stub_model(User, is_admin: true)}
         it "should show the checkbox" do
           render
           expect(rendered).to have_xpath official_checkbox
@@ -120,7 +120,7 @@ describe "lightweight_activities/edit" do
       end
 
       context "when the current user is not an admin" do
-        let (:user) { stub_model(User, :is_admin => false)}
+        let (:user) { stub_model(User, is_admin: false)}
         it "should not show the checkbox" do
           render
           expect(rendered).not_to have_xpath official_checkbox
@@ -130,7 +130,7 @@ describe "lightweight_activities/edit" do
 
     it 'should show the current activity name' do
       render
-      expect(rendered).to match /<input[^>]+id="lightweight_activity_name"[^>]+name="lightweight_activity\[name\]"[^>]+type="text"[^<]+value="#{activity.name}"[^<]*\/>/
+      assert_select "input#lightweight_activity_name", name: "lightweight_activity[name]", value: activity.name
     end
 
     it 'should show the current activity description' do
@@ -164,8 +164,8 @@ describe "lightweight_activities/edit" do
       skip "Rewrite for view specs"
       act
       visit new_user_session_path
-      fill_in "Email", :with => @user.email
-      fill_in "Password", :with => @user.password
+      fill_in "Email", with: @user.email
+      fill_in "Password", with: @user.password
       click_button "Sign in"
       visit edit_activity_path(act)
 

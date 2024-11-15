@@ -1,5 +1,4 @@
-class AdminEvent < ActiveRecord::Base
-  attr_accessible :kind, :message
+class AdminEvent < ApplicationRecord
   
   after_create :write_log
 

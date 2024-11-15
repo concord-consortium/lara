@@ -16,10 +16,19 @@ class ProjectsController < ApplicationController
   def edit
   end
 
+  def project_params
+    params.fetch(:project, {})
+      .permit(
+        :about, :admin_ids, :collaborators, :collaborators_image_url, :contact_email,
+        :copyright, :copyright_image_url, :footer, :funders_image_url, :logo_ap,
+        :logo_lara, :project_key, :title, :url
+      )
+  end
+
   # POST /projects
   # POST /projects.json
   def create
-    @project = Project.new(params[:project])
+    @project = Project.new(project_params)
 
     respond_to do |format|
       if @project.save
@@ -35,7 +44,15 @@ class ProjectsController < ApplicationController
   # PUT /projects/1
   # PUT /projects/1.json
   def update
-    simple_update(@project)
+    respond_to do |format|
+      if @project.update_attributes(project_params)
+        format.html { redirect_to edit_polymorphic_url(@project), notice: "Project was successfully updated." }
+        format.json { head :no_content }
+      else
+        format.html { render action: "edit" }
+        format.json { render json: @project.errors, status: :unprocessable_entity }
+      end
+    end
   end
 
   # DELETE /projects/1
@@ -48,26 +65,26 @@ class ProjectsController < ApplicationController
       format.json { head :no_content }
     end
   end
-  
+
   def about
     respond_to do |format|
-      format.js{ render :json => { :html => render_to_string('about')}, :content_type => 'text/json' }
+      format.js{ render json: { html: render_to_string('about')}, content_type: 'text/json' }
       format.html {}
     end
   end
-  
+
   def help
     respond_to do |format|
-      format.js{ render :json => { :html => render_to_string('help')}, :content_type => 'text/json' }
+      format.js{ render json: { html: render_to_string('help')}, content_type: 'text/json' }
       format.html {}
     end
   end
-  
+
   def contact_us
     respond_to do |format|
-      format.js{ render :json => { :html => render_to_string('shared/_contact_us')}, :content_type => 'text/json' }
+      format.js{ render json: { html: render_to_string('shared/_contact_us')}, content_type: 'text/json' }
       format.html {}
     end
   end
-  
+
 end

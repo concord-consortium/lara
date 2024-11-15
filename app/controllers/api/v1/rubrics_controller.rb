@@ -1,5 +1,5 @@
 class Api::V1::RubricsController < API::APIController
-  skip_before_filter :verify_authenticity_token, :only => :update
+  skip_before_action :verify_authenticity_token, only: :update
 
   # GET /api/v1/rubrics/1.json
   def show
@@ -31,7 +31,7 @@ class Api::V1::RubricsController < API::APIController
     rescue => e
       error(e.message)
     else
-      render :json => {id: rubric.id, name: rubric.name, doc_url: rubric.doc_url, project: Project.id_and_title(rubric.project)}
+      render json: {id: rubric.id, name: rubric.name, doc_url: rubric.doc_url, project: Project.id_and_title(rubric.project)}
     end
   end
 end

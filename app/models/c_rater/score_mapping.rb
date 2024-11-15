@@ -1,11 +1,10 @@
-class CRater::ScoreMapping < ActiveRecord::Base
+class CRater::ScoreMapping < ApplicationRecord
   serialize :mapping
-  attr_accessible :mapping, :description
   belongs_to :user
-  belongs_to :changed_by, :class_name => 'User'
-  
-  scope :public, self.all
-  scope :newest, order("updated_at DESC")
+  belongs_to :changed_by, class_name: 'User'
+
+  scope :is_public, -> { self.all }
+  scope :newest, -> { order(updated_at: :desc) }
 
   scope :rationale,   -> { where('description LIKE ?', '%[rationale]%').order('created_at ASC') }
   scope :explanation, -> { where('description LIKE ?', '%[explanation]%').order('created_at ASC') }
@@ -33,7 +32,7 @@ class CRater::ScoreMapping < ActiveRecord::Base
 
   # The maximum score is inferred from mapping
   def max_score
-    mapping.select{ |x,v| v.present? }.keys.map { |k| k.gsub(/#{MAP_KEY}/,'').to_i }.max || -1
+    mapping.select{ |x,v| v.present? }.keys.map { |k| k.to_s.gsub(/#{MAP_KEY}/,'').to_i }.max || -1
   end
 
   def method_missing(method_sym, *arguments, &block)
@@ -51,13 +50,13 @@ class CRater::ScoreMapping < ActiveRecord::Base
       super
     end
   end
-  
+
   def self.my(user)
-    where(:user_id => user.id)
+    where(user_id: user.id)
   end
-  
+
   def self.visible(user)
-    self.scoped
+    self.all
   end
-  
+
 end

@@ -8,17 +8,17 @@ describe Api::V1::LightweightActivitiesController do
 
   describe "#show" do
     it 'recognizes and generates #show' do
-      expect({:get => "api/v1/activities/1.json"}).to route_to(
-        :controller => 'api/v1/lightweight_activities',
-        :action => 'show',
-        :id => "1",
-        :format => "json"
+      expect({get: "api/v1/activities/1.json"}).to route_to(
+        controller: 'api/v1/lightweight_activities',
+        action: 'show',
+        id: "1",
+        format: "json"
       )
     end
 
     it "when user is anonymous, shows an activity's json" do
 
-      get :show, :id => activity.id, :format => :json
+      get :show, params: { id: activity.id, format: :json }
       expect(response.status).to eq(200)
       # json_response = JSON.parse(response.body)
       # expect(json_response["token"]).to eq('fake-token')
@@ -27,17 +27,17 @@ describe Api::V1::LightweightActivitiesController do
 
   describe "#report_structure" do
     it 'recognizes and generates #report_structure' do
-      expect({:get => "api/v1/activities/1/report_structure.json"}).to route_to(
-        :controller => 'api/v1/lightweight_activities',
-        :action => 'report_structure',
-        :id => "1",
-        :format => "json"
+      expect({get: "api/v1/activities/1/report_structure.json"}).to route_to(
+        controller: 'api/v1/lightweight_activities',
+        action: 'report_structure',
+        id: "1",
+        format: "json"
       )
     end
 
     it "when user is anonymous, shows an the json sent to the report structure" do
 
-      get :report_structure, :id => activity.id, :format => :json
+      get :report_structure, params: { id: activity.id, format: :json }
       expect(response.status).to eq(200)
       # json_response = JSON.parse(response.body)
       # expect(json_response["token"]).to eq('fake-token')
@@ -49,8 +49,8 @@ describe Api::V1::LightweightActivitiesController do
       if user
         sign_in user
       end
-      xhr :delete, "destroy", id: activity.id
-      expect(LightweightActivity.exists?(activity)).to eq(false)
+      delete "destroy", params: { id: activity.id }, xhr: true
+      expect(LightweightActivity.exists?(activity.id)).to eq(false)
       expect(response.status).to eq(200)
       expect(response.content_type).to eq("application/json")
       expect(response.body).to eql({
@@ -62,8 +62,8 @@ describe Api::V1::LightweightActivitiesController do
       if user
         sign_in user
       end
-      xhr :delete, "destroy", id: activity.id
-      expect(LightweightActivity.exists?(activity)).to eq(true)
+      delete "destroy", params: { id: activity.id }, xhr: true
+      expect(LightweightActivity.exists?(activity.id)).to eq(true)
       expect(response.status).to eq(403)
       expect(response.content_type).to eq("application/json")
     end

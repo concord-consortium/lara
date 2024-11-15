@@ -18,7 +18,7 @@ describe LightweightActivitiesController do
       user: author, project: project, pages: [page])
   }
   let (:private_act) { FactoryGirl.create(:activity)}
-  let (:ar_run)  { FactoryGirl.create(:run, :activity_id => act.id, :user_id => nil) }
+  let (:ar_run)  { FactoryGirl.create(:run, activity_id: act.id, user_id: nil) }
   # let (:page) { act.pages.create!(:name => "Page 1") }
   let (:sequence) { FactoryGirl.create(:sequence) }
 
@@ -26,14 +26,14 @@ describe LightweightActivitiesController do
 
   describe 'routing' do
     it 'recognizes and generates #show' do
-      expect({:get => "activities/3"}).to route_to(:controller => 'lightweight_activities', :action => 'show', :id => "3")
+      expect({get: "activities/3"}).to route_to(controller: 'lightweight_activities', action: 'show', id: "3")
     end
   end
 
   describe '#show' do
     it 'renders 404 when the activity does not exist' do
       expect{
-        get :show, :id => 9876548376394
+        get :show, params: { id: 9876548376394 }
       }.to raise_error(ActiveRecord::RecordNotFound)
     end
 
@@ -43,7 +43,7 @@ describe LightweightActivitiesController do
       query["activity"] = "#{api_v1_activity_url(act[:id])}.json"
       uri.query = Rack::Utils.build_query(query)
 
-      get :show, :id => act[:id]
+      get :show, params: { id: act[:id] }
       expect(response).to redirect_to uri.to_s
     end
 
@@ -56,7 +56,7 @@ describe LightweightActivitiesController do
       query["sequenceActivity"] = "activity_#{sequence_with_activity.activities[0].id}"
       uri.query = Rack::Utils.build_query(query)
 
-      get :show, :sequence_id => sequence_with_activity[:id], :id => sequence_with_activity.activities[0].id
+      get :show, params: { sequence_id: sequence_with_activity[:id], id: sequence_with_activity.activities[0].id }
       expect(response).to redirect_to uri.to_s
     end
 
@@ -67,7 +67,7 @@ describe LightweightActivitiesController do
       query["runKey"] = ar_run.key
       uri.query = Rack::Utils.build_query(query)
 
-      get :show, {:id => act[:id], :run_key => ar_run.key}
+      get :show, params: { id: act[:id], run_key: ar_run.key }
       expect(response).to redirect_to uri.to_s
     end
   end
@@ -80,11 +80,11 @@ describe LightweightActivitiesController do
     it 'calls clear_answers on the run' do
       expect(Run).to receive(:lookup).and_return(ar_run)
       expect(ar_run).to receive(:clear_answers).and_return(:true)
-      get :preview, :id => act.id
+      get :preview, params: { id: act.id }
     end
 
     it 'renders show' do
-      get :preview, :id => act.id
+      get :preview, params: { id: act.id }
       expect(response).to render_template('lightweight_activities/show')
     end
   end
@@ -99,7 +99,7 @@ describe LightweightActivitiesController do
       end
 
       it "redirects to external portal with the provided run" do
-        get :summary, { :id => act.id, :run_key => ar_run.key }
+        get :summary, params: { id: act.id, run_key: ar_run.key }
         expect(response).to redirect_to "https://portal-report.concord.org/branch/master/index.html" +
           "?firebase-app=report-service-dev" +
           "&sourceKey=authoring.test.concord.org" +
@@ -114,7 +114,7 @@ describe LightweightActivitiesController do
 
     it_behaves_like "runnable resource not launchable by the portal", Run do
       let(:action) { :single_page }
-      let(:resource_template) { 'lightweight_activities/single' }
+      let(:resource_template) { 'lightweight_activities/single_page' }
       let(:base_params) { {id: act.id } }
       let(:base_factory_params) { {activity_id: act.id }}
       let(:run_path_helper) { :activity_single_page_with_run_path }
@@ -126,7 +126,7 @@ describe LightweightActivitiesController do
 
   describe '#print_blank' do
     it 'renders print_blank' do
-      get :print_blank, :id => act.id
+      get :print_blank, params: { id: act.id }
       expect(response).to render_template('lightweight_activities/print_blank')
     end
   end
@@ -135,8 +135,8 @@ describe LightweightActivitiesController do
     # Access control/authorization is tested in spec/models/user_spec.rb
     before(:each) do
       sign_in author
-      make_collection_with_rand_modication_time(:activity,3, :publication_status => 'public', :is_official => false)
-      make_collection_with_rand_modication_time(:activity,4, :publication_status => 'public', :is_official => true)
+      make_collection_with_rand_modication_time(:activity,3, publication_status: 'public', is_official: false)
+      make_collection_with_rand_modication_time(:activity,4, publication_status: 'public', is_official: true)
     end
 
     describe '#index' do
@@ -162,7 +162,7 @@ describe LightweightActivitiesController do
       it 'creates a new Lightweight Activity when submitted with valid data' do
         existing_activities = LightweightActivity.count
 
-        post :create, {:lightweight_activity => {:name => 'Test Activity', :description => "Test Activity's description"}}
+        post :create, params: { lightweight_activity: {name: 'Test Activity', description: "Test Activity's description"} }
 
         expect(flash[:notice]).to eq("Lightweight Activity Test Activity was created.")
         expect(response).to redirect_to(edit_activity_path(assigns(:activity)))
@@ -170,22 +170,22 @@ describe LightweightActivitiesController do
       end
 
       it 'creates LightweightActivities owned by the current_user' do
-        existing_activities = LightweightActivity.count(:conditions => {:user_id => author.id})
-        post :create, {:lightweight_activity => {:name => 'Owned Activity', :description => "Test Activity's description", :user_id => 10}}
+        existing_activities = LightweightActivity.where(user_id: author.id).count
+        post :create, params: { lightweight_activity: {name: 'Owned Activity', description: "Test Activity's description", user_id: 10} }
 
-        expect(LightweightActivity.count(:conditions => {:user_id => author.id})).to equal existing_activities + 1
+        expect(LightweightActivity.where(user_id: author.id).count).to equal existing_activities + 1
       end
 
       it 'returns to the form with an error message when submitted with invalid data' do
         allow_any_instance_of(LightweightActivity).to receive(:save).and_return(false)
         existing_activities = LightweightActivity.count
 
-        post :create, {:lightweight_activity => { :name => 'This update will fail.'} }
+        post :create, params: { lightweight_activity: { name: 'This update will fail.'} }
 
         expect(flash[:warning]).to eq('There was a problem creating the new Lightweight Activity.')
         expect(response.body).to match /<form[^<]+action="\/activities"[^<]+method="post"[^<]*>/
-        expect(response.body).to match /<input[^<]+id="lightweight_activity_name"[^<]+name="lightweight_activity\[name\]"[^<]+type="text"[^<]*\/>/
-        expect(response.body).to match /<textarea[^<]+id="lightweight_activity_description"[^<]+name="lightweight_activity\[description\]"[^<]*>[^<]*<\/textarea>/
+        assert_select 'input[name=?]', 'lightweight_activity[name]'
+        assert_select 'textarea[name=?]', 'lightweight_activity[description]'
         expect(LightweightActivity.count).to equal existing_activities
       end
     end
@@ -193,7 +193,7 @@ describe LightweightActivitiesController do
     describe 'edit' do
       it 'should assign an activity and return success' do
         act
-        get :edit, {:id => act.id}
+        get :edit, params: { id: act.id }
 
         expect(assigns(:activity)).not_to be_nil
         expect(assigns(:activity)).to eq(act)
@@ -206,7 +206,7 @@ describe LightweightActivitiesController do
         act
         existing_activities = LightweightActivity.count
 
-        post :update, {:_method => 'put', :id => act.id, :lightweight_activity => { :name => 'This name has been edited', :description => 'Activity which was edited' }}
+        post :update, params: { _method: 'put', id: act.id, lightweight_activity: { name: 'This name has been edited', description: 'Activity which was edited' } }
 
         expect(LightweightActivity.count).to eq(existing_activities)
 
@@ -219,7 +219,7 @@ describe LightweightActivitiesController do
       it "should redirect to the activity's edit page on error" do
         allow_any_instance_of(LightweightActivity).to receive(:save).and_return(false)
         act
-        post :update, {:_method => 'put', :id => act.id, :lightweight_activity => { :name => 'This update will fail' } }
+        post :update, params: { _method: 'put', id: act.id, lightweight_activity: { name: 'This update will fail' } }
 
         expect(flash[:warning]).to eq("There was a problem updating your activity.")
         expect(response).to redirect_to(edit_activity_path(act))
@@ -228,7 +228,7 @@ describe LightweightActivitiesController do
       it 'should change single attributes in response to XHR-submitted data' do
         act
         request.accept = "application/json"
-        xhr :post, :update, {:id => act.id, "lightweight_activity" => { "name" => "I'm editing this name with an Ajax request" } }
+        put :update, params: {:id => act.id, "lightweight_activity" => { "name" => "I'm editing this name with an Ajax request" } }, xhr: true
 
         expect(response.body).to match /I'm editing this name with an Ajax request/
       end
@@ -240,7 +240,7 @@ describe LightweightActivitiesController do
         act
         existing_activities = LightweightActivity.count
 
-        post :destroy, {:_method => 'delete', :id => act.id}
+        post :destroy, params: { _method: 'delete', id: act.id }
 
         expect(LightweightActivity.count).to eq(existing_activities - 1)
         expect(response).to redirect_to(activities_path)
@@ -257,7 +257,7 @@ describe LightweightActivitiesController do
       before do
         # TODO: Instead of creating three new pages each time, can we use let?
         [1,2,3].each do |i|
-          act.pages.create!(:name => "Page #{i}", :sidebar => "This is the #{ActiveSupport::Inflector.ordinalize(i)} page.")
+          act.pages.create!(name: "Page #{i}", sidebar: "This is the #{ActiveSupport::Inflector.ordinalize(i)} page.")
         end
         request.env["HTTP_REFERER"] = "/activities/#{act.id}/edit"
       end
@@ -266,7 +266,7 @@ describe LightweightActivitiesController do
       it 'decrements the position value of the page' do
         page = act.pages[2]
         old_position = page.position
-        get :move_up, {:activity_id => act.id, :id => page.id}
+        get :move_up, params: { activity_id: act.id, id: page.id }
         page.reload
         act.reload
         expect(page.position).to eq(old_position - 1)
@@ -276,7 +276,7 @@ describe LightweightActivitiesController do
       it 'does not change the position of the first item' do
         page = act.pages.first
         old_position = page.position
-        get :move_up, {:activity_id => act.id, :id => page.id}
+        get :move_up, params: { activity_id: act.id, id: page.id }
         page.reload
         act.reload
         expect(page.position).to eq(old_position)
@@ -286,7 +286,7 @@ describe LightweightActivitiesController do
       it 'adjusts the positions of surrounding items correctly' do
         page = act.pages[2]
         page_before = page.higher_item
-        get :move_up, {:activity_id => act.id, :id => page.id}
+        get :move_up, params: { activity_id: act.id, id: page.id }
         page.reload
         act.reload
         expect(page_before).to be === act.pages[2]
@@ -297,7 +297,7 @@ describe LightweightActivitiesController do
       before do
         # TODO: Instead of creating three new pages each time, can we use let?
         [1,2,3].each do |i|
-          act.pages.create!(:name => "Page #{i}", :sidebar => "This is the #{ActiveSupport::Inflector.ordinalize(i)} page.")
+          act.pages.create!(name: "Page #{i}", sidebar: "This is the #{ActiveSupport::Inflector.ordinalize(i)} page.")
         end
         request.env["HTTP_REFERER"] = "/activities/#{act.id}/edit"
       end
@@ -305,7 +305,7 @@ describe LightweightActivitiesController do
       it 'increments the position value of the page' do
         page = act.pages[0]
         old_position = page.position
-        get :move_down, {:activity_id => act.id, :id => page.id}
+        get :move_down, params: { activity_id: act.id, id: page.id }
         page.reload
         act.reload
         expect(page.position).to eq(old_position + 1)
@@ -315,7 +315,7 @@ describe LightweightActivitiesController do
       it 'does not change the position of the last item' do
         page = act.pages.last
         old_position = page.position
-        get :move_down, {:activity_id => act.id, :id => page.id}
+        get :move_down, params: { activity_id: act.id, id: page.id }
         page.reload
         act.reload
         expect(page.position).to eq(old_position)
@@ -325,7 +325,7 @@ describe LightweightActivitiesController do
       it 'adjusts the positions of surrounding items correctly' do
         page = act.pages.first
         page_after = page.lower_item
-        get :move_down, {:activity_id => act.id, :id => page.id}
+        get :move_down, params: { activity_id: act.id, id: page.id }
         page.reload
         act.reload
         expect(page_after).to be === act.pages.first
@@ -336,14 +336,14 @@ describe LightweightActivitiesController do
       before do
         # TODO: Instead of creating three new pages each time, can we use let?
         [1,2,3].each do |i|
-          act.pages.create!(:name => "Page #{i}", :sidebar => "This is the #{ActiveSupport::Inflector.ordinalize(i)} page.")
+          act.pages.create!(name: "Page #{i}", sidebar: "This is the #{ActiveSupport::Inflector.ordinalize(i)} page.")
         end
       end
 
       it 'rearranges activity pages to match order in request' do
         # Format: item_interactive_page[]=1&item_interactive_page[]=3&item_interactive_page[]=11&item_interactive_page[]=12&item_interactive_page[]=13&item_interactive_page[]=21&item_interactive_page[]=20&item_interactive_page[]=2
         # Should provide a list of IDs in reverse order
-        get :reorder_pages, {:id => act.id, :item_interactive_page => act.pages.map { |p| p.id }.reverse }
+        get :reorder_pages, params: { id: act.id, item_interactive_page: act.pages.map { |p| p.id }.reverse }
         act.reload
         expect(act.pages.first.name).to eq("Page 3")
         expect(act.pages.last.name).to eq("Page 1")
@@ -356,11 +356,11 @@ describe LightweightActivitiesController do
       it "should call 'duplicate' on the activity" do
         allow(LightweightActivity).to receive(:find).and_return(act)
         expect(act).to receive(:duplicate).and_return(duplicate_act)
-        get :duplicate, { :id => act.id }
+        get :duplicate, params: { id: act.id }
       end
 
       it 'should redirect to edit the new activity' do
-        get :duplicate, { :id => act.id }
+        get :duplicate, params: { id: act.id }
         expect(response).to redirect_to(edit_activity_url(assigns(:new_activity)))
       end
 
@@ -370,7 +370,7 @@ describe LightweightActivitiesController do
         allow(LightweightActivity).to receive(:find).and_return(act)
         allow(act).to receive(:duplicate).and_return(duplicate_act)
         expect(duplicate_act).to receive(:portal_publish).with(author, portal_url, "#{request.protocol}#{request.host_with_port}")
-        get :duplicate, { :id => act.id, :add_to_portal => portal_url }
+        get :duplicate, params: { id: act.id, add_to_portal: portal_url }
       end
     end
   end
@@ -382,7 +382,7 @@ describe LightweightActivitiesController do
 
     describe '#export' do
       it "should call 'export' on the activity" do
-        get :export, { :id => act.id }
+        get :export, params: { id: act.id }
         expect(response).to be_success
       end
     end
@@ -395,7 +395,7 @@ describe LightweightActivitiesController do
       end
 
       it "should call 'export' on the activity" do
-        get :export_for_portal, { :id => act.id }
+        get :export_for_portal, params: { id: act.id }
         expect(response).to be_success
         json_response = JSON.parse(response.body)
         expect(json_response["student_report_enabled"]).to_not be_nil
@@ -405,18 +405,18 @@ describe LightweightActivitiesController do
     describe '#resubmit_answers' do
       context 'without a run key' do
         it 'redirects to activities list' do
-          get :resubmit_answers, { :id => act.id }
+          get :resubmit_answers, params: { id: act.id }
           expect(response).to redirect_to activities_path
         end
       end
 
       context 'with a run key' do
-        let (:answer1) { FactoryGirl.create(:multiple_choice_answer, :run => ar_run)}
-        let (:answer2) { FactoryGirl.create(:multiple_choice_answer, :run => ar_run)}
+        let (:answer1) { FactoryGirl.create(:multiple_choice_answer, run: ar_run)}
+        let (:answer2) { FactoryGirl.create(:multiple_choice_answer, run: ar_run)}
 
         before(:each) do
-          allow(act).to receive_messages(:answers => [answer1, answer2])
-          allow(LightweightActivity).to receive_messages(:find => act)
+          allow(act).to receive_messages(answers: [answer1, answer2])
+          allow(LightweightActivity).to receive_messages(find: act)
           request.env["HTTP_REFERER"] = 'http://localhost:3000/activities'
         end
 
@@ -425,18 +425,18 @@ describe LightweightActivitiesController do
           expect(ar_run.answers.length).not_to be(0)
           expect(answer1).to receive(:mark_dirty)
           expect(answer1).not_to receive(:send_to_portal)
-          get :resubmit_answers, { :id => act.id, :run_key => ar_run.key }
+          get :resubmit_answers, params: { id: act.id, run_key: ar_run.key }
         end
 
         it 'calls send_to_portal for the last answer' do
           [answer1, answer2]
           expect(ar_run.answers.length).not_to be(0)
           expect(answer2).to receive(:send_to_portal)
-          get :resubmit_answers, { :id => act.id, :run_key => ar_run.key }
+          get :resubmit_answers, params: { id: act.id, run_key: ar_run.key }
         end
 
         it 'sets a flash notice for success' do
-          get :resubmit_answers, { :id => act.id, :run_key => ar_run.key }
+          get :resubmit_answers, params: { id: act.id, run_key: ar_run.key }
           expect(flash[:notice]).to match /requeued for submission/
         end
       end

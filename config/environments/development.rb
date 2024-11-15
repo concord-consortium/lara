@@ -6,8 +6,9 @@ LightweightStandalone::Application.configure do
   # since you don't have to restart the web server when you make code changes.
   config.cache_classes = false
 
-  # Log error messages when you accidentally call methods on nil.
-  config.whiny_nils = true
+  # Eager loads all registered config.eager_load_namespaces. This includes your
+  # application, engines, Rails frameworks, and any other registered namespace.
+  config.eager_load = false
 
   # Show full error reports and disable caching
   config.consider_all_requests_local       = true
@@ -15,7 +16,7 @@ LightweightStandalone::Application.configure do
 
   # Don't care if the mailer can't send
   config.action_mailer.raise_delivery_errors = false
-  config.action_mailer.default_url_options = { :host => 'localhost:3000' }
+  config.action_mailer.default_url_options = { host: 'localhost:3000' }
 
   # Print deprecation notices to the Rails logger
   config.active_support.deprecation = :log
@@ -23,18 +24,18 @@ LightweightStandalone::Application.configure do
   # Only use best-standards-support built into browsers
   config.action_dispatch.best_standards_support = :builtin
 
-  # Raise exception on mass assignment protection for Active Record models
-  config.active_record.mass_assignment_sanitizer = :strict
-
-  # Log the query plan for queries taking more than this (works
-  # with SQLite, MySQL, and PostgreSQL)
-  config.active_record.auto_explain_threshold_in_seconds = 0.5
-
   # Do not compress assets
-  config.assets.compress = false
+  config.assets.js_compressor = false
 
   # Expands the lines which load the assets
   config.assets.debug = true
+
+  config.active_record.use_yaml_unsafe_load = true
+  config.active_record.belongs_to_required_by_default = false
+  config.action_controller.per_form_csrf_tokens = false
+  config.action_controller.forgery_protection_origin_check = false
+  config.ssl_options = { hsts: { subdomains: false } }
+  ActiveSupport.to_time_preserves_timezone = false
 
   config.after_initialize do
     Bullet.enable = true
@@ -66,7 +67,7 @@ LightweightStandalone::Application.configure do
 
   if ENV["RAILS_STDOUT_LOGGING"].present?
     # Disable logging to file. It might have performance impact while using Docker for Mac (slow filesystem sync).
-    config.logger = Logger.new(STDOUT)
+    config.logger = ActiveSupport::TaggedLogging.new(Logger.new(STDOUT))
   end
 end
 

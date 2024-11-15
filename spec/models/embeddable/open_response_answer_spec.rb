@@ -2,8 +2,8 @@ require 'spec_helper'
 
 describe Embeddable::OpenResponseAnswer do
   let(:question) { FactoryGirl.create(:or_embeddable) }
-  let(:run) { FactoryGirl.create(:run, :activity => FactoryGirl.create(:activity) ) }
-  let(:answer) { FactoryGirl.create(:or_answer, :answer_text => "the answer", :question => question, :run => run ) }
+  let(:run) { FactoryGirl.create(:run, activity: FactoryGirl.create(:activity) ) }
+  let(:answer) { FactoryGirl.create(:or_answer, answer_text: "the answer", question: question, run: run ) }
 
   it_behaves_like "an answer"
   describe "model associations" do
@@ -37,7 +37,7 @@ describe Embeddable::OpenResponseAnswer do
   end
 
   describe '#copy_answer!' do
-    let(:another_answer) { FactoryGirl.create(:or_answer, :answer_text => "the answer", :is_final => true) }
+    let(:another_answer) { FactoryGirl.create(:or_answer, answer_text: "the answer", is_final: true) }
 
     it "should copy basic attributes that can be modified by student" do
       answer.copy_answer!(another_answer)

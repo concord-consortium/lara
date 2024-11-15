@@ -125,7 +125,7 @@ describe InteractivePageHelper do
   describe "#show_labbook_in_assessment_block?" do
     let(:question)    { nil }
     let(:interactive) { nil }
-    let(:answer)      { double("answer", :question => question) }
+    let(:answer)      { double("answer", question: question) }
     subject           { helper.show_labbook_in_assessment_block?(answer) }
 
     describe "when the embeddable isn't a labbook" do
