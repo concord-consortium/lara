@@ -1,8 +1,8 @@
 
 .publication
   .header
-    %span.title Publish #{@publishable.name} to portals:
-    %span.close.close_link
+    %span.title{'data-testid' => 'publish-title-to-portals'} Publish #{@publishable.name} to portals:
+    %span.close.close_link{'data-testid' => 'close-publish-modal-btn'}
       close (✖)
   .info
     %table

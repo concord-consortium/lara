@@ -33,5 +33,5 @@ modulejs.define 'components/itsi_authoring/publication_details',
                 (span {className: 'message error-message', title: debugTitle}, 'not published!')
             )
         )
-        (a {href: @props.publicationDetails.publish_url, className: 'btn btn-primary', 'data-remote': true}, 'Publish to Other Portals')
+        (a {href: @props.publicationDetails.publish_url, className: 'btn btn-primary', 'data-remote': true, 'data-testid': 'publish-to-other-portals-btn'}, 'Publish to Other Portals')
       )
