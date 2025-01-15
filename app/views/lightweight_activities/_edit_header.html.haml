@@ -20,25 +20,25 @@
       = svg_icon(asset_path "/assets/images/icons/page-nav/add.svg")
     %button{ :id => "page-nav-copy", :class => "page-button disabled" }
       = svg_icon(asset_path "/assets/images/icons/page-nav/copy.svg")
-%header.edit-form-header
-  %h1 Edit Activity#{ @activity.name != "" ? ": " + @activity.name : "" }
+%header.edit-form-header{ "data-testid" => "edit-form-header" }
+  %h1{ "data-testid" => "edit-activity-title" } Edit Activity#{ @activity.name != "" ? ": " + @activity.name : "" }
   - if @editor_mode == LightweightActivity::ITSI_EDITOR_MODE
-    %div{class: "buttons-menu"}
-      %button{onclick: "window.open('#{itsi_preview_url(@activity)}', '_blank')"}
+    %div{class: "buttons-menu", "data-testid" => "preview-buttons-menu"}
+      %button{onclick: "window.open('#{itsi_preview_url(@activity)}', '_blank')", "data-testid" => "itsi-preview-button"}
         Preview
   - else
-    #preview-menu
-      %label{for: "preview-options-select"}
+    #preview-menu{ "data-testid" => "preview-menu" }
+      %label{for: "preview-options-select", "data-testid" => "preview-options-label"}
         %strong
           Preview in:
-      = select_tag :preview_options_select, options_for_select(activity_preview_options(@activity)), {id: 'preview-options-select'}
+      = select_tag :preview_options_select, options_for_select(activity_preview_options(@activity)), {id: 'preview-options-select', "data-testid" => "preview-options-select"}
 
-.edit-form-options
+.edit-form-options{ "data-testid" => "edit-form-options" }
   - if current_user.is_admin
-    = link_to "Edit in Standard Mode", "#{edit_activity_path(@activity)}?mode=standard"
-    = link_to "Edit in ITSI Mode", "#{edit_activity_path(@activity)}?mode=itsi"
+    = link_to "Edit in Standard Mode", "#{edit_activity_path(@activity)}?mode=standard", "data-testid" => "edit-standard-mode-link"
+    = link_to "Edit in ITSI Mode", "#{edit_activity_path(@activity)}?mode=itsi", "data-testid" => "edit-itsi-mode-link"
   - if (can? :export, @activity) && ENV['CONVERSION_SCRIPT_URL'].present?
-    = link_to "Convert", activity_player_conversion_url(@activity), :target => 'new'
+    = link_to "Convert", activity_player_conversion_url(@activity), :target => 'new', "data-testid" => "convert-link"
 
 - if show_publication_details
   = render :partial => "publications/publication_details", :locals =>{ :publication => @activity}
