@@ -25,8 +25,8 @@
     %ul#new-menu
       %li#search
         %form
-          %input{:type => "text", :name => "search", :placeholder => "Search..."}
-          %input{:type => "submit", :value => "Search"}
+          %input{:type => "text", :name => "search", :placeholder => "Search..." "data-testid" => "authoring-search-bar"}
+          %input{:type => "submit", :value => "Search" "data-testid" => "authoring-search-button"}
       %li#desc-toggle= toggle_all 'descriptions'
       %li#collection_filter= collection_filter_tag @filter
   -if @activities || @sequences
