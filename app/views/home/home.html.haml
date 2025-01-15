@@ -9,37 +9,41 @@
     .buttons-menu
       - if can? :create, LightweightActivity
         %a{ :href => new_activity_path }
-          %button=t("NEW_ACTIVITY_BUTTON")
+          %button{ "data-testid" => "new-activity-button" }= t("NEW_ACTIVITY_BUTTON")
       - if can? :create, Sequence
         %a{ :href => new_sequence_path }
-          %button=t("NEW_SEQUENCE_BUTTON")
+          %button{ "data-testid" => "new-sequence-button" }= t("NEW_SEQUENCE_BUTTON")
       - if can? :create, Glossary
         %a{ :href => new_glossary_path }
-          %button=t("NEW_GLOSSARY_BUTTON")
+          %button{ "data-testid" => "new-glossary-button" }= t("NEW_GLOSSARY_BUTTON")
       - if can? :create, Rubric
         %a{ :href => new_rubric_path }
-          %button=t("NEW_RUBRIC_BUTTON")
+          %button{ "data-testid" => "new-rubric-button" }= t("NEW_RUBRIC_BUTTON")
       - if can? :import, LightweightActivity, Sequence, Glossary
-        %a{ :href => import_status_path, 'data-remote'=>"true" }
-          %button=t("IMPORT")
+        %a{ :href => import_status_path, 'data-remote' => "true" }
+          %button{ "data-testid" => "import-button" }= t("IMPORT")
     %ul#new-menu
       %li#search
         %form
-          %input{:type => "text", :name => "search", :placeholder => "Search..." "data-testid" => "authoring-search-bar"}
-          %input{:type => "submit", :value => "Search" "data-testid" => "authoring-search-button"}
-      %li#desc-toggle= toggle_all 'descriptions'
-      %li#collection_filter= collection_filter_tag @filter
-  -if @activities || @sequences
+          %input{ :type => "text", :name => "search", :placeholder => "Search...", "data-testid" => "authoring-search-bar" }
+          %input{ :type => "submit", :value => "Search", "data-testid" => "authoring-search-button" }
+      %li#desc-toggle{ "data-testid" => "desc-toggle-button" }= toggle_all 'descriptions'
+      %li#collection_filter{ "data-testid" => "collection-filter-button" }= collection_filter_tag @filter
+  - if @activities || @sequences
     %div.bottom-header
-      %strong=t("JUMP_TO")
-      -if @activities
-        %a{ :href => "#activity_listing_head" }=t("ACTIVITIES")
-      -if @sequences
-        %a{ :href => "#sequence_listing_head" }=t("SEQUENCES")
-      -if @glossaries
-        %a{ :href => "#glossary_listing_head" }=t("GLOSSARIES")
-      -if @rubrics
-        %a{ :href => "#rubric_listing_head" }=t("RUBRICS")
+      %strong{ "data-testid" => "jump-to-label" }= t("JUMP_TO")
+      - if @activities
+        %a{ :href => "#activity_listing_head" }
+          %button{ "data-testid" => "jump-to-activities-button" }= t("ACTIVITIES")
+      - if @sequences
+        %a{ :href => "#sequence_listing_head" }
+          %button{ "data-testid" => "jump-to-sequences-button" }= t("SEQUENCES")
+      - if @glossaries
+        %a{ :href => "#glossary_listing_head" }
+          %button{ "data-testid" => "jump-to-glossaries-button" }= t("GLOSSARIES")
+      - if @rubrics
+        %a{ :href => "#rubric_listing_head" }
+          %button{ "data-testid" => "jump-to-rubrics-button" }= t("RUBRICS")
 
 
 -if @activities
