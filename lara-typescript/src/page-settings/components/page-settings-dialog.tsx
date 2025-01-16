@@ -76,8 +76,8 @@ export const PageSettingsDialog: React.FC<IPageSettingsDialogProps> = ({
   };
 
   const modalButtons = [
-    {classes: "cancel", clickHandler: handleCloseDialog, disabled: false, svg: <Close height="12" width="12"/>, text: "Cancel"},
-    {classes: "copy", clickHandler: handleUpdateSettings, disabled: false, svg: <Save height="16" width="16"/>, text: "Save & Close"}
+    {classes: "cancel", clickHandler: handleCloseDialog, disabled: false, svg: <Close height="12" width="12"/>, text: "Cancel", "data-testid": "cancel-button-page-settings"},
+    {classes: "copy", clickHandler: handleUpdateSettings, disabled: false, svg: <Save height="16" width="16"/>, text: "Save & Close", "data-testid": "save-and-close-button-page-settings"}
   ];
 
   return (
@@ -95,6 +95,7 @@ export const PageSettingsDialog: React.FC<IPageSettingsDialogProps> = ({
               value={currentName}
               onChange={handleNameChange}
               placeholder="Enter a title"
+              data-testid="page-title-input"
             />
           </dd>
           <dt className={`input2 ${isHiddenDisabled && "disabled"}`}>
