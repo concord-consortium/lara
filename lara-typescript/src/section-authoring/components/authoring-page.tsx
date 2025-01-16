@@ -194,7 +194,7 @@ export const AuthoringPage: React.FC<IPageProps> = ({
                     ))
                   }
                   { droppableProvided.placeholder }
-                  <button className="bigButton" onClick={addSection}>
+                  <button className="bigButton" data-testid="add-section-button" onClick={addSection}>
                     <Add height="16" width="16" /> <span className="lineAdjust">Add Section</span>
                   </button>
                 </div>
