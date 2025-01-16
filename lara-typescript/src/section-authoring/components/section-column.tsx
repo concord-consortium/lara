@@ -176,9 +176,14 @@ export const SectionColumn: React.FC<ISectionColumnProps> = ({
                   })}
                   { droppableProvided.placeholder }
                   <div className="addItem">
-                    <button className="smallButton" onClick={showItemPicker}>
+                    <button
+                      className="smallButton"
+                      data-testid="add-item-button"
+                      onClick={showItemPicker}
+                    >
                       <Add height="16" width="16" /> <span className="lineAdjust">Add Item</span>
                     </button>
+                  </div>
                   </div>
                 </div>
               </div>
