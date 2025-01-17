@@ -13,12 +13,12 @@
       %li
         != "/ #{@sequence.title}"
 
-%h1.title 
-  %span.title
+%h1.title{"data-testid" => "edit-sequence-header"}
+  %span.title{"data-testid" => "edit-sequence-title"}
     Edit sequence
-  #preview-menu
-    %label{for: "preview-options-select"}
-      %strong
+  #preview-menu{"data-testid" => "preview-menu"}
+    %label{for: "preview-options-select", "data-testid" => "preview-options-label"}
+      %strong{"data-testid" => "preview-options-text"}
         Preview in:
     = select_tag :preview_options_select, options_for_select(sequence_preview_options(@sequence)), {id: 'preview-options-select'}
 

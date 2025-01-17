@@ -38,7 +38,7 @@ export const PageHeader: React.FC<IPageHeaderProps> = ({
           </div>
           <div className="header-center">
             <div className="title-container" onClick={handleTitleClick}>
-              <div className="activity-title">
+              <div className="activity-title" data-testid="activity-title">
                 {renderHTML(resourceName)}
               </div>
             </div>
