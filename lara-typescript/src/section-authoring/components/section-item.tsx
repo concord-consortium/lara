@@ -141,21 +141,43 @@ export const SectionItem: React.FC<ISectionItemProps> = ({
 
   return(
     <div className={containerClasses}>
-      <header className="sectionItemMenu">
-        <div className="menuStart">
-          <GripLines />
-          <h4>{id} - {renderTitle()}</h4>
-        </div>
-        <div className="menuEnd">
-          <ul>
-            <li><button onClick={toggleCollapse}>Collapse</button></li>
-            <li><button onClick={handleEdit}>Edit</button></li>
-            <li><button onClick={handleMove}>Move</button></li>
-            {copyFunction && <li><button onClick={handleCopy}>Copy</button></li>}
-            <li><button onClick={handleDelete}>Delete</button></li>
-          </ul>
-        </div>
-      </header>
+    <header className="sectionItemMenu">
+      <div className="menuStart">
+        <GripLines />
+        <h4 data-testid={`section-title-${id}`}>{id} - {renderTitle()}</h4>
+      </div>
+      <div className="menuEnd">
+        <ul>
+          <li>
+            <button data-testid={`section-collapse-button-${id}`} onClick={toggleCollapse}>
+              Collapse
+            </button>
+          </li>
+          <li>
+            <button data-testid={`section-edit-button-${id}`} onClick={handleEdit}>
+              Edit
+            </button>
+          </li>
+          <li>
+            <button data-testid={`section-move-button-${id}`} onClick={handleMove}>
+              Move
+            </button>
+          </li>
+          {copyFunction && (
+            <li>
+              <button data-testid={`section-copy-button-${id}`} onClick={handleCopy}>
+                Copy
+              </button>
+            </li>
+          )}
+          <li>
+            <button data-testid={`section-delete-button-${id}`} onClick={handleDelete}>
+              Delete
+            </button>
+          </li>
+        </ul>
+      </div>
+    </header>
       <section>
         {pageItem && getContent()}
         {supportsPlugins &&

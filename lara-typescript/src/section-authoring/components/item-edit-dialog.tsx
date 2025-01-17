@@ -167,14 +167,16 @@ export const ItemEditDialog: React.FC<IItemEditDialogProps> = ({
       clickHandler: handleCancelUpdateItem,
       disabled: false,
       svg: <Close height="12" width="12"/>,
-      text: "Cancel"
+      text: "Cancel",
+      "data-testid": "cancel-item-button"
     },
     {
       classes: "save",
       clickHandler: handleSave,
       disabled: false,
       svg: <Save height="16" width="16"/>,
-      text: "Save"
+      text: "Save",
+      "data-testid": "save-item-button"
     }
   ];
 

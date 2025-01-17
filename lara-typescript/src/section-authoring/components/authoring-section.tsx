@@ -307,27 +307,40 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
           </select>
           <label className={toggleSecondaryColumnOptionClass} htmlFor="toggle-secondary-column">
             <input
+              data-testid="toggle-secondary-column-checkbox" // Added data-testid
               defaultChecked={can_collapse_small}
               disabled={toggleSecondaryColumnDisabled}
               id="toggle-secondary-column"
               name="can_collapse_small"
               onChange={handleToggleSecondaryColumnChange}
               type="checkbox"
-            />
-            Allow student to hide secondary column
+            />Allow student to hide secondary column
           </label>
         </div>
         <div className="menuEnd">
           <ul>
-            <li><button onClick={toggleCollapse}>Collapse</button></li>
-            <li><button onClick={handleMoveSection}>Move</button></li>
-            <li><button onClick={handleCopy}>Copy</button></li>
-            <li><button onClick={toggleShow}>{ show ? "Hide" : "Show" }</button></li>
-            <li><button onClick={handleDelete}>Delete</button></li>
+          <li>
+            <button data-testid="collapse-button" onClick={toggleCollapse}>Collapse</button>
+          </li>
+          <li>
+            <button data-testid="move-section-button" onClick={handleMoveSection}>Move</button>
+          </li>
+          <li>
+            <button data-testid="copy-button" onClick={handleCopy}>Copy</button>
+          </li>
+          <li>
+            <button data-testid="toggle-show-button" onClick={toggleShow}>
+              {show ? "Hide" : "Show"}
+            </button>
+          </li>
+          <li>
+            <button data-testid="delete-button" onClick={handleDelete}>Delete</button>
+          </li>
           </ul>
         </div>
       </header>
       {<SectionColumn
+        data-testid={`section-column-${layout}-1`}
         addItem={addItem}
         addPageItem={addPageItem}
         className={classNameForItem(layout, 0)}
@@ -335,10 +348,11 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
         columnNumber={1}
         items={getColumnItems(columnValueForIndex(0))}
         sectionId={id}
-        />
+      />
       }
       {(layout !== "full-width" && layout !== "responsive-full-width") &&
         <SectionColumn
+          data-testid={`section-column-${layout}-2`}
           addItem={addItem}
           addPageItem={addPageItem}
           className={classNameForItem(layout, 1)}

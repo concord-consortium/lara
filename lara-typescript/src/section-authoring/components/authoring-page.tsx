@@ -152,8 +152,13 @@ export const AuthoringPage: React.FC<IPageProps> = ({
     <>
       <PageNavContainer />
       <header className="editPageHeader">
-        <h2>Page: {displayTitle}</h2>
-        <button onClick={pageSettingsClickHandler}><Cog height="16" width="16" /> Page Settings</button>
+        <h2 data-testid="page-title">Page: {displayTitle}</h2>
+        <button 
+          data-testid="page-settings-button" 
+          onClick={pageSettingsClickHandler}
+        >
+          <Cog height="16" width="16" /> Page Settings
+        </button>
         <PreviewLinksContainer />
       </header>
       {isHidden &&
@@ -194,7 +199,7 @@ export const AuthoringPage: React.FC<IPageProps> = ({
                     ))
                   }
                   { droppableProvided.placeholder }
-                  <button className="bigButton" onClick={addSection}>
+                  <button className="bigButton" data-testid="add-section-button" onClick={addSection}>
                     <Add height="16" width="16" /> <span className="lineAdjust">Add Section</span>
                   </button>
                 </div>
