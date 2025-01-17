@@ -184,7 +184,6 @@ export const SectionColumn: React.FC<ISectionColumnProps> = ({
                       <Add height="16" width="16" /> <span className="lineAdjust">Add Item</span>
                     </button>
                   </div>
-                  </div>
                 </div>
               </div>
           )}

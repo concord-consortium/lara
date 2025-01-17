@@ -314,9 +314,7 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
               name="can_collapse_small"
               onChange={handleToggleSecondaryColumnChange}
               type="checkbox"
-            />
-          </label>
-            Allow student to hide secondary column
+            />Allow student to hide secondary column
           </label>
         </div>
         <div className="menuEnd">
