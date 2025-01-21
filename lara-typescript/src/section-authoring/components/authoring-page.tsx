@@ -153,10 +153,7 @@ export const AuthoringPage: React.FC<IPageProps> = ({
       <PageNavContainer />
       <header className="editPageHeader">
         <h2 data-testid="page-title">Page: {displayTitle}</h2>
-        <button 
-          data-testid="page-settings-button" 
-          onClick={pageSettingsClickHandler}
-        >
+        <button data-testid="page-settings-button" onClick={pageSettingsClickHandler}>
           <Cog height="16" width="16" /> Page Settings
         </button>
         <PreviewLinksContainer />
