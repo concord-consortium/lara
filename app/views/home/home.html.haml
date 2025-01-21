@@ -29,17 +29,17 @@
           %input{ :type => "submit", :value => "Search", "data-testid" => "authoring-search-button" }
       %li#desc-toggle{ "data-testid" => "desc-toggle-button" }= toggle_all 'descriptions'
       %li#collection_filter{ "data-testid" => "collection-filter-button" }= collection_filter_tag @filter
-      - if @activities || @sequences
-        %div.bottom-header
-          %strong{ "data-testid" => "jump-to-label" }= t("JUMP_TO")
-          - if @activities
-            %a{ :href => "#activity_listing_head", "data-testid" => "jump-to-activities" }= t("ACTIVITIES")
-          - if @sequences
-            %a{ :href => "#sequence_listing_head", "data-testid" => "jump-to-sequences" }= t("SEQUENCES")
-          - if @glossaries
-            %a{ :href => "#glossary_listing_head", "data-testid" => "jump-to-glossaries" }= t("GLOSSARIES")
-          - if @rubrics
-            %a{ :href => "#rubric_listing_head", "data-testid" => "jump-to-rubrics" }= t("RUBRICS")
+  - if @activities || @sequences
+    %div.bottom-header
+      %strong{ "data-testid" => "jump-to-label" }= t("JUMP_TO")
+      - if @activities
+        %a{ :href => "#activity_listing_head", "data-testid" => "jump-to-activities" }= t("ACTIVITIES")
+      - if @sequences
+        %a{ :href => "#sequence_listing_head", "data-testid" => "jump-to-sequences" }= t("SEQUENCES")
+      - if @glossaries
+        %a{ :href => "#glossary_listing_head", "data-testid" => "jump-to-glossaries" }= t("GLOSSARIES")
+      - if @rubrics
+        %a{ :href => "#rubric_listing_head", "data-testid" => "jump-to-rubrics" }= t("RUBRICS")
 
 -if @activities
   #activity_listing_head
