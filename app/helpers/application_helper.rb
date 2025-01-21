@@ -4,31 +4,13 @@ module ApplicationHelper
     component = (component.respond_to? :embeddable) ? component.embeddable : component
     capture_haml do
       haml_tag :div, class: 'action_menu' do
-        haml_tag :div, class: 'action_menu_header_left' do
-          haml_tag(:h3,{class: 'menu'}) do
-            haml_concat title_for_component(component, id_prefix: 'edit')
-          end
-        end
-        haml_tag :div, class: 'action_menu_header_right' do
+        haml_tag :div, class: 'action_menu_header_right', style: "padding: 10px 5px;" do
           haml_tag :ul, {class: 'menu'} do
-            #if (component.changeable?(current_user))
-            haml_tag(:li, {class: 'menu'}) { haml_concat form.submit("Save") }
-            haml_tag(:li, {class: 'menu'}) { haml_concat form.submit("Cancel") } unless options[:omit_cancel]
-            #end
+            haml_tag(:li, {class: 'menu'}) { haml_concat form.submit("Save", {class: "btn-primary"}) }
+            haml_tag(:li, {class: 'menu'}) { haml_concat form.submit("Cancel", {class: "btn-primary"}) } unless options[:omit_cancel]
           end
         end
       end
-    end
-  end
-
-  def title_for_component(component, options={})
-    title = name_for_component(component, options)
-    id = dom_id_for(component, options[:id_prefix], :title)
-#      if ::Rails.env == "development" || @current_user.has_role?('admin')
-    if false # TODO: Get this working correctly
-      "<span id=#{id} class='component_title'>#{title}</span><span class='dev_note'> #{link_to(component.id, component)}</span>"
-    else
-      "<span id=#{id} class='component_title'>#{title}</span>"
     end
   end
 
@@ -211,7 +193,7 @@ module ApplicationHelper
     #
     # yields:
     #      `?foo=xx&bar=yy` (activity and bam are missing)
-    
+
     # If `params` is an instance of `ActionController::Parameters`, use `permit`
     current_params = if params.is_a?(ActionController::Parameters)
       params.permit(whitelist).to_h
