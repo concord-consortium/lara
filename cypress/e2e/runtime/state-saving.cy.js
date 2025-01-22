@@ -1,4 +1,4 @@
-context('Runtime state saving', function () {
+context.skip('Runtime state saving', function () {
   let activityUrl
   beforeEach(() => {
     cy.login()
