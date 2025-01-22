@@ -114,11 +114,6 @@ cypress:
         with:
           path: lara/.cache/webpack/
           key: ${{steps.restore-webpack-cache.outputs.cache-primary-key}}
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v4
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          flags: cypress
   s3-deploy:
     name: S3 Deploy
     needs:
