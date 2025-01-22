@@ -1,8 +1,9 @@
 {
   "description": "",
   "editor_mode": 0,
+  "external_report_url": null,
   "layout": 0,
-  "name": "[Cypress] Multiple Choice Simple",
+  "name": "[Cypress] Open Response Simple",
   "notes": "",
   "project_id": null,
   "related": "",
@@ -22,7 +23,7 @@
       "position": 1,
       "show_info_assessment": true,
       "show_interactive": false,
-      "show_header": false,
+      "show_introduction": false,
       "show_sidebar": false,
       "sidebar": null,
       "sidebar_title": "Did you know?",
@@ -30,37 +31,16 @@
       "embeddables": [
         {
           "embeddable": {
-            "custom": false,
-            "enable_check_answer": true,
+            "default_text": null,
             "give_prediction_feedback": false,
             "hint": null,
-            "is_half_width": true,
+            "is_full_width": false,
             "is_hidden": false,
             "is_prediction": false,
-            "layout": "vertical",
-            "multi_answer": false,
-            "name": "Multiple Choice Question element",
+            "name": null,
             "prediction_feedback": null,
             "prompt": "why does ...",
-            "show_as_menu": false,
-            "choices": [
-              {
-                "choice": "a",
-                "is_correct": true,
-                "prompt": null
-              },
-              {
-                "choice": "b",
-                "is_correct": null,
-                "prompt": null
-              },
-              {
-                "choice": "c",
-                "is_correct": null,
-                "prompt": null
-              }
-            ],
-            "type": "Embeddable::MultipleChoice"
+            "type": "Embeddable::OpenResponse"
           },
           "section": null
         }

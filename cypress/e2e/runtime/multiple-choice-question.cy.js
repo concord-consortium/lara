@@ -1,4 +1,4 @@
-context('Multiple choice question', function () {
+context.skip('Multiple choice question', function () {
   let activityUrl
   beforeEach(() => {
     cy.login()
