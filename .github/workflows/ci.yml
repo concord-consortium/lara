@@ -114,30 +114,3 @@ cypress:
         with:
           path: lara/.cache/webpack/
           key: ${{steps.restore-webpack-cache.outputs.cache-primary-key}}
-  s3-deploy:
-    name: S3 Deploy
-    needs:
-      - build
-      - cypress
-    runs-on: ubuntu-latest
-    environment:
-      name: ${{ github.ref_type == 'branch' && 'branches' || 'versions' }}
-      url: https://codap3.concord.org/${{ steps.s3-deploy.outputs.deployPath }}/
-    steps:
-      - uses: actions/download-artifact@v4
-        with:
-          name: build
-          path: v3/dist
-      - uses: concord-consortium/s3-deploy-action@v1
-        id: s3-deploy
-        with:
-          build: echo no build
-          bucket: models-resources
-          prefix: lara
-          workingDirectory: lara
-          awsAccessKeyId: ${{ secrets.LARA_AWS_ACCESS_KEY_ID }}
-          awsSecretAccessKey: ${{ secrets.LARA_AWS_SECRET_ACCESS_KEY }}
-          # Parameters to GHActions have to be strings, so a regular yaml array cannot
-          # be used. Instead the `|` turns the following lines into a string
-          topBranches: |
-            ["main"]
