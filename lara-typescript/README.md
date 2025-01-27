@@ -1,5 +1,7 @@
 # LARA TypeScript codebase
 
+DO NOT MERGE - this is just a test for the LARA/JIRA integration.
+
 ### This documentation is meant to be used by LARA developers.
 
 This package was created to let LARA developers use modern TypeScript environment and allow LARA plugin
