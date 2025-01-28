@@ -55,7 +55,7 @@ export const SectionMoveDialog: React.FC = () => {
     if (sectionToMove?.name) {
       return sectionToMove.name;
     }
-    return `section ${sectionToMove?.position}`;
+    return `Section ${sectionToMove?.position}`;
   };
 
   const modalButtons = [
