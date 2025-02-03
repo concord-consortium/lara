@@ -49,6 +49,7 @@ jobs:
       - name: Cypress Tests
         run: |-
           nix develop -c bundle exec rails server -b 0.0.0.0 -p 3000 &
+          nix develop -c npm ci
           nix develop -c npm run test:cypress
         working-directory: ./cypress/
   build:
