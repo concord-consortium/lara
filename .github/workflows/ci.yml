@@ -46,6 +46,12 @@ jobs:
           nix develop -c npm ci
           nix develop -c npm run test
         working-directory: ./lara-typescript/
+      - name: Cypress Tests
+        run: |-
+          nix develop -c bundle exec rails server -b 0.0.0.0 -p 3000
+          nix develop -c npm ci
+          nix develop -c npm run test:cypress
+        working-directory: ./cypress/
   build:
     name: Build Docker image
     runs-on: ubuntu-latest
@@ -90,27 +96,3 @@ jobs:
           tags: ${{ steps.docker_metadata.outputs.tags }}
           build-args: |-
             LARA_VERSION=${{ github.ref_name }}
-
-  cypress:
-      runs-on: ubuntu-latest
-      strategy:
-        # when one test fails, DO NOT cancel the other
-        # containers, because this will kill Cypress processes
-        # leaving the Dashboard hanging ...
-        # https://github.com/cypress-io/github-action/issues/48
-        fail-fast: false
-      steps:
-        - uses: browser-actions/setup-chrome@v1
-          with:
-            chrome-version: stable
-        - uses: snow-actions/sparse-checkout@v1.2.0
-          with:
-            patterns: lara
-        - name: Save Webpack Cache
-          uses: actions/cache/save@v4
-          # Always save the cache on the main branch, it won't be built often and
-          # this way features branches will have an up-to-date main cache
-          if: github.ref_name == 'main' || steps.restore-webpack-cache.outputs.cache-hit != 'true'
-          with:
-            path: lara/.cache/webpack/
-            key: ${{steps.restore-webpack-cache.outputs.cache-primary-key}}
