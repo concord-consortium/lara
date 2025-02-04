@@ -50,7 +50,7 @@ jobs:
         run: |-
           nix develop -c bundle exec rails server -b 0.0.0.0 -p 3000 &
           nix develop -c npm ci
-          nix develop -c npm run test:cypress
+          nix develop -c npm run test:cypress:headless
         working-directory: ./cypress/
   build:
     name: Build Docker image
