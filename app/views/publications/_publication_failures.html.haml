@@ -1,6 +1,6 @@
 #publication-failures
 
 :javascript
-  var PublicationFailureAlert = React.createElement(modulejs.require('components/itsi_authoring/publication_failure_alert'), {publicationDetails: gon.publication_details || gon.ITSIEditor.publication_details});
+  var PublicationFailureAlert = React.createElement({publicationDetails: gon.publication_details});
   ReactDOM.render(PublicationFailureAlert, $('#publication-failures')[0]);
 
