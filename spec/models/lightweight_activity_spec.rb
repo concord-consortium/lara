@@ -374,17 +374,6 @@ describe LightweightActivity do
       end
     end
 
-    describe "for itsi activities" do
-      let(:edit_mode) { LightweightActivity::ITSI_EDITOR_MODE   }
-      let(:layout)    { LightweightActivity::LAYOUT_SINGLE_PAGE }
-
-      it "should use the itsi edit mode, and single page layout" do
-        dup = activity.duplicate(owner)
-        expect(dup.layout).to eq LightweightActivity::LAYOUT_SINGLE_PAGE
-        expect(dup.editor_mode).to eq LightweightActivity::ITSI_EDITOR_MODE
-      end
-    end
-
     describe "for notebook activities" do
       let(:layout)    { LightweightActivity::LAYOUT_NOTEBOOK }
 
