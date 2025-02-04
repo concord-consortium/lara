@@ -1,12 +1,12 @@
-<h1>Listing Users</h1>
+<h1 data-testid="listing-users">Listing Users</h1>
 
 <div class="users">
   <%= will_paginate @users %>
 
   <form class="search" method="get">
-    <lable>Search</lable>
-    <input type="text" id="q" name="q" placeholder="user@host"/>
-    <input type="submit" value="submit"/>
+    <label>Search</label>
+    <input type="text" id="q" name="q" placeholder="user@host" data-testid="search-users"/>
+    <input type="submit" value="submit" data-testid="search-submit"/>
   </form>
 
   <table>
@@ -17,8 +17,8 @@
     <% @users.each do |user| %>
       <tr>
         <td><%= user.email %></td>
-        <td><%= link_to 'Edit', edit_admin_user_path(user) %></td>
-        <td><%= link_to 'Destroy', admin_user_path(user), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to 'Edit', edit_admin_user_path(user), data: { testid: "edit-user-#{user.id}" } %></td>
+        <td><%= link_to 'Destroy', admin_user_path(user), method: :delete, data: { confirm: 'Are you sure?', testid: "destroy-user-#{user.id}" }  %></td>
       </tr>
     <% end %>
   </table>

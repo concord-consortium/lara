@@ -1,21 +1,21 @@
 - if current_user
   -if can? :manage, User
-    = link_to "User Admin", admin_users_path
+    = link_to "User Admin", admin_users_path, data: { testid: "user-admin-link" }
   -if can? :manage, Project
     |
-    = link_to "Projects", projects_path
+    = link_to "Projects", projects_path, data: { testid: "projects-link" }
   -if can? :manage, QuestionTracker
     |
-    = link_to "QuestionTrackers", question_trackers_path
+    = link_to "QuestionTrackers", question_trackers_path, data: { testid: "question-trackers-link" }
   -if can? :manage, ApprovedScript
     |
-    = link_to "Plugins", approved_scripts_path
+    = link_to "Plugins", approved_scripts_path, data: { testid: "plugins-link" }
   -if can? :manage, User
     |
-    = link_to "Failed runs", dirty_runs_path
+    = link_to "Failed runs", dirty_runs_path, data: { testid: "failed-runs-link" }
   -if can? :manage, CRater::ScoreMapping
     |
-    = link_to "Score Mappings", c_rater_score_mappings_path
+    = link_to "Score Mappings", c_rater_score_mappings_path, data: { testid: "score-mappings-link" }
   -if can? :manage, LibraryInteractive
     |
-    = link_to "Library Interactives", library_interactives_path
+    = link_to "Library Interactives", library_interactives_path, data: { testid: "library-interactives-link" }
