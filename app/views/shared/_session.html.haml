@@ -12,10 +12,7 @@
     = link_to "Plugins", approved_scripts_path, data: { testid: "plugins-link" }
   -if can? :manage, User
     |
-    = link_to "Failed runs", dirty_runs_path, data: { testid: "failed-runs-link" }
-  -if can? :manage, CRater::ScoreMapping
-    |
-    = link_to "Score Mappings", c_rater_score_mappings_path, data: { testid: "score-mappings-link" }
+    = link_to "Failed runs", dirty_runs_path
   -if can? :manage, LibraryInteractive
     |
     = link_to "Library Interactives", library_interactives_path, data: { testid: "library-interactives-link" }
