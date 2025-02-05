@@ -31,7 +31,6 @@ export interface IMWInteractive {
   click_to_play: boolean;
   click_to_play_prompt: string;
   full_window: boolean;
-  show_in_featured_question_report: boolean;
   image_url: string;
   is_hidden: boolean;
   is_half_width: boolean;

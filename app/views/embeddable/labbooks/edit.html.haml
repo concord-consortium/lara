@@ -15,7 +15,6 @@
       %li.interactive_choice
         = f.label 'Interactive'
         = f.select :interactive_select_value, @embeddable.interactives_for_select
-      = render :partial => 'shared/edit_featured', :locals => { :f => f }
       = render :partial => 'shared/edit_full_width', :locals => { :f => f }
   = field_set_tag 'Hint' do
     .help

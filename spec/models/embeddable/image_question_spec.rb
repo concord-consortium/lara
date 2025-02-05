@@ -19,7 +19,6 @@ describe Embeddable::ImageQuestion do
         bg_source: image_question.bg_source,
         bg_url: image_question.bg_url,
         is_prediction: image_question.is_prediction,
-        show_in_featured_question_report: image_question.show_in_featured_question_report,
         is_half_width: image_question.is_half_width,
         give_prediction_feedback: image_question.give_prediction_feedback,
         prediction_feedback: image_question.prediction_feedback,
@@ -46,8 +45,7 @@ describe Embeddable::ImageQuestion do
         id: image_question.id,
         prompt: image_question.prompt,
         drawing_prompt: image_question.drawing_prompt,
-        is_required: image_question.is_prediction,
-        show_in_featured_question_report: image_question.show_in_featured_question_report
+        is_required: image_question.is_prediction
       )
     end
   end
@@ -59,7 +57,6 @@ describe Embeddable::ImageQuestion do
         id: "image_question_" + image_question.id.to_s,
         prompt: image_question.prompt,
         drawing_prompt: image_question.drawing_prompt,
-        show_in_featured_question_report: image_question.show_in_featured_question_report,
         question_number: nil,
         required: image_question.is_prediction
       )
