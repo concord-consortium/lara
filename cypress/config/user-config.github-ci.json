@@ -2,6 +2,6 @@
   "dev": {
     "baseUrl": "http://localhost:3000",
     "username": "dev_test_user@test.email",
-    "password": "secret_password"
+    "password": "password"
   }
 }
