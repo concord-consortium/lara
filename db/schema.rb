@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2025_02_05_223358) do
+ActiveRecord::Schema.define(version: 2025_02_06_202625) do
 
   create_table "admin_events", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "kind"
