@@ -449,6 +449,7 @@ describe InteractivePage do
         end
       end
     end
+  end
 
   describe 'InteractivePage#register_additional_section' do
     before(:all) do
