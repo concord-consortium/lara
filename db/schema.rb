@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2025_02_05_221541) do
+ActiveRecord::Schema.define(version: 2025_02_05_223358) do
 
   create_table "admin_events", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "kind"
@@ -53,57 +53,6 @@ ActiveRecord::Schema.define(version: 2025_02_05_221541) do
     t.datetime "updated_at", null: false
     t.index ["container_type", "container_id"], name: "index_authored_contents_on_container_type_and_container_id"
     t.index ["user_id"], name: "index_authored_contents_on_user_id"
-  end
-
-  create_table "c_rater_feedback_items", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.text "answer_text"
-    t.string "answer_type"
-    t.bigint "answer_id"
-    t.string "item_id"
-    t.string "status"
-    t.integer "score"
-    t.text "feedback_text"
-    t.text "response_info"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "feedback_submission_id"
-    t.string "feedback_submission_type"
-    t.index ["answer_id", "answer_type"], name: "c_rat_feed_it_answer_idx"
-    t.index ["answer_type", "answer_id"], name: "index_c_rater_feedback_items_on_answer_type_and_answer_id"
-    t.index ["feedback_submission_id", "feedback_submission_type"], name: "c_rater_feed_item_submission_idx"
-  end
-
-  create_table "c_rater_feedback_submissions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.integer "usefulness_score"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "interactive_page_id"
-    t.integer "run_id"
-    t.integer "collaboration_run_id"
-    t.integer "base_submission_id"
-    t.index ["base_submission_id"], name: "feedback_submissions_base_sub_id_idx"
-    t.index ["interactive_page_id", "run_id", "created_at"], name: "c_rater_fed_submission_page_run_created_idx"
-  end
-
-  create_table "c_rater_item_settings", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.string "item_id"
-    t.bigint "score_mapping_id"
-    t.string "provider_type"
-    t.bigint "provider_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["provider_id", "provider_type"], name: "c_rat_set_prov_idx"
-    t.index ["provider_type", "provider_id"], name: "index_c_rater_item_settings_on_provider_type_and_provider_id"
-    t.index ["score_mapping_id"], name: "index_c_rater_item_settings_on_score_mapping_id"
-  end
-
-  create_table "c_rater_score_mappings", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.text "mapping"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "description"
-    t.integer "user_id"
-    t.integer "changed_by_id"
   end
 
   create_table "collaboration_runs", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|

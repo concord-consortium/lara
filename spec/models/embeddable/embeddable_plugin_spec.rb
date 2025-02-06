@@ -78,7 +78,7 @@ describe Embeddable::EmbeddablePlugin do
   end
 
   describe '#import' do
-    let(:example_json_file) { 'activity_with_arg_block_section' }
+    let(:example_json_file) { 'activity_for_import' }
     let(:activity_json) do
       JSON.parse(File.read(
         Rails.root +
