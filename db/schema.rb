@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_10_18_134619) do
+ActiveRecord::Schema.define(version: 2025_02_05_221541) do
 
   create_table "admin_events", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "kind"
@@ -183,7 +183,6 @@ ActiveRecord::Schema.define(version: 2024_10_18_134619) do
     t.boolean "is_hidden", default: false
     t.text "hint"
     t.boolean "is_half_width", default: true
-    t.boolean "show_in_featured_question_report", default: true
     t.integer "interactive_id"
     t.string "interactive_type"
     t.string "migration_status", default: "not migrated"
@@ -211,7 +210,6 @@ ActiveRecord::Schema.define(version: 2024_10_18_134619) do
     t.bigint "interactive_id"
     t.text "hint"
     t.boolean "is_half_width", default: true
-    t.boolean "show_in_featured_question_report", default: true
     t.index ["interactive_id"], name: "labbook_interactive_i_idx"
     t.index ["interactive_type", "interactive_id"], name: "index_embeddable_labbooks_on_interactive_type_and_interactive_id"
     t.index ["interactive_type"], name: "labbook_interactive_t_idx"
@@ -254,7 +252,6 @@ ActiveRecord::Schema.define(version: 2024_10_18_134619) do
     t.boolean "is_hidden", default: false
     t.text "hint"
     t.boolean "is_half_width", default: true
-    t.boolean "show_in_featured_question_report", default: true
     t.string "migration_status", default: "not migrated"
   end
 
@@ -282,7 +279,6 @@ ActiveRecord::Schema.define(version: 2024_10_18_134619) do
     t.boolean "is_hidden", default: false
     t.text "hint"
     t.boolean "is_half_width", default: true
-    t.boolean "show_in_featured_question_report", default: true
     t.string "migration_status", default: "not migrated"
   end
 
@@ -551,7 +547,6 @@ ActiveRecord::Schema.define(version: 2024_10_18_134619) do
     t.string "click_to_play_prompt"
     t.boolean "show_delete_data_button", default: true
     t.boolean "is_half_width", default: false
-    t.boolean "show_in_featured_question_report", default: true
     t.string "aspect_ratio_method", default: "DEFAULT"
     t.string "linked_interactive_type"
     t.text "report_item_url"

@@ -43,7 +43,6 @@
             "prediction_feedback": null,
             "prompt": "why does ...",
             "show_as_menu": false,
-            "show_in_featured_question_report": true,
             "choices": [
               {
                 "choice": "a",

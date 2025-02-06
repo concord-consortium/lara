@@ -25,7 +25,6 @@ module Embeddable
         name: name,
         prompt: prompt,
         is_prediction: is_prediction,
-        show_in_featured_question_report: show_in_featured_question_report,
         give_prediction_feedback: give_prediction_feedback,
         prediction_feedback: prediction_feedback,
         default_text: default_text,
@@ -40,8 +39,7 @@ module Embeddable
         type: "open_response",
         id: id,
         prompt: prompt,
-        is_required: is_prediction,
-        show_in_featured_question_report: show_in_featured_question_report
+        is_required: is_prediction
       }
     end
 
@@ -50,7 +48,6 @@ module Embeddable
         type: 'open_response',
         id: embeddable_id,
         prompt: prompt,
-        show_in_featured_question_report: show_in_featured_question_report,
         question_number: index_in_activity,
         required: is_prediction
       }
@@ -76,7 +73,6 @@ module Embeddable
       return self.as_json(only:[:name,
                                 :prompt,
                                 :is_prediction,
-                                :show_in_featured_question_report,
                                 :give_prediction_feedback,
                                 :prediction_feedback,
                                 :default_text,

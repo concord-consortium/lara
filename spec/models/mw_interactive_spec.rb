@@ -40,7 +40,6 @@ describe MwInteractive do
         is_hidden: interactive.is_hidden,
         is_half_width: interactive.is_half_width,
         authored_state: interactive.authored_state,
-        show_in_featured_question_report: interactive.show_in_featured_question_report,
         aspect_ratio_method: interactive.aspect_ratio_method,
         no_snapshots: interactive.no_snapshots,
         linked_interactive_item_id: interactive.linked_interactive_item_id,

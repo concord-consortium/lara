@@ -13,8 +13,7 @@ shared_examples "a base interactive" do |model_factory|
         url: interactive.url,
         native_width: interactive.native_width,
         native_height: interactive.native_height,
-        display_in_iframe: interactive.reportable_in_iframe?,
-        show_in_featured_question_report: interactive.show_in_featured_question_report
+        display_in_iframe: interactive.reportable_in_iframe?
       )
       if interactive.instance_of?(MwInteractive)
         # To be backward compatible with MwInteractives already exported to Portal.
@@ -39,8 +38,7 @@ shared_examples "a base interactive" do |model_factory|
           url: interactive.url,
           native_width: interactive.native_width,
           native_height: interactive.native_height,
-          display_in_iframe: interactive.reportable_in_iframe?,
-          show_in_featured_question_report: interactive.show_in_featured_question_report
+          display_in_iframe: interactive.reportable_in_iframe?
         )
       end
     end
@@ -60,8 +58,7 @@ shared_examples "a base interactive" do |model_factory|
           url: interactive.url,
           native_width: interactive.native_width,
           native_height: interactive.native_height,
-          display_in_iframe: interactive.reportable_in_iframe?,
-          show_in_featured_question_report: interactive.show_in_featured_question_report
+          display_in_iframe: interactive.reportable_in_iframe?
         )
       end
     end
@@ -84,8 +81,7 @@ shared_examples "a base interactive" do |model_factory|
           url: interactive.url,
           native_width: interactive.native_width,
           native_height: interactive.native_height,
-          display_in_iframe: interactive.reportable_in_iframe?,
-          show_in_featured_question_report: interactive.show_in_featured_question_report
+          display_in_iframe: interactive.reportable_in_iframe?
         )
       end
     end
@@ -112,7 +108,6 @@ shared_examples "a base interactive" do |model_factory|
         width: interactive.native_width,
         height: interactive.native_height,
         display_in_iframe: interactive.reportable_in_iframe?,
-        show_in_featured_question_report: interactive.show_in_featured_question_report,
         question_number: interactive.index_in_activity,
         report_item_url: interactive.report_item_url
 
@@ -130,7 +125,6 @@ shared_examples "a base interactive" do |model_factory|
           id: interactive.embeddable_id,
           prompt: "Test prompt",
           required: true,
-          show_in_featured_question_report: interactive.show_in_featured_question_report,
           question_number: interactive.index_in_activity,
           # Interactive props:
           name: interactive.name,
@@ -154,7 +148,6 @@ shared_examples "a base interactive" do |model_factory|
           prompt: "Test prompt",
           drawing_prompt: "answer prompt",
           required: true,
-          show_in_featured_question_report: interactive.show_in_featured_question_report,
           question_number: interactive.index_in_activity,
           # Interactive props:
           name: interactive.name,
@@ -181,7 +174,6 @@ shared_examples "a base interactive" do |model_factory|
           prompt: "Test prompt",
           required: true,
           choices: [{id: "1", content: "Choice A", correct: true}, {id: "2", content: "Choice B", correct: false}],
-          show_in_featured_question_report: interactive.show_in_featured_question_report,
           question_number: interactive.index_in_activity,
           # Interactive props:
           name: interactive.name,

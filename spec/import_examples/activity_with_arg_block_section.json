@@ -50,7 +50,6 @@
                     "native_height": 435,
                     "native_width": 576,
                     "show_delete_data_button": true,
-                    "show_in_featured_question_report": true,
                     "url": "https://document-store.concord.org/v2/documents/86253/autolaunch?server=https%3A%2F%2Fcodap.concord.org%2Freleases%2Flatest%2F&scaling",
                     "type": "MwInteractive",
                     "ref_id": "86-MwInteractive"
@@ -108,7 +107,6 @@
                     "prediction_feedback": "",
                     "prompt": "<p>WHAT IS YOUR FAVORITE COLOR ??? ??! ?! ?!?</p>",
                     "show_as_menu": false,
-                    "show_in_featured_question_report": true,
                     "choices": [
                         {
                             "choice": "Blue",
@@ -139,7 +137,6 @@
                     "name": null,
                     "prediction_feedback": null,
                     "prompt": "Explain your answer.",
-                    "show_in_featured_question_report": true,
                     "item_settings": {
                         "item_id": "CARBON_X",
                         "score_mapping_id": 1
@@ -161,7 +158,6 @@
                     "prediction_feedback": null,
                     "prompt": "How certain are you about your claim based on your explanation?",
                     "show_as_menu": true,
-                    "show_in_featured_question_report": true,
                     "choices": [
                         {
                             "choice": "(1) Not at all certain",
@@ -202,7 +198,6 @@
                     "name": null,
                     "prediction_feedback": null,
                     "prompt": "Explain what influenced your certainty rating.",
-                    "show_in_featured_question_report": true,
                     "item_settings": {
                         "item_id": "CARBON_R",
                         "score_mapping_id": 2

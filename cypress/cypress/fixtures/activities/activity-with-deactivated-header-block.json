@@ -38,7 +38,6 @@
         "name": "",
         "prediction_feedback": "",
         "prompt": "\u003Cp\u003EHow will I know?\u003C/p\u003E",
-        "show_in_featured_question_report": true,
         "type": "Embeddable::OpenResponse",
         "ref_id": "111-Embeddable::OpenResponse"
       },
@@ -71,7 +70,6 @@
         "native_width": 576,
         "no_snapshots": false,
         "show_delete_data_button": true,
-        "show_in_featured_question_report": true,
         "url": "http://lab.concord.org/embeddable.html#interactives/samples/1-oil-and-water-shake.json",
         "type": "MwInteractive",
         "ref_id": "46-MwInteractive"
