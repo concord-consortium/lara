@@ -450,25 +450,6 @@ describe InteractivePage do
       end
     end
 
-    describe "from a lightweight activity with arg block section" do
-      let(:example_json_file) { 'activity_with_arg_block_section' }
-      let(:test_page_index) { 1 }
-      let(:page_json) { activity_json[:pages][test_page_index] }
-      let(:page) { InteractivePage.import(page_json)}
-      it 'imports the arg block as an addition section' do
-        expect(page.name).to eql("page 2")
-        expect(page.additional_sections).to_not be_nil
-        expect(page.additional_sections["arg_block"]).to be_truthy
-      end
-      it 'has at least one embeddable arg block' do
-        embeddable = page.embeddables.first
-        expect(page.section_embeddables("arg_block")).to_not be_nil
-        expect(page.section_embeddables("arg_block")).to include(embeddable)
-      end
-    end
-
-  end
-
   describe 'InteractivePage#register_additional_section' do
     before(:all) do
       InteractivePage.register_additional_section({name:        'test_section',

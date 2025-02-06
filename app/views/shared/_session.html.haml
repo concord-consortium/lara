@@ -13,9 +13,6 @@
   -if can? :manage, User
     |
     = link_to "Failed runs", dirty_runs_path
-  -if can? :manage, CRater::ScoreMapping
-    |
-    = link_to "Score Mappings", c_rater_score_mappings_path
   -if can? :manage, LibraryInteractive
     |
     = link_to "Library Interactives", library_interactives_path
