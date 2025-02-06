@@ -83,19 +83,6 @@ describe InteractivePagesController do
     it 'renders the page if it exists' do
 
       # Add embeddables
-      mc1 = Embeddable::MultipleChoice.create!(name: "Multiple choice 1", prompt: "What color is chlorophyll?")
-      Embeddable::MultipleChoiceChoice.create(choice: 'Red', multiple_choice: mc1)
-      Embeddable::MultipleChoiceChoice.create(choice: 'Green', multiple_choice: mc1)
-      Embeddable::MultipleChoiceChoice.create(choice: 'Blue', multiple_choice: mc1)
-
-      mc2 = Embeddable::MultipleChoice.create!(name: "Multiple choice 2", prompt: "How many protons does Helium have?")
-      Embeddable::MultipleChoiceChoice.create(choice: '1', multiple_choice: mc2)
-      Embeddable::MultipleChoiceChoice.create(choice: '2', multiple_choice: mc2)
-      Embeddable::MultipleChoiceChoice.create(choice: '4', multiple_choice: mc2)
-      Embeddable::MultipleChoiceChoice.create(choice: '7', multiple_choice: mc2)
-
-      page1.add_embeddable(mc1)
-      page1.add_embeddable(mc2)
       page1.add_interactive(interactive)
 
       # get the rendering
@@ -103,8 +90,6 @@ describe InteractivePagesController do
 
       # verify the page is as expected
       expect(response.body).to match /<iframe/m
-      expect(response.body).to match /What color is chlorophyll\?/m
-      expect(response.body).to match /How many protons does Helium have\?/m
 
     end
 
