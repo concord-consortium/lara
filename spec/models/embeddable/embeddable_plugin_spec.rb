@@ -78,7 +78,7 @@ describe Embeddable::EmbeddablePlugin do
   end
 
   describe '#import' do
-    let(:example_json_file) { 'valid_lightweight_activity_import_v1' }
+    let(:example_json_file) { 'activity_for_import' }
     let(:activity_json) do
       JSON.parse(File.read(
         Rails.root +
