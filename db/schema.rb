@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2025_02_06_202625) do
+ActiveRecord::Schema.define(version: 2025_02_06_202956) do
 
   create_table "admin_events", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "kind"
@@ -455,7 +455,6 @@ ActiveRecord::Schema.define(version: 2025_02_06_202625) do
     t.string "custom_image_url"
     t.integer "linked_interactive_id"
     t.boolean "is_half_width", default: false
-    t.boolean "show_in_featured_question_report", default: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "linked_interactive_type"
