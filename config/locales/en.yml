@@ -41,7 +41,6 @@ en:
   PREDICTION_BUTTON: "Submit"
   ANSWER_IS_FINAL: "Your answer is now locked."
   IS_PREDICTION_QUESTION: "Answer required?"
-  SHOW_IN_FEATURED_QUESTION_REPORT: "Show in featured question report?"
   IS_CALLOUT_ASSESSMENT_ITEM: "Callout? (Displayed within a shaded box.)"
   IS_HALF_WIDTH_ASSESMENT_ITEM: "Half width? (Full width layout only)"
   LET_USERS_CHECK_MC_ANSWERS: "Allow users to check answers?"

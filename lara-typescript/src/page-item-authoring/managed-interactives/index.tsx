@@ -36,7 +36,6 @@ export interface IManagedInteractive {
   enable_learner_state: boolean;
   linked_interactive_id: number;
   linked_interactive_type: string;
-  show_in_featured_question_report: boolean;
   inherit_aspect_ratio_method: boolean;
   custom_aspect_ratio_method: string;
   inherit_native_width: boolean;

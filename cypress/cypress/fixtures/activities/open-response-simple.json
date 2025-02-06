@@ -39,7 +39,6 @@
             "name": null,
             "prediction_feedback": null,
             "prompt": "why does ...",
-            "show_in_featured_question_report": true,
             "type": "Embeddable::OpenResponse"
           },
           "section": null

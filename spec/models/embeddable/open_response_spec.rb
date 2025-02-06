@@ -19,7 +19,6 @@ describe Embeddable::OpenResponse do
         prediction_feedback: open_response.prediction_feedback,
         default_text: open_response.default_text,
         is_hidden: open_response.is_hidden,
-        show_in_featured_question_report: open_response.show_in_featured_question_report,
         is_half_width: open_response.is_half_width,
         hint: open_response.hint
       }
@@ -42,8 +41,7 @@ describe Embeddable::OpenResponse do
         type: "open_response",
         id: open_response.id,
         prompt: open_response.prompt,
-        is_required: open_response.is_prediction,
-        show_in_featured_question_report: open_response.show_in_featured_question_report
+        is_required: open_response.is_prediction
       )
     end
   end
