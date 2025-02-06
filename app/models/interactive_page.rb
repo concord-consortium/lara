@@ -90,7 +90,7 @@ class InteractivePage < ApplicationRecord
 
   # The order of these register_ calls matters. It determines the order of the embeddables.
   InteractivePage.register_section({name: HEADER_BLOCK, show_method: 'show_header'})
-  InteractivePage.register_section({name: nil, show_method: 'show_info_assessment'})s
+  InteractivePage.register_section({name: nil, show_method: 'show_info_assessment'})
   InteractivePage.register_section({name: INTERACTIVE_BOX, show_method: 'show_interactive'})
 
   # This is a sort of polymorphic has_many :through (which is forbidden in AR)
