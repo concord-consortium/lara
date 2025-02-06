@@ -22,11 +22,6 @@ class Embeddable::MultipleChoicesController < Embeddable::EmbeddablesController
       if request.xhr?
         @embeddable.reload
         format.js { render json: { html: render_to_string('edit')}, content_type: 'text/json' }
-      else
-        flash[:notice] = 'New choice was added.'
-        format.html { redirect_back(fallback_location: edit_interactive_path(@interactive)) }
-        format.xml  { head :ok }
-        format.json
       end
     end
   end
