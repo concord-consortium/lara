@@ -28,10 +28,6 @@ module Embeddable
 
     accepts_nested_attributes_for :choices, allow_destroy: true
 
-    has_one :tracked_question, as: :question, dependent: :delete
-    has_one :question_tracker, through: :tracked_question
-    has_one :master_for_tracker, class_name: 'QuestionTracker', as: :master_question
-
     default_value_for :name, "Multiple Choice Question element"
     default_value_for :prompt, "why does ..."
 

@@ -1,14 +1,10 @@
 :ruby
   dash_id = "#{type}-#{embeddable.id}"
   under_id = "#{type}_#{embeddable.id}"
-  tracked = embeddable.respond_to?(:tracked_question) && embeddable.tracked_question
 
   confirm_delete = t("EMBEDDABLE.CONFIRM_REMOVE.NOT_IN_USE")
   confirm_hide   = t("EMBEDDABLE.CONFIRM_HIDE.NOT_IN_USE")
-  if tracked
-    confirm_delete = t("EMBEDDABLE.CONFIRM_REMOVE.TRACKED") if tracked
-    confirm_hide   = t("EMBEDDABLE.CONFIRM_HIDE.TRACKED") if tracked
-  elsif @activity.active_runs > 0
+  if @activity.active_runs > 0
     confirm_delete = t("EMBEDDABLE.CONFIRM_REMOVE.IN_USE", learners: pluralize(@activity.active_runs, "learner"))
     confirm_hide   = t("EMBEDDABLE.CONFIRM_HIDE.IN_USE", learners: pluralize(@activity.active_runs, "learner"))
   end
@@ -42,25 +38,18 @@
       raise "Unkown Embeddable type: #{type}"
   end
 
-- if tracked
-  - if can? :manage, QuestionTracker
-    %span= t("TRACKED_QUESTION.CAN_EDIT")
-    = link_to "edit", edit_path, :remote => true, :id => "edit-embed-#{dash_id}"
-  - else
-    = t("TRACKED_QUESTION.CANT_EDIT")
-- else
-  - if allow_hide
-    = link_to "show", toggle_hideshow_page_item_path(embeddable.p_item),
-      :remote => true,
-      :method => :post,
-      :id => "show-#{dash_id}",
-      :onclick => "toggle_hide_#{under_id}()"
-    = link_to "hide", toggle_hideshow_page_item_path(embeddable.p_item),
-      :remote => true,
-      :method => :post,
-      :id => "hide-#{dash_id}",
-      :onclick => @activity.active_runs > 0 ? "confirm('#{confirm_hide}') && toggle_hide_#{under_id}()" : "toggle_hide_#{under_id}()"
-  = link_to "edit", edit_path, :remote => true, :id => "edit-embed-#{dash_id}"
+- if allow_hide
+  = link_to "show", toggle_hideshow_page_item_path(embeddable.p_item),
+    :remote => true,
+    :method => :post,
+    :id => "show-#{dash_id}",
+    :onclick => "toggle_hide_#{under_id}()"
+  = link_to "hide", toggle_hideshow_page_item_path(embeddable.p_item),
+    :remote => true,
+    :method => :post,
+    :id => "hide-#{dash_id}",
+    :onclick => @activity.active_runs > 0 ? "confirm('#{confirm_hide}') && toggle_hide_#{under_id}()" : "toggle_hide_#{under_id}()"
+= link_to "edit", edit_path, :remote => true, :id => "edit-embed-#{dash_id}"
 
 = link_to "remove", remove_page_item_path(embeddable.p_item), :method => :post, :data => {:confirm => confirm_delete }
 - if params["edit_#{type}".to_sym].to_i == embeddable.id

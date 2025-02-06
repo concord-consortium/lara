@@ -116,15 +116,6 @@ class InteractivePagesController < ApplicationController
     end
   end
 
-  def add_tracked
-    authorize! :update, @page
-    update_activity_changed_by
-    qt = QuestionTracker.find(params[:question_tracker])
-    question = qt.new_question
-    @page.add_embeddable(question)
-    edit_embeddable_redirect(question)
-  end
-
   def add_embeddable
     authorize! :update, @page
     update_activity_changed_by
@@ -155,7 +146,6 @@ class InteractivePagesController < ApplicationController
     authorize! :update, @page
     update_activity_changed_by
     @section.destroy
-    # We aren't removing the embeddable itself. But we would remove the tracked_question of the embeddable.
     redirect_to edit_activity_page_path(@activity, @page)
   end
 
@@ -163,7 +153,6 @@ class InteractivePagesController < ApplicationController
     authorize! :update, @page
     update_activity_changed_by
     @page_item.destroy
-    # We aren't removing the embeddable itself. But we would remove the tracked_question of the embeddable.
     redirect_to edit_activity_page_path(@activity, @page)
   end
 

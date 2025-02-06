@@ -37,9 +37,6 @@ class PageItem < ApplicationRecord
       emb_copy.linked_interactive = helper.get_copy(embeddable.linked_interactive)
     end
     emb_copy.save!(validate: false)
-    if embeddable.respond_to? :question_tracker and embeddable.question_tracker
-      embeddable.question_tracker.add_question(emb_copy)
-    end
     next_item = next_section.page_items.create!(
       embeddable: emb_copy,
       position: position,

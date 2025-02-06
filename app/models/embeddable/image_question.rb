@@ -13,10 +13,6 @@ class Embeddable::ImageQuestion < ApplicationRecord
     foreign_key: 'image_question_id',
     dependent: :destroy
 
-  has_one :tracked_question, as: :question, dependent: :delete
-  has_one :question_tracker, through: :tracked_question
-  has_one :master_for_tracker, class_name: 'QuestionTracker', as: :master_question
-
   default_value_for :prompt, "why does ..."
 
   # NOTE: publishing to portal doesn't use this hash. portal_hash is used instead

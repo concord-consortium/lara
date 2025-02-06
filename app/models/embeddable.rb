@@ -6,7 +6,6 @@ module Embeddable
     Embeddable::Xhtml,
     Embeddable::ImageQuestion,
     Embeddable::Labbook,
-    QuestionTracker,
     Embeddable::ExternalScript,
   ]
 
