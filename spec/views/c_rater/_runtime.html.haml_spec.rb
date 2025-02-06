@@ -7,7 +7,7 @@ require 'spec_helper'
 
 describe "Rended DOM for Argblock sections" do
   let(:page) { double("page double", layout: "big", id: 1) }
-  let(:embeddable_class) { double( "Answer Class", name: 'Embeddable::OpenResponseAnswer') }
+  let(:embeddable_class) { double( "Answer Class", name: 'Embeddable::MultipleChoiceAnswer') }
   let(:saved_feedback) do
     double("Saved Feedback",
       feedback_text: "",
