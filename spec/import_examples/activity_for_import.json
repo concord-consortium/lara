@@ -1,0 +1,105 @@
+{
+  "description": "",
+  "editor_mode": 0,
+  "layout": 0,
+  "name": "Sharing test",
+  "notes": "",
+  "project_id": 2,
+  "related": "",
+  "student_report_enabled": true,
+  "thumbnail_url": "",
+  "time_to_complete": 3,
+  "version": 1,
+  "theme_name": "HAS National Geographic: Water",
+  "pages": [
+      {
+        "embeddable_display_mode": "stacked",
+        "is_completion": false,
+        "is_hidden": false,
+        "layout": "l-6040",
+        "name": "page 1",
+        "position": 1,
+        "show_info_assessment": true,
+        "show_interactive": false,
+        "show_header": true,
+        "show_sidebar": false,
+        "sidebar": null,
+        "sidebar_title": "Did you know?",
+        "sections": [
+          {
+            "title": null,
+            "is_hidden": false,
+            "layout": "60-40",
+            "secondary_column_collapsible": false,
+            "secondary_column_display_mode": "stacked",
+            "embeddables": [
+              {
+                "aspect_ratio_method": "DEFAULT",
+                "authored_state": null,
+                "click_to_play": true,
+                "click_to_play_prompt": "",
+                "enable_learner_state": true,
+                "full_window": false,
+                "has_report_url": false,
+                "image_url": "https://www.catster.com/wp-content/uploads/2017/12/A-gray-kitten-meowing.jpg",
+                "is_half_width": false,
+                "is_hidden": false,
+                "model_library_url": null,
+                "name": "codap test",
+                "native_height": 435,
+                "native_width": 576,
+                "show_delete_data_button": true,
+                "url": "https://document-store.concord.org/v2/documents/86253/autolaunch?server=https%3A%2F%2Fcodap.concord.org%2Freleases%2Flatest%2F&scaling",
+                "type": "MwInteractive",
+                "ref_id": "86-MwInteractive"
+              },
+              {
+                "plugin": {
+                    "description": "LaraSharingPlugin",
+                    "author_data": "",
+                    "approved_script_label": "LaraSharingPlugin"
+                },
+                "is_hidden": false,
+                "is_half_width": true,
+                "type": "Embeddable::EmbeddablePlugin",
+                "ref_id": "54-Embeddable::EmbeddablePlugin",
+                "embeddable_ref_id": "86-MwInteractive"
+              }
+            ]}
+          ]
+        },
+        {
+          "embeddable_display_mode": "stacked",
+          "is_completion": false,
+          "is_hidden": false,
+          "layout": "l-6040",
+          "name": "page 2",
+          "position": 2,
+          "show_info_assessment": false,
+          "show_interactive": false,
+          "show_header": false,
+          "show_sidebar": false,
+          "sidebar": null,
+          "sidebar_title": "Did you know?",
+          "sections": []
+      },
+      {
+          "embeddable_display_mode": "stacked",
+          "is_completion": true,
+          "is_hidden": false,
+          "layout": "l-6040",
+          "name": "page 3",
+          "position": 3,
+          "show_info_assessment": false,
+          "show_interactive": false,
+          "show_header": false,
+          "show_sidebar": false,
+          "sidebar": null,
+          "sidebar_title": "Did you know?",
+          "sections": []
+      }
+  ],
+  "plugins": [],
+  "type": "LightweightActivity",
+  "export_site": "Lightweight Activities Runtime and Authoring"
+}

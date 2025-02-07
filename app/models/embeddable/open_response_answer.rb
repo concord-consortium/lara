@@ -1,8 +1,6 @@
 module Embeddable
   class OpenResponseAnswer < ApplicationRecord
     include Answer
-    include CRater::FeedbackFunctionality
-
 
     belongs_to :question,
       class_name: 'Embeddable::OpenResponse',
@@ -47,10 +45,6 @@ module Embeddable
 
     def answered?
       self.answer_text.present?
-    end
-
-    def c_rater_item_settings
-      question && question.c_rater_item_settings
     end
 
     def clear_default_text

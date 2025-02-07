@@ -94,12 +94,7 @@ var pageTemplate = {
           "type": "Embeddable::Xhtml"
         }
       ],
-      "sections": [
-        {
-          "name": "arg_block",
-          "section_embeddables": []
-        }
-      ]
+      "sections": []
     };
 
 

@@ -168,9 +168,6 @@ class User < ApplicationRecord
     if can? :manage, User
       links.push({text: "Failed Runs", path: Rails.application.routes.url_helpers.dirty_runs_path})
     end
-    if can? :manage, CRater::ScoreMapping
-      links.push({text: "Score Mappings", path: Rails.application.routes.url_helpers.c_rater_score_mappings_path})
-    end
     if can? :manage, LibraryInteractive
       links.push({text: "Library Interactives", path: Rails.application.routes.url_helpers.library_interactives_path})
     end

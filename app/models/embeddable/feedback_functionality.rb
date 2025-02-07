@@ -2,7 +2,6 @@
 #  - answer_text (returns string)
 #  - feedback_text (returns string)
 #  - score (returns integer, optional)
-#  - c_rater_settings (should point to CRaterSettings instance if feedback should be obtained, nil otherwise)
 
 module Embeddable::FeedbackFunctionality
   extend ActiveSupport::Concern

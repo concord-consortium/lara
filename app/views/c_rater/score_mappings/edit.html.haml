@@ -1,6 +1,0 @@
-.edit-score-mapping
-  .heading
-    Edit : #{@score_mapping.description}
-  = form_for @score_mapping, :url => c_rater_score_mapping_path(@score_mapping),:method => 'put',
-    :html => {:'data-type' => 'json', :class=> 'score_mapping_form'} do |f|      
-    = render :partial => 'form', :locals => { :f => f }

@@ -1,8 +1,4 @@
 class DevController < ActionController::Base
-  def test_argblock
-    # should render test_argblock.html.haml
-  end
-
   def test_mail
     recipient = "authoring-help@concord.org"
     MailTest.test(recipient, request).deliver
