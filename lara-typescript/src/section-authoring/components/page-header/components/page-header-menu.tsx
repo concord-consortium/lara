@@ -90,8 +90,8 @@ export const PageHeaderMenu: React.FC<IAccountOwnerProps> = ({
     return (
       <>
         {showHeaderMenu
-          ? <MenuCloseIcon />
-          : <MenuIcon />
+          ? <MenuCloseIcon data-testid="menu-close-icon" />
+          : <MenuIcon data-testid="menu-icon" />
         }
         <div ref={menuRef} className={`header-menu-links ${showHeaderMenu ? "show" : ""}`}>
           <ul>
@@ -101,13 +101,14 @@ export const PageHeaderMenu: React.FC<IAccountOwnerProps> = ({
                 href="https://docs.google.com/document/d/1d-06qDtpxi-l9eOc1wfYGZzY93Pww32IfZxBJaBXlWM"
                 target="_blank"
                 rel="noopener"
+                data-testid="help-link"
               >
                 <HelpIcon height="20" width="20" />
                 Help
               </a>
             </li>
             <li>
-              <a href={logOutURL} data-method="delete">
+              <a href={logOutURL} data-method="delete" data-testid="logout-link">
                 <LoginIcon height="20" width="20" />
                 Log Out
               </a>

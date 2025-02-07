@@ -101,7 +101,8 @@ class LightweightActivitiesController < ApplicationController
       :time_to_complete, :is_locked, :notes, :thumbnail_url, :project_id,
       :portal_run_count, :layout, :editor_mode, :publication_hash, :copied_from_id,
       :student_report_enabled, :show_submit_button, :project, :background_image,
-      :glossary_id, :hide_read_aloud, :font_size, :hide_question_numbers, :rubric_id
+      :glossary_id, :hide_read_aloud, :font_size, :hide_question_numbers, :rubric_id,
+      :fixed_width_layout, :is_official, :publication_status
     )
   end
 
