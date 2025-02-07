@@ -18,13 +18,6 @@ LightweightStandalone::Application.routes.draw do
 
   root to: 'home#home'
 
-  resources :question_trackers do
-    member do
-      post 'add_embeddable'
-      post 'replace_master'
-    end
-  end
-
   namespace :embeddable do
     resources :image_question_answers
   end
@@ -59,8 +52,6 @@ LightweightStandalone::Application.routes.draw do
       get :export
       get :export_for_portal
       get :show_status
-      # TODO: dpeprecate this Dashboard route
-      get :dashboard_toc, to: redirect(path: "/api/v1/dashboard_toc/sequences/%{id}")
     end
     resources :activities, controller: 'lightweight_activities', constraints: { id: /\d+/, sequence_id: /\d+/ }, only: [:show, :summary] do
       member do
@@ -72,16 +63,6 @@ LightweightStandalone::Application.routes.draw do
   namespace :embeddable do
     resources :open_response_answers
     resources :multiple_choice_answers
-  end
-
-  namespace :c_rater do
-    resources :item_settings, only: [:edit, :update]
-    post "/argumentation_blocks/:page_id/create_embeddables" => 'argumentation_blocks#create_embeddables', :as => 'arg_block_create_embeddables'
-    post "/argumentation_blocks/:page_id/remove_embeddables" => 'argumentation_blocks#remove_embeddables', :as => 'arg_block_remove_embeddables'
-    post "/argumentation_blocks/:page_id/save_feedback/:run_key" => 'argumentation_blocks#save_feedback', :as => 'arg_block_save_feedback', :constraints => { run_key: /[-\w]{36}/ }
-    post "/argumentation_blocks/feedback_on_feedback" => 'argumentation_blocks#feedback_on_feedback', :as => 'arg_block_feedback_on_feedback'
-    resources :score_mappings
-    post "/argumentation_blocks/report" => 'argumentation_blocks#report'
   end
 
   namespace :admin do
@@ -110,8 +91,6 @@ LightweightStandalone::Application.routes.draw do
       get 'export_for_portal'
       get 'show_status'
       post 'add_plugin'
-      # TODO: dpeprecate this Dashboard route
-      get :dashboard_toc, to: redirect(path: "/api/v1/dashboard_toc/activities/%{id}")
     end
 
     resources :pages, controller: 'interactive_pages', constraints: { id: /\d+/ } do
@@ -120,7 +99,6 @@ LightweightStandalone::Application.routes.draw do
         post 'add_embeddable'
         post 'add_section'
         post 'delete_section'
-        get  'add_tracked'
         get 'move_up', controller: 'lightweight_activities'
         get 'move_down', controller: 'lightweight_activities'
         get 'preview'
@@ -175,11 +153,6 @@ LightweightStandalone::Application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-      # For UW style tracked question reports (longitudinal reports)
-      resources :question_trackers, only: [:index] do
-        match 'report' =>  "question_trackers#report", via: ['get','post', 'put'], defaults: { format: 'json' }
-      end
-
       resources :activities, controller: 'lightweight_activities', only: [:show, :destroy] do
         member do
           get :report_structure
@@ -196,14 +169,6 @@ LightweightStandalone::Application.routes.draw do
       resources :rubrics, controller: 'rubrics', only: [:show, :update]
 
       match 'import' => 'import#import', :via => 'post'
-
-      match 'question_trackers/find_by_activity/:activity_id' =>  "question_trackers#find_by_activity", via: ['get'], defaults: { format: 'json' }
-      match 'question_trackers/find_by_sequence/:sequence_id' =>  "question_trackers#find_by_sequence", via: ['get'], defaults: { format: 'json' }
-
-      # For HASBOT C-Rater reports aka HAS Dashboard
-      match 'dashboard_runs' => "dashboard#runs", :via => 'get', defaults: { format: 'json' }
-      match 'dashboard_runs_all' => "dashboard#runs_all", :via => 'get', defaults: { format: 'json' }
-      match 'dashboard_toc/:runnable_type/:runnable_id' => "dashboard#toc", :via => 'get',  defaults: { format: 'json' }
 
       match "interactive_run_states/:key" => 'interactive_run_states#show', :as => 'show_interactive_run_state', :via => 'get'
       match "interactive_run_states/:key" => 'interactive_run_states#update', :as => 'update_interactive_run_state', :via => 'put'
@@ -287,8 +252,6 @@ LightweightStandalone::Application.routes.draw do
   get "/sequences/:sequence_id/activities/:activity_id/pages/:id/:run_key" => 'interactive_pages#show', :as => 'sequence_page_with_run', :constraints => { id: /\d+/, sequence_id: /\d+/, activity_id: /\d+/, run_key: /[-\w]{36}/ }
   get "/sequences/:sequence_id/activities/:activity_id/summary/:run_key" => 'lightweight_activities#summary', :as => 'sequence_summary_with_run', :constraints => { sequence_id: /\d+/, activity_id: /\d+/, run_key: /[-\w]{36}/ }
   get "/sequences/:id/sequence_run/:sequence_run_key" => 'sequences#show', :as => 'sequence_with_sequence_run_key', :constraints => { id: /\d+/, sequence_id: /\d+/, activity_id: /\d+/, run_key: /[-\w]{36}/ }
-  # TODO: Depricate this older dashboard route
-  get "/runs/dashboard" => 'api/v1/dashboard#runs'
   match "/runs/fix_broken_portal_runs/:run_id" => 'runs#fix_broken_portal_runs', :as => 'fix_broken_portal_runs', :via => 'get'
   match "/runs/run_info/:run_id" => 'runs#run_info', :as => 'run_info', :via => 'get'
 
@@ -308,7 +271,6 @@ LightweightStandalone::Application.routes.draw do
     warden.user && warden.user.admin?
   }
 
-  match "/dev/test_argblock" => 'dev#test_argblock', :as => 'test_argblock', :via => 'get'
   match "/dev/test_mail" => 'dev#test_mail', :as => 'test_mail', :via => 'get'
   match "/dev/test_exception" => 'dev#test_error', :as => 'test_exception', :via => 'get'
   match "/dev/test_error" => 'dev#test_error', :as => 'test_error', :via => 'get'

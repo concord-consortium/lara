@@ -75,13 +75,6 @@ module LightweightActivityHelper
 
     activity_player_url = activity.activity_player_url(base_url, page: page)
     activity_player_te_url = activity.activity_player_url(base_url, page: page, mode: "teacher-edition")
-    if page
-      lara_runtime_url = preview_activity_page_path(activity, page)
-      lara_runtime_te_url = preview_activity_page_path(activity, page, mode: "teacher-edition")
-    else
-      lara_runtime_url = preview_activity_path(activity)
-      lara_runtime_te_url = preview_activity_path(activity, mode: "teacher-edition")
-    end
 
     preview_options = {
                        'Select an option...' => '',

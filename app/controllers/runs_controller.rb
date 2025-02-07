@@ -1,6 +1,6 @@
 class RunsController < ApplicationController
   layout false, except: [:dirty, :details]
-  before_action :set_run, except: [:index, :fix_broken_portal_runs, :dashboard]
+  before_action :set_run, except: [:index, :fix_broken_portal_runs]
 
   def index
     # This is actually a special case of show - create an Run and show it
@@ -84,15 +84,6 @@ class RunsController < ApplicationController
     else
       redirect_to url_for(params.merge(origin: request.referrer))
     end
-  end
-
-  # Used by Dashboard app.
-  def dashboard
-    page_id = params[:page_id]
-    endpoint_urls = params[:endpoint_urls] || []
-    submissions_created_after = params[:submissions_created_after]
-    dashboard = DashboardRunlist.new(endpoint_urls, page_id, submissions_created_after)
-    render json: dashboard.to_json, callback: params[:callback]
   end
 
   def unauthorized_feedback

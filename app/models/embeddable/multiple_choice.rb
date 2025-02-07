@@ -28,10 +28,6 @@ module Embeddable
 
     accepts_nested_attributes_for :choices, allow_destroy: true
 
-    has_one :tracked_question, as: :question, dependent: :delete
-    has_one :question_tracker, through: :tracked_question
-    has_one :master_for_tracker, class_name: 'QuestionTracker', as: :master_question
-
     default_value_for :name, "Multiple Choice Question element"
     default_value_for :prompt, "why does ..."
 
@@ -93,7 +89,6 @@ module Embeddable
         multi_answer: multi_answer,
         show_as_menu: show_as_menu,
         is_prediction: is_prediction,
-        show_in_featured_question_report: show_in_featured_question_report,
         give_prediction_feedback: give_prediction_feedback,
         prediction_feedback: prediction_feedback,
         layout: layout,
@@ -113,8 +108,7 @@ module Embeddable
           content: choice.choice,
           correct: choice.is_correct
         } },
-        is_required: is_prediction,
-        show_in_featured_question_report: show_in_featured_question_report
+        is_required: is_prediction
       }
     end
 
@@ -128,7 +122,6 @@ module Embeddable
           content: choice.choice,
           correct: choice.is_correct
         }},
-        show_in_featured_question_report: show_in_featured_question_report,
         question_number: index_in_activity,
         required: is_prediction
       }
@@ -150,7 +143,6 @@ module Embeddable
                                 :multi_answer,
                                 :show_as_menu,
                                 :is_prediction,
-                                :show_in_featured_question_report,
                                 :give_prediction_feedback,
                                 :prediction_feedback,
                                 :layout,

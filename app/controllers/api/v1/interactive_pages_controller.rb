@@ -346,7 +346,6 @@ class Api::V1::InteractivePagesController < API::APIController
       :no_snapshots,
       :report_item_url,
       :show_delete_data_button,
-      :show_in_featured_question_report,
       :url,
       :url_fragment
     )

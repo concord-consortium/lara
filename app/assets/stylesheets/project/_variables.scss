@@ -1,6 +1,6 @@
 /* !============================================= */
 
-/* ! Variables						  			  */ 
+/* ! Variables						  			  */
 
 /* !============================================= */
 
@@ -10,9 +10,9 @@ $black-5: #f5f5f5;
 $black-10: #ededed;
 $black-15: #ccc;
 $black-50: #999;
-$black-75: #666; 
-$black-90: #222; 
-$black-95: #111; 
+$black-75: #666;
+$black-90: #222;
+$black-95: #111;
 
 $light-gray: $black-10;
 $med-gray: $black-50;
@@ -87,20 +87,6 @@ $related-green: #90c556;
 
 $btn-green: #2DA343;
 $btn-green2: #2FAC47;
-
-// Variables for HAS-NGS
-// These are also imported into screen.scss
-// ----------------------------------------
-
-// font variables for HAS-NGS SEE: helv-stack mixin in base-fonts
-// ----------------------------------------
-// TODO: Find instances of these, and change to @include helv-stack(weight)
-// $helv-reg: "Helvetica-Medium", Helvetica, Arial, sans-serif;
-// $helv-bold: "Helvetica-Bold", Helvetica, Arial, sans-serif;
-// $helv-light: "Helvetica-Light", Helvetica, Arial, sans-serif;
-
-// color
-// ----------------------------------------
 
 /* -- Primary -- */
 $shakespeare: #459ace;

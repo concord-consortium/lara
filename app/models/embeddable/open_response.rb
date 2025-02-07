@@ -14,10 +14,6 @@ module Embeddable
       foreign_key: 'open_response_id',
       dependent: :destroy
 
-    has_one :tracked_question, as: :question, dependent: :delete
-    has_one :question_tracker, through: :tracked_question
-    has_one :master_for_tracker, class_name: 'QuestionTracker', as: :master_question
-
     default_value_for :prompt, "why does ..."
 
     def to_hash
@@ -25,7 +21,6 @@ module Embeddable
         name: name,
         prompt: prompt,
         is_prediction: is_prediction,
-        show_in_featured_question_report: show_in_featured_question_report,
         give_prediction_feedback: give_prediction_feedback,
         prediction_feedback: prediction_feedback,
         default_text: default_text,
@@ -40,8 +35,7 @@ module Embeddable
         type: "open_response",
         id: id,
         prompt: prompt,
-        is_required: is_prediction,
-        show_in_featured_question_report: show_in_featured_question_report
+        is_required: is_prediction
       }
     end
 
@@ -50,7 +44,6 @@ module Embeddable
         type: 'open_response',
         id: embeddable_id,
         prompt: prompt,
-        show_in_featured_question_report: show_in_featured_question_report,
         question_number: index_in_activity,
         required: is_prediction
       }
@@ -76,7 +69,6 @@ module Embeddable
       return self.as_json(only:[:name,
                                 :prompt,
                                 :is_prediction,
-                                :show_in_featured_question_report,
                                 :give_prediction_feedback,
                                 :prediction_feedback,
                                 :default_text,
@@ -88,9 +80,5 @@ module Embeddable
     def self.import (import_hash)
       return self.new(import_hash)
     end
-
-    # SettingsProviderFunctionality extends the functionality of duplicate, export and import using alias_method_chain.
-    # So these methods needs to be visible to the SettingsProviderFunctionality.
-    include CRater::SettingsProviderFunctionality
   end
 end

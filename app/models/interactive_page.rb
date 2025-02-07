@@ -72,7 +72,6 @@ class InteractivePage < ApplicationRecord
     @registered_sections.push(s)
     @registered_additional_sections.push(s)
     # Let client code use .update_attributes methods (and similar) to set show_<section_name>.
-    
     # show_<section_name> getter:
     define_method("show_#{s[:name]}") do
       additional_sections && additional_sections[s[:name]]
@@ -92,15 +91,6 @@ class InteractivePage < ApplicationRecord
   # The order of these register_ calls matters. It determines the order of the embeddables.
   InteractivePage.register_section({name: HEADER_BLOCK, show_method: 'show_header'})
   InteractivePage.register_section({name: nil, show_method: 'show_info_assessment'})
-
-  # Register additional sections of interactive page.
-  # This code could (or should) to some config file or initializer, but as we
-  # have only one additional section at the moment, let's keep it here.
-  InteractivePage.register_additional_section({name:  CRater::ARG_SECTION_NAME,
-                                               dir:   CRater::ARG_SECTION_DIR,
-                                               label: CRater::ARG_SECTION_LABEL,
-                                               show_method: 'show_' + CRater::ARG_SECTION_NAME})
-
   InteractivePage.register_section({name: INTERACTIVE_BOX, show_method: 'show_interactive'})
 
   # This is a sort of polymorphic has_many :through (which is forbidden in AR)
@@ -373,7 +363,7 @@ class InteractivePage < ApplicationRecord
       # if explicit version not set figure it out from the json
       version = version || (page_json_object.has_key?(:sections) ? 2 : 1)
 
-      if version == 1 
+      if version == 1
         # First, import and cache all the embeddables.
         page_json_object[:embeddables].each do |embed_hash|
           embed = helper.import(embed_hash[:embeddable])
@@ -391,13 +381,13 @@ class InteractivePage < ApplicationRecord
           # First create the section and add it to the page at the bottom to keep it in the same order as the export
           new_section = import_page.sections.create(Section::DEFAULT_PARAMS.merge({title: s[:title]}))
           new_section.move_to_bottom
-    
+
           # Then, import and cache all the embeddables.
           s[:embeddables].each do |embed_json_obj|
             embed = helper.import(embed_json_obj.except(:column, :position))
             import_page.add_embeddable(embed, embed_json_obj[:position], new_section, embed_json_obj[:column])
           end
-  
+
           # Now when all the objects are created, setup references (e.g. question pointing to interactive, or
           # one embeddable pointing to another one).
           s[:embeddables].each do |embed_json_obj|

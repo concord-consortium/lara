@@ -32,7 +32,6 @@ export const CustomizeMWInteractive: React.FC<Props> = (props) => {
     click_to_play_prompt,
     full_window,
     image_url,
-    show_in_featured_question_report,
     aspect_ratio_method,
     linked_interactive_item_id,
     report_item_url
@@ -144,14 +143,6 @@ export const CustomizeMWInteractive: React.FC<Props> = (props) => {
           defaultChecked={has_report_url}
           label="This interactive has a report URL"
           warning="Please do not select this unless your interactive includes a report url in its saved state."
-        />
-      </div>
-
-      <div>
-        <Checkbox
-          name="show_in_featured_question_report"
-          defaultChecked={show_in_featured_question_report}
-          label="Show in featured question report"
         />
       </div>
 

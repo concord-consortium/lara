@@ -28,11 +28,6 @@ export interface IPageProps extends IPage {
   isHidden?: boolean;
 
   /**
-   * Does page have an argumentation block?
-   */
-  hasArgBlock?: boolean;
-
-  /**
    * Does page have a student sidebar?
    */
   showSidebar?: boolean;

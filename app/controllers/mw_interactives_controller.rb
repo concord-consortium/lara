@@ -21,9 +21,8 @@ class MwInteractivesController < InteractiveController
       :enable_learner_state, :has_report_url, :click_to_play,
       :click_to_play_prompt, :image_url, :is_hidden, :linked_interactive_id, :linked_interactive_type,
       :full_window, :model_library_url, :authored_state, :no_snapshots,
-      :show_delete_data_button, :show_in_featured_question_report, :is_half_width,
-      :aspect_ratio_method, :linked_interactive_item_id, :report_item_url,
-      :linked_interactives, :hide_question_number
+      :show_delete_data_button, :is_half_width, :aspect_ratio_method, :linked_interactive_item_id,
+      :report_item_url, :linked_interactives, :hide_question_number
     )
   end
 

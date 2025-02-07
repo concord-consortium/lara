@@ -341,20 +341,6 @@ describe LightweightActivity do
         embeddable = dup.pages.first.embeddables.first
         expect(embeddable.prompt).to eq prompt
       end
-      describe "when the embeddable is a tracked question" do
-        let(:master_question)  { FactoryGirl.create(:open_response, prompt:prompt) }
-        let(:question_tracker) { QuestionTracker.create(master_question:master_question ) }
-        let(:open_response)    { question_tracker.new_question }
-        before(:each) do
-          question_tracker.add_question(open_response)
-        end
-        it "the duplicate open response should have a question_tracker" do
-          dup = activity.duplicate(owner)
-          embeddable = dup.pages.first.embeddables.first
-          expect(embeddable.question_tracker).to_not be_nil
-          expect(embeddable.prompt).to eq open_response.prompt
-        end
-      end
     end
 
    describe "an activity with an image interactive" do
@@ -371,17 +357,6 @@ describe LightweightActivity do
         dup = activity.duplicate(owner)
         dup_int = dup.pages.first.interactives.first
         expect(dup_int.url).to eq url
-      end
-    end
-
-    describe "for itsi activities" do
-      let(:edit_mode) { LightweightActivity::ITSI_EDITOR_MODE   }
-      let(:layout)    { LightweightActivity::LAYOUT_SINGLE_PAGE }
-
-      it "should use the itsi edit mode, and single page layout" do
-        dup = activity.duplicate(owner)
-        expect(dup.layout).to eq LightweightActivity::LAYOUT_SINGLE_PAGE
-        expect(dup.editor_mode).to eq LightweightActivity::ITSI_EDITOR_MODE
       end
     end
 

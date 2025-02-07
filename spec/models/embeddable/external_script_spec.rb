@@ -47,20 +47,6 @@ describe Embeddable::ExternalScript do
         end
       end
 
-      describe 'when the embeddable is added to the C-RATER section' do
-        let(:section) { CRater::ARG_SECTION_NAME }
-
-        describe 'the page export' do
-          it "should include a section named 'arg_block' with some ebmeddables" do
-            expect(page.export[:sections]).to include(hash_including(
-              {
-                title: CRater::ARG_SECTION_NAME,
-                embeddables: array_including(anything)
-              }))
-          end
-        end
-      end
-
     end
   end
 

@@ -43,7 +43,6 @@
               "name": "",
               "prediction_feedback": "",
               "prompt": "<p>What do you think?<\/p>",
-              "show_in_featured_question_report": true,
               "type": "Embeddable::OpenResponse",
               "ref_id": "1-Embeddable::OpenResponse"
             },
@@ -66,7 +65,6 @@
               "native_height": 435,
               "native_width": 576,
               "show_delete_data_button": false,
-              "show_in_featured_question_report": true,
               "url": "http:\/\/concord-consortium.github.io\/lara-interactive-api\/iframe.html",
               "type": "MwInteractive",
               "ref_id": "1-MwInteractive"
@@ -84,7 +82,6 @@
               "name": "",
               "prediction_feedback": "",
               "prompt": "<p>Why do you think that?<\/p>",
-              "show_in_featured_question_report": true,
               "type": "Embeddable::OpenResponse",
               "ref_id": "2-Embeddable::OpenResponse"
             },
@@ -107,7 +104,6 @@
               "native_height": 435,
               "native_width": 576,
               "show_delete_data_button": false,
-              "show_in_featured_question_report": true,
               "url": "http:\/\/concord-consortium.github.io\/lara-interactive-api\/iframe.html",
               "type": "MwInteractive",
               "ref_id": "5-MwInteractive"
@@ -131,7 +127,6 @@
               "native_height": 435,
               "native_width": 576,
               "show_delete_data_button": true,
-              "show_in_featured_question_report": true,
               "url": "http:\/\/concord-consortium.github.io\/lara-interactive-api\/iframe.html",
               "type": "MwInteractive",
               "ref_id": "2-MwInteractive"
@@ -155,7 +150,6 @@
               "native_height": 435,
               "native_width": 576,
               "show_delete_data_button": false,
-              "show_in_featured_question_report": true,
               "url": "http:\/\/concord-consortium.github.io\/lara-interactive-api\/iframe.html",
               "type": "MwInteractive",
               "ref_id": "3-MwInteractive"
@@ -179,7 +173,6 @@
               "native_height": 435,
               "native_width": 576,
               "show_delete_data_button": true,
-              "show_in_featured_question_report": true,
               "url": "http:\/\/concord-consortium.github.io\/lara-interactive-api\/iframe.html",
               "type": "MwInteractive",
               "ref_id": "4-MwInteractive"

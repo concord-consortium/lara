@@ -41,7 +41,6 @@ en:
   PREDICTION_BUTTON: "Submit"
   ANSWER_IS_FINAL: "Your answer is now locked."
   IS_PREDICTION_QUESTION: "Answer required?"
-  SHOW_IN_FEATURED_QUESTION_REPORT: "Show in featured question report?"
   IS_CALLOUT_ASSESSMENT_ITEM: "Callout? (Displayed within a shaded box.)"
   IS_HALF_WIDTH_ASSESMENT_ITEM: "Half width? (Full width layout only)"
   LET_USERS_CHECK_MC_ANSWERS: "Allow users to check answers?"
@@ -70,36 +69,6 @@ en:
   NO_EMBEDDABLE: "No Embeddable"
   NEXT_EMBEDDABLE: "Next Embeddable"
   SNAPSHOT_WITHOUT_INTERACTIVE: "Snapshot won't work, as the interactive is not selected"
-  ARG_BLOCK:
-    PLEASE_ANSWER: "Please answer all questions in the argumentation block."
-    MAX_SUMISSIONS_REACHED: "You have used up all of your tries. Please move on to the next page."
-    ANSWERS_NOT_CHANGED: "Answers have not been changed."
-    SUBMIT: "Submit"
-    RESUBMIT: "Resubmit"
-    SUBMIT_ERROR: "We are sorry, but something went wrong. Please try again or proceed to the next page."
-    SUBMISSION: "Submission #"
-    HASBOT_SAYS: "HASBOT says:"
-    ANALYZED: "We have analyzed your answers. Look at the feedback below."
-    RESUBMIT_OR_MOVE: "You may revise your answers and resubmit, or you may move to the next page."
-    FEEDBACK: "Feedback"
-    RESUBMIT_ANSWER: "Answer has been changed, please resubmit to update feedback!"
-    RESUBMIT_ANSWER_LIMIT_REACHED: "Answer has been changed, but you are out of feedback tries."
-    TEST_MODEL: "C-Rater Item ID references test model"
-    NO_FEEDBACK_TEXT: "No feedback text defined for score: %{score}"
-    NO_SCORE_MAPPING: "Score: %{score} (score mapping undefined)"
-    NO_ITEM_CONFIG: "C-Rater item configuration is not provided"
-    NO_GLOBAL_CONFIG: "C-Rater global configuration is not provided"
-    EXPLANATION_PROMPT: "Explain your answer."
-    CERTAINTY_PROMPT: "How certain are you about your claim based on your explanation?"
-    RATIONALE_PROMPT: "Explain what influenced your certainty rating."
-    NOT_CERTAIN: "Not at all certain"
-    VERY_CERTAIN: "Very certain"
-    FEEDBACK_ON_FEEDBACK: "How useful was my feedback to you?"
-    PLEASE_FEEDBACK_ON_FEEDBACK: "Please answer the question about the usefulness of our feedback."
-    USEFUL_0: "Not at all"
-    USEFUL_1: "Somewhat"
-    USEFUL_2: "Very"
-    NOT_AVAILABLE: "Sorry, automated scoring is not available at this time."
   LABBOOK:
     ALBUM: "Labbook album"
     WONT_DISPLAY: "Labbook will not be shown."
@@ -129,22 +98,13 @@ en:
         &nbsp;To browse your Snapshot Album, click the album icon.
         A snapshot must be included for the activity to show as completed.</p>
       BUTTON: "Take a Snapshot"
-  TRACKED_QUESTION:
-    ADD_TEXT: "Select a tracked question to add:"
-    CANT_EDIT: "Tracked Question (editing disabled)"
-    CAN_EDIT:  "Tracked Question (use caution!)"
-  QUESTION_TRACKER:
-    MASTER_QUESTION:
-      NOT_DEFINED: "No master question is defined."
   EMBEDDABLE:
     CONFIRM_REMOVE:
       NOT_IN_USE: "Are you sure?"
       IN_USE: "Are you sure you want to delete this element? You will lose data from %{learners} that have answered this question."
-      TRACKED: "Are you sure you want to delete this Tracked Question? You will no longer be able to see special reports for this question."
     CONFIRM_HIDE:
       NOT_IN_USE: "Are you sure? Students will not see this question, and it will not appear in reports"
       IN_USE: "Are you sure you want to hide this element? You will lose data from %{learners} that have answered this question."
-      TRACKED: "Are you sure you want to hide this Tracked Question? You will no longer be able to see special reports for this question."
   COMPLETION_PAGE:
     HEADER: "%{activity} activity complete!"
     CONGRATULATIONS: "Congratulations!"
@@ -189,7 +149,6 @@ en:
       "embeddable/multiple_choice": "Multiple choice"
       "embeddable/open_response": "Open response"
       "embeddable/xhtml": "Text block"
-      "question_tracker": "Tracked Question"
       # Interactive types
       "image_interactive": "Image"
       "managed_interactive": "Library Interactive"

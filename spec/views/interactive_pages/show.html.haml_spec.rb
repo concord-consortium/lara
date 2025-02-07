@@ -11,10 +11,6 @@ describe "interactive_pages/show" do
   let (:page) do
     p = FactoryGirl.create(:page, name: "fake page", lightweight_activity: activity, embeddable_display_mode: 'carousel')
     allow(p).to receive_messages(last?: true)
-    [3,1,2].each do |i|
-      embed = FactoryGirl.create(:xhtml, name: "embeddable #{i}", content: "This is the #{ActiveSupport::Inflector.ordinalize(i)} embeddable")
-      p.add_embeddable(embed, i)
-    end
     p
   end
 
@@ -78,12 +74,6 @@ describe "interactive_pages/show" do
     it 'should have a div with class jcarousel' do
       render
       expect(rendered).to have_css('div.jcarousel')
-    end
-
-    it 'should have next and previous links' do
-      render
-      expect(rendered).to have_css('a.jcarousel-prev')
-      expect(rendered).to have_css('a.jcarousel-next')
     end
   end
 

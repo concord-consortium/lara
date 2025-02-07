@@ -106,9 +106,6 @@ class Section < ApplicationRecord
           emb_copy.linked_interactive = helper.get_copy(embed.linked_interactive)
         end
         emb_copy.save!(validate: false)
-        if embed.respond_to? :question_tracker and embed.question_tracker
-          embed.question_tracker.add_question(emb_copy)
-        end
         new_item = new_section.page_items.create!(
           embeddable: emb_copy,
           position: item.position,

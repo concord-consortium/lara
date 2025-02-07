@@ -62,7 +62,7 @@ LightweightStandalone::Application.configure do
   runtime.css theme-mw.css theme-has-ngs.css theme-has-ngs-atmosphere.css
   theme-has-ngs-climate.css theme-has-ngs-hydrofracking.css theme-has-ngs-landmanagement.css
   theme-has-ngs-water.css theme-rites.css print-summary.css theme-interactions-electrostatics.css
-  theme-interactions.css theme-inquiryspace.css theme-itsi.css theme-itsi-survey.css theme-has-astro.css
+  theme-interactions.css theme-inquiryspace.css theme-has-astro.css
   theme-has-astro-dark.css theme-ngss-assessment.css theme-building-models.css theme-geode-himalayas.css
   theme-ipums-terra.css theme-data-games.css theme-precipitating-change.css theme-geniventure.css
   theme-connectedbio.css theme-geohazard.css theme-geocode.css theme-rmath.css theme-waters.css

@@ -13,10 +13,6 @@ class Embeddable::ImageQuestion < ApplicationRecord
     foreign_key: 'image_question_id',
     dependent: :destroy
 
-  has_one :tracked_question, as: :question, dependent: :delete
-  has_one :question_tracker, through: :tracked_question
-  has_one :master_for_tracker, class_name: 'QuestionTracker', as: :master_question
-
   default_value_for :prompt, "why does ..."
 
   # NOTE: publishing to portal doesn't use this hash. portal_hash is used instead
@@ -28,7 +24,6 @@ class Embeddable::ImageQuestion < ApplicationRecord
       bg_source: bg_source,
       bg_url: bg_url,
       is_prediction: is_prediction,
-      show_in_featured_question_report: show_in_featured_question_report,
       give_prediction_feedback: give_prediction_feedback,
       prediction_feedback: prediction_feedback,
       is_hidden: is_hidden,
@@ -44,7 +39,6 @@ class Embeddable::ImageQuestion < ApplicationRecord
       prompt: prompt,
       drawing_prompt: drawing_prompt,
       is_required: is_prediction,
-      show_in_featured_question_report: show_in_featured_question_report
     }
   end
 
@@ -54,7 +48,6 @@ class Embeddable::ImageQuestion < ApplicationRecord
       id: embeddable_id,
       prompt: prompt,
       drawing_prompt: drawing_prompt,
-      show_in_featured_question_report: show_in_featured_question_report,
       question_number: index_in_activity,
       required: is_prediction
     }
@@ -71,7 +64,6 @@ class Embeddable::ImageQuestion < ApplicationRecord
                               :bg_source,
                               :bg_url,
                               :is_prediction,
-                              :show_in_featured_question_report,
                               :give_prediction_feedback,
                               :prediction_feedback,
                               :is_hidden,

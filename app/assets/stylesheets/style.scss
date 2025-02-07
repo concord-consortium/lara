@@ -1035,20 +1035,6 @@ fieldset {
           }
         }
       }
-      &.tracked {
-        .embeddable_options {
-          opacity: 0.4;
-        }
-        border: 1px solid hsl(44, 80%, 60%);
-        .embeddable_tools {
-          background-color: hsl(44, 60%, 80%);
-          color: hsl(44, 70%, 30%);
-          a:link {  color: hsl(44, 70%, 30%);}
-          .drag_handle {
-            color: hsl(44, 70%, 30%);
-          }
-        }
-      }
     }
     .ui-accordion {
       border: none !important;
