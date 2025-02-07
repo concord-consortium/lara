@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2025_02_06_202956) do
+ActiveRecord::Schema.define(version: 2025_02_06_215441) do
 
   create_table "admin_events", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "kind"
@@ -594,16 +594,6 @@ ActiveRecord::Schema.define(version: 2025_02_06_202956) do
     t.index ["project_key"], name: "index_projects_on_project_key", unique: true
   end
 
-  create_table "question_trackers", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.string "name"
-    t.string "description"
-    t.string "master_question_type"
-    t.bigint "master_question_id"
-    t.bigint "user_id"
-    t.index ["master_question_id", "master_question_type"], name: "index_question_trackers_on_master_question"
-    t.index ["user_id"], name: "index_question_trackers_on_user_id"
-  end
-
   create_table "rubrics", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name"
     t.integer "user_id"
@@ -715,14 +705,6 @@ ActiveRecord::Schema.define(version: 2025_02_06_202956) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["key"], name: "index_settings_on_key", unique: true
-  end
-
-  create_table "tracked_questions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.bigint "question_tracker_id"
-    t.string "question_type"
-    t.bigint "question_id"
-    t.index ["question_tracker_id"], name: "index_tracked_questions_on_question_tracker_id"
-    t.index ["question_type", "question_id"], name: "index_tracked_questions_on_question_type_and_question_id"
   end
 
   create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|

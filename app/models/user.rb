@@ -159,9 +159,6 @@ class User < ApplicationRecord
     if can? :manage, Project
       links.push({text: "Projects", path: Rails.application.routes.url_helpers.projects_path})
     end
-    if can? :manage, QuestionTracker
-      links.push({text: "QuestionTrackers", path: Rails.application.routes.url_helpers.question_trackers_path})
-    end
     if can? :manage, ApprovedScript
       links.push({text: "Plugins", path: Rails.application.routes.url_helpers.approved_scripts_path})
     end

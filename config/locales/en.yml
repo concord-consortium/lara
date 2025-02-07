@@ -98,22 +98,13 @@ en:
         &nbsp;To browse your Snapshot Album, click the album icon.
         A snapshot must be included for the activity to show as completed.</p>
       BUTTON: "Take a Snapshot"
-  TRACKED_QUESTION:
-    ADD_TEXT: "Select a tracked question to add:"
-    CANT_EDIT: "Tracked Question (editing disabled)"
-    CAN_EDIT:  "Tracked Question (use caution!)"
-  QUESTION_TRACKER:
-    MASTER_QUESTION:
-      NOT_DEFINED: "No master question is defined."
   EMBEDDABLE:
     CONFIRM_REMOVE:
       NOT_IN_USE: "Are you sure?"
       IN_USE: "Are you sure you want to delete this element? You will lose data from %{learners} that have answered this question."
-      TRACKED: "Are you sure you want to delete this Tracked Question? You will no longer be able to see special reports for this question."
     CONFIRM_HIDE:
       NOT_IN_USE: "Are you sure? Students will not see this question, and it will not appear in reports"
       IN_USE: "Are you sure you want to hide this element? You will lose data from %{learners} that have answered this question."
-      TRACKED: "Are you sure you want to hide this Tracked Question? You will no longer be able to see special reports for this question."
   COMPLETION_PAGE:
     HEADER: "%{activity} activity complete!"
     CONGRATULATIONS: "Congratulations!"
@@ -158,7 +149,6 @@ en:
       "embeddable/multiple_choice": "Multiple choice"
       "embeddable/open_response": "Open response"
       "embeddable/xhtml": "Text block"
-      "question_tracker": "Tracked Question"
       # Interactive types
       "image_interactive": "Image"
       "managed_interactive": "Library Interactive"

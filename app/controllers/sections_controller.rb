@@ -60,7 +60,6 @@ class SectionsController < ApplicationController
     authorize! :update, @page
     update_activity_changed_by
     @page_item.destroy
-    # We aren't removing the embeddable itself. But we would remove the tracked_question of the embeddable.
     redirect_to edit_activity_page_path(@activity, @page)
   end
 

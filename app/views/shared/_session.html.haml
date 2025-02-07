@@ -4,9 +4,6 @@
   -if can? :manage, Project
     |
     = link_to "Projects", projects_path
-  -if can? :manage, QuestionTracker
-    |
-    = link_to "QuestionTrackers", question_trackers_path
   -if can? :manage, ApprovedScript
     |
     = link_to "Plugins", approved_scripts_path

@@ -18,13 +18,6 @@ LightweightStandalone::Application.routes.draw do
 
   root to: 'home#home'
 
-  resources :question_trackers do
-    member do
-      post 'add_embeddable'
-      post 'replace_master'
-    end
-  end
-
   namespace :embeddable do
     resources :image_question_answers
   end
@@ -106,7 +99,6 @@ LightweightStandalone::Application.routes.draw do
         post 'add_embeddable'
         post 'add_section'
         post 'delete_section'
-        get  'add_tracked'
         get 'move_up', controller: 'lightweight_activities'
         get 'move_down', controller: 'lightweight_activities'
         get 'preview'
@@ -161,11 +153,6 @@ LightweightStandalone::Application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-      # For UW style tracked question reports (longitudinal reports)
-      resources :question_trackers, only: [:index] do
-        match 'report' =>  "question_trackers#report", via: ['get','post', 'put'], defaults: { format: 'json' }
-      end
-
       resources :activities, controller: 'lightweight_activities', only: [:show, :destroy] do
         member do
           get :report_structure
@@ -182,9 +169,6 @@ LightweightStandalone::Application.routes.draw do
       resources :rubrics, controller: 'rubrics', only: [:show, :update]
 
       match 'import' => 'import#import', :via => 'post'
-
-      match 'question_trackers/find_by_activity/:activity_id' =>  "question_trackers#find_by_activity", via: ['get'], defaults: { format: 'json' }
-      match 'question_trackers/find_by_sequence/:sequence_id' =>  "question_trackers#find_by_sequence", via: ['get'], defaults: { format: 'json' }
 
       match "interactive_run_states/:key" => 'interactive_run_states#show', :as => 'show_interactive_run_state', :via => 'get'
       match "interactive_run_states/:key" => 'interactive_run_states#update', :as => 'update_interactive_run_state', :via => 'put'
