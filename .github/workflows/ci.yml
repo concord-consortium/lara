@@ -90,3 +90,4 @@ jobs:
           tags: ${{ steps.docker_metadata.outputs.tags }}
           build-args: |-
             LARA_VERSION=${{ github.ref_name }}
+            RAILS_LTS_PASS=${{ secrets.RAILS_LTS_PASS }}
