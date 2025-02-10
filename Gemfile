@@ -1,18 +1,18 @@
 source "https://rubygems.org"
-  gem 'actionmailer', '~> 6.0.6.1', require: false
-  gem 'actionpack', '~> 6.0.6.1', require: false
-  gem 'activemodel', '~> 6.0.6.1', require: false
-  gem 'activerecord', '~> 6.0.6.1', require: false
-  gem 'activesupport', '~> 6.0.6.1', require: false
-  gem 'rails', '~> 6.0.6.1'
+  gem 'actionmailer', '~> 6.0.5.1', require: false
+  gem 'actionpack', '~> 6.0.5.1', require: false
+  gem 'activemodel', '~> 6.0.5.1', require: false
+  gem 'activerecord', '~> 6.0.5.1', require: false
+  gem 'activesupport', '~> 6.0.5.1', require: false
+  gem 'rails', '~> 6.0.5.1'
   # gem 'railslts-version', :require => false
-  gem 'railties', '~> 6.0.6.1', require: false
+  gem 'railties', '~> 6.0.5.1', require: false
 
 group :production do
   gem "unicorn"
 end
 
-group :assets do
+# group :assets do
   gem "coffee-rails", '~> 4.2', '>= 4.2.2'
   gem "compass-blueprint", "~> 1.0"
   gem "compass-rails", "~> 3.1.0"
@@ -20,7 +20,7 @@ group :assets do
   gem "sassc", "~> 2.1.0"
   gem "turbo-sprockets-rails4", "~> 1.2.5"
   gem "uglifier", "~> 4.2"
-end
+# end
 
 # 2021-11-01 -- NP: rails-assets.org SSL certificate has expired.
 # For now we have just put the JS and CSS files for drawing tool and its deps
@@ -35,7 +35,7 @@ end
 
 group :development do
   gem "better_errors", "~> 2.0.0", ">= 2.0.0"
-  gem 'bullet', "= 5.7.5"
+  # gem 'bullet', "= 6.1.5"
   gem "web-console", "~> 3.7"
 end
 
@@ -82,14 +82,14 @@ gem "gon", "~> 6.4.0"
 gem "haml", "~> 5.2"
 gem "highline", "~> 1.7.3"
 gem "httparty", "= 0.21"
-gem "i18n", "= 1.14.7"
+gem "i18n", ">= 1.8"
 gem "jquery-rails", '~> 4.1', '>= 4.1.0'
 gem "jquery-ui-rails", '~> 4.2.1'
 gem "loofah", "= 2.24.0"
 gem "multi_json", "~> 1.15"
 gem "mysql2", "~> 0.5"
 gem "nested_form", "~> 0.3.2"
-gem 'newrelic_rpm', '= 4.8.0.341'
+gem 'newrelic_rpm'
 gem "nokogiri", "~> 1.12.5"
 gem "omniauth", "= 1.4.2"
 gem "omniauth-oauth2", "1.3"
@@ -99,7 +99,7 @@ gem 'rack-secure_samesite_cookies', {git: 'https://github.com/concord-consortium
 gem 'rake', '~> 13.2', '>= 13.2.1'
 gem "responders", "~> 3.1.1"
 gem "ribbons-rails", "~> 0.0", {git: "https://github.com/concord-consortium/ribbons-rails.git"}
-gem "safe_yaml", "~> 1.0.5"
+# gem "safe_yaml", "~> 1.0.5"
 gem "spreadsheet", "~> 1.1.2", "= 1.1.2"
 gem "sprockets", "~> 3.7", "= 3.7.5"
 gem "tinymce-rails", '~> 4.9.4', "= 4.9.4"
@@ -110,7 +110,7 @@ gem "will_paginate", "~> 4.0.1"
 # The gems below were determined to no longer be needed after the upgrade to Rails 5.
 # For now we're leaving them here for reference just in case we need to add them back
 # in the future.
-#
+
 # # Previously in the :development group
 # gem "binding_of_caller", "~> 0.7"
 # gem "brakeman", "~> 2.4", {:require=>false}
@@ -124,13 +124,13 @@ gem "will_paginate", "~> 4.0.1"
 # gem "sextant", "~> 0.2"
 # gem "webrick", "~> 1.3"
 # gem "xray-rails", "~> 0.1"
-#
+
 # # Previously in the :test, :development group
 # gem "ci_reporter", "~> 1.9.2"
 # gem "pry"
 # gem 'pry-byebug'
 # gem "rb-fsevent", "~> 0.9"
-#
+
 # # Previously not grouped
 # gem "sqlite3", "~> 1.3"
 # gem "test-unit", "~> 3.0"

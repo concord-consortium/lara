@@ -1,6 +1,6 @@
 class InteractivePagesController < ApplicationController
   before_action :set_page, except: [:new, :create]
-  before_action only: [:show, :preview] { set_run_key(portal_launchable: false) }
+  before_action :set_run_key_to_false, only: [:show, :preview]
   before_action :set_sequence, only: [:show]
   before_action :check_if_hidden, only: [:show, :preview]
 
@@ -184,6 +184,10 @@ class InteractivePagesController < ApplicationController
   end
 
   private
+
+  def set_run_key_to_false
+    set_run_key(portal_launchable: false)
+  end
 
   def edit_embeddable_redirect(embeddable)
     case embeddable

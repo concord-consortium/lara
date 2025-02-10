@@ -35,20 +35,7 @@ LightweightStandalone::Application.configure do
   config.action_controller.per_form_csrf_tokens = false
   config.action_controller.forgery_protection_origin_check = false
   config.ssl_options = { hsts: { subdomains: false } }
-  config.hosts << "app.lara.docker"
   ActiveSupport.to_time_preserves_timezone = false
-
-  config.after_initialize do
-    Bullet.enable = true
-    Bullet.alert = false
-    Bullet.bullet_logger = ENV["RAILS_STDOUT_LOGGING"].blank?
-    Bullet.console = true
-    Bullet.growl = false
-    Bullet.xmpp = false
-    Bullet.rails_logger = true
-    Bullet.airbrake = false
-    # Bullet.add_footer = true
-  end
 
   # include per developer environment files if found (the default is excluded by .gitignore)
   #
