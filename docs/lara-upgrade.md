@@ -404,6 +404,33 @@ For now we will stay at 4.2.11.23 instead of upgrading to 4.2.11.38
 8. Create a PR and insure all the tests pass.
 9. After review/approval merge the branch into the `lara-upgrade` branch.
 
-### Upgrade To Rails 7.2.x
+### Upgrade To Rails 7.2.2
 
-This step will not be taken as it requires Ruby 3 which will likely break gems.  **IF THERE IS TIME** it would be good to try out an upgrade to see how much breaks and document what does break.
+1. Create an `upgrade-to-rails-7.2` branch off the `lara-upgrade` branch.
+2. **A Ruby upgrade to 3.1 IS required**. This will require a new `ruby31` branch in [docker-rails-base](https://github.com/concord-consortium/docker-rails-base). Once it exists, using that branch, create a [new GitHub package](https://github.com/orgs/concord-consortium/packages/container/docker-rails-base-private/versions?filters%5Bversion_type%5D=tagged) (Aden only created the initial one) called `ruby-3.1.0-rails-7.2.2`.  You may need Scott or Doug's permissions to do this.
+3. Change `Dockerfile` and `Dockerfile-dev` to use `ruby-3.1.0-rails-7.2.2` in the `FROM` url.
+4. Upgrade rails gems in `Gemfile` to last 7.2 version: `gem 'rails', '~> 7.2.2'`.
+5. Inside running Docker image run `bundle update rails`
+6. Resolve gem dependency issues until the bundle update succeeds.
+7. Complete upgrade tasks in the [7.1 to 7.2 upgrade guide](https://guides.rubyonrails.org/upgrading_ruby_on_rails.html#upgrading-from-rails-7-1-to-rails-7-2)
+
+- [ ] All tests now respect the active_job.queue_adapter config
+
+8. **Create a final FROM package**. Using the `ruby31` branch in [docker-rails-base](https://github.com/concord-consortium/docker-rails-base) create a [new GitHub package](https://github.com/orgs/concord-consortium/packages/container/docker-rails-base-private/versions?filters%5Bversion_type%5D=tagged) called `ruby-3.1.0-rails-7.2.2`.  You may need Scott or Doug's permissions to do this.
+7. Change `Dockerfile` and `Dockerfile-dev` to use `ruby-3.1.0-rails-7.1.4` in the `FROM` url.
+8. Create a PR and insure all the tests pass.
+9. After review/approval merge the branch into the `lara-upgrade` branch.
+
+### Upgrade To Rails 8.0.1
+
+1. Create an `upgrade-to-rails-8` branch off the `lara-upgrade` branch.
+2. **A Ruby upgrade to 3.2 IS required**. This will require a new `ruby32` branch in [docker-rails-base](https://github.com/concord-consortium/docker-rails-base). Once it exists, using that branch, create a [new GitHub package](https://github.com/orgs/concord-consortium/packages/container/docker-rails-base-private/versions?filters%5Bversion_type%5D=tagged) (Aden only created the initial one) called `ruby-3.2.0-rails-8.0.1`.  You may need Scott or Doug's permissions to do this.
+3. Change `Dockerfile` and `Dockerfile-dev` to use `ruby-3.2.0-rails-8.0.1` in the `FROM` url.
+4. Upgrade rails gems in `Gemfile` to last 7.2 version: `gem 'rails', '~> 8.0.1'`.
+5. Inside running Docker image run `bundle update rails`
+6. Resolve gem dependency issues until the bundle update succeeds.
+7. Complete any upgrade tasks in the [7.2 to 8.0 upgrade guide](https://guides.rubyonrails.org/upgrading_ruby_on_rails.html#upgrading-from-rails-7-1-to-rails-7-2). **At the time of writing, there were no tasks listed.**
+8. **Create a final FROM package**. Using the `ruby32` branch in [docker-rails-base](https://github.com/concord-consortium/docker-rails-base) create a [new GitHub package](https://github.com/orgs/concord-consortium/packages/container/docker-rails-base-private/versions?filters%5Bversion_type%5D=tagged) called `ruby-3.2.0-rails-8.0.1`.  You may need Scott or Doug's permissions to do this.
+7. Change `Dockerfile` and `Dockerfile-dev` to use `ruby-3.2.0-rails-8.0.1` in the `FROM` url.
+8. Create a PR and insure all the tests pass.
+9. After review/approval merge the branch into the `lara-upgrade` branch.
