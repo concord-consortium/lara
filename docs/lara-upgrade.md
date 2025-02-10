@@ -75,6 +75,7 @@ The status codes are:
 - NU: no upgrade available - gem can't be upgraded
 - DG?: gem downgraded - why? this should not happen
 - RG: gem removed
+- LV: dependency not previously specified in gem file that we have to lock at a specific version
 
 (add more status codes as needed)
 
@@ -90,7 +91,9 @@ The status codes are:
 | delayed_job_web              |       UC* AM |           1.2.5 |           1.4.4 |       1.4.4 |
 | font-awesome-rails           |       UC* AM |         4.3.0.0 |         4.7.0.8 |     4.7.0.8 |
 | gon                          |       UC! AM |           5.2.3 |           6.4.0 |       6.4.0 |
+| i18n                         |       UC* AM |             n/a |          1.14.7 |      1.14.7 |
 | jasmine-jquery-rails         |        NC AM |           2.0.3 |           2.0.3 |       2.0.3 |
+| loofah                       |       UC* AM |             n/a |          2.24.0 |      2.24.0 |
 | multi_json                   |       UC* AM |          1.13.1 |          1.15.0 |      1.15.0 |
 | nested_form                  |        NC AM |           0.3.2 |           0.3.2 |       0.3.2 |
 | poltergeist                  |       UC* AM |           1.5.1 |          1.18.1 |      1.18.1 |
@@ -99,6 +102,7 @@ The status codes are:
 | rack-secure_samesite_cookies |        NC AM |           1.0.2 |           1.0.2 |       1.0.2 |
 | rails-controller-testing     |          n/a |             n/a |           1.0.5 |       1.0.5 |
 | rake                         |       UC! AM |          10.5.0 |          13.2.1 |      13.2.1 |
+| responders                   |       UC* AM |             n/a |           3.1.1 |       3.1.1 |
 | ribbons-rails                |        NC AM |           0.0.1 |           0.0.1 |       0.0.1 |
 | rspec-activemodel-mocks      |       UC* AM |           1.0.1 |           1.2.1 |       1.2.1 |
 | safe_yaml                    |       UC* AM |           1.0.4 |           1.0.5 |       1.0.5 |
@@ -113,7 +117,7 @@ The status codes are:
 | acts_as_list                 |          UC* |           0.3.0 |          0.9.19 |       1.2.3 |
 | aws-sdk                      |          CU! |          1.66.0 |          2.0.22 |       3.2.0 |
 | better_errors                |          UC! |           1.1.0 |           2.0.0 |      2.10.1 |
-| bootsnap                     |          n/a |             n/a |           1.4.4 |      1.18.4 |
+| bootsnap                     |          UC* |           1.4.4 |           1.5.1 |      1.18.4 |
 | bullet                       |           NC |           5.4.3 |           5.7.5 |       7.2.0 |
 | cancancan                    |          UC! |          1.10.1 |           2.3.0 |       3.6.1 |
 | capybara                     |          UC* |           2.4.4 |          2.18.0 |      3.40.0 |
@@ -126,28 +130,27 @@ The status codes are:
 | exception_notification       |          UC* |           4.0.1 |           4.4.3 |       4.5.0 |
 | factory_girl_rails           |          UC* |           4.3.0 |           4.9.0 |       6.4.3 |
 | faker                        |          UC! |           1.2.0 |           2.2.1 |       3.4.2 |
+| ffi                          |           LV |           1.15.5            1.16.3|      1.17.1 |
 | haml                         |          UC! |           4.0.5 |           5.2.2 |       6.3.0 |
 | highline                     |          UC* |          1.6.21 |          1.7.10 |       3.1.1 |
 | httparty                     |          UC* |          0.12.0 |          0.21.0 |      0.22.0 |
-| i18n                         |          n/a |             n/a |           1.0.1 |      1.14.6 |
 | jasmine                      |          UC* |           2.2.0 |          2.99.0 |      3.99.0 |
 | jquery-rails                 |          UC! |           3.1.5 |           4.6.0 |       4.6.0 |
 | jquery-ui-rails              |          UC* |           4.1.0 |           4.2.1 |       7.0.0 |
 | launchy                      |          UC* |           2.4.0 |           2.5.2 |       3.0.1 |
-| loofah                       |          n/a |             n/a |          2.19.1 |      2.23.1 |
 | mysql2                       |          UC* |          0.3.21 |           0.5.6 |       0.5.6 |
 | newrelic_rpm                 |          UC* |       4.6.0.338 |       4.8.0.341 |      9.14.0 |
-| nokogiri                     |          UC* |          1.10.3 |         1.10.10 |      1.16.7 |
+| nokogiri                     |          UC* |          1.10.3 |          1.12.5 |      1.16.7 |
 | omniauth                     |          UC* |           1.3.2 |           1.4.2 |       2.1.2 |
 | omniauth-oauth2              |          UC* |           1.1.1 |           1.3.0 |       1.8.0 |
 | rack-cors                    |          UC! |           0.4.1 |           1.0.6 |       2.0.2 |
-| responders                   |          n/a |             n/a |           2.4.1 |       3.1.1 |
 | rspec-rails                  |          UC! |           3.8.2 |           4.1.2 |       7.0.1 |
 | rubocop                      |          n/a |             n/a |          0.49.1 |       1.6.8 |
-| sass-rails                   |          UC! |           3.2.6 |           5.0.7 |       6.0.0 |
+| sass-rails                   |          UC! |           3.2.6 |           5.0.8 |       6.0.0 |
 | sassc                        |          n/a |             n/a |           2.1.0 |       2.4.0 |
 | simplecov                    |          UC* |          0.16.1 |          0.17.1 |      0.22.0 |
 | spring                       |          UC* |           1.2.0 |           1.7.2 |       4.2.1 |
+| sprockets                    |          LV  |           3.7.5 |           3.7.5 |       4.2.1 |
 | tinymce-rails                |          UC* |           4.7.9 |           4.9.4 |       7.4.1 |
 | uglifier                     |          UC* |           4.1.8 |           4.2.0 |       4.2.1 |
 | unicorn                      |          UC! |           5.0.1 |           6.1.0 |       6.1.0 |
@@ -312,8 +315,8 @@ For now we will stay at 4.2.11.23 instead of upgrading to 4.2.11.38
 
 - [x] Change `Dockerfile` and `Dockerfile-dev` to use `ruby-2.5.9` in the `FROM` url INSTEAD OF [docker-rails-base](https://github.com/concord-consortium/docker-rails-base) images.
 - [x] Add `RAILS_LTS_PASS` to GitHub LARA repo secrets and update `ci.yml` to pass build arg.
-- [ ] Get value of `RAILS_LTS_PASS` (in 1Password in the description of the "Rails LTS" secret.  Do no use the login password.) and save in local `.env` file.  This should not result in any updates to be committed, and must be done per developer.
-- [ ] Run `docker compose build` to rebuild local image using new base image.  Again, no change should be committed.
+- [x] Get value of `RAILS_LTS_PASS` (in 1Password in the description of the "Rails LTS" secret.  Do no use the login password.) and save in local `.env` file.  This should not result in any updates to be committed, and must be done per developer.
+- [x] Run `docker compose build` to rebuild local image using new base image.  Again, no change should be committed.
 - [ ] Run `docker compose up` and load LARA in the browser once built to confirm the change worked.  Again, no change should be committed.
 
 4. Upgrade rails gems in `Gemfile` to last 6.0 version: `gem 'rails', '~> 6.0.6.1'`.
@@ -321,16 +324,16 @@ For now we will stay at 4.2.11.23 instead of upgrading to 4.2.11.38
 6. Resolve gem dependency issues until the bundle update succeeds.
 7. Complete upgrade tasks in the [5.2 to 6.0 upgrade guide](https://guides.rubyonrails.org/upgrading_ruby_on_rails.html#upgrading-from-rails-5-2-to-rails-6-0)
 
-- [ ] Using Webpacker (SKIP THIS STEP - WEBPACKER IS REPLACED IN LATER RAILS VERSIONS)
-- [ ] Force SSL (probably not needed since we are behind a gateway on production?)
-- [ ] Purpose and expiry metadata is now embedded inside signed and encrypted cookies for increased security
-- [ ] All npm packages have been moved to the @rails scope
-- [ ] Action Cable JavaScript API Changes
-- [ ] ActionDispatch::Response#content_type now returns the Content-Type header without modification
-- [ ] New config.hosts setting
-- [ ] Autoloading
-- [ ] Active Storage assignment behavior change
-- [ ] Custom exception handling applications
+- [x] Using Webpacker (SKIP THIS STEP - WEBPACKER IS REPLACED IN LATER RAILS VERSIONS)
+- [x] Force SSL (probably not needed since we are behind a gateway on production?)
+- [x] Purpose and expiry metadata is now embedded inside signed and encrypted cookies for increased security
+- [x] All npm packages have been moved to the @rails scope
+- [x] Action Cable JavaScript API Changes
+- [x] ActionDispatch::Response#content_type now returns the Content-Type header without modification
+- [x] New config.hosts setting
+- [x] Autoloading
+- [x] Active Storage assignment behavior change
+- [x] Custom exception handling applications
 
 6. Create a PR and insure all the tests pass.
 7. After review/approval merge the branch into the `lara-upgrade` branch.

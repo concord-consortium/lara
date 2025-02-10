@@ -1,29 +1,26 @@
-source 'https://gems.railslts.com' do
-  gem 'actionmailer', '~> 5.2.8.25', require: false
-  gem 'actionpack', '~> 5.2.8.25', require: false
-  gem 'activemodel', '~> 5.2.8.25', require: false
-  gem 'activerecord', '~> 5.2.8.25', require: false
-  gem 'activesupport', '~> 5.2.8.25', require: false
-  gem 'rails', '~> 5.2.8.25'
-  gem 'railslts-version', :require => false
-  gem 'railties', '~> 5.2.8.25', require: false
-end
-
 source "https://rubygems.org"
+  gem 'actionmailer', '~> 6.0.6.1', require: false
+  gem 'actionpack', '~> 6.0.6.1', require: false
+  gem 'activemodel', '~> 6.0.6.1', require: false
+  gem 'activerecord', '~> 6.0.6.1', require: false
+  gem 'activesupport', '~> 6.0.6.1', require: false
+  gem 'rails', '~> 6.0.6.1'
+  # gem 'railslts-version', :require => false
+  gem 'railties', '~> 6.0.6.1', require: false
 
 group :production do
   gem "unicorn"
 end
 
-# group :assets do
+group :assets do
   gem "coffee-rails", '~> 4.2', '>= 4.2.2'
   gem "compass-blueprint", "~> 1.0"
   gem "compass-rails", "~> 3.1.0"
-  gem "sass-rails", "~> 5.0", ">= 5.0.7"
+  gem "sass-rails", "= 5.0.8"
   gem "sassc", "~> 2.1.0"
   gem "turbo-sprockets-rails4", "~> 1.2.5"
   gem "uglifier", "~> 4.2"
-# end
+end
 
 # 2021-11-01 -- NP: rails-assets.org SSL certificate has expired.
 # For now we have just put the JS and CSS files for drawing tool and its deps
@@ -71,6 +68,7 @@ gem "aws-ses", "0.7.1", git: "https://github.com/zebitex/aws-ses.git", ref: "78-
 gem "bootsnap", "= 1.4.4"
 gem "cancancan", "~> 2.3"
 gem "chosen-rails", "~> 1.10"
+gem 'concurrent-ruby', '= 1.3.4'
 gem "daemons", "~> 1.4", ">= 1.4.1"
 gem "default_value_for", "~> 3.6"
 gem "delayed_job_active_record", '~> 4.1', '>= 4.1.10'
@@ -78,30 +76,32 @@ gem "delayed_job_web", '~> 1.4', '>= 1.4.4'
 gem "devise", '~> 4.4', '>= 4.4.0'
 gem "dynamic_form", "= 1.2"
 gem "exception_notification", '= 4.4.3'
+gem "ffi", "= 1.16.3"
 gem "font-awesome-rails", '~> 4.7', '>= 4.7.0.8'
 gem "gon", "~> 6.4.0"
 gem "haml", "~> 5.2"
 gem "highline", "~> 1.7.3"
 gem "httparty", "= 0.21"
-gem "i18n", "= 1.0.1"
+gem "i18n", "= 1.14.7"
 gem "jquery-rails", '~> 4.1', '>= 4.1.0'
 gem "jquery-ui-rails", '~> 4.2.1'
-gem "loofah", "= 2.19.1"
+gem "loofah", "= 2.24.0"
 gem "multi_json", "~> 1.15"
 gem "mysql2", "~> 0.5"
 gem "nested_form", "~> 0.3.2"
 gem 'newrelic_rpm', '= 4.8.0.341'
-gem "nokogiri", "~> 1.10.10"
+gem "nokogiri", "~> 1.12.5"
 gem "omniauth", "= 1.4.2"
 gem "omniauth-oauth2", "1.3"
 gem "rack-cors", "~> 1.0.3", {require: 'rack/cors'}
 gem "rack-environmental"#, "~> 1.3"
 gem 'rack-secure_samesite_cookies', {git: 'https://github.com/concord-consortium/secure-samesite-cookies.git', tag: 'v1.0.2'}
 gem 'rake', '~> 13.2', '>= 13.2.1'
-gem "responders", "~> 2.0"
+gem "responders", "~> 3.1.1"
 gem "ribbons-rails", "~> 0.0", {git: "https://github.com/concord-consortium/ribbons-rails.git"}
 gem "safe_yaml", "~> 1.0.5"
 gem "spreadsheet", "~> 1.1.2", "= 1.1.2"
+gem "sprockets", "~> 3.7", "= 3.7.5"
 gem "tinymce-rails", '~> 4.9.4', "= 4.9.4"
 gem "useragent", "~> 0.16.10"
 gem "uuidtools", "~> 2.1.5", "= 2.1.5"
@@ -110,7 +110,7 @@ gem "will_paginate", "~> 4.0.1"
 # The gems below were determined to no longer be needed after the upgrade to Rails 5.
 # For now we're leaving them here for reference just in case we need to add them back
 # in the future.
-# 
+#
 # # Previously in the :development group
 # gem "binding_of_caller", "~> 0.7"
 # gem "brakeman", "~> 2.4", {:require=>false}

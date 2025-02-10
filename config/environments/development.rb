@@ -35,6 +35,7 @@ LightweightStandalone::Application.configure do
   config.action_controller.per_form_csrf_tokens = false
   config.action_controller.forgery_protection_origin_check = false
   config.ssl_options = { hsts: { subdomains: false } }
+  config.hosts << "app.lara.docker"
   ActiveSupport.to_time_preserves_timezone = false
 
   config.after_initialize do

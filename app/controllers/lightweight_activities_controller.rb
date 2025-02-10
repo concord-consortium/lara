@@ -1,5 +1,3 @@
-require_dependency "application_controller"
-
 class LightweightActivitiesController < ApplicationController
 
   before_action :set_activity, except: [:index, :new, :create]

@@ -1,5 +1,3 @@
-require_dependency "application_controller"
-
 class InteractivePagesController < ApplicationController
   before_action :set_page, except: [:new, :create]
   before_action only: [:show, :preview] { set_run_key(portal_launchable: false) }
