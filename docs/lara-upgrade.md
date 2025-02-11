@@ -81,15 +81,15 @@ The status codes are:
 
 | Gem                          | Status       | Initial Version | Current Version | Max Version |
 |------------------------------|--------------|-----------------|-----------------|-------------|
-| rails (+ rails core...)      |          CU! |          3.2.22 |        5.2.8.25 |       7.1.4 |
+| rails (+ rails core...)      |          CU! |          3.2.22 |         6.0.6.1 |       8.0.1 |
 | *GEMS AT MAX*                |              |                 |                 |             |
 | aws-ses                      |        NC AM |           0.7.1 |           0.7.1 |       0.7.1 |
 | chosen-rails                 |       UC* AM |           1.0.1 |          1.10.0 |      1.10.0 |
 | compass-blueprint            |        NC AM |           1.0.0 |           1.0.0 |       1.0.0 |
 | daemons                      |       UC* AM |           1.1.9 |           1.4.1 |       1.4.1 |
-| delayed_job_active_record    |       UC* AM |           4.0.0 |          4.1.10 |      4.1.10 |
+| delayed_job_active_record    |       UC* AM |           4.0.0 |          4.1.11 |      4.1.11 |
 | delayed_job_web              |       UC* AM |           1.2.5 |           1.4.4 |       1.4.4 |
-| font-awesome-rails           |       UC* AM |         4.3.0.0 |         4.7.0.8 |     4.7.0.8 |
+| font-awesome-rails           |       UC* AM |         4.3.0.0 |         4.7.0.9 |     4.7.0.9 |
 | gon                          |       UC! AM |           5.2.3 |           6.4.0 |       6.4.0 |
 | i18n                         |       UC* AM |             n/a |          1.14.7 |      1.14.7 |
 | jasmine-jquery-rails         |        NC AM |           2.0.3 |           2.0.3 |       2.0.3 |
@@ -97,7 +97,7 @@ The status codes are:
 | multi_json                   |       UC* AM |          1.13.1 |          1.15.0 |      1.15.0 |
 | nested_form                  |        NC AM |           0.3.2 |           0.3.2 |       0.3.2 |
 | poltergeist                  |       UC* AM |           1.5.1 |          1.18.1 |      1.18.1 |
-| protected_attributes         |           AM |             n/a |           1.1.4 |       1.1.4 |
+| protected_attributes         |           RG |             n/a |             n/a |       1.1.4 |
 | rack-environmental           |       UC* AM |           1.3.1 |           1.3.2 |       1.3.2 |
 | rack-secure_samesite_cookies |        NC AM |           1.0.2 |           1.0.2 |       1.0.2 |
 | rails-controller-testing     |          n/a |             n/a |           1.0.5 |       1.0.5 |
@@ -105,20 +105,20 @@ The status codes are:
 | responders                   |       UC* AM |             n/a |           3.1.1 |       3.1.1 |
 | ribbons-rails                |        NC AM |           0.0.1 |           0.0.1 |       0.0.1 |
 | rspec-activemodel-mocks      |       UC* AM |           1.0.1 |           1.2.1 |       1.2.1 |
-| safe_yaml                    |       UC* AM |           1.0.4 |           1.0.5 |       1.0.5 |
-| spreadsheet                  |       UC* AM |           1.0.3 |           1.1.2 |       1.1.2 |
+| safe_yaml                    |           RG |           1.0.4 |             n/a |       1.0.5 |
+| spreadsheet                  |       UC* AM |           1.0.3 |           1.1.2 |       1.3.3 |
 | spring-commands-rspec        |        NC AM |           1.0.4 |           1.0.4 |       1.0.4 |
-| test-unit                    |       UC* AM |           3.2.3 |           3.6.2 |       3.6.2 |
+| test-unit                    |       UC* AM |           3.2.3 |           3.6.7 |       3.6.7 |
 | timecop                      |       UC* AM |           0.6.3 |          0.9.10 |      0.9.10 |
 | turbo-sprockets-rails4       |           AM |             n/a |           1.2.5 |       1.2.5 |
-| useragent                    |       UC* AM |          0.10.0 |         0.16.10 |     0.16.10 |
+| useragent                    |       UC* AM |          0.10.0 |         0.16.11 |     0.16.11 |
 | will_paginate                |       UC! AM |           3.0.7 |           4.0.1 |       4.0.1 |
 | *GEMS THAT CAN BE UPGRADED*  |              |                 |                 |             |
-| acts_as_list                 |          UC* |           0.3.0 |          0.9.19 |       1.2.3 |
+| acts_as_list                 |          UC* |           0.3.0 |          0.9.19 |       1.2.4 |
 | aws-sdk                      |          CU! |          1.66.0 |          2.0.22 |       3.2.0 |
 | better_errors                |          UC! |           1.1.0 |           2.0.0 |      2.10.1 |
 | bootsnap                     |          UC* |           1.4.4 |           1.5.1 |      1.18.4 |
-| bullet                       |           NC |           5.4.3 |           5.7.5 |       7.2.0 |
+| bullet                       |           RG |           5.4.3 |             n/a |       7.2.0 |
 | cancancan                    |          UC! |          1.10.1 |           2.3.0 |       3.6.1 |
 | capybara                     |          UC* |           2.4.4 |          2.18.0 |      3.40.0 |
 | ci_reporter                  |           RM |           1.7.3 |               - |       2.1.0 |
@@ -130,7 +130,7 @@ The status codes are:
 | exception_notification       |          UC* |           4.0.1 |           4.4.3 |       4.5.0 |
 | factory_girl_rails           |          UC* |           4.3.0 |           4.9.0 |       6.4.3 |
 | faker                        |          UC! |           1.2.0 |           2.2.1 |       3.4.2 |
-| ffi                          |           LV |           1.15.5            1.16.3|      1.17.1 |
+| ffi                          |           LV |           1.15.5           1.16.3 |      1.17.1 |
 | haml                         |          UC! |           4.0.5 |           5.2.2 |       6.3.0 |
 | highline                     |          UC* |          1.6.21 |          1.7.10 |       3.1.1 |
 | httparty                     |          UC* |          0.12.0 |          0.21.0 |      0.22.0 |
@@ -139,7 +139,7 @@ The status codes are:
 | jquery-ui-rails              |          UC* |           4.1.0 |           4.2.1 |       7.0.0 |
 | launchy                      |          UC* |           2.4.0 |           2.5.2 |       3.0.1 |
 | mysql2                       |          UC* |          0.3.21 |           0.5.6 |       0.5.6 |
-| newrelic_rpm                 |          UC* |       4.6.0.338 |       4.8.0.341 |      9.14.0 |
+| newrelic_rpm                 |       UC! AM |       4.6.0.338 |          9.17.0 |      9.17.0 |
 | nokogiri                     |          UC* |          1.10.3 |          1.12.5 |      1.16.7 |
 | omniauth                     |          UC* |           1.3.2 |           1.4.2 |       2.1.2 |
 | omniauth-oauth2              |          UC* |           1.1.1 |           1.3.0 |       1.8.0 |
@@ -148,12 +148,12 @@ The status codes are:
 | rubocop                      |          n/a |             n/a |          0.49.1 |       1.6.8 |
 | sass-rails                   |          UC! |           3.2.6 |           5.0.8 |       6.0.0 |
 | sassc                        |          n/a |             n/a |           2.1.0 |       2.4.0 |
-| simplecov                    |          UC* |          0.16.1 |          0.17.1 |      0.22.0 |
+| simplecov                    |       UC* AM |          0.16.1 |          0.22.0 |      0.22.0 |
 | spring                       |          UC* |           1.2.0 |           1.7.2 |       4.2.1 |
 | sprockets                    |          LV  |           3.7.5 |           3.7.5 |       4.2.1 |
 | tinymce-rails                |          UC* |           4.7.9 |           4.9.4 |       7.4.1 |
-| uglifier                     |          UC* |           4.1.8 |           4.2.0 |       4.2.1 |
-| unicorn                      |          UC! |           5.0.1 |           6.1.0 |       6.1.0 |
+| uglifier                     |          UC* |           4.1.8 |           4.2.1 |       4.2.1 |
+| unicorn                      |       UC! AM |           6.1.0 |           6.1.0 |       6.1.0 |
 | uuidtools                    |          UC* |           2.1.4 |           2.1.5 |       2.2.0 |
 | web-console                  |          n/a |             n/a |           3.7.0 |       4.2.1 |
 | webmock                      |          UC! |          1.24.6 |           3.8.3 |      3.24.0 |

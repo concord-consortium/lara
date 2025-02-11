@@ -1,12 +1,12 @@
 source "https://rubygems.org"
-  gem 'actionmailer', '~> 6.0.5.1', require: false
-  gem 'actionpack', '~> 6.0.5.1', require: false
-  gem 'activemodel', '~> 6.0.5.1', require: false
-  gem 'activerecord', '~> 6.0.5.1', require: false
-  gem 'activesupport', '~> 6.0.5.1', require: false
-  gem 'rails', '~> 6.0.5.1'
+  gem 'actionmailer', '~> 6.0.6.1', require: false
+  gem 'actionpack', '~> 6.0.6.1', require: false
+  gem 'activemodel', '~> 6.0.6.1', require: false
+  gem 'activerecord', '~> 6.0.6.1', require: false
+  gem 'activesupport', '~> 6.0.6.1', require: false
+  gem 'rails', '~> 6.0.6.1'
   # gem 'railslts-version', :require => false
-  gem 'railties', '~> 6.0.5.1', require: false
+  gem 'railties', '~> 6.0.6.1', require: false
 
 group :production do
   gem "unicorn"
@@ -35,7 +35,6 @@ end
 
 group :development do
   gem "better_errors", "~> 2.0.0", ">= 2.0.0"
-  # gem 'bullet', "= 6.1.5"
   gem "web-console", "~> 3.7"
 end
 
@@ -99,7 +98,6 @@ gem 'rack-secure_samesite_cookies', {git: 'https://github.com/concord-consortium
 gem 'rake', '~> 13.2', '>= 13.2.1'
 gem "responders", "~> 3.1.1"
 gem "ribbons-rails", "~> 0.0", {git: "https://github.com/concord-consortium/ribbons-rails.git"}
-# gem "safe_yaml", "~> 1.0.5"
 gem "spreadsheet", "~> 1.1.2", "= 1.1.2"
 gem "sprockets", "~> 3.7", "= 3.7.5"
 gem "tinymce-rails", '~> 4.9.4', "= 4.9.4"
@@ -114,6 +112,7 @@ gem "will_paginate", "~> 4.0.1"
 # # Previously in the :development group
 # gem "binding_of_caller", "~> 0.7"
 # gem "brakeman", "~> 2.4", {:require=>false}
+# gem 'bullet', "= 6.1.5"
 # gem "capistrano", "~> 2.15"
 # gem "capistrano-autoscaling", "~> 0.0", {:git=>"https://github.com/concord-consortium/capistrano-autoscaling.git", :branch=>"concord"}
 # gem "capistrano-cowboy", "~> 0.1"
@@ -132,5 +131,6 @@ gem "will_paginate", "~> 4.0.1"
 # gem "rb-fsevent", "~> 0.9"
 
 # # Previously not grouped
+# gem "safe_yaml", "~> 1.0.5"
 # gem "sqlite3", "~> 1.3"
 # gem "test-unit", "~> 3.0"
