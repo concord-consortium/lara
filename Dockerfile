@@ -48,10 +48,11 @@ RUN ln -sf /dev/stdout /var/log/nginx/access.log && ln -sf /dev/stderr /var/log/
 # set production
 ENV RAILS_ENV=production
 
+RUN SECRET_KEY_BASE=dummy 
 
 # We need to fake an ENV Var for the precompile: https://github.com/rails/rails/issues/32947
 # Run precompile rake task in order to at least generate the manifest file
-RUN SECRET_KEY_BASE=dummy bundle exec rake assets:precompile
+RUN bundle exec rake assets:precompile
 
 # pass in a version while building with --build-arg LARA_VERSION=x.y.z
 ARG LARA_VERSION
