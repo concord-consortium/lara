@@ -14,7 +14,7 @@ class Embeddable::ImageQuestionAnswersController < Embeddable::EmbeddableAnswers
   def update
     respond_to do |format|
       format.json do
-        if @answer.update_attributes(update_params)
+        if @answer.update(update_params)
           answer_hash = @answer.portal_hash
           # this 'formatting' is duplicated in image_question_answers/_lightweight.html.haml
           answer_hash['answer_html'] = simple_format h(truncate(@answer.answer_text, length:140))

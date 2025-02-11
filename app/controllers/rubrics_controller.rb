@@ -41,7 +41,7 @@ class RubricsController < ApplicationController
   def update
     authorize! :update, @rubric
     respond_to do |format|
-      if @rubric.update_attributes(update_params)
+      if @rubric.update(update_params)
         format.html { redirect_to edit_polymorphic_url(@rubric), notice: "Rubric was successfully updated." }
         format.json { head :no_content }
       else

@@ -63,7 +63,7 @@ module Embeddable
     def copy_answer!(another_answer)
       self.transaction do
         self.answers = another_answer.answers
-        self.update_attributes!(is_final: another_answer.is_final)
+        self.update!(is_final: another_answer.is_final)
       end
     end
 
@@ -90,7 +90,7 @@ module Embeddable
       }
     end
 
-    # Expects a parameters hash. Normalizes to allow update_attributes.
+    # Expects a parameters hash. Normalizes to allow update.
     def update_from_form_params(params)
       if params && params[:answers].kind_of?(Array)
         params[:answers] = params[:answers].map { |a| Embeddable::MultipleChoiceChoice.find(a) }
@@ -99,7 +99,7 @@ module Embeddable
       else
         params[:answers] = [] if params # Silence errors about this, we catch them in the controller now
       end
-      return self.update_attributes(params)
+      return self.update(params)
     end
 
     def send_to_portal

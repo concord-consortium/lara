@@ -39,7 +39,7 @@ class GlossariesController < ApplicationController
   def update
     authorize! :update, @glossary
     respond_to do |format|
-      if @glossary.update_attributes(glossary_params)
+      if @glossary.update(glossary_params)
         format.html { redirect_to edit_polymorphic_url(@glossary), notice: "Glossary was successfully updated." }
         format.json { head :no_content }
       else

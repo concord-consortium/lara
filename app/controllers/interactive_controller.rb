@@ -8,7 +8,7 @@ class InteractiveController < ApplicationController
     set_page
     input_params = get_interactive_params
     # linked_interactives param follows ISetLinkedInteractives interface format. It isn't a regular attribute.
-    # It requires special treatment and should be removed from params before .update_attributes is called.
+    # It requires special treatment and should be removed from params before .update is called.
     if input_params.has_key? :linked_interactives
       linked_linteractives = input_params.delete :linked_interactives
       if linked_linteractives.present?
@@ -18,7 +18,7 @@ class InteractiveController < ApplicationController
         @interactive.page_item.set_linked_interactives(JSON.parse linked_linteractives)
       end
     end
-    @interactive.update_attributes! input_params
+    @interactive.update! input_params
     respond_to do |format|
       update_activity_changed_by(@activity)
       format.html { redirect_to edit_activity_page_path(@activity, @page) }

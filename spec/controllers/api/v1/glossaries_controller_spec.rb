@@ -122,8 +122,7 @@ describe Api::V1::GlossariesController do
         expect(response.status).to eq(500)
         json_response = JSON.parse(response.body)
         expect(json_response).to eq({
-          # TODO: Is it possible to get a more specific error message?
-          message: "undefined method `attribute' for :name:Symbol",
+          message: "Validation failed: Name can't be blank",
           response_type: "ERROR"
         }.as_json)
       end

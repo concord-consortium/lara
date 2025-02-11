@@ -268,7 +268,7 @@ describe InteractivePagesController do
         end
 
         it 'returns the old text if the update fails' do
-          allow_any_instance_of(InteractivePage).to receive(:update_attributes).and_return(false)
+          allow_any_instance_of(InteractivePage).to receive(:update).and_return(false)
           old_name = page1.name
           put :update, params: { activity_id: act.id, id: page1.id, interactive_page: { name: 'This new name will fail.' } }, xhr: true
 

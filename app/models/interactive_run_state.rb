@@ -86,7 +86,7 @@ class InteractiveRunState < ApplicationRecord
     # itself. Copying interactive state and replacing reporting URLs could break it.
     return if interactive.has_report_url || another_int_run_state.reporting_url.present?
 
-    self.update_attributes!(
+    self.update!(
       raw_data: another_int_run_state.raw_data,
       metadata: another_int_run_state.metadata
     )

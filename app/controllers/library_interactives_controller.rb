@@ -61,7 +61,7 @@ class LibraryInteractivesController < ApplicationController
     @library_interactive = LibraryInteractive.find(params[:id])
 
     respond_to do |format|
-      if @library_interactive.update_attributes(library_interactive_params)
+      if @library_interactive.update(library_interactive_params)
         format.html { redirect_to library_interactives_url, notice: 'Library interactive was successfully updated.' }
         format.json { head :no_content }
       else

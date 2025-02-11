@@ -101,9 +101,9 @@ describe ProjectsController do
       it "updates the requested project" do
         # Assuming there are no other projects in the database, this
         # specifies that the Project created on the previous line
-        # receives the :update_attributes message with whatever params are
+        # receives the :update message with whatever params are
         # submitted in the request.
-        expect_any_instance_of(Project).to receive(:update_attributes).with({'title' => 'New Title'})
+        expect_any_instance_of(Project).to receive(:update).with({'title' => 'New Title'})
         put :update, params: { id: project.id, project: {'title': 'New Title'} }
       end
 
