@@ -21,7 +21,7 @@ require 'capybara/rspec'
 require 'capybara/poltergeist'
 
 # https://github.com/dtao/safe_yaml/issues/10
-SafeYAML::OPTIONS[:deserialize_symbols] = true
+#SafeYAML::OPTIONS[:deserialize_symbols] = true
 
 Capybara.javascript_driver = :poltergeist
 # Capybars default wait of 2s is too slow for some of our tests in travis

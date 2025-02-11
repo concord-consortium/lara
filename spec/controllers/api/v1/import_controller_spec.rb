@@ -13,7 +13,7 @@ describe Api::V1::ImportController do
     it "returns 200 and activity URL" do
       raw_post(:import, {}, {import: valid_activity_import_json}.to_json)
       expect(response.status).to eq(200)
-      expect(response.content_type).to eq("application/json")
+      expect(response.content_type).to eq("application/json; charset=utf-8")
       expect(response.body).to eql({
         success: true,
         url: activity_url(LightweightActivity.last)
@@ -24,7 +24,7 @@ describe Api::V1::ImportController do
       it "returns 500" do
         raw_post(:import, {}, {import: invalid_activity_import_json}.to_json)
         expect(response.status).to eq(500)
-        expect(response.content_type).to eq("application/json")
+        expect(response.content_type).to eq("application/json; charset=utf-8")
       end
     end
   end
@@ -33,7 +33,7 @@ describe Api::V1::ImportController do
     it "returns 403" do
       raw_post(:import, {}, {import: valid_activity_import_json}.to_json)
       expect(response.status).to eq(403)
-      expect(response.content_type).to eq("application/json")
+      expect(response.content_type).to eq("application/json; charset=utf-8")
     end
   end
 end

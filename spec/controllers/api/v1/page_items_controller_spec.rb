@@ -18,7 +18,7 @@ describe Api::V1::PageItemsController do
       puts interactive1.inspect
       get "get_embeddable_metadata", params: {id: 1}, xhr: true
       expect(response.status).to eq(200)
-      expect(response.content_type).to eq("application/json")
+      expect(response.content_type).to eq("application/json; charset=utf-8")
     end
   end
 

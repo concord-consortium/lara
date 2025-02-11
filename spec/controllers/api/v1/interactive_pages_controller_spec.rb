@@ -37,7 +37,7 @@ describe Api::V1::InteractivePagesController do
       it "returns an error" do
         get :get_interactive_list, params: {id: 0}
         expect(response.status).to eq(200)
-        expect(response.content_type).to eq("application/json")
+        expect(response.content_type).to eq("application/json; charset=utf-8")
         expect(response.body).to eql({
           success: false,
           message: "Could not find interactive page #0"
@@ -49,7 +49,7 @@ describe Api::V1::InteractivePagesController do
       it "returns an error" do
         get :get_interactive_list, params: {id: page.id, scope: "flarm"}
         expect(response.status).to eq(200)
-        expect(response.content_type).to eq("application/json")
+        expect(response.content_type).to eq("application/json; charset=utf-8")
         expect(response.body).to eql({
           success: false,
           message: "Invalid scope parameter: flarm"
@@ -63,7 +63,7 @@ describe Api::V1::InteractivePagesController do
       it "returns an error" do
         get :get_interactive_list, params: {id: page.id}
         expect(response.status).to eq(200)
-        expect(response.content_type).to eq("application/json")
+        expect(response.content_type).to eq("application/json; charset=utf-8")
         expect(response.body).to eql({
           success: false,
           message: "You are not authorized to get the interactive list from the requested page"
@@ -75,7 +75,7 @@ describe Api::V1::InteractivePagesController do
       it "returns an empty list" do
         get :get_interactive_list, params: {id: page.id}
         expect(response.status).to eq(200)
-        expect(response.content_type).to eq("application/json")
+        expect(response.content_type).to eq("application/json; charset=utf-8")
         expect(response.body).to eql({
           success: true,
           interactives: []
@@ -97,7 +97,7 @@ describe Api::V1::InteractivePagesController do
       it "returns the list of all interactives when no supportsSnapshots param is present" do
         get :get_interactive_list, params: {id: page.id}
         expect(response.status).to eq(200)
-        expect(response.content_type).to eq("application/json")
+        expect(response.content_type).to eq("application/json; charset=utf-8")
         expect(response.body).to eql({
           success: true,
           interactives: [
@@ -113,7 +113,7 @@ describe Api::V1::InteractivePagesController do
       it "returns the correct list of all interactives when supportsSnapshots param is true" do
         get :get_interactive_list, params: {id: page.id, supportsSnapshots: "true"}
         expect(response.status).to eq(200)
-        expect(response.content_type).to eq("application/json")
+        expect(response.content_type).to eq("application/json; charset=utf-8")
         expect(response.body).to eql({
           success: true,
           interactives: [
@@ -127,7 +127,7 @@ describe Api::V1::InteractivePagesController do
       it "returns the correct list of all interactives when supportsSnapshots param is false" do
         get :get_interactive_list, params: {id: page.id, supportsSnapshots: "false"}
         expect(response.status).to eq(200)
-        expect(response.content_type).to eq("application/json")
+        expect(response.content_type).to eq("application/json; charset=utf-8")
         expect(response.body).to eql({
           success: true,
           interactives: [
@@ -150,21 +150,21 @@ describe Api::V1::InteractivePagesController do
       it "without a page_item parameter" do
         post :create_page_item, params: {id: page.id}
         expect(response.status).to eq(500)
-        expect(response.content_type).to eq("application/json")
+        expect(response.content_type).to eq("application/json; charset=utf-8")
         expect(response.body).to include "Missing page_item parameter"
       end
 
       it "without a section_id parameter" do
         post :create_page_item, params: {id: page.id, page_item: {position: 2}}
         expect(response.status).to eq(500)
-        expect(response.content_type).to eq("application/json")
+        expect(response.content_type).to eq("application/json; charset=utf-8")
         expect(response.body).to include "Missing page_item[section_id] parameter"
       end
 
       it "with an invalid section_id parameter" do
         post :create_page_item, params: {id: page.id, page_item: {section_id: 0}}
         expect(response.status).to eq(500)
-        expect(response.content_type).to eq("application/json")
+        expect(response.content_type).to eq("application/json; charset=utf-8")
         expect(response.body).to include "Invalid page_item[section_id] parameter"
       end
 
@@ -177,7 +177,7 @@ describe Api::V1::InteractivePagesController do
         }}
         expect(response.body).to include "Missing page_item[embeddable] parameter"
         expect(response.status).to eq(500)
-        expect(response.content_type).to eq("application/json")
+        expect(response.content_type).to eq("application/json; charset=utf-8")
         expect(response.body).to include "Missing page_item[embeddable] parameter"
       end
 
@@ -190,7 +190,7 @@ describe Api::V1::InteractivePagesController do
           column: PageItem::COLUMN_PRIMARY
         }}
         expect(response.status).to eq(500)
-        expect(response.content_type).to eq("application/json")
+        expect(response.content_type).to eq("application/json; charset=utf-8")
         expect(response.body).to include "Only library interactive embeddables, iFrame interactives, and text blocks are currently supported"
       end
 
@@ -203,7 +203,7 @@ describe Api::V1::InteractivePagesController do
           column: PageItem::COLUMN_PRIMARY
         }}
         expect(response.status).to eq(500)
-        expect(response.content_type).to eq("application/json")
+        expect(response.content_type).to eq("application/json; charset=utf-8")
         expect(response.body).to include "Invalid page_item[embeddable] parameter"
       end
     end
@@ -217,7 +217,7 @@ describe Api::V1::InteractivePagesController do
         column: PageItem::COLUMN_PRIMARY
       }}
       expect(response.status).to eq(200)
-      expect(response.content_type).to eq("application/json")
+      expect(response.content_type).to eq("application/json; charset=utf-8")
     end
 
     it "succeeds with valid MWInteractive parameters" do
@@ -229,7 +229,7 @@ describe Api::V1::InteractivePagesController do
         column: PageItem::COLUMN_PRIMARY
       }}
       expect(response.status).to eq(200)
-      expect(response.content_type).to eq("application/json")
+      expect(response.content_type).to eq("application/json; charset=utf-8")
     end
 
     it "succeeds with valid windowshade plugin parameters" do
@@ -241,7 +241,7 @@ describe Api::V1::InteractivePagesController do
         column: PageItem::COLUMN_PRIMARY
       }}
       expect(response.status).to eq(200)
-      expect(response.content_type).to eq("application/json")
+      expect(response.content_type).to eq("application/json; charset=utf-8")
     end
 
     it "succeeds with valid question wrapper plugin parameters" do
@@ -253,7 +253,7 @@ describe Api::V1::InteractivePagesController do
         column: PageItem::COLUMN_PRIMARY
       }}
       expect(response.status).to eq(200)
-      expect(response.content_type).to eq("application/json")
+      expect(response.content_type).to eq("application/json; charset=utf-8")
     end
 
     it "succeeds with valid side tip plugin parameters" do
@@ -265,7 +265,7 @@ describe Api::V1::InteractivePagesController do
         column: PageItem::COLUMN_PRIMARY
       }}
       expect(response.status).to eq(200)
-      expect(response.content_type).to eq("application/json")
+      expect(response.content_type).to eq("application/json; charset=utf-8")
     end
   end
 
@@ -352,7 +352,7 @@ describe Api::V1::InteractivePagesController do
 
       get :get_library_interactives_list, params: {}
       expect(response.status).to eq(200)
-      expect(response.content_type).to eq("application/json")
+      expect(response.content_type).to eq("application/json; charset=utf-8")
       actual_response = JSON.parse(response.body)
       expected_response = JSON.parse(expected_response_for_admin)
       actual_response["library_interactives"].each_with_index do |interactive, index|
@@ -439,7 +439,7 @@ describe Api::V1::InteractivePagesController do
 
       get :get_library_interactives_list, params: {}
       expect(response.status).to eq(200)
-      expect(response.content_type).to eq("application/json")
+      expect(response.content_type).to eq("application/json; charset=utf-8")
       actual_response = JSON.parse(response.body)
       expected_response = JSON.parse(expected_response_for_non_admin)
       actual_response["library_interactives"].each_with_index do |interactive, index|
@@ -465,14 +465,14 @@ describe Api::V1::InteractivePagesController do
       it "without a page_item parameter" do
         post :update_page_item, params: {id: page.id}
         expect(response.status).to eq(500)
-        expect(response.content_type).to eq("application/json")
+        expect(response.content_type).to eq("application/json; charset=utf-8")
         expect(response.body).to include "Missing page_item parameter"
       end
 
       it "without an id parameter" do
         post :update_page_item, params: {id: page.id, page_item: {column: 2}}
         expect(response.status).to eq(500)
-        expect(response.content_type).to eq("application/json")
+        expect(response.content_type).to eq("application/json; charset=utf-8")
         expect(response.body).to include "Missing page_item[id] parameter"
       end
 
@@ -481,7 +481,7 @@ describe Api::V1::InteractivePagesController do
           id: page_item.id
         }}
         expect(response.status).to eq(500)
-        expect(response.content_type).to eq("application/json")
+        expect(response.content_type).to eq("application/json; charset=utf-8")
         expect(response.body).to include "Missing page_item[column] parameter"
       end
 
@@ -491,7 +491,7 @@ describe Api::V1::InteractivePagesController do
           column: page_item.column
         }}
         expect(response.status).to eq(500)
-        expect(response.content_type).to eq("application/json")
+        expect(response.content_type).to eq("application/json; charset=utf-8")
         expect(response.body).to include "Missing page_item[position] parameter"
       end
 
@@ -502,7 +502,7 @@ describe Api::V1::InteractivePagesController do
           position: page_item.position
         }}
         expect(response.status).to eq(500)
-        expect(response.content_type).to eq("application/json")
+        expect(response.content_type).to eq("application/json; charset=utf-8")
         expect(response.body).to include "Missing page_item[data] parameter"
       end
 
@@ -514,7 +514,7 @@ describe Api::V1::InteractivePagesController do
           data: new_data
         }}
         expect(response.status).to eq(500)
-        expect(response.content_type).to eq("application/json")
+        expect(response.content_type).to eq("application/json; charset=utf-8")
         expect(response.body).to include "Missing page_item[type] parameter"
       end
     end
@@ -528,7 +528,7 @@ describe Api::V1::InteractivePagesController do
         type: embeddable_type
       }}
       expect(response.status).to eq(200)
-      expect(response.content_type).to eq("application/json")
+      expect(response.content_type).to eq("application/json; charset=utf-8")
       expect(response.body).to eql(
         {
           id: page_item.id.to_s,
@@ -558,7 +558,7 @@ describe Api::V1::InteractivePagesController do
         act.reload
         get "get_pages", params: {activity_id: act.id}, xhr: true
         expect(response.status).to eq(200)
-        expect(response.content_type).to eq("application/json")
+        expect(response.content_type).to eq("application/json; charset=utf-8")
         pages = JSON.parse(response.body)
         expect(pages.length).to eql(page_count)
       end
@@ -584,7 +584,7 @@ describe Api::V1::InteractivePagesController do
 
         post "create_page", params: {activity_id: act.id}, xhr: true
         expect(response.status).to eq(200)
-        expect(response.content_type).to eq("application/json")
+        expect(response.content_type).to eq("application/json; charset=utf-8")
         pages = JSON.parse(response.body)
         expect(pages.length).to eql(after_count)
       end
@@ -615,7 +615,7 @@ describe Api::V1::InteractivePagesController do
 
         post "delete_page", params: {id: page.id}, xhr: true
         expect(response.status).to eq(200)
-        expect(response.content_type).to eq("application/json")
+        expect(response.content_type).to eq("application/json; charset=utf-8")
         expect(JSON.parse(response.body)).to eq({"success"=> true})
         expect(act.reload.pages.length).to eql(after_count)
       end

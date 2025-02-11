@@ -15,7 +15,7 @@ describe Api::V1::ProjectsController do
     it "returns a list of available projects" do
       get "index", xhr: true
       expect(response.status).to eq(200)
-      expect(response.content_type).to eq("application/json")
+      expect(response.content_type).to eq("application/json; charset=utf-8")
       parsed_response = JSON.parse(response.body, symbolize_names: true)
       expect(parsed_response[:projects]).to include(a_hash_including(id: project1.id, title: project1.title))
       expect(parsed_response[:projects]).to include(a_hash_including(id: project2.id, title: project2.title))
@@ -26,7 +26,7 @@ describe Api::V1::ProjectsController do
     it "returns a JSON string for a project with a specific ID" do
       get "show", params: {id: project1.id}, xhr: true
       expect(response.status).to eq(200)
-      expect(response.content_type).to eq("application/json")
+      expect(response.content_type).to eq("application/json; charset=utf-8")
       expect(response.body).to eq({
         project: project1,
         admins: [{id: user.id, email: user.email}]
@@ -42,7 +42,7 @@ describe Api::V1::ProjectsController do
     it "returns a success message and values for the newly created project" do
       post "create", params: {project: {title: "My New Project", project_key: "my-new-project"}}, xhr: true
       expect(response.status).to eq(201)
-      expect(response.content_type).to eq("application/json")
+      expect(response.content_type).to eq("application/json; charset=utf-8")
       response_body = JSON.parse(response.body, symbolize_names: true)
       project = response_body[:project]
       expect(project[:title]).to eq("My New Project")
@@ -58,7 +58,7 @@ describe Api::V1::ProjectsController do
       admins = project1.admins.map {|a| {id: a.id, email: a.email} }
       post "update", params: {id: project1.id, project: {title: "New Project Title", admins: admins}}, xhr: true
       expect(response.status).to eq(200)
-      expect(response.content_type).to eq("application/json")
+      expect(response.content_type).to eq("application/json; charset=utf-8")
       response_body = JSON.parse(response.body, symbolize_names: true)
       project = response_body[:project]
       expect(project[:title]).to eq("New Project Title")
@@ -70,7 +70,7 @@ describe Api::V1::ProjectsController do
       expect(project1.admins.length).to eq(1)
       post "update", params: {id: project1.id, project: {title: "New Project Title", admins: []}}, xhr: true
       expect(response.status).to eq(200)
-      expect(response.content_type).to eq("application/json")
+      expect(response.content_type).to eq("application/json; charset=utf-8")
       response_body = JSON.parse(response.body, symbolize_names: true)
       project = response_body[:project]
       expect(response_body[:admins]).to eq([])
@@ -81,7 +81,7 @@ describe Api::V1::ProjectsController do
       admins.push({id: user2.id, email: user2.email})
       post "update", params: {id: project1.id, project: {title: "New Project Title", admins: admins}}, xhr: true
       expect(response.status).to eq(200)
-      expect(response.content_type).to eq("application/json")
+      expect(response.content_type).to eq("application/json; charset=utf-8")
       response_body = JSON.parse(response.body, symbolize_names: true)
       expect(response_body[:admins]).to eq([{id: user.id, email: user.email}])
     end
@@ -91,7 +91,7 @@ describe Api::V1::ProjectsController do
     it "returns a success message when a project is deleted" do
       post "destroy", params: {id: project1.id}, xhr: true
       expect(response.status).to eq(200)
-      expect(response.content_type).to eq("application/json")
+      expect(response.content_type).to eq("application/json; charset=utf-8")
       expect(response.body).to eq({
         success: true
       }.to_json)

@@ -171,7 +171,7 @@ describe GlossariesController do
   describe "export" do
     it "exports the requested glossary" do
       get :export, params: { id: glossary.id }
-      expect(response).to be_success
+      expect(response).to be_successful
       json_response = JSON.parse(response.body)
       expect(json_response["type"]).to eq("Glossary")
     end
