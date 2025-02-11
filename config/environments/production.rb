@@ -56,7 +56,7 @@ LightweightStandalone::Application.configure do
 
   # Precompile additional assets (application.js, application.css, and all non-JS/CSS are already added)
   # config.assets.precompile += %w( search.js )
-  config.assets.precompile += %w(runtime.js respond.js modernizr.min.js)
+  config.assets.precompile += %w(runtime.js)
   # Themes:
   config.assets.precompile += %w(
   runtime.css theme-mw.css theme-has-ngs.css theme-has-ngs-atmosphere.css
