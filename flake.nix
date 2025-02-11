@@ -30,7 +30,7 @@
             act
             pkgs-ancient-node.nodejs-10_x # Node.js v10.15.3
           ]) ++ (with pkgs-ancient-ruby; [
-            ruby_2_3 # Ruby v2.3.7
+            ruby_2_5 # Ruby v2.5.9
             glibc # Includes 'libcrypt'
             libffi # Needed for 'ffi' Gem
             mysql57
