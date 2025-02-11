@@ -341,18 +341,18 @@ For now we will stay at 4.2.11.23 instead of upgrading to 4.2.11.38
 ### Upgrade To Rails 6.1.7.8
 
 1. Create a `upgrade-to-rails-6.1` branch off the `lara-upgrade` branch.
-2. Upgrade rails gems in `Gemfile` to last 6.1 version: `gem 'rails', '~> 6.1.7.8 '`.  No Ruby upgrade is required.
+2. Upgrade rails gems in `Gemfile` to last 6.1 version: `gem 'rails', '~> 6.1.7.10'`.  No Ruby upgrade is required.
 3. Inside running Docker image run `bundle update rails`
 4. Resolve gem dependency issues until the bundle update succeeds.
 5. Complete upgrade tasks in the [6.0 to 6.1 upgrade guide](https://guides.rubyonrails.org/upgrading_ruby_on_rails.html#upgrading-from-rails-6-0-to-rails-6-1)
 
-- [ ] Rails.application.config_for return value no longer supports access with String keys.
-- [ ] Response's Content-Type when using respond_to#any
-- [ ] ActiveSupport::Callbacks#halted_callback_hook now receive a second argument
-- [ ] The helper class method in controllers uses String#constantize
-- [ ] Redirection to HTTPS from HTTP will now use the 308 HTTP status code
-- [ ] Active Storage now requires Image Processing
-- [ ] New ActiveModel::Error class
+- [X] Rails.application.config_for return value no longer supports access with String keys.
+- [X] Response's Content-Type when using respond_to#any
+- [X] ActiveSupport::Callbacks#halted_callback_hook now receive a second argument
+- [X] The helper class method in controllers uses String#constantize
+- [X] Redirection to HTTPS from HTTP will now use the 308 HTTP status code
+- [X] Active Storage now requires Image Processing
+- [X] New ActiveModel::Error class
 
 6. Create a PR and insure all the tests pass.
 7. After review/approval merge the branch into the `lara-upgrade` branch.
