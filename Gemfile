@@ -65,7 +65,7 @@ gem "acts_as_list", '~> 0.9.19'
 gem 'aws-sdk', '= 2.0.22'
 gem "aws-ses", "0.7.1", git: "https://github.com/zebitex/aws-ses.git", ref: "78-sigv4-problem"
 gem "bootsnap", "= 1.4.4"
-gem "cancancan", "~> 2.3"
+gem "cancancan", "= 3.0.2"
 gem "chosen-rails", "~> 1.10"
 gem 'concurrent-ruby', '= 1.3.4'
 gem "daemons", "~> 1.4", ">= 1.4.1"

@@ -20,9 +20,6 @@ require 'rspec/active_model/mocks'
 require 'capybara/rspec'
 require 'capybara/poltergeist'
 
-# https://github.com/dtao/safe_yaml/issues/10
-#SafeYAML::OPTIONS[:deserialize_symbols] = true
-
 Capybara.javascript_driver = :poltergeist
 # Capybars default wait of 2s is too slow for some of our tests in travis
 Capybara.default_max_wait_time = 5

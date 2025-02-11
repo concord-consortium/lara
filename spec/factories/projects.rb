@@ -12,8 +12,8 @@ FactoryGirl.define do
     contact_email "MyString"
     footer "MyText"
     funders_image_url "MyString"
-    logo_ap "MyString"
-    logo_lara "MyString"
+    logo_ap "cc-logo.png"
+    logo_lara "cc-logo.png"
     project_key { generate(:project_key) }
     title "MyString"
     url "MyString"

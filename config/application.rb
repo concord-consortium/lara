@@ -1,7 +1,6 @@
 require File.expand_path('../boot', __FILE__)
 
 require 'rails/all'
-# require_relative '../lib/middleware/inject_origin_header_middleware'
 require_relative '../lib/rack/response_logger'
 
 if defined?(Bundler)
@@ -102,6 +101,3 @@ module LightweightStandalone
     config.action_dispatch.use_authenticated_cookie_encryption = true
   end
 end
-
-# Mute warnings
-# SafeYAML::OPTIONS[:default_mode] = :safe

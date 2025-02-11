@@ -119,7 +119,7 @@ The status codes are:
 | better_errors                |          UC! |           1.1.0 |           2.0.0 |      2.10.1 |
 | bootsnap                     |          UC* |           1.4.4 |           1.5.1 |      1.18.4 |
 | bullet                       |           RG |           5.4.3 |             n/a |       7.2.0 |
-| cancancan                    |          UC! |          1.10.1 |           2.3.0 |       3.6.1 |
+| cancancan                    |          UC! |          1.10.1 |           3.0.2 |       3.6.1 |
 | capybara                     |          UC* |           2.4.4 |          2.18.0 |      3.40.0 |
 | ci_reporter                  |           RM |           1.7.3 |               - |       2.1.0 |
 | coffee-rails                 |          UC! |           3.2.2 |           4.2.2 |       5.0.0 |
