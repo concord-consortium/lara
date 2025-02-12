@@ -129,7 +129,7 @@ shared_examples "runnable launched with run_key" do |run_type, portal_launchable
         end
 
         it 'returns success' do
-          expect(response).to be_success
+          expect(response).to be_successful
         end
 
         it 'renders the resource' do
@@ -175,7 +175,7 @@ shared_examples "runnable launched with run_key" do |run_type, portal_launchable
           end
 
           it 'returns success' do
-            expect(response).to be_success
+            expect(response).to be_successful
           end
 
           it 'renders the resource' do
@@ -197,7 +197,7 @@ shared_examples "runnable launched with run_key" do |run_type, portal_launchable
           end
 
           it 'returns success' do
-            expect(response).to be_success
+            expect(response).to be_successful
           end
 
           it 'renders the resource' do
@@ -213,7 +213,7 @@ shared_examples "runnable launched with run_key" do |run_type, portal_launchable
           end
 
           it 'returns success' do
-            expect(response).to be_success
+            expect(response).to be_successful
           end
 
           it 'renders the resource' do

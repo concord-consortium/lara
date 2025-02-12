@@ -34,7 +34,7 @@ LightweightStandalone::Application.configure do
   # config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect' # for nginx
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
-  # config.force_ssl = true
+  config.force_ssl = true
 
   # See info messages and above in the log (default is :debug in Rails 5)
   config.log_level = :info
@@ -56,7 +56,7 @@ LightweightStandalone::Application.configure do
 
   # Precompile additional assets (application.js, application.css, and all non-JS/CSS are already added)
   # config.assets.precompile += %w( search.js )
-  config.assets.precompile += %w(runtime.js respond.js modernizr.min.js)
+  config.assets.precompile += %w(runtime.js)
   # Themes:
   config.assets.precompile += %w(
   runtime.css theme-mw.css theme-has-ngs.css theme-has-ngs-atmosphere.css

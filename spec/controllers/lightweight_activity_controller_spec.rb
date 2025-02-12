@@ -154,7 +154,7 @@ describe LightweightActivitiesController do
       it 'should return success' do
         get :new
         expect(assigns(:activity)).not_to be_nil
-        expect(response).to be_success
+        expect(response).to be_successful
       end
     end
 
@@ -197,7 +197,7 @@ describe LightweightActivitiesController do
 
         expect(assigns(:activity)).not_to be_nil
         expect(assigns(:activity)).to eq(act)
-        expect(response).to be_success
+        expect(response).to be_successful
       end
     end
 
@@ -383,7 +383,7 @@ describe LightweightActivitiesController do
     describe '#export' do
       it "should call 'export' on the activity" do
         get :export, params: { id: act.id }
-        expect(response).to be_success
+        expect(response).to be_successful
       end
     end
 
@@ -396,7 +396,7 @@ describe LightweightActivitiesController do
 
       it "should call 'export' on the activity" do
         get :export_for_portal, params: { id: act.id }
-        expect(response).to be_success
+        expect(response).to be_successful
         json_response = JSON.parse(response.body)
         expect(json_response["student_report_enabled"]).to_not be_nil
       end

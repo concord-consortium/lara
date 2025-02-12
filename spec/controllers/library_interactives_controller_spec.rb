@@ -253,7 +253,7 @@ describe LibraryInteractivesController do
         it "returns a success response" do
           model = FactoryGirl.create(:library_interactive, valid_attributes)
           get :index
-          expect(response.content_type).to eq("application/json")
+          expect(response.content_type).to eq("application/json; charset=utf-8")
           expect(response).to be_successful
           expect(response.body).to eq([model].to_json)
         end

@@ -1,5 +1,3 @@
-require_dependency "application_controller"
-
 class ManagedInteractivesController < InteractiveController
   before_action :set_interactive, except: [:new, :create]
 

@@ -1,7 +1,6 @@
 require File.expand_path('../boot', __FILE__)
 
 require 'rails/all'
-require_relative '../lib/middleware/inject_origin_header_middleware'
 require_relative '../lib/rack/response_logger'
 
 if defined?(Bundler)
@@ -15,13 +14,20 @@ module LightweightStandalone
   # TODO: This module name is obsolete.
   class Application < Rails::Application
     config.rails_lts_options = { default: :compatible }
+    config.load_defaults 6.0
+    config.autoloader = :classic
 
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
 
+    config.hosts = nil
     # Custom directories with classes and modules you want to be autoloadable.
-    config.autoload_paths += %W(#{config.root}/extras #{config.root}/lib #{config.root}/services)
+    config.autoload_paths += Dir["#{config.root}/extras"]
+    config.autoload_paths += Dir["#{config.root}/lib"]
+    config.autoload_paths += Dir["#{config.root}/app/services"]
+    config.autoload_paths += Dir["#{config.root}/app/helpers"]
+    config.autoload_paths += Dir["#{config.root}/config/locales"]
 
     # Only load the plugins named here, in the order given (default is alphabetical).
     # :all can be used as a placeholder for all plugins not explicitly named.
@@ -79,10 +85,6 @@ module LightweightStandalone
       end
     end
 
-    # Force Rack::Cors to always return Access-Control-Allow-Origin by injecting Origin header if it's missing.
-    # It's useful for image-proxy and image caching.
-    config.middleware.insert_before Rack::Cors, InjectOriginHeaderMiddleware
-
     # Add a middlewere to log more info about the response
     config.middleware.insert_before 0, Rack::ResponseLogger
 
@@ -95,6 +97,3 @@ module LightweightStandalone
     config.action_dispatch.use_authenticated_cookie_encryption = true
   end
 end
-
-# Mute warnings
-SafeYAML::OPTIONS[:default_mode] = :safe

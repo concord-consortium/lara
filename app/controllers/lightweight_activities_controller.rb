@@ -1,12 +1,7 @@
-require_dependency "application_controller"
-
 class LightweightActivitiesController < ApplicationController
 
   before_action :set_activity, except: [:index, :new, :create]
-  before_action only: [:summary, :show, :preview, :resubmit_answers, :single_page] {
-    portal_launchable = (action_name == 'show' && params[:sequence_id].blank?)
-    set_run_key(portal_launchable: portal_launchable)
-  }
+  before_action :set_run_key_from_portal_launchable, only: [:summary, :show, :preview, :resubmit_answers, :single_page]
   before_action :set_sequence, only: [:summary, :show, :single_page, :preview]
 
   before_action :enable_js_logger, only: [:summary, :show, :preview, :single_page]
@@ -284,6 +279,12 @@ class LightweightActivitiesController < ApplicationController
     else
       @activity = LightweightActivity.find(id)
     end
+  end
+
+  private
+  def set_run_key_from_portal_launchable
+    portal_launchable = (action_name == 'show' && params[:sequence_id].blank?)
+    set_run_key(portal_launchable: portal_launchable)
   end
 
   def set_layout

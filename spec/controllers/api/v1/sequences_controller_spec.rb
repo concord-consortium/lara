@@ -51,7 +51,7 @@ describe Api::V1::SequencesController do
       delete "destroy", params: { id: sequence.id }, xhr: true
       expect(Sequence.exists?(sequence.id)).to eq(false)
       expect(response.status).to eq(200)
-      expect(response.content_type).to eq("application/json")
+      expect(response.content_type).to eq("application/json; charset=utf-8")
       expect(response.body).to eql({
         success: true
       }.to_json)
@@ -64,7 +64,7 @@ describe Api::V1::SequencesController do
       delete "destroy", params: { id: sequence.id }, xhr: true
       expect(Sequence.exists?(sequence.id)).to eq(true)
       expect(response.status).to eq(403)
-      expect(response.content_type).to eq("application/json")
+      expect(response.content_type).to eq("application/json; charset=utf-8")
     end
 
     it "when user is an admin, destroys an sequence" do

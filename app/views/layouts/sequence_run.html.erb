@@ -27,11 +27,6 @@
 	<!-- Scripts -->
   <%= render partial: 'shared/rollbar' %>
   <%= Gon::Base.render_data %>
-	<!--[if IE 8 ]>
-  <%= javascript_include_tag 'respond' %>
-	<![endif]-->
-  <!-- TODO: For production, we should be making a custom build of Modernizr instead of using a dev version from CDN: http://modernizr.com/news/modernizr-and-cdns/ -->
-  <%#= DONE ★  javascript_include_tag '//cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js' %>
 
   <!-- TODO: CDN or include? Lab is using 2.0.x but self-hosting. -->
   <%= javascript_include_tag '//ajax.googleapis.com/ajax/libs/jquery/2.0.1/jquery.min.js' %>

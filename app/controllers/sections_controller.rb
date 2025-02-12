@@ -1,5 +1,3 @@
-require_dependency "application_controller"
-
 class SectionsController < ApplicationController
   before_action :set_page
 

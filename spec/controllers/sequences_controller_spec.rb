@@ -134,7 +134,7 @@ describe SequencesController do
   describe '#export' do
     it "should call 'export' on the sequence" do
       get :export, params: { id: sequence.id }
-      expect(response).to be_success
+      expect(response).to be_successful
     end
   end
 
@@ -147,7 +147,7 @@ describe SequencesController do
 
     it "should call 'export_for_portal' on the sequence" do
       get :export_for_portal, params: { id: sequence.id }
-      expect(response).to be_success
+      expect(response).to be_successful
       json_response = JSON.parse(response.body)
       expect(json_response["source_type"]).to_not be_nil
     end

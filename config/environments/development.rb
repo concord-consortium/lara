@@ -37,18 +37,6 @@ LightweightStandalone::Application.configure do
   config.ssl_options = { hsts: { subdomains: false } }
   ActiveSupport.to_time_preserves_timezone = false
 
-  config.after_initialize do
-    Bullet.enable = true
-    Bullet.alert = false
-    Bullet.bullet_logger = ENV["RAILS_STDOUT_LOGGING"].blank?
-    Bullet.console = true
-    Bullet.growl = false
-    Bullet.xmpp = false
-    Bullet.rails_logger = true
-    Bullet.airbrake = false
-    # Bullet.add_footer = true
-  end
-
   # include per developer environment files if found (the default is excluded by .gitignore)
   #
   # Here is a sample local-development.rb file to speed up requests
