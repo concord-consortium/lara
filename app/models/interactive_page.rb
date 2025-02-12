@@ -71,7 +71,7 @@ class InteractivePage < ApplicationRecord
   def self.register_additional_section(s)
     @registered_sections.push(s)
     @registered_additional_sections.push(s)
-    # Let client code use .update_attributes methods (and similar) to set show_<section_name>.
+    # Let client code use .update methods (and similar) to set show_<section_name>.
     # show_<section_name> getter:
     define_method("show_#{s[:name]}") do
       additional_sections && additional_sections[s[:name]]

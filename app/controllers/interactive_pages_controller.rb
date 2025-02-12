@@ -77,7 +77,7 @@ class InteractivePagesController < ApplicationController
     authorize! :update, @page
     respond_to do |format|
       if request.xhr?
-        if @page.update_attributes(update_params)
+        if @page.update(update_params)
           # *** respond with the new value ***
           update_activity_changed_by
           format.html { render plain: params[:interactive_page].values.first }
@@ -88,7 +88,7 @@ class InteractivePagesController < ApplicationController
         format.json { render json: @page.to_json }
       else
         format.html do
-          if @page.update_attributes(update_params)
+          if @page.update(update_params)
             @page.reload # In case it's the name we updated
             update_activity_changed_by
             flash[:notice] = "Page #{@page.name} was updated."

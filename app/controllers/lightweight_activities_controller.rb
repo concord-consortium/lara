@@ -124,7 +124,7 @@ class LightweightActivitiesController < ApplicationController
     authorize! :update, @activity
     update_activity_changed_by
     respond_to do |format|
-      if @activity.update_attributes(lightweight_activity_params)
+      if @activity.update(lightweight_activity_params)
         format.json { render json: @activity }
         format.html {
           flash[:notice] = "Activity #{@activity.name} was updated."

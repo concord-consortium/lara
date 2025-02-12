@@ -51,7 +51,7 @@ class Api::V1::ProjectsController < API::APIController
       .select { |admin| @project.admin_ids.include?(admin[:id].to_i) }
       .map { |admin| admin[:id] }
 
-    if @project.update_attributes(@updated_project_hash)
+    if @project.update(@updated_project_hash)
       render json: {success: true, project: @project, admins: admin_json(@project)}, status: :ok
     else
       render json: @project.errors, status: :unprocessable_entity

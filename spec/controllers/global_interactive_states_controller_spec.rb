@@ -70,7 +70,7 @@ describe GlobalInteractiveStatesController do
       context 'when anonymous user is trying to modify anonymous run' do
         before(:each) do
           sign_out user
-          run.update_attributes!(user_id: nil)
+          run.update!(user_id: nil)
         end
         it 'should work' do
           basic_create_test

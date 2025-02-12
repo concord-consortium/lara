@@ -281,7 +281,7 @@ class ApplicationController < ActionController::Base
 
   def simple_update(subject)
     respond_to do |format|
-      if subject.update_attributes(params[subject.class.to_s.downcase.to_sym]) # Surely there's a simpler way?
+      if subject.update(params[subject.class.to_s.downcase.to_sym]) # Surely there's a simpler way?
         format.html { redirect_to edit_polymorphic_url(subject), notice: "#{subject.class.to_s} was successfully updated." }
         format.json { head :no_content }
       else

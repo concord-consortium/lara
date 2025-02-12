@@ -69,7 +69,7 @@ class ApprovedScriptsController < ApplicationController
     @approved_script = ApprovedScript.find(params[:id])
 
     respond_to do |format|
-      if @approved_script.update_attributes(update_params)
+      if @approved_script.update(update_params)
         format.html { redirect_to approved_scripts_url, notice: 'Approved script was successfully updated.' }
         format.json { head :no_content }
       else

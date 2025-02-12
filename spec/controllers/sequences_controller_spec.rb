@@ -159,9 +159,9 @@ describe SequencesController do
         sequence = Sequence.create! valid_attributes
         # Assuming there are no other sequences in the database, this
         # specifies that the Sequence created on the previous line
-        # receives the :update_attributes message with whatever params are
+        # receives the :update message with whatever params are
         # submitted in the request.
-        expect_any_instance_of(Sequence).to receive(:update_attributes).with({'title' => 'New Title'})
+        expect_any_instance_of(Sequence).to receive(:update).with({'title' => 'New Title'})
         put :update, params: { id: sequence.to_param, sequence: {'title' => 'New Title'}}
       end
 

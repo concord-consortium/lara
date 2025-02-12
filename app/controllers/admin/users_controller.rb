@@ -85,7 +85,7 @@ class Admin::UsersController < ApplicationController
     modifiable_params[:admined_project_ids] ||= []
 
     respond_to do |format|
-      if @user.update_attributes(modifiable_params)
+      if @user.update(modifiable_params)
         format.html { redirect_to edit_admin_user_path(@user), notice: 'User was successfully updated.' }
         format.json { head :no_content }
       else

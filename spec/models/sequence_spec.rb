@@ -341,9 +341,9 @@ describe Sequence do
     end
 
     it 'keeps order of activities from the original even when it was modified' do
-      sequence_with_activities.lightweight_activities_sequences[0].update_attributes!(position: 2)
-      sequence_with_activities.lightweight_activities_sequences[1].update_attributes!(position: 1)
-      sequence_with_activities.lightweight_activities_sequences[2].update_attributes!(position: 3)
+      sequence_with_activities.lightweight_activities_sequences[0].update!(position: 2)
+      sequence_with_activities.lightweight_activities_sequences[1].update!(position: 1)
+      sequence_with_activities.lightweight_activities_sequences[2].update!(position: 3)
       dup = sequence_with_activities.duplicate(owner)
       dup.reload # make sure that all changes are saved to db.
       sequence_with_activities.reload # make sure that order is updated so test below makes sense.

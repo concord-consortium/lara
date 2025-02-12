@@ -88,7 +88,7 @@ class SequencesController < ApplicationController
   def update
     authorize! :update, @sequence
     respond_to do |format|
-      if @sequence.update_attributes(sequence_params.to_h)
+      if @sequence.update(sequence_params.to_h)
         format.html {
           flash[:notice] = "Sequence was successfully updated."
           redirect_to edit_sequence_path(@sequence)

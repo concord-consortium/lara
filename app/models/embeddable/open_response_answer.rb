@@ -17,7 +17,7 @@ module Embeddable
     end
 
     def copy_answer!(another_answer)
-      self.update_attributes!(
+      self.update!(
         answer_text: another_answer.answer_text,
         is_final: another_answer.is_final
       )

@@ -93,7 +93,7 @@ class Api::V1::InteractivePagesController < API::APIController
       clean_params = page_params.to_h.map { |key, value| [key.to_s.underscore, value] }
       clean_params = clean_params.reject { |k, v| v.nil? }
       clean_params = clean_params.select { |k, v| change_keys.include?(k) }
-      @interactive_page.update_attributes(clean_params.to_h)
+      @interactive_page.update(clean_params.to_h)
 
       if page_params['isCompletion']
         @interactive_page.move_to_bottom
@@ -184,7 +184,7 @@ class Api::V1::InteractivePagesController < API::APIController
     new_items = section_params.delete('items')
     new_item_ids = new_items&.map { |i| i['id'] }
     old_items = section.page_items
-    section.update_attributes(section_params)
+    section.update(section_params)
 
     # Its OK for update_section to come in without items...
     if new_items.present?
@@ -193,7 +193,7 @@ class Api::V1::InteractivePagesController < API::APIController
       if section && new_items
         new_items.each do |pi|
           page_item = PageItem.find(pi.delete('id'))
-          page_item&.update_attributes({
+          page_item&.update({
               column: pi['column'],
               position: pi['position'],
               section: section
@@ -205,7 +205,7 @@ class Api::V1::InteractivePagesController < API::APIController
     # remove any missing items...
     if new_item_ids && !new_item_ids.empty?
       old_items.each do |item|
-        item.update_attributes({ section: nil }) unless new_item_ids.include?(item.id.to_s)
+        item.update({ section: nil }) unless new_item_ids.include?(item.id.to_s)
       end
     end
     update_activity_changed_by(@interactive_page.lightweight_activity)
@@ -370,11 +370,11 @@ class Api::V1::InteractivePagesController < API::APIController
 
     page_item = PageItem.find(page_item_id)
     if page_item
-      page_item.update_attributes(update_page_params)
+      page_item.update(update_page_params)
       embeddable_type = type.constantize
       embeddable = embeddable_type.find(page_item.embeddable_id)
       # linked_interactives param follows ISetLinkedInteractives interface format. It isn't a regular attribute.
-      # It requires special treatment and should be removed from params before .update_attributes is called.
+      # It requires special treatment and should be removed from params before .update is called.
       if data.has_key? :linked_interactives
         linked_interactives = data.delete :linked_interactives
         if linked_interactives.present?
@@ -382,7 +382,7 @@ class Api::V1::InteractivePagesController < API::APIController
         end
       end
       if embeddable
-        embeddable.update_attributes(data_update_params)
+        embeddable.update(data_update_params)
       end
     end
     @interactive_page.reload

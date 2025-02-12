@@ -186,7 +186,7 @@ class Run < ApplicationRecord
   end
 
   def set_last_page(page)
-    update_attributes!(page_id: page.id)
+    update!(page_id: page.id)
     if collaboration_run && collaboration_run.is_owner?(user)
       collaboration_run.collaborators_runs(activity, user).each do |r|
         r.set_last_page(page)

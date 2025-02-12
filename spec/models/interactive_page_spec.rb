@@ -160,8 +160,8 @@ describe InteractivePage do
 
     context 'when some pages are hidden' do
       before(:each) do
-        activity.pages.first.update_attributes!(is_hidden: true)
-        activity.pages.last.update_attributes!(is_hidden: true)
+        activity.pages.first.update!(is_hidden: true)
+        activity.pages.last.update!(is_hidden: true)
       end
       it 'order is based on pages position and is_hidden values' do
         expect(activity.pages[0].first_visible?).to be_falsey

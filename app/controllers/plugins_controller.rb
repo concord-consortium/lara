@@ -35,7 +35,7 @@ class PluginsController < ApplicationController
     @plugin = Plugin.find(params[:id])
     authorize! :manage, @plugin
     if !cancel
-      @plugin.update_attributes(update_params)
+      @plugin.update(update_params)
     end
 
     redirect_to(request.env['HTTP_REFERER'].sub(/\?.+/, ''))
