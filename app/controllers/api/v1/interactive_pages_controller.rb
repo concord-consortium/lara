@@ -1,4 +1,4 @@
-class Api::V1::InteractivePagesController < API::APIController
+class Api::V1::InteractivePagesController < Api::ApiController
   layout false
   before_action :set_interactive_page, except: [
     :get_library_interactives_list,

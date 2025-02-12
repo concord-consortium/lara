@@ -1,4 +1,4 @@
-class Api::V1::ImportController < API::APIController
+class Api::V1::ImportController < Api::ApiController
   skip_before_action :verify_authenticity_token, only: :import
   def import
     authorize! :create, LightweightActivity
@@ -10,7 +10,7 @@ class Api::V1::ImportController < API::APIController
         activity_url(import_result[:import_item])
       render json: { success: true, url: url }
     else
-      raise API::APIError, import_result[:error]
+      raise Api::ApiError, import_result[:error]
     end
   end
 end

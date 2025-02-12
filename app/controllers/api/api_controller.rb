@@ -1,4 +1,4 @@
-class API::APIController < ApplicationController
+class Api::ApiController < ApplicationController
   layout false
 
   def error(message, status = 500)
@@ -12,7 +12,7 @@ class API::APIController < ApplicationController
     error("Not authorized", 403)
   end
 
-  rescue_from API::APIError do |e|
+  rescue_from Api::ApiError do |e|
     error(e.message, 500)
   end
 
