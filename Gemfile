@@ -61,7 +61,7 @@ group :test, :development do
   gem 'rails-controller-testing'
 end
 
-gem "acts_as_list", '~> 0.9.19'
+gem "acts_as_list"
 gem 'aws-sdk', '= 2.0.22'
 gem "aws-ses", "0.7.1", git: "https://github.com/zebitex/aws-ses.git", ref: "78-sigv4-problem"
 gem "bootsnap", "= 1.4.4"

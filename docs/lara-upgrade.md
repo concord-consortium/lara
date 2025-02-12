@@ -114,7 +114,7 @@ The status codes are:
 | useragent                    |       UC* AM |          0.10.0 |         0.16.11 |     0.16.11 |
 | will_paginate                |       UC! AM |           3.0.7 |           4.0.1 |       4.0.1 |
 | *GEMS THAT CAN BE UPGRADED*  |              |                 |                 |             |
-| acts_as_list                 |          UC* |           0.3.0 |          0.9.19 |       1.2.4 |
+| acts_as_list                 |       UC! AM |           0.3.0 |           1.2.4 |       1.2.4 |
 | aws-sdk                      |          CU! |          1.66.0 |          2.0.22 |       3.2.0 |
 | better_errors                |          UC! |           1.1.0 |           2.0.0 |      2.10.1 |
 | bootsnap                     |          UC* |           1.4.4 |           1.5.1 |      1.18.4 |
