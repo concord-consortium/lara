@@ -1,4 +1,4 @@
-require_dependency Rails.root.join("app/models/delayed/plugins/tagged_logging").to_s
+require_dependency Rails.root.join("lib/delayed/plugins/tagged_logging").to_s
 
 # Delayed::Worker.destroy_failed_jobs = true
 Delayed::Worker.sleep_delay = 1
