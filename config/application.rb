@@ -13,9 +13,7 @@ end
 module LightweightStandalone
   # TODO: This module name is obsolete.
   class Application < Rails::Application
-    config.rails_lts_options = { default: :compatible }
-    config.load_defaults 6.0
-    config.autoloader = :classic
+    # config.rails_lts_options = { default: :compatible }
 
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
@@ -28,6 +26,13 @@ module LightweightStandalone
     config.autoload_paths += Dir["#{config.root}/app/services"]
     config.autoload_paths += Dir["#{config.root}/app/helpers"]
     config.autoload_paths += Dir["#{config.root}/config/locales"]
+
+    # Custom directories with classes and modules you want to eager load.
+    config.eager_load_paths += Dir["#{config.root}/extras"]
+    config.eager_load_paths += Dir["#{config.root}/lib"]
+    config.eager_load_paths += Dir["#{config.root}/app/services"]
+    config.eager_load_paths += Dir["#{config.root}/app/helpers"]
+    config.eager_load_paths += Dir["#{config.root}/config/locales"]
 
     # Only load the plugins named here, in the order given (default is alphabetical).
     # :all can be used as a placeholder for all plugins not explicitly named.

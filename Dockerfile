@@ -1,5 +1,5 @@
 # set base ruby image
-FROM ruby:2.5.9
+FROM ruby:2.7.0
 
 # update repositories
 RUN echo 'deb http://archive.debian.org/debian/ stretch main' > /etc/apt/sources.list
@@ -7,10 +7,6 @@ RUN apt-get update
 
 # install needed packages
 RUN apt-get install -y build-essential libpq-dev nginx nodejs
-
-# add railslts auth (REMOVE WHEN RAILS LTS IS NO LONGER NEEDED)
-ARG RAILS_LTS_PASS
-RUN bundle config gems.railslts.com concord:$RAILS_LTS_PASS
 
 # install foreman
 RUN gem install foreman
