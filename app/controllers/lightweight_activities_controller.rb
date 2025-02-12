@@ -117,6 +117,7 @@ class LightweightActivitiesController < ApplicationController
 
   def edit
     authorize! :update, @activity
+    gon.publication_details = PublicationDetails.new(@activity).to_json
     render :edit
   end
 
