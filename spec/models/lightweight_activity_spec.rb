@@ -406,9 +406,10 @@ describe LightweightActivity do
       it 'should still duplicate the page' do
         first_page = FactoryGirl.create(:page)
         first_page.sidebar = bad_content
-        activity.pages << first_page
         activity.fix_page_positions
         activity.description = bad_content
+        activity.save!(validate: false)
+        activity.pages << first_page
         activity.save!(validate: false)
         expect(activity).not_to be_valid
         duplicate = activity.duplicate(owner)
