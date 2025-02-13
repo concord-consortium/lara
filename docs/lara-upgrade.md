@@ -128,7 +128,7 @@ The status codes are:
 | devise                       |          UC! |           3.0.1 |           4.9.4 |       4.9.4 |
 | dynamic_form                 |          UC* |           1.1.4 |           1.2.0 |       1.3.1 |
 | exception_notification       |       UC* AM |           4.0.1 |           4.5.0 |       4.5.0 |
-| factory_girl_rails           |          UC* |           4.3.0 |           4.9.0 |       6.4.3 |
+| factory_bot_rails           |          UC* |           4.3.0 |           4.9.0 |       6.4.3 |
 | faker                        |          UC! |           1.2.0 |           2.2.1 |       3.4.2 |
 | ffi                          |           LV |           1.15.5           1.16.3 |      1.17.1 |
 | haml                         |          UC! |           4.0.5 |           5.2.2 |       6.3.0 |
@@ -426,7 +426,7 @@ For now we will stay at 4.2.11.23 instead of upgrading to 4.2.11.38
 5. Resolve gem dependency issues until the bundle update succeeds.
 6. Complete upgrade tasks in the [7.1 to 7.2 upgrade guide](https://guides.rubyonrails.org/upgrading_ruby_on_rails.html#upgrading-from-rails-7-1-to-rails-7-2)
 
-- [ ] All tests now respect the active_job.queue_adapter config
+- [X] All tests now respect the active_job.queue_adapter config
 
 7. Create a PR and insure all the tests pass.
 8. After review/approval merge the branch into the `lara-upgrade` branch.

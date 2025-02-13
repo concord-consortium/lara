@@ -1,11 +1,11 @@
 source "https://rubygems.org"
-  gem 'actionmailer', '~> 7.1.5.1', require: false
-  gem 'actionpack', '~> 7.1.5.1', require: false
-  gem 'activemodel', '~> 7.1.5.1', require: false
-  gem 'activerecord', '~> 7.1.5.1', require: false
-  gem 'activesupport', '~> 7.1.5.1', require: false
-  gem 'rails', '~> 7.1.5.1'
-  gem 'railties', '~> 7.1.5.1', require: false
+  gem 'actionmailer', '~> 7.2.2', require: false
+  gem 'actionpack', '~> 7.2.2', require: false
+  gem 'activemodel', '~> 7.2.2', require: false
+  gem 'activerecord', '~> 7.2.2', require: false
+  gem 'activesupport', '~> 7.2.2', require: false
+  gem 'rails', '~> 7.2.2'
+  gem 'railties', '~> 7.2.2', require: false
 
 group :production do
   gem "unicorn"
@@ -25,11 +25,11 @@ end
 # into app/assets/javascript & app/assets/css
 # however managing those dependencies isn't going to be easy. We need a better
 # long term solution
-#
-# source 'https://rails-assets.org' do
-#   gem 'rails-assets-drawing-tool', '1.3.2'
-#   gem 'rails-assets-modulejs', '1.6.0'
-# end
+
+source 'https://rails-assets.org' do
+  gem 'rails-assets-drawing-tool', '1.3.2'
+  gem 'rails-assets-modulejs', '1.6.0'
+end
 
 group :development do
   gem "better_errors", "~> 2.0.0", ">= 2.0.0"
@@ -43,7 +43,7 @@ end
 
 group :test, :development do
   gem "capybara", "~> 2.18"
-  gem "factory_girl_rails", "~> 4.5", ">= 4.5.0", require: false
+  gem "factory_bot_rails", '~> 4.8', '>= 4.8.2', require: false
   gem "faker"
   gem "jasmine", "~> 2.99.0"
   gem "jasmine-jquery-rails", "~> 2.0", ">= 2.0.3"
@@ -67,7 +67,7 @@ gem "cancancan"
 gem "chosen-rails", "~> 1.10"
 gem 'concurrent-ruby', '= 1.3.4'
 gem "daemons", "~> 1.4", ">= 1.4.1"
-gem "default_value_for", "~> 3.6"
+gem "default_value_for"
 gem "delayed_job_active_record", '~> 4.1', '>= 4.1.10'
 gem "delayed_job_web", '~> 1.4', '>= 1.4.4'
 gem "devise", '~> 4.4', '>= 4.4.0'
