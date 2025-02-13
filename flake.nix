@@ -2,7 +2,7 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     nixpkgs-ruby = {
-      url: "github:bobvanderlinden/nixpkgs-ruby";
+      url = "github:bobvanderlinden/nixpkgs-ruby";
       flake = false;
     };
     nixpkgs-ancient-node = {
