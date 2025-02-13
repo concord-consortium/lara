@@ -1,10 +1,10 @@
 require 'spec_helper'
 
 describe ReportService do
-  let(:user)         { FactoryGirl.create(:user) }
-  let(:activity)     { FactoryGirl.create(:activity, id: 23, name: "Test Activity") }
-  let(:sequence)     { FactoryGirl.create(:sequence, id: 1, title: "Test Sequence", lightweight_activities: [activity])}
-  let(:run)          { FactoryGirl.create(:run, {key: "012345678901234567890123456789123456", activity: activity})}
+  let(:user)         { FactoryBot.create(:user) }
+  let(:activity)     { FactoryBot.create(:activity, id: 23, name: "Test Activity") }
+  let(:sequence)     { FactoryBot.create(:sequence, id: 1, title: "Test Sequence", lightweight_activities: [activity])}
+  let(:run)          { FactoryBot.create(:run, {key: "012345678901234567890123456789123456", activity: activity})}
 
   describe "#report_url" do
     before(:each) do
@@ -30,7 +30,7 @@ describe ReportService do
 
     describe "when the run has Portal info" do
       let(:run_with_portal_info) do
-        FactoryGirl.create(:run, {
+        FactoryBot.create(:run, {
           key: "012345678901234567890123456789123456",
           activity: activity,
           user: user,
@@ -87,7 +87,7 @@ describe ReportService do
     end
 
     describe "when interactive is provided" do
-      let(:mw_interactive) { FactoryGirl.create(:mw_interactive, id: 123) }
+      let(:mw_interactive) { FactoryBot.create(:mw_interactive, id: 123) }
 
       it "adds iframeQuestionId param" do
         expect(ReportService::report_url(run, activity, nil, mw_interactive)).to eq(

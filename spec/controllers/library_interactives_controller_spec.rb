@@ -34,7 +34,7 @@ describe LibraryInteractivesController do
 
   describe "as as admin" do
     before(:each) do
-      @user = FactoryGirl.create(:admin)
+      @user = FactoryBot.create(:admin)
       sign_in @user
     end
 
@@ -124,7 +124,7 @@ describe LibraryInteractivesController do
       it "changes all references to one library_interactive to another library_interactive and redirects to the library_interactive index" do
         library_interactive1 = LibraryInteractive.create! valid_attributes
         library_interactive2 = LibraryInteractive.create! valid_attributes
-        managed_interactive = FactoryGirl.create(:managed_interactive, library_interactive: library_interactive1)
+        managed_interactive = FactoryBot.create(:managed_interactive, library_interactive: library_interactive1)
         put :migrate, params: { id: library_interactive1.to_param, new_library_interactive_id: library_interactive2.to_param }
         managed_interactive.reload
         expect(response).to redirect_to(library_interactives_url)
@@ -134,7 +134,7 @@ describe LibraryInteractivesController do
       it "changes nothing and redirects to the library_interactive index when the library interactive specified for migration is not used by any managed interactives" do
         library_interactive1 = LibraryInteractive.create! valid_attributes
         library_interactive2 = LibraryInteractive.create! valid_attributes
-        managed_interactive = FactoryGirl.create(:managed_interactive, library_interactive: library_interactive2)
+        managed_interactive = FactoryBot.create(:managed_interactive, library_interactive: library_interactive2)
         put :migrate, params: { id: library_interactive1.to_param, new_library_interactive_id: library_interactive2.to_param }
         managed_interactive.reload
         expect(response).to redirect_to(library_interactives_url)
@@ -161,7 +161,7 @@ describe LibraryInteractivesController do
   [:author, :user].each do |user_type|
     describe "as a #{user_type}" do
       before(:each) do
-        @user = FactoryGirl.create(user_type)
+        @user = FactoryBot.create(user_type)
         sign_in @user
       end
 
@@ -245,13 +245,13 @@ describe LibraryInteractivesController do
 
     describe "as an author" do
       before(:each) do
-        @user = FactoryGirl.create(:author)
+        @user = FactoryBot.create(:author)
         sign_in @user
       end
 
       describe "GET #index" do
         it "returns a success response" do
-          model = FactoryGirl.create(:library_interactive, valid_attributes)
+          model = FactoryBot.create(:library_interactive, valid_attributes)
           get :index
           expect(response.content_type).to eq("application/json; charset=utf-8")
           expect(response).to be_successful
@@ -262,7 +262,7 @@ describe LibraryInteractivesController do
 
     describe "as a non-admin/author user" do
       before(:each) do
-        @user = FactoryGirl.create(:user)
+        @user = FactoryBot.create(:user)
         sign_in @user
       end
 

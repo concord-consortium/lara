@@ -2,13 +2,13 @@ require 'spec_helper'
 
 describe GlossariesController do
 
-  let(:author1) { FactoryGirl.create(:author) }
-  let(:author2) { FactoryGirl.create(:author) }
-  let(:admin) { FactoryGirl.create(:admin) }
+  let(:author1) { FactoryBot.create(:author) }
+  let(:author2) { FactoryBot.create(:author) }
+  let(:admin) { FactoryBot.create(:admin) }
   let (:current_user) { admin }
-  let (:glossary) { FactoryGirl.create(:glossary, user: admin) }
-  let (:glossary2) { FactoryGirl.create(:glossary, user: author1) }
-  let (:glossary3) { FactoryGirl.create(:glossary, user: author2) }
+  let (:glossary) { FactoryBot.create(:glossary, user: admin) }
+  let (:glossary2) { FactoryBot.create(:glossary, user: author1) }
+  let (:glossary3) { FactoryBot.create(:glossary, user: author2) }
 
   before(:each) do
     # We're testing access control in spec/models/user_spec.rb, so for this

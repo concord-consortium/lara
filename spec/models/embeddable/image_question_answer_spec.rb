@@ -1,11 +1,11 @@
 require 'spec_helper'
 
 describe Embeddable::ImageQuestionAnswer do
-  let(:question){ FactoryGirl.create(:image_question) }
-  let(:run)     { FactoryGirl.create(:run, activity: FactoryGirl.create(:activity) ) }
+  let(:question){ FactoryBot.create(:image_question) }
+  let(:run)     { FactoryBot.create(:run, activity: FactoryBot.create(:activity) ) }
 
   let(:answer)  do
-    FactoryGirl.create(:image_question_answer,
+    FactoryBot.create(:image_question_answer,
       question: question,
       run: run )
   end
@@ -45,7 +45,7 @@ describe Embeddable::ImageQuestionAnswer do
 
     describe 'with an annotated_image_url' do
       let(:answer) do
-        FactoryGirl.create(:image_question_answer,
+        FactoryBot.create(:image_question_answer,
           question: question,
           annotated_image_url: 'http://annotation.com/foo.png',
           run: run )
@@ -68,7 +68,7 @@ describe Embeddable::ImageQuestionAnswer do
 
   describe '#copy_answer!' do
     let(:another_answer) do
-      FactoryGirl.create(:image_question_answer,
+      FactoryBot.create(:image_question_answer,
         answer_text: "a",
         image_url: "b",
         annotated_image_url: "c",

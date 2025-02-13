@@ -4,25 +4,25 @@ describe LightweightActivity do
   let(:thumbnail_url)    { "http://fake.url.com/image" }
   let(:rubric_url)       { "https://example.com/1" }
   let(:rubric_doc_url)   { "http://example.com/doc_url" }
-  let(:author)           { FactoryGirl.create(:author) }
+  let(:author)           { FactoryBot.create(:author) }
   let(:glossary)         { nil }
-  let(:authored_content) { FactoryGirl.create(:authored_content, user: author, content_type: "application/json", url: rubric_url) }
-  let(:rubric)           { FactoryGirl.create(:rubric, user: author, name: "Test Rubric", doc_url: rubric_doc_url, authored_content: authored_content)}
+  let(:authored_content) { FactoryBot.create(:authored_content, user: author, content_type: "application/json", url: rubric_url) }
+  let(:rubric)           { FactoryBot.create(:rubric, user: author, name: "Test Rubric", doc_url: rubric_doc_url, authored_content: authored_content)}
   let(:act_opts)         { {thumbnail_url: thumbnail_url, glossary: glossary, hide_read_aloud: true, hide_question_numbers: true, font_size: "large", rubric: rubric } }
   let(:activity)         {
-    activity = FactoryGirl.create(:activity, act_opts)
+    activity = FactoryBot.create(:activity, act_opts)
     activity.user = author
     activity.save
     activity
   }
   let(:valid)         {
-    activity = FactoryGirl.build(:activity)
+    activity = FactoryBot.build(:activity)
     activity.user = author
     activity.save
     activity
   }
   let(:activity_player_activity) {
-    activity_player_activity = FactoryGirl.create(:activity_player_activity, act_opts)
+    activity_player_activity = FactoryBot.create(:activity_player_activity, act_opts)
     activity_player_activity.user = author
     activity_player_activity.save
     activity_player_activity
@@ -42,7 +42,7 @@ describe LightweightActivity do
 
   it 'should have pages' do
     [3,1,2].each do |i|
-      page = FactoryGirl.create(:page)
+      page = FactoryBot.create(:page)
       activity.pages << page
     end
     activity.reload
@@ -52,7 +52,7 @@ describe LightweightActivity do
 
   it 'should have InteractivePages in the correct order' do
     [3,1,2].each do |i|
-      page = FactoryGirl.create(:page, name: "page #{i}", position: i)
+      page = FactoryBot.create(:page, name: "page #{i}", position: i)
       activity.pages << page
     end
     activity.reload
@@ -98,10 +98,10 @@ describe LightweightActivity do
   end
 
   describe '#reportable_items' do
-    let(:page1) { FactoryGirl.create(:interactive_page_with_or, position: 1) }
-    let(:page2) { FactoryGirl.create(:interactive_page_with_or, position: 2) }
+    let(:page1) { FactoryBot.create(:interactive_page_with_or, position: 1) }
+    let(:page2) { FactoryBot.create(:interactive_page_with_or, position: 2) }
     let(:reportable_interactive) {
-      FactoryGirl.create(:mw_interactive, enable_learner_state: true, has_report_url: true)
+      FactoryBot.create(:mw_interactive, enable_learner_state: true, has_report_url: true)
     }
     before(:each) do
       page2.add_interactive reportable_interactive
@@ -118,7 +118,7 @@ describe LightweightActivity do
     end
 
     context 'when some pages are hidden' do
-      let (:page2) { FactoryGirl.create(:interactive_page_with_or, is_hidden: true, position: 2) }
+      let (:page2) { FactoryBot.create(:interactive_page_with_or, is_hidden: true, position: 2) }
 
       it 'doesnt report on items on the hidden page' do
         expect(activity.pages[1].is_hidden).to eq true
@@ -130,16 +130,16 @@ describe LightweightActivity do
   end
 
   context 'it has embeddables' do
-    let(:or1)       { FactoryGirl.create(:or_embeddable) }
-    let(:or2)       { FactoryGirl.create(:or_embeddable) }
-    let(:mc1)       { FactoryGirl.create(:mc_embeddable) }
-    let(:mc2)       { FactoryGirl.create(:mc_embeddable) }
-    let(:text_emb)  { FactoryGirl.create(:xhtml)         }
+    let(:or1)       { FactoryBot.create(:or_embeddable) }
+    let(:or2)       { FactoryBot.create(:or_embeddable) }
+    let(:mc1)       { FactoryBot.create(:mc_embeddable) }
+    let(:mc2)       { FactoryBot.create(:mc_embeddable) }
+    let(:text_emb)  { FactoryBot.create(:xhtml)         }
     let(:questions) { [ or1, or2, mc1, mc2]              }
 
     before :each do
       [3,1,2].each do |i|
-        page = FactoryGirl.create(:page, name: "page #{i}", position: i)
+        page = FactoryBot.create(:page, name: "page #{i}", position: i)
         activity.pages << page
       end
       activity.reload
@@ -202,14 +202,14 @@ describe LightweightActivity do
   describe '#export' do
     let(:host) { 'http://example.com' }
     let(:export) { activity.export(host) }
-    let(:approved_script1) { FactoryGirl.create(:approved_script, label: "glossary") }
-    let(:approved_script2) { FactoryGirl.create(:approved_script, label: "notaglossary") }
-    let(:approved_script3) { FactoryGirl.create(:approved_script, label: "willdelete") }
+    let(:approved_script1) { FactoryBot.create(:approved_script, label: "glossary") }
+    let(:approved_script2) { FactoryBot.create(:approved_script, label: "notaglossary") }
+    let(:approved_script3) { FactoryBot.create(:approved_script, label: "willdelete") }
     let(:plugins) do
       [
-        FactoryGirl.create(:plugin, approved_script: approved_script1, component_label: "glossary"),
-        FactoryGirl.create(:plugin, approved_script: approved_script2, component_label: "notaglossary"),
-        FactoryGirl.create(:plugin, approved_script: approved_script3, component_label: "willdeleteapprovedscript")
+        FactoryBot.create(:plugin, approved_script: approved_script1, component_label: "glossary"),
+        FactoryBot.create(:plugin, approved_script: approved_script2, component_label: "notaglossary"),
+        FactoryBot.create(:plugin, approved_script: approved_script3, component_label: "willdeleteapprovedscript")
       ]
     end
 
@@ -251,7 +251,7 @@ describe LightweightActivity do
 
       describe "for activities that use the glossary model" do
         let(:glossary) {
-          glossary = FactoryGirl.create(:glossary, user: author)
+          glossary = FactoryBot.create(:glossary, user: author)
         }
 
         it "has a glossary model" do
@@ -271,14 +271,14 @@ describe LightweightActivity do
   end
 
   describe '#duplicate' do
-    let(:owner)     { FactoryGirl.create(:user) }
+    let(:owner)     { FactoryBot.create(:user) }
     let(:edit_mode) { LightweightActivity::STANDARD_EDITOR_MODE }
     let(:layout)    { LightweightActivity::LAYOUT_MULTI_PAGE    }
-    let(:glossary)  { FactoryGirl.create(:glossary, user: author) }
+    let(:glossary)  { FactoryBot.create(:glossary, user: author) }
 
-    let(:approved_script) { FactoryGirl.create(:approved_script) }
+    let(:approved_script) { FactoryBot.create(:approved_script) }
     let(:plugins) do
-      FactoryGirl.create_list(:plugin, 2, approved_script: approved_script)
+      FactoryBot.create_list(:plugin, 2, approved_script: approved_script)
     end
     before :each do
       activity.layout = layout
@@ -330,8 +330,8 @@ describe LightweightActivity do
 
     describe "an activity with an open response" do
       let(:prompt)        { "xyzzy" }
-      let(:page)          { FactoryGirl.create(:interactive_page, name: "page 1", position: 0) }
-      let(:open_response) {FactoryGirl.create(:open_response, prompt:prompt) }
+      let(:page)          { FactoryBot.create(:interactive_page, name: "page 1", position: 0) }
+      let(:open_response) {FactoryBot.create(:open_response, prompt:prompt) }
       before(:each) do
         page.add_embeddable(open_response)
         activity.pages << page
@@ -345,9 +345,9 @@ describe LightweightActivity do
 
    describe "an activity with an image interactive" do
       let(:prompt)        { "xyzzy" }
-      let(:page)          { FactoryGirl.create(:interactive_page, name: "page 1", position: 0) }
+      let(:page)          { FactoryBot.create(:interactive_page, name: "page 1", position: 0) }
       let(:url)           { "http://foo.bar/kitten.jpg" }
-      let(:interactive)   { FactoryGirl.create(:image_interactive, url:url) }
+      let(:interactive)   { FactoryBot.create(:image_interactive, url:url) }
       before(:each) do
         page.add_interactive(interactive)
         page.reload
@@ -371,7 +371,7 @@ describe LightweightActivity do
 
     it 'has pages in the same order as the source activity' do
       5.times do |i|
-        activity.pages << FactoryGirl.create(:page, position: i + 1)
+        activity.pages << FactoryBot.create(:page, position: i + 1)
       end
       duplicate = activity.duplicate(owner)
       duplicate.pages.each_with_index do |p, i|
@@ -383,8 +383,8 @@ describe LightweightActivity do
 
     it 'has hidden pages that are hidden in the source' do
       3.times do |n|
-        activity.pages << FactoryGirl.create(:page, is_hidden: true)
-        activity.pages << FactoryGirl.create(:page, is_hidden: false)
+        activity.pages << FactoryBot.create(:page, is_hidden: true)
+        activity.pages << FactoryBot.create(:page, is_hidden: false)
       end
       duplicate = activity.duplicate(owner)
       hidden_count = 0
@@ -404,7 +404,7 @@ describe LightweightActivity do
       let(:bad_content)   {"</p> no closing div tag"}
 
       it 'should still duplicate the page' do
-        first_page = FactoryGirl.create(:page)
+        first_page = FactoryBot.create(:page)
         first_page.sidebar = bad_content
         activity.fix_page_positions
         activity.description = bad_content
@@ -424,7 +424,7 @@ describe LightweightActivity do
   end
 
   describe '#import' do
-    let(:new_owner) { FactoryGirl.create(:user) }
+    let(:new_owner) { FactoryBot.create(:user) }
 
     it 'should return an activity' do
       json = JSON.parse(File.read(Rails.root + 'spec/import_examples/valid_lightweight_activity_import_v2.json'), symbolize_names: true)
@@ -441,10 +441,10 @@ describe LightweightActivity do
     end
 
     describe "for activities that use the glossary model" do
-      let(:glossary) { glossary = FactoryGirl.create(:glossary, user: author) }
+      let(:glossary) { glossary = FactoryBot.create(:glossary, user: author) }
       let(:host) { 'http://example.com' }
-      let(:approved_script) { FactoryGirl.create(:approved_script, label: "glossary") }
-      let(:plugin) { FactoryGirl.create(:plugin, approved_script: approved_script, component_label: "glossary") }
+      let(:approved_script) { FactoryBot.create(:approved_script, label: "glossary") }
+      let(:plugin) { FactoryBot.create(:plugin, approved_script: approved_script, component_label: "glossary") }
 
       before(:each) do
         activity.plugins.push(plugin)
@@ -530,9 +530,9 @@ describe LightweightActivity do
     describe 'pages section' do
       describe 'for the Activity Player' do
         before(:each) do
-          activity_player_activity.pages << FactoryGirl.create(:page, name: 'page 1', position: 1)
-          activity_player_activity.pages << FactoryGirl.create(:page, name: 'page 2', position: 2)
-          activity_player_activity.pages << FactoryGirl.create(:page, name: 'hidden page', is_hidden: true, position: 3)
+          activity_player_activity.pages << FactoryBot.create(:page, name: 'page 1', position: 1)
+          activity_player_activity.pages << FactoryBot.create(:page, name: 'page 2', position: 2)
+          activity_player_activity.pages << FactoryBot.create(:page, name: 'hidden page', is_hidden: true, position: 3)
           activity_player_activity.reload
         end
 
@@ -548,17 +548,17 @@ describe LightweightActivity do
     end
 
     describe 'pages section with hidden embeddables & reportable interactives' do
-      let(:page1) { FactoryGirl.create(:interactive_page_with_or, name: 'page 1', position: 1) }
-      let(:page2) { FactoryGirl.create(:interactive_page_with_hidden_or, name: 'page 2', position: 2) }
-      let(:page3) { FactoryGirl.create(:interactive_page_with_or, name: 'page 3', position: 3) }
-      let(:page4) { FactoryGirl.create(:interactive_page_with_or, name: 'page 4', position: 4) }
+      let(:page1) { FactoryBot.create(:interactive_page_with_or, name: 'page 1', position: 1) }
+      let(:page2) { FactoryBot.create(:interactive_page_with_hidden_or, name: 'page 2', position: 2) }
+      let(:page3) { FactoryBot.create(:interactive_page_with_or, name: 'page 3', position: 3) }
+      let(:page4) { FactoryBot.create(:interactive_page_with_or, name: 'page 4', position: 4) }
 
       let(:non_reportable_interactive) {
-        FactoryGirl.create(:mw_interactive, enable_learner_state: false, has_report_url: false)
+        FactoryBot.create(:mw_interactive, enable_learner_state: false, has_report_url: false)
       }
 
       let(:reportable_interactive) {
-        FactoryGirl.create(:mw_interactive, enable_learner_state: true, has_report_url: true)
+        FactoryBot.create(:mw_interactive, enable_learner_state: true, has_report_url: true)
       }
 
       before(:each) do
@@ -619,9 +619,9 @@ describe LightweightActivity do
       activity_player_page_pattern = /https:\/\/activity-player.concord.org\/.*&page=page_\d+/
 
       before(:each) do
-        activity.pages << FactoryGirl.create(:page, name: 'page 1', position: 1)
-        activity.pages << FactoryGirl.create(:page, name: 'page 2', position: 2)
-        activity.pages << FactoryGirl.create(:page, name: 'hidden page', is_hidden: true, position: 3)
+        activity.pages << FactoryBot.create(:page, name: 'page 1', position: 1)
+        activity.pages << FactoryBot.create(:page, name: 'page 2', position: 2)
+        activity.pages << FactoryBot.create(:page, name: 'hidden page', is_hidden: true, position: 3)
         activity.reload
       end
 
@@ -651,17 +651,17 @@ describe LightweightActivity do
     end
 
     describe 'pages section with hidden embeddables & reportable interactives' do
-      let(:page1) { FactoryGirl.create(:interactive_page_with_or, name: 'page 1', position: 1) }
-      let(:page2) { FactoryGirl.create(:interactive_page_with_hidden_or, name: 'page 2', position: 2) }
-      let(:page3) { FactoryGirl.create(:interactive_page_with_or, name: 'page 3', position: 3) }
-      let(:page4) { FactoryGirl.create(:interactive_page_with_or, name: 'page 4', position: 4) }
+      let(:page1) { FactoryBot.create(:interactive_page_with_or, name: 'page 1', position: 1) }
+      let(:page2) { FactoryBot.create(:interactive_page_with_hidden_or, name: 'page 2', position: 2) }
+      let(:page3) { FactoryBot.create(:interactive_page_with_or, name: 'page 3', position: 3) }
+      let(:page4) { FactoryBot.create(:interactive_page_with_or, name: 'page 4', position: 4) }
 
       let(:non_reportable_interactive) {
-        FactoryGirl.create(:mw_interactive, enable_learner_state: false, has_report_url: false)
+        FactoryBot.create(:mw_interactive, enable_learner_state: false, has_report_url: false)
       }
 
       let(:reportable_interactive) {
-        FactoryGirl.create(:mw_interactive, enable_learner_state: true, has_report_url: true)
+        FactoryBot.create(:mw_interactive, enable_learner_state: true, has_report_url: true)
       }
 
       before(:each) do

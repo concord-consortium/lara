@@ -9,13 +9,13 @@ describe GlobalInteractiveStatesController do
     end
   end
 
-  let (:user) { FactoryGirl.create(:user) }
+  let (:user) { FactoryBot.create(:user) }
   before(:each) do
     sign_in user
   end
 
   describe '#create' do
-    let (:run) { FactoryGirl.create(:run, user: user) }
+    let (:run) { FactoryBot.create(:run, user: user) }
     let (:new_state) { 'test 123' }
 
     def basic_create_test
@@ -34,7 +34,7 @@ describe GlobalInteractiveStatesController do
 
     context 'when there is an existing global interactive state connected with given run' do
       before(:each) do
-        FactoryGirl.create(:global_interactive_state, run: run)
+        FactoryBot.create(:global_interactive_state, run: run)
       end
       it 'should update it' do
         expect {
@@ -47,8 +47,8 @@ describe GlobalInteractiveStatesController do
 
     describe 'authorization' do
       context "when user is trying to modify someone else's run" do
-        let (:different_user) { FactoryGirl.create(:user) }
-        let (:run) { FactoryGirl.create(:run, user: different_user) }
+        let (:different_user) { FactoryBot.create(:user) }
+        let (:run) { FactoryBot.create(:run, user: different_user) }
         it 'it should fail' do
           expect {
             post :create, params: { run_id: run.key, raw_data: new_state }
@@ -58,7 +58,7 @@ describe GlobalInteractiveStatesController do
       end
 
       context "when admin is trying to modify someone else's run" do
-        let (:admin) { FactoryGirl.create(:admin) }
+        let (:admin) { FactoryBot.create(:admin) }
         before(:each) do
           sign_in admin
         end

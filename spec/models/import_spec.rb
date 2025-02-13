@@ -1,7 +1,7 @@
 require 'spec_helper'
 describe Import do
 
-  let (:user) { FactoryGirl.create(:admin) }
+  let (:user) { FactoryBot.create(:admin) }
   let (:valid_activity_import_v1_json) { File.read(Rails.root + 'spec/import_examples/valid_lightweight_activity_import_v1.json') }
   let (:valid_activity_import_v2_json) { File.read(Rails.root + 'spec/import_examples/valid_lightweight_activity_import_v2.json') }
   let (:invalid_activity_import_json) { File.read(Rails.root + 'spec/import_examples/invalid_lightweight_activity_import.json') }

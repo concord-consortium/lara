@@ -5,7 +5,7 @@ describe Embeddable::ExternalScript do
   let(:script) { Embeddable::ExternalScript.create(props) }
 
   let(:page) do
-    p = FactoryGirl.create(:interactive_page)
+    p = FactoryBot.create(:interactive_page)
   end
 
   # address bug:  undefined method `is_hidden?'

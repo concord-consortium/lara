@@ -1,6 +1,6 @@
 shared_examples "attached to embeddable form" do
 
-  let(:page) { FactoryGirl.create(:page) }
+  let(:page) { FactoryBot.create(:page) }
   let(:args) { {} }
 
   before :each do

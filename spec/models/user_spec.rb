@@ -16,24 +16,24 @@ describe User do
     let(:ability) { Ability.new(user) }
     let(:user) { nil }
     let(:locked_activity) do
-      la = FactoryGirl.create(:locked_activity)
-      la.pages << FactoryGirl.create(:page)
-      la.user = FactoryGirl.create(:admin)
+      la = FactoryBot.create(:locked_activity)
+      la.pages << FactoryBot.create(:page)
+      la.user = FactoryBot.create(:admin)
       la.save
       la
     end
 
     context 'when is an administrator' do
-      let(:user) { FactoryGirl.build(:admin) }
+      let(:user) { FactoryBot.build(:admin) }
 
       it { is_expected.to be_able_to(:manage, :all) }
     end
 
     context 'when is an author' do
-      let (:user) { FactoryGirl.build(:author) }
-      let (:other_user) { FactoryGirl.build(:author) }
-      let (:page) { FactoryGirl.create(:page) }
-      let (:other_page) { FactoryGirl.create(:page) }
+      let (:user) { FactoryBot.build(:author) }
+      let (:other_user) { FactoryBot.build(:author) }
+      let (:page) { FactoryBot.create(:page) }
+      let (:other_page) { FactoryBot.create(:page) }
       let (:self_activity) { stub_model(LightweightActivity, user_id: user.id, pages: [page]) }
       let (:other_activity) { stub_model(
                                          LightweightActivity,
@@ -48,10 +48,10 @@ describe User do
       let (:private_sequence) { stub_model(Sequence, publication_status: "private", user_id: 15) }
       let (:archive_sequence) { stub_model(Sequence, publication_status: "archive", user_id: 15) }
       let (:self_glossary) { stub_model(Glossary, user_id: user.id) }
-      let (:section) { FactoryGirl.create(:section, :on_page, :with_items, interactive_page: page) }
-      let (:plugin) { FactoryGirl.create(:plugin, plugin_scope: self_activity) }
-      let (:other_plugin) { FactoryGirl.create(:plugin, plugin_scope: other_activity) }
-      let (:interactive) { FactoryGirl.create(:mw_interactive) }
+      let (:section) { FactoryBot.create(:section, :on_page, :with_items, interactive_page: page) }
+      let (:plugin) { FactoryBot.create(:plugin, plugin_scope: self_activity) }
+      let (:other_plugin) { FactoryBot.create(:plugin, plugin_scope: other_activity) }
+      let (:interactive) { FactoryBot.create(:mw_interactive) }
 
       it { is_expected.to be_able_to(:create, Glossary) }
       it { is_expected.to be_able_to(:duplicate, Glossary) }
@@ -112,10 +112,10 @@ describe User do
         locked_activity.reload
       end
 
-      let (:user) { FactoryGirl.build(:user) }
-      let (:project) { FactoryGirl.build(:project) }
-      let (:other_project) { FactoryGirl.build(:project) }
-      let (:page) { FactoryGirl.build(:page) }
+      let (:user) { FactoryBot.build(:user) }
+      let (:project) { FactoryBot.build(:project) }
+      let (:other_project) { FactoryBot.build(:project) }
+      let (:page) { FactoryBot.build(:page) }
       let (:activity) { stub_model(LightweightActivity, user_id: 15, pages: [page], project: project) }
       let (:other_activity) { stub_model(LightweightActivity, user_id: 15, pages: [page], publication_status: 'public') }
       let (:sequence) { stub_model(Sequence, user_id: 15, project: project) }
@@ -126,9 +126,9 @@ describe User do
       let (:glossary) { stub_model(Glossary, user_id: 15, project: project) }
       let (:no_project_glossary) { stub_model(Glossary, user_id: 15) }
       let (:other_project_glossary) { stub_model(Glossary, user_id: 15, project: other_project) }
-      let (:section) { FactoryGirl.create(:section, :on_page, :with_items, interactive_page: page) }
-      let (:plugin) { FactoryGirl.create(:plugin, plugin_scope: activity) }
-      let (:interactive) { FactoryGirl.create(:mw_interactive) }
+      let (:section) { FactoryBot.create(:section, :on_page, :with_items, interactive_page: page) }
+      let (:plugin) { FactoryBot.create(:plugin, plugin_scope: activity) }
+      let (:interactive) { FactoryBot.create(:mw_interactive) }
 
       it { is_expected.to be_able_to(:create, Glossary) }
       it { is_expected.to be_able_to(:duplicate, glossary) }
@@ -179,15 +179,15 @@ describe User do
 
     context 'when is anonymous' do
       let(:other_user) do
-        ou = FactoryGirl.build(:author)
+        ou = FactoryBot.build(:author)
         ou.id = 3
         ou.save
         ou
       end
-      let(:anon_run) { FactoryGirl.create(:run, user: nil) }
-      let(:anon_sequence_run) { FactoryGirl.create(:sequence_run, user: nil) }
-      let(:other_run) { FactoryGirl.create(:run, user: other_user) }
-      let(:other_sequence_run) { FactoryGirl.create(:sequence_run, user: other_user) }
+      let(:anon_run) { FactoryBot.create(:run, user: nil) }
+      let(:anon_sequence_run) { FactoryBot.create(:sequence_run, user: nil) }
+      let(:other_run) { FactoryBot.create(:run, user: other_user) }
+      let(:other_sequence_run) { FactoryBot.create(:sequence_run, user: other_user) }
 
       it { is_expected.to be_able_to(:access, anon_run) }
       it { is_expected.to be_able_to(:access, anon_sequence_run) }
@@ -197,99 +197,99 @@ describe User do
 
     context 'when is a user' do
       let(:user) do
-        u = FactoryGirl.build(:user)
+        u = FactoryBot.build(:user)
         u.id = 2
         u.save
         u
       end
       let(:other_user) do
-        ou = FactoryGirl.build(:author)
+        ou = FactoryBot.build(:author)
         ou.id = 3
         ou.save
         ou
       end
       let(:other_user2) do
-        ou = FactoryGirl.build(:author)
+        ou = FactoryBot.build(:author)
         ou.id = 4
         ou.save
         ou
       end
       let(:hidden_activity) do
-        act = FactoryGirl.create(:activity)
+        act = FactoryBot.create(:activity)
         act.user = other_user
         act.user_id = other_user.id
-        act.pages << FactoryGirl.create(:page)
+        act.pages << FactoryBot.create(:page)
         act.save
         act
       end
       let(:public_activity) do
-        oa = FactoryGirl.create(:public_activity)
+        oa = FactoryBot.create(:public_activity)
         oa.user = other_user
         oa.user_id = other_user.id
-        oa.pages << FactoryGirl.create(:page)
+        oa.pages << FactoryBot.create(:page)
         oa.save
         oa
       end
       let(:private_activity) do
-        oa = FactoryGirl.create(:private_activity)
+        oa = FactoryBot.create(:private_activity)
         oa.user = other_user
         oa.user_id = other_user.id
-        oa.pages << FactoryGirl.create(:page)
+        oa.pages << FactoryBot.create(:page)
         oa.save
         oa
       end
       let(:archive_activity) do
-        oa = FactoryGirl.create(:archive_activity)
+        oa = FactoryBot.create(:archive_activity)
         oa.user = other_user
         oa.user_id = other_user.id
-        oa.pages << FactoryGirl.create(:page)
+        oa.pages << FactoryBot.create(:page)
         oa.save
         oa
       end
       let(:own_activity) do
-        oa = FactoryGirl.create(:private_activity)
+        oa = FactoryBot.create(:private_activity)
         oa.user = user
         oa.user_id = user.id
-        oa.pages << FactoryGirl.create(:page)
+        oa.pages << FactoryBot.create(:page)
         oa.save
         oa
       end
       let(:own_sequence) do
-        os = FactoryGirl.create(:sequence_with_activity, publication_status: "private")
+        os = FactoryBot.create(:sequence_with_activity, publication_status: "private")
         os.user = user
         os.user_id = user.id
         os.save
         os
       end
-      let(:archive_sequence) { FactoryGirl.create(:sequence_with_activity, publication_status: "archive") }
-      let(:hidden_sequence) { FactoryGirl.create(:sequence_with_activity, publication_status: "hidden") }
-      let(:public_sequence) { FactoryGirl.create(:sequence_with_activity, publication_status: "public") }
-      let(:private_sequence) { FactoryGirl.create(:sequence_with_activity, publication_status: "private") }
-      let(:own_run) { FactoryGirl.create(:run, user: user) }
-      let(:anon_run) { FactoryGirl.create(:run, user: nil) }
-      let(:other_run) { FactoryGirl.create(:run, user: other_user) }
-      let(:own_sequence_run) { FactoryGirl.create(:sequence_run, user: user) }
-      let(:own_irs) { FactoryGirl.create(:interactive_run_state, run: own_run) }
-      let(:other_irs) { FactoryGirl.create(:interactive_run_state, run: other_run) }
-      let(:other_sequence_run) { FactoryGirl.create(:sequence_run, user: other_user) }
-      let(:anon_irs) { FactoryGirl.create(:interactive_run_state, run: anon_run) }
+      let(:archive_sequence) { FactoryBot.create(:sequence_with_activity, publication_status: "archive") }
+      let(:hidden_sequence) { FactoryBot.create(:sequence_with_activity, publication_status: "hidden") }
+      let(:public_sequence) { FactoryBot.create(:sequence_with_activity, publication_status: "public") }
+      let(:private_sequence) { FactoryBot.create(:sequence_with_activity, publication_status: "private") }
+      let(:own_run) { FactoryBot.create(:run, user: user) }
+      let(:anon_run) { FactoryBot.create(:run, user: nil) }
+      let(:other_run) { FactoryBot.create(:run, user: other_user) }
+      let(:own_sequence_run) { FactoryBot.create(:sequence_run, user: user) }
+      let(:own_irs) { FactoryBot.create(:interactive_run_state, run: own_run) }
+      let(:other_irs) { FactoryBot.create(:interactive_run_state, run: other_run) }
+      let(:other_sequence_run) { FactoryBot.create(:sequence_run, user: other_user) }
+      let(:anon_irs) { FactoryBot.create(:interactive_run_state, run: anon_run) }
 
-      let(:collaboration_activity) { FactoryGirl.create(:activity) }
-      let(:follower_run) { FactoryGirl.create(:run, user: user, activity: collaboration_activity) }
-      let(:leader_run) { FactoryGirl.create(:run, user: other_user, activity: collaboration_activity) }
-      let(:collaboration_run) { FactoryGirl.create(:collaboration_run, user: other_user) }
-      let(:collaborating_run) { FactoryGirl.create(:run, user: other_user, collaboration_run: collaboration_run, activity: collaboration_activity) }
-      let(:collaboration_irs) { FactoryGirl.create(:interactive_run_state, run: collaborating_run) }
+      let(:collaboration_activity) { FactoryBot.create(:activity) }
+      let(:follower_run) { FactoryBot.create(:run, user: user, activity: collaboration_activity) }
+      let(:leader_run) { FactoryBot.create(:run, user: other_user, activity: collaboration_activity) }
+      let(:collaboration_run) { FactoryBot.create(:collaboration_run, user: other_user) }
+      let(:collaborating_run) { FactoryBot.create(:run, user: other_user, collaboration_run: collaboration_run, activity: collaboration_activity) }
+      let(:collaboration_irs) { FactoryBot.create(:interactive_run_state, run: collaborating_run) }
 
-      let(:other_collaboration_activity) { FactoryGirl.create(:activity) }
-      let(:other_follower_run) { FactoryGirl.create(:run, user: other_user2, activity: other_collaboration_activity) }
-      let(:other_leader_run) { FactoryGirl.create(:run, user: other_user, activity: other_collaboration_activity) }
-      let(:other_collaboration_run) { FactoryGirl.create(:collaboration_run, user: other_user2) }
-      let(:other_collaborating_run) { FactoryGirl.create(:run, user: other_user, collaboration_run: other_collaboration_run, activity: other_collaboration_activity) }
-      let(:other_collaboration_irs) { FactoryGirl.create(:interactive_run_state, run: other_collaborating_run) }
+      let(:other_collaboration_activity) { FactoryBot.create(:activity) }
+      let(:other_follower_run) { FactoryBot.create(:run, user: other_user2, activity: other_collaboration_activity) }
+      let(:other_leader_run) { FactoryBot.create(:run, user: other_user, activity: other_collaboration_activity) }
+      let(:other_collaboration_run) { FactoryBot.create(:collaboration_run, user: other_user2) }
+      let(:other_collaborating_run) { FactoryBot.create(:run, user: other_user, collaboration_run: other_collaboration_run, activity: other_collaboration_activity) }
+      let(:other_collaboration_irs) { FactoryBot.create(:interactive_run_state, run: other_collaborating_run) }
 
-      let(:glossary) { FactoryGirl.create(:glossary, user: other_user) }
-      let(:own_glossary) { FactoryGirl.create(:glossary, user: user) }
+      let(:glossary) { FactoryBot.create(:glossary, user: other_user) }
+      let(:own_glossary) { FactoryBot.create(:glossary, user: user) }
 
       it { is_expected.not_to be_able_to(:create, Glossary) }
       it { is_expected.to be_able_to(:update, own_glossary) }
@@ -374,8 +374,8 @@ describe User do
     describe "with matching provider and user" do
       it "should return the matching user" do
 
-        expected = FactoryGirl.create(:user)
-        authentication = FactoryGirl.create(:authentication,
+        expected = FactoryBot.create(:user)
+        authentication = FactoryBot.create(:authentication,
           {user: expected, provider: auth_provider, uid: auth_uid})
 
         expect(User.find_for_concord_portal_oauth(auth)).to eq(expected)
@@ -384,12 +384,12 @@ describe User do
 
     describe "with matching email address and no provider" do
       it "should return the found user" do
-        expected = FactoryGirl.create(:user,
+        expected = FactoryBot.create(:user,
           { email: auth_email } )
         expect(User.find_for_concord_portal_oauth(auth)).to eq(expected)
       end
       it "should update the provider and user to match found" do
-        expected = FactoryGirl.create(:user,
+        expected = FactoryBot.create(:user,
           { email: auth_email } )
         found = User.find_for_concord_portal_oauth(auth)
         expect(found.email).to    eq(expected.email)
@@ -402,9 +402,9 @@ describe User do
     describe "with matching email address and different provider" do
       it "should create a new authentication with the provider and uid" do
 
-        expected = FactoryGirl.create(:user,
+        expected = FactoryBot.create(:user,
           { email: auth_email }  )
-        authentication = FactoryGirl.create(:authentication,
+        authentication = FactoryBot.create(:authentication,
           {user: expected, provider: 'some other provider', uid: auth_uid})
         found = User.find_for_concord_portal_oauth(auth)
         expect(found.email).to                eq(expected.email)
@@ -418,18 +418,18 @@ describe User do
 
     describe "with matching email address and wrong uid" do
       it "should throw an exception" do
-        expected = FactoryGirl.create(:user,
+        expected = FactoryBot.create(:user,
           { email: auth_email}  )
-        authentication = FactoryGirl.create(:authentication,
+        authentication = FactoryBot.create(:authentication,
           {user: expected, provider: auth_provider, uid: "222"})
         expect { User.find_for_concord_portal_oauth(auth) }.to raise_error(UncaughtThrowError)
       end
     end
 
     describe '#auth_providers' do
-      let(:user) { FactoryGirl.create(:user) }
-      let(:run)  { FactoryGirl.create(:run, remote_endpoint: 'http://localhost:9000') }
-      let(:auth) { FactoryGirl.create(:authentication, provider: 'concord_portal') }
+      let(:user) { FactoryBot.create(:user) }
+      let(:run)  { FactoryBot.create(:run, remote_endpoint: 'http://localhost:9000') }
+      let(:auth) { FactoryBot.create(:authentication, provider: 'concord_portal') }
 
       it 'should return an array of symbols' do
         expect(user.auth_providers).to eq([])
@@ -450,7 +450,7 @@ describe User do
   describe "#has_api_key" do
     let(:existing_api_key) { nil }
     let(:opts) { { api_key: existing_api_key } }
-    let(:user) { FactoryGirl.build(:user, opts) }
+    let(:user) { FactoryBot.build(:user, opts) }
 
     it "by default users do not have an api_key" do
       expect(user.api_key).to be_nil
@@ -503,9 +503,9 @@ describe User do
   end
 
   describe "project_admins and admined_projects" do
-    let(:user) { FactoryGirl.create(:user) }
-    let(:project1) { FactoryGirl.create(:project) }
-    let(:project2) { FactoryGirl.create(:project) }
+    let(:user) { FactoryBot.create(:user) }
+    let(:project1) { FactoryBot.create(:project) }
+    let(:project2) { FactoryBot.create(:project) }
 
     it "should be empty by default" do
       project1

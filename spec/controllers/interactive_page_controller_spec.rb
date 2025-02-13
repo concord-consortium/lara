@@ -4,27 +4,27 @@ describe InteractivePagesController do
   # TODO: This file is far too big, and contains a lot of view/request testing which should happen there and not here.
 
   render_views
-  let(:project) { FactoryGirl.create(:project) }
-  let (:act) { FactoryGirl.create(:public_activity, project: project ) }
+  let(:project) { FactoryBot.create(:project) }
+  let (:act) { FactoryBot.create(:public_activity, project: project ) }
 
   let (:page1) do
-    page1 = FactoryGirl.create(:page, lightweight_activity: act)
+    page1 = FactoryBot.create(:page, lightweight_activity: act)
   end
 
   let (:page2) do
-    page2 = FactoryGirl.create(:page, name: "Page 2", lightweight_activity: act)
+    page2 = FactoryBot.create(:page, name: "Page 2", lightweight_activity: act)
   end
 
   let (:page3) do
-    page3 = FactoryGirl.create(:page, name: "Page 3", lightweight_activity: act)
+    page3 = FactoryBot.create(:page, name: "Page 3", lightweight_activity: act)
   end
 
-  let (:user) { FactoryGirl.create(:user) }
-  let (:ar) { FactoryGirl.create(:run, activity_id: act.id, user_id: nil) }
+  let (:user) { FactoryBot.create(:user) }
+  let (:ar) { FactoryBot.create(:run, activity_id: act.id, user_id: nil) }
 
-  let (:interactive) { FactoryGirl.create(:mw_interactive) }
-  let (:sequence) { FactoryGirl.create(:sequence, lightweight_activities: [act]) }
-  let (:sequence_run) { FactoryGirl.create(:sequence_run, sequence_id: sequence.id, user_id: nil) }
+  let (:interactive) { FactoryBot.create(:mw_interactive) }
+  let (:sequence) { FactoryBot.create(:sequence, lightweight_activities: [act]) }
+  let (:sequence_run) { FactoryBot.create(:sequence_run, sequence_id: sequence.id, user_id: nil) }
 
   describe 'routing' do
     it 'recognizes and generates #show' do
@@ -60,7 +60,7 @@ describe InteractivePagesController do
     end
 
     describe 'when it is part of a sequence' do
-      let (:seq_run) { FactoryGirl.create(:sequence_run, sequence_id: sequence.id, user_id: nil) }
+      let (:seq_run) { FactoryBot.create(:sequence_run, sequence_id: sequence.id, user_id: nil) }
 
       before(:each) do
         # Add the activity to the sequence
@@ -185,7 +185,7 @@ describe InteractivePagesController do
 
   context 'when the current user is an author' do
     before(:each) do
-      @user ||= FactoryGirl.create(:admin)
+      @user ||= FactoryBot.create(:admin)
       sign_in @user
     end
 
@@ -308,10 +308,10 @@ describe InteractivePagesController do
     describe 'reorder_embeddables' do
       it 'accepts a list of embeddables in order and adjusts position values to match' do
         # Create one MultipleChoice embeddable, with choices
-        mc1 = FactoryGirl.create(:mc_with_choices)
+        mc1 = FactoryBot.create(:mc_with_choices)
 
         # Create another MultipleChoice embeddable, with choices
-        mc2 = FactoryGirl.create(:mc_with_choices)
+        mc2 = FactoryBot.create(:mc_with_choices)
 
         # Add the two embeddables created above to the page. The order they are added is the starting order: first on top, last on the bottom.
         page1.add_embeddable(mc1, 1)
@@ -380,7 +380,7 @@ describe InteractivePagesController do
 
     describe 'remove_page_item' do
       it 'removes the identified embeddable from the page' do
-        embeddable = FactoryGirl.create(:multiple_choice)
+        embeddable = FactoryBot.create(:multiple_choice)
         page1.add_embeddable(embeddable)
         page1.reload
         embed_count = page1.embeddables.length
@@ -392,7 +392,7 @@ describe InteractivePagesController do
       end
 
       it 'redirects to the edit page' do
-        embeddable = FactoryGirl.create(:multiple_choice)
+        embeddable = FactoryBot.create(:multiple_choice)
         page1.add_embeddable(embeddable)
         post :remove_page_item, params: { page_item_id: embeddable.p_item.id }
 

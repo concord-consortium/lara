@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe LaraDuplicationHelper do
-  let(:item) { FactoryGirl.create(:open_response) }
+  let(:item) { FactoryBot.create(:open_response) }
   let(:helper) { LaraDuplicationHelper.new }
 
   describe "#get_copy" do

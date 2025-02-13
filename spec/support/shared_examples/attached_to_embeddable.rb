@@ -1,8 +1,8 @@
 shared_examples "attached to embeddable" do
-  let(:hidden_open_response_embeddable) { FactoryGirl.create(:hidden_open_response) }
-  let(:open_response_embeddable)        { FactoryGirl.create(:open_response) }
+  let(:hidden_open_response_embeddable) { FactoryBot.create(:hidden_open_response) }
+  let(:open_response_embeddable)        { FactoryBot.create(:open_response) }
   let(:embeddables) { [] }
-  let(:page)        { FactoryGirl.create(:page, embeddables: embeddables) }
+  let(:page)        { FactoryBot.create(:page, embeddables: embeddables) }
   let(:args)        { {} }
   let(:test_embeddable) do
     e = described_class.create(args)
@@ -54,8 +54,8 @@ shared_examples "attached to embeddable" do
   end
 
   describe "#embeddables_for_select" do
-    let(:embeddable_a)         { FactoryGirl.create(:open_response) }
-    let(:embeddable_b)         { FactoryGirl.create(:open_response) }
+    let(:embeddable_a)         { FactoryBot.create(:open_response) }
+    let(:embeddable_b)         { FactoryBot.create(:open_response) }
 
     let(:expected_identifier_1) { AttachedToEmbeddable::NO_EMBEDDABLE_SELECT }
     let(:expected_identifier_2) { AttachedToEmbeddable::NEXT_EMBEDDABLE_SELECT }

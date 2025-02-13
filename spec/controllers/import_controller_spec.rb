@@ -2,7 +2,7 @@ require 'spec_helper'
 describe ImportController do
 
   before(:each) do
-    @user ||= FactoryGirl.create(:admin)
+    @user ||= FactoryBot.create(:admin)
     sign_in @user
   end
 

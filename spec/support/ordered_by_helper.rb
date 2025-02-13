@@ -4,7 +4,7 @@ RSpec::Matchers.define :be_ordered_by do |attribute|
     reverse_indicator = "_desc"
     attribute = attribute.to_s
     @failers = []
-    
+
     symbol     = attribute.to_sym
     comparison = Proc.new { |a,b| a.send(symbol) >= b.send(symbol) }
 
@@ -40,7 +40,7 @@ end
 def make_collection_with_rand_modication_time(factory,count=10,opts={})
   count.times do
     Timecop.travel(rand(Date.parse('2011-01-01')..Date.parse('2012-12-01')))
-    FactoryGirl.create(factory.to_sym, opts)
+    FactoryBot.create(factory.to_sym, opts)
   end
   Timecop.return
 end

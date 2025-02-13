@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
 
   factory :section, class: Section do
     title  { Faker::Lorem.sentence(word_count: 3) }
@@ -10,7 +10,7 @@ FactoryGirl.define do
     trait :with_items do
       after :create do |section|
         3.times do |count|
-          embeddable = FactoryGirl.create(:or_embeddable)
+          embeddable = FactoryBot.create(:or_embeddable)
           section.page_items.create!(
             embeddable: embeddable,
             position: count + 1,

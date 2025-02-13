@@ -19,10 +19,10 @@ require 'spec_helper'
 # that an instance is receiving a specific message.
 
 describe Admin::UsersController do
-  let(:target) { FactoryGirl.create(:user) }
+  let(:target) { FactoryBot.create(:user) }
 
   before(:each) do
-    @user ||= FactoryGirl.create(:admin)
+    @user ||= FactoryBot.create(:admin)
     sign_in @user
   end
 
@@ -32,7 +32,7 @@ describe Admin::UsersController do
   def valid_attributes
     {}
   end
-  
+
   # This should return the minimal set of values that should be in the session
   # in order to pass any filters (e.g. authentication) defined in
   # UsersController. Be sure to keep this updated too.
@@ -73,18 +73,18 @@ describe Admin::UsersController do
     describe "with valid params" do
       it "creates a new User" do
         expect {
-          post :create, params: { user: FactoryGirl.attributes_for(:user) }
+          post :create, params: { user: FactoryBot.attributes_for(:user) }
         }.to change(User, :count).by(1)
       end
 
       it "assigns a newly created user as @user" do
-        post :create, params: {user: FactoryGirl.attributes_for(:user) }
+        post :create, params: {user: FactoryBot.attributes_for(:user) }
         expect(assigns(:user)).to be_a(User)
         expect(assigns(:user)).to be_persisted
       end
 
       it "redirects to the created user" do
-        post :create, params: {user: FactoryGirl.attributes_for(:user) }
+        post :create, params: {user: FactoryBot.attributes_for(:user) }
         expect(response).to redirect_to(edit_admin_user_path(User.last))
       end
     end
@@ -141,14 +141,14 @@ describe Admin::UsersController do
   describe "DELETE destroy" do
     it "destroys the requested user" do
       # Using the let-created user in these specs isn't useful
-      user = FactoryGirl.create(:user)
+      user = FactoryBot.create(:user)
       expect {
         delete :destroy, params: { id: user.to_param }
       }.to change(User, :count).by(-1)
     end
 
     it "redirects to the admin_users list" do
-      user = FactoryGirl.create(:user)
+      user = FactoryBot.create(:user)
       delete :destroy, params: { id: user.to_param }
       expect(response).to redirect_to(admin_users_url)
     end

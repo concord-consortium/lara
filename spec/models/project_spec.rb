@@ -68,9 +68,9 @@ describe Project do
   end
 
   describe "project_admins and admins" do
-    let(:project) { FactoryGirl.create(:project) }
-    let(:user1) { FactoryGirl.create(:user) }
-    let(:user2) { FactoryGirl.create(:user) }
+    let(:project) { FactoryBot.create(:project) }
+    let(:user1) { FactoryBot.create(:user) }
+    let(:user2) { FactoryBot.create(:user) }
 
     it "should be empty by default" do
       expect(project.admins.length).to be(0)

@@ -1,6 +1,6 @@
-# Read about factories at https://github.com/thoughtbot/factory_girl
+# Read about factories at https://github.com/thoughtbot/factory_bot
 
-FactoryGirl.define do
+FactoryBot.define do
   sequence(:word)         { |n| Faker::Lorem.word     }
   sequence(:sentence)     { |n| Faker::Lorem.sentence }
   sequence(:author_data)  { |n| Faker::Lorem.sentence }

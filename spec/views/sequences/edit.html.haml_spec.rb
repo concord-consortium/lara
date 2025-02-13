@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe "sequences/edit" do
   before(:each) do
-    @user ||= FactoryGirl.create(:admin)
+    @user ||= FactoryBot.create(:admin)
     sign_in @user
 
     @sequence = assign(:sequence, stub_model(Sequence,

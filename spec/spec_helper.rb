@@ -9,7 +9,7 @@ end
 ENV["RAILS_ENV"] ||= 'test'
 require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
-require 'factory_girl_rails'
+require 'factory_bot_rails'
 require 'webmock/rspec'
 require 'rspec/active_model/mocks'
 
@@ -81,9 +81,9 @@ RSpec.configure do |config|
   config.include Devise::Test::ControllerHelpers, type: :controller
   config.include Devise::Test::ControllerHelpers, type: :view
 
-  # this really doesn't seem like it should be necessary, so I wonder about
-  # wether the require capybara/rspec is working or needed above
-  config.include Rails.application.routes.url_helpers, type: :feature
+  # # this really doesn't seem like it should be necessary, so I wonder about
+  # # wether the require capybara/rspec is working or needed above
+  # config.include Rails.application.routes.url_helpers, type: :feature
 
   Devise.stretches = 1
   WebMock.disable_net_connect!(allow_localhost: true)
@@ -105,6 +105,8 @@ RSpec.configure do |config|
   #       # Equivalent to being in spec/controllers
   #     end
   config.infer_spec_type_from_file_location!
+
+  config.include FactoryBot::Syntax::Methods
 
   config.include Warden::Test::Helpers
   config.before :suite do
@@ -157,5 +159,5 @@ def  clean_env_vars
 end
 
 def add_linked_interactive(primary, secondary, label = nil)
-  FactoryGirl.create(:linked_page_item, {primary: primary.page_item, secondary: secondary.page_item, label: label})
+  FactoryBot.create(:linked_page_item, {primary: primary.page_item, secondary: secondary.page_item, label: label})
 end

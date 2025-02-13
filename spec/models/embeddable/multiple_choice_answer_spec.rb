@@ -2,11 +2,11 @@ require 'spec_helper'
 
 describe Embeddable::MultipleChoiceAnswer do
   let(:feedback) { "feedback text" }
-  let(:a1)       { FactoryGirl.create(:multiple_choice_choice, choice: "answer_one") }
-  let(:a2)       { FactoryGirl.create(:multiple_choice_choice, choice: "answer_two", prompt: feedback) }
-  let(:question) { FactoryGirl.create(:multiple_choice, choices: [a1, a2]) }
-  let(:run)      { FactoryGirl.create(:run, activity: FactoryGirl.create(:activity) ) }
-  let(:answer)   { FactoryGirl.create(:multiple_choice_answer,
+  let(:a1)       { FactoryBot.create(:multiple_choice_choice, choice: "answer_one") }
+  let(:a2)       { FactoryBot.create(:multiple_choice_choice, choice: "answer_two", prompt: feedback) }
+  let(:question) { FactoryBot.create(:multiple_choice, choices: [a1, a2]) }
+  let(:run)      { FactoryBot.create(:run, activity: FactoryBot.create(:activity) ) }
+  let(:answer)   { FactoryBot.create(:multiple_choice_answer,
                     answers: [a1, a2],
                     question: question,
                     run: run)
@@ -51,7 +51,7 @@ describe Embeddable::MultipleChoiceAnswer do
 
   describe "#copy_answer!" do
     let(:another_answer) do
-      FactoryGirl.create(:multiple_choice_answer,
+      FactoryBot.create(:multiple_choice_answer,
         answers: [a1],
         question: question
       )

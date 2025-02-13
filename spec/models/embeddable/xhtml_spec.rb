@@ -1,7 +1,7 @@
 require File.expand_path('../../../spec_helper', __FILE__)
 
 describe Embeddable::Xhtml do
-  let (:xhtml) { FactoryGirl.create(:xhtml) }
+  let (:xhtml) { FactoryBot.create(:xhtml) }
 
   describe 'HTML validation' do
     it 'rejects invalid HTML' do

@@ -8,12 +8,12 @@
 #   let(:question) { Embeddable::Labbook.create! }
 #   let(:answer)   { Embeddable::LabbookAnswer.create!(question: question, run: run) }
 #   let(:endpoint) { 'http://concord.portal.org' }
-#   let(:user)     { FactoryGirl.create(:user) }
+#   let(:user)     { FactoryBot.create(:user) }
 
 #   describe '#update' do
 #     describe 'with a run initiated from remote portal' do
 #       describe 'and logged in' do
-#         let(:run) { FactoryGirl.create(:run, remote_endpoint: endpoint, user_id: user.id) }
+#         let(:run) { FactoryBot.create(:run, remote_endpoint: endpoint, user_id: user.id) }
 #         it 'should fire off a web request to update the portal' do
 #           sign_in user
 #           put 'update', id: answer.id
@@ -22,7 +22,7 @@
 #         end
 #       end
 #       describe 'and anonymous' do
-#         let(:run) { FactoryGirl.create(:run, remote_endpoint: endpoint, user_id: nil) }
+#         let(:run) { FactoryBot.create(:run, remote_endpoint: endpoint, user_id: nil) }
 #         it 'should fire off a web request to update the portal' do
 #           put 'update', id: answer.id
 #           expect(response.status).not_to eq 401
@@ -34,7 +34,7 @@
 
 #   describe 'with no endpoint defined (not requested from portal)' do
 #     describe 'and logged in' do
-#       let(:run) { FactoryGirl.create(:run, user_id: user.id) }
+#       let(:run) { FactoryBot.create(:run, user_id: user.id) }
 #       it 'should not fire a web request to update the portal' do
 #         sign_in user
 #         put 'update', id: answer.id
@@ -43,7 +43,7 @@
 #       end
 #     end
 #     describe 'and anonymous' do
-#       let(:run) { FactoryGirl.create(:run, user_id: nil) }
+#       let(:run) { FactoryBot.create(:run, user_id: nil) }
 #       it 'should not fire a web request to update the portal' do
 #         put 'update', id: answer.id
 #         expect(response.status).not_to eq 401

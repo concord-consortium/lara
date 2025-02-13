@@ -1,6 +1,6 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :glossary, class: Glossary do
     name { generate(:name) }
-    json "{}"
+    json { "{}" }
   end
 end

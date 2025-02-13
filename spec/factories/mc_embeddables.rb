@@ -1,6 +1,6 @@
-# Read about factories at https://github.com/thoughtbot/factory_girl
+# Read about factories at https://github.com/thoughtbot/factory_bot
 
-FactoryGirl.define do
+FactoryBot.define do
   sequence(:prompt) { Faker::Lorem.sentence(word_count: 8) }
   sequence(:choice) { Faker::Lorem.sentence(word_count: 2) }
 

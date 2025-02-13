@@ -5,7 +5,7 @@ describe Embeddable::EmbeddablePlugin do
 
   let (:is_half_width) {false}
   let (:is_hidden) {true}
-  let (:plugin) { FactoryGirl.create(:plugin) }
+  let (:plugin) { FactoryBot.create(:plugin) }
   let (:params) do
     {
       is_hidden: is_hidden,
@@ -13,7 +13,7 @@ describe Embeddable::EmbeddablePlugin do
       plugin: plugin
     }
   end
-  let (:embeddable_plugin) { FactoryGirl.create(:embeddable_plugin, params) }
+  let (:embeddable_plugin) { FactoryBot.create(:embeddable_plugin, params) }
 
   it "should create a new instance with default values" do
     expect(embeddable_plugin).to be_valid
@@ -113,7 +113,7 @@ describe Embeddable::EmbeddablePlugin do
       expect(embeddable_plugin.show_in_edit?).to eq(true)
     end
     it 'returns false if a embeddable is wrapped' do
-      embeddable_plugin.embeddable = FactoryGirl.create(:open_response)
+      embeddable_plugin.embeddable = FactoryBot.create(:open_response)
       expect(embeddable_plugin.show_in_edit?).to eq(false)
     end
   end

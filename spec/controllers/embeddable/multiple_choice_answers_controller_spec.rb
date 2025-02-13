@@ -4,21 +4,21 @@
 #   before(:each) do
 #     stub_request(:any, endpoint)
 #   end
-#   let(:a_answer) { FactoryGirl.create(:multiple_choice_choice, :choice => "a" )}
-#   let(:b_answer) { FactoryGirl.create(:multiple_choice_choice, :choice => "a" )}
-#   let(:c_answer) { FactoryGirl.create(:multiple_choice_choice, :choice => "a" )}
+#   let(:a_answer) { FactoryBot.create(:multiple_choice_choice, :choice => "a" )}
+#   let(:b_answer) { FactoryBot.create(:multiple_choice_choice, :choice => "a" )}
+#   let(:c_answer) { FactoryBot.create(:multiple_choice_choice, :choice => "a" )}
 #   let(:choices)  { [a_answer,b_answer,c_answer] }
-#   let(:question) { FactoryGirl.create(:multiple_choice, :prompt => "prompt", :choices => choices)}
+#   let(:question) { FactoryBot.create(:multiple_choice, :prompt => "prompt", :choices => choices)}
 #   let(:endpoint) { 'http://concord.portal.org' }
-#   let(:run)      { FactoryGirl.create(:run)     }
-#   let(:answer)   { FactoryGirl.create(:multiple_choice_answer, :question => question, :run => run)}
-#   let(:user)     { FactoryGirl.create(:user) }
+#   let(:run)      { FactoryBot.create(:run)     }
+#   let(:answer)   { FactoryBot.create(:multiple_choice_answer, :question => question, :run => run)}
+#   let(:user)     { FactoryBot.create(:user) }
 
 #   describe "#update" do
 #     describe "with a run initiated from remote portal" do
 #       describe "and logged in" do
 #         let(:run)  {
-#           FactoryGirl.create(
+#           FactoryBot.create(
 #             :run,
 #             :remote_endpoint => endpoint,
 #             :user_id => user.id
@@ -62,7 +62,7 @@
 #       end
 #       describe "and anonymous" do
 #         let(:run)  {
-#           FactoryGirl.create(
+#           FactoryBot.create(
 #             :run,
 #             :remote_endpoint => endpoint,
 #             :user_id => nil
@@ -105,7 +105,7 @@
 #     describe "with a run without a remote endpoint (not run from portal)" do
 #       describe "and logged in" do
 #         let(:run)  {
-#           FactoryGirl.create(
+#           FactoryBot.create(
 #             :run,
 #             :remote_endpoint => nil,
 #             :user_id => user.id
@@ -145,7 +145,7 @@
 #       end
 #       describe "and anonymous" do
 #         let(:run)  {
-#           FactoryGirl.create(
+#           FactoryBot.create(
 #             :run,
 #             :remote_endpoint => nil,
 #             :user_id => nil

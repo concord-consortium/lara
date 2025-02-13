@@ -1,7 +1,7 @@
-# Read about factories at https://github.com/thoughtbot/factory_girl
+# Read about factories at https://github.com/thoughtbot/factory_bot
 
-FactoryGirl.define do
+FactoryBot.define do
   factory :sequence_run do
-    user_id 1
+    user_id { 1 }
   end
 end

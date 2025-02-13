@@ -4,7 +4,7 @@ describe Embeddable::ImageQuestion do
   it_behaves_like "a question"
   it_behaves_like "attached to interactive"
 
-  let (:image_question) { FactoryGirl.create(:image_question) }
+  let (:image_question) { FactoryBot.create(:image_question) }
 
   it "should create a new instance with default values" do
     expect(image_question).to be_valid

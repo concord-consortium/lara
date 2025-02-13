@@ -9,16 +9,16 @@ describe Api::V1::PluginsController do
   let(:author_data)  { 'author_data' }
   let(:plugin_scope) { nil }
   let(:author)       { nil }
-  let(:activity) { FactoryGirl.create(:activity, user: author) }
+  let(:activity) { FactoryBot.create(:activity, user: author) }
   let(:embeddable_plugin) {
-    page = FactoryGirl.create(:page)
+    page = FactoryBot.create(:page)
     activity.pages << page
-    embeddable_plugin = FactoryGirl.create(:embeddable_plugin)
+    embeddable_plugin = FactoryBot.create(:embeddable_plugin)
     page.add_embeddable(embeddable_plugin)
     embeddable_plugin
   }
 
-  let(:plugin) { FactoryGirl.create(:plugin, id: plugin_id, author_data: author_data, plugin_scope: plugin_scope) }
+  let(:plugin) { FactoryBot.create(:plugin, id: plugin_id, author_data: author_data, plugin_scope: plugin_scope) }
 
   before(:each) do
     allow(Plugin).to receive(:find).and_return(plugin)
@@ -26,7 +26,7 @@ describe Api::V1::PluginsController do
   end
 
   describe "When a non-admin/non-author uses a plugin" do
-    let(:user) { FactoryGirl.create(:user)}
+    let(:user) { FactoryBot.create(:user)}
 
     describe 'to load author data' do
       it "they should get a not authorized error" do
@@ -44,8 +44,8 @@ describe Api::V1::PluginsController do
   end
 
   describe "When an author of an activity they didn't create uses a plugin" do
-    let(:user) { FactoryGirl.create(:author)}
-    let(:author) { FactoryGirl.create(:author)}
+    let(:user) { FactoryBot.create(:author)}
+    let(:author) { FactoryBot.create(:author)}
 
     context 'at the activity level' do
       let(:plugin_scope) { activity }
@@ -87,7 +87,7 @@ describe Api::V1::PluginsController do
   end
 
   describe "When an author of an activity uses a plugin in that activity" do
-    let(:user) { FactoryGirl.create(:author)}
+    let(:user) { FactoryBot.create(:author)}
     let(:author) { user }
 
     context 'at the activity level' do
@@ -132,7 +132,7 @@ describe Api::V1::PluginsController do
   end
 
   describe "When an admin uses a plugin" do
-    let (:user) { FactoryGirl.create(:admin) }
+    let (:user) { FactoryBot.create(:admin) }
 
     describe 'to load author data' do
       it "they should get the author data" do

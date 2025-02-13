@@ -26,7 +26,7 @@ describe "sequences/index" do
   end
 
   it "renders copy link" do
-    user ||= FactoryGirl.create(:admin)
+    user ||= FactoryBot.create(:admin)
     sign_in user
     render
     assert_select ".copy", count: 2

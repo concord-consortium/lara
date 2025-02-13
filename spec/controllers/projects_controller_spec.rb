@@ -20,12 +20,12 @@ require 'spec_helper'
 
 describe ProjectsController do
 
-  let (:project) { FactoryGirl.create(:project) }
+  let (:project) { FactoryBot.create(:project) }
 
   before(:each) do
     # We're testing access control in spec/models/user_spec.rb, so for this
     # suite we use a user with global permissions
-    @user ||= FactoryGirl.create(:admin)
+    @user ||= FactoryBot.create(:admin)
     sign_in @user
   end
 

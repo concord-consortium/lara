@@ -19,7 +19,7 @@ describe Plugin do
   let(:shared_learner_state_key)  {'global-plugin-id'}
 
   let(:activity)        { mock_model LightweightActivity, activity_opts }
-  let(:approved_script) { FactoryGirl.create(:approved_script, approved_script_opts) }
+  let(:approved_script) { FactoryBot.create(:approved_script, approved_script_opts) }
   let(:description)     { "description" }
   let(:author_data)     { "authored_data" }
   let(:component_label) { "component_label" }

@@ -6,18 +6,18 @@ feature "Author edits a sequence while it is being used" do
   # any assertions that use the teacher edition regex pattern....
   let(:teacher_edition_regex)  { /teacher edition/i }
 
-  let(:author)       { FactoryGirl.create(:author) }
-  let(:user)         { FactoryGirl.create(:user) }
-  let(:page1)        { FactoryGirl.create(:page) }
-  let(:page2)        { FactoryGirl.create(:page) }
-  let(:page3)        { FactoryGirl.create(:page) }
-  let(:page4)        { FactoryGirl.create(:page) }
-  let(:page5)        { FactoryGirl.create(:page) }
-  let(:page6)        { FactoryGirl.create(:page) }
-  let(:activity1)    { FactoryGirl.create(:activity, pages: [page1, page2]) }
-  let(:activity2)    { FactoryGirl.create(:activity, pages: [page3, page4]) }
-  let(:activity3)    { FactoryGirl.create(:activity, pages: [page5, page6]) }
-  let(:sequence)     { FactoryGirl.create(:sequence, title: 'teacher-edition mode test Sequence', user_id: author.id, lightweight_activities: [activity1, activity2], publication_status: 'public')}
+  let(:author)       { FactoryBot.create(:author) }
+  let(:user)         { FactoryBot.create(:user) }
+  let(:page1)        { FactoryBot.create(:page) }
+  let(:page2)        { FactoryBot.create(:page) }
+  let(:page3)        { FactoryBot.create(:page) }
+  let(:page4)        { FactoryBot.create(:page) }
+  let(:page5)        { FactoryBot.create(:page) }
+  let(:page6)        { FactoryBot.create(:page) }
+  let(:activity1)    { FactoryBot.create(:activity, pages: [page1, page2]) }
+  let(:activity2)    { FactoryBot.create(:activity, pages: [page3, page4]) }
+  let(:activity3)    { FactoryBot.create(:activity, pages: [page5, page6]) }
+  let(:sequence)     { FactoryBot.create(:sequence, title: 'teacher-edition mode test Sequence', user_id: author.id, lightweight_activities: [activity1, activity2], publication_status: 'public')}
   # Note that platform_id is a "platform_info" that we care about. externalId and returnUrl are necessary for
   # sequence run lookup.
   let(:portal_params) { "?platform_id=test_platform&externalId=123&returnUrl=http://return.url" }

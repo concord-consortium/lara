@@ -1,11 +1,11 @@
 require 'spec_helper'
 
 describe Api::V1::ProjectsController do
-  let(:user) { FactoryGirl.create(:user) }
-  let(:user2) { FactoryGirl.create(:user) }
-  let!(:project1) { FactoryGirl.create(:project, title: "Test Project 1", admins: [user]) }
-  let!(:project2) { FactoryGirl.create(:project, title: "Test Project 2") }
-  let(:admin) { FactoryGirl.create(:admin) }
+  let(:user) { FactoryBot.create(:user) }
+  let(:user2) { FactoryBot.create(:user) }
+  let!(:project1) { FactoryBot.create(:project, title: "Test Project 1", admins: [user]) }
+  let!(:project2) { FactoryBot.create(:project, title: "Test Project 2") }
+  let(:admin) { FactoryBot.create(:admin) }
 
   before(:each) do
     sign_in admin

@@ -1,12 +1,12 @@
-require 'factory_girl'
+require 'factory_bot'
 
 shared_examples 'an embeddable controller' do |model_factory|
 
   describe "#update" do
-    let(:sequence)  { FactoryGirl.create(:sequence) }
-    let(:activity)  { FactoryGirl.create(:activity) }
-    let(:page)      { FactoryGirl.create(:interactive_page, name: "page 1", position: 0) }
-    let(:model)     { FactoryGirl.create(model_factory, name:"xzzy") }
+    let(:sequence)  { FactoryBot.create(:sequence) }
+    let(:activity)  { FactoryBot.create(:activity) }
+    let(:page)      { FactoryBot.create(:interactive_page, name: "page 1", position: 0) }
+    let(:model)     { FactoryBot.create(model_factory, name:"xzzy") }
 
     before(:each) {
       page.add_embeddable(model)
