@@ -1,7 +1,10 @@
 {
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
-    nixpkgs-ruby.url = "github:bobvanderlinden/nixpkgs-ruby";
+    nixpkgs-ruby = {
+      url: "github:bobvanderlinden/nixpkgs-ruby";
+      flake = false;
+    };
     nixpkgs-ancient-node = {
       url = "github:nixos/nixpkgs/22f65339f3773f5b691f55b8b3a139e5582ae85b";
       flake = false;
@@ -9,14 +12,14 @@
     flake-utils.url = "github:numtide/flake-utils";
   };
 
-  outputs = { self, nixpkgs, nixpkgs-ruby, flake-utils, ... } @ inputs:
+  outputs = { self, nixpkgs, flake-utils, ... } @ inputs:
     flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = nixpkgs.legacyPackages.${system};
         pkgs-ancient-node = import inputs.nixpkgs-ancient-node {
           inherit system;
         };
-        pkgs-ruby = import nixpkgs-ruby {
+        pkgs-ruby = import inputs.nixpkgs-ruby {
           inherit system;
         };
       in
