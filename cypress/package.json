@@ -1,19 +1,14 @@
 {
-  "name": "lara",
+  "name": "cypress",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
-    "test:dev": "cypress open --env testEnv=dev",
-    "test:staging": "cypress open --env testEnv=staging",
-    "test:production": "cypress open --env testEnv=production",
-    "test:cypress:open": "cypress open",
-    "test:cypress": "cypress run",
-    "test:cypress:headless": "cypress run --headless"
+    "test:cypress:open": "cypress open"
   },
   "author": "",
-  "license": "MIT",
+  "license": "ISC",
+  "description": "",
   "devDependencies": {
-    "cypress": "^4.7.0"
+    "cypress": "^14.0.3"
   }
 }

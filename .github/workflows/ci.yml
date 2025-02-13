@@ -46,15 +46,16 @@ jobs:
           nix develop -c npm ci
           nix develop -c npm run test
         working-directory: ./lara-typescript/
-      - name: Cypress Tests
-        run: |-
-          nix develop -c bundle exec rails server -b 0.0.0.0 -p 3000 &
-          nix develop -c npm ci
-          cp config/user-config.github-ci.json config/user-config.json
-          nix develop -c node --version
-          nix develop -c bundle exec rake lightweight:create_admin_user
-          nix develop -c npm run test:cypress:headless
-        working-directory: ./cypress/
+      # DISABLED FOR NOW:
+      # - name: Cypress Tests
+      #   run: |-
+      #     nix develop -c bundle exec rails server -b 0.0.0.0 -p 3000 &
+      #     nix develop -c npm ci
+      #     cp config/user-config.github-ci.json config/user-config.json
+      #     nix develop -c node --version
+      #     nix develop -c bundle exec rake lightweight:create_admin_user
+      #     nix develop -c npm run test:cypress:headless
+      #   working-directory: ./cypress/
   build:
     name: Build Docker image
     runs-on: ubuntu-latest
@@ -99,3 +100,48 @@ jobs:
           tags: ${{ steps.docker_metadata.outputs.tags }}
           build-args: |-
             LARA_VERSION=${{ github.ref_name }}
+  cypress:
+    name: Run Cypress Tests against built Docker image
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: read
+    needs: [build] # Ensure build job finishes first
+    services:
+      database:
+        image: mariadb:11.2
+        ports:
+          - 3306:3306
+        env:
+          MARIADB_DATABASE: ${{ github.event.repository.name }}_test
+          MARIADB_ROOT_PASSWORD: root
+    env:
+      REGISTRY: ghcr.io
+      MYSQL_HOST: 127.0.0.1
+      MYSQL_USER: root
+      DB_PASSWORD: root
+      RAILS_ENV: test
+    steps:
+      - uses: actions/checkout@v4
+      - name: Start Application Container
+        run: |
+          docker run -d --name app -p 3000:3000 --network=host \
+            -e DB_HOST=127.0.0.1 \
+            -e DB_PORT=3306 \
+            -e DB_USER=root \
+            -e DB_PASSWORD=root \
+            -e DB_NAME=${{ github.event.repository.name }}_test \
+            ${{ env.REGISTRY }}/${{ github.repository }}:latest
+      - name: Copy configuration templates
+        run: |-
+          docker exec app cp -v ./config/database.sample.yml ./config/database.yml
+          docker exec app cp -v ./config/app_environment_variables.sample.rb ./config/app_environment_variables.rb
+      - name: Apply database migrations
+        run: docker exec app bundle exec rake db:migrate
+      - name: Run Cypress Tests
+        uses: cypress-io/github-action@v6
+        with:
+          config-file: cypress.config.github.js
+          wait-on: 'http://localhost:3000'
+          wait-on-timeout: 60
+          working-directory: ./cypress/
