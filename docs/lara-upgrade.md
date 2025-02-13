@@ -400,20 +400,20 @@ For now we will stay at 4.2.11.23 instead of upgrading to 4.2.11.38
 5. Complete upgrade tasks in the [7.0 to 7.1 upgrade guide](https://guides.rubyonrails.org/upgrading_ruby_on_rails.html#upgrading-from-rails-7-0-to-rails-7-1)
 
 - [X] Development and test environments secret_key_base file changed
-- [/] Autoloaded paths are no longer in $LOAD_PATH
-- [/] config.autoload_lib and config.autoload_lib_once
+- [X] Autoloaded paths are no longer in $LOAD_PATH
+- [X] config.autoload_lib and config.autoload_lib_once
 - [X] ActiveStorage::BaseController no longer includes the streaming concern
 - [X] MemCacheStore and RedisCacheStore now use connection pooling by default
 - [X] SQLite3Adapter now configured to be used in a strict strings mode
 - [X] Support multiple preview paths for ActionMailer::Preview
-- [/] config.i18n.raise_on_missing_translations = true now raises on any missing translation.
-- [/] bin/rails test now runs test:prepare task
+- [X] config.i18n.raise_on_missing_translations = true now raises on any missing translation.
+- [X] bin/rails test now runs test:prepare task
 - [X] Import syntax from @rails/ujs is modified
 - [X] Rails.logger now returns an ActiveSupport::BroadcastLogger instance
 - [X] Active Record Encryption algorithm changes
-- [/] New ways to handle exceptions in Controller Tests, Integration Tests, and System Tests
+- [X] New ways to handle exceptions in Controller Tests, Integration Tests, and System Tests
 
-7. Change `Dockerfile` and `Dockerfile-dev` to use `ruby-2.7.0-rails-7.1.4` in the `FROM` url.
+7. Change `Dockerfile` and `Dockerfile-dev` to use `ruby-2.7.0-rails-7.1.5` in the `FROM` url.
 8. Create a PR and insure all the tests pass.
 9. After review/approval merge the branch into the `lara-upgrade` branch.
 

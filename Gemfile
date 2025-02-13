@@ -44,7 +44,7 @@ end
 group :test, :development do
   gem "capybara", "~> 2.18"
   gem "factory_girl_rails", "~> 4.5", ">= 4.5.0", require: false
-  gem "faker", "= 2.2.1"
+  gem "faker"
   gem "jasmine", "~> 2.99.0"
   gem "jasmine-jquery-rails", "~> 2.0", ">= 2.0.3"
   gem "launchy", "~> 2.5", ">= 2.5.2"
@@ -63,7 +63,7 @@ gem "acts_as_list"
 gem 'aws-sdk', '~> 3'
 gem "aws-ses", "0.7.1", git: "https://github.com/zebitex/aws-ses.git", ref: "78-sigv4-problem"
 gem "bootsnap"
-gem "cancancan", "= 3.0.2"
+gem "cancancan"
 gem "chosen-rails", "~> 1.10"
 gem 'concurrent-ruby', '= 1.3.4'
 gem "daemons", "~> 1.4", ">= 1.4.1"
