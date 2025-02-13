@@ -1,5 +1,5 @@
 # set base ruby image
-FROM ruby:3.1.0
+FROM ruby:3.3.7
 
 # update repositories
 RUN echo 'deb http://archive.debian.org/debian/ stretch main' > /etc/apt/sources.list

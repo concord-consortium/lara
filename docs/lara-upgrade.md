@@ -119,7 +119,7 @@ The status codes are:
 | better_errors                |          UC! |           1.1.0 |           2.0.0 |      2.10.1 |
 | bootsnap                     |       UC* AM |           1.4.4 |          1.18.4 |      1.18.4 |
 | bullet                       |           RG |           5.4.3 |               - |       7.2.0 |
-| cancancan                    |          UC! |          1.10.1 |           3.0.2 |       3.6.1 |
+| cancancan                    |       UC! AM |          1.10.1 |           3.6.1 |       3.6.1 |
 | capybara                     |          UC* |           2.4.4 |          2.18.0 |      3.40.0 |
 | ci_reporter                  |           RM |           1.7.3 |               - |       2.1.0 |
 | coffee-rails                 |          UC! |           3.2.2 |           4.2.2 |       5.0.0 |
@@ -129,7 +129,7 @@ The status codes are:
 | dynamic_form                 |          UC* |           1.1.4 |           1.2.0 |       1.3.1 |
 | exception_notification       |       UC* AM |           4.0.1 |           4.5.0 |       4.5.0 |
 | factory_girl_rails           |          UC* |           4.3.0 |           4.9.0 |       6.4.3 |
-| faker                        |          UC! |           1.2.0 |           2.2.1 |       3.4.2 |
+| faker                        |       UC! AM |           1.2.0 |           3.5.1 |       3.5.1 |
 | ffi                          |           LV |           1.15.5           1.16.3 |      1.17.1 |
 | haml                         |          UC! |           4.0.5 |           5.2.2 |       6.3.0 |
 | highline                     |          UC* |          1.6.21 |          1.7.10 |       3.1.1 |
@@ -140,7 +140,7 @@ The status codes are:
 | launchy                      |          UC* |           2.4.0 |           2.5.2 |       3.0.1 |
 | mysql2                       |          UC* |          0.3.21 |           0.5.6 |       0.5.6 |
 | newrelic_rpm                 |       UC! AM |       4.6.0.338 |          9.17.0 |      9.17.0 |
-| nokogiri                     |          UC* |          1.10.3 |          1.15.7 |      1.16.7 |
+| nokogiri                     |          UC* |          1.10.3 |          1.18.2 |      1.18.2 |
 | omniauth                     |          UC* |           1.3.2 |           1.4.2 |       2.1.2 |
 | omniauth-oauth2              |          UC* |           1.1.1 |           1.3.0 |       1.8.0 |
 | rack-cors                    |          UC! |           0.4.1 |           1.0.6 |       2.0.2 |
