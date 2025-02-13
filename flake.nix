@@ -38,6 +38,7 @@
             openssl
             sqlite
             xz # Needed for nokogiri Gem
+            libyaml
           ]);
         };
       }
