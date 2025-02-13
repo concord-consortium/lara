@@ -4,8 +4,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile-dev
-      args:
-        RAILS_LTS_PASS: ${RAILS_LTS_PASS}
     command: docker/dev/run.sh
     environment:
       # Look at the docker/dev/docker-compose-*.yml files for configuration of

@@ -1,12 +1,11 @@
 source "https://rubygems.org"
-  gem 'actionmailer', '~> 6.1.7.10', require: false
-  gem 'actionpack', '~> 6.1.7.10', require: false
-  gem 'activemodel', '~> 6.1.7.10', require: false
-  gem 'activerecord', '~> 6.1.7.10', require: false
-  gem 'activesupport', '~> 6.1.7.10', require: false
-  gem 'rails', '~> 6.1.7.10'
-  # gem 'railslts-version', :require => false
-  gem 'railties', '~> 6.1.7.10', require: false
+  gem 'actionmailer', '~> 7.0.8.7', require: false
+  gem 'actionpack', '~> 7.0.8.7', require: false
+  gem 'activemodel', '~> 7.0.8.7', require: false
+  gem 'activerecord', '~> 7.0.8.7', require: false
+  gem 'activesupport', '~> 7.0.8.7', require: false
+  gem 'rails', '~> 7.0.8.7'
+  gem 'railties', '~> 7.0.8.7', require: false
 
 group :production do
   gem "unicorn"
@@ -18,7 +17,6 @@ end
   gem "compass-rails", "~> 3.1.0"
   gem "sass-rails", "= 5.0.8"
   gem "sassc", "~> 2.1.0"
-  gem "turbo-sprockets-rails4", "~> 1.2.5"
   gem "uglifier", "~> 4.2"
 # end
 
@@ -54,7 +52,7 @@ group :test, :development do
   gem "rspec-activemodel-mocks", '~> 1.2', '>= 1.2.1'
   gem "rspec-rails", '~> 4.1'
   gem 'rubocop', '= 0.49.1', require: false
-  gem "spring", "~> 1.7", ">= 1.7.2"
+  gem "spring", "~> 3.0"
   gem "spring-commands-rspec", "~> 1.0", ">= 1.0.4"
   gem "test-unit", "~> 3.6", ">= 3.6.2"
   gem "timecop", "~> 0.9", ">= 0.9.10"
@@ -64,7 +62,7 @@ end
 gem "acts_as_list"
 gem 'aws-sdk', '= 2.0.22'
 gem "aws-ses", "0.7.1", git: "https://github.com/zebitex/aws-ses.git", ref: "78-sigv4-problem"
-gem "bootsnap", "= 1.4.4"
+gem "bootsnap"
 gem "cancancan", "= 3.0.2"
 gem "chosen-rails", "~> 1.10"
 gem 'concurrent-ruby', '= 1.3.4'
@@ -74,7 +72,7 @@ gem "delayed_job_active_record", '~> 4.1', '>= 4.1.10'
 gem "delayed_job_web", '~> 1.4', '>= 1.4.4'
 gem "devise", '~> 4.4', '>= 4.4.0'
 gem "dynamic_form", "= 1.2"
-gem "exception_notification", '= 4.4.3'
+gem "exception_notification"
 gem "ffi", "= 1.16.3"
 gem "font-awesome-rails", '~> 4.7', '>= 4.7.0.8'
 gem "gon", "~> 6.4.0"
@@ -99,7 +97,6 @@ gem 'rake', '~> 13.2', '>= 13.2.1'
 gem "responders", "~> 3.1.1"
 gem "ribbons-rails", "~> 0.0", {git: "https://github.com/concord-consortium/ribbons-rails.git"}
 gem "spreadsheet", "~> 1.1.2", "= 1.1.2"
-gem "sprockets", "~> 3.7", "= 3.7.5"
 gem "tinymce-rails", '~> 4.9.4', "= 4.9.4"
 gem "useragent", "~> 0.16.10"
 gem "uuidtools", "~> 2.1.5", "= 2.1.5"
@@ -132,5 +129,7 @@ gem "will_paginate", "~> 4.0.1"
 
 # # Previously not grouped
 # gem "safe_yaml", "~> 1.0.5"
+# gem "sprockets", "~> 3.7", "= 3.7.5"
 # gem "sqlite3", "~> 1.3"
 # gem "test-unit", "~> 3.0"
+# gem "turbo-sprockets-rails4", "~> 1.2.5"

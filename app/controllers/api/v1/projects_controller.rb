@@ -1,4 +1,4 @@
-class Api::V1::ProjectsController < API::APIController
+class Api::V1::ProjectsController < Api::ApiController
 
   skip_before_action :verify_authenticity_token
 

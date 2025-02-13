@@ -1,4 +1,4 @@
-class Api::V1::AuthoredContentsController < API::APIController
+class Api::V1::AuthoredContentsController < Api::ApiController
   skip_before_action :verify_authenticity_token, only: :update
 
   def show
@@ -19,7 +19,7 @@ class Api::V1::AuthoredContentsController < API::APIController
       authored_content.url = get_s3_url(s3_config, key)
       authored_content.save!
     rescue => e
-      raise API::APIError, e.message
+      raise Api::ApiError, e.message
     else
       render_result(authored_content)
     end

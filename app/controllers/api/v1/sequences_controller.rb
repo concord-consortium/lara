@@ -1,4 +1,4 @@
-class Api::V1::SequencesController < API::APIController
+class Api::V1::SequencesController < Api::ApiController
   def destroy
     sequence = Sequence.find(params[:id])
     authorize! :destroy, sequence

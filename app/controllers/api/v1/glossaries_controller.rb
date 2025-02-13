@@ -1,4 +1,4 @@
-class Api::V1::GlossariesController < API::APIController
+class Api::V1::GlossariesController < Api::ApiController
   skip_before_action :verify_authenticity_token, only: :update
 
   # GET /api/v1/glossaries/1.json

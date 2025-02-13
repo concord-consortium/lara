@@ -97,7 +97,7 @@ The status codes are:
 | multi_json                   |       UC* AM |          1.13.1 |          1.15.0 |      1.15.0 |
 | nested_form                  |        NC AM |           0.3.2 |           0.3.2 |       0.3.2 |
 | poltergeist                  |       UC* AM |           1.5.1 |          1.18.1 |      1.18.1 |
-| protected_attributes         |           RG |             n/a |             n/a |       1.1.4 |
+| protected_attributes         |           RG |             n/a |               - |       1.1.4 |
 | rack-environmental           |       UC* AM |           1.3.1 |           1.3.2 |       1.3.2 |
 | rack-secure_samesite_cookies |        NC AM |           1.0.2 |           1.0.2 |       1.0.2 |
 | rails-controller-testing     |          n/a |             n/a |           1.0.5 |       1.0.5 |
@@ -105,20 +105,20 @@ The status codes are:
 | responders                   |       UC* AM |             n/a |           3.1.1 |       3.1.1 |
 | ribbons-rails                |        NC AM |           0.0.1 |           0.0.1 |       0.0.1 |
 | rspec-activemodel-mocks      |       UC* AM |           1.0.1 |           1.2.1 |       1.2.1 |
-| safe_yaml                    |           RG |           1.0.4 |             n/a |       1.0.5 |
+| safe_yaml                    |           RG |           1.0.4 |               - |       1.0.5 |
 | spreadsheet                  |       UC* AM |           1.0.3 |           1.1.2 |       1.3.3 |
 | spring-commands-rspec        |        NC AM |           1.0.4 |           1.0.4 |       1.0.4 |
 | test-unit                    |       UC* AM |           3.2.3 |           3.6.7 |       3.6.7 |
 | timecop                      |       UC* AM |           0.6.3 |          0.9.10 |      0.9.10 |
-| turbo-sprockets-rails4       |           AM |             n/a |           1.2.5 |       1.2.5 |
+| turbo-sprockets-rails4       |           RG |             n/a |               - |       1.2.5 |
 | useragent                    |       UC* AM |          0.10.0 |         0.16.11 |     0.16.11 |
 | will_paginate                |       UC! AM |           3.0.7 |           4.0.1 |       4.0.1 |
 | *GEMS THAT CAN BE UPGRADED*  |              |                 |                 |             |
 | acts_as_list                 |       UC! AM |           0.3.0 |           1.2.4 |       1.2.4 |
 | aws-sdk                      |          CU! |          1.66.0 |          2.0.22 |       3.2.0 |
 | better_errors                |          UC! |           1.1.0 |           2.0.0 |      2.10.1 |
-| bootsnap                     |          UC* |           1.4.4 |           1.5.1 |      1.18.4 |
-| bullet                       |           RG |           5.4.3 |             n/a |       7.2.0 |
+| bootsnap                     |       UC* AM |           1.4.4 |          1.18.4 |      1.18.4 |
+| bullet                       |           RG |           5.4.3 |               - |       7.2.0 |
 | cancancan                    |          UC! |          1.10.1 |           3.0.2 |       3.6.1 |
 | capybara                     |          UC* |           2.4.4 |          2.18.0 |      3.40.0 |
 | ci_reporter                  |           RM |           1.7.3 |               - |       2.1.0 |
@@ -127,7 +127,7 @@ The status codes are:
 | default_value_for            |          UC! |           2.0.3 |           3.6.0 |       4.0.0 |
 | devise                       |          UC! |           3.0.1 |           4.9.4 |       4.9.4 |
 | dynamic_form                 |          UC* |           1.1.4 |           1.2.0 |       1.3.1 |
-| exception_notification       |          UC* |           4.0.1 |           4.4.3 |       4.5.0 |
+| exception_notification       |       UC* AM |           4.0.1 |           4.5.0 |       4.5.0 |
 | factory_girl_rails           |          UC* |           4.3.0 |           4.9.0 |       6.4.3 |
 | faker                        |          UC! |           1.2.0 |           2.2.1 |       3.4.2 |
 | ffi                          |           LV |           1.15.5           1.16.3 |      1.17.1 |
@@ -149,8 +149,8 @@ The status codes are:
 | sass-rails                   |          UC! |           3.2.6 |           5.0.8 |       6.0.0 |
 | sassc                        |          n/a |             n/a |           2.1.0 |       2.4.0 |
 | simplecov                    |       UC* AM |          0.16.1 |          0.22.0 |      0.22.0 |
-| spring                       |          UC* |           1.2.0 |           1.7.2 |       4.2.1 |
-| sprockets                    |          LV  |           3.7.5 |           3.7.5 |       4.2.1 |
+| spring                       |          UC! |           1.2.0 |           3.1.1 |       4.2.1 |
+| sprockets                    |          RG  |           3.7.5 |               - |       4.2.1 |
 | tinymce-rails                |          UC* |           4.7.9 |           4.9.4 |       7.4.1 |
 | uglifier                     |          UC* |           4.1.8 |           4.2.1 |       4.2.1 |
 | unicorn                      |       UC! AM |           6.1.0 |           6.1.0 |       6.1.0 |
@@ -317,7 +317,7 @@ For now we will stay at 4.2.11.23 instead of upgrading to 4.2.11.38
 - [x] Add `RAILS_LTS_PASS` to GitHub LARA repo secrets and update `ci.yml` to pass build arg.
 - [x] Get value of `RAILS_LTS_PASS` (in 1Password in the description of the "Rails LTS" secret.  Do no use the login password.) and save in local `.env` file.  This should not result in any updates to be committed, and must be done per developer.
 - [x] Run `docker compose build` to rebuild local image using new base image.  Again, no change should be committed.
-- [ ] Run `docker compose up` and load LARA in the browser once built to confirm the change worked.  Again, no change should be committed.
+- [x] Run `docker compose up` and load LARA in the browser once built to confirm the change worked.  Again, no change should be committed.
 
 4. Upgrade rails gems in `Gemfile` to last 6.0 version: `gem 'rails', '~> 6.0.6.1'`.
 5. Inside running Docker image run `bundle update rails`
@@ -363,30 +363,30 @@ For now we will stay at 4.2.11.23 instead of upgrading to 4.2.11.38
 2. **A Ruby upgrade to 2.7 IS required**. Change `Dockerfile` and `Dockerfile-dev` to use `ruby-2.7.0` in the `FROM` url.
 3. Remove RailsLTS support.  Rails 7.0.x is community supported so RailsLTS is no longer needed.
 
-- [ ] Remove references to `RAILS_LTS_PASS` in `docker-compose.yml`, `DockerFile`, `Dockerfile-dev`, and `ci.yml`
-- [ ] Remove `source 'https://gems.railslts.com'` in Gemfile and move rails gems in common gem list
+- [X] Remove references to `RAILS_LTS_PASS` in `docker-compose.yml`, `DockerFile`, `Dockerfile-dev`, and `ci.yml`
+- [X] Remove `source 'https://gems.railslts.com'` in Gemfile and move rails gems in common gem list
 - [ ] Remove `RAILS_LTS_PASS` secret from LARA GitHub repo
 
-4. Upgrade rails gems in `Gemfile` to last 7.0 version: `gem 'rails', '~> 7.0.8.4'`.
+4. Upgrade rails gems in `Gemfile` to last 7.0 version: `gem 'rails', '~> 7.0.8.7'`.
 5. Inside running Docker image run `bundle update rails`
 6. Resolve gem dependency issues until the bundle update succeeds.
 7. Complete upgrade tasks in the [6.1 to 7.0 upgrade guide](https://guides.rubyonrails.org/upgrading_ruby_on_rails.html#upgrading-from-rails-6-1-to-rails-7-0)
 
-- [ ] ActionView::Helpers::UrlHelper#button_to changed behavior
-- [ ] Spring
-- [ ] Sprockets is now an optional dependency
-- [ ] Applications need to run in zeitwerk mode
-- [ ] The setter config.autoloader= has been deleted
-- [ ] ActiveSupport::Dependencies private API has been deleted
-- [ ] Autoloading during initialization
-- [ ] Ability to configure config.autoload_once_paths
-- [ ] ActionDispatch::Request#content_type now returns Content-Type header as it is.
-- [ ] Key generator digest class change requires a cookie rotator
-- [ ] Digest class for ActiveSupport::Digest changing to SHA256
-- [ ] New ActiveSupport::Cache serialization format
-- [ ] Active Storage video preview image generation
-- [ ] Active Storage default variant processor changed to :vips
-- [ ] Rails version is now included in the Active Record schema dump
+- [X] ActionView::Helpers::UrlHelper#button_to changed behavior
+- [X] Spring
+- [X] Sprockets is now an optional dependency
+- [X] Applications need to run in zeitwerk mode
+- [X] The setter config.autoloader= has been deleted
+- [X] ActiveSupport::Dependencies private API has been deleted
+- [X] Autoloading during initialization
+- [X] Ability to configure config.autoload_once_paths
+- [X] ActionDispatch::Request#content_type now returns Content-Type header as it is.
+- [X] Key generator digest class change requires a cookie rotator
+- [X] Digest class for ActiveSupport::Digest changing to SHA256
+- [X] New ActiveSupport::Cache serialization format
+- [X] Active Storage video preview image generation
+- [X] Active Storage default variant processor changed to :vips
+- [X] Rails version is now included in the Active Record schema dump
 
 8. Create a PR and insure all the tests pass.
 9. After review/approval merge the branch into the `lara-upgrade` branch.
