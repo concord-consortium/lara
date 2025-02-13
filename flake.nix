@@ -1,8 +1,8 @@
 {
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
-    nixpkgs-ruby = {
-      url = "github:bobvanderlinden/nixpkgs-ruby";
+    nixpkgs-ancient-ruby = {
+      url = "github:nixos/nixpkgs/df2176f7f3f748974f24916df29bb70763d89734";
       flake = false;
     };
     nixpkgs-ancient-node = {
@@ -19,7 +19,7 @@
         pkgs-ancient-node = import inputs.nixpkgs-ancient-node {
           inherit system;
         };
-        pkgs-ruby = import inputs.nixpkgs-ruby {
+        pkgs-ancient-ruby = import inputs.nixpkgs-ancient-ruby {
           inherit system;
         };
       in
@@ -29,8 +29,8 @@
           packages = (with pkgs; [
             act
             pkgs-ancient-node.nodejs-10_x # Node.js v10.15.3
-          ]) ++ (with pkgs-ruby; [
-            ruby_2_7 # Ruby v2.7 from nixpkgs-ruby
+          ]) ++ (with pkgs-ancient-ruby; [
+            ruby_2_7 # Ruby v2.7.0
             glibc # Includes 'libcrypt'
             libffi # Needed for 'ffi' Gem
             mysql57
