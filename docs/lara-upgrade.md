@@ -81,7 +81,7 @@ The status codes are:
 
 | Gem                          | Status       | Initial Version | Current Version | Max Version |
 |------------------------------|--------------|-----------------|-----------------|-------------|
-| rails (+ rails core...)      |          CU! |          3.2.22 |         6.0.6.1 |       8.0.1 |
+| rails (+ rails core...)      |          CU! |          3.2.22 |         7.1.5.1 |       8.0.1 |
 | *GEMS AT MAX*                |              |                 |                 |             |
 | aws-ses                      |        NC AM |           0.7.1 |           0.7.1 |       0.7.1 |
 | chosen-rails                 |       UC* AM |           1.0.1 |          1.10.0 |      1.10.0 |
@@ -140,7 +140,7 @@ The status codes are:
 | launchy                      |          UC* |           2.4.0 |           2.5.2 |       3.0.1 |
 | mysql2                       |          UC* |          0.3.21 |           0.5.6 |       0.5.6 |
 | newrelic_rpm                 |       UC! AM |       4.6.0.338 |          9.17.0 |      9.17.0 |
-| nokogiri                     |          UC* |          1.10.3 |          1.12.5 |      1.16.7 |
+| nokogiri                     |          UC* |          1.10.3 |          1.15.7 |      1.16.7 |
 | omniauth                     |          UC* |           1.3.2 |           1.4.2 |       2.1.2 |
 | omniauth-oauth2              |          UC* |           1.1.1 |           1.3.0 |       1.8.0 |
 | rack-cors                    |          UC! |           0.4.1 |           1.0.6 |       2.0.2 |
@@ -365,7 +365,7 @@ For now we will stay at 4.2.11.23 instead of upgrading to 4.2.11.38
 
 - [X] Remove references to `RAILS_LTS_PASS` in `docker-compose.yml`, `DockerFile`, `Dockerfile-dev`, and `ci.yml`
 - [X] Remove `source 'https://gems.railslts.com'` in Gemfile and move rails gems in common gem list
-- [ ] Remove `RAILS_LTS_PASS` secret from LARA GitHub repo
+- [X] Remove `RAILS_LTS_PASS` secret from LARA GitHub repo
 
 4. Upgrade rails gems in `Gemfile` to last 7.0 version: `gem 'rails', '~> 7.0.8.7'`.
 5. Inside running Docker image run `bundle update rails`
@@ -394,24 +394,24 @@ For now we will stay at 4.2.11.23 instead of upgrading to 4.2.11.38
 ### Upgrade To Rails 7.1.4
 
 1. Create a `upgrade-to-rails-7.1` branch off the `lara-upgrade` branch.
-2. Upgrade rails gems in `Gemfile` to last 7.1 version: `gem 'rails', '~> 7.1.4 '`.  No Ruby upgrade is required.
+2. Upgrade rails gems in `Gemfile` to last 7.1 version: `gem 'rails', '~> 7.1.5'`.  No Ruby upgrade is required.
 3. Inside running Docker image run `bundle update rails`
 4. Resolve gem dependency issues until the bundle update succeeds.
 5. Complete upgrade tasks in the [7.0 to 7.1 upgrade guide](https://guides.rubyonrails.org/upgrading_ruby_on_rails.html#upgrading-from-rails-7-0-to-rails-7-1)
 
-- [ ] Development and test environments secret_key_base file changed
-- [ ] Autoloaded paths are no longer in $LOAD_PATH
-- [ ] config.autoload_lib and config.autoload_lib_once
-- [ ] ActiveStorage::BaseController no longer includes the streaming concern
-- [ ] MemCacheStore and RedisCacheStore now use connection pooling by default
-- [ ] SQLite3Adapter now configured to be used in a strict strings mode
-- [ ] Support multiple preview paths for ActionMailer::Preview
-- [ ] config.i18n.raise_on_missing_translations = true now raises on any missing translation.
-- [ ] bin/rails test now runs test:prepare task
-- [ ] Import syntax from @rails/ujs is modified
-- [ ] Rails.logger now returns an ActiveSupport::BroadcastLogger instance
-- [ ] Active Record Encryption algorithm changes
-- [ ] New ways to handle exceptions in Controller Tests, Integration Tests, and System Tests
+- [X] Development and test environments secret_key_base file changed
+- [/] Autoloaded paths are no longer in $LOAD_PATH
+- [/] config.autoload_lib and config.autoload_lib_once
+- [X] ActiveStorage::BaseController no longer includes the streaming concern
+- [X] MemCacheStore and RedisCacheStore now use connection pooling by default
+- [X] SQLite3Adapter now configured to be used in a strict strings mode
+- [X] Support multiple preview paths for ActionMailer::Preview
+- [/] config.i18n.raise_on_missing_translations = true now raises on any missing translation.
+- [/] bin/rails test now runs test:prepare task
+- [X] Import syntax from @rails/ujs is modified
+- [X] Rails.logger now returns an ActiveSupport::BroadcastLogger instance
+- [X] Active Record Encryption algorithm changes
+- [/] New ways to handle exceptions in Controller Tests, Integration Tests, and System Tests
 
 7. Change `Dockerfile` and `Dockerfile-dev` to use `ruby-2.7.0-rails-7.1.4` in the `FROM` url.
 8. Create a PR and insure all the tests pass.

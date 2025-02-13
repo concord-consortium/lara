@@ -22,17 +22,19 @@ module LightweightStandalone
     config.hosts = nil
     # Custom directories with classes and modules you want to be autoloadable.
     config.autoload_paths += Dir["#{config.root}/extras"]
-    config.autoload_paths += Dir["#{config.root}/lib"]
+    # config.autoload_paths += Dir["#{config.root}/lib"]
     config.autoload_paths += Dir["#{config.root}/app/services"]
     config.autoload_paths += Dir["#{config.root}/app/helpers"]
     config.autoload_paths += Dir["#{config.root}/config/locales"]
     # These are here to verify zeitwerk autoloading
     # See: https://guides.rubyonrails.org/v7.0/classic_to_zeitwerk_howto.html#config-eager-load-paths
     config.eager_load_paths += Dir["#{config.root}/extras"]
-    config.eager_load_paths += Dir["#{config.root}/lib"]
+    # config.eager_load_paths += Dir["#{config.root}/lib"]
     config.eager_load_paths += Dir["#{config.root}/app/services"]
     config.eager_load_paths += Dir["#{config.root}/app/helpers"]
     config.eager_load_paths += Dir["#{config.root}/config/locales"]
+
+    config.autoload_lib(ignore: %w(assets tasks))
 
     # Only load the plugins named here, in the order given (default is alphabetical).
     # :all can be used as a placeholder for all plugins not explicitly named.

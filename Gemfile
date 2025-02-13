@@ -1,11 +1,11 @@
 source "https://rubygems.org"
-  gem 'actionmailer', '~> 7.0.8.7', require: false
-  gem 'actionpack', '~> 7.0.8.7', require: false
-  gem 'activemodel', '~> 7.0.8.7', require: false
-  gem 'activerecord', '~> 7.0.8.7', require: false
-  gem 'activesupport', '~> 7.0.8.7', require: false
-  gem 'rails', '~> 7.0.8.7'
-  gem 'railties', '~> 7.0.8.7', require: false
+  gem 'actionmailer', '~> 7.1.5.1', require: false
+  gem 'actionpack', '~> 7.1.5.1', require: false
+  gem 'activemodel', '~> 7.1.5.1', require: false
+  gem 'activerecord', '~> 7.1.5.1', require: false
+  gem 'activesupport', '~> 7.1.5.1', require: false
+  gem 'rails', '~> 7.1.5.1'
+  gem 'railties', '~> 7.1.5.1', require: false
 
 group :production do
   gem "unicorn"
@@ -13,7 +13,7 @@ end
 
 # group :assets do
   gem "coffee-rails", '~> 4.2', '>= 4.2.2'
-  gem "compass-blueprint", "~> 1.0"
+  gem "compass-blueprint"
   gem "compass-rails", "~> 3.1.0"
   gem "sass-rails", "= 5.0.8"
   gem "sassc", "~> 2.1.0"
@@ -50,7 +50,7 @@ group :test, :development do
   gem "launchy", "~> 2.5", ">= 2.5.2"
   gem "poltergeist", "~> 1.18", ">= 1.18.1"
   gem "rspec-activemodel-mocks", '~> 1.2', '>= 1.2.1'
-  gem "rspec-rails", '~> 4.1'
+  gem "rspec-rails", '~> 6.0'
   gem 'rubocop', '= 0.49.1', require: false
   gem "spring", "~> 3.0"
   gem "spring-commands-rspec", "~> 1.0", ">= 1.0.4"
@@ -60,7 +60,7 @@ group :test, :development do
 end
 
 gem "acts_as_list"
-gem 'aws-sdk', '= 2.0.22'
+gem 'aws-sdk', '~> 3'
 gem "aws-ses", "0.7.1", git: "https://github.com/zebitex/aws-ses.git", ref: "78-sigv4-problem"
 gem "bootsnap"
 gem "cancancan", "= 3.0.2"
@@ -87,7 +87,7 @@ gem "multi_json", "~> 1.15"
 gem "mysql2", "~> 0.5"
 gem "nested_form", "~> 0.3.2"
 gem 'newrelic_rpm'
-gem "nokogiri", "~> 1.12.5"
+gem "nokogiri", "~> 1.15.7"
 gem "omniauth", "= 1.4.2"
 gem "omniauth-oauth2", "1.3"
 gem "rack-cors", "~> 1.0.3", {require: 'rack/cors'}
