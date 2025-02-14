@@ -15,7 +15,7 @@ end
   gem "coffee-rails", '~> 4.2', '>= 4.2.2'
   gem "sass-rails", "= 5.0.8"
   gem "sassc", "~> 2.1.0"
-  gem "uglifier", "~> 4.2"
+  gem "terser"
 # end
 
 # 2021-11-01 -- NP: rails-assets.org SSL certificate has expired.

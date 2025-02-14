@@ -76,6 +76,7 @@ The status codes are:
 - DG?: gem downgraded - why? this should not happen
 - RG: gem removed
 - LV: dependency not previously specified in gem file that we have to lock at a specific version
+- AG: gem added
 
 (add more status codes as needed)
 
@@ -108,6 +109,7 @@ The status codes are:
 | safe_yaml                    |           RG |           1.0.4 |               - |       1.0.5 |
 | spreadsheet                  |       UC* AM |           1.0.3 |           1.1.2 |       1.3.3 |
 | spring-commands-rspec        |        NC AM |           1.0.4 |           1.0.4 |       1.0.4 |
+| terser                       |        AG AM |             n/a |           1.2.5 |       1.2.5 |
 | test-unit                    |       UC* AM |           3.2.3 |           3.6.7 |       3.6.7 |
 | timecop                      |       UC* AM |           0.6.3 |          0.9.10 |      0.9.10 |
 | turbo-sprockets-rails4       |           RG |             n/a |               - |       1.2.5 |
@@ -152,7 +154,7 @@ The status codes are:
 | spring                       |          UC! |           1.2.0 |           3.1.1 |       4.2.1 |
 | sprockets                    |          RG  |           3.7.5 |               - |       4.2.1 |
 | tinymce-rails                |          UC* |           4.7.9 |           4.9.4 |       7.4.1 |
-| uglifier                     |          UC* |           4.1.8 |           4.2.1 |       4.2.1 |
+| uglifier                     |           RG |           4.1.8 |               - |       4.2.1 |
 | unicorn                      |       UC! AM |           6.1.0 |           6.1.0 |       6.1.0 |
 | uuidtools                    |          UC* |           2.1.4 |           2.1.5 |       2.2.0 |
 | web-console                  |          n/a |             n/a |           3.7.0 |       4.2.1 |
