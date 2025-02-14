@@ -13,7 +13,7 @@
                       rgba(0, 0, 0, 0.2) 0 1px 2px;
           box-shadow: rgba(255, 255, 255, 0.4) 0 1px 0 inset,
                       rgba(0, 0, 0, 0.2) 0 1px 2px;
-  @include border-radius(4px);
+  border-radius: 4px;
   @include drk-txt-shadow( darken($color1, 10%) );
   border: 1px solid $color2;
   margin-top: 13px;
@@ -39,9 +39,9 @@
 
 // Text shadows included on various elements
 @mixin drk-txt-shadow($color: $black-50) {
-  @include text-shadow(0 -1px 0 darken($color, 15%));
+  text-shadow: 0 -1px 0 darken($color, 15%);
 }
 
 @mixin lt-txt-shadow($color: #fff) {
-  @include text-shadow(0 1px 0 lighten($color, 10%));
+  text-shadow: 0 1px 0 lighten($color, 10%);
 }

@@ -76,16 +76,17 @@ The status codes are:
 - DG?: gem downgraded - why? this should not happen
 - RG: gem removed
 - LV: dependency not previously specified in gem file that we have to lock at a specific version
+- AG: gem added
 
 (add more status codes as needed)
 
 | Gem                          | Status       | Initial Version | Current Version | Max Version |
 |------------------------------|--------------|-----------------|-----------------|-------------|
-| rails (+ rails core...)      |          CU! |          3.2.22 |         6.0.6.1 |       8.0.1 |
+| rails (+ rails core...)      |          CU! |          3.2.22 |         7.1.5.1 |       8.0.1 |
 | *GEMS AT MAX*                |              |                 |                 |             |
 | aws-ses                      |        NC AM |           0.7.1 |           0.7.1 |       0.7.1 |
 | chosen-rails                 |       UC* AM |           1.0.1 |          1.10.0 |      1.10.0 |
-| compass-blueprint            |        NC AM |           1.0.0 |           1.0.0 |       1.0.0 |
+| compass-blueprint            |           RG |           1.0.0 |               - |       1.0.0 |
 | daemons                      |       UC* AM |           1.1.9 |           1.4.1 |       1.4.1 |
 | delayed_job_active_record    |       UC* AM |           4.0.0 |          4.1.11 |      4.1.11 |
 | delayed_job_web              |       UC* AM |           1.2.5 |           1.4.4 |       1.4.4 |
@@ -108,6 +109,7 @@ The status codes are:
 | safe_yaml                    |           RG |           1.0.4 |               - |       1.0.5 |
 | spreadsheet                  |       UC* AM |           1.0.3 |           1.1.2 |       1.3.3 |
 | spring-commands-rspec        |        NC AM |           1.0.4 |           1.0.4 |       1.0.4 |
+| terser                       |        AG AM |             n/a |           1.2.5 |       1.2.5 |
 | test-unit                    |       UC* AM |           3.2.3 |           3.6.7 |       3.6.7 |
 | timecop                      |       UC* AM |           0.6.3 |          0.9.10 |      0.9.10 |
 | turbo-sprockets-rails4       |           RG |             n/a |               - |       1.2.5 |
@@ -119,17 +121,17 @@ The status codes are:
 | better_errors                |          UC! |           1.1.0 |           2.0.0 |      2.10.1 |
 | bootsnap                     |       UC* AM |           1.4.4 |          1.18.4 |      1.18.4 |
 | bullet                       |           RG |           5.4.3 |               - |       7.2.0 |
-| cancancan                    |          UC! |          1.10.1 |           3.0.2 |       3.6.1 |
+| cancancan                    |       UC! AM |          1.10.1 |           3.6.1 |       3.6.1 |
 | capybara                     |          UC* |           2.4.4 |          2.18.0 |      3.40.0 |
 | ci_reporter                  |           RM |           1.7.3 |               - |       2.1.0 |
 | coffee-rails                 |          UC! |           3.2.2 |           4.2.2 |       5.0.0 |
-| compass-rails                |           NC |           3.1.0 |           3.1.0 |       4.0.0 |
+| compass-rails                |           RG |           3.1.0 |               - |       4.0.0 |
 | default_value_for            |          UC! |           2.0.3 |           3.6.0 |       4.0.0 |
 | devise                       |          UC! |           3.0.1 |           4.9.4 |       4.9.4 |
 | dynamic_form                 |          UC* |           1.1.4 |           1.2.0 |       1.3.1 |
 | exception_notification       |       UC* AM |           4.0.1 |           4.5.0 |       4.5.0 |
 | factory_girl_rails           |          UC* |           4.3.0 |           4.9.0 |       6.4.3 |
-| faker                        |          UC! |           1.2.0 |           2.2.1 |       3.4.2 |
+| faker                        |       UC! AM |           1.2.0 |           3.5.1 |       3.5.1 |
 | ffi                          |           LV |           1.15.5           1.16.3 |      1.17.1 |
 | haml                         |          UC! |           4.0.5 |           5.2.2 |       6.3.0 |
 | highline                     |          UC* |          1.6.21 |          1.7.10 |       3.1.1 |
@@ -140,7 +142,7 @@ The status codes are:
 | launchy                      |          UC* |           2.4.0 |           2.5.2 |       3.0.1 |
 | mysql2                       |          UC* |          0.3.21 |           0.5.6 |       0.5.6 |
 | newrelic_rpm                 |       UC! AM |       4.6.0.338 |          9.17.0 |      9.17.0 |
-| nokogiri                     |          UC* |          1.10.3 |          1.12.5 |      1.16.7 |
+| nokogiri                     |          UC* |          1.10.3 |          1.18.2 |      1.18.2 |
 | omniauth                     |          UC* |           1.3.2 |           1.4.2 |       2.1.2 |
 | omniauth-oauth2              |          UC* |           1.1.1 |           1.3.0 |       1.8.0 |
 | rack-cors                    |          UC! |           0.4.1 |           1.0.6 |       2.0.2 |
@@ -152,7 +154,7 @@ The status codes are:
 | spring                       |          UC! |           1.2.0 |           3.1.1 |       4.2.1 |
 | sprockets                    |          RG  |           3.7.5 |               - |       4.2.1 |
 | tinymce-rails                |          UC* |           4.7.9 |           4.9.4 |       7.4.1 |
-| uglifier                     |          UC* |           4.1.8 |           4.2.1 |       4.2.1 |
+| uglifier                     |           RG |           4.1.8 |               - |       4.2.1 |
 | unicorn                      |       UC! AM |           6.1.0 |           6.1.0 |       6.1.0 |
 | uuidtools                    |          UC* |           2.1.4 |           2.1.5 |       2.2.0 |
 | web-console                  |          n/a |             n/a |           3.7.0 |       4.2.1 |
@@ -365,7 +367,7 @@ For now we will stay at 4.2.11.23 instead of upgrading to 4.2.11.38
 
 - [X] Remove references to `RAILS_LTS_PASS` in `docker-compose.yml`, `DockerFile`, `Dockerfile-dev`, and `ci.yml`
 - [X] Remove `source 'https://gems.railslts.com'` in Gemfile and move rails gems in common gem list
-- [ ] Remove `RAILS_LTS_PASS` secret from LARA GitHub repo
+- [X] Remove `RAILS_LTS_PASS` secret from LARA GitHub repo
 
 4. Upgrade rails gems in `Gemfile` to last 7.0 version: `gem 'rails', '~> 7.0.8.7'`.
 5. Inside running Docker image run `bundle update rails`
@@ -394,26 +396,26 @@ For now we will stay at 4.2.11.23 instead of upgrading to 4.2.11.38
 ### Upgrade To Rails 7.1.4
 
 1. Create a `upgrade-to-rails-7.1` branch off the `lara-upgrade` branch.
-2. Upgrade rails gems in `Gemfile` to last 7.1 version: `gem 'rails', '~> 7.1.4 '`.  No Ruby upgrade is required.
+2. Upgrade rails gems in `Gemfile` to last 7.1 version: `gem 'rails', '~> 7.1.5'`.  No Ruby upgrade is required.
 3. Inside running Docker image run `bundle update rails`
 4. Resolve gem dependency issues until the bundle update succeeds.
 5. Complete upgrade tasks in the [7.0 to 7.1 upgrade guide](https://guides.rubyonrails.org/upgrading_ruby_on_rails.html#upgrading-from-rails-7-0-to-rails-7-1)
 
-- [ ] Development and test environments secret_key_base file changed
-- [ ] Autoloaded paths are no longer in $LOAD_PATH
-- [ ] config.autoload_lib and config.autoload_lib_once
-- [ ] ActiveStorage::BaseController no longer includes the streaming concern
-- [ ] MemCacheStore and RedisCacheStore now use connection pooling by default
-- [ ] SQLite3Adapter now configured to be used in a strict strings mode
-- [ ] Support multiple preview paths for ActionMailer::Preview
-- [ ] config.i18n.raise_on_missing_translations = true now raises on any missing translation.
-- [ ] bin/rails test now runs test:prepare task
-- [ ] Import syntax from @rails/ujs is modified
-- [ ] Rails.logger now returns an ActiveSupport::BroadcastLogger instance
-- [ ] Active Record Encryption algorithm changes
-- [ ] New ways to handle exceptions in Controller Tests, Integration Tests, and System Tests
+- [X] Development and test environments secret_key_base file changed
+- [X] Autoloaded paths are no longer in $LOAD_PATH
+- [X] config.autoload_lib and config.autoload_lib_once
+- [X] ActiveStorage::BaseController no longer includes the streaming concern
+- [X] MemCacheStore and RedisCacheStore now use connection pooling by default
+- [X] SQLite3Adapter now configured to be used in a strict strings mode
+- [X] Support multiple preview paths for ActionMailer::Preview
+- [X] config.i18n.raise_on_missing_translations = true now raises on any missing translation.
+- [X] bin/rails test now runs test:prepare task
+- [X] Import syntax from @rails/ujs is modified
+- [X] Rails.logger now returns an ActiveSupport::BroadcastLogger instance
+- [X] Active Record Encryption algorithm changes
+- [X] New ways to handle exceptions in Controller Tests, Integration Tests, and System Tests
 
-7. Change `Dockerfile` and `Dockerfile-dev` to use `ruby-2.7.0-rails-7.1.4` in the `FROM` url.
+7. Change `Dockerfile` and `Dockerfile-dev` to use `ruby-2.7.0-rails-7.1.5` in the `FROM` url.
 8. Create a PR and insure all the tests pass.
 9. After review/approval merge the branch into the `lara-upgrade` branch.
 

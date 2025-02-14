@@ -14,7 +14,7 @@
 
 
 // Make everything conform to a standard box-model
-* { @include box-sizing(border-box); }
+* { box-sizing: border-box; }
 
 html, body, div, span, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
@@ -160,7 +160,6 @@ label, input[type=button], input[type=submit], button { cursor: pointer; }
 button, input, select, textarea { margin: 0; outline:none; }
 
 // colors for form validity
-input:valid, textarea:valid   {  }
 input:invalid, textarea:invalid { 
       border-radius: 1px;
     -moz-box-shadow: 0px 0px 5px red; 
