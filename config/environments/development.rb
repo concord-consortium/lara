@@ -35,7 +35,6 @@ LightweightStandalone::Application.configure do
   config.action_controller.per_form_csrf_tokens = false
   config.action_controller.forgery_protection_origin_check = false
   config.ssl_options = { hsts: { subdomains: false } }
-  ActiveSupport.to_time_preserves_timezone = false
 
   # include per developer environment files if found (the default is excluded by .gitignore)
   #
