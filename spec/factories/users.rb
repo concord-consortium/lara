@@ -10,7 +10,7 @@ FactoryBot.define do
     is_admin { false }
     factory :user_with_authentication do
       authentications {
-        [ FactoryBot.create(
+        [ FactoryBot.build(
         :authentication,
         uid: 'fake_concord_user',
         provider: 'concord_portal')

@@ -1805,11 +1805,11 @@ GEM
       actionmailer (>= 5.2, < 8)
       activesupport (>= 5.2, < 8)
     execjs (2.10.0)
-    factory_bot (4.11.1)
-      activesupport (>= 3.0.0)
-    factory_bot_rails (4.11.1)
-      factory_bot (~> 4.11.1)
-      railties (>= 3.0.0)
+    factory_bot (6.5.1)
+      activesupport (>= 6.1.0)
+    factory_bot_rails (6.4.4)
+      factory_bot (~> 6.5)
+      railties (>= 5.0.0)
     faker (3.5.1)
       i18n (>= 1.8.11, < 2)
     faraday (2.12.2)
@@ -1901,18 +1901,6 @@ GEM
       net-protocol
     newrelic_rpm (9.17.0)
     nio4r (2.7.4)
-    nokogiri (1.18.2-aarch64-linux-gnu)
-      racc (~> 1.4)
-    nokogiri (1.18.2-aarch64-linux-musl)
-      racc (~> 1.4)
-    nokogiri (1.18.2-arm-linux-gnu)
-      racc (~> 1.4)
-    nokogiri (1.18.2-arm-linux-musl)
-      racc (~> 1.4)
-    nokogiri (1.18.2-arm64-darwin)
-      racc (~> 1.4)
-    nokogiri (1.18.2-x86_64-darwin)
-      racc (~> 1.4)
     nokogiri (1.18.2-x86_64-linux-gnu)
       racc (~> 1.4)
     nokogiri (1.18.2-x86_64-linux-musl)
@@ -2060,8 +2048,6 @@ GEM
       tilt (>= 1.1, < 3)
     sassc (2.1.0-x86_64-linux)
       ffi (~> 1.9)
-    sassc (2.1.0-x86_64-linux)
-      ffi (~> 1.9)
     sassc-rails (2.1.2)
       railties (>= 4.0.0)
       sassc (>= 2.0)
@@ -2093,7 +2079,7 @@ GEM
       actionpack (>= 6.1)
       activesupport (>= 6.1)
       sprockets (>= 3.0.0)
-    stringio (3.1.2)
+    stringio (3.1.3)
     temple (0.10.3)
     terser (1.2.5)
       execjs (>= 0.3.0, < 3)
@@ -2138,12 +2124,7 @@ GEM
     zeitwerk (2.7.1)
 
 PLATFORMS
-  aarch64-linux-gnu
-  aarch64-linux-musl
-  arm-linux-gnu
-  arm-linux-musl
-  arm64-darwin
-  x86_64-darwin
+  x86_64-linux
   x86_64-linux-gnu
   x86_64-linux-musl
 
@@ -2170,7 +2151,7 @@ DEPENDENCIES
   devise (~> 4.4, >= 4.4.0)
   dynamic_form (= 1.2)
   exception_notification
-  factory_bot_rails (~> 4.8, >= 4.8.2)
+  factory_bot_rails
   faker
   ffi (= 1.16.3)
   font-awesome-rails (~> 4.7, >= 4.7.0.8)

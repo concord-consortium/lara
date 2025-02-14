@@ -35,13 +35,13 @@ group :development do
 end
 
 group :test do
+  gem "factory_bot_rails"
   gem 'simplecov', require: false
   gem "webmock", "~> 3.8.3", "= 3.8.3"
 end
 
 group :test, :development do
   gem "capybara", "~> 2.18"
-  gem "factory_bot_rails", '~> 4.8', '>= 4.8.2', require: false
   gem "faker"
   gem "jasmine", "~> 2.99.0"
   gem "jasmine-jquery-rails", "~> 2.0", ">= 2.0.3"

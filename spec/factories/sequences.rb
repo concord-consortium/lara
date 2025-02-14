@@ -11,7 +11,7 @@ FactoryBot.define do
         pages_count { 2 }
         activities_count { 2 }
       end
-      publication_status 'public'
+      publication_status { 'public' }
       after(:create) do |sequence, evaluator|
         # has_many
         create_list(

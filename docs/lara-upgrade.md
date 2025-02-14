@@ -130,7 +130,7 @@ The status codes are:
 | devise                       |          UC! |           3.0.1 |           4.9.4 |       4.9.4 |
 | dynamic_form                 |          UC* |           1.1.4 |           1.2.0 |       1.3.1 |
 | exception_notification       |       UC* AM |           4.0.1 |           4.5.0 |       4.5.0 |
-| factory_bot_rails            |          UC* |           4.3.0 |           4.9.0 |       6.4.3 |
+| factory_bot_rails            |       UC* AM |           4.3.0 |           6.4.4 |       6.4.4 |
 | faker                        |       UC! AM |           1.2.0 |           3.5.1 |       3.5.1 |
 | ffi                          |           LV |           1.15.5           1.16.3 |      1.17.1 |
 | haml                         |          UC! |           4.0.5 |           5.2.2 |       6.3.0 |

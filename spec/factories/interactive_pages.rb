@@ -32,7 +32,7 @@ FactoryBot.define do
     end
 
     factory :interactive_page_with_or, aliases: [:page_with_or] do
-      name "page with open response"
+      name { "page with open response" }
       after(:create) do |page, evaluator|
         page.add_embeddable(FactoryBot.create(:or_embeddable, is_hidden: false))
         # page.page_items  { [ FactoryBot.create(:page_item, :interactive_page => page) ] }
@@ -41,7 +41,7 @@ FactoryBot.define do
     end
 
     factory :interactive_page_with_hidden_or do
-      name "page with hidden open response"
+      name { "page with hidden open response" }
       after(:create) do |page, evaluator|
         # page.page_items  { [ FactoryBot.create(:page_item, :interactive_page => page) ] }
         page.add_embeddable(FactoryBot.create(:or_embeddable, is_hidden: true))
