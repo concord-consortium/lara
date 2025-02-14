@@ -153,7 +153,7 @@
   border: 3px dashed $lt-blue;
   padding: 40px;
   text-align: center;
-  @include border-radius(10px);
+  border-radius: 10px;
 
   &.complete {
     margin-bottom: 12px;
@@ -161,14 +161,14 @@
 }
 
 .image-file {
-  @include border-radius(5px);
+  border-radius: 5px;
   background-color: #FFF;
   text-align: center;
 
   img {
     max-width: 100%;
     opacity: 0.6;
-    @include border-radius(5px);
+    border-radius: 5px;
   }
 
   p {

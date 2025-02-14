@@ -22,7 +22,12 @@
 
 @mixin media-grid($num: 2, $pad: em(20), $class:media-block) {
 	margin-left: -#{$pad};
-	@include pie-clearfix;
+
+	&::after {
+    content: "";
+    display: table;
+    clear: both;
+  }
 
 	.#{$class} {
 		float: left;
@@ -72,53 +77,65 @@ $width-2: 50% !default;
 $margin-r: 5% !default;
 
 @mixin ui-grid-2($width-1,$width-2,$margin-r) {
-	@include pie-clearfix;
+	&::after {
+    content: "";
+    display: table;
+    clear: both;
+  }
 
 	> .ui-block-1,
 	> .ui-block.first {
 		width: $width-1 - ($margin-r/2);
-		@include float-left;
+		float: left;
 		margin-right: $margin-r;
 	}
 
 	> .ui-block-2,
 	> .ui-block.second {
 		width: $width-2 - ($margin-r/2);
-		@include float-left;
+		float: left;
 		margin-right: 0;
 	}
 }
 
 @mixin ui-grid-rl($width-1,$width-2,$margin-r) {
-	@include pie-clearfix;
+	&::after {
+    content: "";
+    display: table;
+    clear: both;
+  }
 
 	> .ui-block-1,
 	> .ui-block.first {
 		width: $width-1 - ($margin-r/2);
-		@include float-right;
+		float: right;
 	}
 
 	> .ui-block-2,
 	> .ui-block.second {
 		width: $width-2 - ($margin-r/2);
-		@include float-left;
+		float: left;
 		margin-right: 0;
 	}
 }
 
 @mixin ui-grid-lr($width-1,$width-2,$margin-r) {
-	@include pie-clearfix;
+	&::after {
+    content: "";
+    display: table;
+    clear: both;
+  }
 
 	> .ui-block-1,
 	> .ui-block.first {
 		width: $width-1 - ($margin-r/2);
-		@include float-left;
+		float: left;
 	}
 
 	> .ui-block-2,
 	> .ui-block.second {
 		width: $width-2 - ($margin-r/2);
-		@include float-right;
+		float: right;
 		margin-right: 0;
 	}
 }
@@ -131,11 +148,11 @@ $margin-r: 5% !default;
 	.ui-block-1,
 	.ui-block.first,
 	.ui-block-2,
-	.ui-block.second, {
+	.ui-block.second {
 		transition: .1s;
 	}
 	.questions-mod.ui-block-2,
-	.questions-mod.ui-block.second, {
+	.questions-mod.ui-block.second {
 		background: #eee;
 		padding: 10px;
 
@@ -309,12 +326,16 @@ $width3-3: 33.333333% !default;
 $margin3-r: 3.5% !default;
 
 @mixin ui-grid-3($width3-1,$width3-2,$width3-3,$margin3-r)  {
-	@include pie-clearfix;
+	&::after {
+    content: "";
+    display: table;
+    clear: both;
+  }
 
 	> .ui-block-1,
 	> .ui-block.first {
 		width: $width3-1 - ($margin3-r/3);
-		@include float-left;
+		float: left;
 		margin-right: $margin3-r/2;
 		transition: .3;
 	}
@@ -322,7 +343,7 @@ $margin3-r: 3.5% !default;
 	> .ui-block-2,
 	> .ui-block.second {
 		width: $width3-2 - ($margin3-r/3);
-		@include float-left;
+		float: left;
 		margin-right: $margin3-r/2;
 		transition: .3;
 	}
@@ -330,7 +351,7 @@ $margin3-r: 3.5% !default;
 	> .ui-block-3,
 	> .ui-block.last {
 		width: $width3-3 - ($margin3-r/3);
-		@include float-left;
+		float: left;
 		margin-right: 0;
 	}
 }
@@ -338,26 +359,30 @@ $margin3-r: 3.5% !default;
 /* Grid-3-rrl vars */
 
 @mixin ui-grid-rrl($width3-1,$width3-2,$width3-3,$margin3-r)  {
-	@include pie-clearfix;
+	&::after {
+    content: "";
+    display: table;
+    clear: both;
+  }
 
 	> .ui-block-1,
 	> .ui-block.first {
 		width: $width3-1 - ($margin3-r/3);
-		@include float-right;
+		float: right;
 		margin-right: 0;
 	}
 
 	> .ui-block-2,
 	> .ui-block.second {
 		width: $width3-2 - ($margin3-r/3);
-		@include float-right;
+		float: right;
 		margin-right: $margin3-r/2;
 	}
 
 	> .ui-block-3,
 	> .ui-block.last {
 		width: $width3-3 - ($margin3-r/3);
-		@include float-left;
+		float: left;
 		margin-right: $margin3-r/2;
 	}
 }
@@ -373,33 +398,37 @@ $margin4-r: 8% !default;
 
 @mixin ui-grid-4($width4-1,$width4-2,$width4-3,$width4-4,$margin5-r) {
 
-	@include pie-clearfix;
+	&::after {
+    content: "";
+    display: table;
+    clear: both;
+  }
 
 	> .ui-block-1,
 	> .ui-block.first {
 		width: $width4-1 - ($margin4-r/4);
-		@include float-left;
+		float: left;
 		margin-right: $margin4-r/3;
 	}
 
 	> .ui-block-2,
 	> .ui-block.second {
 		width: $width4-2 - ($margin4-r/4);
-		@include float-left;
+		float: left;
 		margin-right: $margin4-r/3;
 	}
 
 	> .ui-block-3,
 	> .ui-block.third {
 		width: $width4-3 - ($margin4-r/4);
-		@include float-left;
+		float: left;
 		margin-right: $margin4-r/3;
 	}
 
 	> .ui-block-4,
 	> .ui-block.last {
 		width: $width4-4 - ($margin4-r/4);
-		@include float-left;
+		float: left;
 		margin-right: 0;
 	}
 }
@@ -416,40 +445,44 @@ $margin5-r: 8% !default;
 
 @mixin ui-grid-5($width5-1,$width5-2,$width5-3,$width5-4,$width5-5,$margin5-r) {
 
-	@include pie-clearfix;
+	&::after {
+    content: "";
+    display: table;
+    clear: both;
+  }
 
 	> .ui-block-1,
 	> .ui-block.first {
 		width: $width5-1 - ($margin5-r/5);
-		@include float-left;
+		float: left;
 		margin-right: $margin5-r/4;
 	}
 
 	> .ui-block-2,
 	> .ui-block.second {
 		width: $width5-2 - ($margin5-r/5);
-		@include float-left;
+		float: left;
 		margin-right: $margin5-r/4;
 	}
 
 	> .ui-block-3,
 	> .ui-block.third {
 		width: $width5-3 - ($margin5-r/5);
-		@include float-left;
+		float: left;
 		margin-right: $margin5-r/4;
 	}
 
 	> .ui-block-4,
 	> .ui-block.fourth {
 		width: $width5-4 - ($margin5-r/5);
-		@include float-left;
+		float: left;
 		margin-right: $margin5-r/4;
 	}
 
 	> .ui-block-5,
 	> .ui-block.last {
 		width: $width5-5 - ($margin5-r/5);
-		@include float-left;
+		float: left;
 		margin-right: 0;
 	}
 }
@@ -484,7 +517,12 @@ $margin5-r: 8% !default;
 
 @mixin pair($art-width: 50px, $art-margin: 20px, $v-align: middle, $direction: left) {
 	$gutter: $art-width + $art-margin;
-	@include pie-clearfix;
+
+	&::after {
+    content: "";
+    display: table;
+    clear: both;
+  }
 
 	@if $v-align == middle {
 		display: table;

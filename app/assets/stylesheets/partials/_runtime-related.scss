@@ -13,14 +13,12 @@
 }
 
 .related-hdr {
-  // background-color: $med-blue;
   background-color: $related-green;
   color: #fff;
   font-size: 18px;
   padding: 6px 13px;
   margin-bottom: 8px;
-  @include box-shadow(0 2px 5px -1px $black-15);
-  //@extend .drk-text-shadow;
+  box-shadow: 0 2px 5px -1px $black-15;
 }
 
 .related-bd {

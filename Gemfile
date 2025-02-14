@@ -13,11 +13,9 @@ end
 
 # group :assets do
   gem "coffee-rails", '~> 4.2', '>= 4.2.2'
-  gem "compass-blueprint"
-  gem "compass-rails", "~> 3.1.0"
   gem "sass-rails", "= 5.0.8"
   gem "sassc", "~> 2.1.0"
-  gem "uglifier", "~> 4.2"
+  gem "terser"
 # end
 
 # 2021-11-01 -- NP: rails-assets.org SSL certificate has expired.
@@ -87,7 +85,7 @@ gem "multi_json", "~> 1.15"
 gem "mysql2", "~> 0.5"
 gem "nested_form", "~> 0.3.2"
 gem 'newrelic_rpm'
-gem "nokogiri", "~> 1.15.7"
+gem "nokogiri"
 gem "omniauth", "= 1.4.2"
 gem "omniauth-oauth2", "1.3"
 gem "rack-cors", "~> 1.0.3", {require: 'rack/cors'}
