@@ -18,12 +18,6 @@ end
   gem "terser"
 # end
 
-# 2021-11-01 -- NP: rails-assets.org SSL certificate has expired.
-# For now we have just put the JS and CSS files for drawing tool and its deps
-# into app/assets/javascript & app/assets/css
-# however managing those dependencies isn't going to be easy. We need a better
-# long term solution
-
 source 'https://rails-assets.org' do
   gem 'rails-assets-drawing-tool', '1.3.2'
   gem 'rails-assets-modulejs', '1.6.0'
