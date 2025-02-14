@@ -70,7 +70,7 @@ gem "font-awesome-rails", '~> 4.7', '>= 4.7.0.8'
 gem "gon", "~> 6.4.0"
 gem "haml", "~> 5.2"
 gem "highline", "~> 1.7.3"
-gem "httparty", "= 0.21"
+gem "httparty", ">= 0.21"
 gem "i18n", ">= 1.8"
 gem "jquery-rails", '~> 4.1', '>= 4.1.0'
 gem "jquery-ui-rails", '~> 4.2.1'
@@ -83,7 +83,7 @@ gem "nokogiri"
 gem "omniauth", "= 1.4.2"
 gem "omniauth-oauth2", "1.3"
 gem "rack-cors", "~> 1.0.3", {require: 'rack/cors'}
-gem "rack-environmental"#, "~> 1.3"
+gem "rack-environmental"
 gem 'rack-secure_samesite_cookies', {git: 'https://github.com/concord-consortium/secure-samesite-cookies.git', tag: 'v1.0.2'}
 gem 'rake', '~> 13.2', '>= 13.2.1'
 gem "responders", "~> 3.1.1"
