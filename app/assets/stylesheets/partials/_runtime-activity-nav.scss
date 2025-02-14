@@ -12,17 +12,6 @@ $nav-bar-height: auto;
   color: white;
   @extend .cf;
   @include trans;
-
-
-/*  &.fixed {
-    position: fixed;
-    top: 0;
-    background-color: lighten($lt-blue, 15%);
-    @include box-shadow(0 2px 8px rgba(0, 0, 0, 0.2) );
-    padding: 10px 6px;
-    z-index: 9999;
-  }
-*/
 }
 
 .activity-nav-logo {
@@ -38,7 +27,7 @@ table.l-nav {
     @include ui-grid-2(70%, 30%, 5%);
     background-color: $capecod;
     height: $nav-bar-height;
-    @include border-radius(2px);
+    border-radius: 2px;
     td {
       vertical-align: middle;
     }
@@ -93,7 +82,7 @@ div.nav-menu-top {
     font-size: 12pt;
     &.active {
       .activity-list-head {
-        @include border-radius(2px);
+        border-radius: 2px;
         padding: 10px 20px 10px 10px;
         margin: 0 0 10px 0;
         color: white;
@@ -225,7 +214,7 @@ div.nav-menu-top {
 }
 
 .pagination-item {
-  @include border-radius(10px);
+  border-radius: 10px;
   text-align: center;
   display: inline-block;
 
@@ -240,7 +229,7 @@ div.nav-menu-top {
     width: 26px;
     height: 26px;
     font-size: 13px;
-    @include border-radius(13px);
+    border-radius: 13px;
     border: 3px solid #616768;
     padding: 2px;
     text-align: center;
@@ -253,7 +242,7 @@ div.nav-menu-top {
       height: 28px;
       width: 28px;
       padding-top: 3px;
-      @include border-radius(14px);
+      border-radius: 14px;
       /* TODO: gradient? */
     }
   } // end .pagination-link

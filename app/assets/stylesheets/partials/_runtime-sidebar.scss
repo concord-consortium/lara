@@ -4,7 +4,7 @@
   position: fixed;
   @include helv-stack(100);
   text-align: left;
-  @include border-radius(0 0 0 8px);
+  border-radius: 0 0 0 8px;
   background-color: #fff;
   opacity: 0;
   z-index: 1000;
@@ -42,7 +42,7 @@
   position: absolute;
   width: 85px;
   left: -85px;
-  @include border-radius(3px 0 0 3px);
+  border-radius: 3px 0 0 3px;
 
   &:hover {
     box-shadow: -2px 2px 10px rgba(0, 0, 0, 0.3);
@@ -63,7 +63,7 @@
   overflow: hidden;
   font-size: 16px;
   @include helv-stack(500);
-  @include border-radius(0 0 0 8px);
+  border-radius: 0 0 0 8px;
   background-color: transparent;
 
   .h4 {

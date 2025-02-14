@@ -177,8 +177,7 @@ terminal in the LARA Codespaces:
 
 ## Editing CSS
 
-This project was setup with [Compass](http://compass-style.org/), however, you shouldn't ever need to run `compass watch`. The asset pipeline should take care of itself in development mode.
-This project does use [Sass](http://sass-lang.com/) for the stylesheets.
+This project uses [Sass](http://sass-lang.com/) for the stylesheets.
 
 ## Themes
 

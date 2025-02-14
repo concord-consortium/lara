@@ -85,7 +85,7 @@ The status codes are:
 | *GEMS AT MAX*                |              |                 |                 |             |
 | aws-ses                      |        NC AM |           0.7.1 |           0.7.1 |       0.7.1 |
 | chosen-rails                 |       UC* AM |           1.0.1 |          1.10.0 |      1.10.0 |
-| compass-blueprint            |        NC AM |           1.0.0 |           1.0.0 |       1.0.0 |
+| compass-blueprint            |           RG |           1.0.0 |               - |       1.0.0 |
 | daemons                      |       UC* AM |           1.1.9 |           1.4.1 |       1.4.1 |
 | delayed_job_active_record    |       UC* AM |           4.0.0 |          4.1.11 |      4.1.11 |
 | delayed_job_web              |       UC* AM |           1.2.5 |           1.4.4 |       1.4.4 |
@@ -123,7 +123,7 @@ The status codes are:
 | capybara                     |          UC* |           2.4.4 |          2.18.0 |      3.40.0 |
 | ci_reporter                  |           RM |           1.7.3 |               - |       2.1.0 |
 | coffee-rails                 |          UC! |           3.2.2 |           4.2.2 |       5.0.0 |
-| compass-rails                |           NC |           3.1.0 |           3.1.0 |       4.0.0 |
+| compass-rails                |           RG |           3.1.0 |               - |       4.0.0 |
 | default_value_for            |          UC! |           2.0.3 |           3.6.0 |       4.0.0 |
 | devise                       |          UC! |           3.0.1 |           4.9.4 |       4.9.4 |
 | dynamic_form                 |          UC* |           1.1.4 |           1.2.0 |       1.3.1 |

@@ -54,7 +54,7 @@
         background-color: $black-5;
         position: relative;
         top: -2px;
-        @include border-radius(2px);
+        border-radius: 2px;
       }
     } //li
   }//ol
@@ -82,9 +82,6 @@
 //definition lists
 .intro-mod,
 .content-mod {
-  dl {
-
-  }
   dt {
     font-weight: bold;
     margin-top: 13px;
@@ -98,9 +95,6 @@
 // text areas
 .intro-mod,
 .content-mod {
-  form {
-  }
-
   label {
     display: block;
     margin-bottom: 4px;
@@ -110,7 +104,7 @@
     padding: 16px;
     border: 1px solid $black-15;
     @include helv-stack(500);
-    @include border-radius(8px);
+    border-radius: 8px;
   }
 
   em.credit {
