@@ -75,7 +75,6 @@ The status codes are:
 - NU: no upgrade available - gem can't be upgraded
 - DG?: gem downgraded - why? this should not happen
 - RG: gem removed
-- LV: dependency not previously specified in gem file that we have to lock at a specific version
 - AG: gem added
 
 (add more status codes as needed)
@@ -96,6 +95,7 @@ The status codes are:
 | exception_notification       |       UC* AM |           4.0.1 |           4.5.0 |       4.5.0 |
 | factory_bot_rails            |       UC* AM |           4.3.0 |           6.4.4 |       6.4.4 |
 | faker                        |       UC! AM |           1.2.0 |           3.5.1 |       3.5.1 |
+| ffi                          |       UC* AM |           1.15.5           1.17.1 |      1.17.1 |
 | font-awesome-rails           |       UC* AM |         4.3.0.0 |         4.7.0.9 |     4.7.0.9 |
 | gon                          |       UC! AM |           5.2.3 |           6.4.0 |       6.4.0 |
 | httparty                     |       UC* AM |          0.12.0 |          0.22.0 |      0.22.0 |
@@ -129,7 +129,6 @@ The status codes are:
 | default_value_for            |          UC! |           2.0.3 |           3.6.0 |       4.0.0 |
 | devise                       |          UC! |           3.0.1 |           4.9.4 |       4.9.4 |
 | dynamic_form                 |          UC* |           1.1.4 |           1.2.0 |       1.3.1 |
-| ffi                          |           LV |           1.15.5           1.16.3 |      1.17.1 |
 | haml                         |          UC! |           4.0.5 |           5.2.2 |       6.3.0 |
 | highline                     |          UC* |          1.6.21 |          1.7.10 |       3.1.1 |
 | jasmine                      |          UC* |           2.2.0 |          2.99.0 |      3.99.0 |
@@ -142,7 +141,6 @@ The status codes are:
 | omniauth-oauth2              |          UC* |           1.1.1 |           1.3.0 |       1.8.0 |
 | rack-cors                    |          UC! |           0.4.1 |           1.0.6 |       2.0.2 |
 | rspec-rails                  |          UC! |           3.8.2 |           4.1.2 |       7.0.1 |
-| rubocop                      |          n/a |             n/a |          0.49.1 |       1.6.8 |
 | sass-rails                   |          UC! |           3.2.6 |           5.0.8 |       6.0.0 |
 | sassc                        |          n/a |             n/a |           2.1.0 |       2.4.0 |
 | spring                       |          UC! |           1.2.0 |           3.1.1 |       4.2.1 |

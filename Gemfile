@@ -43,7 +43,6 @@ group :test, :development do
   gem "poltergeist", "~> 1.18", ">= 1.18.1"
   gem "rspec-activemodel-mocks", '~> 1.2', '>= 1.2.1'
   gem "rspec-rails", '~> 6.0'
-  gem 'rubocop', '= 0.49.1', require: false
   gem "spring", "~> 3.0"
   gem "spring-commands-rspec", "~> 1.0", ">= 1.0.4"
   gem "test-unit", "~> 3.6", ">= 3.6.2"
@@ -65,7 +64,7 @@ gem "delayed_job_web", '~> 1.4', '>= 1.4.4'
 gem "devise", '~> 4.4', '>= 4.4.0'
 gem "dynamic_form", "= 1.2"
 gem "exception_notification"
-gem "ffi", "= 1.16.3"
+gem "ffi", "~> 1.17"
 gem "font-awesome-rails", '~> 4.7', '>= 4.7.0.8'
 gem "gon", "~> 6.4.0"
 gem "haml", "~> 5.2"
