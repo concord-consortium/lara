@@ -6,9 +6,9 @@ describe MwInteractivesController do
   end
 
   render_views
-  let (:activity) { FactoryGirl.create(:activity_with_page) }
+  let (:activity) { FactoryBot.create(:activity_with_page) }
   let (:page) { activity.pages.first }
-  let (:int) { FactoryGirl.create(:mw_interactive, name: 'Test Interactive') }
+  let (:int) { FactoryBot.create(:mw_interactive, name: 'Test Interactive') }
 
   before(:each) {
     page.add_embeddable(int)

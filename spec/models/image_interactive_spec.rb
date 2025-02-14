@@ -1,8 +1,8 @@
 require 'spec_helper'
 
 describe ImageInteractive do
-  let(:image_interactive) { FactoryGirl.create(:image_interactive) }
-  let(:page) { FactoryGirl.create(:page) }
+  let(:image_interactive) { FactoryBot.create(:image_interactive) }
+  let(:page) { FactoryBot.create(:page) }
 
   it 'has valid attributes' do
     image_interactive.valid?

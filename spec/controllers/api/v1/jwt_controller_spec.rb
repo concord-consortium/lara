@@ -4,9 +4,9 @@ describe Api::V1::JwtController do
   let(:endpoint_url)  { "http://fake.blarg.com/blarg/1" }
   let(:stubbed_token) { 'foo' }
   let(:user)          { stub_model(User, is_admin: false) }
-  let(:activity)      { FactoryGirl.create(:activity) }
+  let(:activity)      { FactoryBot.create(:activity) }
   let(:run) {
-    r = FactoryGirl.create(:run, remote_endpoint: endpoint_url, user: user)
+    r = FactoryBot.create(:run, remote_endpoint: endpoint_url, user: user)
     r.activity = activity
     r.save
     r

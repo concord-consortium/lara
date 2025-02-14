@@ -9,13 +9,13 @@ describe "interactive_pages/show" do
   let(:activity)  { stub_model(LightweightActivity, id: 1)}
 
   let (:page) do
-    p = FactoryGirl.create(:page, name: "fake page", lightweight_activity: activity, embeddable_display_mode: 'carousel')
+    p = FactoryBot.create(:page, name: "fake page", lightweight_activity: activity, embeddable_display_mode: 'carousel')
     allow(p).to receive_messages(last?: true)
     p
   end
 
-  let(:user) { FactoryGirl.create(:user) }
-  let(:run)  { FactoryGirl.create(:run, {activity: activity, user: user}) }
+  let(:user) { FactoryBot.create(:user) }
+  let(:run)  { FactoryBot.create(:run, {activity: activity, user: user}) }
 
   let(:all_pages) { [page] }
 
@@ -82,7 +82,7 @@ describe "interactive_pages/show" do
       assign(:activity, activity)
     end
     let (:page) do
-      p = FactoryGirl.create(:page, name: "fake page", lightweight_activity: activity, is_completion: completion_flag)
+      p = FactoryBot.create(:page, name: "fake page", lightweight_activity: activity, is_completion: completion_flag)
       allow(p).to receive_messages(last?: true)
       p
     end

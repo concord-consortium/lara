@@ -8,13 +8,13 @@ describe InteractiveRunHelper do
     init_haml_helpers
   end
 
-  let(:project)      { FactoryGirl.create(:project) }
-  let(:activity)     { FactoryGirl.create(:public_activity, project: project ) }
-  let(:page)         { FactoryGirl.create(:page, lightweight_activity: activity) }
-  let(:run)          { FactoryGirl.create(:run, run_stubs) }
+  let(:project)      { FactoryBot.create(:project) }
+  let(:activity)     { FactoryBot.create(:public_activity, project: project ) }
+  let(:page)         { FactoryBot.create(:page, lightweight_activity: activity) }
+  let(:run)          { FactoryBot.create(:run, run_stubs) }
   let(:sequence_run) { nil }
-  let(:interactive)  { FactoryGirl.create(:mw_interactive, authored_state: "{}", name: "test" ) }
-  let(:user)         { FactoryGirl.create(:user, { email: "test@example.com" } ) }
+  let(:interactive)  { FactoryBot.create(:mw_interactive, authored_state: "{}", name: "test" ) }
+  let(:user)         { FactoryBot.create(:user, { email: "test@example.com" } ) }
 
   let(:run_stubs) do
     {

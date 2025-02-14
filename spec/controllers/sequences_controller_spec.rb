@@ -1,16 +1,16 @@
 require 'spec_helper'
 
 describe SequencesController do
-  let(:project) { FactoryGirl.create(:project) }
-  let(:sequence) { FactoryGirl.create(:sequence,
+  let(:project) { FactoryBot.create(:project) }
+  let(:sequence) { FactoryBot.create(:sequence,
     publication_status: 'public',
     project: project,
     user: user) }
-  let(:activity) { FactoryGirl.create(:public_activity) }
-  let(:user) { FactoryGirl.create(:user) }
+  let(:activity) { FactoryBot.create(:public_activity) }
+  let(:user) { FactoryBot.create(:user) }
 
   it_behaves_like "remote duplicate support" do
-    let(:resource) { FactoryGirl.create(:sequence) }
+    let(:resource) { FactoryBot.create(:sequence) }
   end
 
   # This should return the minimal set of attributes required to create a valid
@@ -23,7 +23,7 @@ describe SequencesController do
   before(:each) do
     # We're testing access control in spec/models/user_spec.rb, so for this
     # suite we use a user with global permissions
-    @user ||= FactoryGirl.create(:admin)
+    @user ||= FactoryBot.create(:admin)
     sign_in @user
   end
 
@@ -39,7 +39,7 @@ describe SequencesController do
   end
 
   describe "GET show" do
-    let(:user) { FactoryGirl.create(:user) }
+    let(:user) { FactoryBot.create(:user) }
     before(:each) do
       # the run lookup logic is based on the current_user so it is better to start
       # anonymously
@@ -211,7 +211,7 @@ describe SequencesController do
     it 'removes the designated activity from the sequence' do
       sequence.lightweight_activities << activity
       5.times do |i|
-        sequence.lightweight_activities << FactoryGirl.create(:public_activity)
+        sequence.lightweight_activities << FactoryBot.create(:public_activity)
       end
       expect(sequence.activities.length).to be(6)
       post :remove_activity, params: { id: sequence.to_param, activity_id: activity.id }

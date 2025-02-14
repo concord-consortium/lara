@@ -25,13 +25,13 @@ def expect_response_is_not_authorized(response, reason, method)
 end
 
 describe Api::V1::InteractiveRunStatesController do
-  let(:activity)              { FactoryGirl.create(:activity)       }
-  let(:interactive)           { FactoryGirl.create(:mw_interactive) }
-  let(:user)                  { FactoryGirl.create(:user)           }
-  let(:run)                   { FactoryGirl.create(:run, {activity: activity, user: user})}
+  let(:activity)              { FactoryBot.create(:activity)       }
+  let(:interactive)           { FactoryBot.create(:mw_interactive) }
+  let(:user)                  { FactoryBot.create(:user)           }
+  let(:run)                   { FactoryBot.create(:run, {activity: activity, user: user})}
   let(:run_data)              {'{"bar": 1}'}
   let(:metadata)              {'{"attachments": 1}'}
-  let(:interactive_run_state) { FactoryGirl.create(:interactive_run_state, {run: run, interactive: interactive, raw_data: run_data, metadata: metadata, key: 'foo'})}
+  let(:interactive_run_state) { FactoryBot.create(:interactive_run_state, {run: run, interactive: interactive, raw_data: run_data, metadata: metadata, key: 'foo'})}
 
   before(:each) do
     make interactive_run_state
@@ -58,7 +58,7 @@ describe Api::V1::InteractiveRunStatesController do
     describe 'when a user is not logged in' do
 
       describe 'unowned documents' do
-        let(:run) { FactoryGirl.create(:run, {activity: activity, user: nil})}
+        let(:run) { FactoryBot.create(:run, {activity: activity, user: nil})}
 
         it 'can be opened' do
           get :show, params: { key: 'foo' }
@@ -81,7 +81,7 @@ describe Api::V1::InteractiveRunStatesController do
       end
 
       describe 'unowned documents' do
-        let(:run) { FactoryGirl.create(:run, {activity: activity, user: nil})}
+        let(:run) { FactoryBot.create(:run, {activity: activity, user: nil})}
 
         it 'can be opened' do
           get :show, params: { key: 'foo' }
@@ -97,8 +97,8 @@ describe Api::V1::InteractiveRunStatesController do
       end
 
       describe 'owned documents that the user does not own' do
-        let(:user2) { FactoryGirl.create(:user)           }
-        let(:run)   { FactoryGirl.create(:run, {activity: activity, user: user2})}
+        let(:user2) { FactoryBot.create(:user)           }
+        let(:run)   { FactoryBot.create(:run, {activity: activity, user: user2})}
 
         it 'cannot be opened' do
           get :show, params: { key: 'foo' }
@@ -108,15 +108,15 @@ describe Api::V1::InteractiveRunStatesController do
 
       describe 'owned documents that the user does not own but is a collaborator' do
         before(:each) do
-          cr = FactoryGirl.create(:collaboration_run)
+          cr = FactoryBot.create(:collaboration_run)
           cr.user = user2
           cr.runs.concat([run, run2])
           cr.save!
         end
 
-        let(:user2) { FactoryGirl.create(:user)           }
-        let(:run)   { FactoryGirl.create(:run, {activity: activity, user: user2})}
-        let(:run2)  { FactoryGirl.create(:run, {activity: activity, user: user})}
+        let(:user2) { FactoryBot.create(:user)           }
+        let(:run)   { FactoryBot.create(:run, {activity: activity, user: user2})}
+        let(:run2)  { FactoryBot.create(:run, {activity: activity, user: user})}
 
         it 'can be opened' do
           get :show, params: { key: 'foo' }
@@ -126,14 +126,14 @@ describe Api::V1::InteractiveRunStatesController do
     end
 
     describe 'when a admin user is logged in' do
-      let(:user) { FactoryGirl.create(:user, {is_admin: true})           }
+      let(:user) { FactoryBot.create(:user, {is_admin: true})           }
 
       before(:each) do
         sign_in user
       end
 
       describe 'unowned documents' do
-        let(:run) { FactoryGirl.create(:run, {activity: activity, user: nil})}
+        let(:run) { FactoryBot.create(:run, {activity: activity, user: nil})}
 
         it 'can be opened' do
           get :show, params: { key: 'foo' }
@@ -149,8 +149,8 @@ describe Api::V1::InteractiveRunStatesController do
       end
 
       describe 'owned documents that the user does not own' do
-        let(:user2)  { FactoryGirl.create(:user)           }
-        let(:run)    { FactoryGirl.create(:run, {activity: activity, user: user2})}
+        let(:user2)  { FactoryBot.create(:user)           }
+        let(:run)    { FactoryBot.create(:run, {activity: activity, user: user2})}
 
         it 'can be opened' do
           get :show, params: { key: 'foo' }
@@ -171,7 +171,7 @@ describe Api::V1::InteractiveRunStatesController do
 
     describe 'when a user is not logged in' do
       describe 'unowned documents' do
-        let(:run) { FactoryGirl.create(:run, {activity: activity, user: nil})}
+        let(:run) { FactoryBot.create(:run, {activity: activity, user: nil})}
 
         it 'can be updated' do
           put :update, params: { key: 'foo', raw_data: '{"bar": 2}', metadata: '{"shared_with": "context"}', learner_url: 'http://example.com' }
@@ -193,7 +193,7 @@ describe Api::V1::InteractiveRunStatesController do
       end
 
       describe 'unowned documents' do
-        let(:run) { FactoryGirl.create(:run, {activity: activity, user: nil})}
+        let(:run) { FactoryBot.create(:run, {activity: activity, user: nil})}
 
         it 'can be updated' do
           put :update, params: { key: 'foo', raw_data: '{"bar": 2}', metadata: '{"shared_with": "context"}', learner_url: 'http://example.com' }
@@ -209,8 +209,8 @@ describe Api::V1::InteractiveRunStatesController do
       end
 
       describe 'owned documents that the user does not own' do
-        let(:user2) { FactoryGirl.create(:user)           }
-        let(:run)   { FactoryGirl.create(:run, {activity: activity, user: user2})}
+        let(:user2) { FactoryBot.create(:user)           }
+        let(:run)   { FactoryBot.create(:run, {activity: activity, user: user2})}
 
         it 'cannot be updated' do
           put :update, params: { key: 'foo', raw_data: '{"bar": 2}', metadata: '{"shared_with": "context"}', learner_url: 'http://example.com' }
@@ -220,15 +220,15 @@ describe Api::V1::InteractiveRunStatesController do
 
       describe 'owned documents that the user does not own but is a collaborator' do
         before(:each) do
-          cr = FactoryGirl.create(:collaboration_run)
+          cr = FactoryBot.create(:collaboration_run)
           cr.user = user2
           cr.runs.concat([run, run2])
           cr.save!
         end
 
-        let(:user2) { FactoryGirl.create(:user)           }
-        let(:run)   { FactoryGirl.create(:run, {activity: activity, user: user2})}
-        let(:run2)  { FactoryGirl.create(:run, {activity: activity, user: user})}
+        let(:user2) { FactoryBot.create(:user)           }
+        let(:run)   { FactoryBot.create(:run, {activity: activity, user: user2})}
+        let(:run2)  { FactoryBot.create(:run, {activity: activity, user: user})}
 
         it 'can be updated' do
           put :update, params: { key: 'foo', raw_data: '{"bar": 2}', metadata: '{"shared_with": "context"}', learner_url: 'http://example.com' }
@@ -238,14 +238,14 @@ describe Api::V1::InteractiveRunStatesController do
     end
 
     describe 'when a admin user is logged in' do
-      let(:user) { FactoryGirl.create(:user, {is_admin: true})           }
+      let(:user) { FactoryBot.create(:user, {is_admin: true})           }
 
       before(:each) do
         sign_in user
       end
 
       describe 'unowned documents' do
-        let(:run) { FactoryGirl.create(:run, {activity: activity, user: nil})}
+        let(:run) { FactoryBot.create(:run, {activity: activity, user: nil})}
 
         it 'can be updated' do
           put :update, params: { key: 'foo', raw_data: '{"bar": 2}', metadata: '{"shared_with": "context"}', learner_url: 'http://example.com' }
@@ -261,8 +261,8 @@ describe Api::V1::InteractiveRunStatesController do
       end
 
       describe 'owned documents that the user does not own' do
-        let(:user2)  { FactoryGirl.create(:user)           }
-        let(:run)    { FactoryGirl.create(:run, {activity: activity, user: user2})}
+        let(:user2)  { FactoryBot.create(:user)           }
+        let(:run)    { FactoryBot.create(:run, {activity: activity, user: user2})}
 
         it 'can be updated' do
           put :update, params: { key: 'foo', raw_data: '{"bar": 2}', metadata: '{"shared_with": "context"}', learner_url: 'http://example.com' }

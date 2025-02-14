@@ -1,8 +1,8 @@
 shared_examples "interactives controller" do
   # interactive_label is provided by main test file
-  let (:activity) { FactoryGirl.create(:activity_with_page) }
+  let (:activity) { FactoryBot.create(:activity_with_page) }
   let (:page) { activity.pages.first }
-  let (:int) { FactoryGirl.create(interactive_label, name: 'Test Interactive') }
+  let (:int) { FactoryBot.create(interactive_label, name: 'Test Interactive') }
 
   describe 'update' do
     # PJ 11/03/2020: Old comment said that "authorization is tested in spec/models/user_spec.rb"
@@ -23,14 +23,14 @@ shared_examples "interactives controller" do
 
     describe "when linked_interactives param is present" do
       describe "on a page with interactives" do
-        let (:int2) { FactoryGirl.create(interactive_label, name: 'Test Interactive 2') }
-        let (:int3) { FactoryGirl.create(interactive_label, name: 'Test Interactive 3') }
+        let (:int2) { FactoryBot.create(interactive_label, name: 'Test Interactive 2') }
+        let (:int3) { FactoryBot.create(interactive_label, name: 'Test Interactive 3') }
 
         def add_interactive_to_section(page, interactive, section)
           page.add_embeddable(interactive, nil, section)
           interactive.reload
         end
-        
+
         before :each do
           add_interactive_to_section(page, int, InteractivePage::INTERACTIVE_BOX)
           add_interactive_to_section(page, int2, InteractivePage::HEADER_BLOCK)

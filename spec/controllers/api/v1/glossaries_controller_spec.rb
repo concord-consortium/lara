@@ -1,10 +1,10 @@
 require "spec_helper"
 
 describe Api::V1::GlossariesController do
-  let(:author)        { FactoryGirl.create(:author) }
-  let(:author2)       { FactoryGirl.create(:author) }
-  let(:project1)      { FactoryGirl.create(:project) }
-  let(:project2)      { FactoryGirl.create(:project) }
+  let(:author)        { FactoryBot.create(:author) }
+  let(:author2)       { FactoryBot.create(:author) }
+  let(:project1)      { FactoryBot.create(:project) }
+  let(:project2)      { FactoryBot.create(:project) }
   let(:stringifed_json) {
     JSON.generate({
       askForUserDefinition: true,
@@ -44,7 +44,7 @@ describe Api::V1::GlossariesController do
       }
     })
   }
-  let(:glossary) { FactoryGirl.create(:glossary, name: "Glossary", legacy_glossary_resource_id: "TEST-LEGACY-ID", user: author, json: stringifed_json, project: project1) }
+  let(:glossary) { FactoryBot.create(:glossary, name: "Glossary", legacy_glossary_resource_id: "TEST-LEGACY-ID", user: author, json: stringifed_json, project: project1) }
   let(:project1_data) { Project.id_and_title(project1) }
   let(:project2_data) { Project.id_and_title(project2) }
 
@@ -118,7 +118,7 @@ describe Api::V1::GlossariesController do
 
       it "updates to a blank name are not allowed" do
         post :update, params: { id: glossary.id, glossary: { name: "" }, format: :json }
-        
+
         expect(response.status).to eq(500)
         json_response = JSON.parse(response.body)
         expect(json_response).to eq({

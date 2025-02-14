@@ -2,7 +2,7 @@ shared_examples "remote duplicate support" do
   describe '#remote_duplicate' do
     describe "when request is coming from normal user (even admin)" do
       before(:each) do
-        user = FactoryGirl.create(:admin)
+        user = FactoryBot.create(:admin)
         sign_in user
       end
       it "should return 403 unauthorized" do
@@ -23,7 +23,7 @@ shared_examples "remote duplicate support" do
     end
 
     describe "when request is coming from peer (trusted Portal)" do
-      let(:user) { FactoryGirl.create(:author) }
+      let(:user) { FactoryBot.create(:author) }
       let(:secret) { 'very secure secret' }
       let(:portal_url) { 'http://portal.concord.org' }
       let(:portal_name) { 'test portal' }

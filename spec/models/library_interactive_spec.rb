@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe LibraryInteractive do
-  let(:library_interactive) { FactoryGirl.create(:library_interactive) }
+  let(:library_interactive) { FactoryBot.create(:library_interactive) }
 
   describe '#to_hash' do
     it 'has useful values' do
@@ -40,7 +40,7 @@ describe LibraryInteractive do
   end
 
   describe "export_hash" do
-    let(:library_interactive_via_build) { FactoryGirl.build(:library_interactive) }
+    let(:library_interactive_via_build) { FactoryBot.build(:library_interactive) }
 
     it "is set on create" do
       expect(library_interactive.export_hash).not_to be_nil
@@ -103,7 +103,7 @@ describe LibraryInteractive do
 
   describe "generate_export_hash" do
     it "returns a hash value based on only certain properties" do
-      library_interactives = FactoryGirl.create_list(:library_interactive, 3,
+      library_interactives = FactoryBot.create_list(:library_interactive, 3,
                                                      aspect_ratio_method: "DEFAULT",
                                                      authoring_guidance: "",
                                                      base_url: "https://fake.url",
@@ -142,7 +142,7 @@ describe LibraryInteractive do
   describe "#use_count" do
     it 'returns the number of managed interactives that use the library interactive' do
       expect(library_interactive.use_count()).to eq(0)
-      managed_interactive = FactoryGirl.create(:managed_interactive,
+      managed_interactive = FactoryBot.create(:managed_interactive,
                                                 library_interactive: library_interactive
                                                )
       expect(library_interactive.use_count()).to eq(1)

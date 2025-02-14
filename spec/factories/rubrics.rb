@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :rubric, class: Rubric do
     name { generate(:name) }
   end

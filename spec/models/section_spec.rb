@@ -62,7 +62,7 @@ describe Section do
   end
 
   describe "#duplicate" do
-    let(:original) { FactoryGirl.create(:section, :on_page, :with_items) }
+    let(:original) { FactoryBot.create(:section, :on_page, :with_items) }
 
     let(:copy) { original.duplicate }
 

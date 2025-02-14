@@ -4,11 +4,11 @@ require 'spec_helper'
 
 describe PageItem do
 
-  let (:interactive1) { FactoryGirl.create(:mw_interactive) }
-  let (:interactive2) { FactoryGirl.create(:mw_interactive) }
-  let (:interactive3) { FactoryGirl.create(:mw_interactive) }
-  let (:interactive4) { FactoryGirl.create(:mw_interactive) }
-  let (:page) { FactoryGirl.create(:page) }
+  let (:interactive1) { FactoryBot.create(:mw_interactive) }
+  let (:interactive2) { FactoryBot.create(:mw_interactive) }
+  let (:interactive3) { FactoryBot.create(:mw_interactive) }
+  let (:interactive4) { FactoryBot.create(:mw_interactive) }
+  let (:page) { FactoryBot.create(:page) }
 
   before :each do
     page.add_interactive(interactive1)

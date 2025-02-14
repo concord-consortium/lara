@@ -1,10 +1,10 @@
 require 'spec_helper'
 
 describe Api::V1::LightweightActivitiesController do
-  let (:admin) { FactoryGirl.create(:admin) }
-  let (:author1) { FactoryGirl.create(:author) }
-  let (:author2) { FactoryGirl.create(:author) }
-  let (:activity) { FactoryGirl.create(:activity, user: author1) }
+  let (:admin) { FactoryBot.create(:admin) }
+  let (:author1) { FactoryBot.create(:author) }
+  let (:author2) { FactoryBot.create(:author) }
+  let (:activity) { FactoryBot.create(:activity, user: author1) }
 
   describe "#show" do
     it 'recognizes and generates #show' do

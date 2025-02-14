@@ -1,17 +1,17 @@
-# Read about factories at https://github.com/thoughtbot/factory_girl
+# Read about factories at https://github.com/thoughtbot/factory_bot
 
-FactoryGirl.define do
+FactoryBot.define do
   factory :sequence do
-    title "MyString"
-    description "MyText"
-    abstract "short abstract"
+    title { "MyString" }
+    description { "MyText" }
+    abstract { "short abstract" }
 
     factory :sequence_with_activity do
       transient do
-        pages_count 2
-        activities_count 2
+        pages_count { 2 }
+        activities_count { 2 }
       end
-      publication_status 'public'
+      publication_status { 'public' }
       after(:create) do |sequence, evaluator|
         # has_many
         create_list(
@@ -24,8 +24,8 @@ FactoryGirl.define do
   end
 
   factory :activity_player_sequence, class: Sequence do
-    title "MyString"
-    description "MyText"
-    abstract "short abstract"
+    title { "MyString" }
+    description { "MyText" }
+    abstract { "short abstract" }
   end
 end

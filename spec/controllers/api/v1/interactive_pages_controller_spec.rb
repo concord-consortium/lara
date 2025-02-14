@@ -1,30 +1,30 @@
 require 'spec_helper'
 
 describe Api::V1::InteractivePagesController do
-  let (:admin) { FactoryGirl.create(:admin) }
-  let (:author) { FactoryGirl.create(:author) }
-  let (:project) { FactoryGirl.create(:project) }
+  let (:admin) { FactoryBot.create(:admin) }
+  let (:author) { FactoryBot.create(:author) }
+  let (:project) { FactoryBot.create(:project) }
   let (:publication_status) { "public" }
-  let (:act) { FactoryGirl.create(:public_activity, project: project, publication_status: publication_status, user: author ) }
-  let (:page) { FactoryGirl.create(:page, lightweight_activity: act) }
-  let (:library_interactive1) { FactoryGirl.create(:library_interactive,
+  let (:act) { FactoryBot.create(:public_activity, project: project, publication_status: publication_status, user: author ) }
+  let (:page) { FactoryBot.create(:page, lightweight_activity: act) }
+  let (:library_interactive1) { FactoryBot.create(:library_interactive,
                                                    name: 'Test Library Interactive 1',
                                                    base_url: 'http://foo.com/',
                                                    thumbnail_url: nil,
                                                    official: true
                                                   ) }
-  let (:library_interactive2) { FactoryGirl.create(:library_interactive,
+  let (:library_interactive2) { FactoryBot.create(:library_interactive,
                                                    name: 'Test Library Interactive 2',
                                                    base_url: 'http://bar.com/',
                                                    thumbnail_url: 'http://thumbnail.url',
                                                    no_snapshots: true,
                                                    official: false
                                                   ) }
-  let (:interactive1) { FactoryGirl.create(:mw_interactive) }
-  let (:interactive2) { FactoryGirl.create(:mw_interactive, no_snapshots: true) }
-  let (:interactive3) { FactoryGirl.create(:mw_interactive) }
-  let (:interactive4) { FactoryGirl.create(:managed_interactive, library_interactive: library_interactive1, url_fragment: "test1") }
-  let (:interactive5) { FactoryGirl.create(:managed_interactive, library_interactive: library_interactive2, url_fragment: "test2") }
+  let (:interactive1) { FactoryBot.create(:mw_interactive) }
+  let (:interactive2) { FactoryBot.create(:mw_interactive, no_snapshots: true) }
+  let (:interactive3) { FactoryBot.create(:mw_interactive) }
+  let (:interactive4) { FactoryBot.create(:managed_interactive, library_interactive: library_interactive1, url_fragment: "test1") }
+  let (:interactive5) { FactoryBot.create(:managed_interactive, library_interactive: library_interactive2, url_fragment: "test2") }
 
   def add_interactive_to_section(page, interactive, section)
     page.add_embeddable(interactive, nil, section)
@@ -140,7 +140,7 @@ describe Api::V1::InteractivePagesController do
   end
 
   describe "#create_page_item" do
-    let(:section) { FactoryGirl.create(:section, interactive_page: page, layout: Section::LAYOUT_FULL_WIDTH) }
+    let(:section) { FactoryBot.create(:section, interactive_page: page, layout: Section::LAYOUT_FULL_WIDTH) }
 
     before :each do
       sign_in author
@@ -270,7 +270,7 @@ describe Api::V1::InteractivePagesController do
   end
 
   describe "#get_library_interactives_list" do
-    let (:managed_interactive1) { FactoryGirl.create(:managed_interactive,
+    let (:managed_interactive1) { FactoryBot.create(:managed_interactive,
       library_interactive_id: library_interactive1.id
     )}
 
@@ -450,12 +450,12 @@ describe Api::V1::InteractivePagesController do
   end
 
   describe "#update_page_item" do
-    let(:section) { FactoryGirl.create(:section, interactive_page: page, layout: Section::LAYOUT_FULL_WIDTH) }
+    let(:section) { FactoryBot.create(:section, interactive_page: page, layout: Section::LAYOUT_FULL_WIDTH) }
     let(:data) { { name: "Text Block 1", content: "Some text.", is_callout: false, is_half_width: true, is_hidden: false } }
     let(:new_data) { { name: "Text Block 1v2", content: "I changed my mind.", is_callout: true, is_half_width: false, is_hidden: true } }
-    let(:embeddable) { FactoryGirl.create(:xhtml, data)}
+    let(:embeddable) { FactoryBot.create(:xhtml, data)}
     let(:embeddable_type) { "Embeddable::Xhtml" }
-    let(:page_item) { FactoryGirl.create(:page_item, { section: section, column: PageItem::COLUMN_PRIMARY, position: 1, embeddable: embeddable })}
+    let(:page_item) { FactoryBot.create(:page_item, { section: section, column: PageItem::COLUMN_PRIMARY, position: 1, embeddable: embeddable })}
 
     before :each do
       sign_in author
@@ -550,7 +550,7 @@ describe Api::V1::InteractivePagesController do
 
   describe "#get_pages" do
     let(:page_count) { 5 }
-    let(:pages)      { FactoryGirl.create_list(:page, page_count, lightweight_activity: act)}
+    let(:pages)      { FactoryBot.create_list(:page, page_count, lightweight_activity: act)}
 
     describe "succeeds" do
       it "with an activity_id and pages" do
@@ -600,7 +600,7 @@ describe Api::V1::InteractivePagesController do
 
   describe "#delete_page" do
     let(:page_count) { 5 }
-    let(:pages)      { FactoryGirl.create_list(:page, page_count, lightweight_activity: act)}
+    let(:pages)      { FactoryBot.create_list(:page, page_count, lightweight_activity: act)}
 
     describe "succeeds" do
       before :each do
@@ -639,12 +639,12 @@ describe Api::V1::InteractivePagesController do
   end
 
   describe "#update_section" do
-    let(:section) { FactoryGirl.create(:section, interactive_page: page, layout: Section::LAYOUT_FULL_WIDTH) }
+    let(:section) { FactoryBot.create(:section, interactive_page: page, layout: Section::LAYOUT_FULL_WIDTH) }
     let(:items)   do
       [
-        FactoryGirl.create(:page_item, { section: section, position: 1, column: PageItem::COLUMN_PRIMARY }),
-        FactoryGirl.create(:page_item, { section: section, position: 2, column: PageItem::COLUMN_PRIMARY }),
-        FactoryGirl.create(:page_item, { section: section, position: 3, column: PageItem::COLUMN_PRIMARY })
+        FactoryBot.create(:page_item, { section: section, position: 1, column: PageItem::COLUMN_PRIMARY }),
+        FactoryBot.create(:page_item, { section: section, position: 2, column: PageItem::COLUMN_PRIMARY }),
+        FactoryBot.create(:page_item, { section: section, position: 3, column: PageItem::COLUMN_PRIMARY })
       ]
     end
 
@@ -678,7 +678,7 @@ describe Api::V1::InteractivePagesController do
         end
 
         it 'will add new items' do
-          extra_item = FactoryGirl.create(:page_item, { column: PageItem::COLUMN_PRIMARY })
+          extra_item = FactoryBot.create(:page_item, { column: PageItem::COLUMN_PRIMARY })
           items << extra_item
           expect(section.page_items.length).to eql(3)
           update_request = { id: page.id, section: { id: section.id, items: items.map(&:attributes) } }
@@ -735,7 +735,7 @@ describe Api::V1::InteractivePagesController do
     end
 
     describe "#copy_section" do
-      let(:section) { FactoryGirl.create(:section, :with_items, interactive_page: page, layout: Section::LAYOUT_FULL_WIDTH) }
+      let(:section) { FactoryBot.create(:section, :with_items, interactive_page: page, layout: Section::LAYOUT_FULL_WIDTH) }
 
       before :each do
         sign_in author
@@ -798,7 +798,7 @@ describe Api::V1::InteractivePagesController do
 
 
     describe "#copy_page_item" do
-      let(:section) { FactoryGirl.create(:section, :with_items, interactive_page: page, layout: Section::LAYOUT_FULL_WIDTH) }
+      let(:section) { FactoryBot.create(:section, :with_items, interactive_page: page, layout: Section::LAYOUT_FULL_WIDTH) }
       let(:original_item) { section.page_items[0] }
       let(:number_of_items) { section.page_items.length }
       let(:page_id) { page.id }

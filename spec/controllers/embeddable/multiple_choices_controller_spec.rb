@@ -5,15 +5,15 @@
 #   it_should_behave_like 'an embeddable controller', :mc_embeddable
 
 #   describe '#check' do
-#     let (:multiple) { FactoryGirl.create(:mc_embeddable, :custom => true ) }
-#     let (:correct) { FactoryGirl.create(:mcc_embeddable, :choice => 'This is correct', :is_correct => true, :multiple_choice => multiple) }
-#     let (:incorrect) { FactoryGirl.create(:mcc_embeddable, :choice => 'This is incorrect', :is_correct => false, :prompt => '', :multiple_choice => multiple) }
-#     let (:with_prompt) { FactoryGirl.create(:mcc_embeddable, :choice => 'This is incorrect', :is_correct => false, :prompt => 'Consider what would happen if this was true.', :multiple_choice => multiple) }
-#     let (:answer) { FactoryGirl.create(:multiple_choice_answer, :question => multiple) }
+#     let (:multiple) { FactoryBot.create(:mc_embeddable, :custom => true ) }
+#     let (:correct) { FactoryBot.create(:mcc_embeddable, :choice => 'This is correct', :is_correct => true, :multiple_choice => multiple) }
+#     let (:incorrect) { FactoryBot.create(:mcc_embeddable, :choice => 'This is incorrect', :is_correct => false, :prompt => '', :multiple_choice => multiple) }
+#     let (:with_prompt) { FactoryBot.create(:mcc_embeddable, :choice => 'This is incorrect', :is_correct => false, :prompt => 'Consider what would happen if this was true.', :multiple_choice => multiple) }
+#     let (:answer) { FactoryBot.create(:multiple_choice_answer, :question => multiple) }
 
 #     context 'the choice has an owning page' do
 #       it 'redirects HTML requests to the owning page' do
-#         page = FactoryGirl.create(:page)
+#         page = FactoryBot.create(:page)
 #         page.add_embeddable(multiple)
 #         get :check, :id => answer.id, :format => 'html', :choices => correct.id.to_s
 #         expect(response).to redirect_to(interactive_page_path(page))
@@ -51,7 +51,7 @@
 #     end
 
 #     context 'when there are multiple answers' do
-#       let (:also_correct) { FactoryGirl.create(:mcc_embeddable, :choice => 'This is correct, too', :is_correct => true, :multiple_choice => multiple) }
+#       let (:also_correct) { FactoryBot.create(:mcc_embeddable, :choice => 'This is correct, too', :is_correct => true, :multiple_choice => multiple) }
 
 #       before(:each) do
 #         multiple.multi_answer = true

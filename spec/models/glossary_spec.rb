@@ -1,13 +1,13 @@
 require 'spec_helper'
 
 RSpec.describe Glossary do
-  let(:author)    { FactoryGirl.create(:author) }
-  let(:author2)   { FactoryGirl.create(:author) }
-  let(:admin)     { FactoryGirl.create(:admin) }
-  let(:project)     { FactoryGirl.create(:project) }
+  let(:author)    { FactoryBot.create(:author) }
+  let(:author2)   { FactoryBot.create(:author) }
+  let(:admin)     { FactoryBot.create(:admin) }
+  let(:project)     { FactoryBot.create(:project) }
 
   let(:glossary)      {
-    glossary = FactoryGirl.create(:glossary, name: "Glossary 1", user: author, project: project, legacy_glossary_resource_id: "TEST-LEGACY-ID")
+    glossary = FactoryBot.create(:glossary, name: "Glossary 1", user: author, project: project, legacy_glossary_resource_id: "TEST-LEGACY-ID")
     glossary.json = JSON.generate({
       askForUserDefinition: true,
       autoShowMediaInPopup: true,
@@ -48,7 +48,7 @@ RSpec.describe Glossary do
     glossary.save!
     glossary
   }
-  let(:glossary2) { FactoryGirl.create(:glossary, name: "Glossary 2", user: author2) }
+  let(:glossary2) { FactoryBot.create(:glossary, name: "Glossary 2", user: author2) }
 
   describe "should export itself" do
     it "as the author with can_edit as true" do
@@ -162,7 +162,7 @@ RSpec.describe Glossary do
     end
 
     describe "with a different user" do
-      let(:other_author) { FactoryGirl.create(:author) }
+      let(:other_author) { FactoryBot.create(:author) }
 
       it "should return an array of glossaries by the user if the user is not nil" do
         expect(Glossary.by_author(other_author)).to eq([])
@@ -171,12 +171,12 @@ RSpec.describe Glossary do
 
     describe "with multiple glossaries" do
       let(:glossary1)      {
-        glossary = FactoryGirl.create(:glossary, user: author, name: "ZZZ")
+        glossary = FactoryBot.create(:glossary, user: author, name: "ZZZ")
         glossary.save!
         glossary
       }
       let(:glossary2)      {
-        glossary = FactoryGirl.create(:glossary, user: author, name: "AAA")
+        glossary = FactoryBot.create(:glossary, user: author, name: "AAA")
         glossary.save!
         glossary
       }
@@ -188,7 +188,7 @@ RSpec.describe Glossary do
   end
 
   describe "self.by_others" do
-    let(:other_author) { FactoryGirl.create(:author) }
+    let(:other_author) { FactoryBot.create(:author) }
 
     it "should return an empty array if the user is nil" do
       expect(Glossary.by_others(nil)).to eq([])
@@ -206,12 +206,12 @@ RSpec.describe Glossary do
 
     describe "with multiple glossaries" do
       let(:glossary1)      {
-        glossary = FactoryGirl.create(:glossary, user: author, name: "ZZZ")
+        glossary = FactoryBot.create(:glossary, user: author, name: "ZZZ")
         glossary.save!
         glossary
       }
       let(:glossary2)      {
-        glossary = FactoryGirl.create(:glossary, user: author, name: "AAA")
+        glossary = FactoryBot.create(:glossary, user: author, name: "AAA")
         glossary.save!
         glossary
       }
@@ -352,8 +352,8 @@ RSpec.describe Glossary do
     end
 
     describe "with glossary approved scripts" do
-      let(:approved_script1) { FactoryGirl.create(:approved_script, label: "glossary") }
-      let(:approved_script2) { FactoryGirl.create(:approved_script, label: "glossary") }
+      let(:approved_script1) { FactoryBot.create(:approved_script, label: "glossary") }
+      let(:approved_script2) { FactoryBot.create(:approved_script, label: "glossary") }
 
       before :each do
         approved_script1
@@ -365,7 +365,7 @@ RSpec.describe Glossary do
       end
 
       describe "with glossary approved script setting" do
-        let(:glossary_setting) { FactoryGirl.create(:setting, key: "glossary_approved_script_id", value: "#{approved_script2.id}") }
+        let(:glossary_setting) { FactoryBot.create(:setting, key: "glossary_approved_script_id", value: "#{approved_script2.id}") }
 
         it "should return the glossary approved in the settings" do
           glossary_setting

@@ -49,11 +49,11 @@ describe LaraSerializationHelper do
   end
 
   describe "#export with linked interactives" do
-    let(:interactive1)  { FactoryGirl.create(:mw_interactive) }
-    let(:interactive2)  { FactoryGirl.create(:mw_interactive) }
-    let(:interactive3)  { FactoryGirl.create(:mw_interactive) }
-    let(:interactive4)  { FactoryGirl.create(:mw_interactive) }
-    let(:page)          { FactoryGirl.create(:page) }
+    let(:interactive1)  { FactoryBot.create(:mw_interactive) }
+    let(:interactive2)  { FactoryBot.create(:mw_interactive) }
+    let(:interactive3)  { FactoryBot.create(:mw_interactive) }
+    let(:interactive4)  { FactoryBot.create(:mw_interactive) }
+    let(:page)          { FactoryBot.create(:page) }
     let(:expected_key)  { helper.key interactive1 }
     let(:expected_type) { 'MwInteractive' }
     let(:result)        { helper.export(interactive1) }

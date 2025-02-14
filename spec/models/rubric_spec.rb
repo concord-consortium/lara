@@ -1,17 +1,17 @@
 require 'spec_helper'
 
 RSpec.describe Rubric do
-  let(:author)    { FactoryGirl.create(:author) }
-  let(:author2)   { FactoryGirl.create(:author) }
-  let(:admin)     { FactoryGirl.create(:admin) }
-  let(:project)     { FactoryGirl.create(:project) }
+  let(:author)    { FactoryBot.create(:author) }
+  let(:author2)   { FactoryBot.create(:author) }
+  let(:admin)     { FactoryBot.create(:admin) }
+  let(:project)     { FactoryBot.create(:project) }
 
   let(:rubric)      {
-    rubric = FactoryGirl.create(:rubric, name: "Rubric 1", user: author, project: project, doc_url: "https://example.com")
+    rubric = FactoryBot.create(:rubric, name: "Rubric 1", user: author, project: project, doc_url: "https://example.com")
     rubric.save!
     rubric
   }
-  let(:rubric2) { FactoryGirl.create(:rubric, name: "Rubric 2", user: author2) }
+  let(:rubric2) { FactoryBot.create(:rubric, name: "Rubric 2", user: author2) }
 
   describe "should export itself" do
     it "as the author with can_edit as true" do
@@ -45,7 +45,7 @@ RSpec.describe Rubric do
     end
 
     describe "with a different user" do
-      let(:other_author) { FactoryGirl.create(:author) }
+      let(:other_author) { FactoryBot.create(:author) }
 
       it "should return an array of rubrics by the user if the user is not nil" do
         expect(Rubric.by_author(other_author)).to eq([])
@@ -54,12 +54,12 @@ RSpec.describe Rubric do
 
     describe "with multiple rubrics" do
       let(:rubric1)      {
-        rubric = FactoryGirl.create(:rubric, user: author, name: "ZZZ")
+        rubric = FactoryBot.create(:rubric, user: author, name: "ZZZ")
         rubric.save!
         rubric
       }
       let(:rubric2)      {
-        rubric = FactoryGirl.create(:rubric, user: author, name: "AAA")
+        rubric = FactoryBot.create(:rubric, user: author, name: "AAA")
         rubric.save!
         rubric
       }
@@ -71,7 +71,7 @@ RSpec.describe Rubric do
   end
 
   describe "self.by_others" do
-    let(:other_author) { FactoryGirl.create(:author) }
+    let(:other_author) { FactoryBot.create(:author) }
 
     it "should return an empty array if the user is nil" do
       expect(Rubric.by_others(nil)).to eq([])
@@ -89,12 +89,12 @@ RSpec.describe Rubric do
 
     describe "with multiple rubrics" do
       let(:rubric1)      {
-        rubric = FactoryGirl.create(:rubric, user: author, name: "ZZZ")
+        rubric = FactoryBot.create(:rubric, user: author, name: "ZZZ")
         rubric.save!
         rubric
       }
       let(:rubric2)      {
-        rubric = FactoryGirl.create(:rubric, user: author, name: "AAA")
+        rubric = FactoryBot.create(:rubric, user: author, name: "AAA")
         rubric.save!
         rubric
       }

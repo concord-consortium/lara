@@ -1,8 +1,8 @@
 shared_examples "attached to interactive" do
-  let(:hidden_mw_interactive) { FactoryGirl.create(:hidden_mw_interactive) }
-  let(:mw_interactive)        { FactoryGirl.create(:mw_interactive) }
+  let(:hidden_mw_interactive) { FactoryBot.create(:hidden_mw_interactive) }
+  let(:mw_interactive)        { FactoryBot.create(:mw_interactive) }
   let(:interactives) { [] }
-  let(:page)         { FactoryGirl.create(:page_with_or, interactives: interactives) }
+  let(:page)         { FactoryBot.create(:page_with_or, interactives: interactives) }
   let(:args)         { {} }
   let(:test_embeddable) do
     e = described_class.create(args)
@@ -34,8 +34,8 @@ shared_examples "attached to interactive" do
   end
 
   describe "#interactives_for_select" do
-    let(:interactive_a)         { FactoryGirl.create(:mw_interactive) }
-    let(:interactive_b)         { FactoryGirl.create(:mw_interactive) }
+    let(:interactive_a)         { FactoryBot.create(:mw_interactive) }
+    let(:interactive_b)         { FactoryBot.create(:mw_interactive) }
 
     let(:expected_identifier_1) { AttachedToInteractive::NO_INTERACTIVE_SELECT }
     let(:expected_identifier_2) { ["Iframe Interactive (1)", "#{interactive_a.id}-MwInteractive"]}

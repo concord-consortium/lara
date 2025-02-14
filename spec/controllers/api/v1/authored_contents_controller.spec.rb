@@ -1,18 +1,18 @@
 require "spec_helper"
 
 describe Api::V1::AuthoredContentsController do
-  let(:author1) { FactoryGirl.create(:author) }
-  let(:author2) { FactoryGirl.create(:author) }
+  let(:author1) { FactoryBot.create(:author) }
+  let(:author2) { FactoryBot.create(:author) }
 
-  let(:admin)   { FactoryGirl.create(:admin) }
+  let(:admin)   { FactoryBot.create(:admin) }
 
-  let(:project_admin1) { FactoryGirl.create(:user) }
-  let(:project_admin2) { FactoryGirl.create(:user) }
-  let!(:project1)      { FactoryGirl.create(:project, title: "Test Project 1", admins: [project_admin1]) }
-  let!(:project2)      { FactoryGirl.create(:project, title: "Test Project 2", admins: [project_admin2]) }
+  let(:project_admin1) { FactoryBot.create(:user) }
+  let(:project_admin2) { FactoryBot.create(:user) }
+  let!(:project1)      { FactoryBot.create(:project, title: "Test Project 1", admins: [project_admin1]) }
+  let!(:project2)      { FactoryBot.create(:project, title: "Test Project 2", admins: [project_admin2]) }
 
-  let(:rubric)           { FactoryGirl.create(:rubric, user: author1, name: "Rubric 1", project: project1) }
-  let(:authored_content) { FactoryGirl.create(:authored_content, user: author1, container: rubric, content_type: "application/json", url: "https://example.com/1") }
+  let(:rubric)           { FactoryBot.create(:rubric, user: author1, name: "Rubric 1", project: project1) }
+  let(:authored_content) { FactoryBot.create(:authored_content, user: author1, container: rubric, content_type: "application/json", url: "https://example.com/1") }
 
   describe "#show" do
     it "recognizes and generates #show" do

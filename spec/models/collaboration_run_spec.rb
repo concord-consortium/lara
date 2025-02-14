@@ -37,7 +37,7 @@ describe CollaborationRun do
 
     describe "when runs are related to different activities (e.g. during sequence collaboration)" do
       before do
-        another_activity = FactoryGirl.create(:activity)
+        another_activity = FactoryBot.create(:activity)
         run3.activity = another_activity
         run3.save
       end

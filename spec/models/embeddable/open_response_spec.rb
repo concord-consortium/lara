@@ -3,7 +3,7 @@ require File.expand_path('../../../spec_helper', __FILE__)
 describe Embeddable::OpenResponse do
   it_behaves_like "a question"
 
-  let (:open_response) { FactoryGirl.create(:or_embeddable) }
+  let (:open_response) { FactoryBot.create(:or_embeddable) }
 
   it "should create a new instance with default values" do
     expect(open_response).to be_valid

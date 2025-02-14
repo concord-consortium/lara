@@ -1,13 +1,13 @@
 require File.expand_path('../../../spec_helper', __FILE__)
 
 describe Embeddable::AnswerFinder do
-  let(:open_response)       { FactoryGirl.create(:open_response)       }
-  let(:multiple_choice)     { FactoryGirl.create(:multiple_choice)     }
-  let(:html)                { FactoryGirl.create(:xhtml)               }
-  let(:image)               { FactoryGirl.create(:image_question)      }
-  let(:mw_interactive)      { FactoryGirl.create(:mw_interactive)      }
-  let(:managed_interactive) { FactoryGirl.create(:managed_interactive) }
-  let(:run)                 { FactoryGirl.create(:run)                 }
+  let(:open_response)       { FactoryBot.create(:open_response)       }
+  let(:multiple_choice)     { FactoryBot.create(:multiple_choice)     }
+  let(:html)                { FactoryBot.create(:xhtml)               }
+  let(:image)               { FactoryBot.create(:image_question)      }
+  let(:mw_interactive)      { FactoryBot.create(:mw_interactive)      }
+  let(:managed_interactive) { FactoryBot.create(:managed_interactive) }
+  let(:run)                 { FactoryBot.create(:run)                 }
 
   describe "#find_answer" do
 

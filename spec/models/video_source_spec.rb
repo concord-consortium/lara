@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe VideoSource do
-  let (:video) { FactoryGirl.create(:video_source) }
+  let (:video) { FactoryBot.create(:video_source) }
 
   it 'has valid attributes' do
     expect(video).to be_valid

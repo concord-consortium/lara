@@ -1,9 +1,9 @@
 require 'spec_helper'
 
 describe VideoInteractive do
-  let (:video_interactive) { FactoryGirl.create(:video_interactive) }
-  let (:page) { FactoryGirl.create(:page) }
-  let (:source) { FactoryGirl.create(:video_source) }
+  let (:video_interactive) { FactoryBot.create(:video_interactive) }
+  let (:page) { FactoryBot.create(:page) }
+  let (:source) { FactoryBot.create(:video_source) }
 
   it 'has valid attributes' do
     video_interactive.valid?

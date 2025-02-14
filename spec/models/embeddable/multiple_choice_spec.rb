@@ -4,14 +4,14 @@ describe Embeddable::MultipleChoice do
   it_behaves_like "a question"
 
   let (:multichoice) do
-    mc = FactoryGirl.create(:multiple_choice)
+    mc = FactoryBot.create(:multiple_choice)
     mc.create_default_choices
     mc.reload
     mc
   end
 
   let (:page) do
-    p = FactoryGirl.create(:interactive_page)
+    p = FactoryBot.create(:interactive_page)
     p.add_embeddable(multichoice)
     p.reload
     p
@@ -75,7 +75,7 @@ describe Embeddable::MultipleChoice do
 
     describe 'when the MultipleChoiceChoice is multi-answer' do
       let (:multichoice) do
-        mc = FactoryGirl.create(:multiple_choice, multi_answer: true)
+        mc = FactoryBot.create(:multiple_choice, multi_answer: true)
         mc.create_default_choices
         mc.choices[0].is_correct = true
         mc.choices[0].save

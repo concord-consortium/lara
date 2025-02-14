@@ -2,17 +2,17 @@ require 'spec_helper'
 describe PublicationsController do
   let(:rubric_url)       { "https://example.com/1" }
   let(:rubric_doc_url)   { "http://example.com/doc_url" }
-  let(:author)           { FactoryGirl.create(:author) }
-  let(:authored_content) { FactoryGirl.create(:authored_content, user: author, content_type: "application/json", url: rubric_url) }
-  let(:rubric)           { FactoryGirl.create(:rubric, user: author, name: "Test Rubric", doc_url: rubric_doc_url, authored_content: authored_content)}
-  let(:act) { FactoryGirl.create(:public_activity) }
-  let(:private_act) { FactoryGirl.create(:activity)}
-  let(:ar)  { FactoryGirl.create(:run, activity_id: act.id) }
+  let(:author)           { FactoryBot.create(:author) }
+  let(:authored_content) { FactoryBot.create(:authored_content, user: author, content_type: "application/json", url: rubric_url) }
+  let(:rubric)           { FactoryBot.create(:rubric, user: author, name: "Test Rubric", doc_url: rubric_doc_url, authored_content: authored_content)}
+  let(:act) { FactoryBot.create(:public_activity) }
+  let(:private_act) { FactoryBot.create(:activity)}
+  let(:ar)  { FactoryBot.create(:run, activity_id: act.id) }
   let(:page) { act.pages.create!(name: "Page 1") }
-  let(:sequence) { FactoryGirl.create(:sequence) }
+  let(:sequence) { FactoryBot.create(:sequence) }
 
   before(:each) do
-    @user ||= FactoryGirl.create(:admin)
+    @user ||= FactoryBot.create(:admin)
     sign_in @user
   end
 

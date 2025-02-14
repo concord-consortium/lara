@@ -1,22 +1,22 @@
 require 'spec_helper'
 
 describe Sequence do
-  let (:user) { FactoryGirl.create(:user) }
+  let (:user) { FactoryBot.create(:user) }
   let (:sequence_opts) { {} }
   let (:sequence) {
-      sequence = FactoryGirl.create(:sequence, sequence_opts)
+      sequence = FactoryBot.create(:sequence, sequence_opts)
       sequence.user = user
       sequence.save
       sequence
     }
   let (:activity1) {
-     activity = FactoryGirl.create(:activity, time_to_complete: 45)
+     activity = FactoryBot.create(:activity, time_to_complete: 45)
      activity.user = user
      activity.save
      activity
     }
   let (:activity2) {
-     activity = FactoryGirl.create(:activity, time_to_complete: 40)
+     activity = FactoryBot.create(:activity, time_to_complete: 40)
      activity.user = user
      activity.save
      activity
@@ -72,21 +72,21 @@ describe Sequence do
   end
 
   describe '#serialize_for_portal' do
-    let(:user) { FactoryGirl.create(:user) }
+    let(:user) { FactoryBot.create(:user) }
     let(:act1) {
-      activity = FactoryGirl.build(:activity_with_page)
+      activity = FactoryBot.build(:activity_with_page)
       activity.user = user
       activity.save
       activity
     }
     let(:act2) {
-      activity = FactoryGirl.build(:activity_with_page)
+      activity = FactoryBot.build(:activity_with_page)
       activity.user = user
       activity.save
       activity
     }
     let(:sequence_with_activities) do
-      seq = FactoryGirl.build(:sequence, sequence_opts)
+      seq = FactoryBot.build(:sequence, sequence_opts)
       seq.thumbnail_url = thumbnail_url
       seq.activities << act1
       seq.activities << act2
@@ -99,7 +99,7 @@ describe Sequence do
     end
 
     let (:activity_player_sequence) {
-      activity_player_sequence = FactoryGirl.create(:activity_player_sequence, sequence_opts)
+      activity_player_sequence = FactoryBot.create(:activity_player_sequence, sequence_opts)
       activity_player_sequence.thumbnail_url = thumbnail_url
       activity_player_sequence.user = user
       activity_player_sequence.save
@@ -135,13 +135,13 @@ describe Sequence do
 
   describe '#serialize_for_report_service' do
     let(:act1) {
-      FactoryGirl.build(:activity_with_page)
+      FactoryBot.build(:activity_with_page)
     }
     let(:act2) {
-      FactoryGirl.build(:activity_with_page)
+      FactoryBot.build(:activity_with_page)
     }
     let(:sequence_with_activities) do
-      seq = FactoryGirl.build(:sequence)
+      seq = FactoryBot.build(:sequence)
       seq.activities << act1
       seq.activities << act2
       seq.save!
@@ -234,7 +234,7 @@ describe Sequence do
 
     describe 'for activity player sequences' do
       let (:activity_player_sequence) {
-        activity_player_sequence = FactoryGirl.create(:activity_player_sequence, sequence_opts)
+        activity_player_sequence = FactoryBot.create(:activity_player_sequence, sequence_opts)
         activity_player_sequence.thumbnail_url = thumbnail_url
         activity_player_sequence.user = user
         activity_player_sequence.save
@@ -257,7 +257,7 @@ describe Sequence do
     let(:font_size) { "large" }
     let(:layout_override) { 2 }
     let(:sequence_opts) { {logo: logo, thumbnail_url: thumbnail_url, title: title, hide_read_aloud: hide_read_aloud, hide_question_numbers: hide_question_numbers, font_size: font_size, layout_override: layout_override} }
-    let(:owner)         { FactoryGirl.create(:user) }
+    let(:owner)         { FactoryBot.create(:user) }
     let(:host)          { 'http://test.host' }
 
     it 'returns json of a sequence' do
@@ -273,27 +273,27 @@ describe Sequence do
   end
   describe '#duplicate' do
     let(:sequence_opts) { {} }
-    let(:owner)         { FactoryGirl.create(:user) }
+    let(:owner)         { FactoryBot.create(:user) }
     let(:act1) {
-      activity = FactoryGirl.build(:activity_with_page)
+      activity = FactoryBot.build(:activity_with_page)
       activity.user = owner
       activity.save
       activity
     }
     let(:act2) {
-      activity = FactoryGirl.build(:activity_with_page)
+      activity = FactoryBot.build(:activity_with_page)
       activity.user = owner
       activity.save
       activity
     }
     let(:act3) {
-      activity = FactoryGirl.build(:activity_with_page)
+      activity = FactoryBot.build(:activity_with_page)
       activity.user = owner
       activity.save
       activity
     }
     let(:sequence_with_activities) do
-      seq = FactoryGirl.build(:sequence)
+      seq = FactoryBot.build(:sequence)
       seq.thumbnail_url = thumbnail_url
       seq.activities << act1
       seq.activities << act2

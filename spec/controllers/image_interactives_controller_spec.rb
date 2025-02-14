@@ -2,9 +2,9 @@
 
 # describe ImageInteractivesController do
 #   render_views
-#   let (:activity) { FactoryGirl.create(:activity_with_page) }
+#   let (:activity) { FactoryBot.create(:activity_with_page) }
 #   let (:page) { activity.pages.first }
-#   let (:int) { FactoryGirl.create(:image_interactive, :url => 'http://mw.concord.org/modeler/_assets/img/cc-logo-1.png') }
+#   let (:int) { FactoryBot.create(:image_interactive, :url => 'http://mw.concord.org/modeler/_assets/img/cc-logo-1.png') }
 
 #   before(:each) {
 #     page.add_embeddable(int)

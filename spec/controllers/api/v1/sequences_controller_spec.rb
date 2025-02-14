@@ -1,10 +1,10 @@
 require 'spec_helper'
 
 describe Api::V1::SequencesController do
-  let (:admin) { FactoryGirl.create(:admin) }
-  let (:author1) { FactoryGirl.create(:author) }
-  let (:author2) { FactoryGirl.create(:author) }
-  let (:sequence) { FactoryGirl.create(:sequence, user: author1, title: 'Test Sequence') }
+  let (:admin) { FactoryBot.create(:admin) }
+  let (:author1) { FactoryBot.create(:author) }
+  let (:author2) { FactoryBot.create(:author) }
+  let (:sequence) { FactoryBot.create(:sequence, user: author1, title: 'Test Sequence') }
 
   describe "#show" do
     it 'recognizes and generates #show' do

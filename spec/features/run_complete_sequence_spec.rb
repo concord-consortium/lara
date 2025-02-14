@@ -8,17 +8,17 @@
 #   # any assertions that use the teacher edition regex pattern....
 #   let(:teacher_edition_regex)  { /teacher edition/i }
 
-#   let(:user)         { FactoryGirl.create(:user) }
-#   let(:page1)        { FactoryGirl.create(:page) }
-#   let(:page2)        { FactoryGirl.create(:page) }
-#   let(:page3)        { FactoryGirl.create(:page) }
-#   let(:page4)        { FactoryGirl.create(:page) }
-#   let(:activity1)    { FactoryGirl.create(:activity, pages: [page1, page2]) }
-#   let(:activity2)    { FactoryGirl.create(:activity, pages: [page3, page4]) }
-#   let(:sequence)     { FactoryGirl.create(:sequence, :title => 'teacher-edition mode test Sequence', :user_id => user.id, :lightweight_activities => [activity1, activity2], :publication_status => 'public')}
-#   let(:sequence_run) { FactoryGirl.create(:sequence_run, :sequence_id => sequence.id, :user_id => user.id, remote_id: nil, remote_endpoint: nil) }
-#   let(:run1)         { FactoryGirl.create(:run, :activity_id => activity1.id, :user_id => user.id, :sequence => sequence, :sequence_run => sequence_run) }
-#   let(:run2)         { FactoryGirl.create(:run, :activity_id => activity2.id, :user_id => user.id, :sequence => sequence, :sequence_run => sequence_run) }
+#   let(:user)         { FactoryBot.create(:user) }
+#   let(:page1)        { FactoryBot.create(:page) }
+#   let(:page2)        { FactoryBot.create(:page) }
+#   let(:page3)        { FactoryBot.create(:page) }
+#   let(:page4)        { FactoryBot.create(:page) }
+#   let(:activity1)    { FactoryBot.create(:activity, pages: [page1, page2]) }
+#   let(:activity2)    { FactoryBot.create(:activity, pages: [page3, page4]) }
+#   let(:sequence)     { FactoryBot.create(:sequence, :title => 'teacher-edition mode test Sequence', :user_id => user.id, :lightweight_activities => [activity1, activity2], :publication_status => 'public')}
+#   let(:sequence_run) { FactoryBot.create(:sequence_run, :sequence_id => sequence.id, :user_id => user.id, remote_id: nil, remote_endpoint: nil) }
+#   let(:run1)         { FactoryBot.create(:run, :activity_id => activity1.id, :user_id => user.id, :sequence => sequence, :sequence_run => sequence_run) }
+#   let(:run2)         { FactoryBot.create(:run, :activity_id => activity2.id, :user_id => user.id, :sequence => sequence, :sequence_run => sequence_run) }
 #   let(:params)       { {} }
 
 #   let(:sequence_url) do

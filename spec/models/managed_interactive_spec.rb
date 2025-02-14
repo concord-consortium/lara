@@ -6,7 +6,7 @@ describe ManagedInteractive do
   let(:enable_learner_state) { true }
   let(:hide_question_number) { false }
 
-  let(:library_interactive) { FactoryGirl.create(:library_interactive,
+  let(:library_interactive) { FactoryBot.create(:library_interactive,
                                                  name: 'Test Library managed_Interactive',
                                                  base_url: 'http://concord.org/',
                                                  aspect_ratio_method: "base aspect_ratio_method",
@@ -24,13 +24,13 @@ describe ManagedInteractive do
                                                  report_item_url: ""
                                                 )}
 
-  let(:mw_interactive) { FactoryGirl.create(:mw_interactive) }
-  let(:managed_interactive) { FactoryGirl.create(:managed_interactive,
+  let(:mw_interactive) { FactoryBot.create(:mw_interactive) }
+  let(:managed_interactive) { FactoryBot.create(:managed_interactive,
                                                  library_interactive: library_interactive,
                                                  url_fragment: "test",
                                                  linked_interactive: mw_interactive
                                                 )}
-  let (:page) { FactoryGirl.create(:page) }
+  let (:page) { FactoryBot.create(:page) }
 
   it 'has valid attributes' do
     managed_interactive.valid?
@@ -403,7 +403,7 @@ describe ManagedInteractive do
 
   describe "linked_interactive_item_id" do
 
-    let(:mw_interactive2) { FactoryGirl.create(:mw_interactive) }
+    let(:mw_interactive2) { FactoryBot.create(:mw_interactive) }
 
     before :each do
       page.add_interactive(mw_interactive)

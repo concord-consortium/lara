@@ -1,12 +1,12 @@
 require "spec_helper"
 
 describe LightweightActivityHelper do
-  let(:activity)     { FactoryGirl.create(:activity, id: 23, name: "Test Activity") }
-  let(:activity_player_activity) { FactoryGirl.create(:activity, id: 23, name: "Test Activity") }
-  let(:sequence)     { FactoryGirl.create(:sequence, id: 1, title: "Test Sequence", lightweight_activities: [activity])}
-  let(:user)         { FactoryGirl.create(:user) }
-  let(:sequence_run) { FactoryGirl.create(:sequence_run, sequence_id: sequence.id, user_id: user.id) }
-  let(:run)          { FactoryGirl.create(:run, {key: "012345678901234567890123456789123456", sequence_run: sequence_run, activity: activity})}
+  let(:activity)     { FactoryBot.create(:activity, id: 23, name: "Test Activity") }
+  let(:activity_player_activity) { FactoryBot.create(:activity, id: 23, name: "Test Activity") }
+  let(:sequence)     { FactoryBot.create(:sequence, id: 1, title: "Test Sequence", lightweight_activities: [activity])}
+  let(:user)         { FactoryBot.create(:user) }
+  let(:sequence_run) { FactoryBot.create(:sequence_run, sequence_id: sequence.id, user_id: user.id) }
+  let(:run)          { FactoryBot.create(:run, {key: "012345678901234567890123456789123456", sequence_run: sequence_run, activity: activity})}
   let(:sequence_path_with_run){ "/sequences/1/activities/23/012345678901234567890123456789123456" }
   let(:sequence_path){ "/sequences/1/activities/23" }
   let(:path_no_run)  { "/activities/23" }

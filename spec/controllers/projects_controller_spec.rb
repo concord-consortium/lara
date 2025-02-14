@@ -20,12 +20,12 @@ require 'spec_helper'
 
 describe ProjectsController do
 
-  let (:project) { FactoryGirl.create(:project) }
+  let (:project) { FactoryBot.create(:project) }
 
   before(:each) do
     # We're testing access control in spec/models/user_spec.rb, so for this
     # suite we use a user with global permissions
-    @user ||= FactoryGirl.create(:admin)
+    @user ||= FactoryBot.create(:admin)
     sign_in @user
   end
 
@@ -103,7 +103,7 @@ describe ProjectsController do
         # specifies that the Project created on the previous line
         # receives the :update message with whatever params are
         # submitted in the request.
-        expect_any_instance_of(Project).to receive(:update).with({'title' => 'New Title'})
+        expect_any_instance_of(Project).to receive(:update).with(hash_including('title' => 'New Title'))
         put :update, params: { id: project.id, project: {'title': 'New Title'} }
       end
 

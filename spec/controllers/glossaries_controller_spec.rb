@@ -2,13 +2,13 @@ require 'spec_helper'
 
 describe GlossariesController do
 
-  let(:author1) { FactoryGirl.create(:author) }
-  let(:author2) { FactoryGirl.create(:author) }
-  let(:admin) { FactoryGirl.create(:admin) }
+  let(:author1) { FactoryBot.create(:author) }
+  let(:author2) { FactoryBot.create(:author) }
+  let(:admin) { FactoryBot.create(:admin) }
   let (:current_user) { admin }
-  let (:glossary) { FactoryGirl.create(:glossary, user: admin) }
-  let (:glossary2) { FactoryGirl.create(:glossary, user: author1) }
-  let (:glossary3) { FactoryGirl.create(:glossary, user: author2) }
+  let (:glossary) { FactoryBot.create(:glossary, user: admin) }
+  let (:glossary2) { FactoryBot.create(:glossary, user: author1) }
+  let (:glossary3) { FactoryBot.create(:glossary, user: author2) }
 
   before(:each) do
     # We're testing access control in spec/models/user_spec.rb, so for this
@@ -109,7 +109,7 @@ describe GlossariesController do
         # specifies that the Glossary created on the previous line
         # receives the :update message with whatever params are
         # submitted in the request.
-        expect_any_instance_of(Glossary).to receive(:update).with({'name' => 'New Name'})
+        expect_any_instance_of(Glossary).to receive(:update).with(hash_including('name' => 'New Name'))
         put :update, params: { id: glossary.id, glossary: {'name' => 'New Name'} }
       end
 
