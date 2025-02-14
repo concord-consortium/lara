@@ -19,11 +19,13 @@ WORKDIR $APP_HOME
 
 ADD Gemfile* $APP_HOME/
 
-ENV BUNDLE_GEMFILE=$APP_HOME/Gemfile
-
-# need to copy the Gemfile.lock created during build so it isn't overriden by the following add
-RUN bundle install --without development test && \
+# Determine Bundler version and install it, then copy the Gemfile.lock created during build so
+# it isn't overridden by the following add
+RUN BUNDLER_VERSION=$(grep -A1 "BUNDLED WITH" Gemfile.lock | tail -n1) && \
+    gem install bundler -v "$BUNDLER_VERSION" && \
+    bundle _"$BUNDLER_VERSION"_ install --without development test && \
     cp Gemfile.lock Gemfile.lock-docker
+
 ADD . $APP_HOME
 
 # get files into the right place
@@ -46,7 +48,7 @@ ENV RAILS_ENV=production
 
 # We need to fake an ENV Var for the precompile: https://github.com/rails/rails/issues/32947
 # Run precompile rake task in order to at least generate the manifest file
-RUN SECRET_KEY_BASE=dummy bundle exec rake assets:precompile
+RUN SECRET_KEY_BASE=dummy bundle exec rake assets:precompile --trace
 
 # pass in a version while building with --build-arg LARA_VERSION=x.y.z
 ARG LARA_VERSION
