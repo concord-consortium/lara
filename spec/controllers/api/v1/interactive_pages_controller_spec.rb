@@ -716,7 +716,7 @@ describe Api::V1::InteractivePagesController do
           update_request = { id: page.id }
           expect {
             post 'update_section', params: update_request, xhr: true
-          }.to raise_error(ActionController::ParameterMissing, "param is missing or the value is empty: section")
+          }.to raise_error(ActionController::ParameterMissing, "param is missing or the value is empty or invalid: section")
         end
 
         describe 'when we arent the author' do

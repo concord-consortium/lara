@@ -1,11 +1,11 @@
 source "https://rubygems.org"
-  gem 'actionmailer', '~> 7.2.2', require: false
-  gem 'actionpack', '~> 7.2.2', require: false
-  gem 'activemodel', '~> 7.2.2', require: false
-  gem 'activerecord', '~> 7.2.2', require: false
-  gem 'activesupport', '~> 7.2.2', require: false
-  gem 'rails', '~> 7.2.2'
-  gem 'railties', '~> 7.2.2', require: false
+  gem 'actionmailer', '~> 8.0.1', require: false
+  gem 'actionpack', '~> 8.0.1', require: false
+  gem 'activemodel', '~> 8.0.1', require: false
+  gem 'activerecord', '~> 8.0.1', require: false
+  gem 'activesupport', '~> 8.0.1', require: false
+  gem 'rails', '~> 8.0.1'
+  gem 'railties', '~> 8.0.1', require: false
 
 group :production do
   gem "unicorn"

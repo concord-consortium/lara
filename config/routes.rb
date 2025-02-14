@@ -53,9 +53,10 @@ LightweightStandalone::Application.routes.draw do
       get :export_for_portal
       get :show_status
     end
-    resources :activities, controller: 'lightweight_activities', constraints: { id: /\d+/, sequence_id: /\d+/ }, only: [:show, :summary] do
+    resources :activities, controller: 'lightweight_activities', constraints: { id: /\d+/, sequence_id: /\d+/ }, only: [:show] do
       member do
         get :preview
+        get :summary
       end
     end
   end
