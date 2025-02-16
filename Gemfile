@@ -1,11 +1,11 @@
 source "https://rubygems.org"
-  gem 'actionmailer', '~> 7.2.2', require: false
-  gem 'actionpack', '~> 7.2.2', require: false
-  gem 'activemodel', '~> 7.2.2', require: false
-  gem 'activerecord', '~> 7.2.2', require: false
-  gem 'activesupport', '~> 7.2.2', require: false
-  gem 'rails', '~> 7.2.2'
-  gem 'railties', '~> 7.2.2', require: false
+  gem 'actionmailer', '~> 8.0.1', require: false
+  gem 'actionpack', '~> 8.0.1', require: false
+  gem 'activemodel', '~> 8.0.1', require: false
+  gem 'activerecord', '~> 8.0.1', require: false
+  gem 'activesupport', '~> 8.0.1', require: false
+  gem 'rails', '~> 8.0.1'
+  gem 'railties', '~> 8.0.1', require: false
 
 group :production do
   gem "unicorn"
@@ -43,7 +43,6 @@ group :test, :development do
   gem "poltergeist", "~> 1.18", ">= 1.18.1"
   gem "rspec-activemodel-mocks", '~> 1.2', '>= 1.2.1'
   gem "rspec-rails", '~> 6.0'
-  gem 'rubocop', '= 0.49.1', require: false
   gem "spring", "~> 3.0"
   gem "spring-commands-rspec", "~> 1.0", ">= 1.0.4"
   gem "test-unit", "~> 3.6", ">= 3.6.2"
@@ -65,12 +64,12 @@ gem "delayed_job_web", '~> 1.4', '>= 1.4.4'
 gem "devise", '~> 4.4', '>= 4.4.0'
 gem "dynamic_form", "= 1.2"
 gem "exception_notification"
-gem "ffi", "= 1.16.3"
+gem "ffi", "~> 1.17"
 gem "font-awesome-rails", '~> 4.7', '>= 4.7.0.8'
 gem "gon", "~> 6.4.0"
 gem "haml", "~> 5.2"
 gem "highline", "~> 1.7.3"
-gem "httparty", "= 0.21"
+gem "httparty", ">= 0.21"
 gem "i18n", ">= 1.8"
 gem "jquery-rails", '~> 4.1', '>= 4.1.0'
 gem "jquery-ui-rails", '~> 4.2.1'
@@ -83,7 +82,7 @@ gem "nokogiri"
 gem "omniauth", "= 1.4.2"
 gem "omniauth-oauth2", "1.3"
 gem "rack-cors", "~> 1.0.3", {require: 'rack/cors'}
-gem "rack-environmental"#, "~> 1.3"
+gem "rack-environmental"
 gem 'rack-secure_samesite_cookies', {git: 'https://github.com/concord-consortium/secure-samesite-cookies.git', tag: 'v1.0.2'}
 gem 'rake', '~> 13.2', '>= 13.2.1'
 gem "responders", "~> 3.1.1"

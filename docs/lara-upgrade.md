@@ -75,30 +75,37 @@ The status codes are:
 - NU: no upgrade available - gem can't be upgraded
 - DG?: gem downgraded - why? this should not happen
 - RG: gem removed
-- LV: dependency not previously specified in gem file that we have to lock at a specific version
 - AG: gem added
 
 (add more status codes as needed)
 
 | Gem                          | Status       | Initial Version | Current Version | Max Version |
 |------------------------------|--------------|-----------------|-----------------|-------------|
-| rails (+ rails core...)      |          CU! |          3.2.22 |         7.1.5.1 |       8.0.1 |
+| rails (+ rails core...)      |       CU! AM |          3.2.22 |           8.0.1 |       8.0.1 |
 | *GEMS AT MAX*                |              |                 |                 |             |
+| acts_as_list                 |       UC! AM |           0.3.0 |           1.2.4 |       1.2.4 |
+| aws-sdk                      |       CU! AM |          1.66.0 |           3.2.0 |       3.2.0 |
 | aws-ses                      |        NC AM |           0.7.1 |           0.7.1 |       0.7.1 |
+| bootsnap                     |       UC* AM |           1.4.4 |          1.18.4 |      1.18.4 |
+| cancancan                    |       UC! AM |          1.10.1 |           3.6.1 |       3.6.1 |
 | chosen-rails                 |       UC* AM |           1.0.1 |          1.10.0 |      1.10.0 |
-| compass-blueprint            |           RG |           1.0.0 |               - |       1.0.0 |
 | daemons                      |       UC* AM |           1.1.9 |           1.4.1 |       1.4.1 |
 | delayed_job_active_record    |       UC* AM |           4.0.0 |          4.1.11 |      4.1.11 |
 | delayed_job_web              |       UC* AM |           1.2.5 |           1.4.4 |       1.4.4 |
+| exception_notification       |       UC* AM |           4.0.1 |           4.5.0 |       4.5.0 |
+| factory_bot_rails            |       UC* AM |           4.3.0 |           6.4.4 |       6.4.4 |
+| faker                        |       UC! AM |           1.2.0 |           3.5.1 |       3.5.1 |
+| ffi                          |       UC* AM |           1.15.5           1.17.1 |      1.17.1 |
 | font-awesome-rails           |       UC* AM |         4.3.0.0 |         4.7.0.9 |     4.7.0.9 |
 | gon                          |       UC! AM |           5.2.3 |           6.4.0 |       6.4.0 |
+| httparty                     |       UC* AM |          0.12.0 |          0.22.0 |      0.22.0 |
 | i18n                         |       UC* AM |             n/a |          1.14.7 |      1.14.7 |
 | jasmine-jquery-rails         |        NC AM |           2.0.3 |           2.0.3 |       2.0.3 |
 | loofah                       |       UC* AM |             n/a |          2.24.0 |      2.24.0 |
 | multi_json                   |       UC* AM |          1.13.1 |          1.15.0 |      1.15.0 |
 | nested_form                  |        NC AM |           0.3.2 |           0.3.2 |       0.3.2 |
+| newrelic_rpm                 |       UC! AM |       4.6.0.338 |          9.17.0 |      9.17.0 |
 | poltergeist                  |       UC* AM |           1.5.1 |          1.18.1 |      1.18.1 |
-| protected_attributes         |           RG |             n/a |               - |       1.1.4 |
 | rack-environmental           |       UC* AM |           1.3.1 |           1.3.2 |       1.3.2 |
 | rack-secure_samesite_cookies |        NC AM |           1.0.2 |           1.0.2 |       1.0.2 |
 | rails-controller-testing     |          n/a |             n/a |           1.0.5 |       1.0.5 |
@@ -106,59 +113,52 @@ The status codes are:
 | responders                   |       UC* AM |             n/a |           3.1.1 |       3.1.1 |
 | ribbons-rails                |        NC AM |           0.0.1 |           0.0.1 |       0.0.1 |
 | rspec-activemodel-mocks      |       UC* AM |           1.0.1 |           1.2.1 |       1.2.1 |
-| safe_yaml                    |           RG |           1.0.4 |               - |       1.0.5 |
+| simplecov                    |       UC* AM |          0.16.1 |          0.22.0 |      0.22.0 |
 | spreadsheet                  |       UC* AM |           1.0.3 |           1.1.2 |       1.3.3 |
 | spring-commands-rspec        |        NC AM |           1.0.4 |           1.0.4 |       1.0.4 |
 | terser                       |        AG AM |             n/a |           1.2.5 |       1.2.5 |
 | test-unit                    |       UC* AM |           3.2.3 |           3.6.7 |       3.6.7 |
 | timecop                      |       UC* AM |           0.6.3 |          0.9.10 |      0.9.10 |
-| turbo-sprockets-rails4       |           RG |             n/a |               - |       1.2.5 |
+| unicorn                      |       UC! AM |           6.1.0 |           6.1.0 |       6.1.0 |
 | useragent                    |       UC* AM |          0.10.0 |         0.16.11 |     0.16.11 |
 | will_paginate                |       UC! AM |           3.0.7 |           4.0.1 |       4.0.1 |
 | *GEMS THAT CAN BE UPGRADED*  |              |                 |                 |             |
-| acts_as_list                 |       UC! AM |           0.3.0 |           1.2.4 |       1.2.4 |
-| aws-sdk                      |          CU! |          1.66.0 |          2.0.22 |       3.2.0 |
 | better_errors                |          UC! |           1.1.0 |           2.0.0 |      2.10.1 |
-| bootsnap                     |       UC* AM |           1.4.4 |          1.18.4 |      1.18.4 |
-| bullet                       |           RG |           5.4.3 |               - |       7.2.0 |
-| cancancan                    |       UC! AM |          1.10.1 |           3.6.1 |       3.6.1 |
 | capybara                     |          UC* |           2.4.4 |          2.18.0 |      3.40.0 |
-| ci_reporter                  |           RM |           1.7.3 |               - |       2.1.0 |
 | coffee-rails                 |          UC! |           3.2.2 |           4.2.2 |       5.0.0 |
-| compass-rails                |           RG |           3.1.0 |               - |       4.0.0 |
 | default_value_for            |          UC! |           2.0.3 |           3.6.0 |       4.0.0 |
 | devise                       |          UC! |           3.0.1 |           4.9.4 |       4.9.4 |
 | dynamic_form                 |          UC* |           1.1.4 |           1.2.0 |       1.3.1 |
-| exception_notification       |       UC* AM |           4.0.1 |           4.5.0 |       4.5.0 |
-| factory_bot_rails            |       UC* AM |           4.3.0 |           6.4.4 |       6.4.4 |
-| faker                        |       UC! AM |           1.2.0 |           3.5.1 |       3.5.1 |
-| ffi                          |           LV |           1.15.5           1.16.3 |      1.17.1 |
 | haml                         |          UC! |           4.0.5 |           5.2.2 |       6.3.0 |
 | highline                     |          UC* |          1.6.21 |          1.7.10 |       3.1.1 |
-| httparty                     |          UC* |          0.12.0 |          0.21.0 |      0.22.0 |
 | jasmine                      |          UC* |           2.2.0 |          2.99.0 |      3.99.0 |
 | jquery-rails                 |          UC! |           3.1.5 |           4.6.0 |       4.6.0 |
 | jquery-ui-rails              |          UC* |           4.1.0 |           4.2.1 |       7.0.0 |
 | launchy                      |          UC* |           2.4.0 |           2.5.2 |       3.0.1 |
 | mysql2                       |          UC* |          0.3.21 |           0.5.6 |       0.5.6 |
-| newrelic_rpm                 |       UC! AM |       4.6.0.338 |          9.17.0 |      9.17.0 |
 | nokogiri                     |          UC* |          1.10.3 |          1.18.2 |      1.18.2 |
 | omniauth                     |          UC* |           1.3.2 |           1.4.2 |       2.1.2 |
 | omniauth-oauth2              |          UC* |           1.1.1 |           1.3.0 |       1.8.0 |
 | rack-cors                    |          UC! |           0.4.1 |           1.0.6 |       2.0.2 |
 | rspec-rails                  |          UC! |           3.8.2 |           4.1.2 |       7.0.1 |
-| rubocop                      |          n/a |             n/a |          0.49.1 |       1.6.8 |
 | sass-rails                   |          UC! |           3.2.6 |           5.0.8 |       6.0.0 |
 | sassc                        |          n/a |             n/a |           2.1.0 |       2.4.0 |
-| simplecov                    |       UC* AM |          0.16.1 |          0.22.0 |      0.22.0 |
 | spring                       |          UC! |           1.2.0 |           3.1.1 |       4.2.1 |
-| sprockets                    |          RG  |           3.7.5 |               - |       4.2.1 |
 | tinymce-rails                |          UC* |           4.7.9 |           4.9.4 |       7.4.1 |
-| uglifier                     |           RG |           4.1.8 |               - |       4.2.1 |
-| unicorn                      |       UC! AM |           6.1.0 |           6.1.0 |       6.1.0 |
 | uuidtools                    |          UC* |           2.1.4 |           2.1.5 |       2.2.0 |
 | web-console                  |          n/a |             n/a |           3.7.0 |       4.2.1 |
 | webmock                      |          UC! |          1.24.6 |           3.8.3 |      3.24.0 |
+| *GEMS REMOVED*               |              |                 |                 |             |
+| bullet                       |           RG |           5.4.3 |               - |       7.2.0 |
+| ci_reporter                  |           RG |           1.7.3 |               - |       2.1.0 |
+| compass-blueprint            |           RG |           1.0.0 |               - |       1.0.0 |
+| compass-rails                |           RG |           3.1.0 |               - |       4.0.0 |
+| protected_attributes         |           RG |             n/a |               - |       1.1.4 |
+| safe_yaml                    |           RG |           1.0.4 |               - |       1.0.5 |
+| sprockets                    |           RG |           3.7.5 |               - |       4.2.1 |
+| turbo-sprockets-rails4       |           RG |             n/a |               - |       1.2.5 |
+| uglifier                     |           RG |           4.1.8 |               - |       4.2.1 |
+
 
 ### Upgrade To Rails 4.0.13
 
@@ -437,9 +437,9 @@ For now we will stay at 4.2.11.23 instead of upgrading to 4.2.11.38
 
 1. Create an `upgrade-to-rails-8` branch off the `lara-upgrade` branch.
 2. **A Ruby upgrade to 3.2 IS required**. Change `Dockerfile` and `Dockerfile-dev` to use `ruby-3.2.0` in the `FROM` url.
-3. Upgrade rails gems in `Gemfile` to last 7.2 version: `gem 'rails', '~> 8.0.1'`.
+3. Upgrade rails gems in `Gemfile` to last 8.0 version: `gem 'rails', '~> 8.0.1'`.
 4. Inside running Docker image run `bundle update rails`
 5. Resolve gem dependency issues until the bundle update succeeds.
-6. Complete any upgrade tasks in the [7.2 to 8.0 upgrade guide](https://guides.rubyonrails.org/upgrading_ruby_on_rails.html#upgrading-from-rails-7-1-to-rails-7-2). **At the time of writing, there were no tasks listed.**
+6. Complete any upgrade tasks in the [7.2 to 8.0 upgrade guide](https://guides.rubyonrails.org/upgrading_ruby_on_rails.html#upgrading-from-rails-7-2-to-rails-8-0). **At the time of writing, there were no tasks listed.**
 7. Create a PR and insure all the tests pass.
 8. After review/approval merge the branch into the `lara-upgrade` branch.

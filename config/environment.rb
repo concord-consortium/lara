@@ -10,5 +10,9 @@ else
   puts "please create the file #{app_environment_variables}, or set ENV"
 end
 
+Rails.application.configure do
+  config.active_support.to_time_preserves_timezone = :zone
+end
+
 # Initialize the rails application
 LightweightStandalone::Application.initialize!
