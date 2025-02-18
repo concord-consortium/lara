@@ -54,6 +54,7 @@ jobs:
       packages: write
     env:
       REGISTRY: ghcr.io
+      RAILS_SECRET_KEY_BASE: ${{ secrets.RAILS_SECRET_KEY_BASE }}
     steps:
       - uses: actions/checkout@v3
       - name: Set up QEMU
