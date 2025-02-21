@@ -292,14 +292,12 @@ class Api::V1::InteractivePagesController < Api::ApiController
     render json: result.to_json
   end
 
-  def update_page_params
-    params.require(:page_item).permit(
-      :section, :position, :embeddable, :column, :data
-    )
+  def page_item_update_params
+    params.require(:page_item).permit(:column, :embeddable, :position, :section)
   end
 
-  def data_update_params
-    params[:page_item].require(:data).permit(
+  def data_update_params(data)
+    data.permit(
       :aspect_ratio_method,
       :author_data,
       :authored_state,
@@ -357,20 +355,21 @@ class Api::V1::InteractivePagesController < Api::ApiController
     return error("Missing page_item parameter") if params[:page_item].nil?
 
     # verify the parameters
-    page_item_id = params[:page_item]["id"]
+    page_item_id = params[:page_item].delete("id")
     return error("Missing page_item[id] parameter") if page_item_id.nil?
     column = params[:page_item]["column"]
     return error("Missing page_item[column] parameter") if column.nil?
     position = params[:page_item]["position"]
     return error("Missing page_item[position] parameter") if position.nil?
-    data = params[:page_item]["data"]
+    data = params[:page_item].delete("data")
     return error("Missing page_item[data] parameter") if data.nil?
-    type = params[:page_item]["type"]
+    type = params[:page_item].delete("type")
     return error("Missing page_item[type] parameter") if type.nil?
+    params[:page_item].delete("authoring_api_urls")
 
     page_item = PageItem.find(page_item_id)
     if page_item
-      page_item.update(update_page_params)
+      page_item.update(page_item_update_params)
       embeddable_type = type.constantize
       embeddable = embeddable_type.find(page_item.embeddable_id)
       # linked_interactives param follows ISetLinkedInteractives interface format. It isn't a regular attribute.
@@ -381,8 +380,16 @@ class Api::V1::InteractivePagesController < Api::ApiController
           page_item.set_linked_interactives(JSON.parse(linked_interactives))
         end
       end
-      if embeddable
-        embeddable.update(data_update_params)
+      if embeddable && data
+        permitted_data = data_update_params(data)
+
+        if embeddable.is_a?(Embeddable::EmbeddablePlugin)
+          permitted_data.delete(:label)
+          permitted_data.delete(:name)
+          permitted_data.delete(:url)
+        end
+
+        embeddable.update(permitted_data)
       end
     end
     @interactive_page.reload
