@@ -137,8 +137,8 @@ jobs:
             -e DB_USER=root \
             -e DB_PASSWORD=root \
             -e DB_NAME=${{ github.event.repository.name }}_test \
-            -e RAILS_SECRET_KEY_BASE=fake-secret-for-the-cypress-tests
-            -e DEVISE_SECRET_KEY=fake-secret-for-the-cypress-tests
+            -e RAILS_SECRET_KEY_BASE=fake-secret-for-the-cypress-tests \
+            -e DEVISE_SECRET_KEY=fake-secret-for-the-cypress-tests \
             ${{ env.REGISTRY }}/${{ github.repository }}:latest
       - name: Copy configuration templates
         run: |-
