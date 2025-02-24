@@ -129,7 +129,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - uses: actions/checkout@v4
-      - name: Start Application Container
+      - name: Start Application Container in dev mode so the configs are copied and migrations are run
         run: |
           docker run --name app -p 3000:3000 --network=host \
             -e DB_HOST=127.0.0.1 \
@@ -139,13 +139,8 @@ jobs:
             -e DB_NAME=${{ github.event.repository.name }}_test \
             -e RAILS_SECRET_KEY_BASE=fake-secret-for-the-cypress-tests \
             -e DEVISE_SECRET_KEY=fake-secret-for-the-cypress-tests \
-            ${{ env.REGISTRY }}/${{ github.repository }}:latest
-      - name: Copy configuration templates
-        run: |-
-          docker exec app cp -v ./config/database.sample.yml ./config/database.yml
-          docker exec app cp -v ./config/app_environment_variables.sample.rb ./config/app_environment_variables.rb
-      - name: Apply database migrations
-        run: docker exec app bundle exec rake db:migrate
+            ${{ env.REGISTRY }}/${{ github.repository }}:latest \
+            ./docker/dev/run.sh
       - name: Run Cypress Tests
         uses: cypress-io/github-action@v6
         with:
