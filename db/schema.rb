@@ -10,25 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-<<<<<<< HEAD
 ActiveRecord::Schema[8.0].define(version: 2025_02_06_215441) do
   create_table "admin_events", charset: "utf8", force: :cascade do |t|
-=======
-ActiveRecord::Schema.define(version: 2025_02_06_215441) do
-
-  create_table "admin_events", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
->>>>>>> e640ad99 (Move to Cypress 14 using new install/folder)
     t.string "kind"
     t.text "message"
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
   end
 
-<<<<<<< HEAD
   create_table "approved_scripts", charset: "utf8", force: :cascade do |t|
-=======
-  create_table "approved_scripts", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
->>>>>>> e640ad99 (Move to Cypress 14 using new install/folder)
     t.string "name"
     t.string "url"
     t.text "description"
@@ -40,11 +30,7 @@ ActiveRecord::Schema.define(version: 2025_02_06_215441) do
     t.text "authoring_metadata"
   end
 
-<<<<<<< HEAD
   create_table "authentications", charset: "utf8", force: :cascade do |t|
-=======
-  create_table "authentications", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
->>>>>>> e640ad99 (Move to Cypress 14 using new install/folder)
     t.integer "user_id"
     t.integer "index"
     t.string "provider"
@@ -56,7 +42,6 @@ ActiveRecord::Schema.define(version: 2025_02_06_215441) do
     t.index ["user_id", "provider"], name: "index_authentications_on_user_id_and_provider", unique: true
   end
 
-<<<<<<< HEAD
   create_table "authored_contents", charset: "utf8", force: :cascade do |t|
     t.string "content_type"
     t.string "url"
@@ -70,19 +55,6 @@ ActiveRecord::Schema.define(version: 2025_02_06_215441) do
   end
 
   create_table "collaboration_runs", charset: "utf8", force: :cascade do |t|
-=======
-  create_table "authored_contents", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
-    t.string "content_type"
-    t.string "url"
-    t.integer "user_id"
-    t.integer "container_id"
-    t.string "container_type"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "collaboration_runs", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
->>>>>>> e640ad99 (Move to Cypress 14 using new install/folder)
     t.integer "user_id"
     t.string "collaborators_data_url"
     t.datetime "created_at", precision: nil, null: false
@@ -90,11 +62,7 @@ ActiveRecord::Schema.define(version: 2025_02_06_215441) do
     t.index ["collaborators_data_url"], name: "collaboration_runs_endpoint_idx"
   end
 
-<<<<<<< HEAD
   create_table "delayed_jobs", charset: "utf8", force: :cascade do |t|
-=======
-  create_table "delayed_jobs", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
->>>>>>> e640ad99 (Move to Cypress 14 using new install/folder)
     t.integer "priority", default: 0, null: false
     t.integer "attempts", default: 0, null: false
     t.text "handler", null: false
@@ -109,7 +77,6 @@ ActiveRecord::Schema.define(version: 2025_02_06_215441) do
     t.index ["priority", "run_at"], name: "delayed_jobs_priority"
   end
 
-<<<<<<< HEAD
   create_table "embeddable_external_scripts", charset: "utf8", force: :cascade do |t|
     t.bigint "approved_script_id"
     t.text "configuration"
@@ -120,19 +87,8 @@ ActiveRecord::Schema.define(version: 2025_02_06_215441) do
   end
 
   create_table "embeddable_feedback_items", charset: "utf8", force: :cascade do |t|
-=======
-  create_table "embeddable_external_scripts", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
-    t.integer "approved_script_id"
-    t.text "configuration"
-    t.text "description"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "embeddable_feedback_items", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
-    t.integer "answer_id"
->>>>>>> e640ad99 (Move to Cypress 14 using new install/folder)
     t.string "answer_type"
+    t.bigint "answer_id"
     t.integer "score"
     t.text "feedback_text"
     t.text "answer_text"
@@ -141,16 +97,12 @@ ActiveRecord::Schema.define(version: 2025_02_06_215441) do
     t.integer "feedback_submission_id"
     t.string "feedback_submission_type"
     t.index ["answer_id", "answer_type"], name: "index_embeddable_feedback_items_on_answer_id_and_answer_type"
+    t.index ["answer_type", "answer_id"], name: "index_embeddable_feedback_items_on_answer_type_and_answer_id"
     t.index ["feedback_submission_id", "feedback_submission_type"], name: "e_feed_item_submission_idx"
   end
 
-<<<<<<< HEAD
   create_table "embeddable_image_question_answers", charset: "utf8", force: :cascade do |t|
     t.bigint "run_id"
-=======
-  create_table "embeddable_image_question_answers", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
-    t.integer "run_id"
->>>>>>> e640ad99 (Move to Cypress 14 using new install/folder)
     t.text "answer_text"
     t.string "image_url"
     t.integer "image_question_id"
@@ -165,11 +117,7 @@ ActiveRecord::Schema.define(version: 2025_02_06_215441) do
     t.index ["run_id"], name: "index_on_run_id"
   end
 
-<<<<<<< HEAD
   create_table "embeddable_image_questions", charset: "utf8", force: :cascade do |t|
-=======
-  create_table "embeddable_image_questions", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
->>>>>>> e640ad99 (Move to Cypress 14 using new install/folder)
     t.string "name"
     t.text "prompt"
     t.datetime "created_at", precision: nil, null: false
@@ -188,11 +136,7 @@ ActiveRecord::Schema.define(version: 2025_02_06_215441) do
     t.string "migration_status", default: "not migrated"
   end
 
-<<<<<<< HEAD
   create_table "embeddable_labbook_answers", charset: "utf8", force: :cascade do |t|
-=======
-  create_table "embeddable_labbook_answers", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
->>>>>>> e640ad99 (Move to Cypress 14 using new install/folder)
     t.integer "run_id"
     t.integer "labbook_id"
     t.boolean "is_dirty", default: false
@@ -202,33 +146,24 @@ ActiveRecord::Schema.define(version: 2025_02_06_215441) do
     t.index ["run_id"], name: "index_embeddable_labbook_answers_on_run_id"
   end
 
-<<<<<<< HEAD
   create_table "embeddable_labbooks", charset: "utf8", force: :cascade do |t|
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
-=======
-  create_table "embeddable_labbooks", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
->>>>>>> e640ad99 (Move to Cypress 14 using new install/folder)
     t.integer "action_type", default: 0, null: false
     t.string "name"
     t.text "prompt"
     t.string "custom_action_label"
     t.boolean "is_hidden", default: false
-    t.integer "interactive_id"
     t.string "interactive_type"
+    t.bigint "interactive_id"
     t.text "hint"
     t.boolean "is_half_width", default: true
     t.index ["interactive_id"], name: "labbook_interactive_i_idx"
+    t.index ["interactive_type", "interactive_id"], name: "index_embeddable_labbooks_on_interactive_type_and_interactive_id"
     t.index ["interactive_type"], name: "labbook_interactive_t_idx"
   end
 
-<<<<<<< HEAD
   create_table "embeddable_multiple_choice_answers", charset: "utf8", force: :cascade do |t|
-=======
-  create_table "embeddable_multiple_choice_answers", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
->>>>>>> e640ad99 (Move to Cypress 14 using new install/folder)
     t.integer "run_id"
     t.integer "multiple_choice_id"
     t.datetime "created_at", precision: nil, null: false
@@ -239,11 +174,7 @@ ActiveRecord::Schema.define(version: 2025_02_06_215441) do
     t.index ["run_id"], name: "index_embeddable_multiple_choice_answers_on_run_id"
   end
 
-<<<<<<< HEAD
   create_table "embeddable_multiple_choice_choices", charset: "utf8", force: :cascade do |t|
-=======
-  create_table "embeddable_multiple_choice_choices", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
->>>>>>> e640ad99 (Move to Cypress 14 using new install/folder)
     t.integer "multiple_choice_id"
     t.text "choice"
     t.boolean "is_correct"
@@ -253,11 +184,7 @@ ActiveRecord::Schema.define(version: 2025_02_06_215441) do
     t.index ["multiple_choice_id"], name: "index_embeddable_multiple_choice_choices_on_multiple_choice_id"
   end
 
-<<<<<<< HEAD
   create_table "embeddable_multiple_choices", charset: "utf8", force: :cascade do |t|
-=======
-  create_table "embeddable_multiple_choices", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
->>>>>>> e640ad99 (Move to Cypress 14 using new install/folder)
     t.string "name"
     t.text "prompt"
     t.datetime "created_at", precision: nil, null: false
@@ -276,11 +203,7 @@ ActiveRecord::Schema.define(version: 2025_02_06_215441) do
     t.string "migration_status", default: "not migrated"
   end
 
-<<<<<<< HEAD
   create_table "embeddable_open_response_answers", charset: "utf8", force: :cascade do |t|
-=======
-  create_table "embeddable_open_response_answers", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
->>>>>>> e640ad99 (Move to Cypress 14 using new install/folder)
     t.text "answer_text"
     t.integer "run_id"
     t.integer "open_response_id"
@@ -290,14 +213,9 @@ ActiveRecord::Schema.define(version: 2025_02_06_215441) do
     t.boolean "is_final", default: false
     t.index ["open_response_id"], name: "index_embeddable_open_response_answers_on_open_response_id"
     t.index ["run_id", "open_response_id"], name: "index_open_response_answers_on_run_and_question"
-    t.index ["run_id"], name: "index_embeddable_open_response_answers_on_run_id"
   end
 
-<<<<<<< HEAD
   create_table "embeddable_open_responses", charset: "utf8", force: :cascade do |t|
-=======
-  create_table "embeddable_open_responses", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
->>>>>>> e640ad99 (Move to Cypress 14 using new install/folder)
     t.string "name"
     t.text "prompt"
     t.datetime "created_at", precision: nil, null: false
@@ -312,26 +230,16 @@ ActiveRecord::Schema.define(version: 2025_02_06_215441) do
     t.string "migration_status", default: "not migrated"
   end
 
-<<<<<<< HEAD
   create_table "embeddable_plugins", charset: "utf8", force: :cascade do |t|
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
-=======
-  create_table "embeddable_plugins", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
->>>>>>> e640ad99 (Move to Cypress 14 using new install/folder)
     t.integer "embeddable_id"
     t.string "embeddable_type"
     t.boolean "is_hidden", default: false
     t.boolean "is_half_width", default: true
   end
 
-<<<<<<< HEAD
   create_table "embeddable_xhtmls", charset: "utf8", force: :cascade do |t|
-=======
-  create_table "embeddable_xhtmls", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
->>>>>>> e640ad99 (Move to Cypress 14 using new install/folder)
     t.string "name"
     t.text "content"
     t.datetime "created_at", precision: nil, null: false
@@ -341,11 +249,7 @@ ActiveRecord::Schema.define(version: 2025_02_06_215441) do
     t.boolean "is_callout", default: true
   end
 
-<<<<<<< HEAD
   create_table "global_interactive_states", charset: "utf8", force: :cascade do |t|
-=======
-  create_table "global_interactive_states", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
->>>>>>> e640ad99 (Move to Cypress 14 using new install/folder)
     t.integer "run_id"
     t.text "raw_data"
     t.datetime "created_at", precision: nil, null: false
@@ -353,11 +257,7 @@ ActiveRecord::Schema.define(version: 2025_02_06_215441) do
     t.index ["run_id"], name: "index_global_interactive_states_on_run_id"
   end
 
-<<<<<<< HEAD
   create_table "glossaries", charset: "utf8", force: :cascade do |t|
-=======
-  create_table "glossaries", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
->>>>>>> e640ad99 (Move to Cypress 14 using new install/folder)
     t.string "name"
     t.text "json", size: :medium
     t.integer "user_id"
@@ -367,11 +267,7 @@ ActiveRecord::Schema.define(version: 2025_02_06_215441) do
     t.integer "project_id"
   end
 
-<<<<<<< HEAD
   create_table "image_interactives", charset: "utf8", force: :cascade do |t|
-=======
-  create_table "image_interactives", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
->>>>>>> e640ad99 (Move to Cypress 14 using new install/folder)
     t.string "url"
     t.text "caption"
     t.text "credit"
@@ -384,16 +280,10 @@ ActiveRecord::Schema.define(version: 2025_02_06_215441) do
     t.string "migration_status", default: "not migrated"
   end
 
-<<<<<<< HEAD
   create_table "imports", charset: "utf8", force: :cascade do |t|
-=======
-  create_table "imports", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
->>>>>>> e640ad99 (Move to Cypress 14 using new install/folder)
     t.string "export_site"
-    t.integer "user_id"
-    t.integer "import_item_id"
+    t.bigint "user_id"
     t.string "import_item_type"
-<<<<<<< HEAD
     t.bigint "import_item_id"
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
@@ -402,13 +292,6 @@ ActiveRecord::Schema.define(version: 2025_02_06_215441) do
   end
 
   create_table "interactive_items", charset: "utf8", force: :cascade do |t|
-=======
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "interactive_items", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
->>>>>>> e640ad99 (Move to Cypress 14 using new install/folder)
     t.integer "interactive_page_id"
     t.integer "interactive_id"
     t.string "interactive_type"
@@ -419,11 +302,7 @@ ActiveRecord::Schema.define(version: 2025_02_06_215441) do
     t.index ["interactive_page_id", "position"], name: "interactive_items_by_page_idx"
   end
 
-<<<<<<< HEAD
   create_table "interactive_pages", charset: "utf8", force: :cascade do |t|
-=======
-  create_table "interactive_pages", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
->>>>>>> e640ad99 (Move to Cypress 14 using new install/folder)
     t.string "name"
     t.integer "lightweight_activity_id"
     t.integer "position"
@@ -445,23 +324,25 @@ ActiveRecord::Schema.define(version: 2025_02_06_215441) do
     t.index ["lightweight_activity_id", "position"], name: "interactive_pages_by_activity_idx"
   end
 
-  create_table "interactive_run_states", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
-    t.integer "interactive_id"
+  create_table "interactive_run_states", charset: "utf8", force: :cascade do |t|
     t.string "interactive_type"
-    t.integer "run_id"
-    t.text "raw_data", limit: 16777215
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.bigint "interactive_id"
+    t.bigint "run_id"
+    t.text "raw_data", size: :medium
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.text "learner_url"
     t.boolean "is_dirty", default: false
     t.string "key"
     t.text "metadata"
     t.index ["interactive_id", "interactive_type"], name: "interactive_run_states_interactive_idx"
+    t.index ["interactive_type", "interactive_id"], name: "index_interactive_run_states_on_interactive"
     t.index ["key"], name: "interactive_run_states_key_idx"
+    t.index ["run_id"], name: "index_interactive_run_states_on_run_id"
     t.index ["run_id"], name: "interactive_run_states_run_id_idx"
   end
 
-  create_table "library_interactives", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
+  create_table "library_interactives", charset: "utf8", force: :cascade do |t|
     t.string "name"
     t.text "description"
     t.text "authoring_guidance"
@@ -489,7 +370,7 @@ ActiveRecord::Schema.define(version: 2025_02_06_215441) do
     t.index ["export_hash"], name: "library_interactives_export_hash_idx"
   end
 
-  create_table "lightweight_activities", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
+  create_table "lightweight_activities", charset: "utf8", force: :cascade do |t|
     t.string "name"
     t.integer "user_id"
     t.string "publication_status", default: "private"
@@ -530,7 +411,7 @@ ActiveRecord::Schema.define(version: 2025_02_06_215441) do
     t.index ["user_id"], name: "lightweight_activities_user_idx"
   end
 
-  create_table "lightweight_activities_sequences", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
+  create_table "lightweight_activities_sequences", charset: "utf8", force: :cascade do |t|
     t.integer "lightweight_activity_id", default: 1, null: false
     t.integer "sequence_id", default: 1, null: false
     t.integer "position", default: 1
@@ -540,7 +421,7 @@ ActiveRecord::Schema.define(version: 2025_02_06_215441) do
     t.index ["sequence_id"], name: "index_activities_sequence_join_by_sequence"
   end
 
-  create_table "linked_page_items", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
+  create_table "linked_page_items", charset: "utf8", force: :cascade do |t|
     t.integer "primary_id"
     t.integer "secondary_id"
     t.string "label"
@@ -551,7 +432,7 @@ ActiveRecord::Schema.define(version: 2025_02_06_215441) do
     t.index ["secondary_id"], name: "index_linked_page_items_secondary"
   end
 
-  create_table "managed_interactives", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
+  create_table "managed_interactives", charset: "utf8", force: :cascade do |t|
     t.integer "library_interactive_id"
     t.string "name"
     t.text "url_fragment"
@@ -573,8 +454,8 @@ ActiveRecord::Schema.define(version: 2025_02_06_215441) do
     t.string "custom_image_url"
     t.integer "linked_interactive_id"
     t.boolean "is_half_width", default: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "linked_interactive_type"
     t.integer "legacy_ref_id"
     t.string "legacy_ref_type"
@@ -584,14 +465,16 @@ ActiveRecord::Schema.define(version: 2025_02_06_215441) do
     t.index ["library_interactive_id"], name: "managed_interactive_library_interactive_id_idx"
   end
 
-  create_table "mc_answer_choices", id: false, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
-    t.integer "answer_id"
-    t.integer "choice_id"
+  create_table "mc_answer_choices", id: false, charset: "utf8", force: :cascade do |t|
+    t.bigint "answer_id"
+    t.bigint "choice_id"
     t.index ["answer_id", "choice_id"], name: "index_mc_answer_choices_on_answer_id_and_choice_id"
+    t.index ["answer_id"], name: "index_mc_answer_choices_on_answer_id"
     t.index ["choice_id", "answer_id"], name: "index_mc_answer_choices_on_choice_id_and_answer_id"
+    t.index ["choice_id"], name: "index_mc_answer_choices_on_choice_id"
   end
 
-  create_table "mw_interactives", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
+  create_table "mw_interactives", charset: "utf8", force: :cascade do |t|
     t.string "name"
     t.text "url"
     t.datetime "created_at", precision: nil, null: false
@@ -618,7 +501,7 @@ ActiveRecord::Schema.define(version: 2025_02_06_215441) do
     t.index ["linked_interactive_id"], name: "index_mw_interactives_on_linked_interactive_id"
   end
 
-  create_table "page_items", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
+  create_table "page_items", charset: "utf8", force: :cascade do |t|
     t.integer "interactive_page_id"
     t.integer "embeddable_id"
     t.string "embeddable_type"
@@ -626,21 +509,22 @@ ActiveRecord::Schema.define(version: 2025_02_06_215441) do
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.string "old_section"
-    t.integer "section_id"
+    t.bigint "section_id"
     t.string "column"
     t.integer "section_position"
     t.index ["embeddable_id", "embeddable_type"], name: "index_page_items_on_embeddable_id_and_embeddable_type"
     t.index ["section_id", "position"], name: "index_page_items_on_section_id_and_position"
+    t.index ["section_id"], name: "index_page_items_on_section_id"
   end
 
-  create_table "pending_portal_publications", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
+  create_table "pending_portal_publications", charset: "utf8", force: :cascade do |t|
     t.integer "portal_publication_id"
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.index ["portal_publication_id"], name: "unique_publications_per_portal", unique: true
   end
 
-  create_table "plugin_learner_states", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
+  create_table "plugin_learner_states", charset: "utf8", force: :cascade do |t|
     t.integer "plugin_id"
     t.integer "user_id"
     t.integer "run_id"
@@ -653,7 +537,7 @@ ActiveRecord::Schema.define(version: 2025_02_06_215441) do
     t.index ["shared_learner_state_key", "user_id"], name: "shared_user_plugin_states"
   end
 
-  create_table "plugins", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
+  create_table "plugins", charset: "utf8", force: :cascade do |t|
     t.string "approved_script_id"
     t.integer "plugin_scope_id"
     t.string "plugin_scope_type"
@@ -666,7 +550,7 @@ ActiveRecord::Schema.define(version: 2025_02_06_215441) do
     t.index ["plugin_scope_id", "plugin_scope_type"], name: "plugin_scopes"
   end
 
-  create_table "portal_publications", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
+  create_table "portal_publications", charset: "utf8", force: :cascade do |t|
     t.string "portal_url"
     t.text "response"
     t.boolean "success"
@@ -680,15 +564,17 @@ ActiveRecord::Schema.define(version: 2025_02_06_215441) do
     t.index ["publishable_id", "publishable_type"], name: "index_portal_publications_on_publishable_id_and_publishable_type"
   end
 
-  create_table "project_admins", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
-    t.integer "user_id"
-    t.integer "project_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+  create_table "project_admins", charset: "utf8", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "project_id"
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
+    t.index ["project_id"], name: "index_project_admins_on_project_id"
     t.index ["user_id", "project_id"], name: "index_project_admins_on_user_id_and_project_id", unique: true
+    t.index ["user_id"], name: "index_project_admins_on_user_id"
   end
 
-  create_table "projects", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
+  create_table "projects", charset: "utf8", force: :cascade do |t|
     t.string "title"
     t.string "logo_lara"
     t.string "url"
@@ -707,17 +593,18 @@ ActiveRecord::Schema.define(version: 2025_02_06_215441) do
     t.index ["project_key"], name: "index_projects_on_project_key", unique: true
   end
 
-  create_table "rubrics", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
+  create_table "rubrics", charset: "utf8", force: :cascade do |t|
     t.string "name"
     t.integer "user_id"
     t.integer "project_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "authored_content_id"
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
+    t.bigint "authored_content_id"
     t.string "doc_url"
+    t.index ["authored_content_id"], name: "index_rubrics_on_authored_content_id"
   end
 
-  create_table "runs", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
+  create_table "runs", charset: "utf8", force: :cascade do |t|
     t.integer "user_id"
     t.integer "run_count"
     t.datetime "created_at", precision: nil, null: false
@@ -750,20 +637,21 @@ ActiveRecord::Schema.define(version: 2025_02_06_215441) do
     t.index ["user_id"], name: "index_runs_on_user_id"
   end
 
-  create_table "sections", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
+  create_table "sections", charset: "utf8", force: :cascade do |t|
     t.string "title"
     t.boolean "show"
     t.string "layout"
     t.integer "position"
-    t.integer "interactive_page_id"
+    t.bigint "interactive_page_id"
     t.boolean "can_collapse_small"
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.string "name"
     t.index ["interactive_page_id", "position"], name: "index_sections_on_interactive_page_id_and_position"
+    t.index ["interactive_page_id"], name: "index_sections_on_interactive_page_id"
   end
 
-  create_table "sequence_runs", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
+  create_table "sequence_runs", charset: "utf8", force: :cascade do |t|
     t.integer "user_id"
     t.integer "sequence_id"
     t.string "remote_id"
@@ -781,7 +669,7 @@ ActiveRecord::Schema.define(version: 2025_02_06_215441) do
     t.index ["user_id"], name: "index_sequence_runs_on_user_id"
   end
 
-  create_table "sequences", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
+  create_table "sequences", charset: "utf8", force: :cascade do |t|
     t.string "title"
     t.text "description"
     t.datetime "created_at", precision: nil, null: false
@@ -810,15 +698,15 @@ ActiveRecord::Schema.define(version: 2025_02_06_215441) do
     t.index ["user_id"], name: "index_sequences_on_user_id"
   end
 
-  create_table "settings", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
+  create_table "settings", charset: "utf8", force: :cascade do |t|
     t.string "key"
     t.text "value"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["key"], name: "index_settings_on_key"
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
+    t.index ["key"], name: "index_settings_on_key", unique: true
   end
 
-  create_table "users", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
+  create_table "users", charset: "utf8", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
@@ -844,7 +732,7 @@ ActiveRecord::Schema.define(version: 2025_02_06_215441) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
-  create_table "video_interactives", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
+  create_table "video_interactives", charset: "utf8", force: :cascade do |t|
     t.string "poster_url"
     t.text "caption"
     t.text "credit"
@@ -857,7 +745,7 @@ ActiveRecord::Schema.define(version: 2025_02_06_215441) do
     t.string "migration_status", default: "not migrated"
   end
 
-  create_table "video_sources", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
+  create_table "video_sources", charset: "utf8", force: :cascade do |t|
     t.string "url", null: false
     t.string "format", null: false
     t.integer "video_interactive_id"
