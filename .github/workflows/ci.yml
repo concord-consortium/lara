@@ -131,7 +131,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: Start Application Container in dev mode so the configs are copied and migrations are run
         run: |
-          docker run --name app -p 3000:3000 --network=host \
+          docker run -d --name app -p 3000:3000 --network=host \
             -e DB_HOST=127.0.0.1 \
             -e DB_PORT=3306 \
             -e DB_USER=root \
