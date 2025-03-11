@@ -220,9 +220,18 @@ class ManagedInteractive < ApplicationRecord
     hash
   end
 
+  def self.legacy_properties
+    [:show_in_featured_question_report]
+  end
+
   def self.import(import_hash)
     # make a shallow copy of the import_hash because we are going to modify it
     import_hash = import_hash.clone
+
+    legacy_properties.each do |prop|
+      import_hash.delete(prop)
+    end
+
     # save off the imported library interactive to hydrate it after the instance is created
     imported_library_interactive = import_hash[:library_interactive]
     import_hash.delete(:library_interactive)
