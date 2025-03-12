@@ -105,7 +105,17 @@ class MwInteractive < ApplicationRecord
                               :report_item_url])
   end
 
+  def self.legacy_properties
+    [:show_in_featured_question_report]
+  end
+
   def self.import(import_hash)
+    import_hash = import_hash.clone
+
+    legacy_properties.each do |prop|
+      import_hash.delete(prop)
+    end
+
     return self.new(import_hash)
   end
 
