@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test:cypress:open": "cypress open"
+    "test:cypress:open": "cypress open",
+    "test:cypress:open:staging": "cypress open --config-file cypress.config.staging.js"
   },
   "author": "",
   "license": "ISC",
