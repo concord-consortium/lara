@@ -9,10 +9,14 @@
 // ***********************************************
 //
 //
-// -- This is a parent command --
-// Cypress.Commands.add('login', (email, password) => { ... })
-//
-//
+Cypress.Commands.add("loginLARAWithSSO", (username, password) => {
+    cy.log("Logging in as user : " + username);
+    cy.get("[data-cy=header-menu] .login-link").click();
+    cy.wait(2000);
+    cy.get("[data-cy=header-menu] .header-menu-links.show a").eq(0).click();
+    cy.wait(2000);
+    cy.login(username, password);
+  })
 // -- This is a child command --
 // Cypress.Commands.add('drag', { prevSubject: 'element'}, (subject, options) => { ... })
 //
