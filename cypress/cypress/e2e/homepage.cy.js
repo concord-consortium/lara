@@ -1,4 +1,3 @@
-/// <reference types="Cypress" />
 // context("Test Admin User Role", () => {
 //   before(() => {
 //     cy.visit("")
