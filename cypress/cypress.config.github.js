@@ -9,7 +9,7 @@ module.exports = defineConfig({
   },
   env: {
     baseUrl: "http://localhost:3000",
-    username: "dev_test_user@test.email",
+    email: "dev_test_user@test.email",
     password: "password",
   }
 });

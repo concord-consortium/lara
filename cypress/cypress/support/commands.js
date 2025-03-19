@@ -9,21 +9,23 @@
 // ***********************************************
 //
 //
-Cypress.Commands.add("loginLARAWithSSO", (username, password) => {
-    cy.log("Logging in as user : " + username);
-    cy.get("[data-cy=header-menu] .login-link").click();
-    cy.wait(2000);
-    cy.get("[data-cy=header-menu] .header-menu-links.show a").eq(0).click();
-    cy.wait(2000);
-    cy.login(username, password);
-  })
-// -- This is a child command --
-// Cypress.Commands.add('drag', { prevSubject: 'element'}, (subject, options) => { ... })
-//
-//
-// -- This is a dual command --
-// Cypress.Commands.add('dismiss', { prevSubject: 'optional'}, (subject, options) => { ... })
-//
-//
-// -- This will overwrite an existing command --
-// Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+Cypress.Commands.add("login", (email, password) => {
+  email = email ?? Cypress.env('email');
+  password = password ?? Cypress.env('password');
+  cy.log(`Login user: ${email}`);
+  cy.visit("/users/sign_in");
+  cy.get('#user_email').type(email);
+  cy.get('#user_password').type(password, { log: false });
+  cy.get("input[type=submit]").click( {force: true} );
+  cy.wait(500)
+});
+Cypress.Commands.add("logout", () => {
+  cy.log("Logout");
+  cy.get("[data-cy=header-menu] .icon").click();
+  cy.wait(500);
+  cy.get("[data-cy=header-menu] .header-menu-links.show a").last().click();
+  cy.wait(500);
+});
+Cypress.Commands.add('getAccountOwnerName', () => {
+  return cy.get('#header .account-owner-name');
+});

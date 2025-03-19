@@ -9,7 +9,7 @@ module.exports = defineConfig({
   },
   env: {
     baseUrl: "https://authoring.lara.staging.concord.org/",
-    username: "sara_teacher1",
+    email: "sara.teacher1@mailinator.com",
     // password should NOT be stored here!
     portalBaseUrl: "https://learn.portal.staging.concord.org"
   }
