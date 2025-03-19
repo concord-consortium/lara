@@ -25,4 +25,12 @@ namespace :lightweight do
     end
   end
 
+  desc "Create an admin user for testing in continuous integration environment."
+  task create_ci_admin_user: :environment do
+    u = User.create(
+      email: "ci_test_user@test.email",
+      password: "password",
+      is_admin: true
+    )
+  end
 end
