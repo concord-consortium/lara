@@ -47,7 +47,7 @@ jobs:
           nix develop -c npm run test
         working-directory: ./lara-typescript/
       - name: Create CI admin user
-        run: nix develop -c bundle exec rake create_ci_admin_user
+        run: nix develop -c bundle exec rake lightweight:create_ci_admin_user
       - name: Start Rails server
         run: nix develop -c bundle exec rails server -b 0.0.0.0 -p 3000 &
       - name: Run Cypress Tests
