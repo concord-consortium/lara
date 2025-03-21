@@ -12,6 +12,7 @@ module.exports = defineConfig({
     baseUrl,
   },
   env: {
+    useSSO: false,
     baseUrl,
     email,
     password,

@@ -8,6 +8,7 @@ module.exports = defineConfig({
     baseUrl: "http://localhost:3000",
   },
   env: {
+    useSSO: false,
     baseUrl: "http://localhost:3000",
     email: "ci_test_user@test.email",
     password: "password",
