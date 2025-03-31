@@ -225,6 +225,17 @@ If it was working you could run
 
     docker-compose run --rm app bundle exec rake jasmine:ci
 
+## Cypress
+
+### Running tests
+In the dev environment:
+
+- `npm run test:dev`
+
+In the staging environment:
+
+- `CYPRESS_password=<password> npm run test:cypress:open:staging``
+
 
 ## Adding Embeddable support
 _This may be obsolete as of April 2013_
