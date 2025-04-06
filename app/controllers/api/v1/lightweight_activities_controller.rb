@@ -1,4 +1,4 @@
-class Api::V1::LightweightActivitiesController < API::APIController
+class Api::V1::LightweightActivitiesController < Api::ApiController
   def destroy
     activity = LightweightActivity.find(params[:id])
     authorize! :destroy, activity

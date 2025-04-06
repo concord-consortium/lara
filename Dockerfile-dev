@@ -1,4 +1,13 @@
-FROM ghcr.io/concord-consortium/docker-rails-base-private:ruby-2.3.7-rails-3.2.22.25
+# set base ruby image
+FROM ruby:3.3.7
+
+# update repositories
+RUN echo 'deb http://archive.debian.org/debian/ stretch main' > /etc/apt/sources.list
+RUN apt-get update
+
+# install needed packages
+RUN apt-get install -y build-essential libpq-dev nodejs
+
 #
 # Install wait-for-it to support docker-volume-sync
 WORKDIR /usr/local/bin

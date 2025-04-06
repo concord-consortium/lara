@@ -4,8 +4,8 @@ describe MwInteractive do
   it_behaves_like "a base interactive", :mw_interactive
 
   let (:interactive_options) { {linked_interactive_id: 1} }
-  let (:interactive) { FactoryGirl.create(:mw_interactive, interactive_options) }
-  let (:page) { FactoryGirl.create(:page) }
+  let (:interactive) { FactoryBot.create(:mw_interactive, interactive_options) }
+  let (:page) { FactoryBot.create(:page) }
 
   it 'has valid attributes' do
     interactive.valid?
@@ -40,7 +40,6 @@ describe MwInteractive do
         is_hidden: interactive.is_hidden,
         is_half_width: interactive.is_half_width,
         authored_state: interactive.authored_state,
-        show_in_featured_question_report: interactive.show_in_featured_question_report,
         aspect_ratio_method: interactive.aspect_ratio_method,
         no_snapshots: interactive.no_snapshots,
         linked_interactive_item_id: interactive.linked_interactive_item_id,
@@ -106,8 +105,8 @@ describe MwInteractive do
   # javascript code.
   # Better yet would be to find another way to model and/or author this.
   describe 'labbook options' do
-    let (:labbook) { FactoryGirl.create(:labbook, action_type: Embeddable::Labbook::SNAPSHOT_ACTION, custom_action_label: "custom action label") }
-    let (:interactive) { FactoryGirl.create(:mw_interactive, labbook: labbook) }
+    let (:labbook) { FactoryBot.create(:labbook, action_type: Embeddable::Labbook::SNAPSHOT_ACTION, custom_action_label: "custom action label") }
+    let (:interactive) { FactoryBot.create(:mw_interactive, labbook: labbook) }
 
     it 'remain the same if url changes to a non-upload only url' do
       stub_const('ENV', {'UPLOAD_ONLY_MODEL_URLS' => 'upload_url1|upload_url2'})
@@ -226,7 +225,7 @@ describe MwInteractive do
   describe "reportable?" do
     let(:enable_learner_state) { false }
     let(:hide_question_number) { false }
-    let(:mw_interactive) { FactoryGirl.create(:mw_interactive,
+    let(:mw_interactive) { FactoryBot.create(:mw_interactive,
       enable_learner_state: enable_learner_state,
       hide_question_number: hide_question_number
     )}

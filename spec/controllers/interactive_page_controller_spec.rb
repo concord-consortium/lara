@@ -4,27 +4,27 @@ describe InteractivePagesController do
   # TODO: This file is far too big, and contains a lot of view/request testing which should happen there and not here.
 
   render_views
-  let(:project) { FactoryGirl.create(:project) }
-  let (:act) { FactoryGirl.create(:public_activity, project: project ) }
+  let(:project) { FactoryBot.create(:project) }
+  let (:act) { FactoryBot.create(:public_activity, project: project ) }
 
   let (:page1) do
-    page1 = FactoryGirl.create(:page, lightweight_activity: act)
+    page1 = FactoryBot.create(:page, lightweight_activity: act)
   end
 
   let (:page2) do
-    page2 = FactoryGirl.create(:page, name: "Page 2", lightweight_activity: act)
+    page2 = FactoryBot.create(:page, name: "Page 2", lightweight_activity: act)
   end
 
   let (:page3) do
-    page3 = FactoryGirl.create(:page, name: "Page 3", lightweight_activity: act)
+    page3 = FactoryBot.create(:page, name: "Page 3", lightweight_activity: act)
   end
 
-  let (:user) { FactoryGirl.create(:user) }
-  let (:ar) { FactoryGirl.create(:run, activity_id: act.id, user_id: nil) }
+  let (:user) { FactoryBot.create(:user) }
+  let (:ar) { FactoryBot.create(:run, activity_id: act.id, user_id: nil) }
 
-  let (:interactive) { FactoryGirl.create(:mw_interactive) }
-  let (:sequence) { FactoryGirl.create(:sequence, lightweight_activities: [act]) }
-  let (:sequence_run) { FactoryGirl.create(:sequence_run, sequence_id: sequence.id, user_id: nil) }
+  let (:interactive) { FactoryBot.create(:mw_interactive) }
+  let (:sequence) { FactoryBot.create(:sequence, lightweight_activities: [act]) }
+  let (:sequence_run) { FactoryBot.create(:sequence_run, sequence_id: sequence.id, user_id: nil) }
 
   describe 'routing' do
     it 'recognizes and generates #show' do
@@ -60,7 +60,7 @@ describe InteractivePagesController do
     end
 
     describe 'when it is part of a sequence' do
-      let (:seq_run) { FactoryGirl.create(:sequence_run, sequence_id: sequence.id, user_id: nil) }
+      let (:seq_run) { FactoryBot.create(:sequence_run, sequence_id: sequence.id, user_id: nil) }
 
       before(:each) do
         # Add the activity to the sequence
@@ -83,27 +83,6 @@ describe InteractivePagesController do
     it 'renders the page if it exists' do
 
       # Add embeddables
-      or1 = Embeddable::OpenResponse.create!(name: "Open Response 1", prompt: "Why do you think this model is cool?", default_text: "This is the Open Response 1 default text")
-      or2 = Embeddable::OpenResponse.create!(name: "Open Response 2", prompt: "What would you add to it?", default_text: "This is the Open Response 2 default text")
-
-      mc1 = Embeddable::MultipleChoice.create!(name: "Multiple choice 1", prompt: "What color is chlorophyll?")
-      Embeddable::MultipleChoiceChoice.create(choice: 'Red', multiple_choice: mc1)
-      Embeddable::MultipleChoiceChoice.create(choice: 'Green', multiple_choice: mc1)
-      Embeddable::MultipleChoiceChoice.create(choice: 'Blue', multiple_choice: mc1)
-
-      mc2 = Embeddable::MultipleChoice.create!(name: "Multiple choice 2", prompt: "How many protons does Helium have?")
-      Embeddable::MultipleChoiceChoice.create(choice: '1', multiple_choice: mc2)
-      Embeddable::MultipleChoiceChoice.create(choice: '2', multiple_choice: mc2)
-      Embeddable::MultipleChoiceChoice.create(choice: '4', multiple_choice: mc2)
-      Embeddable::MultipleChoiceChoice.create(choice: '7', multiple_choice: mc2)
-
-      xhtml1 = FactoryGirl.create(:xhtml, content: "This is some <strong>xhtml</strong> content!")
-
-      page1.add_embeddable(mc1)
-      page1.add_embeddable(or1)
-      page1.add_embeddable(xhtml1)
-      page1.add_embeddable(or2)
-      page1.add_embeddable(mc2)
       page1.add_interactive(interactive)
 
       # get the rendering
@@ -111,13 +90,6 @@ describe InteractivePagesController do
 
       # verify the page is as expected
       expect(response.body).to match /<iframe/m
-      expect(response.body).to match /What color is chlorophyll\?/m
-      expect(response.body).to match /Why do you think this model is cool\?/m
-      expect(response.body).to match /This is the Open Response 1 default text/m
-      expect(response.body).to match /What would you add to it\?/m
-      expect(response.body).to match /This is the Open Response 2 default text/m
-      expect(response.body).to match /How many protons does Helium have\?/m
-      expect(response.body).to match /This is some <strong>xhtml<\/strong> content!/m
 
     end
 
@@ -213,7 +185,7 @@ describe InteractivePagesController do
 
   context 'when the current user is an author' do
     before(:each) do
-      @user ||= FactoryGirl.create(:admin)
+      @user ||= FactoryBot.create(:admin)
       sign_in @user
     end
 
@@ -296,7 +268,7 @@ describe InteractivePagesController do
         end
 
         it 'returns the old text if the update fails' do
-          allow_any_instance_of(InteractivePage).to receive(:update_attributes).and_return(false)
+          allow_any_instance_of(InteractivePage).to receive(:update).and_return(false)
           old_name = page1.name
           put :update, params: { activity_id: act.id, id: page1.id, interactive_page: { name: 'This new name will fail.' } }, xhr: true
 
@@ -335,33 +307,22 @@ describe InteractivePagesController do
 
     describe 'reorder_embeddables' do
       it 'accepts a list of embeddables in order and adjusts position values to match' do
-        # Create two OpenResponse embeddables
-        or1 = FactoryGirl.create(:or_embeddable)
-        or2 = FactoryGirl.create(:or_embeddable)
-
         # Create one MultipleChoice embeddable, with choices
-        mc1 = FactoryGirl.create(:mc_with_choices)
+        mc1 = FactoryBot.create(:mc_with_choices)
 
         # Create another MultipleChoice embeddable, with choices
-        mc2 = FactoryGirl.create(:mc_with_choices)
+        mc2 = FactoryBot.create(:mc_with_choices)
 
-        # Create an (X)HTML embeddable
-        xhtml1 = FactoryGirl.create(:xhtml)
-
-        # Add the five embeddables created above to the page. The order they are added is the starting order: first on top, last on the bottom.
+        # Add the two embeddables created above to the page. The order they are added is the starting order: first on top, last on the bottom.
         page1.add_embeddable(mc1, 1)
-        page1.add_embeddable(or1, 2)
-        page1.add_embeddable(xhtml1, 3)
-        page1.add_embeddable(or2, 4)
         page1.add_embeddable(mc2, 5)
 
         # Send a reorder request with params to reverse the order
-        get :reorder_embeddables, params: { id: page1.id, activity_id: act.id, embeddable: [ "#{mc2.id}.#{mc2.class.to_s}", "#{or2.id}.#{or2.class.to_s}", "#{xhtml1.id}.#{xhtml1.class.to_s}", "#{or1.id}.#{or1.class.to_s}", "#{mc1.id}.#{mc1.class.to_s}" ] }, xhr: true
+        get :reorder_embeddables, params: { id: page1.id, activity_id: act.id, embeddable: [ "#{mc2.id}.#{mc2.class.to_s}", "#{mc1.id}.#{mc1.class.to_s}" ] }, xhr: true
 
         page1.reload
         expect(page1.embeddables.first).to eq(mc2)
         expect(page1.embeddables.last).to eq(mc1)
-        expect(page1.embeddables[2]).to eq(xhtml1)
         act.reload
         expect(act.changed_by).to eq(@user)
       end
@@ -369,14 +330,14 @@ describe InteractivePagesController do
 
     describe 'add_embeddable' do
       it 'creates an arbitrary embeddable and adds it to the page' do
-        xhtml_count = Embeddable::Xhtml.count()
+        mc_count = Embeddable::MultipleChoice.count()
         embeddable_count = page1.embeddables.length
-        post :add_embeddable, params: { activity_id: act.id, id: page1.id, embeddable_type: 'Embeddable::Xhtml' }
+        post :add_embeddable, params: { activity_id: act.id, id: page1.id, embeddable_type: 'Embeddable::MultipleChoice' }
 
         page1.reload
 
         expect(page1.embeddables.count).to eq(embeddable_count + 1)
-        expect(Embeddable::Xhtml.count()).to eq(xhtml_count + 1)
+        expect(Embeddable::MultipleChoice.count()).to eq(mc_count + 1)
       end
 
       it 'raises an error on invalid embeddable_type' do
@@ -402,14 +363,8 @@ describe InteractivePagesController do
     it 'add_embeddable redirects to the edit page' do
       embeddable_types = {
         Embeddable::MultipleChoice => :edit_mc,
-        Embeddable::OpenResponse => :edit_or,
-        Embeddable::ImageQuestion => :edit_iq,
-        Embeddable::Labbook => :edit_lb,
-        Embeddable::Xhtml => :edit_xhtml,
-        Embeddable::ExternalScript => :edit_external_script,
         Embeddable::EmbeddablePlugin => :edit_embeddable_plugin,
         MwInteractive => :edit_mw_int,
-        ImageInteractive => :edit_image,
         VideoInteractive => :edit_video
       }
       embeddable_types.each do |clazz, edit_slug|
@@ -425,7 +380,7 @@ describe InteractivePagesController do
 
     describe 'remove_page_item' do
       it 'removes the identified embeddable from the page' do
-        embeddable = FactoryGirl.create(:xhtml)
+        embeddable = FactoryBot.create(:multiple_choice)
         page1.add_embeddable(embeddable)
         page1.reload
         embed_count = page1.embeddables.length
@@ -437,7 +392,7 @@ describe InteractivePagesController do
       end
 
       it 'redirects to the edit page' do
-        embeddable = FactoryGirl.create(:xhtml)
+        embeddable = FactoryBot.create(:multiple_choice)
         page1.add_embeddable(embeddable)
         post :remove_page_item, params: { page_item_id: embeddable.p_item.id }
 

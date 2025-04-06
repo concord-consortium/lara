@@ -2,13 +2,13 @@ require 'spec_helper'
 
 describe GlossariesController do
 
-  let(:author1) { FactoryGirl.create(:author) }
-  let(:author2) { FactoryGirl.create(:author) }
-  let(:admin) { FactoryGirl.create(:admin) }
+  let(:author1) { FactoryBot.create(:author) }
+  let(:author2) { FactoryBot.create(:author) }
+  let(:admin) { FactoryBot.create(:admin) }
   let (:current_user) { admin }
-  let (:glossary) { FactoryGirl.create(:glossary, user: admin) }
-  let (:glossary2) { FactoryGirl.create(:glossary, user: author1) }
-  let (:glossary3) { FactoryGirl.create(:glossary, user: author2) }
+  let (:glossary) { FactoryBot.create(:glossary, user: admin) }
+  let (:glossary2) { FactoryBot.create(:glossary, user: author1) }
+  let (:glossary3) { FactoryBot.create(:glossary, user: author2) }
 
   before(:each) do
     # We're testing access control in spec/models/user_spec.rb, so for this
@@ -107,9 +107,9 @@ describe GlossariesController do
       it "updates the requested glossary" do
         # Assuming there are no other glossaries in the database, this
         # specifies that the Glossary created on the previous line
-        # receives the :update_attributes message with whatever params are
+        # receives the :update message with whatever params are
         # submitted in the request.
-        expect_any_instance_of(Glossary).to receive(:update_attributes).with({'name' => 'New Name'})
+        expect_any_instance_of(Glossary).to receive(:update).with(hash_including('name' => 'New Name'))
         put :update, params: { id: glossary.id, glossary: {'name' => 'New Name'} }
       end
 
@@ -171,7 +171,7 @@ describe GlossariesController do
   describe "export" do
     it "exports the requested glossary" do
       get :export, params: { id: glossary.id }
-      expect(response).to be_success
+      expect(response).to be_successful
       json_response = JSON.parse(response.body)
       expect(json_response["type"]).to eq("Glossary")
     end

@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 RSpec.describe Setting do
-  let(:glossary_setting) { FactoryGirl.create(:setting, key: "glossary_approved_script_id", value: "1") }
+  let(:glossary_setting) { FactoryBot.create(:setting, key: "glossary_approved_script_id", value: "1") }
 
   it "should provide a self.get method with defaults" do
     glossary_setting

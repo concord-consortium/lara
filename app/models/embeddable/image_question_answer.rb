@@ -32,7 +32,7 @@ module Embeddable
     end
 
     def copy_answer!(another_answer)
-      self.update_attributes!(
+      self.update!(
         answer_text: another_answer.answer_text,
         image_url: another_answer.image_url,
         annotated_image_url: another_answer.annotated_image_url,

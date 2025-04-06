@@ -1,10 +1,10 @@
 require "spec_helper"
 
 describe SequenceHelper do
-  let(:activity)     { FactoryGirl.create(:activity, id: 23, name: "Test Activity") }
-  let(:sequence)     { FactoryGirl.create(:sequence, id: 1, title: "Test Sequence", lightweight_activities: [activity])}
-  let(:activity_player_activity)  { FactoryGirl.create(:activity, id: 24, name: "AP Test Activity") }
-  let(:activity_player_sequence)  { FactoryGirl.create(:sequence, id: 2, title: "AP Test Sequence",
+  let(:activity)     { FactoryBot.create(:activity, id: 23, name: "Test Activity") }
+  let(:sequence)     { FactoryBot.create(:sequence, id: 1, title: "Test Sequence", lightweight_activities: [activity])}
+  let(:activity_player_activity)  { FactoryBot.create(:activity, id: 24, name: "AP Test Activity") }
+  let(:activity_player_sequence)  { FactoryBot.create(:sequence, id: 2, title: "AP Test Sequence",
     lightweight_activities: [activity_player_activity])}
 
   describe "#sequence_preview_options" do

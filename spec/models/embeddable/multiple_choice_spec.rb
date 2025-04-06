@@ -4,14 +4,14 @@ describe Embeddable::MultipleChoice do
   it_behaves_like "a question"
 
   let (:multichoice) do
-    mc = FactoryGirl.create(:multiple_choice)
+    mc = FactoryBot.create(:multiple_choice)
     mc.create_default_choices
     mc.reload
     mc
   end
 
   let (:page) do
-    p = FactoryGirl.create(:interactive_page)
+    p = FactoryBot.create(:interactive_page)
     p.add_embeddable(multichoice)
     p.reload
     p
@@ -75,7 +75,7 @@ describe Embeddable::MultipleChoice do
 
     describe 'when the MultipleChoiceChoice is multi-answer' do
       let (:multichoice) do
-        mc = FactoryGirl.create(:multiple_choice, multi_answer: true)
+        mc = FactoryBot.create(:multiple_choice, multi_answer: true)
         mc.create_default_choices
         mc.choices[0].is_correct = true
         mc.choices[0].save
@@ -119,7 +119,6 @@ describe Embeddable::MultipleChoice do
         multi_answer: multichoice.multi_answer,
         show_as_menu: multichoice.show_as_menu,
         is_prediction: multichoice.is_prediction,
-        show_in_featured_question_report: multichoice.show_in_featured_question_report,
         is_half_width: multichoice.is_half_width,
         give_prediction_feedback: multichoice.give_prediction_feedback,
         prediction_feedback: multichoice.prediction_feedback,
@@ -149,7 +148,6 @@ describe Embeddable::MultipleChoice do
         id: multichoice.id,
         prompt: multichoice.prompt,
         is_required: multichoice.is_prediction,
-        show_in_featured_question_report: multichoice.show_in_featured_question_report,
         choices: multichoice.choices.map { |choice|
           {
             id: choice.id,

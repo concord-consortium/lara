@@ -7,7 +7,7 @@ describe ReportService::ResourceSender do
   let(:id)                   { "resource-id"}
   let(:activity_player_url)  { "http://ap.url/"}
 
-  let(:resource) { FactoryGirl.create(:activity_with_page_and_or) }
+  let(:resource) { FactoryBot.create(:activity_with_page_and_or) }
   let(:sender)   { ReportService::ResourceSender.new(resource) }
 
   before(:each) do

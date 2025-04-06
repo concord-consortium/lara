@@ -1,5 +1,5 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :global_interactive_state, class: 'GlobalInteractiveState' do
-    raw_data '{"foo": bar}'
+    raw_data { '{"foo": bar}' }
   end
 end

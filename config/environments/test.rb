@@ -26,8 +26,9 @@ LightweightStandalone::Application.configure do
   config.public_file_server.enabled = true
   config.public_file_server.headers = { "Cache-Control" => "public, max-age=3600" }
 
+  config.assets.compile = true
   config.assets.debug = false
-  config.assets.compile = false
+  config.assets.precompile += %w(runtime.js)
 
   # Show full error reports and disable caching
   config.consider_all_requests_local       = true
@@ -52,6 +53,5 @@ LightweightStandalone::Application.configure do
   config.action_controller.per_form_csrf_tokens = false
   config.action_controller.forgery_protection_origin_check = false
   config.ssl_options = { hsts: { subdomains: false } }
-  ActiveSupport.to_time_preserves_timezone = false
 
 end

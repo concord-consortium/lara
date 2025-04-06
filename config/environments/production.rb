@@ -1,7 +1,8 @@
-require 'uglifier'
-
 LightweightStandalone::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
+
+  # This is not the Rails 8 way, but we want to be able to set the secret key base via an environment variable.
+  config.secret_key_base = ENV["RAILS_SECRET_KEY_BASE"] || raise("Missing RAILS_SECRET_KEY_BASE")
 
   # Code is not reloaded between requests
   config.cache_classes = true
@@ -18,7 +19,7 @@ LightweightStandalone::Application.configure do
   config.public_file_server.enabled = false
 
   # Compress JavaScripts and CSS
-  config.assets.js_compressor = Uglifier.new(harmony: true)
+  config.assets.js_compressor = :terser
 
   # Don't fallback to assets pipeline if a precompiled asset is missed
   config.assets.compile = false
@@ -34,7 +35,7 @@ LightweightStandalone::Application.configure do
   # config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect' # for nginx
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
-  # config.force_ssl = true
+  config.force_ssl = false
 
   # See info messages and above in the log (default is :debug in Rails 5)
   config.log_level = :info
@@ -56,13 +57,13 @@ LightweightStandalone::Application.configure do
 
   # Precompile additional assets (application.js, application.css, and all non-JS/CSS are already added)
   # config.assets.precompile += %w( search.js )
-  config.assets.precompile += %w(runtime.js respond.js modernizr.min.js)
+  config.assets.precompile += %w(runtime.js)
   # Themes:
   config.assets.precompile += %w(
   runtime.css theme-mw.css theme-has-ngs.css theme-has-ngs-atmosphere.css
   theme-has-ngs-climate.css theme-has-ngs-hydrofracking.css theme-has-ngs-landmanagement.css
   theme-has-ngs-water.css theme-rites.css print-summary.css theme-interactions-electrostatics.css
-  theme-interactions.css theme-inquiryspace.css theme-itsi.css theme-itsi-survey.css theme-has-astro.css
+  theme-interactions.css theme-inquiryspace.css theme-has-astro.css
   theme-has-astro-dark.css theme-ngss-assessment.css theme-building-models.css theme-geode-himalayas.css
   theme-ipums-terra.css theme-data-games.css theme-precipitating-change.css theme-geniventure.css
   theme-connectedbio.css theme-geohazard.css theme-geocode.css theme-rmath.css theme-waters.css
@@ -92,6 +93,5 @@ LightweightStandalone::Application.configure do
   config.action_controller.per_form_csrf_tokens = false
   config.action_controller.forgery_protection_origin_check = false
   config.ssl_options = { hsts: { subdomains: false } }
-  ActiveSupport.to_time_preserves_timezone = false
   config.active_record.use_yaml_unsafe_load = true
 end

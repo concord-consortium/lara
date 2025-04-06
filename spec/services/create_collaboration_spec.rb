@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe CreateCollaboration do
-  let(:user) { FactoryGirl.create(:user) }
+  let(:user) { FactoryBot.create(:user) }
   let(:collaborators_data_url) { "http://portal.org/collaborations/123" }
   let(:collaboration_params) do
     [
@@ -48,7 +48,7 @@ describe CreateCollaboration do
   describe "service call" do
     # Obviously it should work only after create collaboration service is called.
     let(:new_user) { User.find_by_email(collaboration_params[1][:email]) }
-    let(:material) { FactoryGirl.create(:activity) }
+    let(:material) { FactoryBot.create(:activity) }
     let(:create_collaboration) { CreateCollaboration.new(collaborators_data_url, user, material) }
 
     it "should create new collaboration run" do
@@ -93,10 +93,10 @@ describe CreateCollaboration do
 
     describe "when a sequence is provided as a material" do
       let(:material) {
-        s = FactoryGirl.create(:sequence)
-        s.activities << FactoryGirl.create(:activity)
-        s.activities << FactoryGirl.create(:activity)
-        s.activities << FactoryGirl.create(:activity)
+        s = FactoryBot.create(:sequence)
+        s.activities << FactoryBot.create(:activity)
+        s.activities << FactoryBot.create(:activity)
+        s.activities << FactoryBot.create(:activity)
         s
       }
       it "should create new runs for each user and each activity" do

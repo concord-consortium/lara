@@ -1,9 +1,9 @@
 require 'spec_helper'
 
 describe Embeddable::OpenResponseAnswer do
-  let(:question) { FactoryGirl.create(:or_embeddable) }
-  let(:run) { FactoryGirl.create(:run, activity: FactoryGirl.create(:activity) ) }
-  let(:answer) { FactoryGirl.create(:or_answer, answer_text: "the answer", question: question, run: run ) }
+  let(:question) { FactoryBot.create(:or_embeddable) }
+  let(:run) { FactoryBot.create(:run, activity: FactoryBot.create(:activity) ) }
+  let(:answer) { FactoryBot.create(:or_answer, answer_text: "the answer", question: question, run: run ) }
 
   it_behaves_like "an answer"
   describe "model associations" do
@@ -37,7 +37,7 @@ describe Embeddable::OpenResponseAnswer do
   end
 
   describe '#copy_answer!' do
-    let(:another_answer) { FactoryGirl.create(:or_answer, answer_text: "the answer", is_final: true) }
+    let(:another_answer) { FactoryBot.create(:or_answer, answer_text: "the answer", is_final: true) }
 
     it "should copy basic attributes that can be modified by student" do
       answer.copy_answer!(another_answer)
@@ -54,16 +54,6 @@ describe Embeddable::OpenResponseAnswer do
         answer.question = question
         expect(answer.prompt).to eq(:some_prompt)
       end
-    end
-  end
-
-  describe "C-Rater functionality" do
-    subject { answer }
-    it { is_expected.to respond_to(:save_feedback) }
-    it { is_expected.to respond_to(:get_saved_feedback) }
-    describe "required interface" do
-      it { is_expected.to respond_to(:answer_text) }
-      it { is_expected.to respond_to(:c_rater_item_settings) }
     end
   end
 end

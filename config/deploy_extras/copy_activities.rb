@@ -22,7 +22,7 @@ namespace :lara do
     filename  = "#{timestamp}-lara.sql"
 
     text      = capture "cat #{deploy_to}/shared/config/database.yml"
-    conf      = YAML::load(text)["production"]
+    conf = Psych.safe_load(text, permitted_classes: [Hash, String])["production"]
     passwd    = conf["password"]
     user      = conf["username"]
     database  = conf["database"]

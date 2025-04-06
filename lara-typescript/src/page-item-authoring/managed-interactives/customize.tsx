@@ -31,7 +31,6 @@ export const CustomizeManagedInteractive: React.FC<Props> = (props) => {
     custom_full_window,
     inherit_image_url,
     custom_image_url,
-    show_in_featured_question_report,
     linked_interactive_item_id,
     inherit_hide_question_number,
     custom_hide_question_number
@@ -92,15 +91,6 @@ export const CustomizeManagedInteractive: React.FC<Props> = (props) => {
             <em>Warning</em>: Please do not link to another interactive
             unless the interactive knows how to load prior work.
           </div>
-        </fieldset>
-        <fieldset>
-          <legend>Featured Report</legend>
-          <Checkbox
-              id="show_in_featured_question_report"
-              name="show_in_featured_question_report"
-              defaultChecked={show_in_featured_question_report}
-              label="Show in featured question report?"
-            />
         </fieldset>
       </>
       : undefined}

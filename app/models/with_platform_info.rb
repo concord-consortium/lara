@@ -10,19 +10,19 @@ module WithPlatformInfo
     new_platform_user_id = params['platform_user_id']
     new_resource_link_id = params['resource_link_id']
     if new_class_info_url && self.class_info_url.blank?
-      update_attributes({ class_info_url: new_class_info_url })
+      update({ class_info_url: new_class_info_url })
     end
     if new_context_id && self.context_id.blank?
-      update_attributes({ context_id: new_context_id })
+      update({ context_id: new_context_id })
     end
     if new_platform_id && self.platform_id.blank?
-      update_attributes({ platform_id: new_platform_id })
+      update({ platform_id: new_platform_id })
     end
     if new_platform_user_id && self.platform_user_id.blank?
-      update_attributes({ platform_user_id: new_platform_user_id })
+      update({ platform_user_id: new_platform_user_id })
     end
     if new_resource_link_id && self.resource_link_id.blank?
-      update_attributes({ resource_link_id: new_resource_link_id })
+      update({ resource_link_id: new_resource_link_id })
     end
   end
 end

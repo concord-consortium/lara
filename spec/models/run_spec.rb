@@ -1,40 +1,40 @@
 require 'spec_helper'
 
 describe Run do
-  let(:activity)        { FactoryGirl.create(:activity) }
-  let(:seq)             { FactoryGirl.create(:sequence, lightweight_activities: [activity]) }
+  let(:activity)        { FactoryBot.create(:activity) }
+  let(:seq)             { FactoryBot.create(:sequence, lightweight_activities: [activity]) }
   let(:remote_endpoint) { nil }
   let(:run) {
-    FactoryGirl.create(:run,
+    FactoryBot.create(:run,
       activity: activity,
       remote_endpoint: remote_endpoint,
       user: user
     )
   }
   let(:run_in_sequence) {
-    FactoryGirl.create(:run,
+    FactoryBot.create(:run,
       activity: activity,
       sequence: seq,
       remote_endpoint: remote_endpoint,
       user: user
     )
   }
-  let(:user)       { FactoryGirl.create(:user) }
-  let(:or_question){ FactoryGirl.create(:or_embeddable) }
-  let(:or_answer)  { FactoryGirl.create(:or_answer, { answer_text: "the answer", question: or_question }) }
-  let(:or_question2){ FactoryGirl.create(:or_embeddable) }
-  let(:or_answer2)  { FactoryGirl.create(:or_answer, { answer_text: "the answer", question: or_question2 }) }
-  let(:image_quest){ FactoryGirl.create(:image_question, prompt: "draw your answer") }
-  let(:iq_answer)  { FactoryGirl.create(:image_question_answer,
+  let(:user)       { FactoryBot.create(:user) }
+  let(:or_question){ FactoryBot.create(:or_embeddable) }
+  let(:or_answer)  { FactoryBot.create(:or_answer, { answer_text: "the answer", question: or_question }) }
+  let(:or_question2){ FactoryBot.create(:or_embeddable) }
+  let(:or_answer2)  { FactoryBot.create(:or_answer, { answer_text: "the answer", question: or_question2 }) }
+  let(:image_quest){ FactoryBot.create(:image_question, prompt: "draw your answer") }
+  let(:iq_answer)  { FactoryBot.create(:image_question_answer,
     answer_text: "the image question answer",
     question: image_quest,
     image_url: "http://foo.com/bar.jpg") }
-  let(:a1)         { FactoryGirl.create(:multiple_choice_choice, choice: "answer_one") }
-  let(:a2)         { FactoryGirl.create(:multiple_choice_choice, choice: "answer_two") }
-  let(:mc_question){ FactoryGirl.create(:multiple_choice, choices: [a1, a2]) }
-  let(:mc_answer)  { FactoryGirl.create(:multiple_choice_answer, answers: [a1], question: mc_question) }
-  let(:interactive){ FactoryGirl.create(:mw_interactive)}
-  let(:interactive_run_state){ FactoryGirl.create(:interactive_run_state,
+  let(:a1)         { FactoryBot.create(:multiple_choice_choice, choice: "answer_one") }
+  let(:a2)         { FactoryBot.create(:multiple_choice_choice, choice: "answer_two") }
+  let(:mc_question){ FactoryBot.create(:multiple_choice, choices: [a1, a2]) }
+  let(:mc_answer)  { FactoryBot.create(:multiple_choice_answer, answers: [a1], question: mc_question) }
+  let(:interactive){ FactoryBot.create(:mw_interactive)}
+  let(:interactive_run_state){ FactoryBot.create(:interactive_run_state,
     interactive: interactive,
     raw_data: '{"lara_options": {"reporting_url": "http://concord.org"}}') }
 
@@ -117,7 +117,7 @@ describe Run do
   describe "#last_page" do
     it "should remember the last page set by the controller" do
       expect(run.page).to be_nil
-      page = FactoryGirl.create(:page)
+      page = FactoryBot.create(:page)
       run.page = page
       run.save
       run.reload
@@ -126,7 +126,7 @@ describe Run do
   end
 
   describe "#set_last_page" do
-    let(:page) { FactoryGirl.create(:page) }
+    let(:page) { FactoryBot.create(:page) }
 
     it "should set the last page" do
       run.set_last_page(page)
@@ -333,7 +333,7 @@ describe Run do
           })
         }
         let(:remote_run) {
-          FactoryGirl.create(:run,
+          FactoryBot.create(:run,
             activity: activity,
             remote_endpoint: remote.remote_endpoint,
             remote_id: remote.remote_id,
@@ -524,7 +524,7 @@ describe Run do
         let(:answers) do
           answers = []
           5.times.map do |i|
-            q = FactoryGirl.create(:image_question_answer, run: run, question: FactoryGirl.create(:image_question))
+            q = FactoryBot.create(:image_question_answer, run: run, question: FactoryBot.create(:image_question))
             q.mark_dirty
             answers << q
           end
@@ -680,7 +680,7 @@ describe Run do
 
   end
   describe "with real DB objects" do
-    let(:page) { FactoryGirl.create(:page, name: 'page 1', position: 0) }
+    let(:page) { FactoryBot.create(:page, name: 'page 1', position: 0) }
     before(:each) do
       # Add answers
       run.open_response_answers << or_answer
@@ -713,7 +713,7 @@ describe Run do
     context 'with a disconnected labbook' do
 
       before(:each) do
-        page.add_embeddable(FactoryGirl.create(:labbook, interactive: nil ))
+        page.add_embeddable(FactoryBot.create(:labbook, interactive: nil ))
       end
 
       describe "page.visible_embeddables.count" do

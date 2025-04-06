@@ -1,4 +1,4 @@
-class Api::V1::PageItemsController < API::APIController
+class Api::V1::PageItemsController < Api::ApiController
   layout false
   before_action :set_page_item
 

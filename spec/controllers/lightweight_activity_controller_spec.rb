@@ -5,24 +5,24 @@ describe LightweightActivitiesController do
   render_views
 
   it_behaves_like "remote duplicate support" do
-    let(:resource) { FactoryGirl.create(:activity) }
+    let(:resource) { FactoryBot.create(:activity) }
   end
 
-  let (:admin) { FactoryGirl.create(:admin) }
-  let (:author) { FactoryGirl.create(:author) }
-  let (:page) { FactoryGirl.create(:page, name: "Page 1" ) }
+  let (:admin) { FactoryBot.create(:admin) }
+  let (:author) { FactoryBot.create(:author) }
+  let (:page) { FactoryBot.create(:page, name: "Page 1" ) }
   # act.pages.create!(:name => "Page 1") }
-  let (:project) { FactoryGirl.create(:project) }
+  let (:project) { FactoryBot.create(:project) }
   let (:act) {
-    activity = FactoryGirl.create(:public_activity,
+    activity = FactoryBot.create(:public_activity,
       user: author, project: project, pages: [page])
   }
-  let (:private_act) { FactoryGirl.create(:activity)}
-  let (:ar_run)  { FactoryGirl.create(:run, activity_id: act.id, user_id: nil) }
+  let (:private_act) { FactoryBot.create(:activity)}
+  let (:ar_run)  { FactoryBot.create(:run, activity_id: act.id, user_id: nil) }
   # let (:page) { act.pages.create!(:name => "Page 1") }
-  let (:sequence) { FactoryGirl.create(:sequence) }
+  let (:sequence) { FactoryBot.create(:sequence) }
 
-  let (:user)    { FactoryGirl.create(:user) }
+  let (:user)    { FactoryBot.create(:user) }
 
   describe 'routing' do
     it 'recognizes and generates #show' do
@@ -48,7 +48,7 @@ describe LightweightActivitiesController do
     end
 
     it "redirects to AP with the correct sequence" do
-      sequence_with_activity = FactoryGirl.create(:sequence_with_activity)
+      sequence_with_activity = FactoryBot.create(:sequence_with_activity)
 
       uri = URI.parse(ENV['ACTIVITY_PLAYER_URL'])
       query = Rack::Utils.parse_query(uri.query)
@@ -154,7 +154,7 @@ describe LightweightActivitiesController do
       it 'should return success' do
         get :new
         expect(assigns(:activity)).not_to be_nil
-        expect(response).to be_success
+        expect(response).to be_successful
       end
     end
 
@@ -197,7 +197,7 @@ describe LightweightActivitiesController do
 
         expect(assigns(:activity)).not_to be_nil
         expect(assigns(:activity)).to eq(act)
-        expect(response).to be_success
+        expect(response).to be_successful
       end
     end
 
@@ -351,7 +351,7 @@ describe LightweightActivitiesController do
     end
 
     describe '#duplicate' do
-      let (:duplicate_act) {  FactoryGirl.build(:activity) }
+      let (:duplicate_act) {  FactoryBot.build(:activity) }
 
       it "should call 'duplicate' on the activity" do
         allow(LightweightActivity).to receive(:find).and_return(act)
@@ -383,7 +383,7 @@ describe LightweightActivitiesController do
     describe '#export' do
       it "should call 'export' on the activity" do
         get :export, params: { id: act.id }
-        expect(response).to be_success
+        expect(response).to be_successful
       end
     end
 
@@ -396,7 +396,7 @@ describe LightweightActivitiesController do
 
       it "should call 'export' on the activity" do
         get :export_for_portal, params: { id: act.id }
-        expect(response).to be_success
+        expect(response).to be_successful
         json_response = JSON.parse(response.body)
         expect(json_response["student_report_enabled"]).to_not be_nil
       end
@@ -411,8 +411,8 @@ describe LightweightActivitiesController do
       end
 
       context 'with a run key' do
-        let (:answer1) { FactoryGirl.create(:multiple_choice_answer, run: ar_run)}
-        let (:answer2) { FactoryGirl.create(:multiple_choice_answer, run: ar_run)}
+        let (:answer1) { FactoryBot.create(:multiple_choice_answer, run: ar_run)}
+        let (:answer2) { FactoryBot.create(:multiple_choice_answer, run: ar_run)}
 
         before(:each) do
           allow(act).to receive_messages(answers: [answer1, answer2])

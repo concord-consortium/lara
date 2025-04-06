@@ -1,0 +1,83 @@
+{
+  "description": "\u003Cp\u003EThis activity has a header block containing one embeddable. The header block has been disabled and the embeddable should not be shown even though it should still exist and be associated with the activity's header block.\u003C/p\u003E",
+  "editor_mode": 0,
+  "layout": 0,
+  "name": "[Cypress] Header Block Test",
+  "notes": "",
+  "project_id": null,
+  "related": "",
+  "show_submit_button": true,
+  "student_report_enabled": true,
+  "thumbnail_url": "",
+  "time_to_complete": null,
+  "version": 1,
+  "theme_name": null,
+  "pages": [{
+    "additional_sections": {},
+    "embeddable_display_mode": "stacked",
+    "is_completion": false,
+    "is_hidden": false,
+    "layout": "l-6040",
+    "name": null,
+    "position": 1,
+    "show_header": false,
+    "show_info_assessment": true,
+    "show_interactive": true,
+    "show_sidebar": false,
+    "sidebar": null,
+    "sidebar_title": "Did you know?",
+    "toggle_info_assessment": false,
+    "embeddables": [{
+      "embeddable": {
+        "default_text": "",
+        "give_prediction_feedback": false,
+        "hint": "",
+        "is_half_width": true,
+        "is_hidden": false,
+        "is_prediction": false,
+        "name": "",
+        "prediction_feedback": "",
+        "prompt": "\u003Cp\u003EHow will I know?\u003C/p\u003E",
+        "type": "Embeddable::OpenResponse",
+        "ref_id": "111-Embeddable::OpenResponse"
+      },
+      "section": null
+    }, {
+      "embeddable": {
+        "content": "\u003Cp\u003EGalaxies birth vastness is bearable only through encyclopaedia galactica shores of the cosmic ocean? Flatland dream of the mind's eye Euclid descended from astronomers a mote of dust suspended in a sunbeam realm of the galaxies. Something incredible is waiting to be known are creatures of the cosmos with pretty stories for which there's little good evidence something incredible is waiting to be known tendrils of gossamer clouds intelligent beings.\u003C/p\u003E",
+        "is_half_width": false,
+        "is_hidden": false,
+        "name": "",
+        "type": "Embeddable::Xhtml",
+        "ref_id": "83-Embeddable::Xhtml"
+      },
+      "section": "header_block"
+    }, {
+      "embeddable": {
+        "aspect_ratio_method": "DEFAULT",
+        "authored_state": "",
+        "click_to_play": false,
+        "click_to_play_prompt": null,
+        "enable_learner_state": false,
+        "full_window": false,
+        "has_report_url": false,
+        "image_url": null,
+        "is_half_width": false,
+        "is_hidden": false,
+        "model_library_url": null,
+        "name": "",
+        "native_height": 435,
+        "native_width": 576,
+        "no_snapshots": false,
+        "show_delete_data_button": true,
+        "url": "http://lab.concord.org/embeddable.html#interactives/samples/1-oil-and-water-shake.json",
+        "type": "MwInteractive",
+        "ref_id": "46-MwInteractive"
+      },
+      "section": "interactive_box"
+    }]
+  }],
+  "plugins": [],
+  "type": "LightweightActivity",
+  "export_site": "Lightweight Activities Runtime and Authoring"
+}

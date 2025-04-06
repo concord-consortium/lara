@@ -5,16 +5,16 @@
 #     stub_request(:any, endpoint)
 #   end
 
-#   let(:question) { FactoryGirl.create(:open_response, :prompt => "prompt", :default_text => "default text") }
-#   let(:answer)   { FactoryGirl.create(:or_answer, :question => question, :run => run) }
+#   let(:question) { FactoryBot.create(:open_response, :prompt => "prompt", :default_text => "default text") }
+#   let(:answer)   { FactoryBot.create(:or_answer, :question => question, :run => run) }
 #   let(:endpoint) { 'http://concord.portal.org' }
-#   let(:user)     { FactoryGirl.create(:user) }
+#   let(:user)     { FactoryBot.create(:user) }
 
 #   describe "#update" do
 #     describe "with a run initiated from remote portal" do
 #       describe "and logged in" do
 #         let(:run)  {
-#           FactoryGirl.create(
+#           FactoryBot.create(
 #             :run,
 #             :remote_endpoint => endpoint,
 #             :user_id => user.id
@@ -55,7 +55,7 @@
 #       end
 #       describe "and anonymous" do
 #         let(:run)  {
-#           FactoryGirl.create(
+#           FactoryBot.create(
 #             :run,
 #             :remote_endpoint => endpoint,
 #             :user_id => nil
@@ -97,7 +97,7 @@
 #   describe "with no endpoint defined (not requested from portal)" do
 #     describe "with valid params" do
 #       describe "and logged in" do
-#         let(:run)      { FactoryGirl.create(:run, user_id: user.id) }
+#         let(:run)      { FactoryBot.create(:run, user_id: user.id) }
 #         let(:new_answer) { "this answer has been changed "}
 #         it "should update the answer" do
 #           sign_in user
@@ -118,7 +118,7 @@
 #         end
 #       end
 #       describe "and anonymous" do
-#         let(:run)      { FactoryGirl.create(:run, user_id: nil) }
+#         let(:run)      { FactoryBot.create(:run, user_id: nil) }
 #         let(:new_answer) { "this answer has been changed "}
 #         it "should update the answer" do
 #           post "update", :id => answer.id, :embeddable_open_response_answer => {
@@ -140,7 +140,7 @@
 
 #     describe "with default params" do
 #       describe "and logged in" do
-#         let(:run)      { FactoryGirl.create(:run, user_id: user.id) }
+#         let(:run)      { FactoryBot.create(:run, user_id: user.id) }
 #         let(:new_answer) { question.default_text }
 #         it "should update the answer" do
 #           sign_in user
@@ -161,7 +161,7 @@
 #         end
 #       end
 #       describe "and anonymous" do
-#         let(:run)      { FactoryGirl.create(:run, user_id: nil) }
+#         let(:run)      { FactoryBot.create(:run, user_id: nil) }
 #         let(:new_answer) { question.default_text }
 #         it "should update the answer" do
 #           post "update", :id => answer.id, :embeddable_open_response_answer => {

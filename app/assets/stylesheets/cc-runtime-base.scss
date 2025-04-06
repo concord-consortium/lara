@@ -57,10 +57,16 @@ div.activity-mod>div.site-width {
 // Border used on questions and related-mod
 .mod-border-rounded {
   border: 1px solid $black-10;
-  @include border-radius(0 0 13px 13px);
+  border-radius: 0 0 13px 13px;
 }
 
-.cf { @include pie-clearfix; }
+.cf {
+  &::after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+}
 
 
 // *********************************************
@@ -89,9 +95,7 @@ div.activity-mod>div.site-width {
   display: none;
 
   .h2 {
-    // font-family: $helv-light;
     font-size: 36px;
-    // font-weight: normal;
     letter-spacing: -1px;
     color: $drk-orange;
   }
@@ -135,7 +139,7 @@ div.activity-mod>div.site-width {
     vertical-align: top;
     padding: 20px;
     border: 1px solid $black-10;
-    @include border-radius(10px);
+    border-radius: 10px;
     opacity: 1.0;
     width: 35%;
     ol {
@@ -174,7 +178,7 @@ div.activity-mod>div.site-width {
   .estimated-time {
     border: 1px solid $black-10;
     background-color: white;
-    @include border-radius(10px);
+    border-radius: 10px;
   }
 }
 

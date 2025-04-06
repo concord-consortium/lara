@@ -1,6 +1,6 @@
-# Read about factories at https://github.com/thoughtbot/factory_girl
+# Read about factories at https://github.com/thoughtbot/factory_bot
 
-FactoryGirl.define do
+FactoryBot.define do
   factory :or_embeddable, class: Embeddable::OpenResponse do
     name         { generate(:name) }
     prompt       { generate(:prompt) }

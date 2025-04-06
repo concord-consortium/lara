@@ -31,7 +31,7 @@ describe "plugins/_show.html.haml" do
       id: run_id,
       class_info_url: class_info_url,
       remote_endpoint: run_remote_endpoint,
-      activity: FactoryGirl.create(:activity)
+      activity: FactoryBot.create(:activity)
     })
   end
   let(:plugin_local) do

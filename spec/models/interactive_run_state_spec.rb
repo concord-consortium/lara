@@ -3,10 +3,10 @@ require 'spec_helper'
 def make(thing); end
 
 describe InteractiveRunState do
-  let(:activity)        { FactoryGirl.create(:activity_with_page) }
-  let(:interactive)     { FactoryGirl.create(:mw_interactive) }
-  let(:user)            { FactoryGirl.create(:user) }
-  let(:run)             { FactoryGirl.create(:run, {activity: activity, user: user})}
+  let(:activity)        { FactoryBot.create(:activity_with_page) }
+  let(:interactive)     { FactoryBot.create(:mw_interactive) }
+  let(:user)            { FactoryBot.create(:user) }
+  let(:run)             { FactoryBot.create(:run, {activity: activity, user: user})}
 
   before(:each) do
     activity.pages.first.add_embeddable(interactive)
@@ -89,8 +89,8 @@ describe InteractiveRunState do
       end
 
       describe "when the interactive has a linked interactive but the linked interactive has no state" do
-        let(:linked_interactive) { FactoryGirl.create(:mw_interactive)}
-        let(:interactive)        { FactoryGirl.create(:mw_interactive, {linked_interactive: linked_interactive})}
+        let(:linked_interactive) { FactoryBot.create(:mw_interactive)}
+        let(:interactive)        { FactoryBot.create(:mw_interactive, {linked_interactive: linked_interactive})}
 
         it "should return the raw_data" do
           expect(result_hash["raw_data"]).to eql run_data
@@ -105,9 +105,9 @@ describe InteractiveRunState do
 
       describe "when the interactive run state has a linked interactive" do
         let(:linked_run_data)    {'{"first": 1}"'}
-        let(:linked_interactive) { FactoryGirl.create(:mw_interactive)}
+        let(:linked_interactive) { FactoryBot.create(:mw_interactive)}
         let(:linked_run_state)   { InteractiveRunState.create(run: run, interactive: linked_interactive, raw_data: linked_run_data)}
-        let(:interactive)        { FactoryGirl.create(:mw_interactive, {linked_interactive: linked_interactive})}
+        let(:interactive)        { FactoryBot.create(:mw_interactive, {linked_interactive: linked_interactive})}
 
         before(:each) do
           make linked_run_state
@@ -122,12 +122,12 @@ describe InteractiveRunState do
         end
 
         describe "when the linked interactive is through a sequence run" do
-          let(:sequence_run)       { FactoryGirl.create(:sequence_run)}
-          let(:run)                { FactoryGirl.create(:run, {sequence_run: sequence_run, activity: activity, user: user})}
-          let(:run2)               { FactoryGirl.create(:run, {sequence_run: sequence_run, activity: activity2, user: user})}
+          let(:sequence_run)       { FactoryBot.create(:sequence_run)}
+          let(:run)                { FactoryBot.create(:run, {sequence_run: sequence_run, activity: activity, user: user})}
+          let(:run2)               { FactoryBot.create(:run, {sequence_run: sequence_run, activity: activity2, user: user})}
           let(:linked_run_data)    {'{"first": 1}"'}
           let(:linked_run_state)   { InteractiveRunState.create(run: run2, interactive: linked_interactive, raw_data: linked_run_data)}
-          let(:activity2  )        { FactoryGirl.create(:activity)}
+          let(:activity2  )        { FactoryBot.create(:activity)}
           it "should return the raw_data" do
             expect(result_hash["raw_data"]).to eql run_data
           end
@@ -139,10 +139,10 @@ describe InteractiveRunState do
 
       describe "when the interactive run state has a linked interactives chain and the previous interactive doesn't have a state" do
         let(:run_data_1)    {'{"first": 1}"'}
-        let(:interactive_1) { FactoryGirl.create(:mw_interactive)}
+        let(:interactive_1) { FactoryBot.create(:mw_interactive)}
         let(:run_state_1)   { InteractiveRunState.create(run: run, interactive: interactive_1, raw_data: run_data_1)}
-        let(:interactive_2) { FactoryGirl.create(:mw_interactive, {linked_interactive: interactive_1})}
-        let(:interactive) { FactoryGirl.create(:mw_interactive, {linked_interactive: interactive_2})}
+        let(:interactive_2) { FactoryBot.create(:mw_interactive, {linked_interactive: interactive_1})}
+        let(:interactive) { FactoryBot.create(:mw_interactive, {linked_interactive: interactive_2})}
 
         before(:each) do
           make run_state_1
@@ -167,7 +167,7 @@ describe InteractiveRunState do
         let(:interactive_run_state) { InteractiveRunState.create(run: run, interactive: interactive, raw_data: run_data) }
 
         describe "when interactive is an instance of MwInteractive" do
-          let(:interactive) { FactoryGirl.create(:mw_interactive, enable_learner_state: true, has_report_url: true) }
+          let(:interactive) { FactoryBot.create(:mw_interactive, enable_learner_state: true, has_report_url: true) }
 
           it "should provide required set of properties and the question_id should be numeric ID" do
             expect(subject).to include({
@@ -181,8 +181,8 @@ describe InteractiveRunState do
         end
 
         describe "when interactive is NOT an instance of MwInteractive" do
-          let(:library_interactive) { FactoryGirl.create(:library_interactive, has_report_url: true) }
-          let(:interactive) { FactoryGirl.create(:managed_interactive, library_interactive: library_interactive) }
+          let(:library_interactive) { FactoryBot.create(:library_interactive, has_report_url: true) }
+          let(:interactive) { FactoryBot.create(:managed_interactive, library_interactive: library_interactive) }
 
           it "should provide required set of properties and the question_id should be embeddable ID" do
             expect(subject).to include({
@@ -201,7 +201,7 @@ describe InteractiveRunState do
         let(:interactive_run_state) { InteractiveRunState.create(run: run, interactive: interactive, raw_data: run_data) }
 
         describe "when interactive is an instance of MwInteractive" do
-          let(:interactive) { FactoryGirl.create(:mw_interactive, enable_learner_state: true, has_report_url: false) }
+          let(:interactive) { FactoryBot.create(:mw_interactive, enable_learner_state: true, has_report_url: false) }
 
           it "should provide required set of properties and the question_id should be numeric ID" do
             expect(subject).to include({
@@ -218,8 +218,8 @@ describe InteractiveRunState do
         end
 
         describe "when interactive is NOT an instance of MwInteractive" do
-          let(:library_interactive) { FactoryGirl.create(:library_interactive, has_report_url: false) }
-          let(:interactive) { FactoryGirl.create(:managed_interactive, library_interactive: library_interactive) }
+          let(:library_interactive) { FactoryBot.create(:library_interactive, has_report_url: false) }
+          let(:interactive) { FactoryBot.create(:managed_interactive, library_interactive: library_interactive) }
 
           it "should provide required set of properties and the question_id should be embeddable ID" do
             expect(subject).to include({
@@ -237,7 +237,7 @@ describe InteractiveRunState do
       end
 
       describe "when interactive run state pretends to be open response answer" do
-        let(:interactive) { FactoryGirl.create(:mw_interactive, enable_learner_state: true) }
+        let(:interactive) { FactoryBot.create(:mw_interactive, enable_learner_state: true) }
         let(:run_data) { JSON({answerType: "open_response_answer", answerText: "Test answer", submitted: true}) }
         let(:interactive_run_state) { InteractiveRunState.create(run: run, interactive: interactive, raw_data: run_data) }
 
@@ -252,7 +252,7 @@ describe InteractiveRunState do
       end
 
       describe "when interactive run state pretends to be image question answer" do
-        let(:interactive) { FactoryGirl.create(:mw_interactive, enable_learner_state: true) }
+        let(:interactive) { FactoryBot.create(:mw_interactive, enable_learner_state: true) }
         let(:run_data) { JSON({answerType: "image_question_answer", answerText: "Test answer", answerImageUrl: "http://test.snapshot.com", submitted: true}) }
         let(:interactive_run_state) { InteractiveRunState.create(run: run, interactive: interactive, raw_data: run_data) }
 
@@ -268,7 +268,7 @@ describe InteractiveRunState do
       end
 
       describe "when interactive run state pretends to be multiple choice answer" do
-        let(:interactive) { FactoryGirl.create(:mw_interactive, enable_learner_state: true) }
+        let(:interactive) { FactoryBot.create(:mw_interactive, enable_learner_state: true) }
         let(:run_data) { JSON({answerType: "multiple_choice_answer", selectedChoiceIds: ["a", "b"], submitted: true}) }
         let(:interactive_run_state) { InteractiveRunState.create(run: run, interactive: interactive, raw_data: run_data)}
 
@@ -289,7 +289,7 @@ describe InteractiveRunState do
 
       describe "when interactive has a report url" do
         # Only when reporting_url is available.
-        let(:interactive) { FactoryGirl.create(:mw_interactive, enable_learner_state: true, has_report_url: true) }
+        let(:interactive) { FactoryBot.create(:mw_interactive, enable_learner_state: true, has_report_url: true) }
         let(:run_data) { '{"second": 2, "lara_options": {"reporting_url": "test.com"}}' }
         let(:interactive_run_state) { InteractiveRunState.create(run: run, interactive: interactive, raw_data: run_data) }
 
@@ -306,7 +306,7 @@ describe InteractiveRunState do
 
       describe "when interactive doesn't have a report url" do
         # Only when reporting_url is available.
-        let(:interactive) { FactoryGirl.create(:mw_interactive, enable_learner_state: true, has_report_url: false) }
+        let(:interactive) { FactoryBot.create(:mw_interactive, enable_learner_state: true, has_report_url: false) }
         let(:run_data) { '{"someProp": 123}' }
         let(:interactive_run_state) { InteractiveRunState.create(run: run, interactive: interactive, raw_data: run_data) }
 
@@ -326,7 +326,7 @@ describe InteractiveRunState do
       end
 
       describe "when interactive has a generic metadata" do
-        let(:interactive) { FactoryGirl.create(:mw_interactive, enable_learner_state: true) }
+        let(:interactive) { FactoryBot.create(:mw_interactive, enable_learner_state: true) }
         let(:metadata) { '{"metadataProp1": 1, "metadataProp2": {"a": "b"}, "question_type": "INVALID_QUESTION_TYPE"}' }
         let(:interactive_run_state) { InteractiveRunState.create(run: run, interactive: interactive, metadata: metadata) }
 
@@ -350,7 +350,7 @@ describe InteractiveRunState do
       end
 
       describe "when interactive run state pretends to be open response answer" do
-        let(:interactive) { FactoryGirl.create(:mw_interactive, enable_learner_state: true) }
+        let(:interactive) { FactoryBot.create(:mw_interactive, enable_learner_state: true) }
         let(:run_data) { JSON({answerType: "open_response_answer", answerText: "Test answer", submitted: true}) }
         let(:interactive_run_state) { InteractiveRunState.create(run: run, interactive: interactive, raw_data: run_data) }
 
@@ -367,7 +367,7 @@ describe InteractiveRunState do
       end
 
       describe "when interactive run state pretends to be image question answer" do
-        let(:interactive) { FactoryGirl.create(:mw_interactive, enable_learner_state: true) }
+        let(:interactive) { FactoryBot.create(:mw_interactive, enable_learner_state: true) }
         let(:run_data) { JSON({answerType: "image_question_answer", answerText: "Test answer", answerImageUrl: "http://test.snapshot.com", submitted: true}) }
         let(:interactive_run_state) { InteractiveRunState.create(run: run, interactive: interactive, raw_data: run_data) }
 
@@ -388,7 +388,7 @@ describe InteractiveRunState do
       end
 
       describe "when interactive run state pretends to be multiple choice answer" do
-        let(:interactive) { FactoryGirl.create(:mw_interactive, enable_learner_state: true) }
+        let(:interactive) { FactoryBot.create(:mw_interactive, enable_learner_state: true) }
         let(:run_data) { JSON({answerType: "multiple_choice_answer", selectedChoiceIds: ["a", "b"], submitted: true}) }
         let(:interactive_run_state) { InteractiveRunState.create(run: run, interactive: interactive, raw_data: run_data)}
 
@@ -438,7 +438,7 @@ describe InteractiveRunState do
 
   describe "#copy_answer!" do
     describe "when interactive doesn't have a report url" do
-      let(:interactive) { FactoryGirl.create(:mw_interactive, enable_learner_state: true, has_report_url: false) }
+      let(:interactive) { FactoryBot.create(:mw_interactive, enable_learner_state: true, has_report_url: false) }
       let(:run_data) { '{"someProp": 123}' }
       let(:metadata) { '{"attachments": 321}' }
       let(:interactive_run_state_1) { InteractiveRunState.create(run: run, interactive: interactive, raw_data: run_data, metadata: metadata) }
@@ -453,7 +453,7 @@ describe InteractiveRunState do
     end
 
     describe "when interactive has a report url" do
-      let(:interactive) { FactoryGirl.create(:mw_interactive, enable_learner_state: true, has_report_url: true) }
+      let(:interactive) { FactoryBot.create(:mw_interactive, enable_learner_state: true, has_report_url: true) }
       let(:run_data) { '{"second": 2, "lara_options": {"reporting_url": "test.com"}}' }
       let(:metadata) { '{"attachments": 321}' }
       let(:interactive_run_state_1) { InteractiveRunState.create(run: run, interactive: interactive, raw_data: run_data, metadata: metadata) }
@@ -469,7 +469,7 @@ describe InteractiveRunState do
 
     describe "when interactive has a report url but author forgot to set has_report_url to true" do
       # has_report_url = false
-      let(:interactive) { FactoryGirl.create(:mw_interactive, enable_learner_state: true, has_report_url: false) }
+      let(:interactive) { FactoryBot.create(:mw_interactive, enable_learner_state: true, has_report_url: false) }
       # but report_url is here anyway:
       let(:run_data) { '{"second": 2, "lara_options": {"reporting_url": "test.com"}}' }
       let(:metadata) { '{"attachments": 321}' }

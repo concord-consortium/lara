@@ -2,7 +2,7 @@ require 'spec_helper'
 describe ImportController do
 
   before(:each) do
-    @user ||= FactoryGirl.create(:admin)
+    @user ||= FactoryBot.create(:admin)
     sign_in @user
   end
 
@@ -39,7 +39,7 @@ describe ImportController do
 
       it "can import a lightweight activity from a valid lightweight activity json and redirect to edit page" do
         post "import", params: params1, xhr: true
-        expect(response.content_type).to eq("text/javascript")
+        expect(response.content_type).to eq("text/javascript; charset=utf-8")
         expect(response.body).to eq("window.location.href = '/activities/#{LightweightActivity.last.id}/edit';")
       end
 
@@ -72,7 +72,7 @@ describe ImportController do
 
       it "can import a sequence from a valid sequence json and redirect to edit page" do
         post "import", params: params1, xhr: true
-        expect(response.content_type).to eq("text/javascript")
+        expect(response.content_type).to eq("text/javascript; charset=utf-8")
         expect(response.body).to eq("window.location.href = '/sequences/#{Sequence.last.id}/edit';")
       end
 
@@ -104,7 +104,7 @@ describe ImportController do
 
       it "can import a glossary from a valid glossary json and redirect to edit page" do
         post "import", params: params1, xhr: true
-        expect(response.content_type).to eq("text/javascript")
+        expect(response.content_type).to eq("text/javascript; charset=utf-8")
         expect(response.body).to eq("window.location.href = '/glossaries/#{Glossary.last.id}/edit';")
       end
 

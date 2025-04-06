@@ -22,8 +22,7 @@ class LightweightActivity < ApplicationRecord
   STANDARD_EDITOR_MODE = 0
   ITSI_EDITOR_MODE = 1
   EDITOR_MODE_OPTIONS = [
-    ['Standard', STANDARD_EDITOR_MODE],
-    ['ITSI', ITSI_EDITOR_MODE]
+    ['Standard', STANDARD_EDITOR_MODE]
   ]
 
 
@@ -36,7 +35,7 @@ class LightweightActivity < ApplicationRecord
     class_name: 'InteractivePage',
     dependent: :destroy,
     inverse_of: :lightweight_activity
-  has_many :visible_pages, -> { where(interactive_pages: {is_hidden: false}).order(:position) }, 
+  has_many :visible_pages, -> { where(interactive_pages: {is_hidden: false}).order(:position) },
          foreign_key: 'lightweight_activity_id', class_name: 'InteractivePage'
 
   has_many :lightweight_activities_sequences, dependent: :destroy

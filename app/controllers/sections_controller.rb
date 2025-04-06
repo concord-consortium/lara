@@ -1,5 +1,3 @@
-require_dependency "application_controller"
-
 class SectionsController < ApplicationController
   before_action :set_page
 
@@ -12,7 +10,7 @@ class SectionsController < ApplicationController
     puts params[:section]
     respond_to do |format|
       if request.xhr?
-        if @section.update_attributes(update_params)
+        if @section.update(update_params)
           # *** respond with the new value ***
           update_activity_changed_by
           format.html { render plain: params[:section].values.first }
@@ -23,7 +21,7 @@ class SectionsController < ApplicationController
         format.json { render json: @section.to_json }
       else
         format.html do
-          if @section.update_attributes(update_params)
+          if @section.update(update_params)
             @section.reload # In case it's the name we updated
             update_activity_changed_by
             flash[:notice] = "Page #{@section.name} was updated."
@@ -60,7 +58,6 @@ class SectionsController < ApplicationController
     authorize! :update, @page
     update_activity_changed_by
     @page_item.destroy
-    # We aren't removing the embeddable itself. But we would remove the tracked_question of the embeddable.
     redirect_to edit_activity_page_path(@activity, @page)
   end
 

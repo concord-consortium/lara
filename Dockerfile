@@ -1,10 +1,12 @@
-FROM ghcr.io/concord-consortium/docker-rails-base-private:ruby-2.3.7-rails-3.2.22.25
+# set base ruby image
+FROM ruby:3.3.7
 
+# update repositories
 RUN echo 'deb http://archive.debian.org/debian/ stretch main' > /etc/apt/sources.list
 RUN apt-get update
 
-# install nginx
-RUN apt-get install -qq -y nginx
+# install needed packages
+RUN apt-get install -y build-essential libpq-dev nginx nodejs
 
 # install foreman
 RUN gem install foreman
@@ -17,11 +19,13 @@ WORKDIR $APP_HOME
 
 ADD Gemfile* $APP_HOME/
 
-ENV BUNDLE_GEMFILE=$APP_HOME/Gemfile
-
-# need to copy the Gemfile.lock created during build so it isn't overriden by the following add
-RUN bundle install --without development test && \
+# Determine Bundler version and install it, then copy the Gemfile.lock created during build so
+# it isn't overridden by the following add
+RUN BUNDLER_VERSION=$(grep -A1 "BUNDLED WITH" Gemfile.lock | tail -n1) && \
+    gem install bundler -v "$BUNDLER_VERSION" && \
+    bundle _"$BUNDLER_VERSION"_ install --without development test && \
     cp Gemfile.lock Gemfile.lock-docker
+
 ADD . $APP_HOME
 
 # get files into the right place
@@ -42,10 +46,9 @@ RUN ln -sf /dev/stdout /var/log/nginx/access.log && ln -sf /dev/stderr /var/log/
 # set production
 ENV RAILS_ENV=production
 
-
 # We need to fake an ENV Var for the precompile: https://github.com/rails/rails/issues/32947
 # Run precompile rake task in order to at least generate the manifest file
-RUN SECRET_KEY_BASE=dummy bundle exec rake assets:precompile
+RUN RAILS_SECRET_KEY_BASE=dummy bundle exec rake assets:precompile
 
 # pass in a version while building with --build-arg LARA_VERSION=x.y.z
 ARG LARA_VERSION

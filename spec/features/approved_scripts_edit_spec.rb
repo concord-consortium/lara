@@ -2,8 +2,8 @@ require "spec_helper"
 require "uri"
 
 feature "Admin edits approved scripts" do
-  let(:user) { FactoryGirl.create(:admin) }
-  let(:approved_script) { FactoryGirl.create(:approved_script) }
+  let(:user) { FactoryBot.create(:admin) }
+  let(:approved_script) { FactoryBot.create(:approved_script) }
   let(:url) { edit_approved_script_path(approved_script) }
 
   scenario "and loads the form" do

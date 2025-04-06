@@ -52,8 +52,8 @@ class Project < ApplicationRecord
 
   # Check if the derived OpenGraph logo file exists
   def image_file_exists?(filename)
-    return File.exists?(Rails.root.join('public', 'assets', filename)) ||
-           File.exists?(Rails.root.join('app', 'assets', 'images', filename))
+    return File.exist?(Rails.root.join('public', 'assets', filename)) ||
+           File.exist?(Rails.root.join('app', 'assets', 'images', filename))
   end
 
   def export

@@ -6,7 +6,7 @@ describe ManagedInteractive do
   let(:enable_learner_state) { true }
   let(:hide_question_number) { false }
 
-  let(:library_interactive) { FactoryGirl.create(:library_interactive,
+  let(:library_interactive) { FactoryBot.create(:library_interactive,
                                                  name: 'Test Library managed_Interactive',
                                                  base_url: 'http://concord.org/',
                                                  aspect_ratio_method: "base aspect_ratio_method",
@@ -24,13 +24,13 @@ describe ManagedInteractive do
                                                  report_item_url: ""
                                                 )}
 
-  let(:mw_interactive) { FactoryGirl.create(:mw_interactive) }
-  let(:managed_interactive) { FactoryGirl.create(:managed_interactive,
+  let(:mw_interactive) { FactoryBot.create(:mw_interactive) }
+  let(:managed_interactive) { FactoryBot.create(:managed_interactive,
                                                  library_interactive: library_interactive,
                                                  url_fragment: "test",
                                                  linked_interactive: mw_interactive
                                                 )}
-  let (:page) { FactoryGirl.create(:page) }
+  let (:page) { FactoryBot.create(:page) }
 
   it 'has valid attributes' do
     managed_interactive.valid?
@@ -56,7 +56,6 @@ describe ManagedInteractive do
         authored_state: managed_interactive.authored_state,
         is_hidden: managed_interactive.is_hidden,
         is_half_width: managed_interactive.is_half_width,
-        show_in_featured_question_report: managed_interactive.show_in_featured_question_report,
         inherit_aspect_ratio_method: managed_interactive.inherit_aspect_ratio_method,
         custom_aspect_ratio_method: managed_interactive.custom_aspect_ratio_method,
         inherit_native_width: managed_interactive.inherit_native_width,
@@ -117,7 +116,6 @@ describe ManagedInteractive do
         authored_state: managed_interactive.authored_state,
         is_hidden: managed_interactive.is_hidden,
         is_half_width: managed_interactive.is_half_width,
-        show_in_featured_question_report: managed_interactive.show_in_featured_question_report,
         inherit_aspect_ratio_method: managed_interactive.inherit_aspect_ratio_method,
         custom_aspect_ratio_method: managed_interactive.custom_aspect_ratio_method,
         inherit_native_width: managed_interactive.inherit_native_width,
@@ -156,7 +154,6 @@ describe ManagedInteractive do
         image_url: managed_interactive.image_url,
         is_hidden: managed_interactive.is_hidden,
         is_half_width: managed_interactive.is_half_width,
-        show_in_featured_question_report: managed_interactive.show_in_featured_question_report,
         authored_state: managed_interactive.authored_state,
         aspect_ratio: managed_interactive.aspect_ratio,
         aspect_ratio_method: managed_interactive.aspect_ratio_method,
@@ -406,7 +403,7 @@ describe ManagedInteractive do
 
   describe "linked_interactive_item_id" do
 
-    let(:mw_interactive2) { FactoryGirl.create(:mw_interactive) }
+    let(:mw_interactive2) { FactoryBot.create(:mw_interactive) }
 
     before :each do
       page.add_interactive(mw_interactive)

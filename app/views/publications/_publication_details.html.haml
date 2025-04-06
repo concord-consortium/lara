@@ -1,6 +1,5 @@
 #publication-details
 
 :javascript
-  var PublicationDetails = React.createElement(modulejs.require('components/itsi_authoring/publication_details'), {publicationDetails: gon.publication_details || gon.ITSIEditor.publication_details});
+  var PublicationDetails = React.createElement(modulejs.require('components/publication_details'), {publicationDetails: gon.publication_details});
   ReactDOM.render(PublicationDetails, $('#publication-details')[0]);
-

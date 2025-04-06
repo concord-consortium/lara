@@ -1,12 +1,7 @@
-require_dependency "application_controller"
-
 class LightweightActivitiesController < ApplicationController
 
   before_action :set_activity, except: [:index, :new, :create]
-  before_action only: [:summary, :show, :preview, :resubmit_answers, :single_page] {
-    portal_launchable = (action_name == 'show' && params[:sequence_id].blank?)
-    set_run_key(portal_launchable: portal_launchable)
-  }
+  before_action :set_run_key_from_portal_launchable, only: [:summary, :show, :preview, :resubmit_answers, :single_page]
   before_action :set_sequence, only: [:summary, :show, :single_page, :preview]
 
   before_action :enable_js_logger, only: [:summary, :show, :preview, :single_page]
@@ -122,31 +117,15 @@ class LightweightActivitiesController < ApplicationController
 
   def edit
     authorize! :update, @activity
-
-    @editor_mode = @activity.editor_mode
-    if params[:mode] && current_user.admin?
-      @editor_mode = case params[:mode]
-                       when "itsi" then LightweightActivity::ITSI_EDITOR_MODE
-                       else LightweightActivity::STANDARD_EDITOR_MODE
-                     end
-    end
-
-    # Data assigned to `gon` variable will be available for JavaScript code in `window.gon` object.
-    # this is used in both the itsi editor and in the standard editor to show the published activity
-    gon.ITSIEditor = ITSIAuthoring::Editor.new(@activity).to_json
-
-    if @editor_mode == LightweightActivity::ITSI_EDITOR_MODE
-      render :itsi_edit
-    else
-      render :edit
-    end
+    gon.publication_details = PublicationDetails.new(@activity).to_json
+    render :edit
   end
 
   def update
     authorize! :update, @activity
     update_activity_changed_by
     respond_to do |format|
-      if @activity.update_attributes(lightweight_activity_params)
+      if @activity.update(lightweight_activity_params)
         format.json { render json: @activity }
         format.html {
           flash[:notice] = "Activity #{@activity.name} was updated."
@@ -301,6 +280,12 @@ class LightweightActivitiesController < ApplicationController
     else
       @activity = LightweightActivity.find(id)
     end
+  end
+
+  private
+  def set_run_key_from_portal_launchable
+    portal_launchable = (action_name == 'show' && params[:sequence_id].blank?)
+    set_run_key(portal_launchable: portal_launchable)
   end
 
   def set_layout

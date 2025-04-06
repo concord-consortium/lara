@@ -1,7 +1,7 @@
 footer {
   .geode-footer {
     background-color: rgba(255,255,255,0.8);
-    @include border-radius(3px);
+    border-radius: 3px;
     color: $dovegrey;
     @include helv-stack(500);
     padding: 10px;
@@ -45,7 +45,7 @@ footer {
   } /* geode-footer */
   .has-footer {
     background-color: rgba(255,255,255,0.8);
-    @include border-radius(3px);
+    border-radius: 3px;
     color: $dovegrey;
     @include helv-stack(500);
     padding: 10px;
@@ -77,7 +77,7 @@ footer {
   } /* precipitating-change */
   .precipitating-change {
     background-color: rgba(255,255,255,0.8);
-    @include border-radius(3px);
+    border-radius: 3px;
     color: $dovegrey;
     @include helv-stack(500);
     padding: 10px;

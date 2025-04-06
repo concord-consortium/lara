@@ -3,7 +3,7 @@ require File.expand_path('../../../spec_helper', __FILE__)
 describe Embeddable::OpenResponse do
   it_behaves_like "a question"
 
-  let (:open_response) { FactoryGirl.create(:or_embeddable) }
+  let (:open_response) { FactoryBot.create(:or_embeddable) }
 
   it "should create a new instance with default values" do
     expect(open_response).to be_valid
@@ -19,7 +19,6 @@ describe Embeddable::OpenResponse do
         prediction_feedback: open_response.prediction_feedback,
         default_text: open_response.default_text,
         is_hidden: open_response.is_hidden,
-        show_in_featured_question_report: open_response.show_in_featured_question_report,
         is_half_width: open_response.is_half_width,
         hint: open_response.hint
       }
@@ -42,8 +41,7 @@ describe Embeddable::OpenResponse do
         type: "open_response",
         id: open_response.id,
         prompt: open_response.prompt,
-        is_required: open_response.is_prediction,
-        show_in_featured_question_report: open_response.show_in_featured_question_report
+        is_required: open_response.is_prediction
       )
     end
   end
@@ -52,10 +50,5 @@ describe Embeddable::OpenResponse do
     it 'returns a new instance with copied attributes' do
       expect(open_response.duplicate).to be_a_new(Embeddable::OpenResponse).with( name: open_response.name, prompt: open_response.prompt, default_text: open_response.default_text )
     end
-  end
-
-  describe 'C-Rater functionality' do
-    subject { open_response }
-    it { is_expected.to respond_to(:c_rater_item_settings) }
   end
 end

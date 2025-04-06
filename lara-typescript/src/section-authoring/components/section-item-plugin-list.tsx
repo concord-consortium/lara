@@ -37,7 +37,7 @@ export const SectionItemPluginList: React.FC<ISectionItemPluginListProps> = ({
       alert("Please select a plugin type.");
       return;
     }
-    const itemPosition = 0;
+    const itemPosition = 1;
     setWrappedItemId(sectionItemId);
     const newItem: ICreatePageItem = {
       column: sectionColumn,

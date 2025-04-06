@@ -6,9 +6,9 @@ describe ManagedInteractivesController do
   end
 
   render_views
-  let (:activity) { FactoryGirl.create(:activity_with_page) }
+  let (:activity) { FactoryBot.create(:activity_with_page) }
   let (:page) { activity.pages.first }
-  let (:int) { FactoryGirl.create(:managed_interactive, name: 'Test Managed Interactive', url_fragment: '/interactive') }
+  let (:int) { FactoryBot.create(:managed_interactive, name: 'Test Managed Interactive', url_fragment: '/interactive') }
 
   before(:each) {
     page.add_embeddable(int)

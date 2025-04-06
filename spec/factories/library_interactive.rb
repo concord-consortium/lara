@@ -1,6 +1,6 @@
-# Read about factories at https://github.com/thoughtbot/factory_girl
+# Read about factories at https://github.com/thoughtbot/factory_bot
 
-FactoryGirl.define do
+FactoryBot.define do
   sequence (:li_url) { Faker::Internet.url() }
 
   factory :library_interactive, class: LibraryInteractive do
@@ -12,15 +12,15 @@ FactoryGirl.define do
     thumbnail_url  { generate(:li_url) }
     created_at { Time.now.change(usec: 0) }
     updated_at { Time.now.change(usec: 0) }
-    aspect_ratio_method "DEFAULT"
-    authoring_guidance "valid authoring_guidance"
-    click_to_play false
-    click_to_play_prompt "valid click_to_play_prompt"
-    description "valid description"
-    enable_learner_state false
-    full_window false
-    has_report_url false
-    no_snapshots false
-    show_delete_data_button false
+    aspect_ratio_method { "DEFAULT" }
+    authoring_guidance { "valid authoring_guidance" }
+    click_to_play { false }
+    click_to_play_prompt { "valid click_to_play_prompt" }
+    description { "valid description" }
+    enable_learner_state { false }
+    full_window { false }
+    has_report_url { false }
+    no_snapshots { false }
+    show_delete_data_button { false }
   end
 end

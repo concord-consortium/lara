@@ -11,14 +11,12 @@ describe "WithPlatformInfo" do
     attr_accessor :resource_link_id
 
     def initialize(props)
-      update_attributes(props)
+      update(props)
     end
-    def update_attributes(new_attrs)
-      self.class_info_url = new_attrs[:class_info_url] if new_attrs[:class_info_url]
-      self.context_id     = new_attrs[:context_id] if new_attrs[:context_id]
-      self.platform_id    = new_attrs[:platform_id] if new_attrs[:platform_id]
-      self.platform_user_id = new_attrs[:platform_user_id] if new_attrs[:platform_user_id]
-      self.resource_link_id = new_attrs[:resource_link_id] if new_attrs[:resource_link_id]
+    def update(new_attrs)
+      new_attrs.each do |key, value|
+        send("#{key}=", value) if respond_to?("#{key}=")
+      end
     end
   end
 

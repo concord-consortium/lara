@@ -2,9 +2,9 @@ require 'spec_helper'
 
 describe VideoInteractivesController do
   render_views
-  let (:activity) { FactoryGirl.create(:activity_with_page) }
+  let (:activity) { FactoryBot.create(:activity_with_page) }
   let (:page) { activity.pages.first }
-  let (:int) { FactoryGirl.create(:video_interactive, poster_url: 'http://example.com/poster.png') }
+  let (:int) { FactoryBot.create(:video_interactive, poster_url: 'http://example.com/poster.png') }
 
   before(:each) {
     page.add_embeddable(int)

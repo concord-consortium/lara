@@ -31,10 +31,6 @@
   <!-- Scripts -->
   <%= render partial: 'shared/rollbar' %>
   <%= Gon::Base.render_data %>
-  <!--[if IE 8 ]>
-  <%= javascript_include_tag 'respond' %>
-	<![endif]-->
-  <%= javascript_include_tag 'modernizr.min' %>
   <!-- TODO: CDN or include? Lab is using 2.0.x but self-hosting. -->
   <%= javascript_include_tag '//ajax.googleapis.com/ajax/libs/jquery/2.0.1/jquery.min.js' %>
   <%= javascript_include_tag '//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js' %>

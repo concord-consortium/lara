@@ -75,85 +75,90 @@ The status codes are:
 - NU: no upgrade available - gem can't be upgraded
 - DG?: gem downgraded - why? this should not happen
 - RG: gem removed
+- AG: gem added
 
 (add more status codes as needed)
 
 | Gem                          | Status       | Initial Version | Current Version | Max Version |
 |------------------------------|--------------|-----------------|-----------------|-------------|
-| rails (+ rails core...)      |          CU! |          3.2.22 |        5.2.8.25 |       7.1.4 |
+| rails (+ rails core...)      |       CU! AM |          3.2.22 |           8.0.1 |       8.0.1 |
 | *GEMS AT MAX*                |              |                 |                 |             |
+| acts_as_list                 |       UC! AM |           0.3.0 |           1.2.4 |       1.2.4 |
+| aws-sdk                      |       CU! AM |          1.66.0 |           3.2.0 |       3.2.0 |
 | aws-ses                      |        NC AM |           0.7.1 |           0.7.1 |       0.7.1 |
+| bootsnap                     |       UC* AM |           1.4.4 |          1.18.4 |      1.18.4 |
+| cancancan                    |       UC! AM |          1.10.1 |           3.6.1 |       3.6.1 |
 | chosen-rails                 |       UC* AM |           1.0.1 |          1.10.0 |      1.10.0 |
-| compass-blueprint            |        NC AM |           1.0.0 |           1.0.0 |       1.0.0 |
 | daemons                      |       UC* AM |           1.1.9 |           1.4.1 |       1.4.1 |
-| delayed_job_active_record    |       UC* AM |           4.0.0 |          4.1.10 |      4.1.10 |
+| delayed_job_active_record    |       UC* AM |           4.0.0 |          4.1.11 |      4.1.11 |
 | delayed_job_web              |       UC* AM |           1.2.5 |           1.4.4 |       1.4.4 |
-| font-awesome-rails           |       UC* AM |         4.3.0.0 |         4.7.0.8 |     4.7.0.8 |
+| exception_notification       |       UC* AM |           4.0.1 |           4.5.0 |       4.5.0 |
+| factory_bot_rails            |       UC* AM |           4.3.0 |           6.4.4 |       6.4.4 |
+| faker                        |       UC! AM |           1.2.0 |           3.5.1 |       3.5.1 |
+| ffi                          |       UC* AM |           1.15.5           1.17.1 |      1.17.1 |
+| font-awesome-rails           |       UC* AM |         4.3.0.0 |         4.7.0.9 |     4.7.0.9 |
 | gon                          |       UC! AM |           5.2.3 |           6.4.0 |       6.4.0 |
+| httparty                     |       UC* AM |          0.12.0 |          0.22.0 |      0.22.0 |
+| i18n                         |       UC* AM |             n/a |          1.14.7 |      1.14.7 |
 | jasmine-jquery-rails         |        NC AM |           2.0.3 |           2.0.3 |       2.0.3 |
+| loofah                       |       UC* AM |             n/a |          2.24.0 |      2.24.0 |
 | multi_json                   |       UC* AM |          1.13.1 |          1.15.0 |      1.15.0 |
 | nested_form                  |        NC AM |           0.3.2 |           0.3.2 |       0.3.2 |
+| newrelic_rpm                 |       UC! AM |       4.6.0.338 |          9.17.0 |      9.17.0 |
 | poltergeist                  |       UC* AM |           1.5.1 |          1.18.1 |      1.18.1 |
-| protected_attributes         |           AM |             n/a |           1.1.4 |       1.1.4 |
 | rack-environmental           |       UC* AM |           1.3.1 |           1.3.2 |       1.3.2 |
 | rack-secure_samesite_cookies |        NC AM |           1.0.2 |           1.0.2 |       1.0.2 |
 | rails-controller-testing     |          n/a |             n/a |           1.0.5 |       1.0.5 |
 | rake                         |       UC! AM |          10.5.0 |          13.2.1 |      13.2.1 |
+| responders                   |       UC* AM |             n/a |           3.1.1 |       3.1.1 |
 | ribbons-rails                |        NC AM |           0.0.1 |           0.0.1 |       0.0.1 |
 | rspec-activemodel-mocks      |       UC* AM |           1.0.1 |           1.2.1 |       1.2.1 |
-| safe_yaml                    |       UC* AM |           1.0.4 |           1.0.5 |       1.0.5 |
-| spreadsheet                  |       UC* AM |           1.0.3 |           1.1.2 |       1.1.2 |
+| simplecov                    |       UC* AM |          0.16.1 |          0.22.0 |      0.22.0 |
+| spreadsheet                  |       UC* AM |           1.0.3 |           1.1.2 |       1.3.3 |
 | spring-commands-rspec        |        NC AM |           1.0.4 |           1.0.4 |       1.0.4 |
-| test-unit                    |       UC* AM |           3.2.3 |           3.6.2 |       3.6.2 |
+| terser                       |        AG AM |             n/a |           1.2.5 |       1.2.5 |
+| test-unit                    |       UC* AM |           3.2.3 |           3.6.7 |       3.6.7 |
 | timecop                      |       UC* AM |           0.6.3 |          0.9.10 |      0.9.10 |
-| turbo-sprockets-rails4       |           AM |             n/a |           1.2.5 |       1.2.5 |
-| useragent                    |       UC* AM |          0.10.0 |         0.16.10 |     0.16.10 |
+| unicorn                      |       UC! AM |           6.1.0 |           6.1.0 |       6.1.0 |
+| useragent                    |       UC* AM |          0.10.0 |         0.16.11 |     0.16.11 |
 | will_paginate                |       UC! AM |           3.0.7 |           4.0.1 |       4.0.1 |
 | *GEMS THAT CAN BE UPGRADED*  |              |                 |                 |             |
-| acts_as_list                 |          UC* |           0.3.0 |          0.9.19 |       1.2.3 |
-| aws-sdk                      |          CU! |          1.66.0 |          2.0.22 |       3.2.0 |
 | better_errors                |          UC! |           1.1.0 |           2.0.0 |      2.10.1 |
-| bootsnap                     |          n/a |             n/a |           1.4.4 |      1.18.4 |
-| bullet                       |           NC |           5.4.3 |           5.7.5 |       7.2.0 |
-| cancancan                    |          UC! |          1.10.1 |           2.3.0 |       3.6.1 |
 | capybara                     |          UC* |           2.4.4 |          2.18.0 |      3.40.0 |
-| ci_reporter                  |           RM |           1.7.3 |               - |       2.1.0 |
 | coffee-rails                 |          UC! |           3.2.2 |           4.2.2 |       5.0.0 |
-| compass-rails                |           NC |           3.1.0 |           3.1.0 |       4.0.0 |
 | default_value_for            |          UC! |           2.0.3 |           3.6.0 |       4.0.0 |
 | devise                       |          UC! |           3.0.1 |           4.9.4 |       4.9.4 |
 | dynamic_form                 |          UC* |           1.1.4 |           1.2.0 |       1.3.1 |
-| exception_notification       |          UC* |           4.0.1 |           4.4.3 |       4.5.0 |
-| factory_girl_rails           |          UC* |           4.3.0 |           4.9.0 |       6.4.3 |
-| faker                        |          UC! |           1.2.0 |           2.2.1 |       3.4.2 |
 | haml                         |          UC! |           4.0.5 |           5.2.2 |       6.3.0 |
 | highline                     |          UC* |          1.6.21 |          1.7.10 |       3.1.1 |
-| httparty                     |          UC* |          0.12.0 |          0.21.0 |      0.22.0 |
-| i18n                         |          n/a |             n/a |           1.0.1 |      1.14.6 |
 | jasmine                      |          UC* |           2.2.0 |          2.99.0 |      3.99.0 |
 | jquery-rails                 |          UC! |           3.1.5 |           4.6.0 |       4.6.0 |
 | jquery-ui-rails              |          UC* |           4.1.0 |           4.2.1 |       7.0.0 |
 | launchy                      |          UC* |           2.4.0 |           2.5.2 |       3.0.1 |
-| loofah                       |          n/a |             n/a |          2.19.1 |      2.23.1 |
 | mysql2                       |          UC* |          0.3.21 |           0.5.6 |       0.5.6 |
-| newrelic_rpm                 |          UC* |       4.6.0.338 |       4.8.0.341 |      9.14.0 |
-| nokogiri                     |          UC* |          1.10.3 |         1.10.10 |      1.16.7 |
+| nokogiri                     |          UC* |          1.10.3 |          1.18.2 |      1.18.2 |
 | omniauth                     |          UC* |           1.3.2 |           1.4.2 |       2.1.2 |
 | omniauth-oauth2              |          UC* |           1.1.1 |           1.3.0 |       1.8.0 |
 | rack-cors                    |          UC! |           0.4.1 |           1.0.6 |       2.0.2 |
-| responders                   |          n/a |             n/a |           2.4.1 |       3.1.1 |
 | rspec-rails                  |          UC! |           3.8.2 |           4.1.2 |       7.0.1 |
-| rubocop                      |          n/a |             n/a |          0.49.1 |       1.6.8 |
-| sass-rails                   |          UC! |           3.2.6 |           5.0.7 |       6.0.0 |
+| sass-rails                   |          UC! |           3.2.6 |           5.0.8 |       6.0.0 |
 | sassc                        |          n/a |             n/a |           2.1.0 |       2.4.0 |
-| simplecov                    |          UC* |          0.16.1 |          0.17.1 |      0.22.0 |
-| spring                       |          UC* |           1.2.0 |           1.7.2 |       4.2.1 |
+| spring                       |          UC! |           1.2.0 |           3.1.1 |       4.2.1 |
 | tinymce-rails                |          UC* |           4.7.9 |           4.9.4 |       7.4.1 |
-| uglifier                     |          UC* |           4.1.8 |           4.2.0 |       4.2.1 |
-| unicorn                      |          UC! |           5.0.1 |           6.1.0 |       6.1.0 |
 | uuidtools                    |          UC* |           2.1.4 |           2.1.5 |       2.2.0 |
 | web-console                  |          n/a |             n/a |           3.7.0 |       4.2.1 |
 | webmock                      |          UC! |          1.24.6 |           3.8.3 |      3.24.0 |
+| *GEMS REMOVED*               |              |                 |                 |             |
+| bullet                       |           RG |           5.4.3 |               - |       7.2.0 |
+| ci_reporter                  |           RG |           1.7.3 |               - |       2.1.0 |
+| compass-blueprint            |           RG |           1.0.0 |               - |       1.0.0 |
+| compass-rails                |           RG |           3.1.0 |               - |       4.0.0 |
+| protected_attributes         |           RG |             n/a |               - |       1.1.4 |
+| safe_yaml                    |           RG |           1.0.4 |               - |       1.0.5 |
+| sprockets                    |           RG |           3.7.5 |               - |       4.2.1 |
+| turbo-sprockets-rails4       |           RG |             n/a |               - |       1.2.5 |
+| uglifier                     |           RG |           4.1.8 |               - |       4.2.1 |
+
 
 ### Upgrade To Rails 4.0.13
 
@@ -308,23 +313,29 @@ For now we will stay at 4.2.11.23 instead of upgrading to 4.2.11.38
 ### Upgrade To Rails 6.0.6.1
 
 1. Create a `upgrade-to-rails-6.0` branch off the `lara-upgrade` branch.
-2. **A Ruby upgrade to 2.5 IS required**. Using the `ruby25` branch in [docker-rails-base](https://github.com/concord-consortium/docker-rails-base) create a [new GitHub package](https://github.com/orgs/concord-consortium/packages/container/docker-rails-base-private/versions?filters%5Bversion_type%5D=tagged) (Aden only created the initial one) called `ruby-2.5.9-rails-3.2.22.19`.  You may need Scott or Doug's permissions to do this.
-3. Change `Dockerfile` and `Dockerfile-dev` to use `ruby-2.5.9-rails-3.2.22.19` in the `FROM` url.
+2. **A Ruby upgrade to 2.5 IS required**.
+
+- [x] Change `Dockerfile` and `Dockerfile-dev` to use `ruby-2.5.9` in the `FROM` url INSTEAD OF [docker-rails-base](https://github.com/concord-consortium/docker-rails-base) images.
+- [x] Add `RAILS_LTS_PASS` to GitHub LARA repo secrets and update `ci.yml` to pass build arg.
+- [x] Get value of `RAILS_LTS_PASS` (in 1Password in the description of the "Rails LTS" secret.  Do no use the login password.) and save in local `.env` file.  This should not result in any updates to be committed, and must be done per developer.
+- [x] Run `docker compose build` to rebuild local image using new base image.  Again, no change should be committed.
+- [x] Run `docker compose up` and load LARA in the browser once built to confirm the change worked.  Again, no change should be committed.
+
 4. Upgrade rails gems in `Gemfile` to last 6.0 version: `gem 'rails', '~> 6.0.6.1'`.
 5. Inside running Docker image run `bundle update rails`
 6. Resolve gem dependency issues until the bundle update succeeds.
 7. Complete upgrade tasks in the [5.2 to 6.0 upgrade guide](https://guides.rubyonrails.org/upgrading_ruby_on_rails.html#upgrading-from-rails-5-2-to-rails-6-0)
 
-- [ ] Using Webpacker (SKIP THIS STEP - WEBPACKER IS REPLACED IN LATER RAILS VERSIONS)
-- [ ] Force SSL
-- [ ] Purpose and expiry metadata is now embedded inside signed and encrypted cookies for increased security
-- [ ] All npm packages have been moved to the @rails scope
-- [ ] Action Cable JavaScript API Changes
-- [ ] ActionDispatch::Response#content_type now returns the Content-Type header without modification
-- [ ] New config.hosts setting
-- [ ] Autoloading
-- [ ] Active Storage assignment behavior change
-- [ ] Custom exception handling applications
+- [x] Using Webpacker (SKIP THIS STEP - WEBPACKER IS REPLACED IN LATER RAILS VERSIONS)
+- [x] Force SSL (probably not needed since we are behind a gateway on production?)
+- [x] Purpose and expiry metadata is now embedded inside signed and encrypted cookies for increased security
+- [x] All npm packages have been moved to the @rails scope
+- [x] Action Cable JavaScript API Changes
+- [x] ActionDispatch::Response#content_type now returns the Content-Type header without modification
+- [x] New config.hosts setting
+- [x] Autoloading
+- [x] Active Storage assignment behavior change
+- [x] Custom exception handling applications
 
 6. Create a PR and insure all the tests pass.
 7. After review/approval merge the branch into the `lara-upgrade` branch.
@@ -332,18 +343,18 @@ For now we will stay at 4.2.11.23 instead of upgrading to 4.2.11.38
 ### Upgrade To Rails 6.1.7.8
 
 1. Create a `upgrade-to-rails-6.1` branch off the `lara-upgrade` branch.
-2. Upgrade rails gems in `Gemfile` to last 6.1 version: `gem 'rails', '~> 6.1.7.8 '`.  No Ruby upgrade is required.
+2. Upgrade rails gems in `Gemfile` to last 6.1 version: `gem 'rails', '~> 6.1.7.10'`.  No Ruby upgrade is required.
 3. Inside running Docker image run `bundle update rails`
 4. Resolve gem dependency issues until the bundle update succeeds.
 5. Complete upgrade tasks in the [6.0 to 6.1 upgrade guide](https://guides.rubyonrails.org/upgrading_ruby_on_rails.html#upgrading-from-rails-6-0-to-rails-6-1)
 
-- [ ] Rails.application.config_for return value no longer supports access with String keys.
-- [ ] Response's Content-Type when using respond_to#any
-- [ ] ActiveSupport::Callbacks#halted_callback_hook now receive a second argument
-- [ ] The helper class method in controllers uses String#constantize
-- [ ] Redirection to HTTPS from HTTP will now use the 308 HTTP status code
-- [ ] Active Storage now requires Image Processing
-- [ ] New ActiveModel::Error class
+- [X] Rails.application.config_for return value no longer supports access with String keys.
+- [X] Response's Content-Type when using respond_to#any
+- [X] ActiveSupport::Callbacks#halted_callback_hook now receive a second argument
+- [X] The helper class method in controllers uses String#constantize
+- [X] Redirection to HTTPS from HTTP will now use the 308 HTTP status code
+- [X] Active Storage now requires Image Processing
+- [X] New ActiveModel::Error class
 
 6. Create a PR and insure all the tests pass.
 7. After review/approval merge the branch into the `lara-upgrade` branch.
@@ -351,59 +362,84 @@ For now we will stay at 4.2.11.23 instead of upgrading to 4.2.11.38
 ### Upgrade To Rails 7.0.8.4
 
 1. Create a `upgrade-to-rails-7.0` branch off the `lara-upgrade` branch.
-2. **A Ruby upgrade to 2.7 IS required**. Using the `ruby27` branch in [docker-rails-base](https://github.com/concord-consortium/docker-rails-base) create a [new GitHub package](https://github.com/orgs/concord-consortium/packages/container/docker-rails-base-private/versions?filters%5Bversion_type%5D=tagged) (Aden only created the initial one) called `ruby-2.7.0-rails-6.1.3.2`.  You may need Scott or Doug's permissions to do this.
-3. Change `Dockerfile` and `Dockerfile-dev` to use `ruby-2.7.0-rails-6.1.3.2` in the `FROM` url.
-4. Upgrade rails gems in `Gemfile` to last 7.0 version: `gem 'rails', '~> 7.0.8.4'`.
+2. **A Ruby upgrade to 2.7 IS required**. Change `Dockerfile` and `Dockerfile-dev` to use `ruby-2.7.0` in the `FROM` url.
+3. Remove RailsLTS support.  Rails 7.0.x is community supported so RailsLTS is no longer needed.
+
+- [X] Remove references to `RAILS_LTS_PASS` in `docker-compose.yml`, `DockerFile`, `Dockerfile-dev`, and `ci.yml`
+- [X] Remove `source 'https://gems.railslts.com'` in Gemfile and move rails gems in common gem list
+- [X] Remove `RAILS_LTS_PASS` secret from LARA GitHub repo
+
+4. Upgrade rails gems in `Gemfile` to last 7.0 version: `gem 'rails', '~> 7.0.8.7'`.
 5. Inside running Docker image run `bundle update rails`
 6. Resolve gem dependency issues until the bundle update succeeds.
 7. Complete upgrade tasks in the [6.1 to 7.0 upgrade guide](https://guides.rubyonrails.org/upgrading_ruby_on_rails.html#upgrading-from-rails-6-1-to-rails-7-0)
 
-- [ ] ActionView::Helpers::UrlHelper#button_to changed behavior
-- [ ] Spring
-- [ ] Sprockets is now an optional dependency
-- [ ] Applications need to run in zeitwerk mode
-- [ ] The setter config.autoloader= has been deleted
-- [ ] ActiveSupport::Dependencies private API has been deleted
-- [ ] Autoloading during initialization
-- [ ] Ability to configure config.autoload_once_paths
-- [ ] ActionDispatch::Request#content_type now returns Content-Type header as it is.
-- [ ] Key generator digest class change requires a cookie rotator
-- [ ] Digest class for ActiveSupport::Digest changing to SHA256
-- [ ] New ActiveSupport::Cache serialization format
-- [ ] Active Storage video preview image generation
-- [ ] Active Storage default variant processor changed to :vips
-- [ ] Rails version is now included in the Active Record schema dump
+- [X] ActionView::Helpers::UrlHelper#button_to changed behavior
+- [X] Spring
+- [X] Sprockets is now an optional dependency
+- [X] Applications need to run in zeitwerk mode
+- [X] The setter config.autoloader= has been deleted
+- [X] ActiveSupport::Dependencies private API has been deleted
+- [X] Autoloading during initialization
+- [X] Ability to configure config.autoload_once_paths
+- [X] ActionDispatch::Request#content_type now returns Content-Type header as it is.
+- [X] Key generator digest class change requires a cookie rotator
+- [X] Digest class for ActiveSupport::Digest changing to SHA256
+- [X] New ActiveSupport::Cache serialization format
+- [X] Active Storage video preview image generation
+- [X] Active Storage default variant processor changed to :vips
+- [X] Rails version is now included in the Active Record schema dump
 
-6. Create a PR and insure all the tests pass.
-7. After review/approval merge the branch into the `lara-upgrade` branch.
+8. Create a PR and insure all the tests pass.
+9. After review/approval merge the branch into the `lara-upgrade` branch.
 
 ### Upgrade To Rails 7.1.4
 
 1. Create a `upgrade-to-rails-7.1` branch off the `lara-upgrade` branch.
-2. Upgrade rails gems in `Gemfile` to last 7.1 version: `gem 'rails', '~> 7.1.4 '`.  No Ruby upgrade is required.
+2. Upgrade rails gems in `Gemfile` to last 7.1 version: `gem 'rails', '~> 7.1.5'`.  No Ruby upgrade is required.
 3. Inside running Docker image run `bundle update rails`
 4. Resolve gem dependency issues until the bundle update succeeds.
 5. Complete upgrade tasks in the [7.0 to 7.1 upgrade guide](https://guides.rubyonrails.org/upgrading_ruby_on_rails.html#upgrading-from-rails-7-0-to-rails-7-1)
 
-- [ ] Development and test environments secret_key_base file changed
-- [ ] Autoloaded paths are no longer in $LOAD_PATH
-- [ ] config.autoload_lib and config.autoload_lib_once
-- [ ] ActiveStorage::BaseController no longer includes the streaming concern
-- [ ] MemCacheStore and RedisCacheStore now use connection pooling by default
-- [ ] SQLite3Adapter now configured to be used in a strict strings mode
-- [ ] Support multiple preview paths for ActionMailer::Preview
-- [ ] config.i18n.raise_on_missing_translations = true now raises on any missing translation.
-- [ ] bin/rails test now runs test:prepare task
-- [ ] Import syntax from @rails/ujs is modified
-- [ ] Rails.logger now returns an ActiveSupport::BroadcastLogger instance
-- [ ] Active Record Encryption algorithm changes
-- [ ] New ways to handle exceptions in Controller Tests, Integration Tests, and System Tests
+- [X] Development and test environments secret_key_base file changed
+- [X] Autoloaded paths are no longer in $LOAD_PATH
+- [X] config.autoload_lib and config.autoload_lib_once
+- [X] ActiveStorage::BaseController no longer includes the streaming concern
+- [X] MemCacheStore and RedisCacheStore now use connection pooling by default
+- [X] SQLite3Adapter now configured to be used in a strict strings mode
+- [X] Support multiple preview paths for ActionMailer::Preview
+- [X] config.i18n.raise_on_missing_translations = true now raises on any missing translation.
+- [X] bin/rails test now runs test:prepare task
+- [X] Import syntax from @rails/ujs is modified
+- [X] Rails.logger now returns an ActiveSupport::BroadcastLogger instance
+- [X] Active Record Encryption algorithm changes
+- [X] New ways to handle exceptions in Controller Tests, Integration Tests, and System Tests
 
-6. **Create a final FROM package**. Using the `ruby27` branch in [docker-rails-base](https://github.com/concord-consortium/docker-rails-base) create a [new GitHub package](https://github.com/orgs/concord-consortium/packages/container/docker-rails-base-private/versions?filters%5Bversion_type%5D=tagged) called `ruby-2.7.0-rails-7.1.4`.  You may need Scott or Doug's permissions to do this.
-7. Change `Dockerfile` and `Dockerfile-dev` to use `ruby-2.7.0-rails-7.1.4` in the `FROM` url.
+7. Change `Dockerfile` and `Dockerfile-dev` to use `ruby-2.7.0-rails-7.1.5` in the `FROM` url.
 8. Create a PR and insure all the tests pass.
 9. After review/approval merge the branch into the `lara-upgrade` branch.
 
-### Upgrade To Rails 7.2.x
+### Upgrade To Rails 7.2.2
 
-This step will not be taken as it requires Ruby 3 which will likely break gems.  **IF THERE IS TIME** it would be good to try out an upgrade to see how much breaks and document what does break.
+1. Create an `upgrade-to-rails-7.2` branch off the `lara-upgrade` branch.
+2. **A Ruby upgrade to 3.1 IS required**. Change `Dockerfile` and `Dockerfile-dev` to use `ruby-3.1.0` in the `FROM` url.
+3. Upgrade rails gems in `Gemfile` to last 7.2 version: `gem 'rails', '~> 7.2.2'`.
+4. Inside running Docker image run `bundle update rails`
+5. Resolve gem dependency issues until the bundle update succeeds.
+6. Complete upgrade tasks in the [7.1 to 7.2 upgrade guide](https://guides.rubyonrails.org/upgrading_ruby_on_rails.html#upgrading-from-rails-7-1-to-rails-7-2)
+
+- [X] All tests now respect the active_job.queue_adapter config
+
+7. Create a PR and insure all the tests pass.
+8. After review/approval merge the branch into the `lara-upgrade` branch.
+
+### Upgrade To Rails 8.0.1
+
+1. Create an `upgrade-to-rails-8` branch off the `lara-upgrade` branch.
+2. **A Ruby upgrade to 3.2 IS required**. Change `Dockerfile` and `Dockerfile-dev` to use `ruby-3.2.0` in the `FROM` url.
+3. Upgrade rails gems in `Gemfile` to last 8.0 version: `gem 'rails', '~> 8.0.1'`.
+4. Inside running Docker image run `bundle update rails`
+5. Resolve gem dependency issues until the bundle update succeeds.
+6. Complete any upgrade tasks in the [7.2 to 8.0 upgrade guide](https://guides.rubyonrails.org/upgrading_ruby_on_rails.html#upgrading-from-rails-7-2-to-rails-8-0). **At the time of writing, there were no tasks listed.**
+7. Create a PR and insure all the tests pass.
+8. After review/approval merge the branch into the `lara-upgrade` branch.

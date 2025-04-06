@@ -34,7 +34,7 @@ module BaseInteractive
   def portal_hash
     result = report_service_hash
     # When Portal receives iframe_interactive, it expects:
-    # id, name, url, native_width, native_height, is_required, show_in_featured_question_report, display_in_iframe.
+    # id, name, url, native_width, native_height, is_required, display_in_iframe.
     # Add / map property names that are different in report_service_hash.
 
     result[:native_width] = result[:width]
@@ -85,7 +85,6 @@ module BaseInteractive
       id: embeddable_id,
       name: name,
       url: url,
-      show_in_featured_question_report: show_in_featured_question_report,
       display_in_iframe: reportable_in_iframe?,
       width: native_width,
       height: native_height,

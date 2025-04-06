@@ -119,7 +119,6 @@ class ManagedInteractive < ApplicationRecord
       authored_state: authored_state,
       is_hidden: is_hidden,
       is_half_width: is_half_width,
-      show_in_featured_question_report: show_in_featured_question_report,
       inherit_aspect_ratio_method: inherit_aspect_ratio_method,
       custom_aspect_ratio_method: custom_aspect_ratio_method,
       inherit_native_width: inherit_native_width,
@@ -181,7 +180,6 @@ class ManagedInteractive < ApplicationRecord
       image_url: image_url,
       is_hidden: is_hidden,
       is_half_width: is_half_width,
-      show_in_featured_question_report: show_in_featured_question_report,
       authored_state: authored_state,
       aspect_ratio: aspect_ratio,
       aspect_ratio_method: aspect_ratio_method,
@@ -222,9 +220,18 @@ class ManagedInteractive < ApplicationRecord
     hash
   end
 
+  def self.legacy_properties
+    [:show_in_featured_question_report]
+  end
+
   def self.import(import_hash)
     # make a shallow copy of the import_hash because we are going to modify it
     import_hash = import_hash.clone
+
+    legacy_properties.each do |prop|
+      import_hash.delete(prop)
+    end
+
     # save off the imported library interactive to hydrate it after the instance is created
     imported_library_interactive = import_hash[:library_interactive]
     import_hash.delete(:library_interactive)

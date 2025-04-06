@@ -1,6 +1,6 @@
-# Read about factories at https://github.com/thoughtbot/factory_girl
+# Read about factories at https://github.com/thoughtbot/factory_bot
 
-FactoryGirl.define do
+FactoryBot.define do
   sequence (:url) { Faker::Internet.url() }
 
   factory :mw_interactive do
@@ -8,7 +8,7 @@ FactoryGirl.define do
     url  { generate(:url) }
 
     factory :hidden_mw_interactive do
-      is_hidden true
+      is_hidden { true }
     end
   end
 end

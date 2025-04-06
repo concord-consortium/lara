@@ -32,10 +32,10 @@ module ClassInfoImportHelper
     SequenceRun
       .where(remote_endpoint: remote_endpoint)
       .each do |srun|
-        srun.update_attributes(attrs)
+        srun.update(attrs)
         # Child runs:
         srun.runs.each do |run|
-          run.update_attributes(attrs)
+          run.update(attrs)
           updated_run_count = updated_run_count + 1
         end
     end
@@ -43,7 +43,7 @@ module ClassInfoImportHelper
     Run
       .where(remote_endpoint: remote_endpoint)
       .each do |run|
-        run.update_attributes(attrs)
+        run.update(attrs)
         updated_run_count = updated_run_count + 1
       end
     

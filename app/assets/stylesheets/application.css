@@ -23,17 +23,10 @@
  *= require bad_browser
  *= require dirty_runs
  *= require run_detail_report
- *= require c_rater/score_mapping
- *= require components/itsi_authoring
- *= require tracked-question
- *= require components/question_tracker
  *= require components/authoring
- *= require question-tracker
  *= require common
  *= require lara-typescript
  *= require styled-admin-forms
  *= require project-editing
  *= require shared/_loading
- *= require c_rater/argblock
-
  */

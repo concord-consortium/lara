@@ -46,6 +46,23 @@ jobs:
           nix develop -c npm ci
           nix develop -c npm run test
         working-directory: ./lara-typescript/
+      - name: Create CI admin user
+        run: nix develop -c bundle exec rake lightweight:create_ci_admin_user
+      - name: Start Rails server
+        run: nix develop -c bundle exec rails server -b 0.0.0.0 -p 3000 &
+      - name: Run Cypress Tests
+        uses: cypress-io/github-action@v6
+        with:
+          config-file: cypress.config.github.js
+          wait-on: 'http://localhost:3000'
+          wait-on-timeout: 60
+          working-directory: ./cypress/
+      - name: Upload Cypress screenshots
+        if: always()  # Ensure this runs even if tests fail
+        uses: actions/upload-artifact@v4
+        with:
+          name: cypress-screenshots
+          path: /home/runner/work/lara/lara/cypress/cypress/screenshots/**
   build:
     name: Build Docker image
     runs-on: ubuntu-latest

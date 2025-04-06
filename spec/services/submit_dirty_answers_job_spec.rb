@@ -5,7 +5,7 @@ describe SubmitDirtyAnswersJob do
   let(:report_service_url) { 'http://fake-report-service.fake' }
   let(:report_service_token) { 'very-secret-token' }
   let(:run) do
-    FactoryGirl.create(:run, { open_response_answers: [ FactoryGirl.create(:or_answer) ], is_dirty: true })
+    FactoryBot.create(:run, { open_response_answers: [ FactoryBot.create(:or_answer) ], is_dirty: true })
   end
   let(:submit_time) { Time.now }
   let(:report_service_configured) { true}

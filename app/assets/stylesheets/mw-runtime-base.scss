@@ -56,21 +56,27 @@ footer {
 
 // Text shadows included on various elements
 @mixin drk-txt-shadow($color: $black-50) {
-  @include text-shadow(0 -1px 0 darken($color, 15%));
+  text-shadow: 0 -1px 0 darken($color, 15%);
 }
 
 @mixin lt-txt-shadow($color: #fff) {
-  @include text-shadow(0 1px 0 lighten($color, 10%));
+  text-shadow: 0 1px 0 lighten($color, 10%);
 }
 
 // Border used on questions and related-mod
 .mod-border-rounded {
   border: 1px solid $black-10;
-  @include border-radius(0 0 13px 13px);
+  border-radius: 0 0 13px 13px;
 }
 
 // Clearfix
-.cf { @include pie-clearfix; }
+.cf {
+  &::after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+}
 
 // Extra padding applied via JS when nav is in fixed position
 .extra-pad { padding-top: 70px; }
@@ -87,7 +93,7 @@ footer {
                       rgba(0, 0, 0, 0.2) 0 1px 2px;
           box-shadow: rgba(255, 255, 255, 0.4) 0 1px 0 inset,
                       rgba(0, 0, 0, 0.2) 0 1px 2px;
-  @include border-radius(4px);
+  border-radius: 4px;
   @include drk-txt-shadow( darken($color1, 10%) );
   border: 1px solid $color2;
   margin-top: 13px;
@@ -175,7 +181,7 @@ footer {
     position: fixed;
     top: 0;
     background-color: lighten($lt-blue, 15%);
-    @include box-shadow(0 2px 8px rgba(0, 0, 0, 0.2) );
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
     padding: 10px 6px;
     z-index: 9999;
   }
@@ -280,10 +286,10 @@ div.intra-page-nav {
     white-space: nowrap;
     .prev,
     .next {
-      disaplay:block;
+      display: block;
       background-color: lighten($med-blue, 5%);
       border: 1px solid $med-blue;
-      @include border-radius(3px);
+      border-radius: 3px;
       text-align: center;
       margin-left: 8px;
       @include trans;
@@ -318,7 +324,7 @@ div.intra-page-nav {
   margin-left: 0px;
   margin-right: 5px;
   margin-bottom: 4px;
-  @include border-radius(10px);
+  border-radius: 10px;
   text-align: center;
   display: inline-block;
 
@@ -329,7 +335,7 @@ div.intra-page-nav {
   .pagination-link {
     background-color: lighten($med-blue, 27%);
     color: $med-blue;
-    @include border-radius(3px);
+    border-radius: 3px;
     @include lt-txt-shadow(#fff);
     border: 1px solid lighten($med-blue, 18%);
     padding: 3px 5px;
@@ -761,7 +767,7 @@ div.intra-page-nav {
         background-color: $black-5;
         position: relative;
         top: -2px;
-        @include border-radius(2px);
+        border-radius: 2px;
       }
     } //li
   }//ol
@@ -789,9 +795,6 @@ div.intra-page-nav {
 //definition lists
 .intro-mod,
 .content-mod {
-  dl {
-
-  }
   dt {
     font-weight: bold;
     margin-top: 13px;
@@ -805,9 +808,6 @@ div.intra-page-nav {
 // text areas
 .intro-mod,
 .content-mod {
-  form {
-  }
-
   label {
     display: block;
     margin-bottom: 4px;
@@ -817,7 +817,7 @@ div.intra-page-nav {
     padding: 16px;
     border: 1px solid $black-15;
     font-family: $lato-reg;
-    @include border-radius(8px);
+    border-radius: 8px;
   }
 
   em.credit {
@@ -849,7 +849,7 @@ div.intra-page-nav {
   border: 3px dashed $lt-blue;
   padding: 40px;
   text-align: center;
-  @include border-radius(10px);
+  border-radius: 10px;
 
   &.complete {
     margin-bottom: 12px;
@@ -857,14 +857,14 @@ div.intra-page-nav {
 }
 
 .image-file {
-  @include border-radius(5px);
+  border-radius: 5px;
   background-color: #FFF;
   text-align: center;
 
   img {
     max-width: 100%;
     opacity: 0.6;
-    @include border-radius(5px);
+    border-radius: 5px;
   }
 
   p {
@@ -929,13 +929,12 @@ input:disabled {
 }
 
 .related-hdr {
-  // background-color: $med-blue;
   background-color: $related-green;
   color: #fff;
   font-size: 18px;
   padding: 6px 13px;
   margin-bottom: 8px;
-  @include box-shadow(0 2px 5px -1px $black-15);
+  box-shadow: 0 2px 5px -1px $black-15;
   //@extend .drk-text-shadow;
 }
 
@@ -1055,7 +1054,7 @@ input:disabled {
   height: 28px;
   background: $med-blue url('/assets/plus.png') no-repeat center;
   background: $med-blue url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2hpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDowNDgwMTE3NDA3MjA2ODExODIyQUE0NzczNTQ2ODgzRCIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDo3RDI1OEQ3RUEyRjAxMUUyODc4QkNENDU5RjNFMTk1RSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDo3RDI1OEQ3REEyRjAxMUUyODc4QkNENDU5RjNFMTk1RSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M2IChNYWNpbnRvc2gpIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6MDQ4MDExNzQwNzIwNjgxMTgyMkFBNDc3MzU0Njg4M0QiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6MDQ4MDExNzQwNzIwNjgxMTgyMkFBNDc3MzU0Njg4M0QiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz7eT1LfAAAALElEQVR42mL4//8/Axac9h8VYKhhYiATDCGNII/O/E8GGBinjsYjtTUCBBgAZiiR6+hReNkAAAAASUVORK5CYII=') no-repeat center;
-  @include box-shadow(-1px 1px 2px rgba(0, 0, 0, 0.3) );
+  box-shadow: -1px 1px 2px rgba(0, 0, 0, 0.3);
   @include trans;
 
   &:hover {

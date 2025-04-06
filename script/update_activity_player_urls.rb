@@ -7,6 +7,6 @@ ExternalActivity.where(tool: tool).find_each{ |ea|
   query = Rack::Utils.parse_query(uri.query)
   uri.query = Rack::Utils.build_query(query)
   puts uri.to_s
-  ea.update_attributes(url: uri.to_s)
+  ea.update(url: uri.to_s)
 }
 ExternalActivity.where(tool: tool).pluck(:url).each{|url| puts url}; nil

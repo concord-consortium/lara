@@ -1,10 +1,10 @@
 require 'spec_helper'
 
 describe Api::V1::LightweightActivitiesController do
-  let (:admin) { FactoryGirl.create(:admin) }
-  let (:author1) { FactoryGirl.create(:author) }
-  let (:author2) { FactoryGirl.create(:author) }
-  let (:activity) { FactoryGirl.create(:activity, user: author1) }
+  let (:admin) { FactoryBot.create(:admin) }
+  let (:author1) { FactoryBot.create(:author) }
+  let (:author2) { FactoryBot.create(:author) }
+  let (:activity) { FactoryBot.create(:activity, user: author1) }
 
   describe "#show" do
     it 'recognizes and generates #show' do
@@ -52,7 +52,7 @@ describe Api::V1::LightweightActivitiesController do
       delete "destroy", params: { id: activity.id }, xhr: true
       expect(LightweightActivity.exists?(activity.id)).to eq(false)
       expect(response.status).to eq(200)
-      expect(response.content_type).to eq("application/json")
+      expect(response.content_type).to eq("application/json; charset=utf-8")
       expect(response.body).to eql({
         success: true
       }.to_json)
@@ -65,7 +65,7 @@ describe Api::V1::LightweightActivitiesController do
       delete "destroy", params: { id: activity.id }, xhr: true
       expect(LightweightActivity.exists?(activity.id)).to eq(true)
       expect(response.status).to eq(403)
-      expect(response.content_type).to eq("application/json")
+      expect(response.content_type).to eq("application/json; charset=utf-8")
     end
 
     it "when user is an admin, destroys an activity" do

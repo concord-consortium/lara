@@ -4,8 +4,8 @@ require 'spec_helper'
 def make(thing) end
 
 describe SequenceRun do
-  let(:user)            { FactoryGirl.create(:user)            }
-  let(:sequence)        { FactoryGirl.create(:sequence)        }
+  let(:user)            { FactoryBot.create(:user)            }
+  let(:sequence)        { FactoryBot.create(:sequence)        }
   let(:remote_endpoint) { "http://someplace.com/return_data/4" }
   let(:remote_id)       { "23" }
 
@@ -40,14 +40,14 @@ describe SequenceRun do
       end
 
       describe "when the sequence isn't the same as the existing" do
-        let(:other_sequence) { FactoryGirl.create(:sequence)  }
+        let(:other_sequence) { FactoryBot.create(:sequence)  }
         it "should make a new run" do
           expect(subject.lookup_or_create(other_sequence, user, portal)).not_to eq(existing_seq_run)
         end
       end
 
       describe "when the user isn't the same as the existing" do
-        let(:other_user) { FactoryGirl.create(:user) }
+        let(:other_user) { FactoryBot.create(:user) }
         it "should make a new run" do
           expect(subject.lookup_or_create(sequence, other_user, portal)).not_to eq(existing_seq_run)
         end
@@ -84,12 +84,12 @@ describe SequenceRun do
   describe "run_for_activity" do
     subject            { existing_seq_run }
 
-    let(:activity1) { FactoryGirl.create(:activity) }
-    let(:activity2) { FactoryGirl.create(:activity) }
-    let(:outside_activity) { FactoryGirl.create(:activity) }
-    let(:sequence) { FactoryGirl.create(:sequence,
+    let(:activity1) { FactoryBot.create(:activity) }
+    let(:activity2) { FactoryBot.create(:activity) }
+    let(:outside_activity) { FactoryBot.create(:activity) }
+    let(:sequence) { FactoryBot.create(:sequence,
       lightweight_activities: [activity1, activity2])}
-    let(:activity_run_in_seq_run) { FactoryGirl.create(:run,
+    let(:activity_run_in_seq_run) { FactoryBot.create(:run,
         user: user,
         activity: activity1,
         # TODO:  The current implementation looks up the sequence runs
@@ -124,8 +124,8 @@ describe SequenceRun do
   describe "an activity run for a sequence of 4 acitivites" do
     subject          { existing_seq_run }
 
-    let(:activities) { Array(1..4).map { |a| FactoryGirl.create(:activity)} }
-    let(:sequence)   { FactoryGirl.create(:sequence, lightweight_activities: activities) }
+    let(:activities) { Array(1..4).map { |a| FactoryBot.create(:activity)} }
+    let(:sequence)   { FactoryBot.create(:sequence, lightweight_activities: activities) }
 
     describe "most_recent_run" do
       before(:each) do
@@ -185,7 +185,7 @@ describe SequenceRun do
         subject { existing_seq_run }
 
         before(:each) do
-          activities.each { |act| act.runs<<FactoryGirl.create(:run, sequence_run: subject)}
+          activities.each { |act| act.runs<<FactoryBot.create(:run, sequence_run: subject)}
           subject.make_or_update_runs
           activities.each { |act| act.reload }
         end
@@ -204,7 +204,7 @@ describe SequenceRun do
         subject { existing_seq_run }
 
         before(:each) do
-          activities.each { |act| act.runs<<FactoryGirl.create(:run)}
+          activities.each { |act| act.runs<<FactoryBot.create(:run)}
           activities.each { |act| act.reload }
         end
 

@@ -7,7 +7,7 @@ class GlobalInteractiveStatesController < ApplicationController
   # This action creates a new global interactive state for given run or updates existing one.
   def create
     if @run.global_interactive_state
-      @run.global_interactive_state.update_attributes!(raw_data: params[:raw_data])
+      @run.global_interactive_state.update!(raw_data: params[:raw_data])
       head :ok
     else
       GlobalInteractiveState.create!(run_id: @run.id, raw_data: params[:raw_data])

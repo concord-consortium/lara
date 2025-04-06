@@ -5,7 +5,7 @@ describe Embeddable::ExternalScript do
   let(:script) { Embeddable::ExternalScript.create(props) }
 
   let(:page) do
-    p = FactoryGirl.create(:interactive_page)
+    p = FactoryBot.create(:interactive_page)
   end
 
   # address bug:  undefined method `is_hidden?'
@@ -43,20 +43,6 @@ describe Embeddable::ExternalScript do
             export_sections.each do |section|
               expect(section).to include(:embeddables)
             end
-          end
-        end
-      end
-
-      describe 'when the embeddable is added to the C-RATER section' do
-        let(:section) { CRater::ARG_SECTION_NAME }
-
-        describe 'the page export' do
-          it "should include a section named 'arg_block' with some ebmeddables" do
-            expect(page.export[:sections]).to include(hash_including(
-              {
-                title: CRater::ARG_SECTION_NAME,
-                embeddables: array_including(anything)
-              }))
           end
         end
       end

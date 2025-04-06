@@ -1,10 +1,10 @@
 require 'spec_helper'
 
 describe Api::V1::SequencesController do
-  let (:admin) { FactoryGirl.create(:admin) }
-  let (:author1) { FactoryGirl.create(:author) }
-  let (:author2) { FactoryGirl.create(:author) }
-  let (:sequence) { FactoryGirl.create(:sequence, user: author1, title: 'Test Sequence') }
+  let (:admin) { FactoryBot.create(:admin) }
+  let (:author1) { FactoryBot.create(:author) }
+  let (:author2) { FactoryBot.create(:author) }
+  let (:sequence) { FactoryBot.create(:sequence, user: author1, title: 'Test Sequence') }
 
   describe "#show" do
     it 'recognizes and generates #show' do
@@ -51,7 +51,7 @@ describe Api::V1::SequencesController do
       delete "destroy", params: { id: sequence.id }, xhr: true
       expect(Sequence.exists?(sequence.id)).to eq(false)
       expect(response.status).to eq(200)
-      expect(response.content_type).to eq("application/json")
+      expect(response.content_type).to eq("application/json; charset=utf-8")
       expect(response.body).to eql({
         success: true
       }.to_json)
@@ -64,7 +64,7 @@ describe Api::V1::SequencesController do
       delete "destroy", params: { id: sequence.id }, xhr: true
       expect(Sequence.exists?(sequence.id)).to eq(true)
       expect(response.status).to eq(403)
-      expect(response.content_type).to eq("application/json")
+      expect(response.content_type).to eq("application/json; charset=utf-8")
     end
 
     it "when user is an admin, destroys an sequence" do

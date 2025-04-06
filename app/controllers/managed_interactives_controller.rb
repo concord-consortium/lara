@@ -1,5 +1,3 @@
-require_dependency "application_controller"
-
 class ManagedInteractivesController < InteractiveController
   before_action :set_interactive, except: [:new, :create]
 
@@ -16,7 +14,6 @@ class ManagedInteractivesController < InteractiveController
       :name,
       :url_fragment,
       :is_half_width,
-      :show_in_featured_question_report,
       :authored_state,
       :is_hidden,
       :linked_interactive_id, :linked_interactive_type,

@@ -6,9 +6,9 @@ end
 
 describe InteractivePage do
   let(:page) do
-    p = FactoryGirl.create(:page, sidebar_title: "sidebar")
+    p = FactoryBot.create(:page, sidebar_title: "sidebar")
     [3,1,2].each do |i|
-      embed = FactoryGirl.create(:xhtml, name: "embeddable #{i}", content: "This is the #{ActiveSupport::Inflector.ordinalize(i)} embeddable")
+      embed = FactoryBot.create(:xhtml, name: "embeddable #{i}", content: "This is the #{ActiveSupport::Inflector.ordinalize(i)} embeddable")
       p.add_embeddable(embed, i)
     end
     p
@@ -67,7 +67,7 @@ describe InteractivePage do
 
     it 'has a header block to which an embeddable can be added' do
       embed_text = "This is an embeddable in the header block."
-      embed = FactoryGirl.create(:xhtml, name: "", content: embed_text)
+      embed = FactoryBot.create(:xhtml, name: "", content: embed_text)
       page.add_embeddable(embed, 1, Section::HEADER_BLOCK)
       page.reload # We have to reload to get the order of page_items correct.
       expect(page.embeddables.size).to eq(4)
@@ -88,7 +88,7 @@ describe InteractivePage do
   end
 
   it 'belongs to a lightweight activity' do
-    activity = FactoryGirl.create(:activity)
+    activity = FactoryBot.create(:activity)
 
     page.lightweight_activity = activity
     page.save!
@@ -102,7 +102,7 @@ describe InteractivePage do
 
   it 'has interactives' do
     [3,1,2].each do |i|
-      inter = FactoryGirl.create(:mw_interactive)
+      inter = FactoryBot.create(:mw_interactive)
       page.add_interactive(inter, i)
     end
     page.reload
@@ -113,7 +113,7 @@ describe InteractivePage do
   it 'has interactives in the correct order' do
     # We're adding these with a "position" parameter, so they're being added as 3, 1, 2 but the order should be 1, 2, 3
     [3,1,2].each do |i|
-      inter = FactoryGirl.create(:mw_interactive, name: "inter #{i}", url: "http://www.concord.org/#{i}")
+      inter = FactoryBot.create(:mw_interactive, name: "inter #{i}", url: "http://www.concord.org/#{i}")
       page.add_interactive(inter, i)
     end
     page.reload
@@ -133,7 +133,7 @@ describe InteractivePage do
 
   it 'inserts embeddables at the end if position is not provided' do
     embed_count = page.sections[0].embeddables.length
-    embed4 = FactoryGirl.create(:xhtml, name: 'Embeddable 4')
+    embed4 = FactoryBot.create(:xhtml, name: 'Embeddable 4')
     page.add_embeddable(embed4)
     page.reload
 
@@ -143,7 +143,7 @@ describe InteractivePage do
   end
 
   describe 'helpers related to order of pages should respect is_hidden value' do
-    let (:activity) { FactoryGirl.create(:activity_with_pages, pages_count: 4) }
+    let (:activity) { FactoryBot.create(:activity_with_pages, pages_count: 4) }
 
     context 'when no pages are hidden' do
       it 'order is based on pages position' do
@@ -160,8 +160,8 @@ describe InteractivePage do
 
     context 'when some pages are hidden' do
       before(:each) do
-        activity.pages.first.update_attributes!(is_hidden: true)
-        activity.pages.last.update_attributes!(is_hidden: true)
+        activity.pages.first.update!(is_hidden: true)
+        activity.pages.last.update!(is_hidden: true)
       end
       it 'order is based on pages position and is_hidden values' do
         expect(activity.pages[0].first_visible?).to be_falsey
@@ -251,9 +251,9 @@ describe InteractivePage do
     end
 
     describe 'copies of the original interactives' do
-      let(:hidden_image)    { FactoryGirl.create(:image_interactive, is_hidden: true)}
-      let(:hidden_mw)       { FactoryGirl.create(:mw_interactive, is_hidden: true)}
-      let(:hidden_video)    { FactoryGirl.create(:video_interactive, is_hidden: true)}
+      let(:hidden_image)    { FactoryBot.create(:image_interactive, is_hidden: true)}
+      let(:hidden_mw)       { FactoryBot.create(:mw_interactive, is_hidden: true)}
+      let(:hidden_video)    { FactoryBot.create(:video_interactive, is_hidden: true)}
       let(:dupe)            { page.duplicate.reload}
       before(:each) do
         page.add_interactive hidden_image
@@ -274,8 +274,8 @@ describe InteractivePage do
     end
 
     describe 'has copies of the original embeddables' do
-      let(:hidden_text)    { FactoryGirl.create(:xhtml, is_hidden: true)}
-      let(:hidden_labbook) { FactoryGirl.create(:labbook, is_hidden: true)}
+      let(:hidden_text)    { FactoryBot.create(:xhtml, is_hidden: true)}
+      let(:hidden_labbook) { FactoryBot.create(:labbook, is_hidden: true)}
       let(:dupe)           { page.duplicate.reload}
       before(:each) do
         page.add_embeddable hidden_labbook
@@ -337,10 +337,10 @@ describe InteractivePage do
         page.reload
       end
 
-      let(:linked_mw_1)  { FactoryGirl.create(:mw_interactive) }
-      let(:linked_mw_2)  { FactoryGirl.create(:mw_interactive) }
-      let(:mw_1)         { FactoryGirl.create(:mw_interactive, linked_interactive: linked_mw_1) }
-      let(:mw_2)         { FactoryGirl.create(:mw_interactive, linked_interactive: linked_mw_2) }
+      let(:linked_mw_1)  { FactoryBot.create(:mw_interactive) }
+      let(:linked_mw_2)  { FactoryBot.create(:mw_interactive) }
+      let(:mw_1)         { FactoryBot.create(:mw_interactive, linked_interactive: linked_mw_1) }
+      let(:mw_2)         { FactoryBot.create(:mw_interactive, linked_interactive: linked_mw_2) }
 
       let(:dupe)         { page.duplicate }
 
@@ -364,14 +364,14 @@ describe InteractivePage do
         page.reload
       end
 
-      let(:linked_mw_1)  { FactoryGirl.create(:mw_interactive) }
-      let(:linked_mw_2)  { FactoryGirl.create(:mw_interactive) }
-      let(:mw_1)         { FactoryGirl.create(:mw_interactive, linked_interactive: linked_mw_1) }
-      let(:mw_2)         { FactoryGirl.create(:mw_interactive, linked_interactive: linked_mw_1) }
-      let(:mw_3)         { FactoryGirl.create(:mw_interactive, linked_interactive: linked_mw_1) }
-      let(:mw_4)         { FactoryGirl.create(:mw_interactive) }
-      let(:mw_5)         { FactoryGirl.create(:mw_interactive, linked_interactive: linked_mw_2) }
-      let(:mw_6)         { FactoryGirl.create(:mw_interactive, linked_interactive: linked_mw_2) }
+      let(:linked_mw_1)  { FactoryBot.create(:mw_interactive) }
+      let(:linked_mw_2)  { FactoryBot.create(:mw_interactive) }
+      let(:mw_1)         { FactoryBot.create(:mw_interactive, linked_interactive: linked_mw_1) }
+      let(:mw_2)         { FactoryBot.create(:mw_interactive, linked_interactive: linked_mw_1) }
+      let(:mw_3)         { FactoryBot.create(:mw_interactive, linked_interactive: linked_mw_1) }
+      let(:mw_4)         { FactoryBot.create(:mw_interactive) }
+      let(:mw_5)         { FactoryBot.create(:mw_interactive, linked_interactive: linked_mw_2) }
+      let(:mw_6)         { FactoryBot.create(:mw_interactive, linked_interactive: linked_mw_2) }
 
       let(:dupe)         { page.duplicate }
 
@@ -389,10 +389,10 @@ describe InteractivePage do
     end
 
     describe "interactives linked to each other" do
-      let(:int_1) { FactoryGirl.create(:mw_interactive) }
-      let(:int_2) { FactoryGirl.create(:managed_interactive) }
-      let(:int_3) { FactoryGirl.create(:mw_interactive) }
-      let(:int_4) { FactoryGirl.create(:managed_interactive) }
+      let(:int_1) { FactoryBot.create(:mw_interactive) }
+      let(:int_2) { FactoryBot.create(:managed_interactive) }
+      let(:int_3) { FactoryBot.create(:mw_interactive) }
+      let(:int_4) { FactoryBot.create(:managed_interactive) }
       let(:dupe)  { page.duplicate }
 
       before(:each) do
@@ -449,24 +449,6 @@ describe InteractivePage do
         end
       end
     end
-
-    describe "from a lightweight activity with arg block section" do
-      let(:example_json_file) { 'activity_with_arg_block_section' }
-      let(:test_page_index) { 1 }
-      let(:page_json) { activity_json[:pages][test_page_index] }
-      let(:page) { InteractivePage.import(page_json)}
-      it 'imports the arg block as an addition section' do
-        expect(page.name).to eql("page 2")
-        expect(page.additional_sections).to_not be_nil
-        expect(page.additional_sections["arg_block"]).to be_truthy
-      end
-      it 'has at least one embeddable arg block' do
-        embeddable = page.embeddables.first
-        expect(page.section_embeddables("arg_block")).to_not be_nil
-        expect(page.section_embeddables("arg_block")).to include(embeddable)
-      end
-    end
-
   end
 
   describe 'InteractivePage#register_additional_section' do
@@ -485,22 +467,22 @@ describe InteractivePage do
 
   describe '#reportable_items' do
     let(:non_reportable_interactive) {
-      FactoryGirl.create(:mw_interactive, enable_learner_state: false, has_report_url: false)
+      FactoryBot.create(:mw_interactive, enable_learner_state: false, has_report_url: false)
     }
     let(:reportable_interactive) {
-      FactoryGirl.create(:mw_interactive, enable_learner_state: true, has_report_url: false)
+      FactoryBot.create(:mw_interactive, enable_learner_state: true, has_report_url: false)
     }
     let(:reportable_interactive2) {
-      FactoryGirl.create(:mw_interactive, enable_learner_state: true, has_report_url: true)
+      FactoryBot.create(:mw_interactive, enable_learner_state: true, has_report_url: true)
     }
-    let(:video_interactive) { FactoryGirl.create(:video_interactive) }
-    let(:image_interactive) { FactoryGirl.create(:image_interactive) }
+    let(:video_interactive) { FactoryBot.create(:video_interactive) }
+    let(:image_interactive) { FactoryBot.create(:image_interactive) }
 
-    let(:or_question) { FactoryGirl.create(:or_embeddable) }
-    let(:im_question) { FactoryGirl.create(:image_question, prompt: "draw your answer") }
-    let(:mc_question) { FactoryGirl.create(:mc_with_choices) }
-    let(:labbook_question) { FactoryGirl.create(:labbook, interactive: reportable_interactive) }
-    let(:xhtml) { FactoryGirl.create(:xhtml) }
+    let(:or_question) { FactoryBot.create(:or_embeddable) }
+    let(:im_question) { FactoryBot.create(:image_question, prompt: "draw your answer") }
+    let(:mc_question) { FactoryBot.create(:mc_with_choices) }
+    let(:labbook_question) { FactoryBot.create(:labbook, interactive: reportable_interactive) }
+    let(:xhtml) { FactoryBot.create(:xhtml) }
 
     before(:each) do
       interactives.each{|interactive|
@@ -538,7 +520,7 @@ describe InteractivePage do
 
     context 'when the reportable interactive is hidden' do
       let(:reportable_interactive) {
-        FactoryGirl.create(:mw_interactive,
+        FactoryBot.create(:mw_interactive,
           enable_learner_state: true,
           has_report_url: true,
           is_hidden: true)
@@ -551,7 +533,7 @@ describe InteractivePage do
     end
 
     context 'when the embeddable open reponse is hidden' do
-      let(:or_question) { FactoryGirl.create(:or_embeddable, is_hidden: true) }
+      let(:or_question) { FactoryBot.create(:or_embeddable, is_hidden: true) }
       let(:interactives) { [] }
       let(:embeddables) { [or_question] }
       it 'does not return it' do
@@ -563,7 +545,7 @@ describe InteractivePage do
   end
 
   describe "A completion page" do
-    let(:page)       { FactoryGirl.create(:page, is_completion: true) }
+    let(:page)       { FactoryBot.create(:page, is_completion: true) }
 
     describe "#to_hash" do
       it "should respect the _is_completion property" do
@@ -580,8 +562,8 @@ describe InteractivePage do
   end
 
   describe "#add_embeddable" do
-    let(:page)        { FactoryGirl.create(:page) }
-    let(:embeddables) { FactoryGirl.create_list(:or_embeddable, 5)}
+    let(:page)        { FactoryBot.create(:page) }
+    let(:embeddables) { FactoryBot.create_list(:or_embeddable, 5)}
 
     describe "without specifying a section" do
       it "should put everything in the default (assessment block) section" do

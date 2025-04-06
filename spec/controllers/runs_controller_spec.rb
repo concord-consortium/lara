@@ -2,9 +2,9 @@ require 'spec_helper'
 
 describe RunsController do
   render_views
-  let (:activity) { FactoryGirl.create(:activity) }
+  let (:activity) { FactoryBot.create(:activity) }
   let (:run) {
-    r = FactoryGirl.create(:run)
+    r = FactoryBot.create(:run)
     r.activity = activity
     r.save
     r
@@ -35,12 +35,12 @@ describe RunsController do
   end
 
   describe '#dirty' do
-    let (:dirty_run) { FactoryGirl.create(:run, is_dirty: true, created_at: 15.minutes.ago, updated_at: 14.minutes.ago) }
+    let (:dirty_run) { FactoryBot.create(:run, is_dirty: true, created_at: 15.minutes.ago, updated_at: 14.minutes.ago) }
 
     it 'assigns @runs with dirty runs older than 5 minutes' do
       dirty_run
       # Have to be logged in
-      @user ||= FactoryGirl.create(:admin)
+      @user ||= FactoryBot.create(:admin)
       sign_in @user
       get :dirty
       expect(assigns(:runs)).to eq([dirty_run])

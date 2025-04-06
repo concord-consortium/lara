@@ -1,0 +1,190 @@
+
+
+{
+    "description": "",
+    "editor_mode": 0,
+    "layout": 0,
+    "name": "[Cypress] Test Interactive Header",
+    "notes": "",
+    "project_id": null,
+    "related": "",
+    "student_report_enabled": true,
+    "thumbnail_url": "",
+    "time_to_complete": null,
+    "version": 1,
+    "theme_name": null,
+    "pages": [
+      {
+        "additional_sections": {
+
+        },
+        "embeddable_display_mode": "stacked",
+        "is_completion": false,
+        "is_hidden": false,
+        "layout": "l-6040",
+        "name": null,
+        "position": 1,
+        "show_info_assessment": true,
+        "show_interactive": true,
+        "show_header": true,
+        "show_sidebar": false,
+        "sidebar": null,
+        "sidebar_title": "Did you know?",
+        "text": "<p>Hello!<\/p>",
+        "embeddables": [
+          {
+            "embeddable": {
+              "default_text": "",
+              "give_prediction_feedback": false,
+              "hint": "",
+              "is_half_width": true,
+              "is_hidden": false,
+              "is_prediction": false,
+              "name": "",
+              "prediction_feedback": "",
+              "prompt": "<p>What do you think?<\/p>",
+              "type": "Embeddable::OpenResponse",
+              "ref_id": "1-Embeddable::OpenResponse"
+            },
+            "section": null
+          },
+          {
+            "embeddable": {
+              "aspect_ratio_method": "DEFAULT",
+              "authored_state": null,
+              "click_to_play": false,
+              "click_to_play_prompt": null,
+              "enable_learner_state": true,
+              "full_window": false,
+              "has_report_url": false,
+              "image_url": "",
+              "is_half_width": false,
+              "is_hidden": false,
+              "model_library_url": null,
+              "name": "",
+              "native_height": 435,
+              "native_width": 576,
+              "show_delete_data_button": false,
+              "url": "http:\/\/concord-consortium.github.io\/lara-interactive-api\/iframe.html",
+              "type": "MwInteractive",
+              "ref_id": "1-MwInteractive"
+            },
+            "section": null
+          },
+          {
+            "embeddable": {
+              "default_text": "",
+              "give_prediction_feedback": false,
+              "hint": "",
+              "is_half_width": true,
+              "is_hidden": false,
+              "is_prediction": false,
+              "name": "",
+              "prediction_feedback": "",
+              "prompt": "<p>Why do you think that?<\/p>",
+              "type": "Embeddable::OpenResponse",
+              "ref_id": "2-Embeddable::OpenResponse"
+            },
+            "section": null
+          },
+          {
+            "embeddable": {
+              "aspect_ratio_method": "DEFAULT",
+              "authored_state": null,
+              "click_to_play": false,
+              "click_to_play_prompt": null,
+              "enable_learner_state": false,
+              "full_window": false,
+              "has_report_url": false,
+              "image_url": "",
+              "is_half_width": false,
+              "is_hidden": false,
+              "model_library_url": null,
+              "name": "Does NOT save state",
+              "native_height": 435,
+              "native_width": 576,
+              "show_delete_data_button": false,
+              "url": "http:\/\/concord-consortium.github.io\/lara-interactive-api\/iframe.html",
+              "type": "MwInteractive",
+              "ref_id": "5-MwInteractive"
+            },
+            "section": null
+          },
+          {
+            "embeddable": {
+              "aspect_ratio_method": "DEFAULT",
+              "authored_state": null,
+              "click_to_play": false,
+              "click_to_play_prompt": null,
+              "enable_learner_state": true,
+              "full_window": false,
+              "has_report_url": false,
+              "image_url": "",
+              "is_half_width": false,
+              "is_hidden": false,
+              "model_library_url": null,
+              "name": "Saves state #1",
+              "native_height": 435,
+              "native_width": 576,
+              "show_delete_data_button": true,
+              "url": "http:\/\/concord-consortium.github.io\/lara-interactive-api\/iframe.html",
+              "type": "MwInteractive",
+              "ref_id": "2-MwInteractive"
+            },
+            "section": "interactive_box"
+          },
+          {
+            "embeddable": {
+              "aspect_ratio_method": "DEFAULT",
+              "authored_state": null,
+              "click_to_play": false,
+              "click_to_play_prompt": null,
+              "enable_learner_state": false,
+              "full_window": false,
+              "has_report_url": false,
+              "image_url": "",
+              "is_half_width": false,
+              "is_hidden": false,
+              "model_library_url": null,
+              "name": "Does NOT save state",
+              "native_height": 435,
+              "native_width": 576,
+              "show_delete_data_button": false,
+              "url": "http:\/\/concord-consortium.github.io\/lara-interactive-api\/iframe.html",
+              "type": "MwInteractive",
+              "ref_id": "3-MwInteractive"
+            },
+            "section": "interactive_box"
+          },
+          {
+            "embeddable": {
+              "aspect_ratio_method": "DEFAULT",
+              "authored_state": null,
+              "click_to_play": false,
+              "click_to_play_prompt": null,
+              "enable_learner_state": true,
+              "full_window": false,
+              "has_report_url": false,
+              "image_url": "",
+              "is_half_width": false,
+              "is_hidden": false,
+              "model_library_url": null,
+              "name": "Saves state #2",
+              "native_height": 435,
+              "native_width": 576,
+              "show_delete_data_button": true,
+              "url": "http:\/\/concord-consortium.github.io\/lara-interactive-api\/iframe.html",
+              "type": "MwInteractive",
+              "ref_id": "4-MwInteractive"
+            },
+            "section": "interactive_box"
+          }
+        ]
+      }
+    ],
+    "plugins": [
+
+    ],
+    "type": "LightweightActivity",
+    "export_site": "Lightweight Activities Runtime and Authoring"
+  }

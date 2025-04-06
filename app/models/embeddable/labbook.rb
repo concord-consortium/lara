@@ -49,7 +49,6 @@ module Embeddable
         type: self.class.portal_type.gsub(' ', '_'),
         id: portal_id,
         name: name,
-        show_in_featured_question_report: show_in_featured_question_report,
         # This info can be used by Portal to generate an iframe with album in teacher report.
         display_in_iframe: true,
         # These dimensions are pretty random at the moment. Labbook album doesn't look good
@@ -65,7 +64,6 @@ module Embeddable
         type: 'iframe_interactive',
         id: embeddable_id,
         name: name,
-        show_in_featured_question_report: show_in_featured_question_report,
         display_in_iframe: true,
         width: 600,
         height: 500,
@@ -81,8 +79,7 @@ module Embeddable
         custom_action_label: custom_action_label,
         is_hidden: is_hidden,
         is_half_width: is_half_width,
-        hint: hint,
-        show_in_featured_question_report: show_in_featured_question_report
+        hint: hint
       }
     end
 
@@ -98,8 +95,7 @@ module Embeddable
         :custom_action_label,
         :is_hidden,
         :is_half_width,
-        :hint,
-        :show_in_featured_question_report
+        :hint
       ])
     end
 

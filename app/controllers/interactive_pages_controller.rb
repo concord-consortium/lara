@@ -1,8 +1,6 @@
-require_dependency "application_controller"
-
 class InteractivePagesController < ApplicationController
   before_action :set_page, except: [:new, :create]
-  before_action only: [:show, :preview] { set_run_key(portal_launchable: false) }
+  before_action :set_run_key_to_false, only: [:show, :preview]
   before_action :set_sequence, only: [:show]
   before_action :check_if_hidden, only: [:show, :preview]
 
@@ -64,7 +62,6 @@ class InteractivePagesController < ApplicationController
   def edit
     authorize! :update, @page
     @all_pages = @activity.pages
-    gon.publication_details = PublicationDetails.new(@activity).to_json
   end
 
   def update_params
@@ -79,7 +76,7 @@ class InteractivePagesController < ApplicationController
     authorize! :update, @page
     respond_to do |format|
       if request.xhr?
-        if @page.update_attributes(update_params)
+        if @page.update(update_params)
           # *** respond with the new value ***
           update_activity_changed_by
           format.html { render plain: params[:interactive_page].values.first }
@@ -90,7 +87,7 @@ class InteractivePagesController < ApplicationController
         format.json { render json: @page.to_json }
       else
         format.html do
-          if @page.update_attributes(update_params)
+          if @page.update(update_params)
             @page.reload # In case it's the name we updated
             update_activity_changed_by
             flash[:notice] = "Page #{@page.name} was updated."
@@ -114,15 +111,6 @@ class InteractivePagesController < ApplicationController
       flash[:warning] = "There was a problem deleting page #{@page.name}."
       redirect_to edit_activity_path(@activity)
     end
-  end
-
-  def add_tracked
-    authorize! :update, @page
-    update_activity_changed_by
-    qt = QuestionTracker.find(params[:question_tracker])
-    question = qt.new_question
-    @page.add_embeddable(question)
-    edit_embeddable_redirect(question)
   end
 
   def add_embeddable
@@ -155,7 +143,6 @@ class InteractivePagesController < ApplicationController
     authorize! :update, @page
     update_activity_changed_by
     @section.destroy
-    # We aren't removing the embeddable itself. But we would remove the tracked_question of the embeddable.
     redirect_to edit_activity_page_path(@activity, @page)
   end
 
@@ -163,7 +150,6 @@ class InteractivePagesController < ApplicationController
     authorize! :update, @page
     update_activity_changed_by
     @page_item.destroy
-    # We aren't removing the embeddable itself. But we would remove the tracked_question of the embeddable.
     redirect_to edit_activity_page_path(@activity, @page)
   end
 
@@ -197,6 +183,10 @@ class InteractivePagesController < ApplicationController
   end
 
   private
+
+  def set_run_key_to_false
+    set_run_key(portal_launchable: false)
+  end
 
   def edit_embeddable_redirect(embeddable)
     case embeddable

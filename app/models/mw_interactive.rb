@@ -60,7 +60,6 @@ class MwInteractive < ApplicationRecord
       image_url: image_url,
       is_hidden: is_hidden,
       is_half_width: is_half_width,
-      show_in_featured_question_report: show_in_featured_question_report,
       model_library_url: model_library_url,
       authored_state: authored_state,
       aspect_ratio_method: aspect_ratio_method,
@@ -96,7 +95,6 @@ class MwInteractive < ApplicationRecord
                               :click_to_play,
                               :click_to_play_prompt,
                               :full_window,
-                              :show_in_featured_question_report,
                               :image_url,
                               :is_hidden,
                               :is_half_width,
@@ -107,7 +105,17 @@ class MwInteractive < ApplicationRecord
                               :report_item_url])
   end
 
+  def self.legacy_properties
+    [:show_in_featured_question_report]
+  end
+
   def self.import(import_hash)
+    import_hash = import_hash.clone
+
+    legacy_properties.each do |prop|
+      import_hash.delete(prop)
+    end
+
     return self.new(import_hash)
   end
 

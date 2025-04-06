@@ -22,7 +22,7 @@
 # base_params: the base parameters of the request so a simple request will look like:
 #     get action, base_params
 #   these base_params are also passed to route helpers to construct redirect paths
-# base_factory_params: parameters passed to FactoryGirl to create an instance of the
+# base_factory_params: parameters passed to FactoryBot to create an instance of the
 #   run type
 # run_path_helper: the name of the route helper for constructing a path to the resource
 #   with a run key.
@@ -32,7 +32,7 @@
 #   the run
 
 shared_examples "runnable launched without run_key" do |run_type|
-  let (:running_user) { FactoryGirl.create(:user) }
+  let (:running_user) { FactoryBot.create(:user) }
   let (:run_factory_type) { run_type.model_name.to_s.underscore.to_sym}
   describe "when the user is anonymous" do
     it "redirects with a #{run_type} key in the URL" do
@@ -44,9 +44,9 @@ shared_examples "runnable launched without run_key" do |run_type|
     describe "when an anonymous #{run_type} already exists" do
       # we only build the new run and not create it so it won't be found by accident
       # if the lookup code is broken
-      let(:new_run) { FactoryGirl.build(run_factory_type, base_factory_params) }
+      let(:new_run) { FactoryBot.build(run_factory_type, base_factory_params) }
       let(:anon_factory_params){ base_factory_params.merge(user_id: nil) }
-      let(:anon_run) { FactoryGirl.create(run_factory_type, anon_factory_params) }
+      let(:anon_run) { FactoryBot.create(run_factory_type, anon_factory_params) }
 
       before(:each) {
         # create the anonymous run
@@ -70,7 +70,7 @@ shared_examples "runnable launched without run_key" do |run_type|
       let (:run_with_user_factory_params) { base_factory_params.merge(user_id: running_user.id) }
       let (:owned_run) {
         factory_params = run_with_user_factory_params.merge(extra_factory_params)
-        FactoryGirl.create(run_factory_type, factory_params)
+        FactoryBot.create(run_factory_type, factory_params)
       }
       before(:each) {
         owned_run
@@ -83,7 +83,7 @@ shared_examples "runnable launched without run_key" do |run_type|
       end
       describe "when this #{run_type} has portal properties" do
         let (:extra_factory_params) { {remote_endpoint: 'http://example.com', remote_id: 1} }
-        let (:new_run) { FactoryGirl.build(run_factory_type, run_with_user_factory_params) }
+        let (:new_run) { FactoryBot.build(run_factory_type, run_with_user_factory_params) }
 
         it "creates a new #{run_type}, it does not use the existing #{run_type}" do
           expect(run_type).to receive(:create!) { new_run.save; new_run }
@@ -96,7 +96,7 @@ shared_examples "runnable launched without run_key" do |run_type|
 end
 
 shared_examples "runnable launched with run_key" do |run_type, portal_launchable|
-  let (:running_user) { FactoryGirl.create(:user) }
+  let (:running_user) { FactoryBot.create(:user) }
   let (:run_factory_type) { run_type.model_name.to_s.underscore.to_sym}
   describe "when there is no #{run_type} with this key" do
     it "returns 404" do
@@ -108,7 +108,7 @@ shared_examples "runnable launched with run_key" do |run_type, portal_launchable
     end
   end
   describe "when there is an existing #{run_type} with this key" do
-    let (:existing_run) { FactoryGirl.create(run_factory_type, existing_run_factory_params) }
+    let (:existing_run) { FactoryBot.create(run_factory_type, existing_run_factory_params) }
     let (:params_with_existing_run_key) {
       params = base_params.clone()
       params[run_key_param_name] = existing_run.key
@@ -129,7 +129,7 @@ shared_examples "runnable launched with run_key" do |run_type, portal_launchable
         end
 
         it 'returns success' do
-          expect(response).to be_success
+          expect(response).to be_successful
         end
 
         it 'renders the resource' do
@@ -141,7 +141,7 @@ shared_examples "runnable launched with run_key" do |run_type, portal_launchable
         end
       end
       describe "but the #{run_type} is owned by a user" do
-        let (:other_user) { FactoryGirl.create(:user) }
+        let (:other_user) { FactoryBot.create(:user) }
         let (:existing_run_factory_params) { base_factory_params.merge(user_id: other_user.id) }
         it "returns 403" do
           expect(response).to have_http_status(403)
@@ -169,13 +169,13 @@ shared_examples "runnable launched with run_key" do |run_type, portal_launchable
           expect(response).to have_http_status(403)
         end
         describe "when the current user is an admin" do
-          let (:running_user) { FactoryGirl.create(:admin) }
+          let (:running_user) { FactoryBot.create(:admin) }
           it "finds this existing #{run_type}" do
             expect(assigns[run_variable_name]).to eq(existing_run)
           end
 
           it 'returns success' do
-            expect(response).to be_success
+            expect(response).to be_successful
           end
 
           it 'renders the resource' do
@@ -184,20 +184,20 @@ shared_examples "runnable launched with run_key" do |run_type, portal_launchable
         end
       end
       describe "when the #{run_type} is owned by a different user" do
-        let (:other_user) { FactoryGirl.create(:user) }
+        let (:other_user) { FactoryBot.create(:user) }
         let (:existing_run_factory_params) { base_factory_params.merge(user_id: other_user.id) }
         it "returns 403" do
           expect(response).to have_http_status(403)
         end
 
         describe "when the current user is an admin" do
-          let (:running_user) { FactoryGirl.create(:admin) }
+          let (:running_user) { FactoryBot.create(:admin) }
           it "finds this existing #{run_type}" do
             expect(assigns[run_variable_name]).to eq(existing_run)
           end
 
           it 'returns success' do
-            expect(response).to be_success
+            expect(response).to be_successful
           end
 
           it 'renders the resource' do
@@ -213,7 +213,7 @@ shared_examples "runnable launched with run_key" do |run_type, portal_launchable
           end
 
           it 'returns success' do
-            expect(response).to be_success
+            expect(response).to be_successful
           end
 
           it 'renders the resource' do
@@ -234,7 +234,7 @@ end
 
 shared_examples "runnable launched with portal parameters" do |run_type|
   let (:run_factory_type) { run_type.model_name.to_s.underscore.to_sym}
-  let (:running_user) { FactoryGirl.create(:user) }
+  let (:running_user) { FactoryBot.create(:user) }
   let (:request_params_with_portal_properties) {
     base_params.merge(returnUrl: 'https:/example.com', externalId: 1)
   }
@@ -281,18 +281,18 @@ shared_examples "runnable launched with portal parameters" do |run_type|
       let(:anon_run_with_same_portal_params) {
         params = base_factory_params.merge(user_id: nil)
         params = params.merge(run_factory_portal_params)
-        FactoryGirl.create(run_factory_type, params)
+        FactoryBot.create(run_factory_type, params)
       }
-      let(:other_user) { FactoryGirl.create(:user) }
+      let(:other_user) { FactoryBot.create(:user) }
       let(:other_user_run_with_same_portal_params) {
         params = base_factory_params.merge(user_id: other_user.id)
         params = params.merge(run_factory_portal_params)
-        FactoryGirl.create(run_factory_type, params)
+        FactoryBot.create(run_factory_type, params)
       }
       let (:new_run) {
         params = base_factory_params.merge(user_id: running_user.id)
         params = params.merge(run_factory_portal_params)
-        FactoryGirl.build(run_factory_type, params)
+        FactoryBot.build(run_factory_type, params)
       }
 
       it "redirects with a #{run_type} key in the URL" do
@@ -312,7 +312,7 @@ shared_examples "runnable launched with portal parameters" do |run_type|
       let (:matching_run) {
         params = base_factory_params.merge(user_id: running_user.id)
         params = params.merge(run_factory_portal_params)
-        FactoryGirl.create(run_factory_type, params)
+        FactoryBot.create(run_factory_type, params)
       }
       describe "when this #{run_type} is owned by the current user" do
         it "redirects to a URL with the #{run_type} key" do
@@ -333,7 +333,7 @@ shared_examples "runnable launched with portal parameters" do |run_type|
       let (:collaboration_run) {
         params = base_factory_params.merge(user_id: running_user.id)
         params = params.merge(run_factory_portal_params)
-        FactoryGirl.create(run_factory_type, params)
+        FactoryBot.create(run_factory_type, params)
       }
 
       it "should call CreateCollaboration" do
@@ -358,7 +358,7 @@ shared_examples "runnable resource not launchable by the portal" do |run_type|
   it_behaves_like "runnable launched with run_key", run_type
   describe "when launched with portal parameters" do
     before(:each) do
-      sign_in FactoryGirl.create(:user)
+      sign_in FactoryBot.create(:user)
     end
     it "returns an error" do
       with_portal_params = base_params.merge(returnUrl: 'https:/example.com', externalId: 1)

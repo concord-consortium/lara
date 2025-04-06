@@ -45,7 +45,7 @@ class ProjectsController < ApplicationController
   # PUT /projects/1.json
   def update
     respond_to do |format|
-      if @project.update_attributes(project_params)
+      if @project.update(project_params)
         format.html { redirect_to edit_polymorphic_url(@project), notice: "Project was successfully updated." }
         format.json { head :no_content }
       else

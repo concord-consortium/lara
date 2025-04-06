@@ -57,7 +57,7 @@ $context: 960 !default;
 // USE: @include trans;
 // USE: @include trans(.1s, opacity, linear);
 @mixin trans($trans-time: .2s, $trans-property: all, $trans-function: ease-in) {
-	@include single-transition(#{$trans-property}, #{$trans-time}, #{$trans-function}, false);
+	transition: #{$trans-property} #{$trans-time} #{$trans-function};
 }
 
 // User Select
@@ -79,7 +79,7 @@ $context: 960 !default;
 
 // Reset Clearfix
 // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
-// FOR: Removing pie-clearfix from an element after it's been applied
+// FOR: Removing clearfix from an element after it's been applied
 // WHY: Hard to remember attribute combo. Helpful in responsive layouts.
 // USE: @include reset-clearfix;
 @mixin reset-clearfix {
@@ -236,10 +236,6 @@ $context: 960 !default;
 // WHY: Saves time and typing and is guaranteed to work across devices 
 // NOTE 1: You still need to set the display (inline-block or block) 
 // and a height/width for the container
-// NOTE 2: "image-url" is a helper that automatically creates a relative link to the _img folder
-// from wherever it's called. This function is built-in to Compass. It's rare that you'll need
-// change the base folder (_img) but it can be done in the config.rb file in the root 
-// REF: http://compass-style.org/reference/compass/helpers/urls
 // USE: @include svg(imageName);
 
 @mixin svg($image) {
@@ -247,7 +243,7 @@ $context: 960 !default;
 	$path: "_icons/";
 	$svg: $path + $image + ".svg";
 	$png: $path + $image + ".png";
-	$ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='"+ image-url($png) +"', sizingMethod='scale')";
+	$ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='"+ $png +"', sizingMethod='scale')";
 
 	// Universal properties
 	background-position: 50% 50%;
@@ -255,14 +251,13 @@ $context: 960 !default;
 
 	// Fallback pattern
 	.no-svg & {
-		background-image: image-url($png);
-		// Makes sure that image scales if necessary, works for IE9
-		@include background-size(cover);
+		background-image: url($png);
+		background-size: cover;
 		filter: $ms-filter;
 		-ms-filter: $ms-filter;
 	}
 	.svg & {
-		background-image: image-url($svg);
+		background-image: url($svg);
 	}
 } // svg
 
@@ -331,8 +326,8 @@ $context: 960 !default;
          (min-device-pixel-ratio: 1.1),
          (min-resolution: 96dpi) {
     // on retina, use image that's scaled by 2
-	background-image: $image;
-	@include background-size($width $height);
+	  background-image: $image;
+	  background-size: $width $height;
   }
 }
 
@@ -367,42 +362,6 @@ $context: 960 !default;
       height: 100%;
   }
 }
-
-
-// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
-//
-// Sprites	
-//
-// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
-
-
-// Let Compass make Sprites for us
-// http://compass-style.org/help/tutorials/spriting/
-//@import "compass/utilities/sprites/base";
-
-// Make a sprite from all the images in the "_img > sprite" folder
-//$sprite-layout:horizontal;
-//$sprite-sprite-dimensions:true;
-//@import "sprite/*.png";
-//@include all-sprite-sprites;
-
-//
-// Retina Sprites 
-//
-
-// UNCOMMENT TO ENABLE RETINA SPRITES
-// Place all your retina images in retina folder
-
-// Make a sprite from all the images in the "_img > retina" folder
-// $retina-layout:horizontal;
-// @import "retina/*.png";
-// @include all-retina-sprites; 
-
-// .sprite-sprite {
-// 	@include retina($retina-sprites, 8px, 10px);		
-// }
-
-
 
 // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 //

@@ -7,10 +7,10 @@ shared_examples "attached to interactive form" do
     AttachedToInteractive::NO_INTERACTIVE_LABEL
   end
 
-  let(:interactive_a)  { FactoryGirl.create(:mw_interactive) }
-  let(:interactive_b)  { FactoryGirl.create(:mw_interactive) }
+  let(:interactive_a)  { FactoryBot.create(:mw_interactive) }
+  let(:interactive_b)  { FactoryBot.create(:mw_interactive) }
   let(:interactives)   { [] }
-  let(:page)           { FactoryGirl.create(:page_with_or, interactives: interactives) }
+  let(:page)           { FactoryBot.create(:page_with_or, interactives: interactives) }
   let(:args)           { {} }
 
   before :each do
