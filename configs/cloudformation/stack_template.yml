@@ -202,6 +202,12 @@ Parameters:
     Description: Namespace to use under lara-authored-content folder
     AllowedValues: ['staging', 'production']
     Default: 'production'
+  RestartToggle:
+    Type: String
+    Description:
+      Change this value to cause a rolling restart of the containers running
+      LARA code. This is necessary after running migrations to update the containers
+      without changing other parameters.
 
 Conditions:
   AddLearnMigrate: !Not [!Equals [!Ref LearnMigrateSecret, ""]]
@@ -605,6 +611,8 @@ Resources:
               Value: !Ref AuthoredContentS3SecretAccessKey
             - Name: AUTHORED_CONTENT_SOURCE
               Value: !Ref AuthoredContentSource
+            - Name: RESTART_TOGGLE
+              Value: !Ref RestartToggle
 
   LogGroup:
     Type: AWS::Logs::LogGroup
@@ -869,6 +877,8 @@ Resources:
               Value: !Ref AuthoredContentS3SecretAccessKey
             - Name: AUTHORED_CONTENT_SOURCE
               Value: !Ref AuthoredContentSource
+            - Name: RESTART_TOGGLE
+              Value: !Ref RestartToggle
 
   WorkerService:
     Type: AWS::ECS::Service
