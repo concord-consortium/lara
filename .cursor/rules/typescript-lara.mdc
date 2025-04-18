@@ -1,0 +1,18 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+
+# Your rule content
+
+Coding:
+you need to use node version 14
+https://github.com/concord-consortium/lara/tree/master/lara-typescript
+
+Open a terminal in the root of the LARA repo
+Change to the lara-typescript folder
+Run npm run build and wait for it to complete
+Fix any lint issues you see
+Commit the built files as part of the PR
+

@@ -1,0 +1,12 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+
+# Your rule content
+
+To run cypress in the staging environment:
+Cd cypress
+
+CYPRESS_password="password1" npm run test:cypress:open:staging
