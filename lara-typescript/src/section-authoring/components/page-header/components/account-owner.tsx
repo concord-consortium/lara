@@ -39,7 +39,7 @@ export const AccountOwner: React.FC<IAccountOwnerProps> = ({
 
   const accountOwnerContent = currentUser ? renderLoggedInUserContent() : null;
   return (
-    <div className="account-owner" data-cy="account-owner">
+    <div className="account-owner" data-testid="account-owner">
       {accountOwnerContent}
     </div>
   );

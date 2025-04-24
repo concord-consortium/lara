@@ -1,6 +1,6 @@
 class ActivityPlayerPreview {
   getActivitySummary() {
-    return cy.get('[data-cy=activity-summary]');
+    return cy.get('[data-testid=activity-summary]');
   }
   getActivityTitle() {
     return this.getActivitySummary().find('h1 div');
@@ -18,23 +18,23 @@ class ActivityPlayerPreview {
     return this.getActivitySummary().find('.activity-content.intro-txt img').invoke("attr", "src").should("contain", url);
   }
   getEstimatedTime() {
-    return this.getActivitySummary().find('[data-cy=estimated-time] .estimate');
+    return this.getActivitySummary().find('[data-testid=estimated-time] .estimate');
   }
   getPagesHeader() {
-    return cy.get('[data-cy=activity-page-links] .pages div')
+    return cy.get('[data-testid=activity-page-links] .pages div')
   }
   getPageItemNo() {
-    return cy.get('[data-cy=activity-page-links] .page-item span').eq(0);
+    return cy.get('[data-testid=activity-page-links] .page-item span').eq(0);
   }
   getPageItemLink() {
-    return cy.get('[data-cy=activity-page-links] .page-item span').eq(1);
+    return cy.get('[data-testid=activity-page-links] .page-item span').eq(1);
   }
   clickPageItem(index) {
-    return cy.get('[data-cy=activity-page-links] .page-item').eq(index).click();
+    return cy.get('[data-testid=activity-page-links] .page-item').eq(index).click();
   }
 
   getPageContent() {
-    return cy.get('[data-cy=page-content]');
+    return cy.get('[data-testid=page-content]');
   }
   getPageContentHeader() {
     return this.getPageContent().find('.name  div');
@@ -43,7 +43,7 @@ class ActivityPlayerPreview {
     return this.getPageContent().find('.name  div').should("contain", header);
   }
   getInteractive() {
-    return cy.get('[data-cy=managed-interactive]');
+    return cy.get('[data-testid=managed-interactive]');
   }
   getQuestionHeader() {
     return this.getInteractive().find('.header div').eq(0);
@@ -52,7 +52,7 @@ class ActivityPlayerPreview {
     this.getQuestionHeader().should("contain", header);
   }
   openHint() {
-    this.getInteractive().find('[data-cy=open-hint]').eq(0).click();
+    this.getInteractive().find('[data-testid=open-hint]').eq(0).click();
   }
   getHintText() {
     return this.getInteractive().find('.hint.question-txt');
@@ -60,10 +60,10 @@ class ActivityPlayerPreview {
 
   //Sequence Home Page
   getSequenceActivityTitle() {
-    return cy.get('[data-cy=activity-title]');
+    return cy.get('[data-testid=activity-title]');
   }
   getSequenceContent() {
-    return cy.get('[data-cy=sequence-page-content]')
+    return cy.get('[data-testid=sequence-page-content]')
   }
   getSequenceTitle() {
     return this.getSequenceContent().find('.sequence-title div');

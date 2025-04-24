@@ -12,7 +12,7 @@ export const Logo: React.FC<ILogoProps> = ({
     logoPath
   }: ILogoProps) => {
   const logo = logoPath
-                 ? <img data-cy="logo-img" className="logo-img" src={logoPath} alt="Authoring Home"/>
+                 ? <img data-testid="logo-img" className="logo-img" src={logoPath} alt="Authoring Home"/>
                  : <CCLogo/>;
 
   const handleClick = (e: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => {

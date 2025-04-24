@@ -103,7 +103,7 @@ export const RubricStudentPreview = ({scored, scoring, setScoring}: IProps) => {
   };
 
   return (
-    <div className="rubricStudentPreview" data-cy="rubric-student-preview">
+    <div className="rubricStudentPreview" data-testid="rubric-student-preview">
       {hide ? renderHidden() : (scored ? renderScored() : renderUnscored())}
     </div>
   );

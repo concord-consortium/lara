@@ -74,25 +74,25 @@ class BarGraphAuthoringPage {
   verifyAuthoringPreviewTitle(title) {
     this.getInteractive().find('iframe').then($iframe => {
       const $body = $iframe.contents().find('#app')
-            cy.wrap($body).find('[data-cy=title]').should("contain", title);
+            cy.wrap($body).find('[data-testid=title]').should("contain", title);
     });
   }
   verifyAuthoringPreviewXAxisLabel(label) {
     this.getInteractive().find('iframe').then($iframe => {
       const $body = $iframe.contents().find('#app')
-            cy.wrap($body).find('[data-cy=xAxisLabel]').should("contain", label);
+            cy.wrap($body).find('[data-testid=xAxisLabel]').should("contain", label);
     });
   }
   verifyAuthoringPreviewYAxisLabel(label) {
     this.getInteractive().find('iframe').then($iframe => {
       const $body = $iframe.contents().find('#app')
-            cy.wrap($body).find('[data-cy=yAxisLabel]').should("contain", label);
+            cy.wrap($body).find('[data-testid=yAxisLabel]').should("contain", label);
     });
   }
   verifyAuthoringPreviewBarValue(index, value) {
     this.getInteractive().find('iframe').then($iframe => {
       const $body = $iframe.contents().find('#app')
-            cy.wrap($body).find('[data-cy=barValue'+index+']').should("contain", value);
+            cy.wrap($body).find('[data-testid=barValue'+index+']').should("contain", value);
     });
   }
   
@@ -111,25 +111,25 @@ class BarGraphAuthoringPage {
   verifyEditItemPreviewTitle(title) {
     this.getInteractive().find('iframe').then($iframe => {
       const $body = $iframe.contents().find('#app')
-            cy.wrap($body).find('[data-cy=title]').should("contain", title);
+            cy.wrap($body).find('[data-testid=title]').should("contain", title);
     });
   }
   verifyEditItemPreviewXAxisLabel(label) {
     this.getInteractive().find('iframe').then($iframe => {
       const $body = $iframe.contents().find('#app')
-            cy.wrap($body).find('[data-cy=xAxisLabel]').should("contain", label);
+            cy.wrap($body).find('[data-testid=xAxisLabel]').should("contain", label);
     });
   }
   verifyEditItemPreviewYAxisLabel(label) {
     this.getInteractive().find('iframe').then($iframe => {
       const $body = $iframe.contents().find('#app')
-            cy.wrap($body).find('[data-cy=yAxisLabel]').should("contain", label);
+            cy.wrap($body).find('[data-testid=yAxisLabel]').should("contain", label);
     });
   }
   verifyEditItemPreviewBarValue(index, value) {
     this.getInteractive().find('iframe').then($iframe => {
       const $body = $iframe.contents().find('#app')
-            cy.wrap($body).find('[data-cy=barValue'+index+']').should("contain", value);
+            cy.wrap($body).find('[data-testid=barValue'+index+']').should("contain", value);
     });
   }
   

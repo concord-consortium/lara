@@ -82,18 +82,18 @@ export const SidebarPanel = (props: ISidebarPanelProps) => {
   return (
     <div className={`sidebar-panel ${props.show ? "visible " : "hidden"}`}>
       <div className="sidebar-header">
-        <div className="sidebar-title" data-cy="sidebar-title">
+        <div className="sidebar-title" data-testid="sidebar-title">
           <Title />
         </div>
-        <div className="sidebar-menu" data-cy="sidebar-menu">
+        <div className="sidebar-menu" data-testid="sidebar-menu">
           <MenuItems />
         </div>
         <div className="icon" onClick={handleCloseButton}
-              data-cy="sidebar-close-button" tabIndex={0}>
+              data-testid="sidebar-close-button" tabIndex={0}>
           <IconClose />
         </div>
       </div>
-      <div className="sidebar-content help-content" data-cy="sidebar-content">
+      <div className="sidebar-content help-content" data-testid="sidebar-content">
         <Content />
       </div>
     </div>

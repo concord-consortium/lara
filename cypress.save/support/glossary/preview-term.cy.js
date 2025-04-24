@@ -80,10 +80,10 @@ class PreviewTerm {
   }
 
   getTermPopupPreviewSubmitButton() {
-    return this.getTermPopupPreviewInnerPopup().find("[data-cy=submit]");
+    return this.getTermPopupPreviewInnerPopup().find("[data-testid=submit]");
   }
   getTermPopupPreviewIDontKnowYetButton() {
-    return this.getTermPopupPreviewInnerPopup().find("[data-cy=cancel]");
+    return this.getTermPopupPreviewInnerPopup().find("[data-testid=cancel]");
   }
   getTermPopupPreviewUserDefinition() {
     return this.getTermPopupPreviewInnerPopup().find("[class^=user-definitions--userDefinition]");
