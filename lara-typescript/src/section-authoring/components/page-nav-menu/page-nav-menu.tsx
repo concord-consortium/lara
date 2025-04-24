@@ -161,7 +161,7 @@ export const PageNavMenu: React.FC<IPageNavMenuProps> = ({
                 className={pageButtonClasses}
                 onClick={clickHandler}
                 key={`page ${pageNum}`}
-                data-cy={`${page.isCompletion ? "nav-pages-completion-page-button" : "nav-pages-button"}`}
+                data-testid={`${page.isCompletion ? "nav-pages-completion-page-button" : "nav-pages-button"}`}
                 aria-label={`Page ${pageNum}`}
               >
                 {buttonContent}
@@ -196,8 +196,8 @@ export const PageNavMenu: React.FC<IPageNavMenuProps> = ({
 
   return (
     <>
-      <nav className="activity-nav" data-cy="activity-nav">
-        <div className="nav-pages" data-cy="nav-pages">
+      <nav className="activity-nav" data-testid="activity-nav">
+        <div className="nav-pages" data-testid="nav-pages">
           {renderPreviousButton()}
           {renderHomePageButton()}
           {renderPageButtons()}

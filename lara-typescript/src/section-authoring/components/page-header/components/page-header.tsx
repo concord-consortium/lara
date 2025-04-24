@@ -30,7 +30,7 @@ export const PageHeader: React.FC<IPageHeaderProps> = ({
 
   return (
     <APIContainer host={host}>
-      <div className="authoring-header" data-cy="authoring-header">
+      <div className="authoring-header" data-testid="authoring-header">
         <div className="inner">
           <div className="header-left">
             <Logo />

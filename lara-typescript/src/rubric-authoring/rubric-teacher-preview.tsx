@@ -42,7 +42,7 @@ export const RubricTeacherPreview = ({scoring, setScoring, referenceURL}: IProps
               className="launchButton"
               href={referenceURL}
               target="_blank"
-              data-cy="scoring-guide-launch-icon"
+              data-testid="scoring-guide-launch-icon"
               onClick={checkReferenceUrl}
             >
               <LaunchIcon />
@@ -114,12 +114,12 @@ export const RubricTeacherPreview = ({scoring, setScoring, referenceURL}: IProps
     ));
 
     return (
-      <button className={classNames("outerCircle", {selected})} data-cy="rating-radio-button" onClick={handleClick} />
+      <button className={classNames("outerCircle", {selected})} data-testid="rating-radio-button" onClick={handleClick} />
     );
   };
 
   return (
-    <div className="rubricTeacherPreview" data-cy="rubric-teacher-preview">
+    <div className="rubricTeacherPreview" data-testid="rubric-teacher-preview">
       {renderColumnHeaders()}
       <div className="rubricTable">
         {criteriaGroups.map((criteriaGroup, index) => (

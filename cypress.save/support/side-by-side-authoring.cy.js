@@ -26,13 +26,13 @@ class SideBySideAuthoringPage {
   selectInteractive(value, index) {
     this.getEditItemForm().find('iframe').then($iframe => {
       const $body = $iframe.contents().find('#app')
-            cy.wrap($body).find('[data-cy=select-subquestion]').eq(index).select(value);
+            cy.wrap($body).find('[data-testid=select-subquestion]').eq(index).select(value);
     });
   }
   selectAuthoring(index) {
     this.getEditItemForm().find('iframe').then($iframe => {
       const $body = $iframe.contents().find('#app')
-            cy.wrap($body).find('[data-cy=subquestion-authoring]').eq(index).click();
+            cy.wrap($body).find('[data-testid=subquestion-authoring]').eq(index).click();
     });
   }
   getPrompt(prompt, index) {

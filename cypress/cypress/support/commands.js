@@ -18,9 +18,9 @@ Cypress.Commands.add("login", (options) => {
   const useSSO = Cypress.env('useSSO') || false;
   if (useSSO) {
     cy.log("Login using SSO as user : " + username);
-    cy.get("[data-cy=header-menu] .login-link").click();
+    cy.get("[data-testid=header-menu] .login-link").click();
     cy.wait(2000);
-    cy.get("[data-cy=header-menu] .header-menu-links.show a").eq(0).click();
+    cy.get("[data-testid=header-menu] .header-menu-links.show a").eq(0).click();
     cy.wait(2000);
     cy.origin('https://learn.portal.staging.concord.org', { args: { username, password } }, ({ username, password }) => {
       cy.get('#username').type(username);
@@ -41,11 +41,11 @@ Cypress.Commands.add("login", (options) => {
 
 Cypress.Commands.add("logout", () => {
   cy.log("Logout");
-  cy.get("[data-cy=header-menu] .icon").click();
+  cy.get("[data-testid=header-menu] .icon").click();
   cy.wait(500);
-  cy.get("[data-cy=header-menu] .header-menu-links.show a").last().click();
+  cy.get("[data-testid=header-menu] .header-menu-links.show a").last().click();
   cy.wait(500);
 });
 Cypress.Commands.add('getAccountOwnerName', () => {
-  return cy.get('#header .account-owner-name');
+  return cy.get('[data-testid=account-owner] .account-owner-name');
 });

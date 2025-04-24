@@ -19,7 +19,7 @@ class TEQuestionWrapperAuthoringPage {
   }
 
   clickHeader(form) {
-    this.getEditItemForm().find('.authoring-app--preview--TETipsPluginV1 [data-cy='+form+']').click();
+    this.getEditItemForm().find('.authoring-app--preview--TETipsPluginV1 [data-testid='+form+']').click();
   }
 
   verifyQuestionWrapperContent(content) {

@@ -1,6 +1,6 @@
 class Projects {
   getHeaderMenu() {
-    return cy.get("[data-cy='header-menu']");
+    return cy.get("[data-testid='header-menu']");
   }
   clickHeaderMenu() {
     this.getHeaderMenu().click();
@@ -8,11 +8,11 @@ class Projects {
   }
   launchUserAdmin() {
     this.clickHeaderMenu();
-    cy.get("[data-cy=header-menu] .header-menu-links.show a").contains("User Admin").click();
+    cy.get("[data-testid=header-menu] .header-menu-links.show a").contains("User Admin").click();
   }
   launchProjects() {
     this.clickHeaderMenu();
-    cy.get("[data-cy=header-menu] .header-menu-links.show a").contains("Projects").click();
+    cy.get("[data-testid=header-menu] .header-menu-links.show a").contains("Projects").click();
   }
 
 // Projects
