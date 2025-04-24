@@ -76,17 +76,17 @@ class GlossarySettings {
     return this.getTermPopupPreviewInnerPopup().find("[class^=glossary-popup--answerTextarea]");
   }
   getAnswerTextAreaRecordButton() {
-    return this.getTermPopupPreviewAnswerTextArea().find("[data-cy=recordButton]");
+    return this.getTermPopupPreviewAnswerTextArea().find("[data-testid=recordButton]");
   }
   getAnswerTextAreaReadAloud() {
     return this.getTermPopupPreviewAnswerTextArea().find("[title^=Read]");
   }
 
   getTermPopupPreviewSubmitButton() {
-    return this.getTermPopupPreviewInnerPopup().find("[data-cy=submit]");
+    return this.getTermPopupPreviewInnerPopup().find("[data-testid=submit]");
   }
   getTermPopupPreviewIDontKnowYetButton() {
-    return this.getTermPopupPreviewInnerPopup().find("[data-cy=cancel]");
+    return this.getTermPopupPreviewInnerPopup().find("[data-testid=cancel]");
   }
 
   getTermPopupLanguageSelector() {

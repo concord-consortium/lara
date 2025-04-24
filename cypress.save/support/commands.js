@@ -7,18 +7,18 @@ Cypress.Commands.add("login", (username, password) => {
 
 Cypress.Commands.add("loginLARAWithSSO", (username, password) => {
   cy.log("Logging in as user : " + username);
-  cy.get("[data-cy=header-menu] .login-link").click();
+  cy.get("[data-testid=header-menu] .login-link").click();
   cy.wait(2000);
-  cy.get("[data-cy=header-menu] .header-menu-links.show a").eq(0).click();
+  cy.get("[data-testid=header-menu] .header-menu-links.show a").eq(0).click();
   cy.wait(2000);
   cy.login(username, password);
 })
 
 Cypress.Commands.add("loginLARA", (username) => {
   cy.log("Logging in as user : " + username);
-  cy.get("[data-cy=header-menu] .login-link").click();
+  cy.get("[data-testid=header-menu] .login-link").click();
   cy.wait(1000);
-  cy.get("[data-cy=header-menu] .header-menu-links.show a").eq(0).click();
+  cy.get("[data-testid=header-menu] .header-menu-links.show a").eq(0).click();
   cy.wait(2000);
 })
 
@@ -277,8 +277,8 @@ Cypress.Commands.add("previewNotebookActivty", () => {
 
 Cypress.Commands.add("logoutLARA", (username) => {
   cy.log("Logout user : " + username);
-  cy.get("[data-cy=header-menu] .icon").click();
+  cy.get("[data-testid=header-menu] .icon").click();
   cy.wait(2000);
-  cy.get("[data-cy=header-menu] .header-menu-links.show a").last().click();
+  cy.get("[data-testid=header-menu] .header-menu-links.show a").last().click();
   cy.wait(2000);
 })

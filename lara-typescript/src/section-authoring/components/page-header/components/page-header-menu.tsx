@@ -121,7 +121,7 @@ export const PageHeaderMenu: React.FC<IAccountOwnerProps> = ({
 
   const menuLinks = logOutURL !== "" ? renderLoggedInUserLinks() : renderAnonymousUserLinks();
   return (
-    <div className={`header-menu ${showHeaderMenu ? "active" : ""}`} onClick={handleMenuClick} data-cy="header-menu">
+    <div className={`header-menu ${showHeaderMenu ? "active" : ""}`} onClick={handleMenuClick} data-testid="header-menu">
       {menuLinks}
     </div>
   );

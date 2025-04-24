@@ -36,7 +36,7 @@ export const RubricPreview = ({referenceURL}: IProps) => {
   const handleSetStudentView = () => setView("student");
 
   return (
-    <div className="rubricPreview" data-cy="rubric-preview">
+    <div className="rubricPreview" data-testid="rubric-preview">
       <div className="rubricPreviewSwitcher">
         <div
           className={classNames({rubricPreviewActive: view === "teacher"})}

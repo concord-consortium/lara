@@ -13,38 +13,38 @@ class MCQAuthoringPage {
   getCheckAnswerButton() {
   return  this.getEditItemPreview().find('iframe').then($iframe => {
       const $body = $iframe.contents().find('#app')
-            cy.wrap($body).find('[data-cy=check-answer-button]');
+            cy.wrap($body).find('[data-testid=check-answer-button]');
     });
   }
   getChoice(choice) {
     this.getEditItemPreview().find('iframe').then($iframe => {
       const $body = $iframe.contents().find('#app')
-            cy.wrap($body).find('[data-cy=choices-container]').should("contain", choice);
+            cy.wrap($body).find('[data-testid=choices-container]').should("contain", choice);
     });
   }
   getChoiceDisabled() {
     this.getEditItemPreview().find('iframe').then($iframe => {
       const $body = $iframe.contents().find('#app')
-            cy.wrap($body).find('[data-cy=choices-container] .radio-choice  input').eq(0).should("be.disabled");
+            cy.wrap($body).find('[data-testid=choices-container] .radio-choice  input').eq(0).should("be.disabled");
     });
   }
   selectChoice(choice) {
     const option = [ "1", "2", "3", "4"];
     this.getEditItemPreview().find('iframe').then($iframe => {
       const $body = $iframe.contents().find('#app')
-            cy.wrap($body).find('[data-cy=choices-container] [type=radio]').eq(option.indexOf(choice)).click();
+            cy.wrap($body).find('[data-testid=choices-container] [type=radio]').eq(option.indexOf(choice)).click();
     });
   }
   getIncorrectFeedback() {
   return  this.getEditItemPreview().find('iframe').then($iframe => {
       const $body = $iframe.contents().find('#app')
-            cy.wrap($body).find('[data-cy=feedback-false]');
+            cy.wrap($body).find('[data-testid=feedback-false]');
     });
   }
   getCorrectFeedback() {
   return  this.getEditItemPreview().find('iframe').then($iframe => {
       const $body = $iframe.contents().find('#app')
-            cy.wrap($body).find('[data-cy=feedback-true]');
+            cy.wrap($body).find('[data-testid=feedback-true]');
     });
   }
 //***************************************************************************************************************
@@ -83,38 +83,38 @@ class MCQAuthoringPage {
   getAuthoringPreviewChoice(choice) {
     this.getInteractive().find('iframe').then($iframe => {
       const $body = $iframe.contents().find('#app')
-            cy.wrap($body).find('[data-cy=choices-container]').should("contain", choice);
+            cy.wrap($body).find('[data-testid=choices-container]').should("contain", choice);
     });
   }
   getAuthoringPreviewCheckAnswerButton() {
   return  this.getInteractive().find('iframe').then($iframe => {
       const $body = $iframe.contents().find('#app')
-            cy.wrap($body).find('[data-cy=check-answer-button]');
+            cy.wrap($body).find('[data-testid=check-answer-button]');
     });
   }
   selectAuthoringPreviewChoice(choice) {
     const option = [ "1", "2", "3", "4"];
     this.getInteractive().find('iframe').then($iframe => {
       const $body = $iframe.contents().find('#app')
-            cy.wrap($body).find('[data-cy=choices-container] [type=radio]').eq(option.indexOf(choice)).click();
+            cy.wrap($body).find('[data-testid=choices-container] [type=radio]').eq(option.indexOf(choice)).click();
     });
   }
   getAuthoringPreviewIncorrectFeedback() {
   return  this.getInteractive().find('iframe').then($iframe => {
       const $body = $iframe.contents().find('#app')
-            cy.wrap($body).find('[data-cy=feedback-false]');
+            cy.wrap($body).find('[data-testid=feedback-false]');
     });
   }
   getAuthoringPreviewCorrectFeedback() {
   return  this.getInteractive().find('iframe').then($iframe => {
       const $body = $iframe.contents().find('#app')
-            cy.wrap($body).find('[data-cy=feedback-true]');
+            cy.wrap($body).find('[data-testid=feedback-true]');
     });
   }
   getAuthoringPreviewChoiceDisabled() {
     this.getInteractive().find('iframe').then($iframe => {
       const $body = $iframe.contents().find('#app')
-            cy.wrap($body).find('[data-cy=choices-container] .radio-choice  input').eq(0).should("be.disabled");
+            cy.wrap($body).find('[data-testid=choices-container] .radio-choice  input').eq(0).should("be.disabled");
     });
   }
 

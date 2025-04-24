@@ -1,7 +1,7 @@
 class RunTimePreview {
 
   getSequenceContent() {
-    return cy.get('[data-cy=sequence-page-content]');
+    return cy.get('[data-testid=sequence-page-content]');
   }
   getSequenceTitle() {
     return this.getSequenceContent().find('.sequence-title');

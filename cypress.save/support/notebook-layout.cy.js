@@ -1,9 +1,9 @@
 class NotebookLayout {
   getPreviousPageButton() {
-    return cy.get("[data-cy=previous-page-button");
+    return cy.get("[data-testid=previous-page-button");
   }
   getNextPageButton() {
-    return cy.get("[data-cy=next-page-button");
+    return cy.get("[data-testid=next-page-button");
   }
   getActivityNavHeader(index) {
     return cy.get("[data-cy=activity-nav-header]").eq(index);
