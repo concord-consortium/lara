@@ -6,7 +6,7 @@ describe('homepage spec', () => {
   it('should render the homepage', () => {
     cy.contains('Authoring');
     // check the header
-    cy.get('[data-cy="authoring-header"]')
+    cy.get('[data-testid="authoring-header"]')
       .should('exist')
       .and('be.visible')
       .within(() => {
