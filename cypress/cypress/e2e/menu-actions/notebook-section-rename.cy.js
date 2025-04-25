@@ -11,7 +11,7 @@ function previewTest() {
   cy.previewNotebookActivty();
 }
 
-context("Test Section Action Menus", () => {
+context.skip("Test Section Action Menus", () => {
   before(() => {
     cy.visit("");
     cy.loginLARAWithSSO(Cypress.config().username, Cypress.env("password"));

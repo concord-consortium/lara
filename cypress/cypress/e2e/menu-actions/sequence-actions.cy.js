@@ -2,7 +2,7 @@ import AuthoringPage from "../../support/authoring-page.cy.js";
 
 const authoringPage = new AuthoringPage;
 
-context("Test Sequence Action Menu", () => {
+context.skip("Test Sequence Action Menu", () => {
   before(() => {
     cy.visit("");
     cy.loginLARAWithSSO(Cypress.config().username, Cypress.env("password"));

@@ -145,7 +145,7 @@ class AuthoringPage {
   //***************************************************************************************************************
 
   getInteractive() {
-    return cy.get('.itemsContainer .sectionItemContainer')
+    return cy.get('.sectionItem')
       .should('exist')
       .first();
   }
@@ -159,13 +159,17 @@ class AuthoringPage {
     return this.getInteractive().find(".menuEnd button").eq(1);
   }
   getSectionMenuMove() {
-    return this.getInteractive().find(".menuEnd button").eq(2);
+    return this.getInteractive().within(() => {
+      return cy.get('[data-testid^=section-move-button]');
+    });
   }
   getSectionMenuCopy() {
-    return this.getInteractive().find(".menuEnd button").eq(3);
+    return cy.get('[data-testid^=section-copy-button]');
   }
   getSectionMenuDelete() {
-    return this.getInteractive().find(".menuEnd button").eq(4);
+    return this.getInteractive().within(() => {
+      return cy.get('[data-testid^=section-delete-button]');
+    });
   }
   getAuthoringPreviewPrompt(prompt) {
     this.getInteractive().find('iframe').then($iframe => {
@@ -176,7 +180,7 @@ class AuthoringPage {
   getAuthoringPreviewSubmitButton() {
   return  this.getInteractive().find('iframe').then($iframe => {
       const $body = $iframe.contents().find('#app')
-            cy.wrap($body).find('[data-cy=lock-answer-button]');
+            cy.wrap($body).find('[data-testid=lock-answer-button]');
     });
   }
   getAuthoringPreviewLockedInfoHeader() {
@@ -191,15 +195,17 @@ class AuthoringPage {
             cy.wrap($body).find('.locked-info--feedback--question-int');
     });
   }
-  getMoveModel() {
-    return cy.get("#sections-container #modal");
+  // todo: replace selector with data-testid="section-item-move-dialog"
+  // once available in staging
+  getMoveModal() {
+    // Look for any element containing the move dialog text
+    return cy.contains('Move this item to...');
   }
-  getMoveModelHeader(header) {
-    this.getMoveModel().find('header').should("contain", header);
+  getMoveModalHeader(header) {
+    this.getMoveModal().find('[data-testid=move-modal-header]').should("contain", header);
   }
-  getMoveModelClose() {
-    return this.getMoveModel().find('.modalClose');
-    cy.wait(1000);
+  getMoveModalClose() {
+    return this.getMoveModal().find('[data-testid=move-modal-close]');
   }
   getCopySectionItemHeader(index) {
     return this.getInteractive().eq(index).find(".menuStart");

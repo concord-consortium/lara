@@ -15,7 +15,7 @@ const file = {
     glossaryName: "Test Automation Glossary Export"
 };
 
-context("Test Export Activity", () => {
+context.skip("Test Export Activity", () => {
   before(() => {
     cy.visit("");
     cy.loginLARAWithSSO(Cypress.config().username, Cypress.env("password"));

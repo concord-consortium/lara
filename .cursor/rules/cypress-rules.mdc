@@ -9,4 +9,6 @@ alwaysApply: true
 To run cypress in the staging environment:
 Cd cypress
 
+CYPRESS_password="password1" npx cypress run --config-file cypress.config.staging.js --spec 
+
 CYPRESS_password="password1" npm run test:cypress:open:staging
