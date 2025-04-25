@@ -301,28 +301,28 @@ class AuthoringPage {
     return this.getActivity().find('.action_menu_header_right');
   }
   getActivityExportMenu() {
-    return this.getActivityActionMenu().find('.export a');
+    return this.getActivityActionMenu().find('[data-testid="export-activity-button"] a');
   }
   getActivityConvertMenu() {
-    return this.getActivityActionMenu().find('.convert a');
+    return this.getActivityActionMenu().find('[data-testid="convert-activity-button"] a');
   }
   getActivityCopyMenu() {
-    return this.getActivityActionMenu().find('.copy a');
+    return this.getActivityActionMenu().find('[data-testid="duplicate-activity-button"] a');
   }
   getActivityEditMenu() {
-    return this.getActivityActionMenu().find('.edit a');
+    return this.getActivityActionMenu().find('[data-testid="edit-activity-button"] a');
   }
   getActivityDeleteMenu() {
-    return this.getActivityActionMenu().find('.delete a');
+    return this.getActivityActionMenu().find('[data-testid="delete-activity-button"] a');
   }
   getActivityPublishMenu() {
-    return this.getActivityActionMenu().find('.publish a');
+    return this.getActivityActionMenu().find('[data-testid="publish-activity-button"] a');
   }
   getActivityPrintMenu() {
-    return this.getActivityActionMenu().find('.print a');
+    return this.getActivityActionMenu().find('[data-testid="print-activity-button"] a');
   }
   getActivityRunMenu() {
-    return this.getActivityActionMenu().find('.run a');
+    return this.getActivityActionMenu().find('[data-testid="run-activity-button"] a');
   }
 
   getSequence() {

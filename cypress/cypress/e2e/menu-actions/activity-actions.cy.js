@@ -2,11 +2,13 @@ import AuthoringPage from "../../support/authoring-page.cy.js";
 
 const authoringPage = new AuthoringPage;
 
-context.skip("Test Activity Action Menu", () => {
+context("Test Activity Action Menu", () => {
   before(() => {
     cy.visit("");
-    cy.loginLARAWithSSO(Cypress.config().username, Cypress.env("password"));
-    cy.searchActivity("Test Automation Activity Menu Actions");
+     // Visit the base URL and ensure we're logged in
+     cy.visit(Cypress.config().baseUrl);
+     cy.login();
+     cy.searchActivity("Test Automation Activity Menu Actions");
   });
 
   describe("Test Activity Action Menu", () => {
