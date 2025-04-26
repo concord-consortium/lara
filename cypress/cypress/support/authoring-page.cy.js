@@ -63,10 +63,10 @@ class AuthoringPage {
     return this.getEditItemForm().find('#name');
   }
   getPromptField(prompt) {
-    cy.wait(6000);
-    this.getEditItemForm().find('iframe').then($iframe => {
+    // Instead of arbitrary wait, wait for the iframe to be loaded
+    this.getEditItemForm().find('iframe').should('be.visible').then($iframe => {
       const $body = $iframe.contents().find('#app')
-            cy.wrap($body).find('#root_prompt').type(prompt);
+      cy.wrap($body).find('#root_prompt').type(prompt);
     });
   }
   getHintField(hint) {
@@ -230,8 +230,9 @@ class AuthoringPage {
 
 
   addSection() {
-  cy.get('.bigButton .lineAdjust').click();
-  cy.wait(4000);
+    cy.get('.bigButton .lineAdjust').click();
+    // Instead of arbitrary wait, wait for the section to be added
+    cy.get("#sections-container .sectionMenu").should('exist');
   }
   getSection() {
     return cy.get("#sections-container .sectionMenu");
@@ -377,12 +378,14 @@ class AuthoringPage {
 
   //***************************************************************************************************************
   clickHomePageLink() {
+    // TODO: Update to use data-testid="breadcrumbs-navigation" once it's available on staging
     cy.get('.breadcrumbs a').eq(0).click();
-    cy.wait(2000);
+    // Instead of arbitrary wait, wait for the home page to be loaded
+    cy.url().should('include', '/');
   }
   searchActivitySequence(name) {
-    cy.get("#search input").eq(0).type(name);
-    cy.get("#search input").eq(1).click();
+    cy.get('[data-testid="authoring-search-bar"]').type(name);
+    cy.get('[data-testid="authoring-search-button"]').click();
   }
   getActivityDetails() {
     return this.getActivity().find('[id^=details_lightweight_activity]');
@@ -550,45 +553,57 @@ class AuthoringPage {
   //***************************************************************************************************************
   previewActivity(name) {
     cy.log("Launch Test Activity : ");
-    // to-do: add data-test ID once on staging PT-#188775242
-    cy.get("#search input").eq(0).type(name);
-    cy.get("#search input").eq(1).click();
-    cy.wait(1000);
-    cy.get(".item.community .action_menu_header_left a").click();
-    cy.wait(2000);
+    // Using data-testid for search functionality
+    cy.get('[data-testid="authoring-search-bar"]').type(name);
+    cy.get('[data-testid="authoring-search-button"]').click();
+    // Instead of arbitrary wait, wait for the search results
+    cy.get(".item.community").should('exist');
+    // Using data-testid for activity preview link
+    cy.get('[data-testid="activity-preview-link"]').click();
+    // Instead of arbitrary wait, wait for the preview page to load
+    cy.url().should('include', '/preview');
   }
   previewSequence(name) {
     cy.log("Launch Test Sequence : ");
-    // to-do: add data-test ID once on staging PT-#188775242
-    cy.get("#search input").eq(0).type(name);
-    cy.get("#search input").eq(1).click();
-    cy.wait(1000);
+    // Using data-testid for search functionality
+    cy.get('[data-testid="authoring-search-bar"]').type(name);
+    cy.get('[data-testid="authoring-search-button"]').click();
+    // Instead of arbitrary wait, wait for the search results
+    cy.get(".quiet_list.sequences").should('exist');
+    // TODO: Update to use data-testid="sequence-preview-link" once available in staging
     cy.get(".quiet_list.sequences .action_menu_header_left a").click();
-    cy.wait(2000);
+    // Instead of arbitrary wait, wait for the preview page to load
+    cy.url().should('include', '/preview');
   }
   launchActivity(name) {
     cy.log("Launch Test Activity : ");
-    cy.get("#search input").eq(0).type(name);
-    cy.get("#search input").eq(1).click();
-    cy.wait(1000);
-    cy.get("[id^=item_lightweight_activity] .action_menu_header_right .edit a").first().click();
-    cy.wait(1000);
-    cy.get('#rightcol #pages [id^=item_interactive_page] .edit').first().click();
-    cy.wait(2000);
+    // Using data-testid for search functionality
+    cy.get('[data-testid="authoring-search-bar"]').type(name);
+    cy.get('[data-testid="authoring-search-button"]').click();
+    // Instead of arbitrary wait, wait for the search results
+    cy.get("[id^=item_lightweight_activity]").should('exist');
+    // Using data-testid for edit button
+    cy.get('[data-testid="edit-activity-button"]').first().click();
+    // Instead of arbitrary wait, wait for the page to load
+    cy.get('#rightcol').should('exist');
+    // Using data-testid for page navigation
+    cy.get('[data-testid="nav-pages-button"]').first().click();
+    // Instead of arbitrary wait, wait for the page content to load
+    cy.get('#rightcol #pages [id^=item_interactive_page]').should('exist');
   }
   deleteActivity(name) {
     cy.log("Delete Test Activity : ");
-    // to-do: add data-test ID once on staging PT-#188775242
-    cy.get("#search input").eq(0).type(name);
-    cy.get("#search input").eq(1).click();
-    cy.wait(1000);
+    // Using data-testid for search functionality
+    cy.get('[data-testid="authoring-search-bar"]').type(name);
+    cy.get('[data-testid="authoring-search-button"]').click();
+    // Instead of arbitrary wait, wait for the search results
     cy.get("body").then($body => {
       if ($body.find("[id^=item_lightweight_activity]").length > 0) {
         cy.log("Delete Copy Activity");
-        cy.get('[id^=item_lightweight_activity] .action_menu_header_right .delete a').click();
-        cy.wait(2000);
-        cy.get('.breadcrumbs a').click();
-        cy.wait(1000);
+        // Using data-testid for delete button
+        cy.get('[data-testid="delete-activity-button"]').click();
+        // Instead of arbitrary wait, wait for the home page to load
+        cy.url().should('include', '/');
       } else {
         cy.log("No Activity To Delete");
       }
@@ -596,7 +611,7 @@ class AuthoringPage {
   }
   deleteSequence(name) {
     cy.log("Delete Test Sequence : ");
-    // to-do: add data-test ID once on staging PT-#188775242
+    // TODO: Update to use data-testid="delete-sequence-button" once available in staging
     cy.get("#search input").eq(0).type(name);
     cy.get("#search input").eq(1).click();
     cy.wait(1000);

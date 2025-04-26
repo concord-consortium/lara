@@ -15,10 +15,11 @@ const file = {
     glossaryName: "Test Automation Glossary Export"
 };
 
-context.skip("Test Export Activity", () => {
+context("Test Export Activity", () => {
   before(() => {
-    cy.visit("");
-    cy.loginLARAWithSSO(Cypress.config().username, Cypress.env("password"));
+    // Visit the base URL and ensure we're logged in
+    cy.visit(Cypress.config().baseUrl);
+    cy.login();
   });
 
   describe("Export Activity", () => {
