@@ -1,0 +1,14 @@
+{
+  "default": {
+    "name": "Multiple Choice Question",
+    "prompt": "Multiple Choice Prompt",
+    "hint": "Multiple Choice Hint",
+    "correctChoice": 0
+  },
+  "custom": {
+    "name": "Custom MCQ Question",
+    "prompt": "This is a custom prompt",
+    "hint": "This is a custom hint",
+    "correctChoice": 1
+  }
+} 

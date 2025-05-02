@@ -9,9 +9,14 @@ RSpec.describe Rubric do
   let(:rubric)      {
     rubric = FactoryBot.create(:rubric, name: "Rubric 1", user: author, project: project, doc_url: "https://example.com")
     rubric.save!
+    rubric.update_column(:updated_at, 1.day.ago)
     rubric
   }
-  let(:rubric2) { FactoryBot.create(:rubric, name: "Rubric 2", user: author2) }
+  let(:rubric2) { 
+    rubric = FactoryBot.create(:rubric, name: "Rubric 2", user: author2)
+    rubric.update_column(:updated_at, Time.now)
+    rubric
+  }
 
   describe "should export itself" do
     it "as the author with can_edit as true" do

@@ -114,7 +114,11 @@ export const RubricTeacherPreview = ({scoring, setScoring, referenceURL}: IProps
     ));
 
     return (
-      <button className={classNames("outerCircle", {selected})} data-testid="rating-radio-button" onClick={handleClick} />
+      <button
+        className={classNames("outerCircle", {selected})}
+        data-testid="rating-radio-button"
+        onClick={handleClick}
+      />
     );
   };
 

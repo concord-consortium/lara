@@ -2,7 +2,7 @@
   %div.action_menu
     %div.action_menu_header_left
       = sequence.id.to_s + '.'
-      = link_to sequence.title, sequence_runtime_url(sequence), :class => 'container_link', :title => 'Preview Sequence'
+      = link_to sequence.title, sequence_runtime_url(sequence), :class => 'container_link', :title => 'Preview Sequence', "data-testid" => "sequence-preview-link"
     %div.action_menu_header_right
       %ul.menu
         - if can? :export, sequence
@@ -14,7 +14,7 @@
         - if can? :update, sequence
           %li.edit= link_to "Edit", edit_sequence_path(sequence)
         - if can? :update, sequence
-          %li.delete= link_to 'Delete', sequence_path(sequence), method: :delete, data: { confirm: 'Are you sure?' }
+          %li.delete{ "data-testid" => "delete-sequence-button" }= link_to 'Delete', sequence_path(sequence), method: :delete, data: { confirm: 'Are you sure?' }
         - if can? :publish, sequence
           %li.publish= link_to('Publish', publication_show_status_path(sequence.class,sequence.id), :remote => true)
         - if can? :read, sequence

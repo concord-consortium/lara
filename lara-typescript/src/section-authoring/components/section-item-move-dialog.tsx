@@ -98,7 +98,7 @@ export const SectionItemMoveDialog: React.FC = () => {
   if (movingItemId) {
     return (
       <Modal title="Move this item to..." visibility={true} closeFunction={handleCloseDialog} width={600}>
-        <div className="sectionItemMoveDialog">
+        <div className="sectionItemMoveDialog" data-testid="section-item-move-dialog">
           <dl>
             <dt className="col1">Page</dt>
             <dd className="col1">
