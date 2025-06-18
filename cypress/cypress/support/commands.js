@@ -79,8 +79,8 @@ Cypress.Commands.add("launchActivty", () => {
 
 Cypress.Commands.add("searchActivity", (activity) => {
   cy.log("Launch Test Activity : ");
-  cy.get("#search input").eq(0).type(activity);
-  cy.get("#search input").eq(1).click();
+  cy.get('[data-testid="authoring-search-bar"]').type(activity);
+  cy.get('[data-testid="authoring-search-button"]').click();
   cy.wait(1000);
 });
 
