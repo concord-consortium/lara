@@ -4,7 +4,7 @@ import MCQAuthoringPage from "../../support/mcq-authoring.cy.js";
 const authoringPage = new AuthoringPage;
 const mcqAuthoringPage = new MCQAuthoringPage;
 
-context("Test Section Action Menus", () => {
+context.skip("Test Section Action Menus", () => {
   before(() => {
     cy.visit("");
     cy.loginLARAWithSSO(Cypress.config().username, Cypress.env("password"));

@@ -1,7 +1,7 @@
-.import_activity_sequence
+.import_activity_sequence{"data-testid" => "import-modal"}
   .header
-    %span.title Import Activity/Sequence/Glossary
-    %span.close.close_link
+    %span.title{"data-testid" => "import-modal-header"} Import Activity/Sequence/Glossary
+    %span.close.close_link{"data-testid" => "import-modal-close"}
       close (✖)
 
   = form_tag import_path, :method => :post, :remote => true, :multipart => true, :id => "import" do
@@ -10,11 +10,11 @@
         %tr
           %td
             -#%input{:type => "file", "name" => "file", "class" => "native-file-input"}
-            =file_field 'import', 'import', accept: 'application/json', class: 'import_file'
+            =file_field 'import', 'import', accept: 'application/json', class: 'import_file', "data-testid" => "import-file-input"
     .buttons
       -#= link_to "Import", import_activities_path, {:remote => true, :class => 'btn btn-primary'}
-      =submit_tag "Import", class: "import btn btn-primary"
-      %a.btn.btn-primary.close
+      =submit_tag "Import", class: "import btn btn-primary", "data-testid" => "import-confirm-button"
+      %a.btn.btn-primary.close{"data-testid" => "import-cancel-button"}
         Cancel
-    .message
+    .message{"data-testid" => "import-message"}
       =@message

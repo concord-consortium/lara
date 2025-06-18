@@ -499,20 +499,44 @@ class AuthoringPage {
 
   //***************************************************************************************************************
 
+  // TODO: Update to use data-testid="import-button" once available on staging
   getImportButton() {
-    return cy.get('#content .top-header .buttons-menu a').eq(3);
+    return cy.get('[data-testid="import-button"]');
   }
-  getImportModel() {
+  
+  // TODO: Update to use data-testid="import-modal" once available on staging
+  getImportModal() {
     return cy.get('#modal .import_activity_sequence');
   }
-  getImportModelHeader() {
-    return this.getImportModel().find('.title').should("contain", "Import Activity/Sequence/Glossary");
+  
+  // TODO: Update to use data-testid="import-modal-header" once available on staging
+  getImportModalHeader(expectedText) {
+    return this.getImportModal().find('span.title').should("contain", expectedText);
   }
+  
+  // TODO: Update to use data-testid="import-file-input" once available on staging
   getImportFile(file) {
-    return this.getImportModel().find('#import_import').selectFile(file);
+    return this.getImportModal().find('#import_import').selectFile(file);
   }
-  getImportModelButton() {
-    return this.getImportModel().find('.import');
+  
+  // TODO: Update to use data-testid="import-confirm-button" once available on staging
+  getImportModalButton() {
+    return this.getImportModal().find('.import');
+  }
+  
+  // TODO: Update to use data-testid="import-modal-close" once available on staging
+  getImportModalClose() {
+    return this.getImportModal().find('.close_link');
+  }
+  
+  // TODO: Update to use data-testid="import-modal-cancel" once available on staging
+  getImportModalCancel() {
+    return this.getImportModal().find('a.btn.btn-primary.close');
+  }
+  
+  // TODO: Update to use data-testid="import-modal-message" once available on staging
+  getImportModalMessage() {
+    return this.getImportModal().find('.message');
   }
 
   getExportModel() {
@@ -586,8 +610,9 @@ class AuthoringPage {
     cy.get('[data-testid="edit-activity-button"]').first().click();
     // Instead of arbitrary wait, wait for the page to load
     cy.get('#rightcol').should('exist');
-    // Using data-testid for page navigation
-    cy.get('[data-testid="nav-pages-button"]').first().click();
+    // TODO: Add data-testid once available on staging
+    // cy.get('[data-testid="nav-pages-button"]').first().click();
+    cy.get(".action_menu_header_right .edit a").click(); // Click "Edit" link in the action menu
     // Instead of arbitrary wait, wait for the page content to load
     cy.get('#rightcol #pages [id^=item_interactive_page]').should('exist');
   }
