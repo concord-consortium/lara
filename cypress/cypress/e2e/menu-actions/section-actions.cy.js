@@ -4,6 +4,12 @@ import MCQAuthoringPage from "../../support/mcq-authoring.cy.js";
 const authoringPage = new AuthoringPage;
 const mcqAuthoringPage = new MCQAuthoringPage;
 
+// TODO: This test is failing because:
+// 1. The section action menu selectors have changed in staging
+// 2. The test is trying to find elements that don't exist in the current DOM structure
+// 3. The test needs to be updated to use the new data-testid selectors that are available in staging
+// 4. The test should be re-enabled once the selectors are updated to match the staging environment
+
 context.skip("Test Section Action Menus", () => {
   before(() => {
     cy.visit("");

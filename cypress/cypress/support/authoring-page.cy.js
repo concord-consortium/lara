@@ -607,14 +607,13 @@ class AuthoringPage {
     // Instead of arbitrary wait, wait for the search results
     cy.get("[id^=item_lightweight_activity]").should('exist');
     // Using data-testid for edit button
-    cy.get('[data-testid="edit-activity-button"]').first().click();
-    // Instead of arbitrary wait, wait for the page to load
-    cy.get('#rightcol').should('exist');
-    // TODO: Add data-testid once available on staging
-    // cy.get('[data-testid="nav-pages-button"]').first().click();
-    cy.get(".action_menu_header_right .edit a").click(); // Click "Edit" link in the action menu
-    // Instead of arbitrary wait, wait for the page content to load
+    cy.get('[data-testid="edit-activity-button"] a').first().click();
+    // Wait for the page to load and verify we're on the edit page
+    cy.url().should('include', '/edit');
+    // Wait for the page content to load
     cy.get('#rightcol #pages [id^=item_interactive_page]').should('exist');
+    // Wait for the add item button to be available and click it
+    cy.get('.bigButton .lineAdjust').should('exist').click();
   }
   deleteActivity(name) {
     cy.log("Delete Test Activity : ");
