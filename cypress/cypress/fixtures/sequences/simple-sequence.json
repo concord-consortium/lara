@@ -1,0 +1,144 @@
+{
+  "abstract": "",
+  "description": "",
+  "display_title": "",
+  "external_report_url": "",
+  "logo": "",
+  "project_id": null,
+  "theme_id": null,
+  "thumbnail_url": "",
+  "title": "[Cypress] Simple Sequence",
+  "activities": [
+    {
+      "description": "",
+      "editor_mode": 0,
+      "external_report_url": null,
+      "layout": 0,
+      "name": "[Cypress] Open Response Simple",
+      "notes": "",
+      "project_id": null,
+      "related": "",
+      "student_report_enabled": true,
+      "thumbnail_url": "",
+      "time_to_complete": null,
+      "version": 1,
+      "theme_name": null,
+      "pages": [
+        {
+          "additional_sections": null,
+          "embeddable_display_mode": "stacked",
+          "is_completion": false,
+          "is_hidden": false,
+          "layout": "l-6040",
+          "name": null,
+          "position": 1,
+          "show_info_assessment": true,
+          "show_interactive": false,
+          "show_introduction": false,
+          "show_sidebar": false,
+          "sidebar": null,
+          "sidebar_title": "Did you know?",
+          "text": null,
+          "embeddables": [
+            {
+              "embeddable": {
+                "default_text": null,
+                "give_prediction_feedback": false,
+                "hint": null,
+                "is_full_width": false,
+                "is_hidden": false,
+                "is_prediction": false,
+                "name": null,
+                "prediction_feedback": null,
+                "prompt": "why does ...",
+                "show_in_featured_question_report": true,
+                "type": "Embeddable::OpenResponse"
+              },
+              "section": null
+            }
+          ]
+        }
+      ],
+      "type": "LightweightActivity",
+      "export_site": "Lightweight Activities Runtime and Authoring",
+      "position": 1
+    },
+    {
+      "description": "",
+      "editor_mode": 0,
+      "external_report_url": null,
+      "layout": 0,
+      "name": "[Cypress] Multiple Choice Simple",
+      "notes": "",
+      "project_id": null,
+      "related": "",
+      "student_report_enabled": true,
+      "thumbnail_url": "",
+      "time_to_complete": null,
+      "version": 1,
+      "theme_name": null,
+      "pages": [
+        {
+          "additional_sections": null,
+          "embeddable_display_mode": "stacked",
+          "is_completion": false,
+          "is_hidden": false,
+          "layout": "l-6040",
+          "name": null,
+          "position": 1,
+          "show_info_assessment": true,
+          "show_interactive": false,
+          "show_introduction": false,
+          "show_sidebar": false,
+          "sidebar": null,
+          "sidebar_title": "Did you know?",
+          "text": null,
+          "embeddables": [
+            {
+              "embeddable": {
+                "custom": false,
+                "enable_check_answer": true,
+                "give_prediction_feedback": false,
+                "hint": null,
+                "is_full_width": false,
+                "is_hidden": false,
+                "is_prediction": false,
+                "layout": "vertical",
+                "multi_answer": false,
+                "name": "Multiple Choice Question element",
+                "prediction_feedback": null,
+                "prompt": "why does ...",
+                "show_as_menu": false,
+                "show_in_featured_question_report": true,
+                "choices": [
+                  {
+                    "choice": "a",
+                    "is_correct": true,
+                    "prompt": null
+                  },
+                  {
+                    "choice": "b",
+                    "is_correct": null,
+                    "prompt": null
+                  },
+                  {
+                    "choice": "c",
+                    "is_correct": null,
+                    "prompt": null
+                  }
+                ],
+                "type": "Embeddable::MultipleChoice"
+              },
+              "section": null
+            }
+          ]
+        }
+      ],
+      "type": "LightweightActivity",
+      "export_site": "Lightweight Activities Runtime and Authoring",
+      "position": 2
+    }
+  ],
+  "type": "Sequence",
+  "export_site": "Lightweight Activities Runtime and Authoring"
+}

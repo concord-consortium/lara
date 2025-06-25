@@ -8,6 +8,7 @@ module.exports = defineConfig({
       // implement node event listeners here
     },
     baseUrl: "https://authoring.lara.staging.concord.org/",
+    chromeWebSecurity: false
   },
   env: {
     useSSO: true,

@@ -1,0 +1,18 @@
+{
+  "default": {
+    "activityName": "Test Automation Notebook Section Rename",
+    "sectionNames": {
+      "initial": "Section 1",
+      "edited": "Section Name Edit",
+      "cancelled": "Cancel Section Name"
+    }
+  },
+  "custom": {
+    "activityName": "Custom Notebook Section Rename Test",
+    "sectionNames": {
+      "initial": "Custom Section 1",
+      "edited": "Custom Section Name Edit",
+      "cancelled": "Custom Cancel Section Name"
+    }
+  }
+} 

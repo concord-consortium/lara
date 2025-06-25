@@ -4,7 +4,9 @@
   "main": "index.js",
   "scripts": {
     "test:cypress:open": "cypress open",
-    "test:cypress:open:staging": "cypress open --config-file cypress.config.staging.js"
+    "test:cypress:open:staging": "cypress open --config-file cypress.config.staging.js",
+    "test:cypress": "cypress run",
+    "test:cypress:staging": "cypress run --config-file cypress.config.staging.js"
   },
   "author": "",
   "license": "ISC",
