@@ -61,6 +61,11 @@
         padding: 8px 10px;
         width: calc(100% - 20px);
 
+        &.empty {
+          cursor: auto !important;
+          background-color: inherit !important;
+        }
+
         &:hover {
           background-color: var(--lt-teal);
         }

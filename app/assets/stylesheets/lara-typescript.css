@@ -663,6 +663,10 @@
   padding: 8px 10px;
   width: calc(100% - 20px);
 }
+.authoring-header .inner .header-center .title-container.empty {
+  cursor: auto !important;
+  background-color: inherit !important;
+}
 .authoring-header .inner .header-center .title-container:hover {
   background-color: var(--lt-teal);
 }
