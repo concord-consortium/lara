@@ -718,4 +718,18 @@ describe LightweightActivity do
       end
     end
   end
+
+  describe "#search" do
+    let!(:activity1) { FactoryBot.create(:activity, name: "Alpha Activity") }
+    let!(:activity2) { FactoryBot.create(:activity, name: "Beta Activity") }
+
+    it "finds by name substring" do
+      expect(LightweightActivity.search("Alpha", nil)).to include(activity1)
+      expect(LightweightActivity.search("Beta", nil)).to include(activity2)
+    end
+    it "finds by id (string and integer)" do
+      expect(LightweightActivity.search(activity1.id.to_s, nil)).to eq([activity1])
+      expect(LightweightActivity.search(activity2.id, nil)).to eq([activity2])
+    end
+  end
 end

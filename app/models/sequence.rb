@@ -243,7 +243,11 @@ class Sequence < ApplicationRecord
   end
 
   def self.search(query, _user)  # user not used
-    where("title LIKE ?", "%#{query}%")
+    if query.to_s =~ /^\d+$/ && query.to_i > 0
+      where("title LIKE ? OR id = ?", "%#{query}%", query.to_i)
+    else
+      where("title LIKE ?", "%#{query}%")
+    end
   end
 
   private

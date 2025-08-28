@@ -6,6 +6,7 @@ class HomeController < ApplicationController
     attributes = (params[:filter] || {})
     if params.has_key?('search')
       attributes[:search] = params[:search]
+      @search = params[:search]
     end
     @filter  = CollectionFilter.new(current_user, LightweightActivity, attributes)
     # TODO: Add 'oficial' to the criteron?

@@ -122,7 +122,11 @@ class Rubric < ApplicationRecord
   end
 
   def self.search(query, user)
-    self.can_see(user).where("name LIKE ?", "%#{query}%")
+    if query.to_s =~ /^\d+$/ && query.to_i > 0
+      self.can_see(user).where("name LIKE ? OR id = ?", "%#{query}%", query.to_i)
+    else
+      self.can_see(user).where("name LIKE ?", "%#{query}%")
+    end
   end
 
   def self.public_for_user(user)
