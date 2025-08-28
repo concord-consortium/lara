@@ -418,7 +418,11 @@ class LightweightActivity < ApplicationRecord
   end
 
   def self.search(query, _user)  # user not used
-    where("name LIKE ?", "%#{query}%")
+    if query.to_s =~ /^\d+$/ && query.to_i > 0
+      where("name LIKE ? OR id = ?", "%#{query}%", query.to_i)
+    else
+      where("name LIKE ?", "%#{query}%")
+    end
   end
 
   def activity_player_url(host, page: nil, preview: false, mode: nil)

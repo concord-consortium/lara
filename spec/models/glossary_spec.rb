@@ -300,6 +300,8 @@ RSpec.describe Glossary do
 
       it "should support self.search" do
         expect(Glossary.search("Glossary", author)).to eq([glossary, glossary2])
+        expect(Glossary.search(glossary.id.to_s, author)).to eq([glossary])
+        expect(Glossary.search(glossary2.id, author)).to eq([glossary2])
       end
 
       it "should support self.public_for_user" do
@@ -328,6 +330,8 @@ RSpec.describe Glossary do
 
       it "should support self.search" do
         expect(Glossary.search("Glossary", admin)).to eq([glossary, glossary2])
+        expect(Glossary.search(glossary.id.to_s, admin)).to eq([glossary])
+        expect(Glossary.search(glossary2.id, admin)).to eq([glossary2])
       end
 
       it "should support self.public_for_user" do

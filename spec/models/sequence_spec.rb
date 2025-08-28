@@ -380,4 +380,17 @@ describe Sequence do
     end
   end
 
+  describe "#search" do
+    let!(:sequence1) { FactoryBot.create(:sequence, title: "Alpha Sequence") }
+    let!(:sequence2) { FactoryBot.create(:sequence, title: "Beta Sequence") }
+
+    it "finds by title substring" do
+      expect(Sequence.search("Alpha", nil)).to include(sequence1)
+      expect(Sequence.search("Beta", nil)).to include(sequence2)
+    end
+    it "finds by id (string and integer)" do
+      expect(Sequence.search(sequence1.id.to_s, nil)).to eq([sequence1])
+      expect(Sequence.search(sequence2.id, nil)).to eq([sequence2])
+    end
+  end
 end

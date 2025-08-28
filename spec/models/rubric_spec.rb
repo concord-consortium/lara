@@ -12,7 +12,7 @@ RSpec.describe Rubric do
     rubric.update_column(:updated_at, 1.day.ago)
     rubric
   }
-  let(:rubric2) { 
+  let(:rubric2) {
     rubric = FactoryBot.create(:rubric, name: "Rubric 2", user: author2)
     rubric.update_column(:updated_at, Time.now)
     rubric
@@ -182,6 +182,8 @@ RSpec.describe Rubric do
 
       it "should support self.search" do
         expect(Rubric.search("Rubric", author)).to eq([rubric, rubric2])
+        expect(Rubric.search(rubric.id.to_s, author)).to eq([rubric])
+        expect(Rubric.search(rubric2.id, author)).to eq([rubric2])
       end
 
       it "should support self.public_for_user" do
@@ -210,6 +212,8 @@ RSpec.describe Rubric do
 
       it "should support self.search" do
         expect(Rubric.search("Rubric", admin)).to eq([rubric, rubric2])
+        expect(Rubric.search(rubric.id.to_s, admin)).to eq([rubric])
+        expect(Rubric.search(rubric2.id, admin)).to eq([rubric2])
       end
 
       it "should support self.public_for_user" do
