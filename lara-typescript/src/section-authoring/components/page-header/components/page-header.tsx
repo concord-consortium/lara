@@ -1,4 +1,5 @@
 import * as React from "react";
+import classNames from "classnames";
 import { APIContainer } from "../../../containers/api-container";
 import { Logo } from "./logo";
 import { AccountOwner, IUser } from "./account-owner";
@@ -23,7 +24,12 @@ export const PageHeader: React.FC<IPageHeaderProps> = ({
     userLinks
   }: IPageHeaderProps) => {
 
+  const isEmptyResourceName = (resourceName ?? "").trim().length === 0;
+
   const handleTitleClick = () => {
+    if (isEmptyResourceName) {
+      return;
+    }
     const activityPath = window.location.pathname.split("/pages")[0];
     window.location.href = activityPath + "/edit";
   };
@@ -37,7 +43,7 @@ export const PageHeader: React.FC<IPageHeaderProps> = ({
             <div className="separator" />
           </div>
           <div className="header-center">
-            <div className="title-container" onClick={handleTitleClick}>
+            <div className={classNames("title-container", { empty: isEmptyResourceName })} onClick={handleTitleClick}>
               <div className="activity-title" data-testid="activity-title">
                 {renderHTML(resourceName)}
               </div>
