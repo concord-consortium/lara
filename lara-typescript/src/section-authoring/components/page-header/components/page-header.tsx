@@ -30,8 +30,11 @@ export const PageHeader: React.FC<IPageHeaderProps> = ({
     if (isEmptyResourceName) {
       return;
     }
-    const activityPath = window.location.pathname.split("/pages")[0];
-    window.location.href = activityPath + "/edit";
+    let activityPath = window.location.pathname.split("/pages")[0];
+    if (!activityPath.endsWith("/edit")) {
+      activityPath += "/edit";
+    }
+    window.location.href = activityPath;
   };
 
   return (
