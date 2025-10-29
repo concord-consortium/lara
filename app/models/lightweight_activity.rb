@@ -106,6 +106,7 @@ class LightweightActivity < ApplicationRecord
       show_submit_button: show_submit_button,
       hide_read_aloud: hide_read_aloud,
       hide_question_numbers: hide_question_numbers,
+      save_interactive_state_history: save_interactive_state_history,
       font_size: font_size
     }
   end
@@ -155,6 +156,7 @@ class LightweightActivity < ApplicationRecord
                                         :defunct,
                                         :hide_read_aloud,
                                         :hide_question_numbers,
+                                        :save_interactive_state_history,
                                         :font_size ])
     activity_json[:version] = 2
     activity_json[:project] = self.project ? self.project.export : nil
@@ -222,6 +224,7 @@ class LightweightActivity < ApplicationRecord
     import_activity.is_official = activity_json_object[:is_official]
     import_activity.hide_read_aloud = activity_json_object[:hide_read_aloud]
     import_activity.hide_question_numbers = activity_json_object[:hide_question_numbers]
+    import_activity.save_interactive_state_history = activity_json_object[:save_interactive_state_history]
     import_activity.font_size = activity_json_object[:font_size]
     import_activity.project = Project.find_or_create(activity_json_object[:project]) if activity_json_object[:project]
     self.link_glossaries_on_import(activity_json_object, import_activity)

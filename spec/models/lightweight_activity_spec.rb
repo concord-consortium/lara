@@ -8,7 +8,7 @@ describe LightweightActivity do
   let(:glossary)         { nil }
   let(:authored_content) { FactoryBot.create(:authored_content, user: author, content_type: "application/json", url: rubric_url) }
   let(:rubric)           { FactoryBot.create(:rubric, user: author, name: "Test Rubric", doc_url: rubric_doc_url, authored_content: authored_content)}
-  let(:act_opts)         { {thumbnail_url: thumbnail_url, glossary: glossary, hide_read_aloud: true, hide_question_numbers: true, font_size: "large", rubric: rubric } }
+  let(:act_opts)         { {thumbnail_url: thumbnail_url, glossary: glossary, hide_read_aloud: true, hide_question_numbers: true, font_size: "large", rubric: rubric, save_interactive_state_history: false } }
   let(:activity)         {
     activity = FactoryBot.create(:activity, act_opts)
     activity.user = author
@@ -193,6 +193,7 @@ describe LightweightActivity do
         editor_mode: activity.editor_mode,
         hide_read_aloud: activity.hide_read_aloud,
         hide_question_numbers: activity.hide_question_numbers,
+        save_interactive_state_history: activity.save_interactive_state_history,
         font_size: activity.font_size,
        }
       expect(activity.to_hash).to eq(expected)
@@ -240,6 +241,9 @@ describe LightweightActivity do
       end
       it 'includes the font_size setting' do
         expect(export["font_size"]).to eq("large")
+      end
+      it 'includes the save_interactive_state_history setting' do
+        expect(export["save_interactive_state_history"]).to eq(false)
       end
 
       describe "for activity player activities" do
@@ -300,6 +304,7 @@ describe LightweightActivity do
       expect(dup.glossary_id).to eq(activity.glossary_id)
       expect(dup.hide_read_aloud).to eq(activity.hide_read_aloud)
       expect(dup.hide_question_numbers).to eq(activity.hide_question_numbers)
+      expect(dup.save_interactive_state_history).to eq(activity.save_interactive_state_history)
       expect(dup.font_size).to eq(activity.font_size)
     end
 
@@ -437,6 +442,7 @@ describe LightweightActivity do
       expect(act.glossary_id).to eq(nil)
       expect(act.hide_read_aloud).to eq(true)
       expect(act.hide_question_numbers).to eq(true)
+      expect(act.save_interactive_state_history).to eq(false)
       expect(act.font_size).to eq("large")
     end
 

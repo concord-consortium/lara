@@ -33,7 +33,9 @@ export const CustomizeManagedInteractive: React.FC<Props> = (props) => {
     custom_image_url,
     linked_interactive_item_id,
     inherit_hide_question_number,
-    custom_hide_question_number
+    custom_hide_question_number,
+    inherit_save_interactive_state_history,
+    custom_save_interactive_state_history,
   } = managedInteractive;
 
   const [inheritAspectRatio, setInheritAspectRatio] = useState(inherit_aspect_ratio_method);
@@ -50,6 +52,10 @@ export const CustomizeManagedInteractive: React.FC<Props> = (props) => {
   const [customImageUrl, setCustomImageUrl] = useState(custom_image_url);
   const [inheritHideQuestionNumber, setInheritHideQuestionNumber] = useState(inherit_hide_question_number);
   const [customHideQuestionNumber, setCustomHideQuestionNumber] = useState(custom_hide_question_number);
+  const [inheritSaveInteractiveStateHistory, setInheritSaveInteractiveStateHistory] =
+    useState(inherit_save_interactive_state_history);
+  const [customSaveInteractiveStateHistory, setCustomSaveInteractiveStateHistory] =
+    useState(custom_save_interactive_state_history);
 
   const handleBooleanOption = (setter: (value: boolean) => void) => {
     return (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -72,6 +78,8 @@ export const CustomizeManagedInteractive: React.FC<Props> = (props) => {
   const handleChangeCustomImageUrl = handleStringOption(setCustomImageUrl);
   const handleChangeHideQuestionNumber = handleBooleanOption(setInheritHideQuestionNumber);
   const handleChangeCustomHideQuestionNumber = handleBooleanOption(setCustomHideQuestionNumber);
+  const handleChangeSaveInteractiveStateHistory = handleBooleanOption(setInheritSaveInteractiveStateHistory);
+  const handleChangeCustomSaveInteractiveStateHistory = handleBooleanOption(setCustomSaveInteractiveStateHistory);
 
   const clickToPlayEnabled = (inheritClickToPlay && libraryInteractive.click_to_play) ||
                              (!inheritClickToPlay && customClickToPlay);
@@ -354,6 +362,55 @@ export const CustomizeManagedInteractive: React.FC<Props> = (props) => {
                 onChange={handleChangeCustomHideQuestionNumber}
               />
               <label htmlFor="custom-hide-question-number">
+                Enabled
+              </label>
+            </div>
+          }
+        </div>
+      </div>
+    </fieldset>
+    }
+
+    {libraryInteractive.enable_learner_state &&
+    <fieldset>
+      <legend>Save Interactive State History</legend>
+      <div className="option_group">
+        <div className="customizable-option">
+          <input
+            type="radio"
+            id="inherit-save-interactive-state-history"
+            name="inherit_save_interactive_state_history"
+            value="true"
+            defaultChecked={inheritSaveInteractiveStateHistory}
+            onChange={handleChangeSaveInteractiveStateHistory}
+          />
+          <label htmlFor="inherit-save-interactive-state-history" className="radioLabel">
+            Use default: <strong>{libraryInteractive.save_interactive_state_history ? "Enabled" : "Disabled"}</strong>
+          </label>
+        </div>
+        <div className="customizable-option">
+          <input
+            type="radio"
+            id="inherit-save-interactive-state-history"
+            name="inherit_save_interactive_state_history"
+            value="false"
+            defaultChecked={!inheritSaveInteractiveStateHistory}
+            onChange={handleChangeSaveInteractiveStateHistory}
+          />
+          <label htmlFor="inherit-save-interactive-state-history" className="radioLabel">
+            Customize
+          </label>
+          {!inheritSaveInteractiveStateHistory &&
+            <div className="customizable-option-setting">
+              <input
+                id="custom-save-interactive-state-history"
+                type="checkbox"
+                name="custom_save_interactive_state_history"
+                value="true"
+                defaultChecked={customSaveInteractiveStateHistory}
+                onChange={handleChangeCustomSaveInteractiveStateHistory}
+              />
+              <label htmlFor="custom-save-interactive-state-history">
                 Enabled
               </label>
             </div>

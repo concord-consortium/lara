@@ -86,6 +86,24 @@ class ActivitySequenceSettingsPage {
   verifySequenceHideQuestionNumbersHint(hint) {
     this.getSequenceHideQuestionNumbersCheckbox().parent().find('.hint').should("contain", hint);
   }
+  getSaveInteractiveStateHistoryCheckbox() {
+    return cy.get('#lightweight_activity_save_interactive_state_history');
+  }
+  verifySaveInteractiveStateHistoryLabel(label) {
+    this.getSaveInteractiveStateHistoryCheckbox().parent().find('label').should("contain", label);
+  }
+  verifySaveInteractiveStateHistoryHint(hint) {
+    this.getSaveInteractiveStateHistoryCheckbox().parent().find('.hint').should("contain", hint);
+  }
+  getSequenceSaveInteractiveStateHistoryCheckbox() {
+    return cy.get('#sequence_save_interactive_state_history');
+  }
+  verifySequenceSaveInteractiveStateHistoryLabel(label) {
+    this.getSequenceSaveInteractiveStateHistoryCheckbox().parent().find('label').should("contain", label);
+  }
+  verifySequenceSaveInteractiveStateHistoryHint(hint) {
+    this.getSequenceSaveInteractiveStateHistoryCheckbox().parent().find('.hint').should("contain", hint);
+  }
 
   //*******************************
 

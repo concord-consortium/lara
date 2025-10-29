@@ -26,6 +26,7 @@ export interface IMWInteractive {
   native_height: number;
   enable_learner_state: boolean;
   hide_question_number: boolean;
+  save_interactive_state_history: boolean;
   show_delete_data_button: boolean;
   has_report_url: boolean;
   click_to_play: boolean;

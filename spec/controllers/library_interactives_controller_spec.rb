@@ -12,6 +12,7 @@ describe LibraryInteractivesController do
       description: "valid description",
       enable_learner_state: false,
       hide_question_number: false,
+      save_interactive_state_history: false,
       full_window: false,
       has_report_url: false,
       image_url: "http://example.com/image_url.jpg",

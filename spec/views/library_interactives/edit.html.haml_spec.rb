@@ -11,6 +11,7 @@ describe "library_interactives/edit" do
       no_snapshots: false,
       enable_learner_state: false,
       hide_question_number: false,
+      save_interactive_state_history: false,
       has_report_url: false,
       show_delete_data_button: false,
       aspect_ratio_method: "MyString",
@@ -43,6 +44,8 @@ describe "library_interactives/edit" do
       assert_select "input[name=?]", "library_interactive[enable_learner_state]"
 
       assert_select "input[name=?]", "library_interactive[hide_question_number]"
+
+      assert_select "input[name=?]", "library_interactive[save_interactive_state_history]"
 
       assert_select "input[name=?]", "library_interactive[has_report_url]"
 

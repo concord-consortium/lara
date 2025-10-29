@@ -20,6 +20,7 @@ describe "sequences/edit" do
       assert_select "textarea#sequence_description", name: "sequence[description]"
       assert_select "input#sequence_hide_read_aloud", name: "sequence[hide_read_aloud]"
       assert_select "input#sequence_hide_question_numbers", name: "sequence[hide_question_numbers]"
+      assert_select "input#sequence_save_interactive_state_history", name: "sequence[save_interactive_state_history]"
       assert_select "select#sequence_font_size", name: "sequence[font_size]"
     end
   end

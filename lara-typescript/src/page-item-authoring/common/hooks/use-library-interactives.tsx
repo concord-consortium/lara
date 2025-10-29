@@ -11,6 +11,7 @@ export interface ILibraryInteractive {
   description: string;
   enable_learner_state: boolean;
   hide_question_number: boolean;
+  save_interactive_state_history: boolean;
   export_hash: string;
   full_window: boolean;
   has_report_url: boolean;

@@ -54,6 +54,7 @@ class Sequence < ApplicationRecord
       thumbnail_url: thumbnail_url,
       hide_read_aloud: hide_read_aloud,
       hide_question_numbers: hide_question_numbers,
+      save_interactive_state_history: save_interactive_state_history,
       font_size: font_size,
       layout_override: layout_override
     }
@@ -102,6 +103,7 @@ class Sequence < ApplicationRecord
                                         :defunct,
                                         :hide_read_aloud,
                                         :hide_question_numbers,
+                                        :save_interactive_state_history,
                                         :font_size,
                                         :layout_override
     ])
@@ -215,6 +217,7 @@ class Sequence < ApplicationRecord
       background_image: sequence_json_object[:background_image],
       hide_read_aloud: sequence_json_object[:hide_read_aloud],
       hide_question_numbers: sequence_json_object[:hide_question_numbers],
+      save_interactive_state_history: sequence_json_object[:save_interactive_state_history],
       font_size: sequence_json_object[:font_size],
       layout_override: sequence_json_object[:layout_override]
     }

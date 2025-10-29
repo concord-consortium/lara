@@ -35,7 +35,7 @@ class LibraryInteractivesController < ApplicationController
       :click_to_play_prompt, :customizable, :data, :description, :enable_learner_state,
       :export_hash, :hide_question_number, :full_window, :has_report_url, :image_url,
       :name, :native_height, :native_width, :no_snapshots, :official, :report_item_url,
-      :show_delete_data_button, :thumbnail_url
+      :show_delete_data_button, :thumbnail_url, :save_interactive_state_history
     )
   end
 

@@ -27,6 +27,7 @@ export const CustomizeMWInteractive: React.FC<Props> = (props) => {
     enable_learner_state,
     show_delete_data_button,
     hide_question_number,
+    save_interactive_state_history,
     has_report_url,
     click_to_play,
     click_to_play_prompt,
@@ -126,6 +127,14 @@ export const CustomizeMWInteractive: React.FC<Props> = (props) => {
           name="hide_question_number"
           defaultChecked={hide_question_number}
           label={`Hide question number`}
+        />
+      </div>
+
+      <div>
+        <Checkbox
+          name="save_interactive_state_history"
+          defaultChecked={save_interactive_state_history}
+          label={`Save interactive state history`}
         />
       </div>
 

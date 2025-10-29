@@ -120,6 +120,7 @@ export const ItemEditDialog: React.FC<IItemEditDialogProps> = ({
           case "inherit_native_height":
           case "inherit_native_width":
           case "inherit_hide_question_number":
+          case "inherit_save_interactive_state_history":
             elementValue = handleBooleanElement((element as HTMLInputElement));
             break;
           case "library_interactive_id":
