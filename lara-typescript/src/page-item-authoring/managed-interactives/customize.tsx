@@ -236,13 +236,13 @@ export const CustomizeManagedInteractive: React.FC<Props> = (props) => {
       />
       <input
         type="radio"
-        id="inherit-aspect-ratio-method"
+        id="inherit-aspect-ratio-method-default"
         name="inherit_aspect_ratio_method"
         value="true"
         defaultChecked={inheritAspectRatio}
         onChange={handleChangeCustomizeAspectRatio}
       />
-      <label htmlFor="inherit-aspect-ratio-method" className="radioLabel">
+      <label htmlFor="inherit-aspect-ratio-method-default" className="radioLabel">
         Use default:
         <strong>
           {availableAspectRatios[libraryInteractive.aspect_ratio_method as AspectRatioMode]}
@@ -254,13 +254,13 @@ export const CustomizeManagedInteractive: React.FC<Props> = (props) => {
       <div className="customizable-option">
         <input
           type="radio"
-          id="inherit-aspect-ratio-method"
+          id="inherit-aspect-ratio-method-customize"
           name="inherit_aspect_ratio_method"
           value="false"
           defaultChecked={!inheritAspectRatio}
           onChange={handleChangeCustomizeAspectRatio}
         />
-        <label htmlFor="inherit-aspect-ratio-method" className="radioLabel">
+        <label htmlFor="inherit-aspect-ratio-method-customize" className="radioLabel">
           Customize
           {!inheritAspectRatio &&
             <AspectRatioChooser
@@ -280,26 +280,26 @@ export const CustomizeManagedInteractive: React.FC<Props> = (props) => {
         <div className="customizable-option">
           <input
             type="radio"
-            id="inherit-click-to-play"
+            id="inherit-click-to-play-default"
             name="inherit_click_to_play"
             value="true"
             defaultChecked={inheritClickToPlay}
             onChange={handleChangeClickToPlay}
           />
-          <label htmlFor="inherit-click-to-play" className="radioLabel">
+          <label htmlFor="inherit-click-to-play-default" className="radioLabel">
             Use default: <strong>{libraryInteractive.click_to_play ? "Enabled" : "Disabled"}</strong>
           </label>
         </div>
         <div className="customizable-option">
           <input
             type="radio"
-            id="inherit-click-to-play"
+            id="inherit-click-to-play-customize"
             name="inherit_click_to_play"
             value="false"
             defaultChecked={!inheritClickToPlay}
             onChange={handleChangeClickToPlay}
           />
-          <label htmlFor="inherit-click-to-play" className="radioLabel">
+          <label htmlFor="inherit-click-to-play-customize" className="radioLabel">
             Customize
           </label>
           {!inheritClickToPlay &&
@@ -329,26 +329,26 @@ export const CustomizeManagedInteractive: React.FC<Props> = (props) => {
         <div className="customizable-option">
           <input
             type="radio"
-            id="inherit-hide-question-number"
+            id="inherit-hide-question-number-default"
             name="inherit_hide_question_number"
             value="true"
             defaultChecked={inheritHideQuestionNumber}
             onChange={handleChangeHideQuestionNumber}
           />
-          <label htmlFor="inherit-hide-question-number" className="radioLabel">
+          <label htmlFor="inherit-hide-question-number-default" className="radioLabel">
             Use default: <strong>{libraryInteractive.hide_question_number ? "Enabled" : "Disabled"}</strong>
           </label>
         </div>
         <div className="customizable-option">
           <input
             type="radio"
-            id="inherit-hide-question-number"
+            id="inherit-hide-question-number-customize"
             name="inherit_hide_question_number"
             value="false"
             defaultChecked={!inheritHideQuestionNumber}
             onChange={handleChangeHideQuestionNumber}
           />
-          <label htmlFor="inherit-hide-question-number" className="radioLabel">
+          <label htmlFor="inherit-hide-question-number-customize" className="radioLabel">
             Customize
           </label>
           {!inheritHideQuestionNumber &&
@@ -378,26 +378,26 @@ export const CustomizeManagedInteractive: React.FC<Props> = (props) => {
         <div className="customizable-option">
           <input
             type="radio"
-            id="inherit-save-interactive-state-history"
+            id="inherit-save-interactive-state-history-default"
             name="inherit_save_interactive_state_history"
             value="true"
             defaultChecked={inheritSaveInteractiveStateHistory}
             onChange={handleChangeSaveInteractiveStateHistory}
           />
-          <label htmlFor="inherit-save-interactive-state-history" className="radioLabel">
+          <label htmlFor="inherit-save-interactive-state-history-default" className="radioLabel">
             Use default: <strong>{libraryInteractive.save_interactive_state_history ? "Enabled" : "Disabled"}</strong>
           </label>
         </div>
         <div className="customizable-option">
           <input
             type="radio"
-            id="inherit-save-interactive-state-history"
+            id="inherit-save-interactive-state-history-customize"
             name="inherit_save_interactive_state_history"
             value="false"
             defaultChecked={!inheritSaveInteractiveStateHistory}
             onChange={handleChangeSaveInteractiveStateHistory}
           />
-          <label htmlFor="inherit-save-interactive-state-history" className="radioLabel">
+          <label htmlFor="inherit-save-interactive-state-history-customize" className="radioLabel">
             Customize
           </label>
           {!inheritSaveInteractiveStateHistory &&

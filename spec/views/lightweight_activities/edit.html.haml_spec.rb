@@ -88,7 +88,7 @@ describe "lightweight_activities/edit" do
 
       context "when the current user is not an admin or author" do
         let (:user) { stub_model(User, is_admin: false, is_author: false)}
-        it "should not show the checkbox" do
+        it "should show the checkbox" do
           render
           expect(rendered).to have_xpath hide_question_numbers_checkbox
         end
@@ -114,7 +114,7 @@ describe "lightweight_activities/edit" do
 
       context "when the current user is not an admin or author" do
         let (:user) { stub_model(User, is_admin: false, is_author: false)}
-        it "should not show the checkbox" do
+        it "should show the checkbox" do
           render
           expect(rendered).to have_xpath save_interactive_state_history_checkbox
         end
