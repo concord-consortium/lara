@@ -15,7 +15,7 @@
 .field
   = f.check_box :save_interactive_state_history
   = f.label :save_interactive_state_history,  "Save Interactive State History"
-  .hint Check this box if you want to store the interactive state history of student responses for all interactives in this activity and display a history time scrubber in the Class Dashboard for each interactive that supports this.
+  .hint Check this box if you want to save the interactive state history of <strong>previous</strong> student responses for all interactives in this activity and display a history time scrubber in the Class Dashboard for each interactive that supports this.
 .field
   = f.label :layout, "Activity Layout"
   = f.select :layout, options_for_select(LightweightActivity::LAYOUT_OPTIONS, @activity.layout)
