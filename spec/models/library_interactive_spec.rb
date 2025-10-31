@@ -14,6 +14,7 @@ describe LibraryInteractive do
         description: library_interactive.description,
         enable_learner_state: library_interactive.enable_learner_state,
         hide_question_number: library_interactive.hide_question_number,
+        save_interactive_state_history: library_interactive.save_interactive_state_history,
         full_window: library_interactive.full_window,
         has_report_url: library_interactive.has_report_url,
         image_url: library_interactive.image_url,

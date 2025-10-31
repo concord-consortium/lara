@@ -30,6 +30,7 @@ describe MwInteractive do
         native_height: interactive.native_height,
         enable_learner_state: interactive.enable_learner_state,
         hide_question_number: interactive.hide_question_number,
+        save_interactive_state_history: interactive.save_interactive_state_history,
         show_delete_data_button: interactive.show_delete_data_button,
         has_report_url: interactive.has_report_url,
         click_to_play: interactive.click_to_play,

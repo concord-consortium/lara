@@ -17,7 +17,8 @@ class SequencesController < ApplicationController
     params.fetch(:sequence, {})
       .permit(
         :abstract, :background_image, :defunct, :description, :display_title, :font_size, :hide_question_numbers,
-        :hide_read_aloud, :layout_override, :logo, :project, :project_id, :publication_hash, :thumbnail_url, :title, :user_id
+        :hide_read_aloud, :layout_override, :logo, :project, :project_id, :publication_hash, :thumbnail_url, :title, :user_id,
+        :save_interactive_state_history
       )
   end
 

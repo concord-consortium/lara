@@ -74,7 +74,11 @@ class ManagedInteractive < ApplicationRecord
   end
 
   def hide_question_number
-    inherit_hide_question_number && library_interactive  ? library_interactive.hide_question_number : custom_hide_question_number
+    inherit_hide_question_number && library_interactive ? library_interactive.hide_question_number : custom_hide_question_number
+  end
+
+  def save_interactive_state_history
+    inherit_save_interactive_state_history && library_interactive ? library_interactive.save_interactive_state_history : custom_save_interactive_state_history
   end
 
   # getters for proxied attributes
@@ -136,7 +140,9 @@ class ManagedInteractive < ApplicationRecord
       linked_interactives: linked_interactives_list,
       linked_interactive_item_id: linked_interactive_item_id,
       inherit_hide_question_number: inherit_hide_question_number,
-      custom_hide_question_number: custom_hide_question_number
+      custom_hide_question_number: custom_hide_question_number,
+      inherit_save_interactive_state_history: inherit_save_interactive_state_history,
+      custom_save_interactive_state_history: custom_save_interactive_state_history,
     }
   end
 
@@ -160,7 +166,7 @@ class ManagedInteractive < ApplicationRecord
   # inherit_native_width, custom_native_width, inherit_native_height, custom_native_height,
   # inherit_click_to_play, custom_click_to_play, inherit_full_window, custom_full_window,
   # inherit_click_to_play_prompt, custom_click_to_play_prompt, inherit_image_url, custom_image_url,
-  # linked_interactives, inherit_hide_question_number, custom_question_number
+  # linked_interactives, inherit_hide_question_number, save_interactive_state_history, custom_question_number
 
   def to_interactive
     # NOTE: model_library_url is missing as there is no analog
@@ -172,6 +178,7 @@ class ManagedInteractive < ApplicationRecord
       native_height: native_height,
       enable_learner_state: enable_learner_state,
       hide_question_number: hide_question_number,
+      save_interactive_state_history: save_interactive_state_history,
       show_delete_data_button: show_delete_data_button,
       has_report_url: has_report_url,
       click_to_play: click_to_play,

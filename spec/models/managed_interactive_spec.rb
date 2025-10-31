@@ -18,6 +18,7 @@ describe ManagedInteractive do
                                                  image_url: "http://base.url/image",
                                                  enable_learner_state: enable_learner_state,
                                                  hide_question_number: hide_question_number,
+                                                 save_interactive_state_history: false,
                                                  show_delete_data_button: false,
                                                  has_report_url: true,
                                                  no_snapshots: true,
@@ -74,6 +75,8 @@ describe ManagedInteractive do
         linked_interactive_item_id: nil,
         inherit_hide_question_number: managed_interactive.inherit_hide_question_number,
         custom_hide_question_number: managed_interactive.custom_hide_question_number,
+        inherit_save_interactive_state_history: managed_interactive.inherit_save_interactive_state_history,
+        custom_save_interactive_state_history: managed_interactive.custom_save_interactive_state_history
        }
       expect(managed_interactive.to_hash).to eq(expected)
     end
@@ -132,6 +135,8 @@ describe ManagedInteractive do
         custom_image_url: managed_interactive.custom_image_url,
         inherit_hide_question_number: managed_interactive.inherit_hide_question_number,
         custom_hide_question_number: managed_interactive.custom_hide_question_number,
+        inherit_save_interactive_state_history: managed_interactive.inherit_save_interactive_state_history,
+        custom_save_interactive_state_history: managed_interactive.custom_save_interactive_state_history
       })
     end
   end
@@ -146,6 +151,7 @@ describe ManagedInteractive do
         native_height: managed_interactive.native_height,
         enable_learner_state: managed_interactive.enable_learner_state,
         hide_question_number: managed_interactive.hide_question_number,
+        save_interactive_state_history: managed_interactive.save_interactive_state_history,
         show_delete_data_button: managed_interactive.show_delete_data_button,
         has_report_url: managed_interactive.has_report_url,
         click_to_play: managed_interactive.click_to_play,
@@ -310,6 +316,18 @@ describe ManagedInteractive do
       expect(managed_interactive.hide_question_number).to eq library_interactive.hide_question_number
       managed_interactive.library_interactive = nil
       expect(managed_interactive.hide_question_number).to eq !library_interactive.hide_question_number
+    end
+
+    it "returns save_interactive_state_history" do
+      expect(managed_interactive.save_interactive_state_history).to eq library_interactive.save_interactive_state_history
+      managed_interactive.custom_save_interactive_state_history = !library_interactive.save_interactive_state_history
+      expect(managed_interactive.save_interactive_state_history).to eq library_interactive.save_interactive_state_history
+      managed_interactive.inherit_save_interactive_state_history = false
+      expect(managed_interactive.save_interactive_state_history).to eq !library_interactive.save_interactive_state_history
+      managed_interactive.inherit_save_interactive_state_history = true
+      expect(managed_interactive.save_interactive_state_history).to eq library_interactive.save_interactive_state_history
+      managed_interactive.library_interactive = nil
+      expect(managed_interactive.save_interactive_state_history).to eq !library_interactive.save_interactive_state_history
     end
 
     it "returns full_window" do

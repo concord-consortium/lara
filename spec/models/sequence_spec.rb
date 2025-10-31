@@ -195,7 +195,7 @@ describe Sequence do
   end
 
   describe '#to_hash' do
-    let(:sequence_opts) { {hide_read_aloud: true, hide_question_numbers: true, font_size: "large", layout_override: 2} }
+    let(:sequence_opts) { {hide_read_aloud: true, hide_question_numbers: true, save_interactive_state_history: true, font_size: "large", layout_override: 2} }
     it 'returns a hash with relevant values for sequence duplication' do
       expected = {
         title: sequence.title,
@@ -208,6 +208,7 @@ describe Sequence do
         thumbnail_url: sequence.thumbnail_url,
         hide_read_aloud: true,
         hide_question_numbers: true,
+        save_interactive_state_history: true,
         font_size: "large",
         layout_override: 2,
       }
@@ -216,13 +217,14 @@ describe Sequence do
   end
 
   describe '#export' do
-    let(:sequence_opts) { {hide_read_aloud: true, hide_question_numbers: true, font_size: "large", layout_override: 2} }
+    let(:sequence_opts) { {hide_read_aloud: true, hide_question_numbers: true, save_interactive_state_history: true, font_size: "large", layout_override: 2} }
     let(:host) { 'http://test.host' }
     it 'returns json of a sequence' do
       sequence_json = JSON.parse(sequence.export(host))
       expect(sequence_json['activities'].length).to eq(sequence.activities.count)
       expect(sequence_json['hide_read_aloud']).to eq(true)
       expect(sequence_json['hide_question_numbers']).to eq(true)
+      expect(sequence_json['save_interactive_state_history']).to eq(true)
       expect(sequence_json['font_size']).to eq("large")
       expect(sequence_json['layout_override']).to eq(2)
     end
@@ -254,9 +256,10 @@ describe Sequence do
     let(:title)         { "title" }
     let(:hide_read_aloud) { true }
     let(:hide_question_numbers) { true }
+    let(:save_interactive_state_history) { true }
     let(:font_size) { "large" }
     let(:layout_override) { 2 }
-    let(:sequence_opts) { {logo: logo, thumbnail_url: thumbnail_url, title: title, hide_read_aloud: hide_read_aloud, hide_question_numbers: hide_question_numbers, font_size: font_size, layout_override: layout_override} }
+    let(:sequence_opts) { {logo: logo, thumbnail_url: thumbnail_url, title: title, hide_read_aloud: hide_read_aloud, hide_question_numbers: hide_question_numbers, save_interactive_state_history: save_interactive_state_history, font_size: font_size, layout_override: layout_override} }
     let(:owner)         { FactoryBot.create(:user) }
     let(:host)          { 'http://test.host' }
 
@@ -267,6 +270,7 @@ describe Sequence do
       expect(imported.logo).to eq(logo)
       expect(imported.hide_read_aloud).to eq(hide_read_aloud)
       expect(imported.hide_question_numbers).to eq(hide_question_numbers)
+      expect(imported.save_interactive_state_history).to eq(save_interactive_state_history)
       expect(imported.font_size).to eq(font_size)
       expect(imported.layout_override).to eq(layout_override)
     end

@@ -13,13 +13,16 @@ end
 def hide_question_numbers_checkbox
   '//*[@id="lightweight_activity_hide_question_numbers"]'
 end
+def save_interactive_state_history_checkbox
+  '//*[@id="lightweight_activity_save_interactive_state_history"]'
+end
 def font_size_select
   '//*[@id="lightweight_activity_font_size"]'
 end
 
 describe "lightweight_activities/edit" do
 
-  let(:activity)  { stub_model(LightweightActivity, id: 1, name: 'Activity name', defunct: false, hide_read_aloud: false, hide_question_numbers: false, font_size: "normal") }
+  let(:activity)  { stub_model(LightweightActivity, id: 1, name: 'Activity name', defunct: false, hide_read_aloud: false, hide_question_numbers: false, save_interactive_state_history: false, font_size: "normal") }
   let(:user)      { stub_model(User, is_admin: false)      }
 
   before(:each) do
@@ -85,9 +88,35 @@ describe "lightweight_activities/edit" do
 
       context "when the current user is not an admin or author" do
         let (:user) { stub_model(User, is_admin: false, is_author: false)}
-        it "should not show the checkbox" do
+        it "should show the checkbox" do
           render
           expect(rendered).to have_xpath hide_question_numbers_checkbox
+        end
+      end
+    end
+
+    describe "save_interactive_state_history checkbox" do
+      context "when the current user is an admin" do
+        let (:user) { stub_model(User, is_admin: true)}
+        it "should show the checkbox" do
+          render
+          expect(rendered).to have_xpath save_interactive_state_history_checkbox
+        end
+      end
+
+      context "when the current user is an author" do
+        let (:user) { stub_model(User, is_author: true)}
+        it "should show the checkbox" do
+          render
+          expect(rendered).to have_xpath save_interactive_state_history_checkbox
+        end
+      end
+
+      context "when the current user is not an admin or author" do
+        let (:user) { stub_model(User, is_admin: false, is_author: false)}
+        it "should show the checkbox" do
+          render
+          expect(rendered).to have_xpath save_interactive_state_history_checkbox
         end
       end
     end

@@ -55,6 +55,8 @@ export interface IManagedInteractive {
   linked_interactives: ILinkedInteractive[];
   inherit_hide_question_number: boolean;
   custom_hide_question_number: boolean;
+  inherit_save_interactive_state_history: boolean;
+  custom_save_interactive_state_history: boolean;
 }
 
 export const ManagedInteractiveAuthoring: React.FC<Props> = (props) => {
