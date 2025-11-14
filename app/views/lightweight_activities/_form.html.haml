@@ -14,8 +14,8 @@
   .hint Check this box if you do not want question numbers to appear to the student in this activity.
 .field
   = f.check_box :save_interactive_state_history
-  = f.label :save_interactive_state_history,  "Save Interactive State History"
-  .hint Check this box if you want to save the interactive state history of <strong>previous</strong> student responses for all interactives in this activity and display a history time scrubber in the Class Dashboard for each interactive that supports this.
+  = f.label :save_interactive_state_history,  "Save Answer History"
+  .hint Check this box to save student answer history and enable the Class Dashboard history scrubber under each interactive. This will enable a step-by-step history of student answers for each interactive in this activity.
 .field
   = f.label :layout, "Activity Layout"
   = f.select :layout, options_for_select(LightweightActivity::LAYOUT_OPTIONS, @activity.layout)

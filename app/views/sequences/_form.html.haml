@@ -33,8 +33,8 @@
       .hint Check this box if you do not want question numbers to appear to the student in all activities in this sequence. Note: This will override the "Hide Question Numbers" setting for any activities in this sequence.
     .field
       = f.check_box :save_interactive_state_history
-      = f.label :save_interactive_state_history,  "Save Interactive State History"
-      .hint Check this box if you want to save the interactive state history of <strong>previous</strong> student responses for all interactives in this sequence and display a history time scrubber in the Class Dashboard for each interactive that supports this. Note: This will override the “Save Interactive State History” setting for any activities in this sequence.
+      = f.label :save_interactive_state_history,  "Save Answer History"
+      .hint Check this box to save student answer history and enable the Class Dashboard history scrubber under each interactive. This will enable a step-by-step history of student answers for each interactive in this sequence.  Note: This will override the "Save Answer History" setting for any activities in this sequence.
     .field
       = f.label :layout_override, "Activity Layout Override"
       = f.select :layout_override, options_for_select(LightweightActivity::LAYOUT_OVERRIDE_OPTIONS, @sequence.layout_override)
