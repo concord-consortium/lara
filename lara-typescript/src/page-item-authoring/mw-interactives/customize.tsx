@@ -134,7 +134,7 @@ export const CustomizeMWInteractive: React.FC<Props> = (props) => {
         <Checkbox
           name="save_interactive_state_history"
           defaultChecked={save_interactive_state_history}
-          label={`Save interactive state history`}
+          label={`Save answer history`}
         />
       </div>
 

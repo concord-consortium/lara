@@ -373,7 +373,7 @@ export const CustomizeManagedInteractive: React.FC<Props> = (props) => {
 
     {libraryInteractive.enable_learner_state &&
     <fieldset>
-      <legend>Save Interactive State History</legend>
+      <legend>Save Answer History</legend>
       <div className="option_group">
         <div className="customizable-option">
           <input
