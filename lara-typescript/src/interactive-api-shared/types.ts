@@ -79,6 +79,7 @@ export interface IRuntimeInitInteractive<InteractiveState = {}, AuthoredState = 
   attachments?: AttachmentInfoMap;
   accessibility: IAccessibilitySettings;
   mediaLibrary: IMediaLibrary;
+  objectStorageConfig: IOpaqueObjectStorageConfig;
 }
 
 export interface IThemeInfo {
@@ -115,6 +116,7 @@ export interface IReportInitInteractive<InteractiveState = {}, AuthoredState = {
   themeInfo: IThemeInfo;
   attachments?: AttachmentInfoMap;
   linkedInteractives: ILinkedInteractive[];
+  objectStorageConfig: IOpaqueObjectStorageConfig;
 }
 
 export interface IReportItemInitInteractive<InteractiveState = {}, AuthoredState = {}> {
@@ -125,6 +127,7 @@ export interface IReportItemInitInteractive<InteractiveState = {}, AuthoredState
   view: "singleAnswer" | "multipleAnswer" | "hidden";
   users: Record<string, {hasAnswer: boolean}>;
   attachments?: AttachmentInfoMap;
+  objectStorageConfig: IOpaqueObjectStorageConfig;
 }
 
 export type IInitInteractive<InteractiveState = {}, AuthoredState = {}, GlobalInteractiveState = {}> =
@@ -608,3 +611,16 @@ export interface IMediaLibrary {
   enabled: boolean;
   items: IMediaLibraryItem[];
 }
+
+/**
+ * Configuration for object store - this is "opaque" as it is not intended to be inspected or modified by the consumer
+ * but instead passed through to the object store implementation defined in @concord-consortium/object-storage.
+ *
+ * The QI demo system returns a demo configuration which is uses to store objects in memory only for the duration of
+ * the session.
+ *
+ * AP returns a configuration which allows storage and retrieval of objects via Firebase.
+ * The @concord-consortium/object-storage package implements both the in-memory and Firebase backends.
+ */
+
+export type IOpaqueObjectStorageConfig = Record<string, unknown>;
