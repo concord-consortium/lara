@@ -228,6 +228,7 @@ describe("IFrameSaver", () => {
             enabled: false,
             items: []
           },
+          objectStorageConfig: {},
         });
       });
 
@@ -287,6 +288,7 @@ describe("IFrameSaver", () => {
             enabled: false,
             items: []
           },
+          objectStorageConfig: {},
         });
       });
     });
