@@ -180,6 +180,13 @@
     }
   }
 }
+.section-responsive-50-50 {
+  .col-1, .col-2 {
+    .menuStart {
+      max-width: 98px;
+    }
+  }
+}
 .section-responsive-full-width {
   .col-1 {
     .menuStart {

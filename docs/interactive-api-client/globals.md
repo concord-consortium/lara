@@ -116,6 +116,7 @@
 * [IGetReportItemAnswerHandler](globals.md#igetreportitemanswerhandler)
 * [IInitInteractive](globals.md#iinitinteractive)
 * [IMediaLibraryItemType](globals.md#imedialibraryitemtype)
+* [IOpaqueObjectStorageConfig](globals.md#iopaqueobjectstorageconfig)
 * [IReportItemAnswerItem](globals.md#ireportitemansweritem)
 * [IReportItemClientMessage](globals.md#ireportitemclientmessage)
 * [IReportItemServerMessage](globals.md#ireportitemservermessage)
@@ -326,6 +327,21 @@ ___
 Type of the exported media library items found in the activity or sequence.  Initially this will just
 be "image" but could be extended in the future to "video" or "audio".  The exact mime type would be
 preferable but that is not always detectable from the exported media library urls.
+
+___
+
+###  IOpaqueObjectStorageConfig
+
+Ƭ **IOpaqueObjectStorageConfig**: *Record‹string, unknown›*
+
+Configuration for object store - this is "opaque" as it is not intended to be inspected or modified by the consumer
+but instead passed through to the object store implementation defined in @concord-consortium/object-storage.
+
+The QI demo system returns a demo configuration which is uses to store objects in memory only for the duration of
+the session.
+
+AP returns a configuration which allows storage and retrieval of objects via Firebase.
+The @concord-consortium/object-storage package implements both the in-memory and Firebase backends.
 
 ___
 

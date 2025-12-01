@@ -20,6 +20,7 @@ const layoutClassNames = {
   [SectionLayouts.LAYOUT_70_30]: ["section-70", "section-30"],
   [SectionLayouts.LAYOUT_30_70]: ["section-30", "section-70"],
   [SectionLayouts.LAYOUT_RESPONSIVE_2_COLUMN]: ["section-responsive-static", "section-responsive-fluid"],
+  [SectionLayouts.LAYOUT_RESPONSIVE_50_50]: ["section-responsive-50-50", "section-responsive-50-50"],
   [SectionLayouts.LAYOUT_RESPONSIVE_FULL_WIDTH]: ["section-responsive-fluid"]
 };
 
@@ -218,7 +219,8 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
     }
     if (layout === SectionLayouts.LAYOUT_30_70 ||
         layout === SectionLayouts.LAYOUT_40_60 ||
-        layout === SectionLayouts.LAYOUT_RESPONSIVE_2_COLUMN) {
+        layout === SectionLayouts.LAYOUT_RESPONSIVE_2_COLUMN ||
+        layout === SectionLayouts.LAYOUT_RESPONSIVE_50_50) {
           if (columnNumber === 0) {
             return SectionColumns.SECONDARY;
           } else {

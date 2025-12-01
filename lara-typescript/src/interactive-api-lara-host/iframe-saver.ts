@@ -565,6 +565,9 @@ export class IFrameSaver {
         fontFamilyForType: getFamilyForFontType("normal"),
       },
       mediaLibrary: this.mediaLibrary,
+      objectStorageConfig: {
+        // not implement in legacy LARA
+      }
     };
 
     // Perhaps it would be nicer to keep `interactiveStateProps` in some separate property instead of mixing

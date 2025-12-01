@@ -41,6 +41,7 @@
 * [linkedState](iruntimeinitinteractive.md#optional-linkedstate)
 * [mediaLibrary](iruntimeinitinteractive.md#medialibrary)
 * [mode](iruntimeinitinteractive.md#mode)
+* [objectStorageConfig](iruntimeinitinteractive.md#objectstorageconfig)
 * [pageName](iruntimeinitinteractive.md#optional-pagename)
 * [pageNumber](iruntimeinitinteractive.md#optional-pagenumber)
 * [runRemoteEndpoint](iruntimeinitinteractive.md#optional-runremoteendpoint)
@@ -207,6 +208,12 @@ ___
 ###  mode
 
 • **mode**: *"runtime"*
+
+___
+
+###  objectStorageConfig
+
+• **objectStorageConfig**: *[IOpaqueObjectStorageConfig](../globals.md#iopaqueobjectstorageconfig)*
 
 ___
 

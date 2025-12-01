@@ -65,6 +65,13 @@ FullWidth.args = {
   layout: SectionLayouts.LAYOUT_RESPONSIVE_2_COLUMN
 };
 
+export const Responsive5050 = Template.bind({});
+FullWidth.args = {
+  id: "1",
+  interactive_page_id: "2",
+  layout: SectionLayouts.LAYOUT_RESPONSIVE_50_50
+};
+
 export const ResponsiveFullWidth = Template.bind({});
 FullWidth.args = {
   id: "1",

@@ -12,6 +12,7 @@ export enum SectionLayouts {
   LAYOUT_70_30 = "70-30",
   LAYOUT_30_70 = "30-70",
   LAYOUT_RESPONSIVE_2_COLUMN = "responsive-2-columns",
+  LAYOUT_RESPONSIVE_50_50 = "responsive-50-50",
   LAYOUT_RESPONSIVE_FULL_WIDTH = "responsive-full-width",
 }
 

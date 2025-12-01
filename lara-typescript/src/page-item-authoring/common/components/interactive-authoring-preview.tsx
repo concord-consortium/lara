@@ -97,6 +97,10 @@ export const InteractiveAuthoringPreview: React.FC<Props> = ({interactive, user}
       enabled: false,
       items: []
     },
+    objectStorageConfig: {
+      version: 1,
+      type: "demo"
+    }
   };
 
   return (

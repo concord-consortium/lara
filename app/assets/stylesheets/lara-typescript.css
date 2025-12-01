@@ -1239,6 +1239,10 @@
   padding: 5px;
 }
 
+.section-responsive-50-50 .col-1 .menuStart, .section-responsive-50-50 .col-2 .menuStart {
+  max-width: 98px;
+}
+
 .section-responsive-full-width .col-1 .menuStart {
   max-width: auto;
 }
@@ -1874,6 +1878,9 @@ select {
   width: calc(91.5vw - 345px);
   max-width: calc(100% - 20px);
   min-width: 515px;
+}
+.edit-page-grid-container.section-responsive-50-50 {
+  grid-template-columns: repeat(2, 1fr);
 }
 .edit-page-grid-container.section-responsive-full-width {
   display: flex;

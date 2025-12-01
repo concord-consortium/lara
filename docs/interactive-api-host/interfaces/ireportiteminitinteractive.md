@@ -20,6 +20,7 @@
 * [hostFeatures](ireportiteminitinteractive.md#hostfeatures)
 * [interactiveItemId](ireportiteminitinteractive.md#interactiveitemid)
 * [mode](ireportiteminitinteractive.md#mode)
+* [objectStorageConfig](ireportiteminitinteractive.md#objectstorageconfig)
 * [users](ireportiteminitinteractive.md#users)
 * [version](ireportiteminitinteractive.md#version)
 * [view](ireportiteminitinteractive.md#view)
@@ -47,6 +48,12 @@ ___
 ###  mode
 
 • **mode**: *"reportItem"*
+
+___
+
+###  objectStorageConfig
+
+• **objectStorageConfig**: *[IOpaqueObjectStorageConfig](../globals.md#iopaqueobjectstorageconfig)*
 
 ___
 
