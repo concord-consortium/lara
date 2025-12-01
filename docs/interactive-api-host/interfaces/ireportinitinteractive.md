@@ -22,6 +22,7 @@
 * [interactiveState](ireportinitinteractive.md#interactivestate)
 * [linkedInteractives](ireportinitinteractive.md#linkedinteractives)
 * [mode](ireportinitinteractive.md#mode)
+* [objectStorageConfig](ireportinitinteractive.md#objectstorageconfig)
 * [themeInfo](ireportinitinteractive.md#themeinfo)
 * [version](ireportinitinteractive.md#version)
 * [view](ireportinitinteractive.md#optional-view)
@@ -61,6 +62,12 @@ ___
 ###  mode
 
 • **mode**: *"report"*
+
+___
+
+###  objectStorageConfig
+
+• **objectStorageConfig**: *[IOpaqueObjectStorageConfig](../globals.md#iopaqueobjectstorageconfig)*
 
 ___
 
