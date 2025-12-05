@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import * as LaraInteractiveApi from "../../../interactive-api-client";
 import { IInteractiveListResponseItem, IInitInteractive } from "../../../interactive-api-client";
 import { AuthoringApiUrls } from "../types";
+import { setInteractiveDirtyState } from "../authoring-dirty-state";
 
 type IGetFirebaseJwtRequestOptionalRequestId = LaraInteractiveApi.IGetFirebaseJwtRequest;
 type IGetFirebaseJwtResponseOptionalRequestId = LaraInteractiveApi.IGetFirebaseJwtResponse;
@@ -55,9 +56,18 @@ export const InteractiveIframe: React.FC<Props> = (props) => {
   // used by both jQuery and React
   const [height, setHeight] = useState<number|string|null>(null);
   const [aspectRatio, setAspectRatio] = useState<number>(authoredAspectRatio);
+  const [dirtyState, setDirtyState] = useState<{ dirty: boolean; message?: string }>({ dirty: false });
 
   const handleHeightChange = (newHeight: number | string) => {
     setHeight(newHeight);
+  };
+
+  const handleSetAuthoringDirtyState = (state: { dirty: boolean; message?: string }) => {
+    setDirtyState(state);
+    // Also update the global dirty state manager
+    if (initMsg.mode === "authoring" && initMsg.interactiveItemId) {
+      setInteractiveDirtyState(initMsg.interactiveItemId, state);
+    }
   };
 
   const handleSupportedFeatures = (info: any) => {
@@ -134,6 +144,9 @@ export const InteractiveIframe: React.FC<Props> = (props) => {
       });
       phone.addListener("supportedFeatures", (info: any) => handleSupportedFeatures(info));
       phone.addListener("height", (newHeight: number | string) => handleHeightChange(newHeight));
+      phone.addListener("setAuthoringDirtyState", (state: { dirty: boolean; message?: string }) => {
+        handleSetAuthoringDirtyState(state);
+      });
 
       const getInteractiveListUrl = authoringApiUrls?.get_interactive_list;
       if (getInteractiveListUrl) {

@@ -24,6 +24,14 @@ $ ->
       addModalClickHandlers()
 
   $(document).on 'click', '#modal .close', ->
+    # Check if any interactive has unsaved changes
+    if window.LARA?.AuthoringDirtyState?.hasUnsavedInteractiveChanges?()
+      message = window.LARA.AuthoringDirtyState.getDirtyInteractiveMessage()
+      unless window.confirm(message)
+        return false
+      # Clear dirty states if user confirmed
+      window.LARA.AuthoringDirtyState.clearAllDirtyStates()
+    
     # if an enclosing element has marked itself with reload-on-close reload the page
     if $(this).closest('.reload-on-close').length > 0
       window.reload()
@@ -31,6 +39,19 @@ $ ->
       $modal_container.hide()
       $modal.hide()
     false
+
+  # Handle form submission - check for dirty state before saving
+  $(document).on 'submit', '#modal form', (e) ->
+    # Check if any interactive has unsaved changes
+    if window.LARA?.AuthoringDirtyState?.hasUnsavedInteractiveChanges?()
+      message = window.LARA.AuthoringDirtyState.getDirtyInteractiveMessage()
+      unless window.confirm(message)
+        e.preventDefault()
+        return false
+      # Clear dirty states if user confirmed
+      window.LARA.AuthoringDirtyState.clearAllDirtyStates()
+    # Allow form to proceed normally
+    true
 
   $(document).on 'submit', 'form#import', ->
     filedata = new FormData(this)

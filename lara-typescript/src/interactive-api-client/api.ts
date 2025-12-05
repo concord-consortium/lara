@@ -525,3 +525,17 @@ export const setOnUnload = (onUnload?: OnUnloadFunction) => {
 export const sendCustomMessage = (customMessage: ICustomMessage) => {
   getClient().post("customMessage", customMessage);
 };
+
+export interface ISetAuthoringDirtyState {
+  dirty: boolean;
+  message?: string;  // Optional message to show in confirmation dialog
+}
+
+/**
+ * Notify LARA that the interactive has unsaved changes in authoring mode.
+ * When dirty is true, LARA should warn the user before closing the editing dialog.
+ */
+export const setAuthoringDirtyState = (state: ISetAuthoringDirtyState): void => {
+  const client = getClient();
+  client.post("setAuthoringDirtyState", state);
+};

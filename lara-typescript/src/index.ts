@@ -9,6 +9,7 @@ import * as PageItemAuthoring from "./page-item-authoring";
 import * as SectionAuthoring from "./section-authoring";
 import * as RubricAuthoring from "./rubric-authoring";
 import * as Projects from "./projects";
+import * as AuthoringDirtyState from "./page-item-authoring/common/authoring-dirty-state";
 
 export interface LaraGlobalType {
   PluginAPI_V3: typeof PluginAPI;
@@ -25,7 +26,8 @@ export {
   PageItemAuthoring,
   SectionAuthoring,
   Projects,
-  RubricAuthoring
+  RubricAuthoring,
+  AuthoringDirtyState
 };
 
 // Note that LARA namespace is defined for the first time by V2 API. Once V2 is removed, this code should also be
@@ -40,6 +42,7 @@ export {
 (window as any).LARA.SectionAuthoring = SectionAuthoring;
 (window as any).LARA.RubricAuthoring = RubricAuthoring;
 (window as any).LARA.Projects = Projects;
+(window as any).LARA.AuthoringDirtyState = AuthoringDirtyState;
 
 // for clients that don't require LARA to be a global on window
 export function initializeLara(): LaraGlobalType {

@@ -18,4 +18,30 @@
       defaultClickToPlayPrompt: #{MwInteractive::DEFAULT_CLICK_TO_PLAY_PROMPT.to_json.html_safe},
       authoringApiUrls: #{@interactive.authoring_api_urls(request.protocol, request.host_with_port).to_json.html_safe},
     });
+    
+    // Handle form submission - check for dirty state
+    $('form.styled-admin-form').on('submit', function(e) {
+      if (window.LARA && window.LARA.AuthoringDirtyState && window.LARA.AuthoringDirtyState.hasUnsavedInteractiveChanges()) {
+        var message = window.LARA.AuthoringDirtyState.getDirtyInteractiveMessage();
+        if (!window.confirm(message)) {
+          e.preventDefault();
+          return false;
+        }
+        // Clear dirty states if user confirmed
+        window.LARA.AuthoringDirtyState.clearAllDirtyStates();
+      }
+    });
+    
+    // Handle Cancel button - check for dirty state
+    $('button.close').on('click', function(e) {
+      if (window.LARA && window.LARA.AuthoringDirtyState && window.LARA.AuthoringDirtyState.hasUnsavedInteractiveChanges()) {
+        var message = window.LARA.AuthoringDirtyState.getDirtyInteractiveMessage();
+        if (!window.confirm(message)) {
+          e.preventDefault();
+          return false;
+        }
+        // Clear dirty states if user confirmed
+        window.LARA.AuthoringDirtyState.clearAllDirtyStates();
+      }
+    });
   });

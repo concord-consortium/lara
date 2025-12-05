@@ -183,7 +183,7 @@ ___
 
 ###  IAuthoringClientMessage
 
-Ƭ **IAuthoringClientMessage**: *"getInteractiveList" | "setLinkedInteractives" | "getFirebaseJWT"*
+Ƭ **IAuthoringClientMessage**: *"getInteractiveList" | "setLinkedInteractives" | "getFirebaseJWT" | "setAuthoringDirtyState"*
 
 ___
 

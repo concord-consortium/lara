@@ -211,7 +211,8 @@ export type IRuntimeServerMessage = "attachmentUrl" |
 
 export type IAuthoringClientMessage = "getInteractiveList" |
                                       "setLinkedInteractives" |
-                                      "getFirebaseJWT"
+                                      "getFirebaseJWT" |
+                                      "setAuthoringDirtyState"
                                       ;
 
 export type IAuthoringServerMessage = "interactiveList" |

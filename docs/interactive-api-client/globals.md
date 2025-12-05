@@ -84,6 +84,7 @@
 * [IRuntimeMetadataBase](interfaces/iruntimemetadatabase.md)
 * [IRuntimeMultipleChoiceMetadata](interfaces/iruntimemultiplechoicemetadata.md)
 * [IRuntimeOpenResponseMetadata](interfaces/iruntimeopenresponsemetadata.md)
+* [ISetAuthoringDirtyState](interfaces/isetauthoringdirtystate.md)
 * [ISetLinkedInteractives](interfaces/isetlinkedinteractives.md)
 * [IShowAlert](interfaces/ishowalert.md)
 * [IShowDialog](interfaces/ishowdialog.md)
@@ -178,6 +179,7 @@
 * [sendCustomMessage](globals.md#const-sendcustommessage)
 * [sendReportItemAnswer](globals.md#const-sendreportitemanswer)
 * [setAuthoredState](globals.md#const-setauthoredstate)
+* [setAuthoringDirtyState](globals.md#const-setauthoringdirtystate)
 * [setGlobalInteractiveState](globals.md#const-setglobalinteractivestate)
 * [setHeight](globals.md#const-setheight)
 * [setHint](globals.md#const-sethint)
@@ -254,7 +256,7 @@ ___
 
 ###  IAuthoringClientMessage
 
-Ƭ **IAuthoringClientMessage**: *"getInteractiveList" | "setLinkedInteractives" | "getFirebaseJWT"*
+Ƭ **IAuthoringClientMessage**: *"getInteractiveList" | "setLinkedInteractives" | "getFirebaseJWT" | "setAuthoringDirtyState"*
 
 ___
 
@@ -1045,6 +1047,23 @@ setAuthoredState(previousState);
 Name | Type |
 ------ | ------ |
 `newAuthoredState` | AuthoredState &#124; null |
+
+**Returns:** *void*
+
+___
+
+### `Const` setAuthoringDirtyState
+
+▸ **setAuthoringDirtyState**(`state`: [ISetAuthoringDirtyState](interfaces/isetauthoringdirtystate.md)): *void*
+
+Notify LARA that the interactive has unsaved changes in authoring mode.
+When dirty is true, LARA should warn the user before closing the editing dialog.
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`state` | [ISetAuthoringDirtyState](interfaces/isetauthoringdirtystate.md) |
 
 **Returns:** *void*
 
