@@ -144,6 +144,12 @@ describe("changeLayout", () => {
     expect(items[0].column).toEqual(SectionColumns.SECONDARY);
     expect(items[1].column).toEqual(SectionColumns.SECONDARY);
     expect(items[2].column).toEqual(SectionColumns.PRIMARY);
+
+    newLayout = SectionLayouts.LAYOUT_RESPONSIVE_50_50;
+    expect(changeLayout({ id: sectionId, layout: newLayout, page })).toBeTruthy();
+    expect(items[0].column).toEqual(SectionColumns.SECONDARY);
+    expect(items[1].column).toEqual(SectionColumns.SECONDARY);
+    expect(items[2].column).toEqual(SectionColumns.PRIMARY);
   });
 
   it ("it will move items in the primary column into the secondary column and place them first in the overall order when switching from any non full-width layout to the full-width layout", () => {
