@@ -119,7 +119,7 @@ class InteractivePage < ApplicationRecord
       # If a section's primary column is on the right, we need to adjust the
       # embeddables' order so they're output in the same order they appear on
       # the activity page.
-      primary_right_layouts = ["40-60", "30-70", "responsive-2-columns", "responsive-50-50"]
+      primary_right_layouts = ["40-60", "30-70", "responsive-30-70", "responsive-50-50"]
       if primary_right_layouts.include? section.layout
         secondary_column_items = section.page_items.where(column: "secondary").order(:position)
         primary_column_items = section.page_items.where(column: "primary").order(:position)
