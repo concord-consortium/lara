@@ -1,4 +1,4 @@
-class RenameResponsive2ColumnsToResponsive3070 < ActiveRecord::Migration[6.1]
+class RenameResponsive2ColumnsToResponsive3070 < ActiveRecord::Migration[8.0]
   def up
     execute <<-SQL
       UPDATE sections 
