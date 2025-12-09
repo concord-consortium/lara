@@ -378,8 +378,12 @@ class InteractivePage < ApplicationRecord
         end
       elsif version == 2
         page_json_object[:sections].each do |s|
+          # Migrate old layout names to new ones for backward compatibility
+          layout = s[:layout]
+          layout = 'responsive-30-70' if layout == 'responsive-2-columns'
+          
           # First create the section and add it to the page at the bottom to keep it in the same order as the export
-          new_section = import_page.sections.create(Section::DEFAULT_PARAMS.merge({title: s[:title]}))
+          new_section = import_page.sections.create(Section::DEFAULT_PARAMS.merge({title: s[:title], layout: layout}))
           new_section.move_to_bottom
 
           # Then, import and cache all the embeddables.
