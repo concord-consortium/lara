@@ -67,7 +67,7 @@ const setUp2ColumnResponsivePage = () => {
     sections: [
       {
         id: "section-1",
-        layout: SectionLayouts.LAYOUT_RESPONSIVE_2_COLUMN,
+        layout: SectionLayouts.LAYOUT_RESPONSIVE_30_70,
         items: [
           {
             id: "item-1",
@@ -139,7 +139,13 @@ describe("changeLayout", () => {
     expect(items[1].column).toEqual(SectionColumns.SECONDARY);
     expect(items[2].column).toEqual(SectionColumns.PRIMARY);
 
-    newLayout = SectionLayouts.LAYOUT_RESPONSIVE_2_COLUMN;
+    newLayout = SectionLayouts.LAYOUT_RESPONSIVE_30_70;
+    expect(changeLayout({ id: sectionId, layout: newLayout, page })).toBeTruthy();
+    expect(items[0].column).toEqual(SectionColumns.SECONDARY);
+    expect(items[1].column).toEqual(SectionColumns.SECONDARY);
+    expect(items[2].column).toEqual(SectionColumns.PRIMARY);
+
+    newLayout = SectionLayouts.LAYOUT_RESPONSIVE_50_50;
     expect(changeLayout({ id: sectionId, layout: newLayout, page })).toBeTruthy();
     expect(items[0].column).toEqual(SectionColumns.SECONDARY);
     expect(items[1].column).toEqual(SectionColumns.SECONDARY);

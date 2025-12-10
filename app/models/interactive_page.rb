@@ -119,7 +119,7 @@ class InteractivePage < ApplicationRecord
       # If a section's primary column is on the right, we need to adjust the
       # embeddables' order so they're output in the same order they appear on
       # the activity page.
-      primary_right_layouts = ["40-60", "30-70", "responsive-2-columns"]
+      primary_right_layouts = ["40-60", "30-70", "responsive-30-70", "responsive-50-50"]
       if primary_right_layouts.include? section.layout
         secondary_column_items = section.page_items.where(column: "secondary").order(:position)
         primary_column_items = section.page_items.where(column: "primary").order(:position)
@@ -378,8 +378,12 @@ class InteractivePage < ApplicationRecord
         end
       elsif version == 2
         page_json_object[:sections].each do |s|
+          # Migrate old layout names to new ones for backward compatibility
+          layout = s[:layout]
+          layout = 'responsive-30-70' if layout == 'responsive-2-columns'
+          
           # First create the section and add it to the page at the bottom to keep it in the same order as the export
-          new_section = import_page.sections.create(Section::DEFAULT_PARAMS.merge({title: s[:title]}))
+          new_section = import_page.sections.create(Section::DEFAULT_PARAMS.merge({title: s[:title], layout: layout}))
           new_section.move_to_bottom
 
           # Then, import and cache all the embeddables.

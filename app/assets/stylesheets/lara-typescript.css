@@ -1229,14 +1229,18 @@
   padding: 5px;
 }
 
-.section-responsive-2-columns .col-1 .menuStart {
+.section-responsive-30-70 .col-1 .menuStart {
   max-width: 12px;
 }
-.section-responsive-2-columns .col-1 .menuEnd {
+.section-responsive-30-70 .col-1 .menuEnd {
   margin-right: 0;
 }
-.section-responsive-2-columns .col-1 .menuEnd button {
+.section-responsive-30-70 .col-1 .menuEnd button {
   padding: 5px;
+}
+
+.section-responsive-50-50 .col-1 .menuStart, .section-responsive-50-50 .col-2 .menuStart {
+  max-width: 98px;
 }
 
 .section-responsive-full-width .col-1 .menuStart {
@@ -1863,17 +1867,32 @@ select {
 .edit-page-grid-container.section-60-40 {
   grid-template-columns: 6fr 4fr;
 }
-.edit-page-grid-container.section-responsive-2-columns {
+.edit-page-grid-container.section-responsive-30-70 {
   grid-template-columns: 325px 1fr;
 }
-.edit-page-grid-container.section-responsive-2-columns .section-responsive-fluid .edit-items-container {
+.edit-page-grid-container.section-responsive-30-70 .section-responsive-fluid .edit-items-container {
   display: flex;
   flex-direction: column;
 }
-.edit-page-grid-container.section-responsive-2-columns .section-responsive-fluid .edit-items-container .itemsContainer {
+.edit-page-grid-container.section-responsive-30-70 .section-responsive-fluid .edit-items-container .itemsContainer {
   width: calc(91.5vw - 345px);
   max-width: calc(100% - 20px);
   min-width: 515px;
+}
+.edit-page-grid-container.section-responsive-50-50 {
+  grid-template-columns: repeat(2, 1fr);
+}
+.edit-page-grid-container.section-responsive-50-50 .section-responsive-fluid .edit-items-container {
+  display: flex;
+  flex-direction: column;
+}
+.edit-page-grid-container.section-responsive-50-50 .section-responsive-fluid .edit-items-container .itemsContainer {
+  width: calc(91.5vw - 20px);
+  max-width: calc(100% - 20px);
+  min-width: 700px;
+}
+.edit-page-grid-container.section-responsive-50-50 .section-responsive-fluid .edit-items-container .itemsContainer .sectionItem.halfWidth {
+  width: calc(50% - 6px);
 }
 .edit-page-grid-container.section-responsive-full-width {
   display: flex;

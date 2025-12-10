@@ -167,7 +167,7 @@
     }
   }
 }
-.section-responsive-2-columns {
+.section-responsive-30-70 {
   .col-1 {
     .menuStart {
       max-width: 12px;
@@ -177,6 +177,13 @@
       button {
         padding: 5px;
       }
+    }
+  }
+}
+.section-responsive-50-50 {
+  .col-1, .col-2 {
+    .menuStart {
+      max-width: 98px;
     }
   }
 }
