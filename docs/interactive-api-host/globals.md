@@ -85,6 +85,7 @@
 * [IRuntimeCustomReportValues](interfaces/iruntimecustomreportvalues.md)
 * [IRuntimeInitInteractive](interfaces/iruntimeinitinteractive.md)
 * [IS3SignedUrlOptions](interfaces/is3signedurloptions.md)
+* [ISetDirtyStateRequest](interfaces/isetdirtystaterequest.md)
 * [ISetLinkedInteractives](interfaces/isetlinkedinteractives.md)
 * [IShowAlert](interfaces/ishowalert.md)
 * [IShowDialog](interfaces/ishowdialog.md)
@@ -300,7 +301,7 @@ ___
 
 ###  IRuntimeClientMessage
 
-Ƭ **IRuntimeClientMessage**: *"interactiveState" | "height" | "hint" | "getAttachmentUrl" | "getAuthInfo" | "supportedFeatures" | "navigation" | "getFirebaseJWT" | "authoredState" | "authoringCustomReportFields" | "runtimeCustomReportValues" | "showModal" | "closeModal" | "getLibraryInteractiveList" | "getInteractiveSnapshot" | "addLinkedInteractiveStateListener" | "removeLinkedInteractiveStateListener" | "decoratedContentEvent" | "customMessage" | "createChannel" | "publish" | "subscribe" | "unsubscribe"*
+Ƭ **IRuntimeClientMessage**: *"interactiveState" | "height" | "hint" | "getAttachmentUrl" | "getAuthInfo" | "supportedFeatures" | "navigation" | "getFirebaseJWT" | "authoredState" | "authoringCustomReportFields" | "runtimeCustomReportValues" | "showModal" | "closeModal" | "getLibraryInteractiveList" | "getInteractiveSnapshot" | "addLinkedInteractiveStateListener" | "removeLinkedInteractiveStateListener" | "decoratedContentEvent" | "setDirtyState" | "customMessage" | "createChannel" | "publish" | "subscribe" | "unsubscribe"*
 
 ___
 

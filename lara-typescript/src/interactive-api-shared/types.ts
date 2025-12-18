@@ -191,6 +191,7 @@ export type IRuntimeClientMessage = "interactiveState" |
                                        "addLinkedInteractiveStateListener" |
                                        "removeLinkedInteractiveStateListener" |
                                        "decoratedContentEvent" |
+                                       "setDirtyState" |
                                        // intentionally same name as server message to allow bi-directional messages
                                        "customMessage" |
                                        "createChannel" |
@@ -381,6 +382,10 @@ export type ICustomMessageHandler = (message: ICustomMessage) => void;
 export interface ISetLinkedInteractives {
   linkedInteractives?: ILinkedInteractive[];
   linkedState?: InteractiveItemId;
+}
+
+export interface ISetDirtyStateRequest {
+  isDirty: boolean;
 }
 
 //

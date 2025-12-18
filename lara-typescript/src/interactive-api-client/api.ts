@@ -12,6 +12,7 @@ import {
   IGetInteractiveListOptions,
   IGetInteractiveListResponse,
   ISetLinkedInteractives,
+  ISetDirtyStateRequest,
   IGetLibraryInteractiveListRequest,
   IGetInteractiveSnapshotRequest,
   IHintRequest,
@@ -531,4 +532,9 @@ export const sendCustomMessage = (customMessage: ICustomMessage) => {
 
 export const createPubSubChannel = (channelId: string, channelInfo?: any): PubSubChannel => {
   return getClient().createPubSubChannel(channelId, channelInfo);
+};
+
+export const setDirtyState = (isDirty: boolean) => {
+  const request: ISetDirtyStateRequest = { isDirty };
+  getClient().post("setDirtyState", request);
 };

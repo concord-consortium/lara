@@ -15,12 +15,14 @@ interface Props {
   };
   onAuthoredStateChange: (authoredState: string | object) => void;
   onLinkedInteractivesChange: (linkedInteractives: ISetLinkedInteractives) => void;
+  onDirtyStateChange?: (isDirty: boolean) => void;
   allowReset: boolean;
   authoringApiUrls: AuthoringApiUrls;
 }
 
 export const InteractiveAuthoring: React.FC<Props> = (props) => {
-  const {interactive, onAuthoredStateChange, onLinkedInteractivesChange, allowReset, authoringApiUrls} = props;
+  const {interactive, onAuthoredStateChange, onLinkedInteractivesChange, onDirtyStateChange,
+         allowReset, authoringApiUrls} = props;
   const [authoringSupported, setAuthoringSupported] = useState(false);
   const [authoredState, setAuthoredState] = useState<object|null>(
     typeof interactive.authored_state === "string"
@@ -42,6 +44,11 @@ export const InteractiveAuthoring: React.FC<Props> = (props) => {
   const handleReset = () => {
     setAuthoredState(null);
     setResetCount(resetCount + 1);
+    onDirtyStateChange?.(false);
+  };
+
+  const handleDirtyStateChange = (isDirty: boolean) => {
+    onDirtyStateChange?.(isDirty);
   };
 
   const initMsg: IInitInteractive = {
@@ -87,6 +94,7 @@ export const InteractiveAuthoring: React.FC<Props> = (props) => {
         onAuthoredStateChange={handleAuthoredStateChange}
         onLinkedInteractivesChange={onLinkedInteractivesChange}
         onSupportedFeaturesUpdate={handleSupportedFeatures}
+        onDirtyStateChange={handleDirtyStateChange}
         authoredAspectRatioMethod={interactive.aspect_ratio_method}
         authoredAspectRatio={interactive.aspect_ratio}
         authoringApiUrls={authoringApiUrls}

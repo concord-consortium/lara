@@ -16,6 +16,7 @@ interface Props {
   initMsg: IInitInteractive;
   resetCount?: number;
   onAuthoredStateChange?: (authoredState: string | object) => void;
+  onDirtyStateChange?: (isDirty: boolean) => void;
   onLinkedInteractivesChange?: (linkedInteractives: LaraInteractiveApi.ISetLinkedInteractives) => void;
   onSupportedFeaturesUpdate?: (info: any) => void;
   authoredAspectRatio: number;
@@ -32,8 +33,8 @@ export interface IframePhone {
 
 export const InteractiveIframe: React.FC<Props> = (props) => {
   const {
-    src, width, initMsg, onAuthoredStateChange, onLinkedInteractivesChange, resetCount,
-    onSupportedFeaturesUpdate, authoredAspectRatio, authoredAspectRatioMethod,
+    src, width, initMsg, onAuthoredStateChange, onDirtyStateChange, onLinkedInteractivesChange,
+    resetCount, onSupportedFeaturesUpdate, authoredAspectRatio, authoredAspectRatioMethod,
     authoringApiUrls
   } = props;
 
@@ -146,6 +147,10 @@ export const InteractiveIframe: React.FC<Props> = (props) => {
 
       phone.addListener("setLinkedInteractives", (request: LaraInteractiveApi.ISetLinkedInteractives) => {
         onLinkedInteractivesChange?.(request);
+      });
+
+      phone.addListener("setDirtyState", (request: LaraInteractiveApi.ISetDirtyStateRequest) => {
+        onDirtyStateChange?.(request.isDirty);
       });
 
       phone.addListener("getFirebaseJWT", (request?: IGetFirebaseJwtRequestOptionalRequestId) => {
