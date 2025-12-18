@@ -2606,6 +2606,77 @@ module.exports = LRUCache
 
 /***/ }),
 
+/***/ "./node_modules/nanoid/index.browser.js":
+/*!**********************************************!*\
+  !*** ./node_modules/nanoid/index.browser.js ***!
+  \**********************************************/
+/*! exports provided: nanoid, customAlphabet, customRandom, urlAlphabet, random */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "nanoid", function() { return nanoid; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "customAlphabet", function() { return customAlphabet; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "customRandom", function() { return customRandom; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "random", function() { return random; });
+/* harmony import */ var _url_alphabet_index_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./url-alphabet/index.js */ "./node_modules/nanoid/url-alphabet/index.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "urlAlphabet", function() { return _url_alphabet_index_js__WEBPACK_IMPORTED_MODULE_0__["urlAlphabet"]; });
+
+
+let random = bytes => crypto.getRandomValues(new Uint8Array(bytes))
+let customRandom = (alphabet, defaultSize, getRandom) => {
+  let mask = (2 << (Math.log(alphabet.length - 1) / Math.LN2)) - 1
+  let step = -~((1.6 * mask * defaultSize) / alphabet.length)
+  return (size = defaultSize) => {
+    let id = ''
+    while (true) {
+      let bytes = getRandom(step)
+      let j = step | 0
+      while (j--) {
+        id += alphabet[bytes[j] & mask] || ''
+        if (id.length === size) return id
+      }
+    }
+  }
+}
+let customAlphabet = (alphabet, size = 21) =>
+  customRandom(alphabet, size, random)
+let nanoid = (size = 21) =>
+  crypto.getRandomValues(new Uint8Array(size)).reduce((id, byte) => {
+    byte &= 63
+    if (byte < 36) {
+      id += byte.toString(36)
+    } else if (byte < 62) {
+      id += (byte - 26).toString(36).toUpperCase()
+    } else if (byte > 62) {
+      id += '-'
+    } else {
+      id += '_'
+    }
+    return id
+  }, '')
+
+
+
+/***/ }),
+
+/***/ "./node_modules/nanoid/url-alphabet/index.js":
+/*!***************************************************!*\
+  !*** ./node_modules/nanoid/url-alphabet/index.js ***!
+  \***************************************************/
+/*! exports provided: urlAlphabet */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "urlAlphabet", function() { return urlAlphabet; });
+let urlAlphabet =
+  'useandom-26T198340PX75pxJACKVERYMINDBUSHWOLF_GQZbfghjklqvwyzrict'
+
+
+
+/***/ }),
+
 /***/ "./node_modules/object-assign/index.js":
 /*!*********************************************!*\
   !*** ./node_modules/object-assign/index.js ***!
@@ -36769,9 +36840,11 @@ var __rest = (this && this.__rest) || function (s, e) {
     return t;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.sendCustomMessage = exports.setOnUnload = exports.sendReportItemAnswer = exports.getAttachmentUrl = exports.readAttachment = exports.writeAttachment = exports.getLibraryInteractiveList = exports.getInteractiveSnapshot = exports.setLinkedInteractives = exports.getInteractiveList = exports.closeModal = exports.showModal = exports.removeLinkedInteractiveStateListener = exports.addLinkedInteractiveStateListener = exports.removeGlobalInteractiveStateListener = exports.addGlobalInteractiveStateListener = exports.removeAuthoredStateListener = exports.addAuthoredStateListener = exports.removeInteractiveStateListener = exports.addInteractiveStateListener = exports.log = exports.getFirebaseJwt = exports.getAuthInfo = exports.setNavigation = exports.setHint = exports.postDecoratedContentEvent = exports.setHeight = exports.setSupportedFeatures = exports.notifyReportItemClientReady = exports.removeGetReportItemAnswerListener = exports.addGetReportItemAnswerListener = exports.removeDecorateContentListener = exports.addDecorateContentListener = exports.removeCustomMessageListener = exports.addCustomMessageListener = exports.setGlobalInteractiveState = exports.getGlobalInteractiveState = exports.setAuthoredState = exports.getAuthoredState = exports.flushStateUpdates = exports.setInteractiveState = exports.setInteractiveStateTimeout = exports.getInteractiveState = exports.getMode = exports.getInitInteractiveMessage = void 0;
+exports.createPubSubChannel = exports.sendCustomMessage = exports.setOnUnload = exports.sendReportItemAnswer = exports.getAttachmentUrl = exports.readAttachment = exports.writeAttachment = exports.getLibraryInteractiveList = exports.getInteractiveSnapshot = exports.setLinkedInteractives = exports.getInteractiveList = exports.closeModal = exports.showModal = exports.removeLinkedInteractiveStateListener = exports.addLinkedInteractiveStateListener = exports.removeGlobalInteractiveStateListener = exports.addGlobalInteractiveStateListener = exports.removeAuthoredStateListener = exports.addAuthoredStateListener = exports.removeInteractiveStateListener = exports.addInteractiveStateListener = exports.log = exports.getFirebaseJwt = exports.getAuthInfo = exports.setNavigation = exports.setHint = exports.postDecoratedContentEvent = exports.setHeight = exports.setSupportedFeatures = exports.notifyReportItemClientReady = exports.removeGetReportItemAnswerListener = exports.addGetReportItemAnswerListener = exports.removeDecorateContentListener = exports.addDecorateContentListener = exports.removeCustomMessageListener = exports.addCustomMessageListener = exports.setGlobalInteractiveState = exports.getGlobalInteractiveState = exports.setAuthoredState = exports.getAuthoredState = exports.flushStateUpdates = exports.setInteractiveState = exports.setInteractiveStateTimeout = exports.getInteractiveState = exports.getMode = exports.getInitInteractiveMessage = exports.PubSubChannel = void 0;
 var client_1 = __webpack_require__(/*! ./client */ "./src/interactive-api-client/client.ts");
 var uuid_1 = __webpack_require__(/*! uuid */ "./node_modules/uuid/dist/esm-browser/index.js");
+var pubsub_1 = __webpack_require__(/*! ./pubsub */ "./src/interactive-api-client/pubsub.ts");
+Object.defineProperty(exports, "PubSubChannel", { enumerable: true, get: function () { return pubsub_1.PubSubChannel; } });
 var THROW_NOT_IMPLEMENTED_YET = function (method) {
     throw new Error(method + " is not yet implemented in the client!");
 };
@@ -37277,6 +37350,10 @@ var sendCustomMessage = function (customMessage) {
     (0, client_1.getClient)().post("customMessage", customMessage);
 };
 exports.sendCustomMessage = sendCustomMessage;
+var createPubSubChannel = function (channelId, channelInfo) {
+    return (0, client_1.getClient)().createPubSubChannel(channelId, channelInfo);
+};
+exports.createPubSubChannel = createPubSubChannel;
 
 
 /***/ }),
@@ -37356,6 +37433,7 @@ exports.Client = exports.getClient = void 0;
 var iframePhone = __webpack_require__(/*! iframe-phone */ "./node_modules/iframe-phone/main.js");
 var in_frame_1 = __webpack_require__(/*! ./in-frame */ "./src/interactive-api-client/in-frame.ts");
 var managed_state_1 = __webpack_require__(/*! ./managed-state */ "./src/interactive-api-client/managed-state.ts");
+var pubsub_1 = __webpack_require__(/*! ./pubsub */ "./src/interactive-api-client/pubsub.ts");
 var parseJSONIfString = function (data) {
     // Note that we don't want to call JSON.parse for an empty string.
     try {
@@ -37477,6 +37555,9 @@ var Client = /** @class */ (function () {
             return true;
         }
         return false;
+    };
+    Client.prototype.createPubSubChannel = function (channelId, channelInfo) {
+        return new pubsub_1.PubSubChannel(this, channelId, channelInfo);
     };
     Client.prototype.connect = function () {
         var _this = this;
@@ -37974,7 +38055,125 @@ Object.defineProperty(exports, "__esModule", { value: true });
 /*! exports provided: name, version, description, main, types, repository, author, license, bugs, homepage, dependencies, peerDependencies, default */
 /***/ (function(module) {
 
-module.exports = JSON.parse("{\"name\":\"@concord-consortium/lara-interactive-api\",\"version\":\"1.10.0\",\"description\":\"LARA Interactive API client and types\",\"main\":\"./index.js\",\"types\":\"./index-bundle.d.ts\",\"repository\":{\"type\":\"git\",\"url\":\"git+https://github.com/concord-consortium/lara.git\"},\"author\":\"Concord Consortium\",\"license\":\"MIT\",\"bugs\":{\"url\":\"https://github.com/concord-consortium/lara/issues\"},\"homepage\":\"https://github.com/concord-consortium/lara/tree/master/lara-typescript/src/interactive-api-client#readme\",\"dependencies\":{\"iframe-phone\":\"^1.3.1\"},\"peerDependencies\":{\"react\":\">=16.9.0\",\"react-dom\":\">=16.9.0\"}}");
+module.exports = JSON.parse("{\"name\":\"@concord-consortium/lara-interactive-api\",\"version\":\"1.11.0-pre.0\",\"description\":\"LARA Interactive API client and types\",\"main\":\"./index.js\",\"types\":\"./index-bundle.d.ts\",\"repository\":{\"type\":\"git\",\"url\":\"git+https://github.com/concord-consortium/lara.git\"},\"author\":\"Concord Consortium\",\"license\":\"MIT\",\"bugs\":{\"url\":\"https://github.com/concord-consortium/lara/issues\"},\"homepage\":\"https://github.com/concord-consortium/lara/tree/master/lara-typescript/src/interactive-api-client#readme\",\"dependencies\":{\"iframe-phone\":\"^1.3.1\",\"nanoid\":\"^3.3.7\"},\"peerDependencies\":{\"react\":\">=16.9.0\",\"react-dom\":\">=16.9.0\"}}");
+
+/***/ }),
+
+/***/ "./src/interactive-api-client/pubsub.ts":
+/*!**********************************************!*\
+  !*** ./src/interactive-api-client/pubsub.ts ***!
+  \**********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.PubSubChannel = void 0;
+var nanoid_1 = __webpack_require__(/*! nanoid */ "./node_modules/nanoid/index.browser.js");
+var PubSubChannel = /** @class */ (function () {
+    function PubSubChannel(client, channelId, channelInfo) {
+        this.subscriptions = new Map();
+        this.listenersRegistered = false;
+        this.client = client;
+        this.channelId = channelId;
+        this.channelInfo = channelInfo;
+        // Always create the channel on construction
+        this.createChannel();
+    }
+    PubSubChannel.prototype.publish = function (message) {
+        var publishMessage = {
+            channelId: this.channelId,
+            message: message,
+            timestamp: Date.now()
+        };
+        this.client.post("publish", publishMessage);
+    };
+    PubSubChannel.prototype.subscribe = function (handler, onChannelInfo) {
+        var _this = this;
+        var subscriptionId = (0, nanoid_1.nanoid)();
+        // Store handlers locally
+        this.subscriptions.set(subscriptionId, {
+            handler: handler,
+            channelInfoHandler: onChannelInfo
+        });
+        // Register listeners for pubSubMessage and pubSubChannelInfo if not already done
+        if (!this.listenersRegistered) {
+            this.registerListeners();
+        }
+        // Send subscribe message to host
+        var subscribeMessage = {
+            channelId: this.channelId,
+            subscriptionId: subscriptionId
+        };
+        this.client.post("subscribe", subscribeMessage);
+        // Return unsubscribe function
+        return function () {
+            _this.unsubscribe(subscriptionId);
+        };
+    };
+    PubSubChannel.prototype.dispose = function () {
+        var _this = this;
+        // Unsubscribe all subscriptions
+        var subscriptionIds = Array.from(this.subscriptions.keys());
+        subscriptionIds.forEach(function (subscriptionId) {
+            _this.unsubscribe(subscriptionId);
+        });
+    };
+    PubSubChannel.prototype.getChannelId = function () {
+        return this.channelId;
+    };
+    PubSubChannel.prototype.getChannelInfo = function () {
+        return this.channelInfo;
+    };
+    PubSubChannel.prototype.setChannelInfo = function (channelInfo) {
+        this.channelInfo = channelInfo;
+        this.createChannel();
+    };
+    PubSubChannel.prototype.registerListeners = function () {
+        var _this = this;
+        // Listen for pubSubMessage events for this channel
+        this.client.addListener("pubSubMessage", function (content) {
+            if (content.channelId === _this.channelId) {
+                _this.subscriptions.forEach(function (subscription) {
+                    subscription.handler(content.message, content.publisherId);
+                });
+            }
+        });
+        // Listen for pubSubChannelInfo events for this channel
+        this.client.addListener("pubSubChannelInfo", function (content) {
+            if (content.channelId === _this.channelId) {
+                _this.subscriptions.forEach(function (subscription) {
+                    if (subscription.channelInfoHandler) {
+                        subscription.channelInfoHandler(content.channelInfo, content.publisherId);
+                    }
+                });
+            }
+        });
+        this.listenersRegistered = true;
+    };
+    PubSubChannel.prototype.createChannel = function () {
+        var createMessage = {
+            channelId: this.channelId,
+            channelInfo: this.channelInfo,
+            timestamp: Date.now()
+        };
+        this.client.post("createChannel", createMessage);
+    };
+    PubSubChannel.prototype.unsubscribe = function (subscriptionId) {
+        // Remove local reference
+        this.subscriptions.delete(subscriptionId);
+        // Send unsubscribe message to host
+        var unsubscribeMessage = {
+            channelId: this.channelId,
+            subscriptionId: subscriptionId
+        };
+        this.client.post("unsubscribe", unsubscribeMessage);
+    };
+    return PubSubChannel;
+}());
+exports.PubSubChannel = PubSubChannel;
+
 
 /***/ }),
 

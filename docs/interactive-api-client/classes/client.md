@@ -25,6 +25,7 @@ in api.ts or hooks.ts (or both so the client app has choice).
 ### Methods
 
 * [addListener](client.md#addlistener)
+* [createPubSubChannel](client.md#createpubsubchannel)
 * [getNextRequestId](client.md#getnextrequestid)
 * [post](client.md#post)
 * [removeListener](client.md#removelistener)
@@ -72,6 +73,21 @@ Name | Type |
 `requestId?` | undefined &#124; number |
 
 **Returns:** *boolean*
+
+___
+
+###  createPubSubChannel
+
+▸ **createPubSubChannel**(`channelId`: string, `channelInfo?`: any): *[PubSubChannel](pubsubchannel.md)*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`channelId` | string |
+`channelInfo?` | any |
+
+**Returns:** *[PubSubChannel](pubsubchannel.md)*
 
 ___
 

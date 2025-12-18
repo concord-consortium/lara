@@ -4,6 +4,10 @@
 
 ## Index
 
+### Classes
+
+* [PubSubManager](classes/pubsubmanager.md)
+
 ### Interfaces
 
 * [IAccessibilitySettings](interfaces/iaccessibilitysettings.md)
@@ -61,6 +65,12 @@
 * [IMediaLibraryItem](interfaces/imedialibraryitem.md)
 * [INavigationOptions](interfaces/inavigationoptions.md)
 * [IPortalClaims](interfaces/iportalclaims.md)
+* [IPubSubChannelInfo](interfaces/ipubsubchannelinfo.md)
+* [IPubSubCreateChannel](interfaces/ipubsubcreatechannel.md)
+* [IPubSubMessage](interfaces/ipubsubmessage.md)
+* [IPubSubPublish](interfaces/ipubsubpublish.md)
+* [IPubSubSubscribe](interfaces/ipubsubsubscribe.md)
+* [IPubSubUnsubscribe](interfaces/ipubsubunsubscribe.md)
 * [IReadableAttachmentInfo](interfaces/ireadableattachmentinfo.md)
 * [IRemoveLinkedInteractiveStateListenerRequest](interfaces/iremovelinkedinteractivestatelistenerrequest.md)
 * [IReportInitInteractive](interfaces/ireportinitinteractive.md)
@@ -119,6 +129,8 @@
 * [LoggerClientMessage](globals.md#loggerclientmessage)
 * [ModalType](globals.md#modaltype)
 * [OnUnloadFunction](globals.md#onunloadfunction)
+* [PubSubChannelInfoHandler](globals.md#pubsubchannelinfohandler)
+* [PubSubMessageHandler](globals.md#pubsubmessagehandler)
 * [ReadAttachmentParams](globals.md#readattachmentparams)
 * [ReportItemsType](globals.md#reportitemstype)
 * [S3Operation](globals.md#s3operation)
@@ -288,13 +300,13 @@ ___
 
 ###  IRuntimeClientMessage
 
-Ƭ **IRuntimeClientMessage**: *"interactiveState" | "height" | "hint" | "getAttachmentUrl" | "getAuthInfo" | "supportedFeatures" | "navigation" | "getFirebaseJWT" | "authoredState" | "authoringCustomReportFields" | "runtimeCustomReportValues" | "showModal" | "closeModal" | "getLibraryInteractiveList" | "getInteractiveSnapshot" | "addLinkedInteractiveStateListener" | "removeLinkedInteractiveStateListener" | "decoratedContentEvent" | "customMessage"*
+Ƭ **IRuntimeClientMessage**: *"interactiveState" | "height" | "hint" | "getAttachmentUrl" | "getAuthInfo" | "supportedFeatures" | "navigation" | "getFirebaseJWT" | "authoredState" | "authoringCustomReportFields" | "runtimeCustomReportValues" | "showModal" | "closeModal" | "getLibraryInteractiveList" | "getInteractiveSnapshot" | "addLinkedInteractiveStateListener" | "removeLinkedInteractiveStateListener" | "decoratedContentEvent" | "customMessage" | "createChannel" | "publish" | "subscribe" | "unsubscribe"*
 
 ___
 
 ###  IRuntimeServerMessage
 
-Ƭ **IRuntimeServerMessage**: *"attachmentUrl" | "authInfo" | "getInteractiveState" | "initInteractive" | "firebaseJWT" | "closedModal" | "customMessage" | "libraryInteractiveList" | "interactiveSnapshot" | "contextMembership" | "linkedInteractiveState" | "decorateContent"*
+Ƭ **IRuntimeServerMessage**: *"attachmentUrl" | "authInfo" | "getInteractiveState" | "initInteractive" | "firebaseJWT" | "closedModal" | "customMessage" | "libraryInteractiveList" | "interactiveSnapshot" | "contextMembership" | "linkedInteractiveState" | "decorateContent" | "pubSubMessage" | "pubSubChannelInfo"*
 
 ___
 
@@ -363,6 +375,40 @@ ___
 Name | Type |
 ------ | ------ |
 `options` | [IGetInteractiveState](interfaces/igetinteractivestate.md) |
+
+___
+
+###  PubSubChannelInfoHandler
+
+Ƭ **PubSubChannelInfoHandler**: *function*
+
+#### Type declaration:
+
+▸ (`channelInfo`: any, `publisherId`: string): *void*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`channelInfo` | any |
+`publisherId` | string |
+
+___
+
+###  PubSubMessageHandler
+
+Ƭ **PubSubMessageHandler**: *function*
+
+#### Type declaration:
+
+▸ (`message`: any, `publisherId`: string): *void*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`message` | any |
+`publisherId` | string |
 
 ___
 

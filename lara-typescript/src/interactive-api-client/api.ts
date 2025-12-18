@@ -42,6 +42,9 @@ import {
 } from "./types";
 import { getClient } from "./client";
 import { v4 as uuidv4 } from "uuid";
+import { PubSubChannel } from "./pubsub";
+
+export { PubSubChannel };
 
 const THROW_NOT_IMPLEMENTED_YET = (method: string) => {
   throw new Error(`${method} is not yet implemented in the client!`);
@@ -524,4 +527,8 @@ export const setOnUnload = (onUnload?: OnUnloadFunction) => {
 
 export const sendCustomMessage = (customMessage: ICustomMessage) => {
   getClient().post("customMessage", customMessage);
+};
+
+export const createPubSubChannel = (channelId: string, channelInfo?: any): PubSubChannel => {
+  return getClient().createPubSubChannel(channelId, channelInfo);
 };

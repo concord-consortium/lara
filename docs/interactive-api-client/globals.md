@@ -7,6 +7,7 @@
 ### Classes
 
 * [Client](classes/client.md)
+* [PubSubChannel](classes/pubsubchannel.md)
 
 ### Interfaces
 
@@ -67,6 +68,12 @@
 * [IMediaLibraryItem](interfaces/imedialibraryitem.md)
 * [INavigationOptions](interfaces/inavigationoptions.md)
 * [IPortalClaims](interfaces/iportalclaims.md)
+* [IPubSubChannelInfo](interfaces/ipubsubchannelinfo.md)
+* [IPubSubCreateChannel](interfaces/ipubsubcreatechannel.md)
+* [IPubSubMessage](interfaces/ipubsubmessage.md)
+* [IPubSubPublish](interfaces/ipubsubpublish.md)
+* [IPubSubSubscribe](interfaces/ipubsubsubscribe.md)
+* [IPubSubUnsubscribe](interfaces/ipubsubunsubscribe.md)
 * [IRemoveLinkedInteractiveStateListenerRequest](interfaces/iremovelinkedinteractivestatelistenerrequest.md)
 * [IReportInitInteractive](interfaces/ireportinitinteractive.md)
 * [IReportItemAnswer](interfaces/ireportitemanswer.md)
@@ -131,6 +138,8 @@
 * [LoggerClientMessage](globals.md#loggerclientmessage)
 * [ModalType](globals.md#modaltype)
 * [OnUnloadFunction](globals.md#onunloadfunction)
+* [PubSubChannelInfoHandler](globals.md#pubsubchannelinfohandler)
+* [PubSubMessageHandler](globals.md#pubsubmessagehandler)
 * [ReadAttachmentParams](globals.md#readattachmentparams)
 * [ReportItemsType](globals.md#reportitemstype)
 * [ServerMessage](globals.md#servermessage)
@@ -150,6 +159,7 @@
 * [addInteractiveStateListener](globals.md#const-addinteractivestatelistener)
 * [addLinkedInteractiveStateListener](globals.md#const-addlinkedinteractivestatelistener)
 * [closeModal](globals.md#const-closemodal)
+* [createPubSubChannel](globals.md#const-createpubsubchannel)
 * [flushStateUpdates](globals.md#const-flushstateupdates)
 * [getAttachmentUrl](globals.md#const-getattachmenturl)
 * [getAuthInfo](globals.md#const-getauthinfo)
@@ -365,7 +375,7 @@ ___
 
 ###  IRuntimeClientMessage
 
-Ƭ **IRuntimeClientMessage**: *"interactiveState" | "height" | "hint" | "getAttachmentUrl" | "getAuthInfo" | "supportedFeatures" | "navigation" | "getFirebaseJWT" | "authoredState" | "authoringCustomReportFields" | "runtimeCustomReportValues" | "showModal" | "closeModal" | "getLibraryInteractiveList" | "getInteractiveSnapshot" | "addLinkedInteractiveStateListener" | "removeLinkedInteractiveStateListener" | "decoratedContentEvent" | "customMessage"*
+Ƭ **IRuntimeClientMessage**: *"interactiveState" | "height" | "hint" | "getAttachmentUrl" | "getAuthInfo" | "supportedFeatures" | "navigation" | "getFirebaseJWT" | "authoredState" | "authoringCustomReportFields" | "runtimeCustomReportValues" | "showModal" | "closeModal" | "getLibraryInteractiveList" | "getInteractiveSnapshot" | "addLinkedInteractiveStateListener" | "removeLinkedInteractiveStateListener" | "decoratedContentEvent" | "customMessage" | "createChannel" | "publish" | "subscribe" | "unsubscribe"*
 
 ___
 
@@ -377,7 +387,7 @@ ___
 
 ###  IRuntimeServerMessage
 
-Ƭ **IRuntimeServerMessage**: *"attachmentUrl" | "authInfo" | "getInteractiveState" | "initInteractive" | "firebaseJWT" | "closedModal" | "customMessage" | "libraryInteractiveList" | "interactiveSnapshot" | "contextMembership" | "linkedInteractiveState" | "decorateContent"*
+Ƭ **IRuntimeServerMessage**: *"attachmentUrl" | "authInfo" | "getInteractiveState" | "initInteractive" | "firebaseJWT" | "closedModal" | "customMessage" | "libraryInteractiveList" | "interactiveSnapshot" | "contextMembership" | "linkedInteractiveState" | "decorateContent" | "pubSubMessage" | "pubSubChannelInfo"*
 
 ___
 
@@ -446,6 +456,40 @@ ___
 Name | Type |
 ------ | ------ |
 `options` | [IGetInteractiveState](interfaces/igetinteractivestate.md) |
+
+___
+
+###  PubSubChannelInfoHandler
+
+Ƭ **PubSubChannelInfoHandler**: *function*
+
+#### Type declaration:
+
+▸ (`channelInfo`: any, `publisherId`: string): *void*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`channelInfo` | any |
+`publisherId` | string |
+
+___
+
+###  PubSubMessageHandler
+
+Ƭ **PubSubMessageHandler**: *function*
+
+#### Type declaration:
+
+▸ (`message`: any, `publisherId`: string): *void*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`message` | any |
+`publisherId` | string |
 
 ___
 
@@ -642,6 +686,21 @@ Name | Type |
 `options` | [ICloseModal](interfaces/iclosemodal.md) |
 
 **Returns:** *void*
+
+___
+
+### `Const` createPubSubChannel
+
+▸ **createPubSubChannel**(`channelId`: string, `channelInfo?`: any): *[PubSubChannel](classes/pubsubchannel.md)*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`channelId` | string |
+`channelInfo?` | any |
+
+**Returns:** *[PubSubChannel](classes/pubsubchannel.md)*
 
 ___
 
