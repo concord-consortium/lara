@@ -192,7 +192,11 @@ export type IRuntimeClientMessage = "interactiveState" |
                                        "removeLinkedInteractiveStateListener" |
                                        "decoratedContentEvent" |
                                        // intentionally same name as server message to allow bi-directional messages
-                                       "customMessage"
+                                       "customMessage" |
+                                       "createChannel" |
+                                       "publish" |
+                                       "subscribe" |
+                                       "unsubscribe"
                                       ;
 
 export type IRuntimeServerMessage = "attachmentUrl" |
@@ -206,7 +210,9 @@ export type IRuntimeServerMessage = "attachmentUrl" |
                                        "interactiveSnapshot" |
                                        "contextMembership" |
                                        "linkedInteractiveState" |
-                                       "decorateContent"
+                                       "decorateContent" |
+                                       "pubSubMessage" |
+                                       "pubSubChannelInfo"
                                        ;
 
 export type IAuthoringClientMessage = "getInteractiveList" |
@@ -624,3 +630,43 @@ export interface IMediaLibrary {
  */
 
 export type IOpaqueObjectStorageConfig = Record<string, unknown>;
+
+// Pub/Sub types
+
+export interface IPubSubCreateChannel {
+  channelId: string;
+  channelInfo: any;
+  timestamp: number;
+}
+
+export interface IPubSubPublish {
+  channelId: string;
+  message: any;
+  timestamp: number;
+}
+
+export interface IPubSubSubscribe {
+  channelId: string;
+  subscriptionId: string;
+}
+
+export interface IPubSubUnsubscribe {
+  channelId: string;
+  subscriptionId: string;
+}
+
+export interface IPubSubMessage {
+  channelId: string;
+  message: any;
+  publisherId: string;
+  timestamp: number;
+}
+
+export interface IPubSubChannelInfo {
+  channelId: string;
+  channelInfo: any;
+  timestamp: number;
+}
+
+export type PubSubMessageHandler = (message: any, publisherId: string) => void;
+export type PubSubChannelInfoHandler = (channelInfo: any) => void;

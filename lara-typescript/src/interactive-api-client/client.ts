@@ -8,6 +8,7 @@ import { ClientMessage, ICustomMessageHandler, ICustomMessagesHandledMap, IInitI
 import { postDecoratedContentEvent } from "../interactive-api-client";
 import { inIframe } from "./in-frame";
 import { ManagedState } from "./managed-state";
+import { PubSubChannel } from "./pubsub";
 
 interface IRequestCallback {
   requestId?: number;
@@ -151,6 +152,10 @@ export class Client {
 
   public setOnUnload = (onUnload?: OnUnloadFunction) => {
     this.onUnload = onUnload;
+  }
+
+  public createPubSubChannel(channelId: string, channelInfo?: any): PubSubChannel {
+    return new PubSubChannel(this, channelId, channelInfo);
   }
 
   private connect() {
