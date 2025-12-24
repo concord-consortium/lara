@@ -12,7 +12,6 @@
 
 * [channelId](ipubsubchannelinfo.md#channelid)
 * [channelInfo](ipubsubchannelinfo.md#channelinfo)
-* [publisherId](ipubsubchannelinfo.md#publisherid)
 * [timestamp](ipubsubchannelinfo.md#timestamp)
 
 ## Properties
@@ -26,12 +25,6 @@ ___
 ###  channelInfo
 
 • **channelInfo**: *any*
-
-___
-
-###  publisherId
-
-• **publisherId**: *string*
 
 ___
 

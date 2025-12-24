@@ -50,16 +50,16 @@ ___
 
 ###  createChannel
 
-▸ **createChannel**(`interactiveId`: string, `channelId`: string, `channelInfo`: any): *void*
+▸ **createChannel**(`channelId`: string, `channelInfo`: any): *void*
 
-Create or update a channel with channelInfo.
-Sends channelInfo to all current subscribers.
+Create a channel with channelInfo.
+Sets channelInfo only if the channel doesn't already exist.
+Sends channelInfo to all current subscribers if channel is new.
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
-`interactiveId` | string |
 `channelId` | string |
 `channelInfo` | any |
 
@@ -107,7 +107,7 @@ ___
 ▸ **subscribe**(`interactiveId`: string, `channelId`: string, `subscriptionId`: string): *void*
 
 Subscribe an interactive to a channel.
-If a publisher already exists for this channel, immediately send channelInfo to the new subscriber.
+If channelInfo already exists for this channel, immediately send it to the new subscriber.
 
 **Parameters:**
 

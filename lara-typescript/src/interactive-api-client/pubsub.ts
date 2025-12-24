@@ -101,7 +101,7 @@ export class PubSubChannel {
       if (content.channelId === this.channelId) {
         this.subscriptions.forEach((subscription) => {
           if (subscription.channelInfoHandler) {
-            subscription.channelInfoHandler(content.channelInfo, content.publisherId);
+            subscription.channelInfoHandler(content.channelInfo);
           }
         });
       }

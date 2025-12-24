@@ -384,14 +384,13 @@ ___
 
 #### Type declaration:
 
-▸ (`channelInfo`: any, `publisherId`: string): *void*
+▸ (`channelInfo`: any): *void*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
 `channelInfo` | any |
-`publisherId` | string |
 
 ___
 

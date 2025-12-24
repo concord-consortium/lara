@@ -665,9 +665,8 @@ export interface IPubSubMessage {
 export interface IPubSubChannelInfo {
   channelId: string;
   channelInfo: any;
-  publisherId: string;
   timestamp: number;
 }
 
 export type PubSubMessageHandler = (message: any, publisherId: string) => void;
-export type PubSubChannelInfoHandler = (channelInfo: any, publisherId: string) => void;
+export type PubSubChannelInfoHandler = (channelInfo: any) => void;

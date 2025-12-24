@@ -5,7 +5,6 @@ import {
 
 interface ChannelState {
   subscribers: Set<SubscriberInfo>;
-  publisherId?: string;
   channelInfo?: any;
   lastPublishTime?: number;
 }
@@ -53,50 +52,51 @@ export class PubSubManager {
       });
 
       // Clean up empty channels
-      if (channel.subscribers.size === 0 && !channel.publisherId) {
+      if (channel.subscribers.size === 0) {
         this.channels.delete(channelId);
       }
     });
   }
 
   /**
-   * Create or update a channel with channelInfo.
-   * Sends channelInfo to all current subscribers.
+   * Create a channel with channelInfo.
+   * Sets channelInfo only if the channel doesn't already exist.
+   * Sends channelInfo to all current subscribers if channel is new.
    */
-  public createChannel(interactiveId: string, channelId: string, channelInfo: any): void {
+  public createChannel(channelId: string, channelInfo: any): void {
     let channel = this.channels.get(channelId);
 
     if (!channel) {
       channel = {
         subscribers: new Set(),
-        publisherId: interactiveId,
         channelInfo
       };
       this.channels.set(channelId, channel);
     } else {
-      channel.publisherId = interactiveId;
-      channel.channelInfo = channelInfo;
-    }
+      // Channel already exists - only set channelInfo if not already set
+      if (channel.channelInfo === undefined) {
+        channel.channelInfo = channelInfo;
 
-    // Send channelInfo to all current subscribers
-    const channelInfoMessage: IPubSubChannelInfo = {
-      channelId,
-      channelInfo,
-      publisherId: interactiveId,
-      timestamp: Date.now()
-    };
+        // Send channelInfo to all current subscribers
+        const channelInfoMessage: IPubSubChannelInfo = {
+          channelId,
+          channelInfo,
+          timestamp: Date.now()
+        };
 
-    channel.subscribers.forEach((subscriber: SubscriberInfo) => {
-      const phone = this.phones.get(subscriber.interactiveId);
-      if (phone) {
-        phone.post("pubSubChannelInfo", channelInfoMessage);
+        channel.subscribers.forEach((subscriber: SubscriberInfo) => {
+          const phone = this.phones.get(subscriber.interactiveId);
+          if (phone) {
+            phone.post("pubSubChannelInfo", channelInfoMessage);
+          }
+        });
       }
-    });
+    }
   }
 
   /**
    * Subscribe an interactive to a channel.
-   * If a publisher already exists for this channel, immediately send channelInfo to the new subscriber.
+   * If channelInfo already exists for this channel, immediately send it to the new subscriber.
    */
   public subscribe(interactiveId: string, channelId: string, subscriptionId: string): void {
     let channel = this.channels.get(channelId);
@@ -110,12 +110,11 @@ export class PubSubManager {
 
     channel.subscribers.add({ interactiveId, subscriptionId });
 
-    // If a publisher already exists for this channel, send channelInfo to the new subscriber
-    if (channel.publisherId && channel.channelInfo !== undefined) {
+    // If channelInfo already exists for this channel, send it to the new subscriber
+    if (channel.channelInfo !== undefined) {
       const channelInfoMessage: IPubSubChannelInfo = {
         channelId,
         channelInfo: channel.channelInfo,
-        publisherId: channel.publisherId,
         timestamp: Date.now()
       };
 
@@ -144,7 +143,7 @@ export class PubSubManager {
     });
 
     // Clean up empty channels
-    if (channel.subscribers.size === 0 && !channel.publisherId) {
+    if (channel.subscribers.size === 0) {
       this.channels.delete(channelId);
     }
   }

@@ -25,7 +25,7 @@ describe("PubSubManager", () => {
   describe("createChannel", () => {
     it("creates a new channel with channelInfo", () => {
       const phone1 = registerMockPhone("interactive1");
-      manager.createChannel("interactive1", "channel1", { unit: "celsius" });
+      manager.createChannel("channel1", { unit: "celsius" });
 
       // No messages sent when no subscribers exist
       expect(phone1.post).not.toHaveBeenCalled();
@@ -38,13 +38,12 @@ describe("PubSubManager", () => {
       manager.subscribe("interactive2", "channel1", "sub1");
       phone2.post.mockClear(); // Clear subscribe-related calls
 
-      manager.createChannel("interactive1", "channel1", { unit: "celsius" });
+      manager.createChannel("channel1", { unit: "celsius" });
 
       expect(phone2.post).toHaveBeenCalledTimes(1);
       expect(phone2.post).toHaveBeenCalledWith("pubSubChannelInfo", expect.objectContaining({
         channelId: "channel1",
-        channelInfo: { unit: "celsius" },
-        publisherId: "interactive1"
+        channelInfo: { unit: "celsius" }
       }));
     });
   });
@@ -69,7 +68,7 @@ describe("PubSubManager", () => {
     it("sends channelInfo to late subscriber if publisher exists", () => {
       const phone1 = registerMockPhone("interactive1");
 
-      manager.createChannel("interactive1", "channel1", { unit: "celsius" });
+      manager.createChannel("channel1", { unit: "celsius" });
       phone1.post.mockClear(); // Clear create messages
 
       const phone2 = registerMockPhone("interactive2");
