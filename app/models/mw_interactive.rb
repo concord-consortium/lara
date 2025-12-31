@@ -25,6 +25,8 @@ class MwInteractive < ApplicationRecord
   has_one :labbook, as: :interactive, class_name: 'Embeddable::Labbook'
   belongs_to :linked_interactive, polymorphic: true
 
+  belongs_to :data_source_interactive, polymorphic: true
+
   after_update :update_labbook_options
 
   def self.portal_type
@@ -67,7 +69,10 @@ class MwInteractive < ApplicationRecord
       no_snapshots: no_snapshots,
       linked_interactive_item_id: linked_interactive_item_id,
       linked_interactives: linked_interactives_list,
-      report_item_url: report_item_url
+      report_item_url: report_item_url,
+      data_source_interactive_ref_id: data_source_interactive_ref_id,
+      data_source_interactive_embeddable_id: data_source_interactive_embeddable_id,
+      data_source_interactive_item_id: data_source_interactive_item_id
     }
   end
 
@@ -78,7 +83,9 @@ class MwInteractive < ApplicationRecord
   def duplicate
     # Remove linked_interactives from the hash since it can't be mapped to a database column like the other
     # properties in the hash can, and so causes an error when we try to create the duplicate interactive.
-    new_interactive_hash = self.to_hash.except!(:linked_interactives)
+    new_interactive_hash = self.to_hash.except!(
+      :linked_interactives, :data_source_interactive_ref_id, :data_source_interactive_embeddable_id, :data_source_interactive_item_id
+    )
     # Generate a new object with those values
     MwInteractive.new(new_interactive_hash)
     # N.B. the duplicate hasn't been saved yet

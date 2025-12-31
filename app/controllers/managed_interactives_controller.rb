@@ -28,7 +28,8 @@ class ManagedInteractivesController < InteractiveController
       :legacy_ref_id, :legacy_ref_type,
       :linked_interactives,
       :hide_question_number,
-      :save_interactive_state_history
+      :save_interactive_state_history,
+      :data_source_interactive_item_id
     )
   end
 

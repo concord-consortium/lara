@@ -46,6 +46,7 @@ export interface IMWInteractive {
   linked_interactive_item_id: string;
   linked_interactives: ILinkedInteractive[];
   report_item_url: string;
+  data_source_interactive_item_id: string;
 }
 
 export const MWInteractiveAuthoring: React.FC<Props> = (props) => {

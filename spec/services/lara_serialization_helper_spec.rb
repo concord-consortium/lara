@@ -86,6 +86,32 @@ describe LaraSerializationHelper do
     end
   end
 
+  describe "#export with data source interactive" do
+    let(:interactive1)  { FactoryBot.create(:mw_interactive) }
+    let(:interactive2)  { FactoryBot.create(:mw_interactive, data_source_interactive: interactive1) }
+    let(:page)          { FactoryBot.create(:page) }
+    let(:expected_type) { 'MwInteractive' }
+
+    it "should not export interactive1 with a data source interactive" do
+      result = helper.export(interactive1)
+      expect(result).to include({
+        ref_id: helper.key(interactive1),
+        type: expected_type,
+      })
+      expect(result).not_to have_key(:data_source_interactive)
+    end
+
+    it "should export interactive2 with a data source interactive" do
+      result = helper.export(interactive2)
+      expect(result).to include({
+        ref_id: helper.key(interactive2),
+        type: expected_type,
+        data_source_interactive: helper.export(interactive1)
+      })
+      expect(result).to have_key(:data_source_interactive)
+    end
+  end
+
   describe "#import" do
     describe "importing an interactive" do
       let(:export_data) do
@@ -214,6 +240,61 @@ describe LaraSerializationHelper do
         expect(interactive4_linked_items[0].label).to eq "three"
       end
     end
-  end
 
+    describe "import interactive with data source interactive" do
+      let(:export_data) do
+        {
+          type: "InteractivePage",
+          ref_id: "100-InteractivePage",
+          sections: [
+            {
+            "title": "interactive_box",
+            "is_hidden": false,
+            "layout": "full-width",
+            "secondary_column_collapsible": false,
+            "secondary_column_display_mode": "stacked",
+            embeddables: [
+              {
+                type: "MwInteractive",
+                ref_id: "100-MwInteractive",
+                column: "primary",
+                position: 1,
+                linked_interactives: [],
+              },
+              {
+                type: "ManagedInteractive",
+                ref_id: "101-ManagedInteractive",
+                column: "primary",
+                position: 2,
+                linked_interactives: [],
+                data_source_interactive: {
+                  type: "MwInteractive",
+                  ref_id: "100-MwInteractive",
+                  column: "primary",
+                  position: 1,
+                  linked_interactives: [],
+                }
+              }
+            ]
+          }]
+        }
+      end
+      let(:result) do
+        helper.import(export_data)
+        helper.set_references(export_data)
+      end
+
+      it "should find the referenced data source interactive in the cache" do
+        expect(result).to be_a InteractivePage
+        expect(result.embeddables.length).to be 2
+
+        interactive1, interactive2 = result.embeddables
+
+        expect(interactive1).to be_a MwInteractive
+        expect(interactive2).to be_a ManagedInteractive
+
+        expect(interactive2.data_source_interactive).to eq interactive1
+      end
+    end
+  end
 end

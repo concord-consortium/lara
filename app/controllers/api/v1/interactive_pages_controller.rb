@@ -348,7 +348,8 @@ class Api::V1::InteractivePagesController < Api::ApiController
       :report_item_url,
       :show_delete_data_button,
       :url,
-      :url_fragment
+      :url_fragment,
+      :data_source_interactive_item_id
     )
   end
 

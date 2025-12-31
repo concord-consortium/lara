@@ -25,11 +25,13 @@ describe ManagedInteractive do
                                                  report_item_url: ""
                                                 )}
 
+  let(:data_source_interactive) { FactoryBot.create(:mw_interactive) }
   let(:mw_interactive) { FactoryBot.create(:mw_interactive) }
   let(:managed_interactive) { FactoryBot.create(:managed_interactive,
                                                  library_interactive: library_interactive,
                                                  url_fragment: "test",
-                                                 linked_interactive: mw_interactive
+                                                 linked_interactive: mw_interactive,
+                                                 data_source_interactive: data_source_interactive
                                                 )}
   let (:page) { FactoryBot.create(:page) }
 
@@ -76,7 +78,10 @@ describe ManagedInteractive do
         inherit_hide_question_number: managed_interactive.inherit_hide_question_number,
         custom_hide_question_number: managed_interactive.custom_hide_question_number,
         inherit_save_interactive_state_history: managed_interactive.inherit_save_interactive_state_history,
-        custom_save_interactive_state_history: managed_interactive.custom_save_interactive_state_history
+        custom_save_interactive_state_history: managed_interactive.custom_save_interactive_state_history,
+        data_source_interactive_ref_id: managed_interactive.data_source_interactive_ref_id,
+        data_source_interactive_embeddable_id: managed_interactive.data_source_interactive_embeddable_id,
+        data_source_interactive_item_id: managed_interactive.data_source_interactive_item_id
        }
       expect(managed_interactive.to_hash).to eq(expected)
     end

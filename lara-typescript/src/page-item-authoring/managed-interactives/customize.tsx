@@ -36,6 +36,7 @@ export const CustomizeManagedInteractive: React.FC<Props> = (props) => {
     custom_hide_question_number,
     inherit_save_interactive_state_history,
     custom_save_interactive_state_history,
+    data_source_interactive_item_id
   } = managedInteractive;
 
   const [inheritAspectRatio, setInheritAspectRatio] = useState(inherit_aspect_ratio_method);
@@ -94,6 +95,7 @@ export const CustomizeManagedInteractive: React.FC<Props> = (props) => {
             type="text"
             name="linked_interactive_item_id"
             defaultValue={`${linked_interactive_item_id || ""}`}
+            placeholder="interactive_XXX"
           />
           <div className="warning">
             <em>Warning</em>: Please do not link to another interactive
@@ -102,6 +104,15 @@ export const CustomizeManagedInteractive: React.FC<Props> = (props) => {
         </fieldset>
       </>
       : undefined}
+      <fieldset>
+        <legend>Data Source Interactive</legend>
+          <input
+            type="text"
+            name="data_source_interactive_item_id"
+            defaultValue={`${data_source_interactive_item_id || ""}`}
+            placeholder="interactive_XXX"
+          />
+      </fieldset>
     </>;
   };
 

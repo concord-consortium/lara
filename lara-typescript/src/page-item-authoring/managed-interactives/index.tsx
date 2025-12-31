@@ -57,6 +57,7 @@ export interface IManagedInteractive {
   custom_hide_question_number: boolean;
   inherit_save_interactive_state_history: boolean;
   custom_save_interactive_state_history: boolean;
+  data_source_interactive_item_id: string;
 }
 
 export const ManagedInteractiveAuthoring: React.FC<Props> = (props) => {

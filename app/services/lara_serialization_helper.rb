@@ -14,12 +14,14 @@ class LaraSerializationHelper
     if item.respond_to?(:embeddable) && item.embeddable
       results[:embeddable_ref_id] = key(item.embeddable)
     end
+    # The linked interactive and data_source_interactive is fully serialized because when importing we may need
+    # to create it because the embeddable it links to is not yet present.  The import method will take care of
+    # avoiding duplicates by looking up existing items by ref_id.
     if item.respond_to?(:linked_interactive) && item.linked_interactive
-      # Why is linked interactive fully serialized while other linked items use reference only?
-      # Not sure. It might be related to the fact, that linked interactives can be linked across multiple pages
-      # or even activities. However, it doesn't seem it would work if we export and import activity with this
-      # interactive missing. I guess it could be double checked and fixed in the future.
       results[:linked_interactive] = self.export(item.linked_interactive)
+    end
+    if item.respond_to?(:data_source_interactive) && item.data_source_interactive
+      results[:data_source_interactive] = self.export(item.data_source_interactive)
     end
 
     # This is done here and not in the models as we don't want to export the linked embeddables as they are already exported
@@ -39,7 +41,7 @@ class LaraSerializationHelper
     existing_item = lookup_item(item_hash[:ref_id])
     return existing_item if existing_item
 
-    item = item_hash[:type].constantize.import(item_hash.except(:type, :ref_id, :interactive_ref_id, :embeddable_ref_id, :linked_interactive, :linked_interactives))
+    item = item_hash[:type].constantize.import(item_hash.except(:type, :ref_id, :interactive_ref_id, :embeddable_ref_id, :linked_interactive, :linked_interactives, :data_source_interactive))
     item.save!(validate: false)
     unless item_hash[:ref_id]
       # This is only for backward compatibility when not all the embeddables were defining ref_id in export hash.
@@ -59,6 +61,9 @@ class LaraSerializationHelper
     end
     if item_hash[:linked_interactive] && item.respond_to?(:linked_interactive)
       item.linked_interactive = import(item_hash[:linked_interactive])
+    end
+    if item_hash[:data_source_interactive] && item.respond_to?(:data_source_interactive)
+      item.data_source_interactive = import(item_hash[:data_source_interactive])
     end
     if item_hash[:linked_interactives]
       item_hash[:linked_interactives].each do |lpi_hash|

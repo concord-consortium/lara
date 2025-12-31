@@ -45,7 +45,10 @@ describe MwInteractive do
         no_snapshots: interactive.no_snapshots,
         linked_interactive_item_id: interactive.linked_interactive_item_id,
         linked_interactives: [],
-        report_item_url: interactive.report_item_url
+        report_item_url: interactive.report_item_url,
+        data_source_interactive_ref_id: interactive.data_source_interactive_ref_id,
+        data_source_interactive_embeddable_id: interactive.data_source_interactive_embeddable_id,
+        data_source_interactive_item_id: interactive.data_source_interactive_item_id
       }
       hash = interactive.to_hash
       expect(hash).to eq(expected)
@@ -68,6 +71,7 @@ describe MwInteractive do
       expected[:interactive_item_id] = interactive.interactive_item_id
       expected[:linked_interactive_item_id] = interactive.linked_interactive_item_id
       expected[:linked_interactives] = interactive.linked_interactives_list
+      expected[:data_source_interactive_item_id] = interactive.data_source_interactive_item_id
       expect(interactive.to_authoring_hash).to eq(expected)
     end
   end

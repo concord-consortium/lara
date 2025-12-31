@@ -35,7 +35,8 @@ export const CustomizeMWInteractive: React.FC<Props> = (props) => {
     image_url,
     aspect_ratio_method,
     linked_interactive_item_id,
-    report_item_url
+    report_item_url,
+    data_source_interactive_item_id
   } = interactive;
 
   const [aspectRatioValues, setAspectRatioValues] = useState<IAspectRatioChooserValues>({
@@ -161,6 +162,7 @@ export const CustomizeMWInteractive: React.FC<Props> = (props) => {
           type="text"
           name="linked_interactive_item_id"
           defaultValue={`${linked_interactive_item_id || ""}`}
+          placeholder="interactive_XXX"
         />
         <div className="warning">
           <em>Warning</em>: Please do not link to another interactive
@@ -238,6 +240,16 @@ export const CustomizeMWInteractive: React.FC<Props> = (props) => {
         />
         {state.enable_learner_state ? renderInteractiveStateOptions() : undefined}
       </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Data Source Interactive</legend>
+      <input
+        type="text"
+        name="data_source_interactive_item_id"
+        defaultValue={`${data_source_interactive_item_id || ""}`}
+        placeholder="interactive_XXX"
+      />
     </fieldset>
   </>;
 };

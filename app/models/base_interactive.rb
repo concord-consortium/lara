@@ -20,6 +20,7 @@ module BaseInteractive
     hash[:aspect_ratio] = aspect_ratio
     hash[:interactive_item_id] = interactive_item_id
     hash[:linked_interactive_item_id] = linked_interactive_item_id
+    hash[:data_source_interactive_item_id] = data_source_interactive_item_id
     # Note that linked_interactives is independent from linked_interactive_id and linked_interactive_type fields
     hash[:linked_interactives] = linked_interactives_list
     hash
@@ -155,6 +156,33 @@ module BaseInteractive
     else
       # A way to unlink interactive
       self.linked_interactive = nil
+    end
+  end
+
+  # legacy ref_id format (might be useful in some cases)
+  def data_source_interactive_ref_id
+    data_source_interactive ? "#{data_source_interactive.id}-#{data_source_interactive.class.to_s}" : nil
+  end
+
+  # used at runtime to get the data source interactive id in format used in Firebase
+  def data_source_interactive_embeddable_id
+    data_source_interactive ? "#{Embeddable.get_embeddable_class(data_source_interactive.class)}_#{data_source_interactive.id}" : nil
+  end
+
+  # used at authoring time
+  def data_source_interactive_item_id
+    data_source_interactive ? make_interactive_item_id(data_source_interactive) : nil
+  end
+
+  # used at authoring time
+  def data_source_interactive_item_id=(val)
+    matches = val.nil? ? nil : val.match(/^interactive_(.+)$/)
+    page_item = matches ? PageItem.find_by_id(matches[1]) : nil
+    if page_item
+      self.data_source_interactive = page_item.embeddable
+    else
+      # A way to unlink interactive
+      self.data_source_interactive = nil
     end
   end
 

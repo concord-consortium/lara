@@ -33,9 +33,11 @@ class ManagedInteractive < ApplicationRecord
   belongs_to :linked_interactive, polymorphic: true
   belongs_to :legacy_ref, polymorphic: true
 
+  belongs_to :data_source_interactive, polymorphic: true
+
   # getter for constructed url
   def url
-    # BONUS: instead of returnng nil return a placeholder url that shows a "No interative selecte yet" message
+    # BONUS: instead of returning nil return a placeholder url that shows a "No interactive selected yet" message
     # in both authoring and runtime
     return nil unless library_interactive
     # BONUS: parse library_interactive.base_url query parameters and merge them with url_fragment query parameters
@@ -143,6 +145,9 @@ class ManagedInteractive < ApplicationRecord
       custom_hide_question_number: custom_hide_question_number,
       inherit_save_interactive_state_history: inherit_save_interactive_state_history,
       custom_save_interactive_state_history: custom_save_interactive_state_history,
+      data_source_interactive_ref_id: data_source_interactive_ref_id,
+      data_source_interactive_embeddable_id: data_source_interactive_embeddable_id,
+      data_source_interactive_item_id: data_source_interactive_item_id
     }
   end
 
@@ -196,11 +201,20 @@ class ManagedInteractive < ApplicationRecord
     }
   end
 
+  # Remove linked_interactives from the hash since it can't be mapped to a database column like the other
+  # properties in the hash can, and so causes an error when we try to create the duplicate interactive.
+  # Also remove the library interactive name and base url which are only used by the authoring interface.
+  # Finally remove data_source_interactive_* properties - the data source interactive export is handled
+  # separately in the LaraSerializationHelper.
+  def to_export_hash
+    self.to_hash.except!(
+      :linked_interactives, :library_interactive_name, :library_interactive_base_url,
+      :data_source_interactive_ref_id, :data_source_interactive_embeddable_id, :data_source_interactive_item_id
+    )
+  end
+
   def duplicate
-    # Remove linked_interactives from the hash since it can't be mapped to a database column like the other
-    # properties in the hash can, and so causes an error when we try to create the duplicate interactive.
-    # Also remove the library interactive name and base url which are only used by the authoring interface.
-    new_interactive_hash = self.to_hash.except!(:linked_interactives, :library_interactive_name, :library_interactive_base_url)
+    new_interactive_hash = to_export_hash()
     # Generate a new object with those values
     ManagedInteractive.new(new_interactive_hash)
     # N.B. the duplicate hasn't been saved yet
@@ -216,10 +230,7 @@ class ManagedInteractive < ApplicationRecord
   end
 
   def export
-    # Remove linked_interactives from the hash so we don't export linked embeddables. The export method
-    # in LaraSerializationHelper provides special handling for this value. See comment there for more.
-    # Also remove the library interactive name and base url which are only used by the authoring interface.
-    hash = to_hash().except!(:linked_interactives, :library_interactive_name, :library_interactive_base_url)
+    hash = to_export_hash()
     hash.delete(:library_interactive_id)
     hash[:library_interactive] = library_interactive ? {
       data: library_interactive.to_hash()

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_29_114428) do
+ActiveRecord::Schema[8.0].define(version: 2025_12_31_154440) do
   create_table "admin_events", id: :integer, charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
     t.string "kind"
     t.text "message"
@@ -457,6 +457,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_29_114428) do
     t.boolean "custom_hide_question_number", default: false
     t.boolean "inherit_save_interactive_state_history", default: true
     t.boolean "custom_save_interactive_state_history", default: false
+    t.string "data_source_interactive_type"
+    t.integer "data_source_interactive_id"
     t.index ["legacy_ref_id", "legacy_ref_type"], name: "managed_interactive_legacy_idx"
     t.index ["library_interactive_id"], name: "managed_interactive_library_interactive_id_idx"
   end
@@ -493,6 +495,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_29_114428) do
     t.text "report_item_url"
     t.boolean "hide_question_number", default: false
     t.boolean "save_interactive_state_history", default: false
+    t.string "data_source_interactive_type"
+    t.integer "data_source_interactive_id"
     t.index ["linked_interactive_id"], name: "index_mw_interactives_on_linked_interactive_id"
   end
 
