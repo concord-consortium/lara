@@ -77,7 +77,7 @@
   .field
     = f.check_box :is_official
     = f.label :is_official,  "Official CC Activity"
-    .hint Official activities appear in the STEM Resource Finder and should be vetted before being designated as such.
+    .hint Official activities appear on learn.concord.org and should be vetted before being designated as such.
 - if current_user.is_admin || @is_project_admin
   .field
     = f.check_box :is_locked
