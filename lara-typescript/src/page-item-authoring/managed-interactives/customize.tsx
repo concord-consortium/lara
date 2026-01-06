@@ -10,6 +10,7 @@ import { AspectRatioChooser,
        } from "../common/components/aspect-ratio-chooser";
 import { CustomizableOption } from "../common/components/customizable-option";
 import { Checkbox } from "../common/components/checkbox";
+import { DataSourceInteractive } from "../common/components/data-source-interactive";
 
 interface Props {
   managedInteractive: IManagedInteractive;
@@ -36,6 +37,7 @@ export const CustomizeManagedInteractive: React.FC<Props> = (props) => {
     custom_hide_question_number,
     inherit_save_interactive_state_history,
     custom_save_interactive_state_history,
+    linked_interactives
   } = managedInteractive;
 
   const [inheritAspectRatio, setInheritAspectRatio] = useState(inherit_aspect_ratio_method);
@@ -84,7 +86,7 @@ export const CustomizeManagedInteractive: React.FC<Props> = (props) => {
   const clickToPlayEnabled = (inheritClickToPlay && libraryInteractive.click_to_play) ||
                              (!inheritClickToPlay && customClickToPlay);
 
-  const renderCommonFields = () => {
+  const renderCommonTopFields = () => {
     return <>
       {libraryInteractive.enable_learner_state ?
       <>
@@ -102,6 +104,12 @@ export const CustomizeManagedInteractive: React.FC<Props> = (props) => {
         </fieldset>
       </>
       : undefined}
+    </>;
+  };
+
+  const renderCommonBottomFields = () => {
+    return <>
+      <DataSourceInteractive linked_interactives={linked_interactives} />
     </>;
   };
 
@@ -124,7 +132,8 @@ export const CustomizeManagedInteractive: React.FC<Props> = (props) => {
 
     return (
       <div>
-        {renderCommonFields()}
+        {renderCommonTopFields()}
+        {renderCommonBottomFields()}
 
         <p>
           The selected library interactive ({libraryInteractive.name})
@@ -205,7 +214,7 @@ export const CustomizeManagedInteractive: React.FC<Props> = (props) => {
 
   // this generates a form element that renders inside the rails popup form
   return <>
-    {renderCommonFields()}
+    {renderCommonTopFields()}
 
     <fieldset>
       <legend>Aspect Ratio</legend>
@@ -419,5 +428,7 @@ export const CustomizeManagedInteractive: React.FC<Props> = (props) => {
       </div>
     </fieldset>
     }
+
+    {renderCommonBottomFields()}
   </>;
 };

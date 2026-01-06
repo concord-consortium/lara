@@ -6,6 +6,7 @@ import { AspectRatioChooser,
          IAspectRatioChooserValues
        } from "../common/components/aspect-ratio-chooser";
 import { Checkbox } from "../common/components/checkbox";
+import { DataSourceInteractive } from "../common/components/data-source-interactive";
 
 interface Props {
   checkboxHandler?: (name: string, checked: boolean) => void;
@@ -35,7 +36,8 @@ export const CustomizeMWInteractive: React.FC<Props> = (props) => {
     image_url,
     aspect_ratio_method,
     linked_interactive_item_id,
-    report_item_url
+    report_item_url,
+    linked_interactives
   } = interactive;
 
   const [aspectRatioValues, setAspectRatioValues] = useState<IAspectRatioChooserValues>({
@@ -239,5 +241,7 @@ export const CustomizeMWInteractive: React.FC<Props> = (props) => {
         {state.enable_learner_state ? renderInteractiveStateOptions() : undefined}
       </div>
     </fieldset>
+
+    <DataSourceInteractive linked_interactives={linked_interactives} />
   </>;
 };
