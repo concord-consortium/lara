@@ -106,6 +106,24 @@ You can list the current links using:
 npm run list:links
 ```
 
+#### Publishing LARA Interactive API package to NPM
+
+If you update LARA Interactive API, remember to bump the version number following semver in
+[src/interactive-api-client/package.json](src/interactive-api-client/package.json)
+and publish a new version to NPM:
+
+```
+publish:interactive-api-client
+```
+
+To publish a pre-release for testing, append `-pre.X` (e.g., `1.2.3-pre.1`) to the version number, and use:
+
+```
+publish:interactive-api-client:beta
+```
+
+Check [src/interactive-api-client/README.md](src/interactive-api-client/README.md) to see how to use this package in external plugins.
+
 
 ### Code that is used by LARA internals
 
