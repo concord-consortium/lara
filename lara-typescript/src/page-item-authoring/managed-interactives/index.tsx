@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useCallback, useState, useRef } from "react";
+import { useState, useRef } from "react";
 import { Tabs, TabList, Tab, TabPanel} from "react-tabs";
 import { ILibraryInteractive } from "../common/hooks/use-library-interactives";
 import { InteractiveAuthoring } from "../common/components/interactive-authoring";

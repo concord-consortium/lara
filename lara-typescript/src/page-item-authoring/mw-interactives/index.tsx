@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useRef } from "react";
+import { useState, useRef } from "react";
 import { Tabs, TabList, Tab, TabPanel} from "react-tabs";
 import { InteractiveAuthoring } from "../common/components/interactive-authoring";
 import { CustomizeMWInteractive } from "./customize";
@@ -9,6 +9,8 @@ import { AuthoredState } from "../common/components/authored-state";
 import { AuthoringApiUrls } from "../common/types";
 import { ILinkedInteractive } from "../../interactive-api-client";
 import { useAuthoringPreview } from "../common/hooks/use-authoring-preview";
+import { useNavigationGuard } from "../../section-authoring/hooks/use-navigation-guard";
+import { UnsavedChangesDialog } from "../../section-authoring/components/unsaved-changes-dialog";
 
 import "react-tabs/style/react-tabs.css";
 
@@ -17,6 +19,7 @@ interface Props {
   defaultClickToPlayPrompt: string;
   authoringApiUrls: AuthoringApiUrls;
   handleUpdateItemPreview?: (updates: Record<string, any>) => void;
+  onDirtyStateChange?: (isDirty: boolean) => void;
 }
 
 export interface IMWInteractive {
@@ -53,11 +56,13 @@ export const MWInteractiveAuthoring: React.FC<Props> = (props) => {
     interactive,
     defaultClickToPlayPrompt,
     authoringApiUrls,
-    handleUpdateItemPreview
+    handleUpdateItemPreview,
+    onDirtyStateChange
   } = props;
   const interactiveAuthoredStateRef = useRef<HTMLTextAreaElement>(null);
   const linkedInteractivesRef = useRef<HTMLTextAreaElement>(null);
   const enableLearnerStateRef = useRef<HTMLInputElement>(null);
+  const [isDirty, setIsDirty] = useState(false);
 
   const {
     url,
@@ -72,6 +77,14 @@ export const MWInteractiveAuthoring: React.FC<Props> = (props) => {
   });
 
   const user = useCurrentUser();
+
+  const handleDirtyStateChange = (newIsDirty: boolean) => {
+    setIsDirty(newIsDirty);
+    onDirtyStateChange?.(newIsDirty);
+  };
+
+  // Navigation guard warns about unsaved changes
+  const navigationGuard = useNavigationGuard({ isDirty });
 
   const renderRequiredFields = () => {
     const { name, is_half_width, no_snapshots } = interactive;
@@ -143,6 +156,7 @@ export const MWInteractiveAuthoring: React.FC<Props> = (props) => {
                 interactive={authoredInteractive}
                 onAuthoredStateChange={handleAuthoredStateChange}
                 onLinkedInteractivesChange={handleLinkedInteractivesChange}
+                onDirtyStateChange={handleDirtyStateChange}
                 allowReset={false}
                 authoringApiUrls={authoringApiUrls}
               />
@@ -194,5 +208,12 @@ export const MWInteractiveAuthoring: React.FC<Props> = (props) => {
     {renderRequiredFields()}
 
     {renderTabs()}
+
+    {navigationGuard.isNavigationBlocked &&
+      <UnsavedChangesDialog
+        onCancel={navigationGuard.cancelNavigation}
+        onConfirm={navigationGuard.confirmNavigation}
+      />
+    }
   </>;
 };
