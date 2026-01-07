@@ -20,7 +20,8 @@ export interface IModalButtonsProps {
 export interface IModalProps {
   children: JSX.Element;
   className?: string;
-  closeFunction?: (e: React.MouseEvent<HTMLElement> | MouseEvent) => void;
+  closeFunction?: (e: React.MouseEvent<HTMLElement> | MouseEvent) => void | boolean;
+  preventClose?: boolean;
   title?: string;
   visibility: boolean;
   width?: number;
@@ -30,6 +31,7 @@ export const Modal: React.FC<IModalProps> = ({
   children,
   className,
   closeFunction,
+  preventClose = false,
   title,
   visibility: initVisibility = true,
   width
@@ -48,7 +50,20 @@ export const Modal: React.FC<IModalProps> = ({
     setIsVisible(false);
   };
 
-  const closeButtonClickHandler = closeFunction ? closeFunction : closeModal;
+  const closeButtonClickHandler = (e: React.MouseEvent<HTMLElement> | MouseEvent) => {
+    if (preventClose) {
+      return;
+    }
+
+    if (closeFunction) {
+      const result = closeFunction(e);
+      if (result === false) {
+        return;
+      }
+    } else {
+      closeModal();
+    }
+  };
 
   if (!isVisible) {
     return null;

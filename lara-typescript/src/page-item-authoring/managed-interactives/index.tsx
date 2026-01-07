@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useCallback, useState, useRef } from "react";
+import { useState, useRef } from "react";
 import { Tabs, TabList, Tab, TabPanel} from "react-tabs";
 import { ILibraryInteractive } from "../common/hooks/use-library-interactives";
 import { InteractiveAuthoring } from "../common/components/interactive-authoring";
@@ -10,6 +10,8 @@ import { AuthoredState } from "../common/components/authored-state";
 import { AuthoringApiUrls } from "../common/types";
 import { ILinkedInteractive } from "../../interactive-api-client";
 import { useAuthoringPreview } from "../common/hooks/use-authoring-preview";
+import { useNavigationGuard } from "../../section-authoring/hooks/use-navigation-guard";
+import { UnsavedChangesDialog } from "../../section-authoring/components/unsaved-changes-dialog";
 
 import "react-tabs/style/react-tabs.css";
 
@@ -20,6 +22,7 @@ interface Props {
   authoringApiUrls: AuthoringApiUrls;
   onUpdate?: (updates: Partial<IManagedInteractive>) => void;
   handleUpdateItemPreview?: (updates: Record<string, any>) => void;
+  onDirtyStateChange?: (isDirty: boolean) => void;
 }
 
 export interface IManagedInteractive {
@@ -65,13 +68,15 @@ export const ManagedInteractiveAuthoring: React.FC<Props> = (props) => {
     managedInteractive,
     defaultClickToPlayPrompt,
     authoringApiUrls,
-    handleUpdateItemPreview
+    handleUpdateItemPreview,
+    onDirtyStateChange
   } = props;
   const { name, is_half_width } = managedInteractive;
   const libraryInteractiveIdRef = useRef<HTMLInputElement|null>(null);
   const interactiveAuthoredStateRef = useRef<HTMLTextAreaElement|null>(null);
   const linkedInteractivesRef = useRef<HTMLTextAreaElement|null>(null);
   const [urlFragment, setUrlFragment] = useState(managedInteractive.url_fragment);
+  const [isDirty, setIsDirty] = useState(false);
   const user = useCurrentUser();
   const { handleAuthoredStateChange, handleLinkedInteractivesChange } = useAuthoringPreview({
     interactive: managedInteractive,
@@ -79,6 +84,14 @@ export const ManagedInteractiveAuthoring: React.FC<Props> = (props) => {
     interactiveAuthoredStateRef,
     linkedInteractivesRef
   });
+
+  const handleDirtyStateChange = (newIsDirty: boolean) => {
+    setIsDirty(newIsDirty);
+    onDirtyStateChange?.(newIsDirty);
+  };
+
+  // Navigation guard warns about unsaved changes
+  const navigationGuard = useNavigationGuard({ isDirty });
 
   const handleUrlFragmentBlur = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setUrlFragment(e.target.value);
@@ -148,6 +161,7 @@ export const ManagedInteractiveAuthoring: React.FC<Props> = (props) => {
               interactive={interactive}
               onAuthoredStateChange={handleAuthoredStateChange}
               onLinkedInteractivesChange={handleLinkedInteractivesChange}
+              onDirtyStateChange={handleDirtyStateChange}
               allowReset={false}
               authoringApiUrls={authoringApiUrls}
             />
@@ -227,5 +241,12 @@ export const ManagedInteractiveAuthoring: React.FC<Props> = (props) => {
       />
     {renderRequiredFields()}
     {renderTabs()}
+
+    {navigationGuard.isNavigationBlocked &&
+      <UnsavedChangesDialog
+        onCancel={navigationGuard.cancelNavigation}
+        onConfirm={navigationGuard.confirmNavigation}
+      />
+    }
   </>;
 };

@@ -14,6 +14,8 @@ import { camelToSnakeCaseKeys } from "../../shared/convert-keys";
 import { TextBlockPreview } from "./text-block-preview";
 import { ManagedInteractivePreview } from "./managed-interactive-preview";
 import { MWInteractivePreview } from "./mw-interactive-preview";
+import { useNavigationGuard } from "../hooks/use-navigation-guard";
+import { UnsavedChangesDialog } from "./unsaved-changes-dialog";
 import classNames from "classnames";
 
 import "./item-edit-dialog.scss";
@@ -35,7 +37,11 @@ export const ItemEditDialog: React.FC<IItemEditDialogProps> = ({
   const wrappedItem = pageItems.find(pi => pi.id === wrappedItemId);
   const [previewPageItem, setPreviewPageItem] = useState<ISectionItem>();
   const [itemData, setItemData] = useState({});
+  const [isDirty, setIsDirty] = useState(false);
   const libraryInteractives = getLibraryInteractives.data?.libraryInteractives;
+
+  // Navigation guard warns about unsaved changes
+  const navigationGuard = useNavigationGuard({ isDirty });
 
   useEffect(() => {
     if (Object.keys(itemData).length > 0) {
@@ -45,6 +51,7 @@ export const ItemEditDialog: React.FC<IItemEditDialogProps> = ({
 
   useEffect(() => {
     setItemData({});
+    setIsDirty(false);
   }, [editingItemId]);
 
   useEffect(() => {
@@ -71,12 +78,17 @@ export const ItemEditDialog: React.FC<IItemEditDialogProps> = ({
     setItemData({authorData});
   };
 
+  const handleLibraryInteractiveDirtyState = (libIsDirty: boolean) => {
+    setIsDirty(libIsDirty);
+  };
+
   const handleUpdateItem = () => {
     if (pageItem) {
       const pageItemUpdateOpts = {...pageItem};
       pageItemUpdateOpts.data = {...pageItem.data, ...itemData};
       updatePageItem(pageItemUpdateOpts);
     }
+    setIsDirty(false);
     handleCloseDialog();
   };
 
@@ -99,8 +111,24 @@ export const ItemEditDialog: React.FC<IItemEditDialogProps> = ({
   };
 
   const handleSave = () => {
-    const form = document.getElementById("itemEditForm");
-    form?.dispatchEvent(new Event("submit"));
+    if (isDirty) {
+      navigationGuard.attemptNavigation(() => {
+        const form = document.getElementById("itemEditForm");
+        form?.dispatchEvent(new Event("submit"));
+      });
+
+      return false;
+    } else {
+      const form = document.getElementById("itemEditForm");
+      form?.dispatchEvent(new Event("submit"));
+      return true;
+    }
+  };
+
+  const handleSaveButtonClick = (e: React.MouseEvent<HTMLElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    handleSave();
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -146,7 +174,16 @@ export const ItemEditDialog: React.FC<IItemEditDialogProps> = ({
   };
 
   const handleCancelUpdateItem = () => {
-    handleCloseDialog();
+    if (isDirty) {
+      navigationGuard.attemptNavigation(() => {
+        handleCloseDialog();
+      });
+
+      return false;
+    } else {
+      handleCloseDialog();
+      return true;
+    }
   };
 
   const handleCloseDialog = () => {
@@ -154,6 +191,7 @@ export const ItemEditDialog: React.FC<IItemEditDialogProps> = ({
     setWrappedItemId(false);
     setItemData({});
     setPreviewPageItem(undefined);
+    setIsDirty(false);
   };
 
   const interactiveFromItemToEdit = (itemToEdit: ISectionItem) => {
@@ -162,10 +200,21 @@ export const ItemEditDialog: React.FC<IItemEditDialogProps> = ({
     return interactive;
   };
 
+  const handleUnsavedChangesConfirm = () => {
+    navigationGuard.confirmNavigation();
+    handleCloseDialog();
+  };
+
+  const handleCancelButtonClick = (e: React.MouseEvent<HTMLElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    handleCancelUpdateItem();
+  };
+
   const standardModalButtons = [
     {
       "classes": "cancel",
-      "clickHandler": handleCancelUpdateItem,
+      "clickHandler": handleCancelButtonClick,
       "disabled": false,
       "svg": <Close height="12" width="12"/>,
       "text": "Cancel",
@@ -173,7 +222,7 @@ export const ItemEditDialog: React.FC<IItemEditDialogProps> = ({
     },
     {
       "classes": "save",
-      "clickHandler": handleSave,
+      "clickHandler": handleSaveButtonClick,
       "disabled": false,
       "svg": <Save height="16" width="16"/>,
       "text": "Save",
@@ -210,6 +259,7 @@ export const ItemEditDialog: React.FC<IItemEditDialogProps> = ({
                 authoringApiUrls={authoringApiUrls}
                 onUpdate={handleManagedInteractiveData}
                 handleUpdateItemPreview={handleUpdateItemPreview}
+                onDirtyStateChange={handleLibraryInteractiveDirtyState}
                />;
       case "MwInteractive":
         const interactive = interactiveFromItemToEdit(itemToEdit);
@@ -271,32 +321,41 @@ export const ItemEditDialog: React.FC<IItemEditDialogProps> = ({
   if (pageItem) {
     const formClassName = classNames({noPreview: !supportsPreview()});
     return (
-      <Modal
-        title="Edit"
-        className="itemEditDialog"
-        closeFunction={handleCancelUpdateItem}
-        visibility={true}
-      >
-        <div id="itemEditDialog">
-          {errorMessage &&
-            <div className="errorMessage">
-              {errorMessage}
-            </div>
-          }
-          <form id="itemEditForm" onSubmit={handleSubmit} className={formClassName}>
-            {getEditForm(pageItem)}
-            <ModalButtons buttons={modalButtons} />
-          </form>
-            {supportsPreview() &&
-              <div className="itemEditPreview">
-                <h2>Preview</h2>
-                  <div className="itemEditPreviewContent">
-                  {getPreview()}
-                </div>
+      <>
+        <Modal
+          title="Edit"
+          className="itemEditDialog"
+          closeFunction={handleCancelUpdateItem}
+          preventClose={navigationGuard.isNavigationBlocked}
+          visibility={true}
+        >
+          <div id="itemEditDialog">
+            {errorMessage &&
+              <div className="errorMessage">
+                {errorMessage}
               </div>
             }
-        </div>
-      </Modal>
+            <form id="itemEditForm" onSubmit={handleSubmit} className={formClassName}>
+              {getEditForm(pageItem)}
+              <ModalButtons buttons={modalButtons} />
+            </form>
+              {supportsPreview() &&
+                <div className="itemEditPreview">
+                  <h2>Preview</h2>
+                    <div className="itemEditPreviewContent">
+                    {getPreview()}
+                  </div>
+                </div>
+              }
+          </div>
+        </Modal>
+        {navigationGuard.isNavigationBlocked &&
+          <UnsavedChangesDialog
+            onCancel={navigationGuard.cancelNavigation}
+            onConfirm={handleUnsavedChangesConfirm}
+          />
+        }
+      </>
     );
   }
   return null;

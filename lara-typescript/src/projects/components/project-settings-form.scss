@@ -100,8 +100,8 @@
     padding: 10px;
 
     &.error {
-      background: var(--error-bg);
-      color: var(--error-fg);
+      background: var(--error-pink);
+      color: var(--error-red);
     }
   }
   @keyframes pulse {

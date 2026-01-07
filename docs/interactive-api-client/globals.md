@@ -91,6 +91,7 @@
 * [IRuntimeMetadataBase](interfaces/iruntimemetadatabase.md)
 * [IRuntimeMultipleChoiceMetadata](interfaces/iruntimemultiplechoicemetadata.md)
 * [IRuntimeOpenResponseMetadata](interfaces/iruntimeopenresponsemetadata.md)
+* [ISetDirtyStateRequest](interfaces/isetdirtystaterequest.md)
 * [ISetLinkedInteractives](interfaces/isetlinkedinteractives.md)
 * [IShowAlert](interfaces/ishowalert.md)
 * [IShowDialog](interfaces/ishowdialog.md)
@@ -188,6 +189,7 @@
 * [sendCustomMessage](globals.md#const-sendcustommessage)
 * [sendReportItemAnswer](globals.md#const-sendreportitemanswer)
 * [setAuthoredState](globals.md#const-setauthoredstate)
+* [setDirtyState](globals.md#const-setdirtystate)
 * [setGlobalInteractiveState](globals.md#const-setglobalinteractivestate)
 * [setHeight](globals.md#const-setheight)
 * [setHint](globals.md#const-sethint)
@@ -375,7 +377,7 @@ ___
 
 ###  IRuntimeClientMessage
 
-Ƭ **IRuntimeClientMessage**: *"interactiveState" | "height" | "hint" | "getAttachmentUrl" | "getAuthInfo" | "supportedFeatures" | "navigation" | "getFirebaseJWT" | "authoredState" | "authoringCustomReportFields" | "runtimeCustomReportValues" | "showModal" | "closeModal" | "getLibraryInteractiveList" | "getInteractiveSnapshot" | "addLinkedInteractiveStateListener" | "removeLinkedInteractiveStateListener" | "decoratedContentEvent" | "customMessage" | "createChannel" | "publish" | "subscribe" | "unsubscribe"*
+Ƭ **IRuntimeClientMessage**: *"interactiveState" | "height" | "hint" | "getAttachmentUrl" | "getAuthInfo" | "supportedFeatures" | "navigation" | "getFirebaseJWT" | "authoredState" | "authoringCustomReportFields" | "runtimeCustomReportValues" | "showModal" | "closeModal" | "getLibraryInteractiveList" | "getInteractiveSnapshot" | "addLinkedInteractiveStateListener" | "removeLinkedInteractiveStateListener" | "decoratedContentEvent" | "setDirtyState" | "customMessage" | "createChannel" | "publish" | "subscribe" | "unsubscribe"*
 
 ___
 
@@ -1103,6 +1105,20 @@ setAuthoredState(previousState);
 Name | Type |
 ------ | ------ |
 `newAuthoredState` | AuthoredState &#124; null |
+
+**Returns:** *void*
+
+___
+
+### `Const` setDirtyState
+
+▸ **setDirtyState**(`isDirty`: boolean): *void*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`isDirty` | boolean |
 
 **Returns:** *void*
 

@@ -1,0 +1,73 @@
+@import "../../vars.scss";
+
+.unsaved-changes-dialog-backdrop {
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  height: 100%;
+  left: 0;
+  justify-content: center;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 10000;
+}
+
+.unsaved-changes-dialog {
+  background: #fff;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  max-height: 80vh;
+  max-width: 80vw;
+  overflow-y: auto;
+}
+
+.unsaved-changes-dialog-header {
+  padding: 24px 24px 0 24px;
+}
+
+.unsaved-changes-dialog-title {
+  color: var(--error-red);
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.unsaved-changes-dialog-body {
+  padding: 16px 24px 24px 24px;
+}
+
+.unsaved-changes-dialog-message {
+  color: var(--dark-gray);
+  font-size: 1rem;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.unsaved-changes-dialog-footer {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  padding: 0 24px 24px 24px;
+}
+
+.unsaved-changes-dialog-button {
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 500;
+  min-width: 120px;
+  padding: 10px 20px;
+  transition: all 0.2s ease;
+}
+
+.unsaved-changes-dialog-button--cancel {
+  background-color: var(--dark-gray);
+  color: #fff;
+}
+
+.unsaved-changes-dialog-button--confirm {
+  background-color: var(--error-red);
+  color: #fff;
+}
+

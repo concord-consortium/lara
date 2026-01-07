@@ -325,8 +325,8 @@
   --med-gray: #979797;
   --lt-gray: hsl(0, 0%, 90%);
   --ltr-gray: hsl(0, 0%, 95%);
-  --error-bg: #fee;
-  --error-fg: #ad2d23;
+  --error-pink: #fee;
+  --error-red: #ad2d23;
 }
 
 .project-logo {
@@ -397,8 +397,8 @@
   --med-gray: #979797;
   --lt-gray: hsl(0, 0%, 90%);
   --ltr-gray: hsl(0, 0%, 95%);
-  --error-bg: #fee;
-  --error-fg: #ad2d23;
+  --error-pink: #fee;
+  --error-red: #ad2d23;
 }
 
 .account-owner {
@@ -472,8 +472,8 @@
   --med-gray: #979797;
   --lt-gray: hsl(0, 0%, 90%);
   --ltr-gray: hsl(0, 0%, 95%);
-  --error-bg: #fee;
-  --error-fg: #ad2d23;
+  --error-pink: #fee;
+  --error-red: #ad2d23;
 }
 
 .header-menu {
@@ -602,8 +602,8 @@
   --med-gray: #979797;
   --lt-gray: hsl(0, 0%, 90%);
   --ltr-gray: hsl(0, 0%, 95%);
-  --error-bg: #fee;
-  --error-fg: #ad2d23;
+  --error-pink: #fee;
+  --error-red: #ad2d23;
 }
 
 .authoring-header {
@@ -691,6 +691,118 @@
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
+}
+@font-face {
+  font-family: "Lato-Light";
+  font-style: normal;
+  font-weight: 100;
+  src: local("Lato Light"), local("Lato-Light"), url(//fonts.googleapis.com/css?family=Lato:100) format("woff");
+}
+@font-face {
+  font-family: "Lato-Regular";
+  font-style: normal;
+  font-weight: 400;
+  src: local("Lato Regular"), local("Lato-Regular"), url(//themes.googleusercontent.com/static/fonts/lato/v6/qIIYRU-oROkIk8vfvxw6QvesZW2xOQ-xsNqO47m55DA.woff) format("woff");
+}
+@font-face {
+  font-family: "Lato-Bold";
+  font-style: normal;
+  font-weight: 700;
+  src: local("Lato Bold"), local("Lato-Bold"), url(//themes.googleusercontent.com/static/fonts/lato/v6/qdgUG4U09HnJwhYI-uK18wLUuEpTyoUstqEm5AMlJo4.woff) format("woff");
+}
+:root {
+  --font-family-bold: Lato-Bold, helvetica, verdana, sans-serif;
+  --font-family-default: Lato-Regular, helvetica, verdana, sans-serif;
+  --font-family-light: Lato-Light, helvetica, verdana, sans-serif;
+  --font-color-default: #313131;
+  --dark-teal: #016082;
+  --teal: #0592af;
+  --lt-teal: #93d5e4;
+  --ltr-teal: #cdebf2;
+  --ltst-teal: #e2f4f8;
+  --gold: #ffc320;
+  --lt-orange: #ffe6d0;
+  --orange: #ea6d2f;
+  --green: #2da343;
+  --med-green: #dcecde;
+  --lt-green: #edf5ee;
+  --dark-gray: #3f3f3f;
+  --med-gray: #979797;
+  --lt-gray: hsl(0, 0%, 90%);
+  --ltr-gray: hsl(0, 0%, 95%);
+  --error-pink: #fee;
+  --error-red: #ad2d23;
+}
+
+.unsaved-changes-dialog-backdrop {
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  height: 100%;
+  left: 0;
+  justify-content: center;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 10000;
+}
+
+.unsaved-changes-dialog {
+  background: #fff;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  max-height: 80vh;
+  max-width: 80vw;
+  overflow-y: auto;
+}
+
+.unsaved-changes-dialog-header {
+  padding: 24px 24px 0 24px;
+}
+
+.unsaved-changes-dialog-title {
+  color: var(--error-red);
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.unsaved-changes-dialog-body {
+  padding: 16px 24px 24px 24px;
+}
+
+.unsaved-changes-dialog-message {
+  color: var(--dark-gray);
+  font-size: 1rem;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.unsaved-changes-dialog-footer {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  padding: 0 24px 24px 24px;
+}
+
+.unsaved-changes-dialog-button {
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 500;
+  min-width: 120px;
+  padding: 10px 20px;
+  transition: all 0.2s ease;
+}
+
+.unsaved-changes-dialog-button--cancel {
+  background-color: var(--dark-gray);
+  color: #fff;
+}
+
+.unsaved-changes-dialog-button--confirm {
+  background-color: var(--error-red);
+  color: #fff;
 }
 .react-tabs {
   -webkit-tap-highlight-color: transparent;
@@ -786,8 +898,8 @@
   --med-gray: #979797;
   --lt-gray: hsl(0, 0%, 90%);
   --ltr-gray: hsl(0, 0%, 95%);
-  --error-bg: #fee;
-  --error-fg: #ad2d23;
+  --error-pink: #fee;
+  --error-red: #ad2d23;
 }
 
 .textBlock {
@@ -865,8 +977,8 @@
   --med-gray: #979797;
   --lt-gray: hsl(0, 0%, 90%);
   --ltr-gray: hsl(0, 0%, 95%);
-  --error-bg: #fee;
-  --error-fg: #ad2d23;
+  --error-pink: #fee;
+  --error-red: #ad2d23;
 }
 
 .managedInteractive {
@@ -914,8 +1026,8 @@
   --med-gray: #979797;
   --lt-gray: hsl(0, 0%, 90%);
   --ltr-gray: hsl(0, 0%, 95%);
-  --error-bg: #fee;
-  --error-fg: #ad2d23;
+  --error-pink: #fee;
+  --error-red: #ad2d23;
 }
 
 .mwInteractive {
@@ -963,8 +1075,8 @@
   --med-gray: #979797;
   --lt-gray: hsl(0, 0%, 90%);
   --ltr-gray: hsl(0, 0%, 95%);
-  --error-bg: #fee;
-  --error-fg: #ad2d23;
+  --error-pink: #fee;
+  --error-red: #ad2d23;
 }
 
 .availablePlugins {
@@ -1085,8 +1197,8 @@
   --med-gray: #979797;
   --lt-gray: hsl(0, 0%, 90%);
   --ltr-gray: hsl(0, 0%, 95%);
-  --error-bg: #fee;
-  --error-fg: #ad2d23;
+  --error-pink: #fee;
+  --error-red: #ad2d23;
 }
 
 .sectionItemContainer {
@@ -1291,8 +1403,8 @@
   --med-gray: #979797;
   --lt-gray: hsl(0, 0%, 90%);
   --ltr-gray: hsl(0, 0%, 95%);
-  --error-bg: #fee;
-  --error-fg: #ad2d23;
+  --error-pink: #fee;
+  --error-red: #ad2d23;
 }
 
 .modalOverlay {
@@ -1469,8 +1581,8 @@
   --med-gray: #979797;
   --lt-gray: hsl(0, 0%, 90%);
   --ltr-gray: hsl(0, 0%, 95%);
-  --error-bg: #fee;
-  --error-fg: #ad2d23;
+  --error-pink: #fee;
+  --error-red: #ad2d23;
 }
 
 .disabled, *[disabled] {
@@ -1673,8 +1785,8 @@ input, select {
   --med-gray: #979797;
   --lt-gray: hsl(0, 0%, 90%);
   --ltr-gray: hsl(0, 0%, 95%);
-  --error-bg: #fee;
-  --error-fg: #ad2d23;
+  --error-pink: #fee;
+  --error-red: #ad2d23;
 }
 
 .itemsContainer {
@@ -1759,8 +1871,8 @@ input, select {
   --med-gray: #979797;
   --lt-gray: hsl(0, 0%, 90%);
   --ltr-gray: hsl(0, 0%, 95%);
-  --error-bg: #fee;
-  --error-fg: #ad2d23;
+  --error-pink: #fee;
+  --error-red: #ad2d23;
 }
 
 a {
@@ -2213,8 +2325,8 @@ select {
   --med-gray: #979797;
   --lt-gray: hsl(0, 0%, 90%);
   --ltr-gray: hsl(0, 0%, 95%);
-  --error-bg: #fee;
-  --error-fg: #ad2d23;
+  --error-pink: #fee;
+  --error-red: #ad2d23;
 }
 
 #preview-links {
@@ -2309,8 +2421,8 @@ select {
   --med-gray: #979797;
   --lt-gray: hsl(0, 0%, 90%);
   --ltr-gray: hsl(0, 0%, 95%);
-  --error-bg: #fee;
-  --error-fg: #ad2d23;
+  --error-pink: #fee;
+  --error-red: #ad2d23;
 }
 
 select {
@@ -2383,8 +2495,8 @@ select {
   --med-gray: #979797;
   --lt-gray: hsl(0, 0%, 90%);
   --ltr-gray: hsl(0, 0%, 95%);
-  --error-bg: #fee;
-  --error-fg: #ad2d23;
+  --error-pink: #fee;
+  --error-red: #ad2d23;
 }
 
 .activity-nav {
@@ -2504,8 +2616,8 @@ select {
   --med-gray: #979797;
   --lt-gray: hsl(0, 0%, 90%);
   --ltr-gray: hsl(0, 0%, 95%);
-  --error-bg: #fee;
-  --error-fg: #ad2d23;
+  --error-pink: #fee;
+  --error-red: #ad2d23;
 }
 
 .pageSettingsDialog input[type=text] {
@@ -2699,8 +2811,8 @@ select {
   --med-gray: #979797;
   --lt-gray: hsl(0, 0%, 90%);
   --ltr-gray: hsl(0, 0%, 95%);
-  --error-bg: #fee;
-  --error-fg: #ad2d23;
+  --error-pink: #fee;
+  --error-red: #ad2d23;
 }
 
 select {
@@ -2779,8 +2891,8 @@ select {
   --med-gray: #979797;
   --lt-gray: hsl(0, 0%, 90%);
   --ltr-gray: hsl(0, 0%, 95%);
-  --error-bg: #fee;
-  --error-fg: #ad2d23;
+  --error-pink: #fee;
+  --error-red: #ad2d23;
 }
 
 select {
@@ -2874,8 +2986,8 @@ select {
   --med-gray: #979797;
   --lt-gray: hsl(0, 0%, 90%);
   --ltr-gray: hsl(0, 0%, 95%);
-  --error-bg: #fee;
-  --error-fg: #ad2d23;
+  --error-pink: #fee;
+  --error-red: #ad2d23;
 }
 
 dl.textBlockEditForm {
@@ -3006,8 +3118,8 @@ dl.textBlockEditForm dd.row4.inputNote {
   --med-gray: #979797;
   --lt-gray: hsl(0, 0%, 90%);
   --ltr-gray: hsl(0, 0%, 95%);
-  --error-bg: #fee;
-  --error-fg: #ad2d23;
+  --error-pink: #fee;
+  --error-red: #ad2d23;
 }
 
 .modalContainer.itemEditDialog {
@@ -3242,8 +3354,8 @@ dl.textBlockEditForm dd.row4.inputNote {
   --med-gray: #979797;
   --lt-gray: hsl(0, 0%, 90%);
   --ltr-gray: hsl(0, 0%, 95%);
-  --error-bg: #fee;
-  --error-fg: #ad2d23;
+  --error-pink: #fee;
+  --error-red: #ad2d23;
 }
 
 .completion-page {
@@ -3303,8 +3415,8 @@ dl.textBlockEditForm dd.row4.inputNote {
   --med-gray: #979797;
   --lt-gray: hsl(0, 0%, 90%);
   --ltr-gray: hsl(0, 0%, 95%);
-  --error-bg: #fee;
-  --error-fg: #ad2d23;
+  --error-pink: #fee;
+  --error-red: #ad2d23;
 }
 
 .sidebar-tab {
@@ -3386,8 +3498,8 @@ dl.textBlockEditForm dd.row4.inputNote {
   --med-gray: #979797;
   --lt-gray: hsl(0, 0%, 90%);
   --ltr-gray: hsl(0, 0%, 95%);
-  --error-bg: #fee;
-  --error-fg: #ad2d23;
+  --error-pink: #fee;
+  --error-red: #ad2d23;
 }
 
 .sidebar-panel {
@@ -3499,8 +3611,8 @@ dl.textBlockEditForm dd.row4.inputNote {
   --med-gray: #979797;
   --lt-gray: hsl(0, 0%, 90%);
   --ltr-gray: hsl(0, 0%, 95%);
-  --error-bg: #fee;
-  --error-fg: #ad2d23;
+  --error-pink: #fee;
+  --error-red: #ad2d23;
 }
 
 .sidebar-container {
@@ -3558,8 +3670,8 @@ dl.textBlockEditForm dd.row4.inputNote {
   --med-gray: #979797;
   --lt-gray: hsl(0, 0%, 90%);
   --ltr-gray: hsl(0, 0%, 95%);
-  --error-bg: #fee;
-  --error-fg: #ad2d23;
+  --error-pink: #fee;
+  --error-red: #ad2d23;
 }
 
 .editPageHeader {
@@ -4568,8 +4680,8 @@ ul.mde-suggestions li:hover, ul.mde-suggestions li[aria-selected=true] {
   --med-gray: #979797;
   --lt-gray: hsl(0, 0%, 90%);
   --ltr-gray: hsl(0, 0%, 95%);
-  --error-bg: #fee;
-  --error-fg: #ad2d23;
+  --error-pink: #fee;
+  --error-red: #ad2d23;
 }
 
 .projectListItem {
@@ -4664,8 +4776,8 @@ ul.mde-suggestions li:hover, ul.mde-suggestions li[aria-selected=true] {
   --med-gray: #979797;
   --lt-gray: hsl(0, 0%, 90%);
   --ltr-gray: hsl(0, 0%, 95%);
-  --error-bg: #fee;
-  --error-fg: #ad2d23;
+  --error-pink: #fee;
+  --error-red: #ad2d23;
 }
 
 .projectListContainer h1.title {
@@ -4969,8 +5081,8 @@ ul.mde-suggestions li:hover, ul.mde-suggestions li[aria-selected=true] {
   --med-gray: #979797;
   --lt-gray: hsl(0, 0%, 90%);
   --ltr-gray: hsl(0, 0%, 95%);
-  --error-bg: #fee;
-  --error-fg: #ad2d23;
+  --error-pink: #fee;
+  --error-red: #ad2d23;
 }
 
 .projectSettingsForm {
@@ -5058,8 +5170,8 @@ ul.mde-suggestions li:hover, ul.mde-suggestions li[aria-selected=true] {
   padding: 10px;
 }
 .projectSettingsForm .alertMessage.error {
-  background: var(--error-bg);
-  color: var(--error-fg);
+  background: var(--error-pink);
+  color: var(--error-red);
 }
 @keyframes pulse {
   0% {
