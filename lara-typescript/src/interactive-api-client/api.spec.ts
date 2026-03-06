@@ -556,6 +556,61 @@ describe("api", () => {
     });
   });
 
+  describe("job API", () => {
+    it("supports createJob with requestId correlation", async () => {
+      const promise = api.createJob({ task: "generate" });
+      const content = {
+        requestId: 1,
+        job: { version: 1, id: "job-1", status: "queued", request: { task: "generate" }, createdAt: 1000 }
+      };
+      mockedPhone.fakeServerMessage({ type: "jobCreated", content });
+      const result = await promise;
+      expect(result).toEqual(content.job);
+    });
+
+    it("createJob updates managed state before resolving", async () => {
+      const promise = api.createJob({ task: "generate" });
+      const job = { version: 1, id: "job-1", status: "queued", request: { task: "generate" }, createdAt: 1000 };
+      const content = { requestId: 1, job };
+      mockedPhone.fakeServerMessage({ type: "jobCreated", content });
+      await promise;
+      expect(api.getJobs()).toContainEqual(job);
+    });
+
+    it("createJob emits jobInfoReceived event", async () => {
+      const listener = jest.fn();
+      api.addJobUpdateListener(listener);
+      const promise = api.createJob({ task: "generate" });
+      const job = { version: 1, id: "job-1", status: "queued", request: { task: "generate" }, createdAt: 1000 };
+      mockedPhone.fakeServerMessage({ type: "jobCreated", content: { requestId: 1, job } });
+      await promise;
+      expect(listener).toHaveBeenCalledWith(job);
+      api.removeJobUpdateListener(listener);
+    });
+
+    it("supports cancelJob", () => {
+      api.cancelJob("job-1");
+      expect(mockedPhone.messages).toEqual([{ type: "cancelJob", content: { jobId: "job-1" } }]);
+    });
+
+    it("supports getJobs returning managed state", () => {
+      expect(api.getJobs()).toEqual([]);
+    });
+
+    it("supports addJobUpdateListener and removeJobUpdateListener", () => {
+      const listener = jest.fn();
+      api.addJobUpdateListener(listener);
+      const job = { version: 1, id: "job-1", status: "queued", request: { task: "test" }, createdAt: 1000 };
+      getClient().managedState.emit("jobInfoReceived", job);
+      expect(listener).toHaveBeenCalledWith(job);
+      expect(listener).toHaveBeenCalledTimes(1);
+
+      api.removeJobUpdateListener(listener);
+      getClient().managedState.emit("jobInfoReceived", job);
+      expect(listener).toHaveBeenCalledTimes(1);
+    });
+  });
+
   describe("report item support", () => {
     it("supports addGetReportItemAnswerListener and removeGetReportItemAnswerListener", () => {
       const listener = jest.fn();

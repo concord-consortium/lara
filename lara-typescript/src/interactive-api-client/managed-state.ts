@@ -6,10 +6,12 @@ type ManagedStateEvent =
   "interactiveStateUpdated" |
   "globalInteractiveStateUpdated" |
   "authoredStateUpdated" |
-  "initInteractive";
+  "initInteractive" |
+  "jobInfoReceived";
 
 export class ManagedState {
   public interactiveStateDirty = false;
+  public jobs: ReadonlyArray<any> = [];
 
   private _initMessage: Readonly<IInitInteractive<any, any, any>> | null = null;
   // State variables are kept separately from initMessage, as they might get updated. For client user convenience,

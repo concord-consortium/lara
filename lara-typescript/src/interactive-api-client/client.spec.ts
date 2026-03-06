@@ -52,7 +52,7 @@ describe("Client", () => {
       }).not.toThrowError();
       expect(mockedPhone).toBeDefined();
       expect(mockedPhone.listenerMessages).toEqual([
-        "initInteractive", "getInteractiveState", "loadInteractiveGlobal"
+        "initInteractive", "getInteractiveState", "loadInteractiveGlobal", "jobInfo"
       ]);
       expect(mockedPhone.initialize).toHaveBeenCalled();
     });
@@ -176,6 +176,31 @@ describe("Client", () => {
       // listener should be removed now
       mockedPhone.fakeServerMessage({type: "authInfo", content: {test: 321}});
       expect(listener).toHaveBeenCalledTimes(1);
+    });
+
+    it("handles jobInfo message and adds new job to managed state", () => {
+      const client = new Client();
+      const job = { version: 1, id: "job-1", status: "queued", request: { task: "test" }, createdAt: 1000 };
+      mockedPhone.fakeServerMessage({ type: "jobInfo", content: { job } });
+      expect(client.managedState.jobs).toEqual([job]);
+    });
+
+    it("handles jobInfo message and replaces existing job by id", () => {
+      const client = new Client();
+      const job1 = { version: 1, id: "job-1", status: "queued", request: { task: "test" }, createdAt: 1000 };
+      mockedPhone.fakeServerMessage({ type: "jobInfo", content: { job: job1 } });
+      const job1Updated = { ...job1, status: "running", updatedAt: 2000 };
+      mockedPhone.fakeServerMessage({ type: "jobInfo", content: { job: job1Updated } });
+      expect(client.managedState.jobs).toEqual([job1Updated]);
+    });
+
+    it("handles jobInfo message and emits jobInfoReceived event", () => {
+      const client = new Client();
+      const listener = jest.fn();
+      client.managedState.on("jobInfoReceived", listener);
+      const job = { version: 1, id: "job-1", status: "queued", request: { task: "test" }, createdAt: 1000 };
+      mockedPhone.fakeServerMessage({ type: "jobInfo", content: { job } });
+      expect(listener).toHaveBeenCalledWith(job);
     });
 
     it("warns user when he tries to leave the page and interactive state is dirty", () => {

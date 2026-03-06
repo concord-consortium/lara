@@ -197,7 +197,9 @@ export type IRuntimeClientMessage = "interactiveState" |
                                        "createChannel" |
                                        "publish" |
                                        "subscribe" |
-                                       "unsubscribe"
+                                       "unsubscribe" |
+                                       "createJob" |
+                                       "cancelJob"
                                       ;
 
 export type IRuntimeServerMessage = "attachmentUrl" |
@@ -213,7 +215,9 @@ export type IRuntimeServerMessage = "attachmentUrl" |
                                        "linkedInteractiveState" |
                                        "decorateContent" |
                                        "pubSubMessage" |
-                                       "pubSubChannelInfo"
+                                       "pubSubChannelInfo" |
+                                       "jobCreated" |
+                                       "jobInfo"
                                        ;
 
 export type IAuthoringClientMessage = "getInteractiveList" |
@@ -675,3 +679,40 @@ export interface IPubSubChannelInfo {
 
 export type PubSubMessageHandler = (message: any, publisherId: string) => void;
 export type PubSubChannelInfoHandler = (channelInfo: any) => void;
+
+// Job types
+
+export interface IJobInfo {
+  version: 1;
+  id: string;
+  status: "queued" | "running" | "success" | "failure" | "cancelled";
+  request: { task: string } & Record<string, any>;
+  result?: { message: string; processingMessage?: string } & Record<string, any>;
+  createdAt: number;
+  updatedAt?: number;
+  startedAt?: number;
+  completedAt?: number;
+}
+
+export interface ICreateJobRequest extends IBaseRequestResponse {
+  request: { task: string } & Record<string, any>;
+}
+
+export interface ICreateJobResponse extends IBaseRequestResponse {
+  job: IJobInfo;
+}
+
+export interface ICancelJobRequest {
+  jobId: string;
+}
+
+export interface IJobInfoMessage {
+  job: IJobInfo;
+}
+
+export interface IJobExecutor {
+  createJob(request: { task: string } & Record<string, any>, context?: Record<string, any>): Promise<IJobInfo>;
+  cancelJob(jobId: string): Promise<void>;
+  getJobs(context?: Record<string, any>): Promise<IJobInfo[]>;
+  onJobUpdate(callback: (job: IJobInfo) => void): void;
+}

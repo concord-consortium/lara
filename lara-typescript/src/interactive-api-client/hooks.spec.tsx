@@ -344,3 +344,65 @@ describe("useAccessibility", () => {
     expect((afterStyle?.sheet?.cssRules[0] as CSSPageRule).style["font-family" as any]).toEqual("test-font-family, fallback-font-family");
   });
 });
+
+describe("useJobs", () => {
+  it("returns empty jobs array on mount", () => {
+    const { result } = renderHook(() => hooks.useJobs());
+    expect(result.current.jobs).toEqual([]);
+    expect(result.current.latestJob).toBeUndefined();
+  });
+
+  it("reads existing jobs from managed state on mount", () => {
+    const job = { version: 1, id: "job-1", status: "queued", request: { task: "test" }, createdAt: 1000 };
+    getClient().managedState.jobs = [job];
+    const { result } = renderHook(() => hooks.useJobs());
+    expect(result.current.jobs).toEqual([job]);
+    expect(result.current.latestJob).toEqual(job);
+  });
+
+  it("adds new jobs from jobInfoReceived events", () => {
+    const { result } = renderHook(() => hooks.useJobs());
+    const job = { version: 1, id: "job-1", status: "queued", request: { task: "test" }, createdAt: 1000 };
+    act(() => {
+      getClient().managedState.emit("jobInfoReceived", job);
+    });
+    expect(result.current.jobs).toEqual([job]);
+    expect(result.current.latestJob).toEqual(job);
+  });
+
+  it("replaces existing jobs by id from jobInfoReceived events", () => {
+    const { result } = renderHook(() => hooks.useJobs());
+    const job = { version: 1, id: "job-1", status: "queued", request: { task: "test" }, createdAt: 1000 };
+    act(() => {
+      getClient().managedState.emit("jobInfoReceived", job);
+    });
+    const updatedJob = { ...job, status: "running", updatedAt: 2000 };
+    act(() => {
+      getClient().managedState.emit("jobInfoReceived", updatedJob);
+    });
+    expect(result.current.jobs).toEqual([updatedJob]);
+  });
+
+  it("maintains arrival-order ordering for multiple jobs", () => {
+    const { result } = renderHook(() => hooks.useJobs());
+    const job1 = { version: 1, id: "job-1", status: "queued", request: { task: "a" }, createdAt: 1000 };
+    const job2 = { version: 1, id: "job-2", status: "queued", request: { task: "b" }, createdAt: 2000 };
+    act(() => {
+      getClient().managedState.emit("jobInfoReceived", job1);
+    });
+    act(() => {
+      getClient().managedState.emit("jobInfoReceived", job2);
+    });
+    expect(result.current.jobs).toEqual([job1, job2]);
+    expect(result.current.latestJob).toEqual(job2);
+  });
+
+  it("removes listener on unmount", () => {
+    const { unmount } = renderHook(() => hooks.useJobs());
+    unmount();
+    // After unmount, emitting should not cause errors
+    expect(() => {
+      getClient().managedState.emit("jobInfoReceived", { id: "job-1" });
+    }).not.toThrow();
+  });
+});

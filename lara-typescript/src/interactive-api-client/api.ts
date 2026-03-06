@@ -39,7 +39,11 @@ import {
   OnUnloadFunction,
   IReportItemHandlerMetadata,
   ITextDecorationInfo,
-  ICustomMessage
+  ICustomMessage,
+  IJobInfo,
+  ICreateJobRequest,
+  ICreateJobResponse,
+  ICancelJobRequest
 } from "./types";
 import { getClient } from "./client";
 import { v4 as uuidv4 } from "uuid";
@@ -537,4 +541,51 @@ export const createPubSubChannel = (channelId: string, channelInfo?: any): PubSu
 export const setDirtyState = (isDirty: boolean) => {
   const request: ISetDirtyStateRequest = { isDirty };
   getClient().post("setDirtyState", request);
+};
+
+// Job API
+
+export const createJob = (request: { task: string } & Record<string, any>): Promise<IJobInfo> => {
+  return new Promise<IJobInfo>((resolve) => {
+    const listener = (response: ICreateJobResponse) => {
+      // Update managed state so getJobs() is immediately consistent
+      const c = getClient();
+      const jobs = c.managedState.jobs as IJobInfo[];
+      const index = jobs.findIndex((j: IJobInfo) => j.id === response.job.id);
+      if (index === -1) {
+        c.managedState.jobs = [...jobs, response.job];
+      } else {
+        const next = [...jobs];
+        next[index] = response.job;
+        c.managedState.jobs = next;
+      }
+      c.managedState.emit("jobInfoReceived", response.job);
+      resolve(response.job);
+    };
+    const client = getClient();
+    const requestId = client.getNextRequestId();
+    const createJobRequest: ICreateJobRequest = {
+      requestId,
+      request
+    };
+    client.addListener("jobCreated", listener, requestId);
+    client.post("createJob", createJobRequest);
+  });
+};
+
+export const cancelJob = (jobId: string): void => {
+  const cancelRequest: ICancelJobRequest = { jobId };
+  getClient().post("cancelJob", cancelRequest);
+};
+
+export const getJobs = (): IJobInfo[] => {
+  return getClient().managedState.jobs as IJobInfo[];
+};
+
+export const addJobUpdateListener = (listener: (job: IJobInfo) => void): void => {
+  getClient().managedState.on("jobInfoReceived", listener);
+};
+
+export const removeJobUpdateListener = (listener: (job: IJobInfo) => void): void => {
+  getClient().managedState.off("jobInfoReceived", listener);
 };
