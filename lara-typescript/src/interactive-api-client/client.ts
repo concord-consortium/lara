@@ -4,7 +4,7 @@
 import * as iframePhone from "iframe-phone";
 import { ClientMessage, ICustomMessageHandler, ICustomMessagesHandledMap, IInitInteractive, ISupportedFeaturesRequest,
          ServerMessage, ITextDecorationHandler, ITextDecorationInfo, IGetReportItemAnswerHandler,
-         IGetInteractiveState, OnUnloadFunction, IJobInfoMessage, IJobInfo } from "./types";
+         IGetInteractiveState, OnUnloadFunction, IJobInfoMessage } from "./types";
 import { postDecoratedContentEvent } from "../interactive-api-client";
 import { inIframe } from "./in-frame";
 import { ManagedState } from "./managed-state";
@@ -200,17 +200,7 @@ export class Client {
     });
 
     this.addListener("jobInfo", (content: IJobInfoMessage) => {
-      const job = content.job;
-      const jobs = this.managedState.jobs as IJobInfo[];
-      const index = jobs.findIndex((j: IJobInfo) => j.id === job.id);
-      if (index === -1) {
-        this.managedState.jobs = [...jobs, job];
-      } else {
-        const next = [...jobs];
-        next[index] = job;
-        this.managedState.jobs = next;
-      }
-      this.managedState.emit("jobInfoReceived", job);
+      this.managedState.upsertJob(content.job);
     });
 
     this.phone.initialize();

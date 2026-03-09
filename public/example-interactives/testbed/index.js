@@ -44884,15 +44884,6 @@ var __rest = (this && this.__rest) || function (s, e) {
         }
     return t;
 };
-var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
-    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
-        if (ar || !(i in from)) {
-            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
-            ar[i] = from[i];
-        }
-    }
-    return to.concat(ar || Array.prototype.slice.call(from));
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.cancelJob = exports.createJob = exports.setDirtyState = exports.createPubSubChannel = exports.sendCustomMessage = exports.setOnUnload = exports.sendReportItemAnswer = exports.getAttachmentUrl = exports.readAttachment = exports.writeAttachment = exports.getLibraryInteractiveList = exports.getInteractiveSnapshot = exports.setLinkedInteractives = exports.getInteractiveList = exports.closeModal = exports.showModal = exports.removeLinkedInteractiveStateListener = exports.addLinkedInteractiveStateListener = exports.removeGlobalInteractiveStateListener = exports.addGlobalInteractiveStateListener = exports.removeAuthoredStateListener = exports.addAuthoredStateListener = exports.removeInteractiveStateListener = exports.addInteractiveStateListener = exports.log = exports.getFirebaseJwt = exports.getAuthInfo = exports.setNavigation = exports.setHint = exports.postDecoratedContentEvent = exports.setHeight = exports.setSupportedFeatures = exports.notifyReportItemClientReady = exports.removeGetReportItemAnswerListener = exports.addGetReportItemAnswerListener = exports.removeDecorateContentListener = exports.addDecorateContentListener = exports.removeCustomMessageListener = exports.addCustomMessageListener = exports.setGlobalInteractiveState = exports.getGlobalInteractiveState = exports.setAuthoredState = exports.getAuthoredState = exports.flushStateUpdates = exports.setInteractiveState = exports.setInteractiveStateTimeout = exports.getInteractiveState = exports.getMode = exports.getInitInteractiveMessage = exports.PubSubChannel = void 0;
 exports.removeJobUpdateListener = exports.addJobUpdateListener = exports.getJobs = void 0;
@@ -45418,19 +45409,7 @@ exports.setDirtyState = setDirtyState;
 var createJob = function (request) {
     return new Promise(function (resolve) {
         var listener = function (response) {
-            // Update managed state so getJobs() is immediately consistent
-            var c = (0, client_1.getClient)();
-            var jobs = c.managedState.jobs;
-            var index = jobs.findIndex(function (j) { return j.id === response.job.id; });
-            if (index === -1) {
-                c.managedState.jobs = __spreadArray(__spreadArray([], jobs, true), [response.job], false);
-            }
-            else {
-                var next = __spreadArray([], jobs, true);
-                next[index] = response.job;
-                c.managedState.jobs = next;
-            }
-            c.managedState.emit("jobInfoReceived", response.job);
+            (0, client_1.getClient)().managedState.upsertJob(response.job);
             resolve(response.job);
         };
         var client = (0, client_1.getClient)();
@@ -45450,7 +45429,7 @@ var cancelJob = function (jobId) {
 };
 exports.cancelJob = cancelJob;
 var getJobs = function () {
-    return (0, client_1.getClient)().managedState.jobs;
+    return (0, client_1.getClient)().managedState.jobs; // ReadonlyArray<IJobInfo> -> mutable for API consumers
 };
 exports.getJobs = getJobs;
 var addJobUpdateListener = function (listener) {
@@ -45531,15 +45510,6 @@ var __rest = (this && this.__rest) || function (s, e) {
                 t[p[i]] = s[p[i]];
         }
     return t;
-};
-var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
-    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
-        if (ar || !(i in from)) {
-            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
-            ar[i] = from[i];
-        }
-    }
-    return to.concat(ar || Array.prototype.slice.call(from));
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Client = exports.getClient = void 0;
@@ -45722,18 +45692,7 @@ var Client = /** @class */ (function () {
             _this.managedState.globalInteractiveState = parseJSONIfString(globalState);
         });
         this.addListener("jobInfo", function (content) {
-            var job = content.job;
-            var jobs = _this.managedState.jobs;
-            var index = jobs.findIndex(function (j) { return j.id === job.id; });
-            if (index === -1) {
-                _this.managedState.jobs = __spreadArray(__spreadArray([], jobs, true), [job], false);
-            }
-            else {
-                var next = __spreadArray([], jobs, true);
-                next[index] = job;
-                _this.managedState.jobs = next;
-            }
-            _this.managedState.emit("jobInfoReceived", job);
+            _this.managedState.upsertJob(content.job);
         });
         this.phone.initialize();
     };
@@ -46105,6 +46064,15 @@ else {
 
 "use strict";
 
+var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
+    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
+        if (ar || !(i in from)) {
+            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+            ar[i] = from[i];
+        }
+    }
+    return to.concat(ar || Array.prototype.slice.call(from));
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ManagedState = void 0;
 var eventemitter2_1 = __webpack_require__(/*! eventemitter2 */ "./node_modules/eventemitter2/lib/eventemitter2.js");
@@ -46195,6 +46163,18 @@ var ManagedState = /** @class */ (function () {
     };
     ManagedState.prototype.once = function (event, handler) {
         this.emitter.once(event, handler);
+    };
+    ManagedState.prototype.upsertJob = function (job) {
+        var index = this.jobs.findIndex(function (j) { return j.id === job.id; });
+        if (index === -1) {
+            this.jobs = __spreadArray(__spreadArray([], this.jobs, true), [job], false);
+        }
+        else {
+            var next = __spreadArray([], this.jobs, true);
+            next[index] = job;
+            this.jobs = next;
+        }
+        this.emit("jobInfoReceived", job);
     };
     return ManagedState;
 }());
@@ -46817,7 +46797,7 @@ let urlAlphabet =
 /*! exports provided: name, version, description, main, types, repository, author, license, bugs, homepage, dependencies, peerDependencies, default */
 /***/ (function(module) {
 
-module.exports = JSON.parse("{\"name\":\"@concord-consortium/lara-interactive-api\",\"version\":\"1.13.0-pre.1\",\"description\":\"LARA Interactive API client and types\",\"main\":\"./index.js\",\"types\":\"./index-bundle.d.ts\",\"repository\":{\"type\":\"git\",\"url\":\"git+https://github.com/concord-consortium/lara.git\"},\"author\":\"Concord Consortium\",\"license\":\"MIT\",\"bugs\":{\"url\":\"https://github.com/concord-consortium/lara/issues\"},\"homepage\":\"https://github.com/concord-consortium/lara/tree/master/lara-typescript/src/interactive-api-client#readme\",\"dependencies\":{\"iframe-phone\":\"^1.3.1\",\"nanoid\":\"^3.3.7\"},\"peerDependencies\":{\"react\":\">=16.9.0\",\"react-dom\":\">=16.9.0\"}}");
+module.exports = JSON.parse("{\"name\":\"@concord-consortium/lara-interactive-api\",\"version\":\"1.13.0-pre.2\",\"description\":\"LARA Interactive API client and types\",\"main\":\"./index.js\",\"types\":\"./index-bundle.d.ts\",\"repository\":{\"type\":\"git\",\"url\":\"git+https://github.com/concord-consortium/lara.git\"},\"author\":\"Concord Consortium\",\"license\":\"MIT\",\"bugs\":{\"url\":\"https://github.com/concord-consortium/lara/issues\"},\"homepage\":\"https://github.com/concord-consortium/lara/tree/master/lara-typescript/src/interactive-api-client#readme\",\"dependencies\":{\"iframe-phone\":\"^1.3.1\",\"nanoid\":\"^3.3.7\"},\"peerDependencies\":{\"react\":\">=16.9.0\",\"react-dom\":\">=16.9.0\"}}");
 
 /***/ }),
 

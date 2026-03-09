@@ -353,7 +353,10 @@ describe("useJobs", () => {
   });
 
   it("reads existing jobs from managed state on mount", () => {
-    const job = { version: 1, id: "job-1", status: "queued", request: { task: "test" }, createdAt: 1000 };
+    const job = {
+      version: 1 as const, id: "job-1", status: "queued" as const,
+      request: { task: "test" }, createdAt: 1000
+    };
     getClient().managedState.jobs = [job];
     const { result } = renderHook(() => hooks.useJobs());
     expect(result.current.jobs).toEqual([job]);

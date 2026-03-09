@@ -1,4 +1,4 @@
-import { IInitInteractive } from "./types";
+import { IInitInteractive, IJobInfo } from "./types";
 import { EventEmitter2 } from "eventemitter2";
 import * as deepFreeze from "deep-freeze";
 
@@ -11,7 +11,7 @@ type ManagedStateEvent =
 
 export class ManagedState {
   public interactiveStateDirty = false;
-  public jobs: ReadonlyArray<any> = [];
+  public jobs: ReadonlyArray<IJobInfo> = [];
 
   private _initMessage: Readonly<IInitInteractive<any, any, any>> | null = null;
   // State variables are kept separately from initMessage, as they might get updated. For client user convenience,
@@ -91,5 +91,17 @@ export class ManagedState {
 
   public once(event: ManagedStateEvent, handler: any) {
     this.emitter.once(event, handler);
+  }
+
+  public upsertJob(job: IJobInfo) {
+    const index = this.jobs.findIndex(j => j.id === job.id);
+    if (index === -1) {
+      this.jobs = [...this.jobs, job];
+    } else {
+      const next = [...this.jobs];
+      next[index] = job;
+      this.jobs = next;
+    }
+    this.emit("jobInfoReceived", job);
   }
 }
