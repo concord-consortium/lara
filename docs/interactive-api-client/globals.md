@@ -28,9 +28,12 @@
 * [IAuthoringMultipleChoiceMetadata](interfaces/iauthoringmultiplechoicemetadata.md)
 * [IAuthoringOpenResponseMetadata](interfaces/iauthoringopenresponsemetadata.md)
 * [IBaseShowModal](interfaces/ibaseshowmodal.md)
+* [ICancelJobRequest](interfaces/icanceljobrequest.md)
 * [ICloseModal](interfaces/iclosemodal.md)
 * [IContextMember](interfaces/icontextmember.md)
 * [IContextMembership](interfaces/icontextmembership.md)
+* [ICreateJobRequest](interfaces/icreatejobrequest.md)
+* [ICreateJobResponse](interfaces/icreatejobresponse.md)
 * [ICustomMessage](interfaces/icustommessage.md)
 * [ICustomReportFieldsAuthoredState](interfaces/icustomreportfieldsauthoredstate.md)
 * [ICustomReportFieldsAuthoredStateField](interfaces/icustomreportfieldsauthoredstatefield.md)
@@ -59,6 +62,9 @@
 * [IInteractiveListResponseItem](interfaces/iinteractivelistresponseitem.md)
 * [IInteractiveStateProps](interfaces/iinteractivestateprops.md)
 * [IInteractiveStateWithDataset](interfaces/iinteractivestatewithdataset.md)
+* [IJobExecutor](interfaces/ijobexecutor.md)
+* [IJobInfo](interfaces/ijobinfo.md)
+* [IJobInfoMessage](interfaces/ijobinfomessage.md)
 * [IJwtClaims](interfaces/ijwtclaims.md)
 * [IJwtResponse](interfaces/ijwtresponse.md)
 * [ILibraryInteractiveListResponseItem](interfaces/ilibraryinteractivelistresponseitem.md)
@@ -158,8 +164,11 @@
 * [addGetReportItemAnswerListener](globals.md#const-addgetreportitemanswerlistener)
 * [addGlobalInteractiveStateListener](globals.md#const-addglobalinteractivestatelistener)
 * [addInteractiveStateListener](globals.md#const-addinteractivestatelistener)
+* [addJobUpdateListener](globals.md#const-addjobupdatelistener)
 * [addLinkedInteractiveStateListener](globals.md#const-addlinkedinteractivestatelistener)
+* [cancelJob](globals.md#const-canceljob)
 * [closeModal](globals.md#const-closemodal)
+* [createJob](globals.md#const-createjob)
 * [createPubSubChannel](globals.md#const-createpubsubchannel)
 * [flushStateUpdates](globals.md#const-flushstateupdates)
 * [getAttachmentUrl](globals.md#const-getattachmenturl)
@@ -172,6 +181,7 @@
 * [getInteractiveList](globals.md#const-getinteractivelist)
 * [getInteractiveSnapshot](globals.md#const-getinteractivesnapshot)
 * [getInteractiveState](globals.md#const-getinteractivestate)
+* [getJobs](globals.md#const-getjobs)
 * [getLibraryInteractiveList](globals.md#const-getlibraryinteractivelist)
 * [getMode](globals.md#const-getmode)
 * [inIframe](globals.md#const-iniframe)
@@ -185,6 +195,7 @@
 * [removeGetReportItemAnswerListener](globals.md#const-removegetreportitemanswerlistener)
 * [removeGlobalInteractiveStateListener](globals.md#const-removeglobalinteractivestatelistener)
 * [removeInteractiveStateListener](globals.md#const-removeinteractivestatelistener)
+* [removeJobUpdateListener](globals.md#const-removejobupdatelistener)
 * [removeLinkedInteractiveStateListener](globals.md#const-removelinkedinteractivestatelistener)
 * [sendCustomMessage](globals.md#const-sendcustommessage)
 * [sendReportItemAnswer](globals.md#const-sendreportitemanswer)
@@ -207,6 +218,7 @@
 * [useGlobalInteractiveState](globals.md#const-useglobalinteractivestate)
 * [useInitMessage](globals.md#const-useinitmessage)
 * [useInteractiveState](globals.md#const-useinteractivestate)
+* [useJobs](globals.md#const-usejobs)
 * [useReportItem](globals.md#const-usereportitem)
 * [writeAttachment](globals.md#const-writeattachment)
 
@@ -377,7 +389,7 @@ ___
 
 ###  IRuntimeClientMessage
 
-Ƭ **IRuntimeClientMessage**: *"interactiveState" | "height" | "hint" | "getAttachmentUrl" | "getAuthInfo" | "supportedFeatures" | "navigation" | "getFirebaseJWT" | "authoredState" | "authoringCustomReportFields" | "runtimeCustomReportValues" | "showModal" | "closeModal" | "getLibraryInteractiveList" | "getInteractiveSnapshot" | "addLinkedInteractiveStateListener" | "removeLinkedInteractiveStateListener" | "decoratedContentEvent" | "setDirtyState" | "customMessage" | "createChannel" | "publish" | "subscribe" | "unsubscribe"*
+Ƭ **IRuntimeClientMessage**: *"interactiveState" | "height" | "hint" | "getAttachmentUrl" | "getAuthInfo" | "supportedFeatures" | "navigation" | "getFirebaseJWT" | "authoredState" | "authoringCustomReportFields" | "runtimeCustomReportValues" | "showModal" | "closeModal" | "getLibraryInteractiveList" | "getInteractiveSnapshot" | "addLinkedInteractiveStateListener" | "removeLinkedInteractiveStateListener" | "decoratedContentEvent" | "setDirtyState" | "customMessage" | "createChannel" | "publish" | "subscribe" | "unsubscribe" | "createJob" | "cancelJob"*
 
 ___
 
@@ -389,7 +401,7 @@ ___
 
 ###  IRuntimeServerMessage
 
-Ƭ **IRuntimeServerMessage**: *"attachmentUrl" | "authInfo" | "getInteractiveState" | "initInteractive" | "firebaseJWT" | "closedModal" | "customMessage" | "libraryInteractiveList" | "interactiveSnapshot" | "contextMembership" | "linkedInteractiveState" | "decorateContent" | "pubSubMessage" | "pubSubChannelInfo"*
+Ƭ **IRuntimeServerMessage**: *"attachmentUrl" | "authInfo" | "getInteractiveState" | "initInteractive" | "firebaseJWT" | "closedModal" | "customMessage" | "libraryInteractiveList" | "interactiveSnapshot" | "contextMembership" | "linkedInteractiveState" | "decorateContent" | "pubSubMessage" | "pubSubChannelInfo" | "jobCreated" | "jobInfo"*
 
 ___
 
@@ -645,6 +657,26 @@ Name | Type |
 
 ___
 
+### `Const` addJobUpdateListener
+
+▸ **addJobUpdateListener**(`listener`: function): *void*
+
+**Parameters:**
+
+▪ **listener**: *function*
+
+▸ (`job`: [IJobInfo](interfaces/ijobinfo.md)): *void*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`job` | [IJobInfo](interfaces/ijobinfo.md) |
+
+**Returns:** *void*
+
+___
+
 ### `Const` addLinkedInteractiveStateListener
 
 ▸ **addLinkedInteractiveStateListener**‹**LinkedInteractiveState**›(`listener`: function, `options`: [IAddLinkedInteractiveStateListenerOptions](interfaces/iaddlinkedinteractivestatelisteneroptions.md)): *void*
@@ -676,6 +708,20 @@ Name | Type |
 
 ___
 
+### `Const` cancelJob
+
+▸ **cancelJob**(`jobId`: string): *void*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`jobId` | string |
+
+**Returns:** *void*
+
+___
+
 ### `Const` closeModal
 
 ▸ **closeModal**(`options`: [ICloseModal](interfaces/iclosemodal.md)): *void*
@@ -687,6 +733,20 @@ Name | Type |
 `options` | [ICloseModal](interfaces/iclosemodal.md) |
 
 **Returns:** *void*
+
+___
+
+### `Const` createJob
+
+▸ **createJob**(`request`: object & Record‹string, any›): *Promise‹[IJobInfo](interfaces/ijobinfo.md)›*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`request` | object & Record‹string, any› |
+
+**Returns:** *Promise‹[IJobInfo](interfaces/ijobinfo.md)›*
 
 ___
 
@@ -838,6 +898,14 @@ ___
 ▪ **InteractiveState**
 
 **Returns:** *InteractiveState | null*
+
+___
+
+### `Const` getJobs
+
+▸ **getJobs**(): *[IJobInfo](interfaces/ijobinfo.md)[]*
+
+**Returns:** *[IJobInfo](interfaces/ijobinfo.md)[]*
 
 ___
 
@@ -1019,6 +1087,26 @@ ___
 Name | Type |
 ------ | ------ |
 `interactiveState` | InteractiveState |
+
+**Returns:** *void*
+
+___
+
+### `Const` removeJobUpdateListener
+
+▸ **removeJobUpdateListener**(`listener`: function): *void*
+
+**Parameters:**
+
+▪ **listener**: *function*
+
+▸ (`job`: [IJobInfo](interfaces/ijobinfo.md)): *void*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`job` | [IJobInfo](interfaces/ijobinfo.md) |
 
 **Returns:** *void*
 
@@ -1408,6 +1496,22 @@ ___
 * **interactiveState**: *null | InteractiveState*
 
 * **setInteractiveState**: *(Anonymous function)* = handleSetInteractiveState
+
+___
+
+### `Const` useJobs
+
+▸ **useJobs**(): *object*
+
+**Returns:** *object*
+
+* **cancelJob**: *(Anonymous function)* = cancelJobFn
+
+* **createJob**: *(Anonymous function)* = createJobFn
+
+* **jobs**: *[IJobInfo](interfaces/ijobinfo.md)[]*
+
+* **latestJob**: *undefined | [IJobInfo](interfaces/ijobinfo.md)*
 
 ___
 

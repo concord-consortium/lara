@@ -39,7 +39,11 @@ import {
   OnUnloadFunction,
   IReportItemHandlerMetadata,
   ITextDecorationInfo,
-  ICustomMessage
+  ICustomMessage,
+  ICreateJobRequest,
+  ICreateJobResponse,
+  ICancelJobRequest,
+  IJobInfo
 } from "./types";
 import { getClient } from "./client";
 import { v4 as uuidv4 } from "uuid";
@@ -537,4 +541,40 @@ export const createPubSubChannel = (channelId: string, channelInfo?: any): PubSu
 export const setDirtyState = (isDirty: boolean) => {
   const request: ISetDirtyStateRequest = { isDirty };
   getClient().post("setDirtyState", request);
+};
+
+// Job API
+
+export const createJob = (request: { task: string } & Record<string, any>): Promise<IJobInfo> => {
+  return new Promise<IJobInfo>((resolve) => {
+    const listener = (response: ICreateJobResponse) => {
+      getClient().managedState.upsertJob(response.job);
+      resolve(response.job);
+    };
+    const client = getClient();
+    const requestId = client.getNextRequestId();
+    const createJobRequest: ICreateJobRequest = {
+      requestId,
+      request
+    };
+    client.addListener("jobCreated", listener, requestId);
+    client.post("createJob", createJobRequest);
+  });
+};
+
+export const cancelJob = (jobId: string): void => {
+  const cancelRequest: ICancelJobRequest = { jobId };
+  getClient().post("cancelJob", cancelRequest);
+};
+
+export const getJobs = (): IJobInfo[] => {
+  return getClient().managedState.jobs as IJobInfo[]; // ReadonlyArray<IJobInfo> -> mutable for API consumers
+};
+
+export const addJobUpdateListener = (listener: (job: IJobInfo) => void): void => {
+  getClient().managedState.on("jobInfoReceived", listener);
+};
+
+export const removeJobUpdateListener = (listener: (job: IJobInfo) => void): void => {
+  getClient().managedState.off("jobInfoReceived", listener);
 };

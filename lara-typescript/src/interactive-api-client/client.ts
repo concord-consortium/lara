@@ -4,7 +4,7 @@
 import * as iframePhone from "iframe-phone";
 import { ClientMessage, ICustomMessageHandler, ICustomMessagesHandledMap, IInitInteractive, ISupportedFeaturesRequest,
          ServerMessage, ITextDecorationHandler, ITextDecorationInfo, IGetReportItemAnswerHandler,
-         IGetInteractiveState, OnUnloadFunction } from "./types";
+         IGetInteractiveState, OnUnloadFunction, IJobInfoMessage } from "./types";
 import { postDecoratedContentEvent } from "../interactive-api-client";
 import { inIframe } from "./in-frame";
 import { ManagedState } from "./managed-state";
@@ -197,6 +197,10 @@ export class Client {
 
     this.addListener("loadInteractiveGlobal", (globalState: any) => {
       this.managedState.globalInteractiveState = parseJSONIfString(globalState);
+    });
+
+    this.addListener("jobInfo", (content: IJobInfoMessage) => {
+      this.managedState.upsertJob(content.job);
     });
 
     this.phone.initialize();

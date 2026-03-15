@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import ResizeObserver from "resize-observer-polyfill";
 
 import { ICustomMessageHandler, ICustomMessagesHandledMap, IInitInteractive, ITextDecorationHandler,
-  IReportItemHandlerMetadata, IGetReportItemAnswerHandler, IAccessibilitySettings } from "./types";
+  IReportItemHandlerMetadata, IGetReportItemAnswerHandler, IAccessibilitySettings, IJobInfo } from "./types";
 import * as client from "./api";
 import { getFamilyForFontType } from "../shared/accessibility";
 
@@ -127,6 +127,42 @@ export const useCustomMessages = (callback: ICustomMessageHandler, handles?: ICu
 
     return () => { client.removeCustomMessageListener(); };
   }, []);
+};
+
+export const useJobs = () => {
+  const [jobs, setJobs] = useState<IJobInfo[]>([]);
+
+  useEffect(() => {
+    setJobs([...client.getJobs()]);
+
+    const handleJobInfo = (job: IJobInfo) => {
+      setJobs(prev => {
+        const index = prev.findIndex(j => j.id === job.id);
+        if (index === -1) {
+          return [...prev, job];
+        }
+        const next = [...prev];
+        next[index] = job;
+        return next;
+      });
+    };
+    client.addJobUpdateListener(handleJobInfo);
+    return () => {
+      client.removeJobUpdateListener(handleJobInfo);
+    };
+  }, []);
+
+  const createJobFn = useCallback(async (request: { task: string } & Record<string, any>): Promise<IJobInfo> => {
+    return client.createJob(request);
+  }, []);
+
+  const cancelJobFn = useCallback((jobId: string): void => {
+    client.cancelJob(jobId);
+  }, []);
+
+  const latestJob = jobs.length > 0 ? jobs[jobs.length - 1] : undefined;
+
+  return { createJob: createJobFn, cancelJob: cancelJobFn, jobs, latestJob };
 };
 
 export const useDecorateContent = (callback: ITextDecorationHandler) => {

@@ -6,6 +6,7 @@
 
 ### Classes
 
+* [JobManager](classes/jobmanager.md)
 * [PubSubManager](classes/pubsubmanager.md)
 
 ### Interfaces
@@ -24,9 +25,12 @@
 * [IAuthoringCustomReportFields](interfaces/iauthoringcustomreportfields.md)
 * [IAuthoringInitInteractive](interfaces/iauthoringinitinteractive.md)
 * [IBaseShowModal](interfaces/ibaseshowmodal.md)
+* [ICancelJobRequest](interfaces/icanceljobrequest.md)
 * [ICloseModal](interfaces/iclosemodal.md)
 * [IContextMember](interfaces/icontextmember.md)
 * [IContextMembership](interfaces/icontextmembership.md)
+* [ICreateJobRequest](interfaces/icreatejobrequest.md)
+* [ICreateJobResponse](interfaces/icreatejobresponse.md)
 * [ICustomMessage](interfaces/icustommessage.md)
 * [ICustomReportFieldsAuthoredState](interfaces/icustomreportfieldsauthoredstate.md)
 * [ICustomReportFieldsAuthoredStateField](interfaces/icustomreportfieldsauthoredstatefield.md)
@@ -56,6 +60,9 @@
 * [IInteractiveListResponseItem](interfaces/iinteractivelistresponseitem.md)
 * [IInteractiveStateProps](interfaces/iinteractivestateprops.md)
 * [IInteractiveStateWithDataset](interfaces/iinteractivestatewithdataset.md)
+* [IJobExecutor](interfaces/ijobexecutor.md)
+* [IJobInfo](interfaces/ijobinfo.md)
+* [IJobInfoMessage](interfaces/ijobinfomessage.md)
 * [IJwtClaims](interfaces/ijwtclaims.md)
 * [IJwtResponse](interfaces/ijwtresponse.md)
 * [ILibraryInteractiveListResponseItem](interfaces/ilibraryinteractivelistresponseitem.md)
@@ -301,13 +308,13 @@ ___
 
 ###  IRuntimeClientMessage
 
-Ƭ **IRuntimeClientMessage**: *"interactiveState" | "height" | "hint" | "getAttachmentUrl" | "getAuthInfo" | "supportedFeatures" | "navigation" | "getFirebaseJWT" | "authoredState" | "authoringCustomReportFields" | "runtimeCustomReportValues" | "showModal" | "closeModal" | "getLibraryInteractiveList" | "getInteractiveSnapshot" | "addLinkedInteractiveStateListener" | "removeLinkedInteractiveStateListener" | "decoratedContentEvent" | "setDirtyState" | "customMessage" | "createChannel" | "publish" | "subscribe" | "unsubscribe"*
+Ƭ **IRuntimeClientMessage**: *"interactiveState" | "height" | "hint" | "getAttachmentUrl" | "getAuthInfo" | "supportedFeatures" | "navigation" | "getFirebaseJWT" | "authoredState" | "authoringCustomReportFields" | "runtimeCustomReportValues" | "showModal" | "closeModal" | "getLibraryInteractiveList" | "getInteractiveSnapshot" | "addLinkedInteractiveStateListener" | "removeLinkedInteractiveStateListener" | "decoratedContentEvent" | "setDirtyState" | "customMessage" | "createChannel" | "publish" | "subscribe" | "unsubscribe" | "createJob" | "cancelJob"*
 
 ___
 
 ###  IRuntimeServerMessage
 
-Ƭ **IRuntimeServerMessage**: *"attachmentUrl" | "authInfo" | "getInteractiveState" | "initInteractive" | "firebaseJWT" | "closedModal" | "customMessage" | "libraryInteractiveList" | "interactiveSnapshot" | "contextMembership" | "linkedInteractiveState" | "decorateContent" | "pubSubMessage" | "pubSubChannelInfo"*
+Ƭ **IRuntimeServerMessage**: *"attachmentUrl" | "authInfo" | "getInteractiveState" | "initInteractive" | "firebaseJWT" | "closedModal" | "customMessage" | "libraryInteractiveList" | "interactiveSnapshot" | "contextMembership" | "linkedInteractiveState" | "decorateContent" | "pubSubMessage" | "pubSubChannelInfo" | "jobCreated" | "jobInfo"*
 
 ___
 

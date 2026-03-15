@@ -1741,525 +1741,6 @@ module.exports = function deepFreeze (o) {
 
 /***/ }),
 
-/***/ "./node_modules/iframe-phone/lib/iframe-endpoint.js":
-/*!**********************************************************!*\
-  !*** ./node_modules/iframe-phone/lib/iframe-endpoint.js ***!
-  \**********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-var structuredClone = __webpack_require__(/*! ./structured-clone */ "./node_modules/iframe-phone/lib/structured-clone.js");
-var HELLO_INTERVAL_LENGTH = 200;
-var HELLO_TIMEOUT_LENGTH = 60000;
-
-function IFrameEndpoint() {
-  var listeners = {};
-  var isInitialized = false;
-  var connected = false;
-  var postMessageQueue = [];
-  var helloInterval;
-
-  function postToParent(message) {
-    // See http://dev.opera.com/articles/view/window-postmessage-messagechannel/#crossdoc
-    //     https://github.com/Modernizr/Modernizr/issues/388
-    //     http://jsfiddle.net/ryanseddon/uZTgD/2/
-    if (structuredClone.supported()) {
-      window.parent.postMessage(message, '*');
-    } else {
-      window.parent.postMessage(JSON.stringify(message), '*');
-    }
-  }
-
-  function post(type, content) {
-    var message;
-    // Message object can be constructed from 'type' and 'content' arguments or it can be passed
-    // as the first argument.
-    if (arguments.length === 1 && typeof type === 'object' && typeof type.type === 'string') {
-      message = type;
-    } else {
-      message = {
-        type: type,
-        content: content
-      };
-    }
-    if (connected) {
-      postToParent(message);
-    } else {
-      postMessageQueue.push(message);
-    }
-  }
-
-  function postHello() {
-    postToParent({
-      type: 'hello'
-    });
-  }
-
-  function addListener(type, fn) {
-    listeners[type] = fn;
-  }
-
-  function removeListener(type) {
-    delete listeners[type];
-  }
-
-  function removeAllListeners() {
-    listeners = {};
-  }
-
-  function getListenerNames() {
-    return Object.keys(listeners);
-  }
-
-  function messageListener(message) {
-    // Anyone can send us a message. Only pay attention to messages from parent.
-    if (message.source !== window.parent) return;
-    var messageData = message.data;
-    if (typeof messageData === 'string') messageData = JSON.parse(messageData);
-
-    if (!connected && messageData.type === 'hello') {
-      connected = true;
-      stopPostingHello();
-      while (postMessageQueue.length > 0) {
-        post(postMessageQueue.shift());
-      }
-    }
-
-    if (connected && listeners[messageData.type]) {
-      listeners[messageData.type](messageData.content);
-    }
-  }
-
-  function disconnect() {
-    connected = false;
-    stopPostingHello();
-    removeAllListeners();
-    window.removeEventListener('message', messageListener);
-  }
-
-  /**
-    Initialize communication with the parent frame. This should not be called until the app's custom
-    listeners are registered (via our 'addListener' public method) because, once we open the
-    communication, the parent window may send any messages it may have queued. Messages for which
-    we don't have handlers will be silently ignored.
-  */
-  function initialize() {
-    if (isInitialized) {
-      return;
-    }
-    isInitialized = true;
-    if (window.parent === window) return;
-
-    // We kick off communication with the parent window by sending a "hello" message. Then we wait
-    // for a handshake (another "hello" message) from the parent window.
-    startPostingHello();
-    window.addEventListener('message', messageListener, false);
-  }
-
-  function startPostingHello() {
-    if (helloInterval) {
-      stopPostingHello();
-    }
-    helloInterval = window.setInterval(postHello, HELLO_INTERVAL_LENGTH);
-    window.setTimeout(stopPostingHello, HELLO_TIMEOUT_LENGTH);
-    // Post the first msg immediately.
-    postHello();
-  }
-
-  function stopPostingHello() {
-    window.clearInterval(helloInterval);
-    helloInterval = null;
-  }
-
-  // Public API.
-  return {
-    initialize: initialize,
-    getListenerNames: getListenerNames,
-    addListener: addListener,
-    removeListener: removeListener,
-    removeAllListeners: removeAllListeners,
-    disconnect: disconnect,
-    post: post
-  };
-}
-
-var instance = null;
-
-// IFrameEndpoint is a singleton, as iframe can't have multiple parents anyway.
-module.exports = function getIFrameEndpoint() {
-  if (!instance) {
-    instance = new IFrameEndpoint();
-  }
-  return instance;
-};
-
-
-/***/ }),
-
-/***/ "./node_modules/iframe-phone/lib/iframe-phone-rpc-endpoint.js":
-/*!********************************************************************!*\
-  !*** ./node_modules/iframe-phone/lib/iframe-phone-rpc-endpoint.js ***!
-  \********************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-var ParentEndpoint = __webpack_require__(/*! ./parent-endpoint */ "./node_modules/iframe-phone/lib/parent-endpoint.js");
-var getIFrameEndpoint = __webpack_require__(/*! ./iframe-endpoint */ "./node_modules/iframe-phone/lib/iframe-endpoint.js");
-
-// Not a real UUID as there's an RFC for that (needed for proper distributed computing).
-// But in this fairly parochial situation, we just need to be fairly sure to avoid repeats.
-function getPseudoUUID() {
-  var chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
-  var len = chars.length;
-  var ret = [];
-
-  for (var i = 0; i < 10; i++) {
-    ret.push(chars[Math.floor(Math.random() * len)]);
-  }
-  return ret.join('');
-}
-
-module.exports = function IframePhoneRpcEndpoint(handler, namespace, targetWindow, targetOrigin, phone) {
-  var pendingCallbacks = Object.create({});
-
-  // if it's a non-null object, rather than a function, 'handler' is really an options object
-  if (handler && typeof handler === 'object') {
-    namespace = handler.namespace;
-    targetWindow = handler.targetWindow;
-    targetOrigin = handler.targetOrigin;
-    phone = handler.phone;
-    handler = handler.handler;
-  }
-
-  if (!phone) {
-    if (targetWindow === window.parent) {
-      phone = getIFrameEndpoint();
-      phone.initialize();
-    } else {
-      phone = new ParentEndpoint(targetWindow, targetOrigin);
-    }
-  }
-
-  phone.addListener(namespace, function (message) {
-    var callbackObj;
-
-    if (message.messageType === 'call' && typeof this.handler === 'function') {
-      this.handler.call(undefined, message.value, function (returnValue) {
-        phone.post(namespace, {
-          messageType: 'returnValue',
-          uuid: message.uuid,
-          value: returnValue
-        });
-      });
-    } else if (message.messageType === 'returnValue') {
-      callbackObj = pendingCallbacks[message.uuid];
-
-      if (callbackObj) {
-        window.clearTimeout(callbackObj.timeout);
-        if (callbackObj.callback) {
-          callbackObj.callback.call(undefined, message.value);
-        }
-        pendingCallbacks[message.uuid] = null;
-      }
-    }
-  }.bind(this));
-
-  function call(message, callback) {
-    var uuid = getPseudoUUID();
-
-    pendingCallbacks[uuid] = {
-      callback: callback,
-      timeout: window.setTimeout(function () {
-        if (callback) {
-          callback(undefined, new Error("IframePhone timed out waiting for reply"));
-        }
-      }, 2000)
-    };
-
-    phone.post(namespace, {
-      messageType: 'call',
-      uuid: uuid,
-      value: message
-    });
-  }
-
-  function disconnect() {
-    phone.disconnect();
-  }
-
-  this.handler = handler;
-  this.call = call.bind(this);
-  this.disconnect = disconnect.bind(this);
-};
-
-
-/***/ }),
-
-/***/ "./node_modules/iframe-phone/lib/parent-endpoint.js":
-/*!**********************************************************!*\
-  !*** ./node_modules/iframe-phone/lib/parent-endpoint.js ***!
-  \**********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-var structuredClone = __webpack_require__(/*! ./structured-clone */ "./node_modules/iframe-phone/lib/structured-clone.js");
-
-/**
-  Call as:
-    new ParentEndpoint(targetWindow, targetOrigin, afterConnectedCallback)
-      targetWindow is a WindowProxy object. (Messages will be sent to it)
-
-      targetOrigin is the origin of the targetWindow. (Messages will be restricted to this origin)
-
-      afterConnectedCallback is an optional callback function to be called when the connection is
-        established.
-
-  OR (less secure):
-    new ParentEndpoint(targetIframe, afterConnectedCallback)
-
-      targetIframe is a DOM object (HTMLIframeElement); messages will be sent to its contentWindow.
-
-      afterConnectedCallback is an optional callback function
-
-    In this latter case, targetOrigin will be inferred from the value of the src attribute of the
-    provided DOM object at the time of the constructor invocation. This is less secure because the
-    iframe might have been navigated to an unexpected domain before constructor invocation.
-
-  Note that it is important to specify the expected origin of the iframe's content to safeguard
-  against sending messages to an unexpected domain. This might happen if our iframe is navigated to
-  a third-party URL unexpectedly. Furthermore, having a reference to Window object (as in the first
-  form of the constructor) does not protect against sending a message to the wrong domain. The
-  window object is actualy a WindowProxy which transparently proxies the Window object of the
-  underlying iframe, so that when the iframe is navigated, the "same" WindowProxy now references a
-  completely differeent Window object, possibly controlled by a hostile domain.
-
-  See http://www.esdiscuss.org/topic/a-dom-use-case-that-can-t-be-emulated-with-direct-proxies for
-  more about this weird behavior of WindowProxies (the type returned by <iframe>.contentWindow).
-*/
-
-module.exports = function ParentEndpoint(targetWindowOrIframeEl, targetOrigin, afterConnectedCallback) {
-  var postMessageQueue = [];
-  var connected = false;
-  var handlers = {};
-  var targetWindowIsIframeElement;
-
-  function getIframeOrigin(iframe) {
-    return iframe.src.match(/(.*?\/\/.*?)\//)[1];
-  }
-
-  function post(type, content) {
-    var message;
-    // Message object can be constructed from 'type' and 'content' arguments or it can be passed
-    // as the first argument.
-    if (arguments.length === 1 && typeof type === 'object' && typeof type.type === 'string') {
-      message = type;
-    } else {
-      message = {
-        type: type,
-        content: content
-      };
-    }
-    if (connected) {
-      var tWindow = getTargetWindow();
-      // if we are laready connected ... send the message
-      // See http://dev.opera.com/articles/view/window-postmessage-messagechannel/#crossdoc
-      //     https://github.com/Modernizr/Modernizr/issues/388
-      //     http://jsfiddle.net/ryanseddon/uZTgD/2/
-      if (structuredClone.supported()) {
-        tWindow.postMessage(message, targetOrigin);
-      } else {
-        tWindow.postMessage(JSON.stringify(message), targetOrigin);
-      }
-    } else {
-      // else queue up the messages to send after connection complete.
-      postMessageQueue.push(message);
-    }
-  }
-
-  function addListener(messageName, func) {
-    handlers[messageName] = func;
-  }
-
-  function removeListener(messageName) {
-    delete handlers[messageName];
-  }
-
-  function removeAllListeners() {
-    handlers = {};
-  }
-
-  // Note that this function can't be used when IFrame element hasn't been added to DOM yet
-  // (.contentWindow would be null). At the moment risk is purely theoretical, as the parent endpoint
-  // only listens for an incoming 'hello' message and the first time we call this function
-  // is in #receiveMessage handler (so iframe had to be initialized before, as it could send 'hello').
-  // It would become important when we decide to refactor the way how communication is initialized.
-  function getTargetWindow() {
-    if (targetWindowIsIframeElement) {
-      var tWindow = targetWindowOrIframeEl.contentWindow;
-      if (!tWindow) {
-        throw "IFrame element needs to be added to DOM before communication " +
-              "can be started (.contentWindow is not available)";
-      }
-      return tWindow;
-    }
-    return targetWindowOrIframeEl;
-  }
-
-  function receiveMessage(message) {
-    var messageData;
-    if (message.source === getTargetWindow() && (targetOrigin === '*' || message.origin === targetOrigin)) {
-      messageData = message.data;
-      if (typeof messageData === 'string') {
-        messageData = JSON.parse(messageData);
-      }
-      if (handlers[messageData.type]) {
-        handlers[messageData.type](messageData.content);
-      } else {
-        console.log("cant handle type: " + messageData.type);
-      }
-    }
-  }
-
-  function disconnect() {
-    connected = false;
-    removeAllListeners();
-    window.removeEventListener('message', receiveMessage);
-  }
-
-  // handle the case that targetWindowOrIframeEl is actually an <iframe> rather than a Window(Proxy) object
-  // Note that if it *is* a WindowProxy, this probe will throw a SecurityException, but in that case
-  // we also don't need to do anything
-  try {
-    targetWindowIsIframeElement = targetWindowOrIframeEl.constructor === HTMLIFrameElement;
-  } catch (e) {
-    targetWindowIsIframeElement = false;
-  }
-
-  if (targetWindowIsIframeElement) {
-    // Infer the origin ONLY if the user did not supply an explicit origin, i.e., if the second
-    // argument is empty or is actually a callback (meaning it is supposed to be the
-    // afterConnectionCallback)
-    if (!targetOrigin || targetOrigin.constructor === Function) {
-      afterConnectedCallback = targetOrigin;
-      targetOrigin = getIframeOrigin(targetWindowOrIframeEl);
-    }
-  }
-
-  // Handle pages served through file:// protocol. Behaviour varies in different browsers. Safari sets origin
-  // to 'file://' and everything works fine, but Chrome and Safari set message.origin to null.
-  // Also, https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage says:
-  //  > Lastly, posting a message to a page at a file: URL currently requires that the targetOrigin argument be "*".
-  //  > file:// cannot be used as a security restriction; this restriction may be modified in the future.
-  // So, using '*' seems like the only possible solution.
-  if (targetOrigin === 'file://') {
-    targetOrigin = '*';
-  }
-
-  // when we receive 'hello':
-  addListener('hello', function () {
-    connected = true;
-
-    // send hello response
-    post({
-      type: 'hello',
-      // `origin` property isn't used by IframeEndpoint anymore (>= 1.2.0), but it's being sent to be
-      // backward compatible with old IframeEndpoint versions (< v1.2.0).
-      origin: window.location.href.match(/(.*?\/\/.*?)\//)[1]
-    });
-
-    // give the user a chance to do things now that we are connected
-    // note that is will happen before any queued messages
-    if (afterConnectedCallback && typeof afterConnectedCallback === "function") {
-      afterConnectedCallback();
-    }
-
-    // Now send any messages that have been queued up ...
-    while (postMessageQueue.length > 0) {
-      post(postMessageQueue.shift());
-    }
-  });
-
-  window.addEventListener('message', receiveMessage, false);
-
-  // Public API.
-  return {
-    post: post,
-    addListener: addListener,
-    removeListener: removeListener,
-    removeAllListeners: removeAllListeners,
-    disconnect: disconnect,
-    getTargetWindow: getTargetWindow,
-    targetOrigin: targetOrigin
-  };
-};
-
-
-/***/ }),
-
-/***/ "./node_modules/iframe-phone/lib/structured-clone.js":
-/*!***********************************************************!*\
-  !*** ./node_modules/iframe-phone/lib/structured-clone.js ***!
-  \***********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-var featureSupported = {
-  'structuredClones': 0
-};
-
-(function () {
-  var result = 0;
-
-  if (!!window.postMessage) {
-    try {
-      // Spec states you can't transmit DOM nodes and it will throw an error
-      // postMessage implementations that support cloned data will throw.
-      window.postMessage(document.createElement("a"), "*");
-    } catch (e) {
-      // BBOS6 throws but doesn't pass through the correct exception
-      // so check error message
-      result = (e.DATA_CLONE_ERR || e.message === "Cannot post cyclic structures.") ? 1 : 0;
-      featureSupported = {
-        'structuredClones': result
-      };
-    }
-  }
-}());
-
-exports.supported = function supported() {
-  return featureSupported && featureSupported.structuredClones > 0;
-};
-
-
-/***/ }),
-
-/***/ "./node_modules/iframe-phone/main.js":
-/*!*******************************************!*\
-  !*** ./node_modules/iframe-phone/main.js ***!
-  \*******************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = {
-  /**
-   * Allows to communicate with an iframe.
-   */
-  ParentEndpoint:  __webpack_require__(/*! ./lib/parent-endpoint */ "./node_modules/iframe-phone/lib/parent-endpoint.js"),
-  /**
-   * Allows to communicate with a parent page.
-   * IFrameEndpoint is a singleton, as iframe can't have multiple parents anyway.
-   */
-  getIFrameEndpoint: __webpack_require__(/*! ./lib/iframe-endpoint */ "./node_modules/iframe-phone/lib/iframe-endpoint.js"),
-  structuredClone: __webpack_require__(/*! ./lib/structured-clone */ "./node_modules/iframe-phone/lib/structured-clone.js"),
-
-  // TODO: May be misnamed
-  IframePhoneRpcEndpoint: __webpack_require__(/*! ./lib/iframe-phone-rpc-endpoint */ "./node_modules/iframe-phone/lib/iframe-phone-rpc-endpoint.js")
-
-};
-
-
-/***/ }),
-
 /***/ "./node_modules/lru-cache/index.js":
 /*!*****************************************!*\
   !*** ./node_modules/lru-cache/index.js ***!
@@ -2602,77 +2083,6 @@ const forEachStep = (self, fn, node, thisp) => {
 }
 
 module.exports = LRUCache
-
-
-/***/ }),
-
-/***/ "./node_modules/nanoid/index.browser.js":
-/*!**********************************************!*\
-  !*** ./node_modules/nanoid/index.browser.js ***!
-  \**********************************************/
-/*! exports provided: nanoid, customAlphabet, customRandom, urlAlphabet, random */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "nanoid", function() { return nanoid; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "customAlphabet", function() { return customAlphabet; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "customRandom", function() { return customRandom; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "random", function() { return random; });
-/* harmony import */ var _url_alphabet_index_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./url-alphabet/index.js */ "./node_modules/nanoid/url-alphabet/index.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "urlAlphabet", function() { return _url_alphabet_index_js__WEBPACK_IMPORTED_MODULE_0__["urlAlphabet"]; });
-
-
-let random = bytes => crypto.getRandomValues(new Uint8Array(bytes))
-let customRandom = (alphabet, defaultSize, getRandom) => {
-  let mask = (2 << (Math.log(alphabet.length - 1) / Math.LN2)) - 1
-  let step = -~((1.6 * mask * defaultSize) / alphabet.length)
-  return (size = defaultSize) => {
-    let id = ''
-    while (true) {
-      let bytes = getRandom(step)
-      let j = step | 0
-      while (j--) {
-        id += alphabet[bytes[j] & mask] || ''
-        if (id.length === size) return id
-      }
-    }
-  }
-}
-let customAlphabet = (alphabet, size = 21) =>
-  customRandom(alphabet, size, random)
-let nanoid = (size = 21) =>
-  crypto.getRandomValues(new Uint8Array(size)).reduce((id, byte) => {
-    byte &= 63
-    if (byte < 36) {
-      id += byte.toString(36)
-    } else if (byte < 62) {
-      id += (byte - 26).toString(36).toUpperCase()
-    } else if (byte > 62) {
-      id += '-'
-    } else {
-      id += '_'
-    }
-    return id
-  }, '')
-
-
-
-/***/ }),
-
-/***/ "./node_modules/nanoid/url-alphabet/index.js":
-/*!***************************************************!*\
-  !*** ./node_modules/nanoid/url-alphabet/index.js ***!
-  \***************************************************/
-/*! exports provided: urlAlphabet */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "urlAlphabet", function() { return urlAlphabet; });
-let urlAlphabet =
-  'useandom-26T198340PX75pxJACKVERYMINDBUSHWOLF_GQZbfghjklqvwyzrict'
-
 
 
 /***/ }),
@@ -36840,7 +36250,8 @@ var __rest = (this && this.__rest) || function (s, e) {
     return t;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createPubSubChannel = exports.sendCustomMessage = exports.setOnUnload = exports.sendReportItemAnswer = exports.getAttachmentUrl = exports.readAttachment = exports.writeAttachment = exports.getLibraryInteractiveList = exports.getInteractiveSnapshot = exports.setLinkedInteractives = exports.getInteractiveList = exports.closeModal = exports.showModal = exports.removeLinkedInteractiveStateListener = exports.addLinkedInteractiveStateListener = exports.removeGlobalInteractiveStateListener = exports.addGlobalInteractiveStateListener = exports.removeAuthoredStateListener = exports.addAuthoredStateListener = exports.removeInteractiveStateListener = exports.addInteractiveStateListener = exports.log = exports.getFirebaseJwt = exports.getAuthInfo = exports.setNavigation = exports.setHint = exports.postDecoratedContentEvent = exports.setHeight = exports.setSupportedFeatures = exports.notifyReportItemClientReady = exports.removeGetReportItemAnswerListener = exports.addGetReportItemAnswerListener = exports.removeDecorateContentListener = exports.addDecorateContentListener = exports.removeCustomMessageListener = exports.addCustomMessageListener = exports.setGlobalInteractiveState = exports.getGlobalInteractiveState = exports.setAuthoredState = exports.getAuthoredState = exports.flushStateUpdates = exports.setInteractiveState = exports.setInteractiveStateTimeout = exports.getInteractiveState = exports.getMode = exports.getInitInteractiveMessage = exports.PubSubChannel = void 0;
+exports.cancelJob = exports.createJob = exports.setDirtyState = exports.createPubSubChannel = exports.sendCustomMessage = exports.setOnUnload = exports.sendReportItemAnswer = exports.getAttachmentUrl = exports.readAttachment = exports.writeAttachment = exports.getLibraryInteractiveList = exports.getInteractiveSnapshot = exports.setLinkedInteractives = exports.getInteractiveList = exports.closeModal = exports.showModal = exports.removeLinkedInteractiveStateListener = exports.addLinkedInteractiveStateListener = exports.removeGlobalInteractiveStateListener = exports.addGlobalInteractiveStateListener = exports.removeAuthoredStateListener = exports.addAuthoredStateListener = exports.removeInteractiveStateListener = exports.addInteractiveStateListener = exports.log = exports.getFirebaseJwt = exports.getAuthInfo = exports.setNavigation = exports.setHint = exports.postDecoratedContentEvent = exports.setHeight = exports.setSupportedFeatures = exports.notifyReportItemClientReady = exports.removeGetReportItemAnswerListener = exports.addGetReportItemAnswerListener = exports.removeDecorateContentListener = exports.addDecorateContentListener = exports.removeCustomMessageListener = exports.addCustomMessageListener = exports.setGlobalInteractiveState = exports.getGlobalInteractiveState = exports.setAuthoredState = exports.getAuthoredState = exports.flushStateUpdates = exports.setInteractiveState = exports.setInteractiveStateTimeout = exports.getInteractiveState = exports.getMode = exports.getInitInteractiveMessage = exports.PubSubChannel = void 0;
+exports.removeJobUpdateListener = exports.addJobUpdateListener = exports.getJobs = void 0;
 var client_1 = __webpack_require__(/*! ./client */ "./src/interactive-api-client/client.ts");
 var uuid_1 = __webpack_require__(/*! uuid */ "./node_modules/uuid/dist/esm-browser/index.js");
 var pubsub_1 = __webpack_require__(/*! ./pubsub */ "./src/interactive-api-client/pubsub.ts");
@@ -37354,6 +36765,46 @@ var createPubSubChannel = function (channelId, channelInfo) {
     return (0, client_1.getClient)().createPubSubChannel(channelId, channelInfo);
 };
 exports.createPubSubChannel = createPubSubChannel;
+var setDirtyState = function (isDirty) {
+    var request = { isDirty: isDirty };
+    (0, client_1.getClient)().post("setDirtyState", request);
+};
+exports.setDirtyState = setDirtyState;
+// Job API
+var createJob = function (request) {
+    return new Promise(function (resolve) {
+        var listener = function (response) {
+            (0, client_1.getClient)().managedState.upsertJob(response.job);
+            resolve(response.job);
+        };
+        var client = (0, client_1.getClient)();
+        var requestId = client.getNextRequestId();
+        var createJobRequest = {
+            requestId: requestId,
+            request: request
+        };
+        client.addListener("jobCreated", listener, requestId);
+        client.post("createJob", createJobRequest);
+    });
+};
+exports.createJob = createJob;
+var cancelJob = function (jobId) {
+    var cancelRequest = { jobId: jobId };
+    (0, client_1.getClient)().post("cancelJob", cancelRequest);
+};
+exports.cancelJob = cancelJob;
+var getJobs = function () {
+    return (0, client_1.getClient)().managedState.jobs; // ReadonlyArray<IJobInfo> -> mutable for API consumers
+};
+exports.getJobs = getJobs;
+var addJobUpdateListener = function (listener) {
+    (0, client_1.getClient)().managedState.on("jobInfoReceived", listener);
+};
+exports.addJobUpdateListener = addJobUpdateListener;
+var removeJobUpdateListener = function (listener) {
+    (0, client_1.getClient)().managedState.off("jobInfoReceived", listener);
+};
+exports.removeJobUpdateListener = removeJobUpdateListener;
 
 
 /***/ }),
@@ -37430,7 +36881,7 @@ exports.Client = exports.getClient = void 0;
 // iframe phone uses 1 listener per message type so we multiplex over 1 listener in this code
 // to allow callbacks to optionally be tied to a requestId.  This allows us to have multiple listeners
 // to the same message and auto-removing listeners when a requestId is given.
-var iframePhone = __webpack_require__(/*! iframe-phone */ "./node_modules/iframe-phone/main.js");
+var iframePhone = __webpack_require__(/*! iframe-phone */ "./src/interactive-api-client/node_modules/iframe-phone/main.js");
 var in_frame_1 = __webpack_require__(/*! ./in-frame */ "./src/interactive-api-client/in-frame.ts");
 var managed_state_1 = __webpack_require__(/*! ./managed-state */ "./src/interactive-api-client/managed-state.ts");
 var pubsub_1 = __webpack_require__(/*! ./pubsub */ "./src/interactive-api-client/pubsub.ts");
@@ -37605,6 +37056,9 @@ var Client = /** @class */ (function () {
         this.addListener("loadInteractiveGlobal", function (globalState) {
             _this.managedState.globalInteractiveState = parseJSONIfString(globalState);
         });
+        this.addListener("jobInfo", function (content) {
+            _this.managedState.upsertJob(content.job);
+        });
         this.phone.initialize();
     };
     return Client;
@@ -37659,8 +37113,17 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
+    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
+        if (ar || !(i in from)) {
+            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+            ar[i] = from[i];
+        }
+    }
+    return to.concat(ar || Array.prototype.slice.call(from));
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.useAccessibility = exports.DefaultAccessibilitySettings = exports.useReportItem = exports.useAutoSetHeight = exports.useDecorateContent = exports.useCustomMessages = exports.useInitMessage = exports.useGlobalInteractiveState = exports.useAuthoredState = exports.useInteractiveState = void 0;
+exports.useAccessibility = exports.DefaultAccessibilitySettings = exports.useReportItem = exports.useAutoSetHeight = exports.useDecorateContent = exports.useJobs = exports.useCustomMessages = exports.useInitMessage = exports.useGlobalInteractiveState = exports.useAuthoredState = exports.useInteractiveState = void 0;
 var react_1 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 var resize_observer_polyfill_1 = __webpack_require__(/*! resize-observer-polyfill */ "./node_modules/resize-observer-polyfill/dist/ResizeObserver.es.js");
 var client = __webpack_require__(/*! ./api */ "./src/interactive-api-client/api.ts");
@@ -37778,6 +37241,38 @@ var useCustomMessages = function (callback, handles) {
     }, []);
 };
 exports.useCustomMessages = useCustomMessages;
+var useJobs = function () {
+    var _a = (0, react_1.useState)([]), jobs = _a[0], setJobs = _a[1];
+    (0, react_1.useEffect)(function () {
+        setJobs(__spreadArray([], client.getJobs(), true));
+        var handleJobInfo = function (job) {
+            setJobs(function (prev) {
+                var index = prev.findIndex(function (j) { return j.id === job.id; });
+                if (index === -1) {
+                    return __spreadArray(__spreadArray([], prev, true), [job], false);
+                }
+                var next = __spreadArray([], prev, true);
+                next[index] = job;
+                return next;
+            });
+        };
+        client.addJobUpdateListener(handleJobInfo);
+        return function () {
+            client.removeJobUpdateListener(handleJobInfo);
+        };
+    }, []);
+    var createJobFn = (0, react_1.useCallback)(function (request) { return __awaiter(void 0, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            return [2 /*return*/, client.createJob(request)];
+        });
+    }); }, []);
+    var cancelJobFn = (0, react_1.useCallback)(function (jobId) {
+        client.cancelJob(jobId);
+    }, []);
+    var latestJob = jobs.length > 0 ? jobs[jobs.length - 1] : undefined;
+    return { createJob: createJobFn, cancelJob: cancelJobFn, jobs: jobs, latestJob: latestJob };
+};
+exports.useJobs = useJobs;
 var useDecorateContent = function (callback) {
     (0, react_1.useEffect)(function () {
         client.addDecorateContentListener(callback);
@@ -37934,6 +37429,15 @@ else {
 
 "use strict";
 
+var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
+    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
+        if (ar || !(i in from)) {
+            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+            ar[i] = from[i];
+        }
+    }
+    return to.concat(ar || Array.prototype.slice.call(from));
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ManagedState = void 0;
 var eventemitter2_1 = __webpack_require__(/*! eventemitter2 */ "./node_modules/eventemitter2/lib/eventemitter2.js");
@@ -37941,6 +37445,7 @@ var deepFreeze = __webpack_require__(/*! deep-freeze */ "./node_modules/deep-fre
 var ManagedState = /** @class */ (function () {
     function ManagedState() {
         this.interactiveStateDirty = false;
+        this.jobs = [];
         this._initMessage = null;
         // State variables are kept separately from initMessage, as they might get updated. For client user convenience,
         // this state is kept here and all the updates emit appropriate event.
@@ -38024,6 +37529,18 @@ var ManagedState = /** @class */ (function () {
     ManagedState.prototype.once = function (event, handler) {
         this.emitter.once(event, handler);
     };
+    ManagedState.prototype.upsertJob = function (job) {
+        var index = this.jobs.findIndex(function (j) { return j.id === job.id; });
+        if (index === -1) {
+            this.jobs = __spreadArray(__spreadArray([], this.jobs, true), [job], false);
+        }
+        else {
+            var next = __spreadArray([], this.jobs, true);
+            next[index] = job;
+            this.jobs = next;
+        }
+        this.emit("jobInfoReceived", job);
+    };
     return ManagedState;
 }());
 exports.ManagedState = ManagedState;
@@ -38048,6 +37565,596 @@ Object.defineProperty(exports, "__esModule", { value: true });
 
 /***/ }),
 
+/***/ "./src/interactive-api-client/node_modules/iframe-phone/lib/iframe-endpoint.js":
+/*!*************************************************************************************!*\
+  !*** ./src/interactive-api-client/node_modules/iframe-phone/lib/iframe-endpoint.js ***!
+  \*************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var structuredClone = __webpack_require__(/*! ./structured-clone */ "./src/interactive-api-client/node_modules/iframe-phone/lib/structured-clone.js");
+var HELLO_INTERVAL_LENGTH = 200;
+var HELLO_TIMEOUT_LENGTH = 60000;
+
+function IFrameEndpoint() {
+  var listeners = {};
+  var isInitialized = false;
+  var connected = false;
+  var postMessageQueue = [];
+  var helloInterval;
+
+  function postToParent(message) {
+    // See http://dev.opera.com/articles/view/window-postmessage-messagechannel/#crossdoc
+    //     https://github.com/Modernizr/Modernizr/issues/388
+    //     http://jsfiddle.net/ryanseddon/uZTgD/2/
+    if (structuredClone.supported()) {
+      window.parent.postMessage(message, '*');
+    } else {
+      window.parent.postMessage(JSON.stringify(message), '*');
+    }
+  }
+
+  function post(type, content) {
+    var message;
+    // Message object can be constructed from 'type' and 'content' arguments or it can be passed
+    // as the first argument.
+    if (arguments.length === 1 && typeof type === 'object' && typeof type.type === 'string') {
+      message = type;
+    } else {
+      message = {
+        type: type,
+        content: content
+      };
+    }
+    if (connected) {
+      postToParent(message);
+    } else {
+      postMessageQueue.push(message);
+    }
+  }
+
+  function postHello() {
+    postToParent({
+      type: 'hello'
+    });
+  }
+
+  function addListener(type, fn) {
+    listeners[type] = fn;
+  }
+
+  function removeListener(type) {
+    delete listeners[type];
+  }
+
+  function removeAllListeners() {
+    listeners = {};
+  }
+
+  function getListenerNames() {
+    return Object.keys(listeners);
+  }
+
+  function messageListener(message) {
+    // Anyone can send us a message. Only pay attention to messages from parent.
+    if (message.source !== window.parent) return;
+    var messageData = message.data;
+    if (typeof messageData === 'string') messageData = JSON.parse(messageData);
+
+    if (!connected && messageData.type === 'hello') {
+      connected = true;
+      stopPostingHello();
+      while (postMessageQueue.length > 0) {
+        post(postMessageQueue.shift());
+      }
+    }
+
+    if (connected && listeners[messageData.type]) {
+      listeners[messageData.type](messageData.content);
+    }
+  }
+
+  function disconnect() {
+    connected = false;
+    stopPostingHello();
+    removeAllListeners();
+    window.removeEventListener('message', messageListener);
+  }
+
+  /**
+    Initialize communication with the parent frame. This should not be called until the app's custom
+    listeners are registered (via our 'addListener' public method) because, once we open the
+    communication, the parent window may send any messages it may have queued. Messages for which
+    we don't have handlers will be silently ignored.
+  */
+  function initialize() {
+    if (isInitialized) {
+      return;
+    }
+    isInitialized = true;
+    if (window.parent === window) return;
+
+    // We kick off communication with the parent window by sending a "hello" message. Then we wait
+    // for a handshake (another "hello" message) from the parent window.
+    startPostingHello();
+    window.addEventListener('message', messageListener, false);
+  }
+
+  function startPostingHello() {
+    if (helloInterval) {
+      stopPostingHello();
+    }
+    helloInterval = window.setInterval(postHello, HELLO_INTERVAL_LENGTH);
+    window.setTimeout(stopPostingHello, HELLO_TIMEOUT_LENGTH);
+    // Post the first msg immediately.
+    postHello();
+  }
+
+  function stopPostingHello() {
+    window.clearInterval(helloInterval);
+    helloInterval = null;
+  }
+
+  // Public API.
+  return {
+    initialize: initialize,
+    getListenerNames: getListenerNames,
+    addListener: addListener,
+    removeListener: removeListener,
+    removeAllListeners: removeAllListeners,
+    disconnect: disconnect,
+    post: post
+  };
+}
+
+var instance = null;
+
+// IFrameEndpoint is a singleton, as iframe can't have multiple parents anyway.
+module.exports = function getIFrameEndpoint() {
+  if (!instance) {
+    instance = new IFrameEndpoint();
+  }
+  return instance;
+};
+
+
+/***/ }),
+
+/***/ "./src/interactive-api-client/node_modules/iframe-phone/lib/iframe-phone-rpc-endpoint.js":
+/*!***********************************************************************************************!*\
+  !*** ./src/interactive-api-client/node_modules/iframe-phone/lib/iframe-phone-rpc-endpoint.js ***!
+  \***********************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var ParentEndpoint = __webpack_require__(/*! ./parent-endpoint */ "./src/interactive-api-client/node_modules/iframe-phone/lib/parent-endpoint.js");
+var getIFrameEndpoint = __webpack_require__(/*! ./iframe-endpoint */ "./src/interactive-api-client/node_modules/iframe-phone/lib/iframe-endpoint.js");
+
+// Not a real UUID as there's an RFC for that (needed for proper distributed computing).
+// But in this fairly parochial situation, we just need to be fairly sure to avoid repeats.
+function getPseudoUUID() {
+  var chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
+  var len = chars.length;
+  var ret = [];
+
+  for (var i = 0; i < 10; i++) {
+    ret.push(chars[Math.floor(Math.random() * len)]);
+  }
+  return ret.join('');
+}
+
+module.exports = function IframePhoneRpcEndpoint(handler, namespace, targetWindow, targetOrigin, phone) {
+  var pendingCallbacks = Object.create({});
+
+  // if it's a non-null object, rather than a function, 'handler' is really an options object
+  if (handler && typeof handler === 'object') {
+    namespace = handler.namespace;
+    targetWindow = handler.targetWindow;
+    targetOrigin = handler.targetOrigin;
+    phone = handler.phone;
+    handler = handler.handler;
+  }
+
+  if (!phone) {
+    if (targetWindow === window.parent) {
+      phone = getIFrameEndpoint();
+      phone.initialize();
+    } else {
+      phone = new ParentEndpoint(targetWindow, targetOrigin);
+    }
+  }
+
+  phone.addListener(namespace, function (message) {
+    var callbackObj;
+
+    if (message.messageType === 'call' && typeof this.handler === 'function') {
+      this.handler.call(undefined, message.value, function (returnValue) {
+        phone.post(namespace, {
+          messageType: 'returnValue',
+          uuid: message.uuid,
+          value: returnValue
+        });
+      });
+    } else if (message.messageType === 'returnValue') {
+      callbackObj = pendingCallbacks[message.uuid];
+
+      if (callbackObj) {
+        window.clearTimeout(callbackObj.timeout);
+        if (callbackObj.callback) {
+          callbackObj.callback.call(undefined, message.value);
+        }
+        pendingCallbacks[message.uuid] = null;
+      }
+    }
+  }.bind(this));
+
+  function call(message, callback) {
+    var uuid = getPseudoUUID();
+
+    pendingCallbacks[uuid] = {
+      callback: callback,
+      timeout: window.setTimeout(function () {
+        if (callback) {
+          callback(undefined, new Error("IframePhone timed out waiting for reply"));
+        }
+      }, 2000)
+    };
+
+    phone.post(namespace, {
+      messageType: 'call',
+      uuid: uuid,
+      value: message
+    });
+  }
+
+  function disconnect() {
+    phone.disconnect();
+  }
+
+  this.handler = handler;
+  this.call = call.bind(this);
+  this.disconnect = disconnect.bind(this);
+};
+
+
+/***/ }),
+
+/***/ "./src/interactive-api-client/node_modules/iframe-phone/lib/parent-endpoint.js":
+/*!*************************************************************************************!*\
+  !*** ./src/interactive-api-client/node_modules/iframe-phone/lib/parent-endpoint.js ***!
+  \*************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var structuredClone = __webpack_require__(/*! ./structured-clone */ "./src/interactive-api-client/node_modules/iframe-phone/lib/structured-clone.js");
+
+/**
+  Call as:
+    new ParentEndpoint(targetWindow, targetOrigin, afterConnectedCallback)
+      targetWindow is a WindowProxy object. (Messages will be sent to it)
+
+      targetOrigin is the origin of the targetWindow. (Messages will be restricted to this origin)
+
+      afterConnectedCallback is an optional callback function to be called when the connection is
+        established.
+
+  OR (less secure):
+    new ParentEndpoint(targetIframe, afterConnectedCallback)
+
+      targetIframe is a DOM object (HTMLIframeElement); messages will be sent to its contentWindow.
+
+      afterConnectedCallback is an optional callback function
+
+    In this latter case, targetOrigin will be inferred from the value of the src attribute of the
+    provided DOM object at the time of the constructor invocation. This is less secure because the
+    iframe might have been navigated to an unexpected domain before constructor invocation.
+
+  Note that it is important to specify the expected origin of the iframe's content to safeguard
+  against sending messages to an unexpected domain. This might happen if our iframe is navigated to
+  a third-party URL unexpectedly. Furthermore, having a reference to Window object (as in the first
+  form of the constructor) does not protect against sending a message to the wrong domain. The
+  window object is actualy a WindowProxy which transparently proxies the Window object of the
+  underlying iframe, so that when the iframe is navigated, the "same" WindowProxy now references a
+  completely differeent Window object, possibly controlled by a hostile domain.
+
+  See http://www.esdiscuss.org/topic/a-dom-use-case-that-can-t-be-emulated-with-direct-proxies for
+  more about this weird behavior of WindowProxies (the type returned by <iframe>.contentWindow).
+*/
+
+module.exports = function ParentEndpoint(targetWindowOrIframeEl, targetOrigin, afterConnectedCallback) {
+  var postMessageQueue = [];
+  var connected = false;
+  var handlers = {};
+  var targetWindowIsIframeElement;
+
+  function getIframeOrigin(iframe) {
+    return iframe.src.match(/(.*?\/\/.*?)\//)[1];
+  }
+
+  function post(type, content) {
+    var message;
+    // Message object can be constructed from 'type' and 'content' arguments or it can be passed
+    // as the first argument.
+    if (arguments.length === 1 && typeof type === 'object' && typeof type.type === 'string') {
+      message = type;
+    } else {
+      message = {
+        type: type,
+        content: content
+      };
+    }
+    if (connected) {
+      var tWindow = getTargetWindow();
+      // if we are laready connected ... send the message
+      // See http://dev.opera.com/articles/view/window-postmessage-messagechannel/#crossdoc
+      //     https://github.com/Modernizr/Modernizr/issues/388
+      //     http://jsfiddle.net/ryanseddon/uZTgD/2/
+      if (structuredClone.supported()) {
+        tWindow.postMessage(message, targetOrigin);
+      } else {
+        tWindow.postMessage(JSON.stringify(message), targetOrigin);
+      }
+    } else {
+      // else queue up the messages to send after connection complete.
+      postMessageQueue.push(message);
+    }
+  }
+
+  function addListener(messageName, func) {
+    handlers[messageName] = func;
+  }
+
+  function removeListener(messageName) {
+    delete handlers[messageName];
+  }
+
+  function removeAllListeners() {
+    handlers = {};
+  }
+
+  // Note that this function can't be used when IFrame element hasn't been added to DOM yet
+  // (.contentWindow would be null). At the moment risk is purely theoretical, as the parent endpoint
+  // only listens for an incoming 'hello' message and the first time we call this function
+  // is in #receiveMessage handler (so iframe had to be initialized before, as it could send 'hello').
+  // It would become important when we decide to refactor the way how communication is initialized.
+  function getTargetWindow() {
+    if (targetWindowIsIframeElement) {
+      var tWindow = targetWindowOrIframeEl.contentWindow;
+      if (!tWindow) {
+        throw "IFrame element needs to be added to DOM before communication " +
+              "can be started (.contentWindow is not available)";
+      }
+      return tWindow;
+    }
+    return targetWindowOrIframeEl;
+  }
+
+  function receiveMessage(message) {
+    var messageData;
+    if (message.source === getTargetWindow() && (targetOrigin === '*' || message.origin === targetOrigin)) {
+      messageData = message.data;
+      if (typeof messageData === 'string') {
+        messageData = JSON.parse(messageData);
+      }
+      if (handlers[messageData.type]) {
+        handlers[messageData.type](messageData.content);
+      } else {
+        console.log("cant handle type: " + messageData.type);
+      }
+    }
+  }
+
+  function disconnect() {
+    connected = false;
+    removeAllListeners();
+    window.removeEventListener('message', receiveMessage);
+  }
+
+  // handle the case that targetWindowOrIframeEl is actually an <iframe> rather than a Window(Proxy) object
+  // Note that if it *is* a WindowProxy, this probe will throw a SecurityException, but in that case
+  // we also don't need to do anything
+  try {
+    targetWindowIsIframeElement = targetWindowOrIframeEl.constructor === HTMLIFrameElement;
+  } catch (e) {
+    targetWindowIsIframeElement = false;
+  }
+
+  if (targetWindowIsIframeElement) {
+    // Infer the origin ONLY if the user did not supply an explicit origin, i.e., if the second
+    // argument is empty or is actually a callback (meaning it is supposed to be the
+    // afterConnectionCallback)
+    if (!targetOrigin || targetOrigin.constructor === Function) {
+      afterConnectedCallback = targetOrigin;
+      targetOrigin = getIframeOrigin(targetWindowOrIframeEl);
+    }
+  }
+
+  // Handle pages served through file:// protocol. Behaviour varies in different browsers. Safari sets origin
+  // to 'file://' and everything works fine, but Chrome and Safari set message.origin to null.
+  // Also, https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage says:
+  //  > Lastly, posting a message to a page at a file: URL currently requires that the targetOrigin argument be "*".
+  //  > file:// cannot be used as a security restriction; this restriction may be modified in the future.
+  // So, using '*' seems like the only possible solution.
+  if (targetOrigin === 'file://') {
+    targetOrigin = '*';
+  }
+
+  // when we receive 'hello':
+  addListener('hello', function () {
+    connected = true;
+
+    // send hello response
+    post({
+      type: 'hello',
+      // `origin` property isn't used by IframeEndpoint anymore (>= 1.2.0), but it's being sent to be
+      // backward compatible with old IframeEndpoint versions (< v1.2.0).
+      origin: window.location.href.match(/(.*?\/\/.*?)\//)[1]
+    });
+
+    // give the user a chance to do things now that we are connected
+    // note that is will happen before any queued messages
+    if (afterConnectedCallback && typeof afterConnectedCallback === "function") {
+      afterConnectedCallback();
+    }
+
+    // Now send any messages that have been queued up ...
+    while (postMessageQueue.length > 0) {
+      post(postMessageQueue.shift());
+    }
+  });
+
+  window.addEventListener('message', receiveMessage, false);
+
+  // Public API.
+  return {
+    post: post,
+    addListener: addListener,
+    removeListener: removeListener,
+    removeAllListeners: removeAllListeners,
+    disconnect: disconnect,
+    getTargetWindow: getTargetWindow,
+    targetOrigin: targetOrigin
+  };
+};
+
+
+/***/ }),
+
+/***/ "./src/interactive-api-client/node_modules/iframe-phone/lib/structured-clone.js":
+/*!**************************************************************************************!*\
+  !*** ./src/interactive-api-client/node_modules/iframe-phone/lib/structured-clone.js ***!
+  \**************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+var featureSupported = {
+  'structuredClones': 0
+};
+
+(function () {
+  var result = 0;
+
+  if (!!window.postMessage) {
+    try {
+      // Spec states you can't transmit DOM nodes and it will throw an error
+      // postMessage implementations that support cloned data will throw.
+      window.postMessage(document.createElement("a"), "*");
+    } catch (e) {
+      // BBOS6 throws but doesn't pass through the correct exception
+      // so check error message
+      result = (e.DATA_CLONE_ERR || e.message === "Cannot post cyclic structures.") ? 1 : 0;
+      featureSupported = {
+        'structuredClones': result
+      };
+    }
+  }
+}());
+
+exports.supported = function supported() {
+  return featureSupported && featureSupported.structuredClones > 0;
+};
+
+
+/***/ }),
+
+/***/ "./src/interactive-api-client/node_modules/iframe-phone/main.js":
+/*!**********************************************************************!*\
+  !*** ./src/interactive-api-client/node_modules/iframe-phone/main.js ***!
+  \**********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = {
+  /**
+   * Allows to communicate with an iframe.
+   */
+  ParentEndpoint:  __webpack_require__(/*! ./lib/parent-endpoint */ "./src/interactive-api-client/node_modules/iframe-phone/lib/parent-endpoint.js"),
+  /**
+   * Allows to communicate with a parent page.
+   * IFrameEndpoint is a singleton, as iframe can't have multiple parents anyway.
+   */
+  getIFrameEndpoint: __webpack_require__(/*! ./lib/iframe-endpoint */ "./src/interactive-api-client/node_modules/iframe-phone/lib/iframe-endpoint.js"),
+  structuredClone: __webpack_require__(/*! ./lib/structured-clone */ "./src/interactive-api-client/node_modules/iframe-phone/lib/structured-clone.js"),
+
+  // TODO: May be misnamed
+  IframePhoneRpcEndpoint: __webpack_require__(/*! ./lib/iframe-phone-rpc-endpoint */ "./src/interactive-api-client/node_modules/iframe-phone/lib/iframe-phone-rpc-endpoint.js")
+
+};
+
+
+/***/ }),
+
+/***/ "./src/interactive-api-client/node_modules/nanoid/index.browser.js":
+/*!*************************************************************************!*\
+  !*** ./src/interactive-api-client/node_modules/nanoid/index.browser.js ***!
+  \*************************************************************************/
+/*! exports provided: nanoid, customAlphabet, customRandom, urlAlphabet, random */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "nanoid", function() { return nanoid; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "customAlphabet", function() { return customAlphabet; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "customRandom", function() { return customRandom; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "random", function() { return random; });
+/* harmony import */ var _url_alphabet_index_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./url-alphabet/index.js */ "./src/interactive-api-client/node_modules/nanoid/url-alphabet/index.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "urlAlphabet", function() { return _url_alphabet_index_js__WEBPACK_IMPORTED_MODULE_0__["urlAlphabet"]; });
+
+
+let random = bytes => crypto.getRandomValues(new Uint8Array(bytes))
+let customRandom = (alphabet, defaultSize, getRandom) => {
+  let mask = (2 << (Math.log(alphabet.length - 1) / Math.LN2)) - 1
+  let step = -~((1.6 * mask * defaultSize) / alphabet.length)
+  return (size = defaultSize) => {
+    let id = ''
+    while (true) {
+      let bytes = getRandom(step)
+      let j = step | 0
+      while (j--) {
+        id += alphabet[bytes[j] & mask] || ''
+        if (id.length === size) return id
+      }
+    }
+  }
+}
+let customAlphabet = (alphabet, size = 21) =>
+  customRandom(alphabet, size, random)
+let nanoid = (size = 21) =>
+  crypto.getRandomValues(new Uint8Array(size)).reduce((id, byte) => {
+    byte &= 63
+    if (byte < 36) {
+      id += byte.toString(36)
+    } else if (byte < 62) {
+      id += (byte - 26).toString(36).toUpperCase()
+    } else if (byte > 62) {
+      id += '-'
+    } else {
+      id += '_'
+    }
+    return id
+  }, '')
+
+
+
+/***/ }),
+
+/***/ "./src/interactive-api-client/node_modules/nanoid/url-alphabet/index.js":
+/*!******************************************************************************!*\
+  !*** ./src/interactive-api-client/node_modules/nanoid/url-alphabet/index.js ***!
+  \******************************************************************************/
+/*! exports provided: urlAlphabet */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "urlAlphabet", function() { return urlAlphabet; });
+let urlAlphabet =
+  'useandom-26T198340PX75pxJACKVERYMINDBUSHWOLF_GQZbfghjklqvwyzrict'
+
+
+
+/***/ }),
+
 /***/ "./src/interactive-api-client/package.json":
 /*!*************************************************!*\
   !*** ./src/interactive-api-client/package.json ***!
@@ -38055,7 +38162,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 /*! exports provided: name, version, description, main, types, repository, author, license, bugs, homepage, dependencies, peerDependencies, default */
 /***/ (function(module) {
 
-module.exports = JSON.parse("{\"name\":\"@concord-consortium/lara-interactive-api\",\"version\":\"1.11.0\",\"description\":\"LARA Interactive API client and types\",\"main\":\"./index.js\",\"types\":\"./index-bundle.d.ts\",\"repository\":{\"type\":\"git\",\"url\":\"git+https://github.com/concord-consortium/lara.git\"},\"author\":\"Concord Consortium\",\"license\":\"MIT\",\"bugs\":{\"url\":\"https://github.com/concord-consortium/lara/issues\"},\"homepage\":\"https://github.com/concord-consortium/lara/tree/master/lara-typescript/src/interactive-api-client#readme\",\"dependencies\":{\"iframe-phone\":\"^1.3.1\",\"nanoid\":\"^3.3.7\"},\"peerDependencies\":{\"react\":\">=16.9.0\",\"react-dom\":\">=16.9.0\"}}");
+module.exports = JSON.parse("{\"name\":\"@concord-consortium/lara-interactive-api\",\"version\":\"1.13.0\",\"description\":\"LARA Interactive API client and types\",\"main\":\"./index.js\",\"types\":\"./index-bundle.d.ts\",\"repository\":{\"type\":\"git\",\"url\":\"git+https://github.com/concord-consortium/lara.git\"},\"author\":\"Concord Consortium\",\"license\":\"MIT\",\"bugs\":{\"url\":\"https://github.com/concord-consortium/lara/issues\"},\"homepage\":\"https://github.com/concord-consortium/lara/tree/master/lara-typescript/src/interactive-api-client#readme\",\"dependencies\":{\"iframe-phone\":\"^1.3.1\",\"nanoid\":\"^3.3.7\"},\"peerDependencies\":{\"react\":\">=16.9.0\",\"react-dom\":\">=16.9.0\"}}");
 
 /***/ }),
 
@@ -38070,7 +38177,7 @@ module.exports = JSON.parse("{\"name\":\"@concord-consortium/lara-interactive-ap
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PubSubChannel = void 0;
-var nanoid_1 = __webpack_require__(/*! nanoid */ "./node_modules/nanoid/index.browser.js");
+var nanoid_1 = __webpack_require__(/*! nanoid */ "./src/interactive-api-client/node_modules/nanoid/index.browser.js");
 var PubSubChannel = /** @class */ (function () {
     function PubSubChannel(client, channelId, channelInfo) {
         this.subscriptions = new Map();
