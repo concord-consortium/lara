@@ -34722,7 +34722,7 @@ let urlAlphabet =
 /*! exports provided: name, version, description, main, types, repository, author, license, bugs, homepage, dependencies, peerDependencies, default */
 /***/ (function(module) {
 
-module.exports = JSON.parse("{\"name\":\"@concord-consortium/lara-interactive-api\",\"version\":\"1.13.0-pre.2\",\"description\":\"LARA Interactive API client and types\",\"main\":\"./index.js\",\"types\":\"./index-bundle.d.ts\",\"repository\":{\"type\":\"git\",\"url\":\"git+https://github.com/concord-consortium/lara.git\"},\"author\":\"Concord Consortium\",\"license\":\"MIT\",\"bugs\":{\"url\":\"https://github.com/concord-consortium/lara/issues\"},\"homepage\":\"https://github.com/concord-consortium/lara/tree/master/lara-typescript/src/interactive-api-client#readme\",\"dependencies\":{\"iframe-phone\":\"^1.3.1\",\"nanoid\":\"^3.3.7\"},\"peerDependencies\":{\"react\":\">=16.9.0\",\"react-dom\":\">=16.9.0\"}}");
+module.exports = JSON.parse("{\"name\":\"@concord-consortium/lara-interactive-api\",\"version\":\"1.13.0\",\"description\":\"LARA Interactive API client and types\",\"main\":\"./index.js\",\"types\":\"./index-bundle.d.ts\",\"repository\":{\"type\":\"git\",\"url\":\"git+https://github.com/concord-consortium/lara.git\"},\"author\":\"Concord Consortium\",\"license\":\"MIT\",\"bugs\":{\"url\":\"https://github.com/concord-consortium/lara/issues\"},\"homepage\":\"https://github.com/concord-consortium/lara/tree/master/lara-typescript/src/interactive-api-client#readme\",\"dependencies\":{\"iframe-phone\":\"^1.3.1\",\"nanoid\":\"^3.3.7\"},\"peerDependencies\":{\"react\":\">=16.9.0\",\"react-dom\":\">=16.9.0\"}}");
 
 /***/ }),
 
