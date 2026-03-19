@@ -82,7 +82,7 @@
     "typedoc": "^0.14.2",
     "typedoc-plugin-markdown": "^1.1.27",
     "typescript": "^3.3.3333",
-    "webpack": "^4.29.6",
+    "webpack": "^5.94.0",
     "webpack-cli": "^3.2.3"
   },
   "dependencies": {
