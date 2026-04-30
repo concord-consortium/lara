@@ -65,11 +65,6 @@ Parameters:
     Description:
       The OAuth2 key to authenticate via learn.staging. If this is not set, the portal
       will not be configured.
-  AssessmentPortalSecret:
-    Type: String
-    Description:
-      The OAuth2 key to authenticate via asessment.portal. If this is not set, the portal
-      will not be configured.
   LearnPortalSecret:
     Type: String
     Description:
@@ -212,7 +207,6 @@ Parameters:
 Conditions:
   AddLearnMigrate: !Not [!Equals [!Ref LearnMigrateSecret, ""]]
   AddLearnStaging: !Not [!Equals [!Ref LearnStagingSecret, ""]]
-  AddAssessmentPortal: !Not [!Equals [!Ref AssessmentPortalSecret, ""]]
   AddLearnPortal: !Not [!Equals [!Ref LearnPortalSecret, ""]]
   AddQAPortal: !Not [!Equals [!Ref QAPortalSecret, ""]] # Also check for QAPortalURL?
   CreateLoadBalancerHTTPRedirectCond:
@@ -435,7 +429,6 @@ Resources:
                 - " "
                 - - !If [AddLearnStaging, LEARN_STAGING, !Ref "AWS::NoValue"]
                   - !If [AddLearnMigrate, LEARN_MIGRATE, !Ref "AWS::NoValue"]
-                  - !If [AddAssessmentPortal, ASSESSMENT, !Ref "AWS::NoValue"]
                   - !If [AddLearnPortal, Learn, !Ref "AWS::NoValue"]
                   - !If [AddQAPortal, QA_PORTAL, !Ref "AWS::NoValue"]
 
@@ -471,23 +464,6 @@ Resources:
               - AddLearnStaging
               - Name: CONCORD_LEARN_STAGING_URL
                 Value: https://learn.staging.concord.org/
-              - !Ref "AWS::NoValue"
-
-            # assessment configuration
-            - !If
-              - AddAssessmentPortal
-              - Name: CONCORD_ASSESSMENT_CLIENT_ID
-                Value: !Ref PortalClientID
-              - !Ref "AWS::NoValue"
-            - !If
-              - AddAssessmentPortal
-              - Name: CONCORD_ASSESSMENT_CLIENT_SECRET
-                Value: !Ref AssessmentPortalSecret
-              - !Ref "AWS::NoValue"
-            - !If
-              - AddAssessmentPortal
-              - Name: CONCORD_ASSESSMENT_URL
-                Value: https://ngss-assessment.portal.concord.org/
               - !Ref "AWS::NoValue"
 
             # learn configuration
@@ -720,7 +696,6 @@ Resources:
                 - " "
                 - - !If [AddLearnStaging, LEARN_STAGING, !Ref "AWS::NoValue"]
                   - !If [AddLearnMigrate, LEARN_MIGRATE, !Ref "AWS::NoValue"]
-                  - !If [AddAssessmentPortal, ASSESSMENT, !Ref "AWS::NoValue"]
                   - !If [AddLearnPortal, Learn, !Ref "AWS::NoValue"]
                   - !If [AddQAPortal, QA_PORTAL, !Ref "AWS::NoValue"]
 
@@ -756,23 +731,6 @@ Resources:
               - AddLearnStaging
               - Name: CONCORD_LEARN_STAGING_URL
                 Value: https://learn.staging.concord.org/
-              - !Ref "AWS::NoValue"
-
-            # assessment configuration
-            - !If
-              - AddAssessmentPortal
-              - Name: CONCORD_ASSESSMENT_CLIENT_ID
-                Value: !Ref PortalClientID
-              - !Ref "AWS::NoValue"
-            - !If
-              - AddAssessmentPortal
-              - Name: CONCORD_ASSESSMENT_CLIENT_SECRET
-                Value: !Ref AssessmentPortalSecret
-              - !Ref "AWS::NoValue"
-            - !If
-              - AddAssessmentPortal
-              - Name: CONCORD_ASSESSMENT_URL
-                Value: https://ngss-assessment.portal.concord.org/
               - !Ref "AWS::NoValue"
 
             # learn confiuration
@@ -962,7 +920,6 @@ Metadata:
           default: "Portals"
         Parameters:
           - PortalClientID
-          - AssessmentPortalSecret
           - LearnMigrateSecret
           - LearnPortalSecret
           - LearnStagingSecret
