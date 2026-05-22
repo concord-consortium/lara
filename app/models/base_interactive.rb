@@ -89,15 +89,18 @@ module BaseInteractive
       width: native_width,
       height: native_height,
       question_number: index_in_activity,
-      authored_state: parsed_authored_state,
       report_item_url: report_item_url
     }
 
     if type === "multiple_choice"
       result.merge!({
         # This property is defined in IAuthoringMultipleChoiceMetadata:
-        choices: (metadata[:choices] || []).map { |c| (c || {}).symbolize_keys.slice(:id, :content, :correct) }
+        choices: (metadata[:choices] || []).map { |c| (c || {}).symbolize_keys.slice(:id, :content, :correct) },
+        # Kept for backward compatibility with portal-report's old reader. Will be removed in a follow-up
+        # once portal-report's new reader using top-level multiple_answers has rolled out.
+        authored_state: metadata
       })
+      result[:multiple_answers] = metadata[:multipleAnswers] if metadata.key?(:multipleAnswers)
     elsif type === "image_question"
       result.merge!({
         # This property is defined in IAuthoringImageQuestionMetadata.
