@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_29_114428) do
+ActiveRecord::Schema[8.0].define(version: 2025_12_09_102615) do
   create_table "admin_events", id: :integer, charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
     t.string "kind"
     t.text "message"
