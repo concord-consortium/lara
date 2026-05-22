@@ -102,6 +102,26 @@ namespace :reporting do
     send_resources(runs, ReportService::RunSender, nil, opts)
   end
 
+  desc "Enqueue SendToReportServiceJob for every Publishable with a publication_hash (clears backlog of failed/missing report-service publishes)"
+  task republish_to_report_service: :environment do
+    next unless ReportService.configured?
+
+    [LightweightActivity, Sequence].each do |klass|
+      scope = klass.where("publication_hash IS NOT NULL")
+      total = scope.count
+      puts "==> Enqueueing #{total} #{klass.name} jobs..."
+      enqueued = 0
+      scope.find_each(batch_size: 100) do |publishable|
+        job = SendToReportServiceJob.new(klass.name, publishable.id, Time.now)
+        Delayed::Job.enqueue(job, 0, 5.seconds.from_now)
+        enqueued += 1
+        putc "." if enqueued % 50 == 0
+      end
+      puts
+      puts "    enqueued: #{enqueued}/#{total}"
+    end
+  end
+
   # Given a CSV file exported from the portal, import `class_hash` value
   # Line Format =  "<clazz_id>, <class_hash>, <learner_id>, <learner_secret_key>"
   # See ClassInfoImportHelper

@@ -81,3 +81,37 @@ describe  "reporting:import_clazz_info" do
   end
 
 end
+
+describe "reporting:republish_to_report_service" do
+  include_context "rake"
+
+  let!(:portal_published_activity)     { LightweightActivity.create!(name: "pp",  publication_hash: "abc") }
+  let!(:never_portal_published_act)    { LightweightActivity.create!(name: "npp", publication_hash: nil) }
+  let!(:portal_published_sequence)     { Sequence.create!(title: "pps", publication_hash: "def") }
+  let!(:never_portal_published_seq)    { Sequence.create!(title: "npps", publication_hash: nil) }
+
+  before(:each) do
+    allow(ReportService).to receive(:configured?).and_return(true)
+  end
+
+  it "enqueues SendToReportServiceJob for each portal-published activity and sequence" do
+    expect(Delayed::Job).to receive(:enqueue) do |job, *_args|
+      expect(job).to be_a(SendToReportServiceJob)
+      expect([
+        ["LightweightActivity", portal_published_activity.id],
+        ["Sequence",            portal_published_sequence.id]
+      ]).to include([job.publishable_type, job.publishable_id])
+    end.twice
+    subject.invoke
+  end
+
+  it "does not enqueue for activities or sequences without a publication_hash" do
+    enqueued_ids = []
+    allow(Delayed::Job).to receive(:enqueue) do |job, *_args|
+      enqueued_ids << [job.publishable_type, job.publishable_id]
+    end
+    subject.invoke
+    expect(enqueued_ids).not_to include(["LightweightActivity", never_portal_published_act.id])
+    expect(enqueued_ids).not_to include(["Sequence",            never_portal_published_seq.id])
+  end
+end
