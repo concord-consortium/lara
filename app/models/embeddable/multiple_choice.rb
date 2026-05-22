@@ -113,7 +113,7 @@ module Embeddable
     end
 
     def report_service_hash
-      {
+      result = {
         type: 'multiple_choice',
         id: embeddable_id,
         prompt: prompt,
@@ -125,6 +125,8 @@ module Embeddable
         question_number: index_in_activity,
         required: is_prediction
       }
+      result[:multiple_answers] = multi_answer unless multi_answer.nil?
+      result
     end
 
     def duplicate
