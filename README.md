@@ -8,21 +8,7 @@ This is a Rails application intended to provide a platform for authoring and usi
 
 ## Getting started
 
-We use Docker for our local development. We also are currently using rails-lts which is a non-open source version of Rails that includes security backports for Rails 3.2. So your dockerhub user will need access to `ghcr.io/concord-consortium/docker-rails-base-private` to do development.
-
-Create GitHub personal access token and select the read:packages scope to download container images and read their metadata
-
-More details: https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry#authenticating-with-a-personal-access-token-classic
-
- Save your token as an environment variable:
-
-    export CR_PAT=YOUR_TOKEN
-
-Log in to docker if you haven't already:
-
-    echo $CR_PAT | docker login ghcr.io -u USERNAME --password-stdin
-
-To get started quickly, run:
+We use Docker for our local development. To get started quickly, run:
 
     docker-compose up
 
@@ -143,14 +129,6 @@ you need to do in practice is described below.
 in LARA's `.env` file.
 
 1. Set `REPORT_SERVICE_TOKEN` in LARA's `.env` file following instructions that can be found there.
-
-1. Create GitHub personal access token and select the `read:packages` scope to download container images and read their metadata. More details: https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry#authenticating-with-a-personal-access-token-classic
-
-    Save your token as an environment variable and log in to docker:
-    ```
-      export CR_PAT=YOUR_TOKEN
-      echo $CR_PAT | docker login ghcr.io -u USERNAME --password-stdin
-    ```
 
 1. Run
     ```
