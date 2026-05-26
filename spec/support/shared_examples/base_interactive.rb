@@ -218,6 +218,17 @@ shared_examples "a base interactive" do |model_factory|
           expect(interactive.report_service_hash).not_to have_key(:multiple_answers)
         end
       end
+
+      describe "and multipleAnswers is explicitly null in metadata" do
+        let (:authored_state) do JSON({
+          questionType: "multiple_choice", prompt: "Test prompt", required: true,
+          multipleAnswers: nil,
+          choices: [{id: "1", content: "Choice A", correct: true}]
+        }) end
+        it 'omits multiple_answers entirely' do
+          expect(interactive.report_service_hash).not_to have_key(:multiple_answers)
+        end
+      end
     end
   end
 end

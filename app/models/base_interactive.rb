@@ -100,7 +100,7 @@ module BaseInteractive
         # once portal-report's new reader using top-level multiple_answers has rolled out.
         authored_state: metadata
       })
-      result[:multiple_answers] = metadata[:multipleAnswers] if metadata.key?(:multipleAnswers)
+      result[:multiple_answers] = metadata[:multipleAnswers] unless metadata[:multipleAnswers].nil?
     elsif type === "image_question"
       result.merge!({
         # This property is defined in IAuthoringImageQuestionMetadata.
