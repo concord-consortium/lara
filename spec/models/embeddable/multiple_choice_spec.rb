@@ -177,4 +177,23 @@ describe Embeddable::MultipleChoice do
     end
   end
 
+  describe '#report_service_hash' do
+    let(:multichoice) { FactoryBot.create(:multiple_choice) }
+
+    it 'emits multiple_answers when multi_answer is true' do
+      multichoice.update!(multi_answer: true)
+      expect(multichoice.report_service_hash).to include(multiple_answers: true)
+    end
+
+    it 'emits multiple_answers when multi_answer is false' do
+      multichoice.update!(multi_answer: false)
+      expect(multichoice.report_service_hash).to include(multiple_answers: false)
+    end
+
+    it 'omits multiple_answers when multi_answer is nil' do
+      multichoice.update_column(:multi_answer, nil)
+      expect(multichoice.report_service_hash).not_to have_key(:multiple_answers)
+    end
+  end
+
 end

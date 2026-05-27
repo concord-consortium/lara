@@ -33,7 +33,7 @@ class SendToReportServiceJob < Struct.new(:publishable_type, :publishable_id, :q
     return if (resource_sender.payload_hash == publishable.last_report_service_hash)
 
     result = resource_sender.send()
-    
+
     if result["success"]
       # Record the last payload_hash to the publishable.
       publishable.update_column(:last_report_service_hash, resource_sender.payload_hash)
@@ -42,7 +42,9 @@ class SendToReportServiceJob < Struct.new(:publishable_type, :publishable_id, :q
     else
       # Delayed job automatically retries failed `perform`s.
       # rescheduled in 5 seconds + N ** 4
-      raise FailedToSendToReportService.new("Failed to send")
+      code = result.respond_to?(:code) ? result.code : nil
+      body_excerpt = (result.respond_to?(:body) ? result.body.to_s : result.to_s)[0, 500]
+      raise FailedToSendToReportService.new("Failed to send: HTTP #{code.inspect} body=#{body_excerpt}")
     end
   end
 

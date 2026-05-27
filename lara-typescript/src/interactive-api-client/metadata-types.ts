@@ -37,6 +37,13 @@ export interface IAuthoringMultipleChoiceChoiceMetadata {
 export interface IAuthoringMultipleChoiceMetadata extends IAuthoringMetadataBase {
   questionType: "multiple_choice";
   choices: IAuthoringMultipleChoiceChoiceMetadata[];
+  /**
+   * Whether the question accepts multiple simultaneous answers. When omitted, consumers should
+   * treat it as undefined (not false) — single-answer behavior is the legacy default but is not
+   * implied by absence. LARA surfaces this verbatim as `multiple_answers` on the report-service
+   * structure document.
+   */
+  multipleAnswers?: boolean;
 }
 
 export interface IAuthoringImageQuestionMetadata extends IAuthoringMetadataBase {

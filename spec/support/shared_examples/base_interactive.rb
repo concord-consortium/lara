@@ -112,6 +112,7 @@ shared_examples "a base interactive" do |model_factory|
         report_item_url: interactive.report_item_url
 
       )
+      expect(interactive.report_service_hash).not_to have_key(:authored_state)
     end
 
     describe "when interactive pretends to be open response question" do
@@ -133,6 +134,7 @@ shared_examples "a base interactive" do |model_factory|
           height: interactive.native_height,
           display_in_iframe: interactive.reportable_in_iframe?
         )
+        expect(interactive.report_service_hash).not_to have_key(:authored_state)
       end
     end
 
@@ -156,6 +158,7 @@ shared_examples "a base interactive" do |model_factory|
           height: interactive.native_height,
           display_in_iframe: interactive.reportable_in_iframe?
         )
+        expect(interactive.report_service_hash).not_to have_key(:authored_state)
       end
     end
 
@@ -182,6 +185,49 @@ shared_examples "a base interactive" do |model_factory|
           height: interactive.native_height,
           display_in_iframe: interactive.reportable_in_iframe?
         )
+      end
+
+      it 'still emits authored_state for backward compatibility' do
+        expect(interactive.report_service_hash).to have_key(:authored_state)
+      end
+
+      describe "and multipleAnswers is set to true in metadata" do
+        let (:authored_state) do JSON({
+          questionType: "multiple_choice", prompt: "Test prompt", required: true,
+          multipleAnswers: true,
+          choices: [{id: "1", content: "Choice A", correct: true}]
+        }) end
+        it 'emits multiple_answers: true' do
+          expect(interactive.report_service_hash).to include(multiple_answers: true)
+        end
+      end
+
+      describe "and multipleAnswers is set to false in metadata" do
+        let (:authored_state) do JSON({
+          questionType: "multiple_choice", prompt: "Test prompt", required: true,
+          multipleAnswers: false,
+          choices: [{id: "1", content: "Choice A", correct: true}]
+        }) end
+        it 'emits multiple_answers: false' do
+          expect(interactive.report_service_hash).to include(multiple_answers: false)
+        end
+      end
+
+      describe "and multipleAnswers is absent from metadata" do
+        it 'omits multiple_answers entirely' do
+          expect(interactive.report_service_hash).not_to have_key(:multiple_answers)
+        end
+      end
+
+      describe "and multipleAnswers is explicitly null in metadata" do
+        let (:authored_state) do JSON({
+          questionType: "multiple_choice", prompt: "Test prompt", required: true,
+          multipleAnswers: nil,
+          choices: [{id: "1", content: "Choice A", correct: true}]
+        }) end
+        it 'omits multiple_answers entirely' do
+          expect(interactive.report_service_hash).not_to have_key(:multiple_answers)
+        end
       end
     end
   end

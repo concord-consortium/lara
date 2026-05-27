@@ -13,6 +13,7 @@
 ### Properties
 
 * [choices](iauthoringmultiplechoicemetadata.md#choices)
+* [multipleAnswers](iauthoringmultiplechoicemetadata.md#optional-multipleanswers)
 * [prompt](iauthoringmultiplechoicemetadata.md#optional-prompt)
 * [questionSubType](iauthoringmultiplechoicemetadata.md#optional-questionsubtype)
 * [questionType](iauthoringmultiplechoicemetadata.md#questiontype)
@@ -23,6 +24,17 @@
 ###  choices
 
 • **choices**: *[IAuthoringMultipleChoiceChoiceMetadata](iauthoringmultiplechoicechoicemetadata.md)[]*
+
+___
+
+### `Optional` multipleAnswers
+
+• **multipleAnswers**? : *undefined | false | true*
+
+Whether the question accepts multiple simultaneous answers. When omitted, consumers should
+treat it as undefined (not false) — single-answer behavior is the legacy default but is not
+implied by absence. LARA surfaces this verbatim as `multiple_answers` on the report-service
+structure document.
 
 ___
 

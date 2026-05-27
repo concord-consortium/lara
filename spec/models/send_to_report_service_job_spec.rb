@@ -79,10 +79,24 @@ describe "SendToReportServiceJob" do
     end
 
     describe "when the server returns an error"  do
-      let(:report_service_response) { { "status" => 400, "success" => false } }
+      let(:report_service_response) do
+        double("HTTPartyResponse").tap do |r|
+          allow(r).to receive(:[]).with("success").and_return(false)
+          allow(r).to receive(:code).and_return(500)
+          allow(r).to receive(:body).and_return('{"success":false,"error":{"details":"Property array contains an invalid nested entity."}}')
+        end
+      end
+
       it "the job should throw an exception to retry the job" do
         expect(sender).not_to receive(:update_column)
         expect { job.perform }.to raise_exception(SendToReportServiceJob::FailedToSendToReportService)
+      end
+
+      it "the exception message includes HTTP status and a body excerpt" do
+        expect { job.perform }.to raise_exception(SendToReportServiceJob::FailedToSendToReportService) { |e|
+          expect(e.message).to include("500")
+          expect(e.message).to include("Property array contains an invalid nested entity")
+        }
       end
     end
 
