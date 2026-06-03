@@ -47,21 +47,29 @@ export const HostComponent: React.FC = () => {
     return () => phone.disconnect();
   }, [iframeOrigin]);
 
-  // Hand-track focusInsideIframe from the iframe element's focus/blur — the one
-  // cross-origin signal the parent can observe. (focus/blur do not bubble, so
-  // listen directly on the element.)
+  // Hand-track focusInsideIframe. An iframe *element* does NOT fire focus/blur
+  // when focus moves into/out of its nested browsing context, so we can't listen
+  // on the element. The reliable cross-origin signal is on the top-level window:
+  // when focus enters the subframe the window fires `blur` and
+  // document.activeElement becomes the iframe element (readable even
+  // cross-origin); when focus returns to the host the window fires `focus`.
+  // We read activeElement on a deferred tick because some browsers update it
+  // just after the blur event fires.
   useEffect(() => {
-    const el = iframeRef.current;
-    if (!el) {
-      return;
-    }
-    const onFocus = () => { setFocusInsideIframe(true); setLastEvent("iframe focus"); };
-    const onBlur = () => { setFocusInsideIframe(false); setLastEvent("iframe blur"); };
-    el.addEventListener("focus", onFocus);
-    el.addEventListener("blur", onBlur);
+    let timer: number | undefined;
+    const syncFromActiveElement = () => {
+      const inIframe = document.activeElement === iframeRef.current;
+      setFocusInsideIframe(inIframe);
+      setLastEvent(inIframe ? "focus entered iframe" : "focus left iframe");
+    };
+    const onWindowBlur = () => { timer = window.setTimeout(syncFromActiveElement, 0); };
+    const onWindowFocus = () => { setFocusInsideIframe(false); setLastEvent("focus returned to host"); };
+    window.addEventListener("blur", onWindowBlur);
+    window.addEventListener("focus", onWindowFocus);
     return () => {
-      el.removeEventListener("focus", onFocus);
-      el.removeEventListener("blur", onBlur);
+      window.clearTimeout(timer);
+      window.removeEventListener("blur", onWindowBlur);
+      window.removeEventListener("focus", onWindowFocus);
     };
   }, []);
 
