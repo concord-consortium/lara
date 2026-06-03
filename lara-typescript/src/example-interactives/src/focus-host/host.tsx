@@ -16,9 +16,16 @@ export const HostComponent: React.FC = () => {
   const [focusInsideIframe, setFocusInsideIframe] = useState(false);
   const [lastEvent, setLastEvent] = useState("(none)");
 
+  // Allow overriding the embedded interactive with a full URL via the
+  // `?interactive=<url>` query param, e.g. to point at testbed/linked-state or
+  // an externally hosted interactive. When set, the iframe-phone target origin
+  // is derived from that URL; otherwise we fall back to the cross-origin trick
+  // (host on one of localhost/127.0.0.1, iframe on the other).
   const { protocol, hostname, port } = window.location;
-  const iframeOrigin = `${protocol}//${otherHost(hostname)}${port ? ":" + port : ""}`;
-  const iframeSrc = `${iframeOrigin}${INTERACTIVE_PATH}`;
+  const defaultOrigin = `${protocol}//${otherHost(hostname)}${port ? ":" + port : ""}`;
+  const overrideSrc = new URLSearchParams(window.location.search).get("interactive") || undefined;
+  const iframeSrc = overrideSrc ?? `${defaultOrigin}${INTERACTIVE_PATH}`;
+  const iframeOrigin = overrideSrc ? new URL(overrideSrc).origin : defaultOrigin;
 
   // Connect the iframe-phone parent endpoint and send a minimal runtime init.
   useEffect(() => {
@@ -64,8 +71,8 @@ export const HostComponent: React.FC = () => {
     <div style={{ padding: 16 }}>
       <h1>focus-host — Phase A (baseline, no trap)</h1>
       <div style={{ fontFamily: "monospace", marginBottom: 12 }}>
-        connected: {String(connected)} | iframeOrigin: {iframeOrigin} | focusInsideIframe:{" "}
-        {String(focusInsideIframe)} | lastEvent: {lastEvent}
+        connected: {String(connected)} | iframeSrc: {iframeSrc} | iframeOrigin: {iframeOrigin} |{" "}
+        focusInsideIframe: {String(focusInsideIframe)} | lastEvent: {lastEvent}
       </div>
 
       <button type="button">Host: Before</button>
