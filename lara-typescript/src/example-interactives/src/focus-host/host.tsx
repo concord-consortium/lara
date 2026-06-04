@@ -1,6 +1,7 @@
 import * as React from "react";
 import { useEffect, useRef, useState } from "react";
 import * as iframePhone from "iframe-phone";
+import { FocusTrapController, FocusTrapStrategy } from "@concord-consortium/accessibility-tools/hooks";
 
 // Cross-origin trick: the host page is opened on one host name; the iframe is
 // pointed at the other. localhost and 127.0.0.1 are different origins for
@@ -15,6 +16,10 @@ export const HostComponent: React.FC = () => {
   const [connected, setConnected] = useState(false);
   const [focusInsideIframe, setFocusInsideIframe] = useState(false);
   const [lastEvent, setLastEvent] = useState("(none)");
+  const containerRef = useRef<HTMLDivElement>(null);
+  const beforeBtnRef = useRef<HTMLButtonElement>(null);
+  const closeBtnRef = useRef<HTMLButtonElement>(null);
+  const [trapEnabled, setTrapEnabled] = useState(true);
 
   // Allow overriding the embedded interactive with a full URL via the
   // `?interactive=<url>` query param, e.g. to point at testbed/linked-state or
@@ -73,19 +78,51 @@ export const HostComponent: React.FC = () => {
     };
   }, []);
 
+  // Phase B: wrap the container in the CURRENT FocusTrapController, with the
+  // iframe as an ordinary slot. This is expected to mishandle the iframe — that
+  // failure is the point of this phase.
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) {
+      return;
+    }
+    const strategy: FocusTrapStrategy = {
+      getElements: () => ({
+        before: beforeBtnRef.current ?? undefined,
+        iframe: iframeRef.current ?? undefined,
+        close: closeBtnRef.current ?? undefined
+      }),
+      cycleOrder: ["before", "iframe", "close"]
+    };
+    const controller = new FocusTrapController(container, strategy);
+    controller.setEnabled(trapEnabled);
+    if (trapEnabled) {
+      controller.enterTrap();
+    }
+    return () => controller.destroy();
+  }, [trapEnabled]);
+
   const sentinelStyle: React.CSSProperties = { position: "absolute", width: 0, height: 0, overflow: "hidden" };
+
+  const handleTrapToggle = (e: React.ChangeEvent<HTMLInputElement>) => setTrapEnabled(e.target.checked);
 
   return (
     <div style={{ padding: 16 }}>
-      <h1>focus-host — Phase A (baseline, no trap)</h1>
+      <h1>focus-host — Phase B (existing trap, iframe-blind)</h1>
       <div style={{ fontFamily: "monospace", marginBottom: 12 }}>
         connected: {String(connected)} | iframeSrc: {iframeSrc} | iframeOrigin: {iframeOrigin} |{" "}
         focusInsideIframe: {String(focusInsideIframe)} | lastEvent: {lastEvent}
       </div>
 
-      <button type="button">Host: Before</button>
+      <label style={{ display: "block", marginBottom: 8 }}>
+        <input type="checkbox" checked={trapEnabled} onChange={handleTrapToggle} />{" "}
+        trap enabled
+      </label>
 
-      <div id="trap-container" style={{ border: "3px solid green", padding: 8, margin: "8px 0" }}>
+      <button type="button">Host: Before (outside trap)</button>
+
+      <div ref={containerRef} id="trap-container" style={{ border: "3px solid green", padding: 8, margin: "8px 0" }}>
+        <button ref={beforeBtnRef} type="button">Host: trapped neighbor</button>
         {/* Sentinels are present but inert in Phase A (tabIndex -1). They become active in Phase C. */}
         <span data-sentinel="before" tabIndex={-1} style={sentinelStyle} />
         <iframe
@@ -97,10 +134,10 @@ export const HostComponent: React.FC = () => {
           tabIndex={0}
         />
         <span data-sentinel="after" tabIndex={-1} style={sentinelStyle} />
-        <button type="button">Host: Close (escape hatch)</button>
+        <button ref={closeBtnRef} type="button">Host: Close (escape hatch)</button>
       </div>
 
-      <button type="button">Host: After</button>
+      <button type="button">Host: After (outside trap)</button>
     </div>
   );
 };
