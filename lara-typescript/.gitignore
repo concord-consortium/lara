@@ -3,3 +3,6 @@ docs
 coverage
 dist
 .DS_Store
+# yalc-linked local package builds (see package.json file:.yalc dependency)
+.yalc
+yalc.lock

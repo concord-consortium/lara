@@ -242,7 +242,15 @@ const exampleInteractive = (name) => ({
     ]
   },
   resolve: {
-    extensions: [ '.ts', '.tsx', '.js' ]
+    extensions: [ '.ts', '.tsx', '.js' ],
+    alias: {
+      // webpack 4 does not honor the package "exports" map, so the
+      // "@concord-consortium/accessibility-tools/hooks" subpath cannot be
+      // resolved automatically. Point it at the built entry directly. (Types
+      // still resolve via the package's typesVersions for ts-loader.)
+      '@concord-consortium/accessibility-tools/hooks':
+        require('path').resolve(__dirname, 'node_modules/@concord-consortium/accessibility-tools/dist/hooks/index.js')
+    }
   },
   stats: {
     // suppress "export not found" warnings about re-exported types
