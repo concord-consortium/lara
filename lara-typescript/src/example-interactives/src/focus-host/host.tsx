@@ -81,11 +81,25 @@ export const HostComponent: React.FC = () => {
   // Phase B: wrap the container in the CURRENT FocusTrapController, with the
   // iframe as an ordinary slot. This is expected to mishandle the iframe — that
   // failure is the point of this phase.
+  //
+  // We present the trap like an inline dialog so it can be demonstrated on a
+  // single page without becoming a keyboard dead-end:
+  //   - "closed" = controller DISABLED. In this mode the library makes the
+  //     trap's contents non-tabbable (so Tab skips them) AND does not intercept
+  //     Tab on the container, so Tab moves past it to the next control. The
+  //     container itself is a single focusable Tab stop (tabIndex 0).
+  //   - Enter on the focused container "opens" the trap: enable + enterTrap()
+  //     focuses the first slot and Tab then cycles within the trap.
+  //   - Escape (handled by the controller) exits; our onExit closes it back to
+  //     the disabled state so Tab passes through again.
+  // When the "trap enabled" toggle is off we skip the controller entirely, so
+  // native traversal (Phase A) returns.
   useEffect(() => {
     const container = containerRef.current;
-    if (!container) {
+    if (!container || !trapEnabled) {
       return;
     }
+    let tearingDown = false;
     const strategy: FocusTrapStrategy = {
       getElements: () => ({
         before: beforeBtnRef.current ?? undefined,
@@ -95,11 +109,30 @@ export const HostComponent: React.FC = () => {
       cycleOrder: ["before", "iframe", "close"]
     };
     const controller = new FocusTrapController(container, strategy);
-    controller.setEnabled(trapEnabled);
-    if (trapEnabled) {
-      controller.enterTrap();
-    }
-    return () => controller.destroy();
+    // Re-close (disable) the trap whenever it exits, so Tab on the container
+    // passes through instead of re-engaging. Guarded so the teardown-time exit
+    // doesn't fight destroy()'s own tabindex restoration.
+    strategy.onExit = () => {
+      if (!tearingDown) {
+        controller.setEnabled(false);
+      }
+    };
+    controller.setEnabled(false); // start "closed"
+
+    const onContainerKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Enter" && e.target === container && !controller.isTrapped) {
+        e.preventDefault();
+        controller.setEnabled(true);
+        controller.enterTrap();
+      }
+    };
+    container.addEventListener("keydown", onContainerKeyDown);
+
+    return () => {
+      tearingDown = true;
+      container.removeEventListener("keydown", onContainerKeyDown);
+      controller.destroy();
+    };
   }, [trapEnabled]);
 
   const sentinelStyle: React.CSSProperties = { position: "absolute", width: 0, height: 0, overflow: "hidden" };
@@ -114,14 +147,19 @@ export const HostComponent: React.FC = () => {
         focusInsideIframe: {String(focusInsideIframe)} | lastEvent: {lastEvent}
       </div>
 
-      <label style={{ display: "block", marginBottom: 8 }}>
+      <label style={{ display: "block", marginBottom: 4 }}>
         <input type="checkbox" checked={trapEnabled} onChange={handleTrapToggle} />{" "}
         trap enabled
       </label>
+      <p style={{ marginTop: 0, marginBottom: 8, fontStyle: "italic" }}>
+        The green container is a single Tab stop: Tab moves past it to the next control
+        without entering. Press Enter on it to open the trap (focuses the first control
+        inside; Tab then cycles within). Press Escape to close back to the container.
+      </p>
 
       <button type="button">Host: Before (outside trap)</button>
 
-      <div ref={containerRef} id="trap-container" style={{ border: "3px solid green", padding: 8, margin: "8px 0" }}>
+      <div ref={containerRef} id="trap-container" tabIndex={0} style={{ border: "3px solid green", padding: 8, margin: "8px 0" }}>
         <button ref={beforeBtnRef} type="button">Host: trapped neighbor</button>
         {/* Sentinels are present but inert in Phase A (tabIndex -1). They become active in Phase C. */}
         <span data-sentinel="before" tabIndex={-1} style={sentinelStyle} />
