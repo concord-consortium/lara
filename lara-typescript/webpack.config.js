@@ -276,7 +276,8 @@ module.exports = (env, argv) => [
   exampleInteractive("report-item"),
   exampleInteractive("attachments"),
   exampleInteractive("focus-host"),
-  exampleInteractive("focus-interactive")
+  exampleInteractive("focus-interactive"),
+  exampleInteractive("focus-host-slot")
 ];
 
 module.exports.laraTypescript = laraTypescript;
