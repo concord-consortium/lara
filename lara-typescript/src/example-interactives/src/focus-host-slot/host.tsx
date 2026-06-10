@@ -183,9 +183,31 @@ export const HostComponent: React.FC = () => {
     };
     container.addEventListener("keydown", onContainerKeyDown);
 
+    // Inline-tile dismiss: while the trap is open, if focus moves to an element
+    // OUTSIDE the tile (e.g. the user clicks "Host: Before"), release the trap so
+    // it doesn't stay stuck "open" (which would no-op the next Enter and leave the
+    // iframe Tab-reachable). This is the host's modality responsibility — mirrors
+    // what selection-driven hosts like CLUE do via setEnabled(false). Release with
+    // { refocus: false } so focus stays where the user clicked, not yanked back to
+    // the container. The iframe is inside the container and native descent into it
+    // fires no parent focusin, so this never false-triggers on iframe entry.
+    const onDocFocusIn = (e: FocusEvent) => {
+      if (!controller.isTrapped) {
+        return;
+      }
+      const target = e.target as Node | null;
+      if (target && container.contains(target)) {
+        return;
+      }
+      controller.exitTrap({ refocus: false }); // fires strategy.onExit (closes + iframe -1)
+      setLastEvent("dismiss (focus left tile)");
+    };
+    document.addEventListener("focusin", onDocFocusIn, true);
+
     return () => {
       tearingDown = true;
       container.removeEventListener("keydown", onContainerKeyDown);
+      document.removeEventListener("focusin", onDocFocusIn, true);
       slot.detach();
       controller.destroy();
     };
