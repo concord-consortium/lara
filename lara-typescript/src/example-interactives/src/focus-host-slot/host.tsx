@@ -7,13 +7,14 @@ import {
   FocusTrapStrategy,
   IframeSlot
 } from "@concord-consortium/accessibility-tools/hooks";
+import { FocusManager } from "../../../interactive-api-host";
 
 // Cross-origin trick (same as Phase B focus-host): the host page is opened on one
 // host name; the iframe is pointed at the other. localhost and 127.0.0.1 are
 // different origins for same-origin-policy / postMessage purposes, so this yields a
 // real cross-origin iframe from a single live-server.
 const otherHost = (hostname: string) => (hostname === "localhost" ? "127.0.0.1" : "localhost");
-const INTERACTIVE_PATH = "/focus-interactive/index.html";
+const INTERACTIVE_PATH = "/focus-interactive-coop/index.html";
 
 const ENTER_LABEL = "Press Tab to enter the interactive";
 
@@ -30,11 +31,14 @@ export const HostComponent: React.FC = () => {
   const afterSentinelRef = useRef<HTMLSpanElement>(null);
   const neighborBtnRef = useRef<HTMLButtonElement>(null);
   const closeBtnRef = useRef<HTMLButtonElement>(null);
+  const restoreBtnRef = useRef<HTMLButtonElement>(null);
   const [trapEnabled, setTrapEnabled] = useState(true);
+  const [cooperating, setCooperating] = useState(false);
 
   // Allow overriding the embedded interactive with a full URL via the
   // `?interactive=<url>` query param (reuses the Phase B mechanism). Default embed
-  // is focus-interactive, which speaks no focus protocol => non-cooperating path.
+  // is focus-interactive-coop, which speaks the focus protocol => cooperating path;
+  // point `?interactive=` at a plain interactive for the non-cooperating fallback.
   const { protocol, hostname, port } = window.location;
   const defaultOrigin = `${protocol}//${otherHost(hostname)}${port ? ":" + port : ""}`;
   const overrideSrc = new URLSearchParams(window.location.search).get("interactive") || undefined;
@@ -120,6 +124,9 @@ export const HostComponent: React.FC = () => {
     // through this closure (same approach as Phase B).
     let controller: FocusTrapController;
 
+    const phone = phoneRef.current;
+    const focusManager = phone ? new FocusManager(phone) : undefined;
+
     const slot = new IframeSlot({
       slotName: "content",
       getIframe: () => iframeRef.current,
@@ -129,12 +136,29 @@ export const HostComponent: React.FC = () => {
         setLastEvent(`sentinel exit ${dir > 0 ? "+1" : "-1"} -> cycle`);
         controller.cycleToAdjacentSlot(dir);
       },
+      // Cooperating escape: the interactive's focusExit{escape} arrives via the
+      // transport; release the trap with the DEFAULT refocus (focus was inside,
+      // so it lands back on the visible tile container).
+      onRequestExit: () => {
+        setLastEvent("focusExit{escape} -> exitTrap");
+        controller.exitTrap();
+      },
+      transport: focusManager?.transport,
       // Single-iframe constant: always intercept both directions with a tabbable
       // sentinel (no shared IframeSlotRegistry in C1).
       getIntercept: () => ({ forward: true, reverse: true }),
       enterLabel: ENTER_LABEL
     });
     slot.attach();
+
+    const unsubscribeCapability = focusManager?.transport.onMessage(msg => {
+      if (msg.type === "capability" && msg.focusProtocol) {
+        setCooperating(true);
+        setLastEvent("capability recv -> cooperating");
+      } else if (msg.type === "focusExit") {
+        setLastEvent(`focusExit recv {${msg.mode}}`);
+      }
+    });
 
     const setIframeEnterable = (enterable: boolean) => {
       const el = iframeRef.current;
@@ -147,9 +171,10 @@ export const HostComponent: React.FC = () => {
       getElements: () => ({
         content: wrapperRef.current ?? undefined,
         neighbor: neighborBtnRef.current ?? undefined,
-        close: closeBtnRef.current ?? undefined
+        close: closeBtnRef.current ?? undefined,
+        restore: restoreBtnRef.current ?? undefined
       }),
-      cycleOrder: ["content", "neighbor", "close"],
+      cycleOrder: ["content", "neighbor", "close", "restore"],
       contentSlot: "content",
       nativeTabSlots: ["content"],
       focusContent: (ctx: FocusContentContext) => slot.focusContent(ctx),
@@ -183,6 +208,15 @@ export const HostComponent: React.FC = () => {
     };
     container.addEventListener("keydown", onContainerKeyDown);
 
+    // Restore stand-in for AP's post-overlay glue: ask the interactive to re-focus
+    // its last-focused control. Cooperating => focusEnter{restore} (precise);
+    // non-cooperating => the library's forward landing-hint fallback.
+    const onRestoreClick = () => {
+      setLastEvent("restore (requestRestore)");
+      slot.requestRestore();
+    };
+    restoreBtnRef.current?.addEventListener("click", onRestoreClick);
+
     // Inline-tile dismiss: while the trap is open, if focus moves to an element
     // OUTSIDE the tile (e.g. the user clicks "Host: Before"), release the trap so
     // it doesn't stay stuck "open" (which would no-op the next Enter and leave the
@@ -208,6 +242,9 @@ export const HostComponent: React.FC = () => {
       tearingDown = true;
       container.removeEventListener("keydown", onContainerKeyDown);
       document.removeEventListener("focusin", onDocFocusIn, true);
+      restoreBtnRef.current?.removeEventListener("click", onRestoreClick);
+      unsubscribeCapability?.();
+      focusManager?.destroy();
       slot.detach();
       controller.destroy();
     };
@@ -244,10 +281,11 @@ export const HostComponent: React.FC = () => {
         }
       `}</style>
 
-      <h1>focus-host-slot — Phase C1 (iframe-slot, non-cooperating)</h1>
+      <h1>focus-host-slot — Phase C2 (iframe-slot, capability-aware)</h1>
       <div style={{ fontFamily: "monospace", marginBottom: 12 }}>
-        connected: {String(connected)} | iframeSrc: {iframeSrc} | iframeOrigin: {iframeOrigin} |{" "}
-        focusInsideIframe: {String(focusInsideIframe)} | lastEvent: {lastEvent}
+        connected: {String(connected)} | cooperating: {String(cooperating)} | iframeSrc: {iframeSrc} |{" "}
+        iframeOrigin: {iframeOrigin} | focusInsideIframe: {String(focusInsideIframe)} |{" "}
+        lastEvent: {lastEvent}
       </div>
 
       <label style={{ display: "block", marginBottom: 4 }}>
@@ -256,11 +294,13 @@ export const HostComponent: React.FC = () => {
       </label>
       <p style={{ marginTop: 0, marginBottom: 8, fontStyle: "italic" }}>
         The green tile is a single Tab stop: Tab moves past it without entering. Press
-        Enter on it to go inside — focus lands on the interactive with a "Press Tab to
-        enter the interactive" hint; the next Tab descends into it. Tab through the
-        interactive, then out to the neighbor / Close buttons; re-enter the interactive
-        by Tab from Close or Shift+Tab from the neighbor. Escape or Close releases the
-        tile. Uncheck "trap enabled" for the native (no-trap) baseline.
+        Enter on it to go inside. With a cooperating embed (the default
+        focus-interactive-coop) focus lands precisely on the interactive's first control
+        and Escape inside the interactive exits the tile; with a non-cooperating embed
+        (<code>?interactive=</code> a plain interactive) you get the Phase&nbsp;C1
+        "Press Tab to enter" landing hint instead. "Restore focus" asks a cooperating
+        interactive to re-focus its last control. Uncheck "trap enabled" for the native
+        (no-trap) baseline.
       </p>
 
       <button type="button">Host: Before (outside trap)</button>
@@ -284,6 +324,7 @@ export const HostComponent: React.FC = () => {
         </div>
         <button ref={neighborBtnRef} type="button">Host: trapped neighbor</button>
         <button ref={closeBtnRef} type="button">Host: Close (escape hatch)</button>
+        <button ref={restoreBtnRef} type="button">Host: Restore focus (AP-glue stand-in)</button>
       </div>
 
       <button type="button">Host: After (outside trap)</button>
