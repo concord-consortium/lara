@@ -199,7 +199,8 @@ export type IRuntimeClientMessage = "interactiveState" |
                                        "subscribe" |
                                        "unsubscribe" |
                                        "createJob" |
-                                       "cancelJob"
+                                       "cancelJob" |
+                                       "focusExit"
                                       ;
 
 export type IRuntimeServerMessage = "attachmentUrl" |
@@ -217,7 +218,8 @@ export type IRuntimeServerMessage = "attachmentUrl" |
                                        "pubSubMessage" |
                                        "pubSubChannelInfo" |
                                        "jobCreated" |
-                                       "jobInfo"
+                                       "jobInfo" |
+                                       "focusEnter"
                                        ;
 
 export type IAuthoringClientMessage = "getInteractiveList" |
@@ -276,6 +278,18 @@ export interface IContextMembership {
 export type ICustomMessageOptions = Record<string, any>;
 export type ICustomMessagesHandledMap = Record<string, boolean | ICustomMessageOptions>;
 
+// Focus protocol (Phase C2 — AP-108 / LARA-215). Host->interactive focusEnter and
+// interactive->host focusExit. Payloads are objects so they can gain fields without
+// a breaking change. Capability is advertised via ISupportedFeatures.focusProtocol.
+export type FocusEnterMode = "forward" | "reverse" | "restore";
+export type FocusExitMode = "forward" | "reverse" | "escape";
+export interface IFocusEnterMessage {
+  mode: FocusEnterMode;
+}
+export interface IFocusExitMessage {
+  mode: FocusExitMode;
+}
+
 export interface ISupportedFeatures {
   aspectRatio?: number;
   authoredState?: boolean;
@@ -284,6 +298,9 @@ export interface ISupportedFeatures {
     handles?: ICustomMessagesHandledMap;
     // TODO: extend later to allow for sending custom messages from interactive
   };
+  // When true, the interactive speaks the focus protocol (focusEnter/focusExit).
+  // Absent/false => non-cooperating (host falls back to sentinel landing hints).
+  focusProtocol?: boolean;
 }
 
 export interface ISupportedFeaturesRequest {
