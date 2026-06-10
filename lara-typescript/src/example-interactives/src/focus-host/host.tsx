@@ -4,10 +4,19 @@ import * as iframePhone from "iframe-phone";
 import { FocusTrapController, FocusTrapStrategy } from "@concord-consortium/accessibility-tools/hooks";
 
 // Cross-origin trick: the host page is opened on one host name; the iframe is
-// pointed at the other. localhost and 127.0.0.1 are different origins for
-// same-origin-policy / postMessage purposes, so this yields a real cross-origin
-// iframe from a single live-server.
-const otherHost = (hostname: string) => (hostname === "localhost" ? "127.0.0.1" : "localhost");
+// pointed at the other. The two hosts are different origins for same-origin-policy /
+// postMessage purposes, so this yields a real cross-origin iframe from a single
+// source. localhost/127.0.0.1 cover the local dev server; the models-resources
+// CloudFront domain pairs with its direct S3 URL (both front the same bucket) so the
+// deployed testbed is also self-demonstrating. Unknown hosts fall back to themselves
+// (same-origin) rather than a broken guess.
+const HOST_MAP: Record<string, string> = {
+  "localhost": "127.0.0.1",
+  "127.0.0.1": "localhost",
+  "models-resources.concord.org": "models-resources.s3.amazonaws.com",
+  "models-resources.s3.amazonaws.com": "models-resources.concord.org"
+};
+const otherHost = (hostname: string) => HOST_MAP[hostname] ?? hostname;
 const INTERACTIVE_PATH = "/focus-interactive/index.html";
 
 export const HostComponent: React.FC = () => {
