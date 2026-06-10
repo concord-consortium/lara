@@ -23,7 +23,10 @@ const HOST_MAP: Record<string, string> = {
   "models-resources.s3.amazonaws.com": "models-resources.concord.org"
 };
 const otherHost = (hostname: string) => HOST_MAP[hostname] ?? hostname;
-const INTERACTIVE_PATH = "/focus-interactive-coop/index.html";
+// Relative to the examples root (the host page and the interactive are sibling
+// folders). Kept path-prefix-relative so the embed resolves both locally (served at
+// "/") and deployed under a prefix like "/lara-example-interactives/branch/<name>/".
+const INTERACTIVE_PATH = "focus-interactive-coop/index.html";
 
 const ENTER_LABEL = "Press Tab to enter the interactive";
 
@@ -50,8 +53,12 @@ export const HostComponent: React.FC = () => {
   // point `?interactive=` at a plain interactive for the non-cooperating fallback.
   const { protocol, hostname, port } = window.location;
   const defaultOrigin = `${protocol}//${otherHost(hostname)}${port ? ":" + port : ""}`;
+  // The examples root is the parent of this page's own directory (host and interactive
+  // are siblings): "/" locally, "/lara-example-interactives/branch/<name>/" deployed.
+  const pageDir = window.location.pathname.replace(/[^/]+$/, "");
+  const examplesRoot = pageDir.replace(/[^/]+\/$/, "");
   const overrideSrc = new URLSearchParams(window.location.search).get("interactive") || undefined;
-  const iframeSrc = overrideSrc ?? `${defaultOrigin}${INTERACTIVE_PATH}`;
+  const iframeSrc = overrideSrc ?? `${defaultOrigin}${examplesRoot}${INTERACTIVE_PATH}`;
   const iframeOrigin = overrideSrc ? new URL(overrideSrc).origin : defaultOrigin;
 
   // Connect the iframe-phone parent endpoint and send a minimal runtime init.
