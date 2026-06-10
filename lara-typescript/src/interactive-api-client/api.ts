@@ -43,7 +43,10 @@ import {
   ICreateJobRequest,
   ICreateJobResponse,
   ICancelJobRequest,
-  IJobInfo
+  IJobInfo,
+  IFocusEnterMessage,
+  IFocusExitMessage,
+  FocusExitMode
 } from "./types";
 import { getClient } from "./client";
 import { v4 as uuidv4 } from "uuid";
@@ -186,6 +189,19 @@ export const addCustomMessageListener = (callback: ICustomMessageHandler, handle
 
 export const removeCustomMessageListener = () => {
   return getClient().removeListener("customMessage");
+};
+
+export const addFocusEnterListener = (callback: (mode: IFocusEnterMessage["mode"]) => void) => {
+  getClient().addListener("focusEnter", (msg: IFocusEnterMessage) => callback(msg.mode));
+};
+
+export const removeFocusEnterListener = () => {
+  return getClient().removeListener("focusEnter");
+};
+
+export const sendFocusExit = (mode: FocusExitMode) => {
+  const message: IFocusExitMessage = { mode };
+  getClient().post("focusExit", message);
 };
 
 export const addDecorateContentListener = (callback: ITextDecorationHandler) => {
