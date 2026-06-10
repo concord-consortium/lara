@@ -277,6 +277,7 @@ module.exports = (env, argv) => [
   exampleInteractive("attachments"),
   exampleInteractive("focus-host"),
   exampleInteractive("focus-interactive"),
+  exampleInteractive("focus-interactive-coop"),
   exampleInteractive("focus-host-slot")
 ];
 
