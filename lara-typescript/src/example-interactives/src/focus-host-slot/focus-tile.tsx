@@ -43,6 +43,11 @@ export const FocusTile: React.FC<FocusTileProps> = ({ title, iframeSrc, iframeOr
   const restoreBtnRef = useRef<HTMLButtonElement>(null);
   const [trapEnabled, setTrapEnabled] = useState(true);
   const [cooperating, setCooperating] = useState(false);
+  // Read-only readout of the entering-sentinel landing state for this tile, so the
+  // single-slot stuck-on-invisible-sentinel case is visible: data-landing=yes means
+  // the "Press Tab to enter" hint is shown; data-landing=no while focus rests on the
+  // before-sentinel is the bug.
+  const [landing, setLanding] = useState("data-landing=no, activeEl=other");
 
   const tile = slots.length === 1 ? "single" : "full";
 
@@ -100,6 +105,41 @@ export const FocusTile: React.FC<FocusTileProps> = ({ title, iframeSrc, iframeOr
       window.clearTimeout(timer);
       window.removeEventListener("blur", onWindowBlur);
       window.removeEventListener("focus", onWindowFocus);
+    };
+  }, []);
+
+  // Read this tile's sentinels' data-landing + the active element on every focus
+  // change and whenever data-landing flips, and publish it to the status line.
+  // Each tile reads only its OWN sentinels, so there is no cross-talk between tiles.
+  useEffect(() => {
+    const updateLanding = () => {
+      const before = beforeSentinelRef.current;
+      const after = afterSentinelRef.current;
+      const active = document.activeElement;
+      const dataLanding = !!(before?.hasAttribute("data-landing") || after?.hasAttribute("data-landing"));
+      let activeEl = "other";
+      if (active === before) {
+        activeEl = "before-sentinel";
+      } else if (active === after) {
+        activeEl = "after-sentinel";
+      } else if (active === iframeRef.current) {
+        activeEl = "iframe";
+      }
+      setLanding(`data-landing=${dataLanding ? "yes" : "no"}, activeEl=${activeEl}`);
+    };
+    document.addEventListener("focusin", updateLanding, true);
+    const observers: MutationObserver[] = [];
+    [beforeSentinelRef.current, afterSentinelRef.current].forEach(el => {
+      if (el) {
+        const mo = new MutationObserver(updateLanding);
+        mo.observe(el, { attributes: true, attributeFilter: ["data-landing"] });
+        observers.push(mo);
+      }
+    });
+    updateLanding();
+    return () => {
+      document.removeEventListener("focusin", updateLanding, true);
+      observers.forEach(o => o.disconnect());
     };
   }, []);
 
@@ -245,7 +285,8 @@ export const FocusTile: React.FC<FocusTileProps> = ({ title, iframeSrc, iframeOr
       <h2>{title}</h2>
       <div style={{ fontFamily: "monospace", marginBottom: 12 }}>
         connected: {String(connected)} | cooperating: {String(cooperating)} |{" "}
-        focusInsideIframe: {String(focusInsideIframe)} | lastEvent: {lastEvent}
+        focusInsideIframe: {String(focusInsideIframe)} | landing: {landing} |{" "}
+        lastEvent: {lastEvent}
       </div>
 
       <label style={{ display: "block", marginBottom: 4 }}>
