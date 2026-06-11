@@ -23,6 +23,7 @@ const INTERACTIVE_PATH = "focus-interactive-coop/index.html";
 // Stable arrays (module-level) so passing them as props doesn't re-create the tiles'
 // trap effects on every render.
 const FULL_SLOTS: SlotName[] = ["content", "neighbor", "close", "restore"];
+const SINGLE_SLOTS: SlotName[] = ["content"];
 
 export const HostComponent: React.FC = () => {
   // Allow overriding the embedded interactive with a full URL via the
@@ -71,16 +72,29 @@ export const HostComponent: React.FC = () => {
         iframeSrc: {iframeSrc} | iframeOrigin: {iframeOrigin}
       </div>
       <p style={{ marginTop: 0, marginBottom: 8, fontStyle: "italic" }}>
-        The green tile is a single Tab stop: Tab moves past it without entering. Press
-        Enter on it to go inside. The tile embeds focus-interactive-coop by default
-        (cooperating); override with <code>?interactive=</code> a plain interactive on
-        the other origin for the non-cooperating fallback. Uncheck "trap enabled" for
-        the native (no-trap) baseline.
+        Each green tile is a single Tab stop: Tab moves past it without entering. Press
+        Enter on it to go inside. Both tiles embed the same interactive (default
+        focus-interactive-coop, cooperating; override with <code>?interactive=</code> a
+        plain interactive on the other origin for the non-cooperating fallback).
+        <strong> Trap 1</strong> has host-chrome slots (neighbor / close / restore).
+        <strong> Trap 2</strong> is single-slot: the iframe is the ONLY slot, mirroring
+        an Activity Player dialog with no close button. In Trap 2, Tabbing forward out
+        of the iframe wraps back to the iframe's own entering sentinel — watch the
+        <code>landing</code> readout: <code>data-landing=yes</code> means the "Press Tab
+        to enter" hint is shown (correct); <code>data-landing=no</code> while focus is
+        on the before-sentinel is the stuck-on-invisible-sentinel case. Uncheck "trap
+        enabled" on a tile for its native (no-trap) baseline.
       </p>
 
       <FocusTile
         title="Trap 1 — full host chrome"
         slots={FULL_SLOTS}
+        iframeSrc={iframeSrc}
+        iframeOrigin={iframeOrigin}
+      />
+      <FocusTile
+        title="Trap 2 — single-slot (iframe only, no host chrome)"
+        slots={SINGLE_SLOTS}
         iframeSrc={iframeSrc}
         iframeOrigin={iframeOrigin}
       />
