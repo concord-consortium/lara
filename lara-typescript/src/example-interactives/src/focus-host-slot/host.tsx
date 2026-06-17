@@ -41,7 +41,7 @@ export const HostComponent: React.FC = () => {
   return (
     <div style={{ padding: 16 }}>
       {/* Landing reveal: the sentinels are visually-hidden but focusable; the
-          library sets [data-landing] on one of them in landing mode, which reveals
+          library sets [data-show-hint] on one of them in landing mode, which reveals
           the static hint text. Rendered once for the whole page. */}
       <style>{`
         .iframe-sentinel {
@@ -52,7 +52,7 @@ export const HostComponent: React.FC = () => {
           clip: rect(0 0 0 0);
           white-space: nowrap;
         }
-        .iframe-sentinel[data-landing] {
+        .iframe-sentinel[data-show-hint] {
           position: static;
           width: auto;
           height: auto;
@@ -80,8 +80,8 @@ export const HostComponent: React.FC = () => {
         <strong> Trap 2</strong> is single-slot: the iframe is the ONLY slot, mirroring
         an Activity Player dialog with no close button. In Trap 2, Tabbing forward out
         of the iframe wraps back to the iframe's own entering sentinel — watch the
-        <code>landing</code> readout: <code>data-landing=yes</code> means the "Press Tab
-        to enter" hint is shown (correct); <code>data-landing=no</code> while focus is
+        <code>landing</code> readout: <code>data-show-hint=yes</code> means the "Press Tab
+        to enter" hint is shown (correct); <code>data-show-hint=no</code> while focus is
         on the before-sentinel is the stuck-on-invisible-sentinel case. Uncheck "trap
         enabled" on a tile for its native (no-trap) baseline.
       </p>

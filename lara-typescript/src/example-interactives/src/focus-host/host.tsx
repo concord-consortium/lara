@@ -124,7 +124,8 @@ export const HostComponent: React.FC = () => {
       }),
       cycleOrder: ["before", "iframe", "close"]
     };
-    const controller = new FocusTrapController(container, strategy);
+    const controller = new FocusTrapController(strategy);
+    controller.containerRef(container); // attach the DOM seam (two-phase ctor)
     // Re-close (disable) the trap whenever it exits, so Tab on the container
     // passes through instead of re-engaging. Guarded so the teardown-time exit
     // doesn't fight destroy()'s own tabindex restoration.

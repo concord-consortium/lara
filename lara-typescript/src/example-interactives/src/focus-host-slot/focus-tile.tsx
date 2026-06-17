@@ -44,10 +44,10 @@ export const FocusTile: React.FC<FocusTileProps> = ({ title, iframeSrc, iframeOr
   const [trapEnabled, setTrapEnabled] = useState(true);
   const [cooperating, setCooperating] = useState(false);
   // Read-only readout of the entering-sentinel landing state for this tile, so the
-  // single-slot stuck-on-invisible-sentinel case is visible: data-landing=yes means
-  // the "Press Tab to enter" hint is shown; data-landing=no while focus rests on the
+  // single-slot stuck-on-invisible-sentinel case is visible: data-show-hint=yes means
+  // the "Press Tab to enter" hint is shown; data-show-hint=no while focus rests on the
   // before-sentinel is the bug.
-  const [landing, setLanding] = useState("data-landing=no, activeEl=other");
+  const [landing, setLanding] = useState("data-show-hint=no, activeEl=other");
 
   const tile = slots.length === 1 ? "single" : "full";
 
@@ -108,15 +108,15 @@ export const FocusTile: React.FC<FocusTileProps> = ({ title, iframeSrc, iframeOr
     };
   }, []);
 
-  // Read this tile's sentinels' data-landing + the active element on every focus
-  // change and whenever data-landing flips, and publish it to the status line.
+  // Read this tile's sentinels' data-show-hint + the active element on every focus
+  // change and whenever data-show-hint flips, and publish it to the status line.
   // Each tile reads only its OWN sentinels, so there is no cross-talk between tiles.
   useEffect(() => {
     const updateLanding = () => {
       const before = beforeSentinelRef.current;
       const after = afterSentinelRef.current;
       const active = document.activeElement;
-      const dataLanding = !!(before?.hasAttribute("data-landing") || after?.hasAttribute("data-landing"));
+      const dataLanding = !!(before?.hasAttribute("data-show-hint") || after?.hasAttribute("data-show-hint"));
       let activeEl = "other";
       if (active === before) {
         activeEl = "before-sentinel";
@@ -125,14 +125,14 @@ export const FocusTile: React.FC<FocusTileProps> = ({ title, iframeSrc, iframeOr
       } else if (active === iframeRef.current) {
         activeEl = "iframe";
       }
-      setLanding(`data-landing=${dataLanding ? "yes" : "no"}, activeEl=${activeEl}`);
+      setLanding(`data-show-hint=${dataLanding ? "yes" : "no"}, activeEl=${activeEl}`);
     };
     document.addEventListener("focusin", updateLanding, true);
     const observers: MutationObserver[] = [];
     [beforeSentinelRef.current, afterSentinelRef.current].forEach(el => {
       if (el) {
         const mo = new MutationObserver(updateLanding);
-        mo.observe(el, { attributes: true, attributeFilter: ["data-landing"] });
+        mo.observe(el, { attributes: true, attributeFilter: ["data-show-hint"] });
         observers.push(mo);
       }
     });
@@ -216,7 +216,8 @@ export const FocusTile: React.FC<FocusTileProps> = ({ title, iframeSrc, iframeOr
       getNativeTabSlotSentinels: () => slot.getSentinels()
     };
 
-    controller = new FocusTrapController(container, strategy);
+    controller = new FocusTrapController(strategy);
+    controller.containerRef(container); // attach the DOM seam (two-phase ctor)
 
     // Re-close (disable) the trap whenever it exits, so Tab on the container passes
     // through instead of re-engaging, and put the iframe back out of the Tab order.
