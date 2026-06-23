@@ -15,10 +15,13 @@ const HOST_MAP: Record<string, string> = {
   "models-resources.s3.amazonaws.com": "models-resources.concord.org"
 };
 const otherHost = (hostname: string) => HOST_MAP[hostname] ?? hostname;
-// Relative to the examples root (the host page and the interactive are sibling
+// Relative to the examples root (the host page and the interactives are sibling
 // folders). Kept path-prefix-relative so the embed resolves both locally (served at
 // "/") and deployed under a prefix like "/lara-example-interactives/branch/<name>/".
-const INTERACTIVE_PATH = "focus-interactive-coop/index.html";
+// The default embed is the cooperating interactive; the non-cooperating one is the
+// fallback target reachable via the toggle link below (and via ?interactive=).
+const COOP_INTERACTIVE_PATH = "focus-interactive-coop/index.html";
+const NONCOOP_INTERACTIVE_PATH = "focus-interactive/index.html";
 
 // Stable arrays (module-level) so passing them as props doesn't re-create the tiles'
 // trap effects on every render.
@@ -35,8 +38,27 @@ export const HostComponent: React.FC = () => {
   const pageDir = window.location.pathname.replace(/[^/]+$/, "");
   const examplesRoot = pageDir.replace(/[^/]+\/$/, "");
   const overrideSrc = new URLSearchParams(window.location.search).get("interactive") || undefined;
-  const iframeSrc = overrideSrc ?? `${defaultOrigin}${examplesRoot}${INTERACTIVE_PATH}`;
+  const iframeSrc = overrideSrc ?? `${defaultOrigin}${examplesRoot}${COOP_INTERACTIVE_PATH}`;
   const iframeOrigin = overrideSrc ? new URL(overrideSrc).origin : defaultOrigin;
+
+  // Cooperating/non-cooperating toggle. The default (no override, or an override that
+  // points at the coop interactive) is the cooperating path; anything else is treated
+  // as non-cooperating. We offer a single link to the OTHER one. Both the coop and
+  // non-coop targets are resolved on `defaultOrigin` (the other host), so the link
+  // keeps the cross-origin demo wherever a HOST_MAP pair exists (localhost<->127.0.0.1
+  // locally, CloudFront<->S3 deployed). Served from the lara docker container there is
+  // no cross-domain pair, so otherHost() falls back to the same host and the embed is
+  // same-origin — the toggle still switches interactives, just same-origin.
+  const isCoop = !overrideSrc || overrideSrc.indexOf(COOP_INTERACTIVE_PATH) !== -1;
+  const nonCoopSrc = `${defaultOrigin}${examplesRoot}${NONCOOP_INTERACTIVE_PATH}`;
+  const switchParams = new URLSearchParams(window.location.search);
+  if (isCoop) {
+    switchParams.set("interactive", nonCoopSrc);
+  } else {
+    switchParams.delete("interactive");
+  }
+  const switchQuery = switchParams.toString();
+  const switchHref = switchQuery ? `${window.location.pathname}?${switchQuery}` : window.location.pathname;
 
   return (
     <div style={{ padding: 16 }}>
@@ -70,6 +92,11 @@ export const HostComponent: React.FC = () => {
       <h1>focus-host-slot — Phase C2 (iframe-slot, capability-aware)</h1>
       <div style={{ fontFamily: "monospace", marginBottom: 12 }}>
         iframeSrc: {iframeSrc} | iframeOrigin: {iframeOrigin}
+      </div>
+      <div style={{ marginBottom: 12 }}>
+        Embed: <strong>{isCoop ? "cooperating" : "non-cooperating"}</strong>{" "}
+        ({isCoop ? COOP_INTERACTIVE_PATH : NONCOOP_INTERACTIVE_PATH}) —{" "}
+        <a href={switchHref}>switch to {isCoop ? "non-cooperating" : "cooperating"}</a>
       </div>
       <p style={{ marginTop: 0, marginBottom: 8, fontStyle: "italic" }}>
         Each green tile is a single Tab stop: Tab moves past it without entering. Press
