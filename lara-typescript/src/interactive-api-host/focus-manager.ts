@@ -31,11 +31,17 @@ export interface IFocusPhone {
  * Adapts an iframe-phone endpoint into a FocusTransport for the iframe-slot.
  *
  * Outbound: focusEnter -> phone.post("focusEnter", { mode }).
- * Inbound:  "focusExit" wire message            -> { type: "focusExit", mode }
- *           "supportedFeatures" w/ focusProtocol -> { type: "capability", focusProtocol: true }
+ * Inbound:  "focusExit" wire message -> { type: "focusExit", mode }.
  *
- * Capability flows through onMessage (not a separate API) so the IframeSlot's own
- * handleMessage consumes it. The last capability is cached and replayed to any
+ * Capability is NOT read from a phone listener here. iframe-phone allows only ONE
+ * listener per message name, and `supportedFeatures` is already owned by the host
+ * (it carries interactiveState, etc.). So the FocusManager must not add its own
+ * `supportedFeatures` listener — it would silently clobber the host's. Instead the
+ * host forwards the capability via `notifyCapability()` from its single listener.
+ * See "iframe-phone has one listener per message" in the cooperating design doc.
+ *
+ * Capability still flows out through onMessage (not a separate API) so the IframeSlot's
+ * own handleMessage consumes it. The last capability is cached and replayed to any
  * subscriber that attaches after it arrived (the slot may subscribe late).
  */
 export class FocusManager {
@@ -50,14 +56,6 @@ export class FocusManager {
     phone.addListener("focusExit", (content?: { mode?: FocusExitMode }) => {
       if (content && content.mode) {
         this.emit({ type: "focusExit", mode: content.mode });
-      }
-    });
-
-    phone.addListener("supportedFeatures", (content?: { features?: { focusProtocol?: boolean } }) => {
-      const focusProtocol = !!(content && content.features && content.features.focusProtocol);
-      if (focusProtocol) {
-        this.lastCapability = { focusProtocol: true };
-        this.emit({ type: "capability", focusProtocol: true });
       }
     });
 
@@ -78,9 +76,21 @@ export class FocusManager {
     };
   }
 
+  /**
+   * Push the interactive's focus-protocol capability in from the host. The host owns
+   * the single `supportedFeatures` listener (iframe-phone is one-listener-per-message),
+   * so it calls this from that listener instead of the FocusManager grabbing its own.
+   * Emits a `capability` FocusMessage and caches it for replay to late subscribers.
+   */
+  public notifyCapability(focusProtocol: boolean): void {
+    if (focusProtocol) {
+      this.lastCapability = { focusProtocol: true };
+      this.emit({ type: "capability", focusProtocol: true });
+    }
+  }
+
   public destroy(): void {
     this.phone.removeListener("focusExit");
-    this.phone.removeListener("supportedFeatures");
     this.subscribers.clear();
   }
 

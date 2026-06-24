@@ -159,6 +159,18 @@ export const FocusTile: React.FC<FocusTileProps> = ({ title, iframeSrc, iframeOr
     const phone = phoneRef.current;
     const focusManager = phone ? new FocusManager(phone) : undefined;
 
+    // The HOST owns the single `supportedFeatures` listener and forwards the focus
+    // capability to the FocusManager (Option 1). iframe-phone allows only one listener
+    // per message name, so the FocusManager must NOT add its own `supportedFeatures`
+    // listener — it would silently clobber the real host's. A real host would call
+    // focusManager.notifyCapability(...) from its existing supportedFeatures handler;
+    // the testbed has no other handler, so this stands in for it.
+    if (phone && focusManager) {
+      phone.addListener("supportedFeatures", (content?: { features?: { focusProtocol?: boolean } }) => {
+        focusManager.notifyCapability(!!content?.features?.focusProtocol);
+      });
+    }
+
     const slot = new IframeSlot({
       slotName: "content",
       getIframe: () => iframeRef.current,
@@ -273,6 +285,7 @@ export const FocusTile: React.FC<FocusTileProps> = ({ title, iframeSrc, iframeOr
       document.removeEventListener("focusin", onDocFocusIn, true);
       restoreBtnRef.current?.removeEventListener("click", onRestoreClick);
       unsubscribeCapability?.();
+      phone?.removeListener("supportedFeatures");
       focusManager?.destroy();
       slot.detach();
       controller.destroy();

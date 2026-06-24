@@ -163,16 +163,53 @@ iframe-phone `ParentEndpoint` (the "maps wire ↔ `FocusMessage`" adapter the
 library design names). It exposes a `FocusTransport`:
 
 - `send({ type: "focusEnter", mode })` → `phone.post("focusEnter", { mode })`.
-- `onMessage(cb)` subscribes to **two** wire messages and translates:
-  - `"focusExit"` → `cb({ type: "focusExit", mode })`.
-  - `"supportedFeatures"` → if `features.focusProtocol`,
-    `cb({ type: "capability", focusProtocol: true })`.
+- `onMessage(cb)` subscribes to the `"focusExit"` wire message and translates it →
+  `cb({ type: "focusExit", mode })`.
+- `notifyCapability(focusProtocol)` — a **host-pushed** method (not a phone
+  listener; see §2a) → emits `cb({ type: "capability", focusProtocol: true })`.
 
-The second translation is deliberate: **capability reaches the `IframeSlot`
-through `transport.onMessage`**, where the library's `handleMessage` already
-auto-consumes `{ type: "capability" }` → `notifyCapability`. So the host passes
-only `transport` and never calls `notifyCapability` itself, and late capability is
-safe by the library's "robust timing" guarantee (§ Open questions).
+Capability still **reaches the `IframeSlot` through `transport.onMessage`**, where
+the library's `handleMessage` auto-consumes `{ type: "capability" }` →
+`IframeSlot.notifyCapability`. So the host passes only `transport` and never calls
+the slot's `notifyCapability` directly; late capability is safe by the library's
+"robust timing" guarantee (§ Open questions) plus the FocusManager's
+replay-to-late-subscribers. The capability itself is **not** read from a phone
+listener inside the FocusManager — see §2a for why.
+
+### 2a. iframe-phone has one listener per message — managers must not grab shared messages
+
+iframe-phone registers handlers as `handlers[messageName] = func` — exactly **one
+listener per message name**, last writer wins, **silently**. So any "manager" that is
+handed a phone and calls `phone.addListener("X", …)` *replaces* whatever handler for
+`"X"` the host (or another manager) already installed. No error, no warning; the prior
+owner simply stops receiving `"X"`.
+
+This is safe only when a manager listens for messages that are **uniquely its own**.
+`PubSubManager` / `JobManager` are fine because `publish`, `createJob`, … belong to
+them alone. It breaks the moment a manager claims a **shared, foundational** message.
+
+Concretely: the `FocusManager` first added its own `supportedFeatures` listener to
+synthesize the `focusProtocol` capability. But `supportedFeatures` is already owned by
+the host — `interactive-api-lara-host/iframe-saver.ts` (and the authoring
+`page-item-authoring/.../interactive-iframe.tsx`) — which uses it for `interactiveState`
+and the rest. Wiring the FocusManager onto the same phone silently stole that listener
+(or had its own stolen, depending on construction order). This was **invisible in the
+testbed**, where the host installs no `supportedFeatures` listener of its own and the
+FocusManager is the sole claimant — but a real regression once integrated into the LARA
+iframe-runtime / AP.
+
+**Resolution (Option 1, implemented):** the FocusManager does **not** listen for
+`supportedFeatures`. The host keeps its single `supportedFeatures` listener and forwards
+the capability with `focusManager.notifyCapability(features.focusProtocol)`. The
+FocusManager owns only messages that are exclusively its own (`focusEnter` out,
+`focusExit` in). In the testbed, `focus-tile.tsx` adds the `supportedFeatures` listener
+that a real host already has, and forwards from it.
+
+**General guidance:** a manager handed a shared phone should either (a) listen only for
+messages it exclusively owns, or (b) receive shared-message data through a method the
+host calls from the host's single listener (Option 1). A broader fix is a multiplexing
+listener layer (fan-out `addListener` so several parties can observe one message); until
+that exists, treat a `phone.addListener` on any non-self-owned message as a conflict.
 
 **`interactive-api-client`:** small client helpers the cooperating interactive
 uses — `addFocusEnterListener((mode) => …)`, `sendFocusExit(mode)`, and

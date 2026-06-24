@@ -32,22 +32,28 @@ describe("FocusManager", () => {
     expect(received).toEqual([{ type: "focusExit", mode: "escape" }]);
   });
 
-  it("translates supportedFeatures.focusProtocol into a capability message", () => {
+  it("does NOT add a supportedFeatures listener (host owns that message)", () => {
+    // iframe-phone is one-listener-per-message; the FocusManager must not claim the
+    // host's supportedFeatures listener. Capability arrives via notifyCapability().
+    expect(phone.hasListener("supportedFeatures")).toBe(false);
+  });
+
+  it("notifyCapability(true) emits a capability message", () => {
     const received: FocusMessage[] = [];
     manager.transport.onMessage(m => received.push(m));
-    phone.fakeMessage("supportedFeatures", { apiVersion: 1, features: { focusProtocol: true } });
+    manager.notifyCapability(true);
     expect(received).toEqual([{ type: "capability", focusProtocol: true }]);
   });
 
-  it("does not emit capability when focusProtocol is absent/false", () => {
+  it("notifyCapability(false) does not emit capability", () => {
     const received: FocusMessage[] = [];
     manager.transport.onMessage(m => received.push(m));
-    phone.fakeMessage("supportedFeatures", { apiVersion: 1, features: { interactiveState: true } });
+    manager.notifyCapability(false);
     expect(received).toEqual([]);
   });
 
-  it("replays capability to a subscriber that attaches AFTER it arrived", () => {
-    phone.fakeMessage("supportedFeatures", { apiVersion: 1, features: { focusProtocol: true } });
+  it("replays capability to a subscriber that attaches AFTER notifyCapability", () => {
+    manager.notifyCapability(true);
     const received: FocusMessage[] = [];
     manager.transport.onMessage(m => received.push(m));
     expect(received).toEqual([{ type: "capability", focusProtocol: true }]);
@@ -61,6 +67,5 @@ describe("FocusManager", () => {
     expect(received).toEqual([]);
     manager.destroy();
     expect(phone.hasListener("focusExit")).toBe(false);
-    expect(phone.hasListener("supportedFeatures")).toBe(false);
   });
 });
