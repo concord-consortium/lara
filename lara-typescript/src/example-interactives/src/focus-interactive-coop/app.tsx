@@ -6,7 +6,9 @@ import {
   useAutoSetHeight,
   addFocusEnterListener,
   removeFocusEnterListener,
-  sendFocusExit
+  sendFocusExit,
+  showModal,
+  closeModal
 } from "../../../interactive-api-client";
 
 // Phase C2 cooperating interactive: advertises focusProtocol, places entry focus
@@ -67,6 +69,19 @@ export const AppComponent: React.FC = () => {
     };
   }, []);
 
+  // Open a host dialog (lara-interactive-api `showModal` type "dialog") to THIS same
+  // interactive URL. In the Activity Player this opens the cooperating interactive
+  // inside an AP focus-trap modal — the image-question shape we want to test. In the
+  // example-interactives testbed the embedding host does not handle showModal, so the
+  // button is inert there; this is meant to be loaded as a real interactive in AP.
+  const openDialog = () => showModal({ type: "dialog", url: window.location.href });
+  // notCloseable disables the AP-provided X icon and click-to-close backdrop, so the
+  // ONLY way out is the interactive's own UI (the "Close dialog" button / closeModal,
+  // or a cooperating Escape). This is the no-host-chrome focus-trap case.
+  const openDialogNoClose = () =>
+    showModal({ type: "dialog", url: window.location.href, notCloseable: true });
+  const closeDialog = () => closeModal({});
+
   if (!initMessage) {
     return (
       <div className="centered">
@@ -83,6 +98,11 @@ export const AppComponent: React.FC = () => {
         <button ref={firstRef} type="button">Coop button 1 (first)</button>
         <input type="text" aria-label="Coop field" placeholder="Coop field" />
         <button ref={lastRef} type="button">Coop button 2 (last)</button>
+      </div>
+      <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginTop: 12 }}>
+        <button type="button" onClick={openDialog}>Open dialog to self</button>
+        <button type="button" onClick={openDialogNoClose}>Open dialog (no close button)</button>
+        <button type="button" onClick={closeDialog}>Close dialog</button>
       </div>
     </div>
   );
