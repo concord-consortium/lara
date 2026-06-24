@@ -11,6 +11,15 @@ import {
   closeModal
 } from "../../../interactive-api-client";
 
+// All focusable controls in this document, in DOM (tab) order.
+const getFocusables = () =>
+  Array.from(
+    document.querySelectorAll<HTMLElement>(
+      "a[href], button:not([disabled]), input:not([disabled]), " +
+      'select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+    )
+  );
+
 // Phase C2 cooperating interactive: advertises focusProtocol, places entry focus
 // precisely on focusEnter{forward|reverse|restore}, tracks its last-focused control
 // for restore, and forwards Escape as focusExit{escape}. It does NOT trap Tab
@@ -18,8 +27,6 @@ import {
 // so it never sends focusExit{forward|reverse} — that is a later phase.
 export const AppComponent: React.FC = () => {
   const initMessage = useInitMessage();
-  const firstRef = useRef<HTMLButtonElement>(null);
-  const lastRef = useRef<HTMLButtonElement>(null);
   // The most recently focused control inside this interactive, for restore.
   const lastFocusedRef = useRef<HTMLElement | null>(null);
 
@@ -32,14 +39,18 @@ export const AppComponent: React.FC = () => {
   }, [initMessage]);
 
   useEffect(() => {
-    // Place entry focus where the host's focusEnter says to.
+    // Place entry focus where the host's focusEnter says to. Use the actual
+    // first/last focusable in DOM order rather than static refs so reverse entry
+    // mirrors where native Shift+Tab would land (the genuinely-last control),
+    // regardless of how many controls the demo grows.
     addFocusEnterListener(mode => {
+      const focusables = getFocusables();
       if (mode === "reverse") {
-        lastRef.current?.focus();
+        focusables[focusables.length - 1]?.focus();
       } else if (mode === "restore") {
-        (lastFocusedRef.current ?? firstRef.current)?.focus();
+        (lastFocusedRef.current ?? focusables[0])?.focus();
       } else {
-        firstRef.current?.focus();
+        focusables[0]?.focus();
       }
     });
     return () => { removeFocusEnterListener(); };
@@ -95,9 +106,9 @@ export const AppComponent: React.FC = () => {
       <h2>focus-interactive-coop</h2>
       <p>mode: {initMessage.mode} — speaks the focus protocol (focusProtocol: true)</p>
       <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-        <button ref={firstRef} type="button">Coop button 1 (first)</button>
+        <button type="button">Coop button 1 (first)</button>
         <input type="text" aria-label="Coop field" placeholder="Coop field" />
-        <button ref={lastRef} type="button">Coop button 2 (last)</button>
+        <button type="button">Coop button 2</button>
       </div>
       <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginTop: 12 }}>
         <button type="button" onClick={openDialog}>Open dialog to self</button>
