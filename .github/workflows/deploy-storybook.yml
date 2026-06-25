@@ -7,14 +7,17 @@ jobs:
     name: Build and Deploy
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: '14'
+          node-version: '22'
       - name: Install Dependencies
         run: npm ci
         working-directory: lara-typescript
       - uses: concord-consortium/s3-deploy-action@v1
+        env:
+          # webpack 4's md4 hashing breaks on Node 17+ (OpenSSL 3) without this.
+          NODE_OPTIONS: --openssl-legacy-provider
         with:
           bucket: models-resources
           prefix: lara-storybook
