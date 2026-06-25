@@ -45,11 +45,19 @@ describe("FocusManager", () => {
     expect(received).toEqual([{ type: "capability", focusProtocol: true }]);
   });
 
-  it("notifyCapability(false) does not emit capability", () => {
+  it("notifyCapability(false) emits a capability message", () => {
     const received: FocusMessage[] = [];
     manager.transport.onMessage(m => received.push(m));
     manager.notifyCapability(false);
-    expect(received).toEqual([]);
+    expect(received).toEqual([{ type: "capability", focusProtocol: false }]);
+  });
+
+  it("caches the LATEST capability for replay when it flips true -> false", () => {
+    manager.notifyCapability(true);
+    manager.notifyCapability(false);
+    const received: FocusMessage[] = [];
+    manager.transport.onMessage(m => received.push(m));
+    expect(received).toEqual([{ type: "capability", focusProtocol: false }]);
   });
 
   it("replays capability to a subscriber that attaches AFTER notifyCapability", () => {

@@ -83,10 +83,15 @@ export class FocusManager {
    * Emits a `capability` FocusMessage and caches it for replay to late subscribers.
    */
   public notifyCapability(focusProtocol: boolean): void {
-    if (focusProtocol) {
-      this.lastCapability = { focusProtocol: true };
-      this.emit({ type: "capability", focusProtocol: true });
-    }
+    // Cache and emit BOTH values. The consumer (accessibility-tools IframeSlot) defaults
+    // to non-cooperating, so a `false` is redundant on first report -- but an interactive
+    // can flip from cooperating to non-cooperating (e.g. it navigates itself to a page
+    // that no longer speaks the protocol) on the SAME FocusManager. Without emitting the
+    // `false`, the slot would stay cooperating and route an entry to an interactive that
+    // no longer listens. Replaying the latest value (true or false) keeps a late
+    // subscriber in sync too.
+    this.lastCapability = { focusProtocol };
+    this.emit({ type: "capability", focusProtocol });
   }
 
   public destroy(): void {
