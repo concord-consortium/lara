@@ -2,24 +2,24 @@
 
 ## Build lara-typescript before `docker build` or running Rails locally
 
-The lara-typescript build outputs are **no longer committed** to git:
+These build outputs are generated, not checked in — they're `.gitignore`d and
+produced by `npm run build:webpack` (webpack + `copy-to-rails`):
 
 - `app/assets/javascripts/lara-typescript.js`
 - `app/assets/stylesheets/lara-typescript.css`
 - `public/example-interactives/**`
 
-They are `.gitignore`d and produced by `npm run build:webpack` (webpack +
-`copy-to-rails`). CI builds them automatically (the `build` and `test` jobs in
-`.github/workflows/ci.yml`), but **locally you must build them yourself** before:
+CI builds them automatically (the `build` and `test` jobs in
+`.github/workflows/ci.yml`). Locally you must build them yourself before:
 
 - `docker build` — the Dockerfile copies the repo verbatim (`ADD .`) and does not
-  build the TS, so a stale/missing bundle ships as-is, and
+  build the TS, so whatever is on disk ships as-is, and
 - running the Rails app — Sprockets `//= require lara-typescript` /
   `@import "lara-typescript"` fail with `Sprockets::FileNotFound` if the JS/CSS are
   missing. That error is the signal you skipped the build.
 
 ```bash
-# from lara-typescript/ — regenerates the three artifact sets above
+# from lara-typescript/ (the flag is explained below)
 NODE_OPTIONS=--openssl-legacy-provider npm run build:webpack
 ```
 
