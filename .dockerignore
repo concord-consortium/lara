@@ -9,3 +9,10 @@ docker/prod/local-test-compose.yml
 docker-compose.yml
 Dockerfile
 README.rdoc
+
+# Build detritus from the CI prebuild — the image needs the copied assets in
+# app/assets + public/, not the lara-typescript node_modules / webpack output.
+**/node_modules
+lara-typescript/dist
+lara-typescript/storybook-static
+coverage
