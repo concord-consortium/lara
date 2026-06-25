@@ -30,6 +30,7 @@ export interface FocusTileProps {
 export const FocusTile: React.FC<FocusTileProps> = ({ title, iframeSrc, iframeOrigin, slots }) => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const phoneRef = useRef<iframePhone.ParentEndpoint>();
+  const focusManagerRef = useRef<FocusManager>();
   const [connected, setConnected] = useState(false);
   const [focusInsideIframe, setFocusInsideIframe] = useState(false);
   const [lastEvent, setLastEvent] = useState("(none)");
@@ -68,7 +69,36 @@ export const FocusTile: React.FC<FocusTileProps> = ({ title, iframeSrc, iframeOr
       });
     });
     phoneRef.current = phone;
-    return () => phone.disconnect();
+
+    // The FocusManager lives for the phone's lifetime, NOT the trap's. The interactive
+    // advertises `supportedFeatures` only once at init, so the focus-capability capture
+    // (and the FocusManager's replay cache) must outlive `trapEnabled` toggles. If it
+    // were rebuilt per-toggle, re-enabling the trap would create a fresh FocusManager
+    // that never re-hears the capability, and the slot would revert to non-cooperating.
+    // The HOST owns the single `supportedFeatures` listener (iframe-phone is
+    // one-listener-per-message) and forwards the capability via notifyCapability(); the
+    // testbed has no other handler, so this stands in for a real host's handler.
+    const focusManager = new FocusManager(phone);
+    focusManagerRef.current = focusManager;
+    phone.addListener("supportedFeatures", (content?: { features?: { focusProtocol?: boolean } }) => {
+      focusManager.notifyCapability(!!content?.features?.focusProtocol);
+    });
+    const unsubscribeCapability = focusManager.transport.onMessage(msg => {
+      if (msg.type === "capability") {
+        setCooperating(msg.focusProtocol);
+        setLastEvent(`capability recv -> ${msg.focusProtocol ? "cooperating" : "non-cooperating"}`);
+      } else if (msg.type === "focusExit") {
+        setLastEvent(`focusExit recv {${msg.mode}}`);
+      }
+    });
+
+    return () => {
+      unsubscribeCapability();
+      phone.removeListener("supportedFeatures");
+      focusManager.destroy();
+      focusManagerRef.current = undefined;
+      phone.disconnect();
+    };
   }, [iframeOrigin]);
 
   // Observability only: drive focusInsideIframe + lastEvent from the top-level window
@@ -156,20 +186,11 @@ export const FocusTile: React.FC<FocusTileProps> = ({ title, iframeSrc, iframeOr
     let tearingDown = false;
     let controller: FocusTrapController;
 
-    const phone = phoneRef.current;
-    const focusManager = phone ? new FocusManager(phone) : undefined;
-
-    // The HOST owns the single `supportedFeatures` listener and forwards the focus
-    // capability to the FocusManager (Option 1). iframe-phone allows only one listener
-    // per message name, so the FocusManager must NOT add its own `supportedFeatures`
-    // listener — it would silently clobber the real host's. A real host would call
-    // focusManager.notifyCapability(...) from its existing supportedFeatures handler;
-    // the testbed has no other handler, so this stands in for it.
-    if (phone && focusManager) {
-      phone.addListener("supportedFeatures", (content?: { features?: { focusProtocol?: boolean } }) => {
-        focusManager.notifyCapability(!!content?.features?.focusProtocol);
-      });
-    }
+    // The FocusManager and its `supportedFeatures` capability capture live in the phone
+    // effect (they outlive trap toggles); the trap only consumes its transport. The
+    // FocusManager caches the last capability and replays it to late subscribers, so a
+    // slot rebuilt by re-enabling the trap still learns the interactive cooperates.
+    const focusManager = focusManagerRef.current;
 
     const slot = new IframeSlot({
       slotName: "content",
@@ -194,15 +215,6 @@ export const FocusTile: React.FC<FocusTileProps> = ({ title, iframeSrc, iframeOr
       enterLabel: ENTER_LABEL
     });
     slot.attach();
-
-    const unsubscribeCapability = focusManager?.transport.onMessage(msg => {
-      if (msg.type === "capability" && msg.focusProtocol) {
-        setCooperating(true);
-        setLastEvent("capability recv -> cooperating");
-      } else if (msg.type === "focusExit") {
-        setLastEvent(`focusExit recv {${msg.mode}}`);
-      }
-    });
 
     const setIframeEnterable = (enterable: boolean) => {
       const el = iframeRef.current;
@@ -284,9 +296,6 @@ export const FocusTile: React.FC<FocusTileProps> = ({ title, iframeSrc, iframeOr
       container.removeEventListener("keydown", onContainerKeyDown);
       document.removeEventListener("focusin", onDocFocusIn, true);
       restoreBtnRef.current?.removeEventListener("click", onRestoreClick);
-      unsubscribeCapability?.();
-      phone?.removeListener("supportedFeatures");
-      focusManager?.destroy();
       slot.detach();
       controller.destroy();
     };
