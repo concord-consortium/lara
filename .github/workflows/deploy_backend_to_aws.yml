@@ -39,7 +39,7 @@ jobs:
       url: https://${{ inputs.environment }}
     steps:
       - name: 📥 Checkout project source
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: 🚀 Deploy Rails App
         uses: ./.github/workflows/actions/deploy-rails-app-to-aws
         with:
