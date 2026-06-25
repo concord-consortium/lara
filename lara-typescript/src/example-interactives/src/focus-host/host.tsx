@@ -32,6 +32,7 @@ const overrideOrigin = (src: string | undefined): string | undefined => {
   try {
     return new URL(src).origin;
   } catch {
+    // tslint:disable-next-line:no-console
     console.warn(`Ignoring invalid ?interactive= override: ${src}`);
     return undefined;
   }
