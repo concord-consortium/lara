@@ -20,7 +20,7 @@ const getFocusables = () =>
     )
   );
 
-// Phase C2 cooperating interactive: advertises focusProtocol, places entry focus
+// Cooperating interactive: advertises focusProtocol, places entry focus
 // precisely on focusEnter{forward|reverse|restore}, tracks its last-focused control
 // for restore, and forwards Escape as focusExit{escape}. It does NOT trap Tab
 // internally (forward/reverse exit still flows out through the host's sentinels),

@@ -1,7 +1,7 @@
 import * as React from "react";
 import { FocusTile, SlotName } from "./focus-tile";
 
-// Cross-origin trick (same as Phase B focus-host): the host page is opened on one
+// Cross-origin trick (same as the focus-host demo): the host page is opened on one
 // host name; the iframe is pointed at the other. The two hosts are different origins
 // for same-origin-policy / postMessage purposes, so this yields a real cross-origin
 // iframe from a single source. localhost/127.0.0.1 cover the local dev server; the
@@ -15,6 +15,20 @@ const HOST_MAP: Record<string, string> = {
   "models-resources.s3.amazonaws.com": "models-resources.concord.org"
 };
 const otherHost = (hostname: string) => HOST_MAP[hostname] ?? hostname;
+// Parse the origin of a `?interactive=` override. Returns undefined for a missing or
+// invalid value so callers fall back to the default cross-origin embed rather than
+// letting `new URL(...)` throw and white-screen the testbed on a typo'd override.
+const overrideOrigin = (src: string | undefined): string | undefined => {
+  if (!src) {
+    return undefined;
+  }
+  try {
+    return new URL(src).origin;
+  } catch {
+    console.warn(`Ignoring invalid ?interactive= override: ${src}`);
+    return undefined;
+  }
+};
 // Relative to the examples root (the host page and the interactives are sibling
 // folders). Kept path-prefix-relative so the embed resolves both locally (served at
 // "/") and deployed under a prefix like "/lara-example-interactives/branch/<name>/".
@@ -37,9 +51,12 @@ export const HostComponent: React.FC = () => {
   const defaultOrigin = `${protocol}//${otherHost(hostname)}${port ? ":" + port : ""}`;
   const pageDir = window.location.pathname.replace(/[^/]+$/, "");
   const examplesRoot = pageDir.replace(/[^/]+\/$/, "");
-  const overrideSrc = new URLSearchParams(window.location.search).get("interactive") || undefined;
+  const rawOverride = new URLSearchParams(window.location.search).get("interactive") || undefined;
+  // An invalid override yields no origin => ignore it and use the default embed.
+  const parsedOrigin = overrideOrigin(rawOverride);
+  const overrideSrc = parsedOrigin ? rawOverride : undefined;
   const iframeSrc = overrideSrc ?? `${defaultOrigin}${examplesRoot}${COOP_INTERACTIVE_PATH}`;
-  const iframeOrigin = overrideSrc ? new URL(overrideSrc).origin : defaultOrigin;
+  const iframeOrigin = parsedOrigin ?? defaultOrigin;
 
   // Cooperating/non-cooperating toggle. The default (no override, or an override that
   // points at the coop interactive) is the cooperating path; anything else is treated
@@ -89,7 +106,7 @@ export const HostComponent: React.FC = () => {
         }
       `}</style>
 
-      <h1>focus-host-slot — Phase C2 (iframe-slot, capability-aware)</h1>
+      <h1>focus-host-slot (iframe-slot, capability-aware)</h1>
       <div style={{ fontFamily: "monospace", marginBottom: 12 }}>
         iframeSrc: {iframeSrc} | iframeOrigin: {iframeOrigin}
       </div>

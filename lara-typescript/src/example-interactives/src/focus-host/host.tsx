@@ -22,6 +22,21 @@ const otherHost = (hostname: string) => HOST_MAP[hostname] ?? hostname;
 // "/") and deployed under a prefix like "/lara-example-interactives/branch/<name>/".
 const INTERACTIVE_PATH = "focus-interactive/index.html";
 
+// Parse the origin of a `?interactive=` override. Returns undefined for a missing or
+// invalid value so callers fall back to the default cross-origin embed rather than
+// letting `new URL(...)` throw and white-screen the testbed on a typo'd override.
+const overrideOrigin = (src: string | undefined): string | undefined => {
+  if (!src) {
+    return undefined;
+  }
+  try {
+    return new URL(src).origin;
+  } catch {
+    console.warn(`Ignoring invalid ?interactive= override: ${src}`);
+    return undefined;
+  }
+};
+
 export const HostComponent: React.FC = () => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const phoneRef = useRef<iframePhone.ParentEndpoint>();
@@ -44,9 +59,12 @@ export const HostComponent: React.FC = () => {
   // are siblings): "/" locally, "/lara-example-interactives/branch/<name>/" deployed.
   const pageDir = window.location.pathname.replace(/[^/]+$/, "");
   const examplesRoot = pageDir.replace(/[^/]+\/$/, "");
-  const overrideSrc = new URLSearchParams(window.location.search).get("interactive") || undefined;
+  const rawOverride = new URLSearchParams(window.location.search).get("interactive") || undefined;
+  // An invalid override yields no origin => ignore it and use the default embed.
+  const parsedOrigin = overrideOrigin(rawOverride);
+  const overrideSrc = parsedOrigin ? rawOverride : undefined;
   const iframeSrc = overrideSrc ?? `${defaultOrigin}${examplesRoot}${INTERACTIVE_PATH}`;
-  const iframeOrigin = overrideSrc ? new URL(overrideSrc).origin : defaultOrigin;
+  const iframeOrigin = parsedOrigin ?? defaultOrigin;
 
   // Connect the iframe-phone parent endpoint and send a minimal runtime init.
   useEffect(() => {
@@ -94,9 +112,9 @@ export const HostComponent: React.FC = () => {
     };
   }, []);
 
-  // Phase B: wrap the container in the CURRENT FocusTrapController, with the
-  // iframe as an ordinary slot. This is expected to mishandle the iframe — that
-  // failure is the point of this phase.
+  // Wrap the container in the CURRENT FocusTrapController, with the iframe as an
+  // ordinary slot. This is expected to mishandle the iframe — that failure is the
+  // point of this demo.
   //
   // We present the trap like an inline dialog so it can be demonstrated on a
   // single page without becoming a keyboard dead-end:
@@ -109,7 +127,7 @@ export const HostComponent: React.FC = () => {
   //   - Escape (handled by the controller) exits; our onExit closes it back to
   //     the disabled state so Tab passes through again.
   // When the "trap enabled" toggle is off we skip the controller entirely, so
-  // native traversal (Phase A) returns.
+  // native traversal returns.
   useEffect(() => {
     const container = containerRef.current;
     if (!container || !trapEnabled) {
@@ -158,7 +176,7 @@ export const HostComponent: React.FC = () => {
 
   return (
     <div style={{ padding: 16 }}>
-      <h1>focus-host — Phase B (existing trap, iframe-blind)</h1>
+      <h1>focus-host (existing trap, iframe-blind)</h1>
       <div style={{ fontFamily: "monospace", marginBottom: 12 }}>
         connected: {String(connected)} | iframeSrc: {iframeSrc} | iframeOrigin: {iframeOrigin} |{" "}
         focusInsideIframe: {String(focusInsideIframe)} | lastEvent: {lastEvent}
@@ -178,7 +196,7 @@ export const HostComponent: React.FC = () => {
 
       <div ref={containerRef} id="trap-container" tabIndex={0} style={{ border: "3px solid green", padding: 8, margin: "8px 0" }}>
         <button ref={beforeBtnRef} type="button">Host: trapped neighbor</button>
-        {/* Sentinels are present but inert in Phase A (tabIndex -1). They become active in Phase C. */}
+        {/* Sentinels are present but inert in this demo (tabIndex -1); the iframe-slot host activates them. */}
         <span data-sentinel="before" tabIndex={-1} style={sentinelStyle} />
         <iframe
           ref={iframeRef}

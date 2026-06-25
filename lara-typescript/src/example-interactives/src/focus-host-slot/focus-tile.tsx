@@ -25,7 +25,7 @@ export interface FocusTileProps {
 
 // One self-contained focus trap: container (single Tab stop) wrapping the iframe-slot
 // (before-sentinel / iframe / after-sentinel) plus optional host-chrome slots. The
-// whole trap is wired imperatively the same way the Phase C2 host did it, now
+// whole trap is wired imperatively the same way the focus-host demo did it, now
 // parameterized by `slots` so a tile can be full-chrome or single-slot.
 export const FocusTile: React.FC<FocusTileProps> = ({ title, iframeSrc, iframeOrigin, slots }) => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
