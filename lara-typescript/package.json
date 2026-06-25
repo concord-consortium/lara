@@ -21,7 +21,7 @@
     "build:dev:lara-typescript": "webpack --config webpack-laraTypescript.config.js && npm run build:copy-to-rails",
     "build:watch": "webpack --watch",
     "build:copy-to-rails": "node scripts/copy-to-rails.js",
-    "clean": "rimraf dist docs ../docs/lara-plugin-api ../docs/interactive-api-client",
+    "clean": "rimraf dist docs ../docs/lara-plugin-api",
     "lara-api:link": "npm run build:webpack && cd dist/interactive-api-client && npm link && cd ../..",
     "lara-api:unlink": "cd dist/interactive-api-client && npm unlink && cd ../..",
     "list:links": "npm ls -g --depth=0 --link=true",
