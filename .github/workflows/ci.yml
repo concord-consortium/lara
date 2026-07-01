@@ -26,7 +26,21 @@ jobs:
       RAILS_ENV: test
     steps:
       - uses: cachix/install-nix-action@v24
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: lara-typescript/package-lock.json
+      - name: Install lara-typescript deps
+        run: npm ci
+        working-directory: lara-typescript
+      - name: Build lara-typescript assets
+        # lara-typescript.js/.css are no longer committed; build them so the ruby
+        # specs and the Rails server (for Cypress) can resolve the Sprockets requires.
+        # webpack 4 on Node 17+ needs the OpenSSL legacy provider.
+        run: NODE_OPTIONS=--openssl-legacy-provider npm run build:webpack
+        working-directory: lara-typescript
       - name: Copy configuration templates
         run: |-
           cp -v ./config/database.sample.yml ./config/database.yml
@@ -42,10 +56,10 @@ jobs:
           nix develop -c npm run test
         working-directory: ./lara-plugin-api-V2/
       - name: Test LARA TypeScript project
-        run: |-
-          nix develop -c npm ci
-          nix develop -c npm run test
-        working-directory: ./lara-typescript/
+        # Runs on the setup-node 22 toolchain (deps installed above), not nix —
+        # lara-typescript no longer uses the ancient nix Node.
+        run: npm run test
+        working-directory: lara-typescript
       - name: Create CI admin user
         run: nix develop -c bundle exec rake lightweight:create_ci_admin_user
       - name: Start Rails server
@@ -72,7 +86,18 @@ jobs:
     env:
       REGISTRY: ghcr.io
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: lara-typescript/package-lock.json
+      - name: Build lara-typescript into the asset tree
+        # The Dockerfile copies the repo verbatim and never builds the TS, so build it
+        # here; `ADD .` then ships the fresh lara-typescript.js/.css + example-interactives.
+        # webpack 4 on Node 17+ needs the OpenSSL legacy provider.
+        run: npm ci && NODE_OPTIONS=--openssl-legacy-provider npm run build:webpack
+        working-directory: lara-typescript
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
       - name: Set up Docker Buildx
@@ -99,6 +124,9 @@ jobs:
       - name: Build & push Docker image
         uses: docker/build-push-action@v4
         with:
+          # Use the local checkout as the build context (NOT the default git context),
+          # so the prebuilt-but-gitignored lara-typescript assets are included.
+          context: .
           # Don't push image to registry when running Actions locally with act CLI
           push: ${{ env.ACT != 'true' }}
           cache-from: type=gha
