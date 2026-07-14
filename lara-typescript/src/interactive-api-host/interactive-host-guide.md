@@ -59,13 +59,13 @@ updated work needs only **three** messages:
 ```ts
 import iframePhone from "iframe-phone";
 import {
-  IInitInteractive, IRuntimeInitInteractive
+  IRuntimeInitInteractive
 } from "@concord-consortium/interactive-api-host"; // or lara-interactive-api — same types
 
 const iframe = document.querySelector<HTMLIFrameElement>("#interactive")!;
 iframe.src = "https://example.com/some-interactive/";
 
-// The 2nd arg fires AFTER the handshake completes — this is when to send initInteractive.
+// The callback fires AFTER the handshake completes — this is when to send initInteractive.
 const phone = new iframePhone.ParentEndpoint(iframe, () => {
   const init: IRuntimeInitInteractive = {
     version: 1,
@@ -93,8 +93,10 @@ phone.addListener("interactiveState", (state: unknown) => {
   persistStudentWork(state);          // save to your backend
 });
 
-phone.addListener("height", (height: number) => {
-  iframe.style.height = `${height}px`;
+phone.addListener("height", (height: number | string) => {
+  // Some interactives send height as a string; coerce before using it.
+  const px = typeof height === "string" ? parseInt(height, 10) : height;
+  iframe.style.height = `${px}px`;
 });
 ```
 
@@ -175,6 +177,7 @@ message. Names come from `IRuntimeClientMessage` / `IRuntimeServerMessage` in
 | `addLinkedInteractiveStateListener` / `removeLinkedInteractiveStateListener` | Observe another interactive's state (linked interactives). |
 | `authoredState` | (authoring mode) updated authored state to save. |
 | `authoringCustomReportFields` / `runtimeCustomReportValues` | Custom report field definitions/values. |
+| `decoratedContentEvent` | Glossary/text-decoration event (pairs with host→interactive `decorateContent`). |
 | `log` | A logging event to forward to your analytics. |
 
 ### Host → interactive (you `post`)
@@ -186,12 +189,15 @@ message. Names come from `IRuntimeClientMessage` / `IRuntimeServerMessage` in
 | `authInfo` | Response to `getAuthInfo`. |
 | `firebaseJWT` | Response to `getFirebaseJWT`. |
 | `attachmentUrl` | Response to `getAttachmentUrl`. |
+| `closedModal` | Acknowledgement that a modal the interactive opened has been closed. |
 | `pubSubMessage` / `pubSubChannelInfo` | Pub/Sub delivery. |
 | `jobCreated` / `jobInfo` | Job lifecycle updates. |
 | `focusEnter` | Accessibility focus protocol — focus is entering the iframe. |
 | `linkedInteractiveState` | Delivery of an observed interactive's state. |
 | `interactiveSnapshot` | Response to `getInteractiveSnapshot`. |
 | `libraryInteractiveList` | Response to `getLibraryInteractiveList`. |
+| `decorateContent` | Glossary/text-decoration instructions (pairs with interactive→host `decoratedContentEvent`). |
+| `contextMembership` | Class/group membership info for the current context. |
 | `customMessage` | Bi-directional app-specific messages (both sides can send). |
 
 Each message's payload has a named interface in `types.ts` (e.g. `IHintRequest`,
