@@ -79,7 +79,7 @@ const phone = new iframePhone.ParentEndpoint(iframe, () => {
     collaboratorUrls: null,
     classInfoUrl: "",
     interactive: { id: "interactive-1", name: "" },
-    authInfo: { provider: "", loggedIn: true, email: "" },
+    authInfo: { provider: "", loggedIn: false, email: "" }, // no auth wired up in this minimal host
     linkedInteractives: [],
     themeInfo: { colors: { colorA: "", colorB: "" } },
     accessibility: { fontSize: "normal", fontSizeInPx: 16, fontType: "normal", fontFamilyForType: "" },
@@ -225,6 +225,11 @@ by hand.
 
 Advertise support via `supportedFeatures` (from the interactive) and `hostFeatures`
 (from you) so both sides negotiate features rather than assuming them.
+
+**Note the casing:** the message is `getFirebaseJWT`, but the `IHostFeatures` field
+advertising support for it is `getFirebaseJwt` (as are the payload types
+`IGetFirebaseJwtRequest`/`Response`). This is a historical quirk of the API, not a
+typo — the identifiers genuinely differ.
 
 ---
 
