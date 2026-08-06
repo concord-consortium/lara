@@ -8,7 +8,11 @@ import { ICreatePageItem, ISection, SectionColumns, SectionLayouts } from "../ap
 import { UserInterfaceContext } from "../containers/user-interface-provider";
 import { usePageAPI } from "../hooks/use-api-provider";
 import { changeLayout } from "../util/change-layout-utils";
-import { columnValueForIndex, displayTextForLayout } from "../util/section-layout-utils";
+import {
+  columnLabelRoleForIndex,
+  columnValueForIndex,
+  displayTextForLayout
+} from "../util/section-layout-utils";
 import { sectionName } from "../util/sections";
 
 import "./authoring-section.scss";
@@ -323,6 +327,7 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
         className={classNameForItem(layout, 0)}
         column={columnValueForIndex(layout, 0)}
         columnNumber={1}
+        columnRole={columnLabelRoleForIndex(layout, 0)}
         items={getColumnItems(columnValueForIndex(layout, 0))}
         sectionId={id}
       />
@@ -334,6 +339,7 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
           className={classNameForItem(layout, 1)}
           column={columnValueForIndex(layout, 1)}
           columnNumber={2}
+          columnRole={columnLabelRoleForIndex(layout, 1)}
           items={getColumnItems(columnValueForIndex(layout, 1))}
           sectionId={id}
         />

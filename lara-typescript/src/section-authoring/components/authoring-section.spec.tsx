@@ -1,5 +1,5 @@
 import * as React from "react";
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, within } from "@testing-library/react";
 import { AuthoringSection } from "./authoring-section";
 import { APIContainer } from "../containers/api-container";
 import { SectionLayouts } from "../api/api-types";
@@ -83,5 +83,98 @@ describe("AuthoringSection layout dropdown", () => {
     // staging, so no fallback option is offered for them.
     expect(select.options.length).toBe(Object.values(SectionLayouts).length);
     expect(select.value).toBe("full-width");
+  });
+});
+
+// labelsInOrder reads the accessible name of each labeled group in DOM order, which is visual
+// order: nothing in the SCSS uses `order` or `direction`, so grid places col-1 left and col-2
+// right in every layout. Asserting the ORDER states the actual requirement, which is which
+// SIDE the primary column is on.
+const labelsInOrder = () =>
+  screen.queryAllByRole("group").map(g =>
+    document.getElementById(g.getAttribute("aria-labelledby") as string)?.textContent);
+
+// renderedColumns counts the column containers. The section container carries the same
+// `edit-page-grid-container` class, so the `col-` filter is what separates them:
+//   [0] edit-page-grid-container sectionContainer section-60-40
+//   [1] edit-page-grid-container col-1 section-60 hasColumnHeader
+//   [2] edit-page-grid-container col-2 section-40 hasColumnHeader
+// `.col-N` is a load-bearing SCSS selector (section-item.scss, authoring-section.scss), not
+// incidental markup, so it will not quietly rot.
+const renderedColumns = (container: HTMLElement) =>
+  container.querySelectorAll(".edit-page-grid-container[class*='col-']");
+
+describe("AuthoringSection column labels", () => {
+  ["60-40", "70-30"].forEach(layout => {
+    it(`labels the left column primary for ${layout}`, () => {
+      renderSection(layout);
+      expect(labelsInOrder()).toEqual(["Primary column", "Secondary column"]);
+    });
+  });
+
+  ["40-60", "30-70", "responsive-30-70", "responsive-50-50"].forEach(layout => {
+    it(`labels the right column primary for ${layout}`, () => {
+      renderSection(layout);
+      expect(labelsInOrder()).toEqual(["Secondary column", "Primary column"]);
+    });
+  });
+
+  ["full-width", "responsive-full-width"].forEach(layout => {
+    it(`renders one column and no label for ${layout}`, () => {
+      const { container } = renderSection(layout);
+      expect(renderedColumns(container).length).toBe(1);
+      expect(screen.queryAllByRole("group")).toEqual([]);
+    });
+  });
+
+  ["responsive", ""].forEach(layout => {
+    it(`renders two columns but no label for the unrecognized layout "${layout}"`, () => {
+      const { container } = renderSection(layout);
+      // The column count matters: without it the test would pass if nothing rendered at all.
+      expect(renderedColumns(container).length).toBe(2);
+      expect(screen.queryAllByRole("group")).toEqual([]);
+      expect(screen.queryByText("Primary column")).toBeNull();
+    });
+  });
+
+  it("updates the labels when the layout changes, with no reload", () => {
+    renderSection("60-40");
+    expect(labelsInOrder()).toEqual(["Primary column", "Secondary column"]);
+
+    fireEvent.change(screen.getByRole("combobox"), { target: { value: "30-70" } });
+    // The primary column has moved to the right.
+    expect(labelsInOrder()).toEqual(["Secondary column", "Primary column"]);
+
+    fireEvent.change(screen.getByRole("combobox"), { target: { value: "full-width" } });
+    expect(labelsInOrder()).toEqual([]);
+  });
+
+  it("gives each column its own header ID, so both columns get their own accessible name", () => {
+    renderSection("60-40", "42");
+    expect(document.getElementById("section-42-column-1-label")?.textContent).toBe("Primary column");
+    expect(document.getElementById("section-42-column-2-label")?.textContent).toBe("Secondary column");
+    // The per-column ID is what makes these two distinct names resolvable. A per-SECTION ID
+    // would give both groups the first header's name.
+    expect(screen.getByRole("group", { name: "Primary column" })).not.toBeNull();
+    expect(screen.getByRole("group", { name: "Secondary column" })).not.toBeNull();
+  });
+
+  it("marks labeled columns with hasColumnHeader, which is what aligns the two drop zones", () => {
+    const twoColumn = renderSection("60-40").container;
+    expect(Array.from(renderedColumns(twoColumn)).map(c => c.classList.contains("hasColumnHeader")))
+      .toEqual([true, true]);
+
+    ["full-width", "responsive"].forEach(layout => {
+      const { container } = renderSection(layout);
+      Array.from(renderedColumns(container)).forEach(c => {
+        expect(c.classList.contains("hasColumnHeader")).toBe(false);
+      });
+    });
+  });
+
+  it("keeps the Add Item control inside the labeled group", () => {
+    renderSection("60-40");
+    const primary = screen.getByRole("group", { name: "Primary column" });
+    expect(within(primary).getByTestId("add-item-button")).not.toBeNull();
   });
 });
