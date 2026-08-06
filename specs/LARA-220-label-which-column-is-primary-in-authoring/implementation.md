@@ -102,10 +102,9 @@ export const displayTextForLayout = (layout: string) => layoutDisplayText[layout
 export const labelForColumn = (column: SectionColumns) => columnLabelText[column];
 
 /**
- * Which stored `column` value a rendered column index holds. Extracted verbatim from
- * AuthoringSection, fallback included: for a layout outside the enum this reports
- * primary-on-left, which is what partitions the section's existing items today. Changing
- * that fallback would silently move author content between columns, so it stays.
+ * Which stored `column` value a rendered column index holds. For a layout outside the enum
+ * this reports primary-on-left, which is what partitions the section's existing items today.
+ * Changing that fallback would silently move author content between columns, so it stays.
  */
 export const columnValueForIndex = (layout: string, columnIndex: number): SectionColumns => {
   if (isSingleColumnLayout(layout)) {
@@ -391,14 +390,21 @@ import { SectionLayouts } from "../api/api-types";
 
 // Some tests render layouts outside the SectionLayouts enum. Those values do occur at
 // runtime (legacy `responsive`, imported values, a nullable column with no model
-// validation), so the cast is deliberate and is what the label-suppression and
-// legacy-option requirements are about.
+// validation), so the cast is deliberate.
 const asLayout = (layout: string) => layout as SectionLayouts;
 
 const renderSection = (layout: string, id = "1") =>
   render(
     <APIContainer>
       <AuthoringSection id={id} interactive_page_id="2" layout={asLayout(layout)} />
+    </APIContainer>
+  );
+
+const renderTwoSections = () =>
+  render(
+    <APIContainer>
+      <AuthoringSection id="1" interactive_page_id="2" layout={SectionLayouts.LAYOUT_60_40} />
+      <AuthoringSection id="2" interactive_page_id="2" layout={SectionLayouts.LAYOUT_60_40} />
     </APIContainer>
   );
 
@@ -410,12 +416,7 @@ describe("AuthoringSection element IDs", () => {
   });
 
   it("clicking a section's collapse label toggles that section's own checkbox", () => {
-    render(
-      <APIContainer>
-        <AuthoringSection id="1" interactive_page_id="2" layout={SectionLayouts.LAYOUT_60_40} />
-        <AuthoringSection id="2" interactive_page_id="2" layout={SectionLayouts.LAYOUT_60_40} />
-      </APIContainer>
-    );
+    renderTwoSections();
 
     const checkboxes = screen.getAllByTestId("toggle-secondary-column-checkbox") as HTMLInputElement[];
     const labels = screen.getAllByText("Allow student to hide secondary column");
@@ -427,18 +428,29 @@ describe("AuthoringSection element IDs", () => {
     expect(checkboxes.map(c => c.checked)).toEqual([false, true]);
   });
 
+  it("associates each section's Layout label with that section's own dropdown", () => {
+    renderTwoSections();
+
+    const labels = screen.getAllByText("Layout:") as HTMLLabelElement[];
+    const selects = screen.getAllByRole("combobox") as HTMLSelectElement[];
+    expect(labels.length).toBe(2);
+    // Before the fix both labels resolved to the FIRST section's dropdown.
+    labels.forEach((label, index) => expect(label.control).toBe(selects[index]));
+  });
+
   it("emits no duplicate element IDs across sections", () => {
-    render(
-      <APIContainer>
-        <AuthoringSection id="1" interactive_page_id="2" layout={SectionLayouts.LAYOUT_60_40} />
-        <AuthoringSection id="2" interactive_page_id="2" layout={SectionLayouts.LAYOUT_60_40} />
-      </APIContainer>
-    );
+    renderTwoSections();
     const ids = Array.from(document.querySelectorAll("[id]")).map(e => e.id);
     expect(ids.filter((v, i) => ids.indexOf(v) !== i)).toEqual([]);
   });
 });
 ```
+
+The Layout-label test covers the second half of the duplicate-ID requirement, which the click test cannot
+reach: jsdom's label activation behavior forwards a click to the labeled control, which toggles a
+checkbox but does nothing observable to a `<select>`. `HTMLLabelElement.control` asserts the association
+itself, which is what the requirement is about, and it fails when the select's ID is reverted to the
+hardcoded value.
 
 `within` is deliberately **not** imported here. It is only needed by the last step's "Add Item inside
 the labeled group" test, and `npm run lint:unused` runs `tsc --noUnusedLocals`, which fails on an
@@ -524,8 +536,8 @@ describe("AuthoringSection layout dropdown", () => {
     renderSection("responsive");
     const select = screen.getByRole("combobox") as HTMLSelectElement;
     // The option list is exactly the enum. react-dom finds no match and selects the first
-    // option, so the control reads `full-width` -- unchanged from today, and deliberate:
-    // zero such rows exist in production or staging.
+    // option, so the control reads `full-width`. Zero such rows exist in production or
+    // staging, so no fallback option is offered for them.
     expect(select.options.length).toBe(Object.values(SectionLayouts).length);
     expect(select.value).toBe("full-width");
   });
@@ -696,8 +708,6 @@ Assertions are by accessible role and name rather than by text, so a dropped `ar
 fails the test rather than passing on a stray text node.
 
 ```tsx
-// Columns are identified two ways, both without a data-testid (see the testid decision).
-//
 // labelsInOrder reads the accessible name of each labeled group in DOM order, which is visual
 // order: nothing in the SCSS uses `order` or `direction`, so grid places col-1 left and col-2
 // right in every layout. Asserting the ORDER states the actual requirement, which is which
@@ -711,8 +721,8 @@ const labelsInOrder = () =>
 //   [0] edit-page-grid-container sectionContainer section-60-40
 //   [1] edit-page-grid-container col-1 section-60 hasColumnHeader
 //   [2] edit-page-grid-container col-2 section-40 hasColumnHeader
-// `.col-N` is a load-bearing SCSS selector (section-item.scss, authoring-section.scss:163),
-// not incidental markup, so it will not quietly rot.
+// `.col-N` is a load-bearing SCSS selector (section-item.scss, authoring-section.scss), not
+// incidental markup, so it will not quietly rot.
 const renderedColumns = (container: HTMLElement) =>
   container.querySelectorAll(".edit-page-grid-container[class*='col-']");
 
@@ -771,6 +781,19 @@ describe("AuthoringSection column labels", () => {
     expect(screen.getByRole("group", { name: "Secondary column" })).not.toBeNull();
   });
 
+  it("marks labeled columns with hasColumnHeader, which is what aligns the two drop zones", () => {
+    const twoColumn = renderSection("60-40").container;
+    expect(Array.from(renderedColumns(twoColumn)).map(c => c.classList.contains("hasColumnHeader")))
+      .toEqual([true, true]);
+
+    ["full-width", "responsive"].forEach(layout => {
+      const { container } = renderSection(layout);
+      Array.from(renderedColumns(container)).forEach(c => {
+        expect(c.classList.contains("hasColumnHeader")).toBe(false);
+      });
+    });
+  });
+
   it("keeps the Add Item control inside the labeled group", () => {
     renderSection("60-40");
     const primary = screen.getByRole("group", { name: "Primary column" });
@@ -778,6 +801,11 @@ describe("AuthoringSection column labels", () => {
   });
 });
 ```
+
+`hasColumnHeader` is asserted even though the `grid-template-rows` rule it triggers does not exist in
+jsdom. The class is plain markup, and it is the sole hook for that rule, so dropping it would misalign
+the shorter column's content with a green suite otherwise. The test isolates cleanly: removing the class
+fails it and nothing else.
 
 Note what these tests deliberately do **not** cover. `text-transform` is invisible to accessible-name
 computation, so `getByRole("group", { name: "Primary column" })` matches an uppercase-styled label and
@@ -797,7 +825,7 @@ npm run lint                 # local only: CI does not run tslint
 npx jest src/section-authoring
 ```
 
-Both were run against a full build of this plan: 79 tests across 5 suites pass, and lint is clean under
+Both were run against a full build of this plan: 81 tests across 5 suites pass, and lint is clean under
 both `tslint.json` and `tslint-build.json`. Do **not** use `npm run lint:unused` as a gate; it reports
 91 pre-existing errors on master. See the Self-Review for both points.
 
@@ -987,7 +1015,7 @@ ran is what is written here), then the result was reverted.
 
 | Check | Result |
 | --- | --- |
-| `npx jest src/section-authoring` | **79 passed, 5 suites**, no `act()` warnings |
+| `npx jest src/section-authoring` | **81 passed, 5 suites**, no `act()` warnings |
 | `npm run lint` (tslint) | clean |
 | `npm run lint:build` (stricter config) | clean |
 | `npm run build:webpack` | section-authoring compiles; see the caveat below |

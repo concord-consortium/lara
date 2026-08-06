@@ -13,7 +13,8 @@
 // Structural chrome, so it follows the uppercase idiom of .sectionItemMenu (12px uppercase)
 // rather than the sentence case used for form-control labels. Bold because it sits on the
 // light --ltr-teal column background rather than a solid teal bar. --dark-teal on --ltr-teal
-// measures 5.59:1 and passes AA; --teal is 2.92:1 and fails at any size.
+// measures 5.59:1 and passes AA; --teal (what the orphaned .teal-label uses) is 2.92:1 and
+// fails at any size.
 .columnHeader {
   color: var(--dark-teal);
   font-size: 12px;

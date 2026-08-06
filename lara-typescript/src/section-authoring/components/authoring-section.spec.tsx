@@ -16,6 +16,14 @@ const renderSection = (layout: string, id = "1") =>
     </APIContainer>
   );
 
+const renderTwoSections = () =>
+  render(
+    <APIContainer>
+      <AuthoringSection id="1" interactive_page_id="2" layout={SectionLayouts.LAYOUT_60_40} />
+      <AuthoringSection id="2" interactive_page_id="2" layout={SectionLayouts.LAYOUT_60_40} />
+    </APIContainer>
+  );
+
 describe("AuthoringSection element IDs", () => {
   it("derives the layout select and collapse checkbox IDs from the section ID", () => {
     renderSection("60-40", "42");
@@ -24,12 +32,7 @@ describe("AuthoringSection element IDs", () => {
   });
 
   it("clicking a section's collapse label toggles that section's own checkbox", () => {
-    render(
-      <APIContainer>
-        <AuthoringSection id="1" interactive_page_id="2" layout={SectionLayouts.LAYOUT_60_40} />
-        <AuthoringSection id="2" interactive_page_id="2" layout={SectionLayouts.LAYOUT_60_40} />
-      </APIContainer>
-    );
+    renderTwoSections();
 
     const checkboxes = screen.getAllByTestId("toggle-secondary-column-checkbox") as HTMLInputElement[];
     const labels = screen.getAllByText("Allow student to hide secondary column");
@@ -41,13 +44,18 @@ describe("AuthoringSection element IDs", () => {
     expect(checkboxes.map(c => c.checked)).toEqual([false, true]);
   });
 
+  it("associates each section's Layout label with that section's own dropdown", () => {
+    renderTwoSections();
+
+    const labels = screen.getAllByText("Layout:") as HTMLLabelElement[];
+    const selects = screen.getAllByRole("combobox") as HTMLSelectElement[];
+    expect(labels.length).toBe(2);
+    // Before the fix both labels resolved to the FIRST section's dropdown.
+    labels.forEach((label, index) => expect(label.control).toBe(selects[index]));
+  });
+
   it("emits no duplicate element IDs across sections", () => {
-    render(
-      <APIContainer>
-        <AuthoringSection id="1" interactive_page_id="2" layout={SectionLayouts.LAYOUT_60_40} />
-        <AuthoringSection id="2" interactive_page_id="2" layout={SectionLayouts.LAYOUT_60_40} />
-      </APIContainer>
-    );
+    renderTwoSections();
     const ids = Array.from(document.querySelectorAll("[id]")).map(e => e.id);
     expect(ids.filter((v, i) => ids.indexOf(v) !== i)).toEqual([]);
   });
