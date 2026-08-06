@@ -252,6 +252,9 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
     disabled: toggleSecondaryColumnDisabled
   });
 
+  const layoutSelectId = `section-layout-${id}`;
+  const toggleSecondaryColumnId = `toggle-secondary-column-${id}`;
+
   return (
     <div className={sectionClassNames()}>
       <header className="sectionMenu full-row">
@@ -265,9 +268,9 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
             position={position}
             onSave={handleSaveSectionName}
            />
-          <label htmlFor="section_layout">Layout: </label>
+          <label htmlFor={layoutSelectId}>Layout: </label>
           <select
-            id="section_layout"
+            id={layoutSelectId}
             name="section[layout]"
             onChange={layoutChanged}
             defaultValue={layout}
@@ -280,12 +283,12 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
               })
             }
           </select>
-          <label className={toggleSecondaryColumnOptionClass} htmlFor="toggle-secondary-column">
+          <label className={toggleSecondaryColumnOptionClass} htmlFor={toggleSecondaryColumnId}>
             <input
-              data-testid="toggle-secondary-column-checkbox" // Added data-testid
+              data-testid="toggle-secondary-column-checkbox"
               defaultChecked={can_collapse_small}
               disabled={toggleSecondaryColumnDisabled}
-              id="toggle-secondary-column"
+              id={toggleSecondaryColumnId}
               name="can_collapse_small"
               onChange={handleToggleSecondaryColumnChange}
               type="checkbox"
