@@ -8,6 +8,7 @@ import { ICreatePageItem, ISection, SectionColumns, SectionLayouts } from "../ap
 import { UserInterfaceContext } from "../containers/user-interface-provider";
 import { usePageAPI } from "../hooks/use-api-provider";
 import { changeLayout } from "../util/change-layout-utils";
+import { columnValueForIndex } from "../util/section-layout-utils";
 import { sectionName } from "../util/sections";
 
 import "./authoring-section.scss";
@@ -207,34 +208,6 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
     return items.filter(i => i.column === column);
   };
 
-  const columnValueForIndex = (columnNumber: number): SectionColumns => {
-    // if our layout is full-width we are SectionColumns.primary
-    // if our layout is responsive, 30_70 or 40_60 and index is 0 → SectionColumns.secondary
-    // if our layout is responsive, 30_70 or 40_60 and index is >0 → SectionColumns.primary
-    // if our layout is 70_30 or 60_40 and index is 0 -> SectionColumns.primary
-    // if our layout is 70_30 or 60_40 and index is >0 -> SectionColumns.secondary
-    if (layout === SectionLayouts.LAYOUT_FULL_WIDTH ||
-        layout === SectionLayouts.LAYOUT_RESPONSIVE_FULL_WIDTH) {
-      return SectionColumns.PRIMARY;
-    }
-    if (layout === SectionLayouts.LAYOUT_30_70 ||
-        layout === SectionLayouts.LAYOUT_40_60 ||
-        layout === SectionLayouts.LAYOUT_RESPONSIVE_30_70 ||
-        layout === SectionLayouts.LAYOUT_RESPONSIVE_50_50) {
-          if (columnNumber === 0) {
-            return SectionColumns.SECONDARY;
-          } else {
-            return SectionColumns.PRIMARY;
-          }
-        }
-    else { // Layout is bigger section first
-      if (columnNumber === 0) {
-        return SectionColumns.PRIMARY;
-      }
-    }
-    return SectionColumns.SECONDARY;
-  };
-
   const addItem = (column: SectionColumns) => {
     const nextId = `section-${id}-item-${items.length}`;
     const itemPosition = items.length + 1;
@@ -342,25 +315,23 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
         </div>
       </header>
       {<SectionColumn
-        data-testid={`section-column-${layout}-1`}
         addItem={addItem}
         addPageItem={addPageItem}
         className={classNameForItem(layout, 0)}
-        column={columnValueForIndex(0)}
+        column={columnValueForIndex(layout, 0)}
         columnNumber={1}
-        items={getColumnItems(columnValueForIndex(0))}
+        items={getColumnItems(columnValueForIndex(layout, 0))}
         sectionId={id}
       />
       }
       {(layout !== "full-width" && layout !== "responsive-full-width") &&
         <SectionColumn
-          data-testid={`section-column-${layout}-2`}
           addItem={addItem}
           addPageItem={addPageItem}
           className={classNameForItem(layout, 1)}
-          column={columnValueForIndex(1)}
+          column={columnValueForIndex(layout, 1)}
           columnNumber={2}
-          items={getColumnItems(columnValueForIndex(1))}
+          items={getColumnItems(columnValueForIndex(layout, 1))}
           sectionId={id}
         />
       }
