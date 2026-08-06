@@ -8,7 +8,7 @@ import { ICreatePageItem, ISection, SectionColumns, SectionLayouts } from "../ap
 import { UserInterfaceContext } from "../containers/user-interface-provider";
 import { usePageAPI } from "../hooks/use-api-provider";
 import { changeLayout } from "../util/change-layout-utils";
-import { columnValueForIndex } from "../util/section-layout-utils";
+import { columnValueForIndex, displayTextForLayout } from "../util/section-layout-utils";
 import { sectionName } from "../util/sections";
 
 import "./authoring-section.scss";
@@ -278,7 +278,7 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
             {
               Object.values(SectionLayouts).map( (l) => {
                 return (
-                  <option key={l} value={l}>{l}</option>
+                  <option key={l} value={l}>{displayTextForLayout(l)}</option>
                 );
               })
             }

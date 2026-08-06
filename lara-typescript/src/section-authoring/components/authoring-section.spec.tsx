@@ -52,3 +52,36 @@ describe("AuthoringSection element IDs", () => {
     expect(ids.filter((v, i) => ids.indexOf(v) !== i)).toEqual([]);
   });
 });
+
+describe("AuthoringSection layout dropdown", () => {
+  it("shows each layout's stored token plus a hint about where the primary column lands", () => {
+    renderSection("60-40");
+    const options = screen.getAllByRole("option") as HTMLOptionElement[];
+    expect(options.map(o => o.text)).toEqual([
+      "full-width (single column)",
+      "60-40 (primary on left)",
+      "40-60 (primary on right)",
+      "70-30 (primary on left)",
+      "30-70 (primary on right)",
+      "responsive-30-70 (primary on right)",
+      "responsive-50-50 (primary on right)",
+      "responsive-full-width (single column)"
+    ]);
+  });
+
+  it("leaves the stored values untouched", () => {
+    renderSection("60-40");
+    const options = screen.getAllByRole("option") as HTMLOptionElement[];
+    expect(options.map(o => o.value)).toEqual(Object.values(SectionLayouts));
+  });
+
+  it("adds no option for an unrecognized stored layout", () => {
+    renderSection("responsive");
+    const select = screen.getByRole("combobox") as HTMLSelectElement;
+    // The option list is exactly the enum. react-dom finds no match and selects the first
+    // option, so the control reads `full-width`. Zero such rows exist in production or
+    // staging, so no fallback option is offered for them.
+    expect(select.options.length).toBe(Object.values(SectionLayouts).length);
+    expect(select.value).toBe("full-width");
+  });
+});
