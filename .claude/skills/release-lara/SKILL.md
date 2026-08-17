@@ -71,7 +71,7 @@ aws cloudformation describe-stacks --stack-name "$(aws cloudformation describe-s
 
 ## Helper scripts
 
-Two helper scripts ship with this skill, in its own `scripts/` directory. **Their paths
+Three helper scripts ship with this skill, in its own `scripts/` directory. **Their paths
 are relative to the skill, not to the repo.** The working directory throughout a release
 is the LARA checkout, whose top-level `scripts/` is unrelated, so a bare
 `scripts/verify-migration.sh` resolves to nothing or to the wrong file. Set `SKILL_DIR`
@@ -80,6 +80,78 @@ from the base directory reported when the skill was loaded, and invoke them thro
 ```bash
 SKILL_DIR=<the skill's base directory>   # as reported on load
 ```
+
+| script | answers | source |
+|---|---|---|
+| `verify-migration.sh` | did *this* migrate task fail, and why | the task's Rails output |
+| `check-migration-status.sh` | is the schema where it should be | `schema_migrations` in the database |
+| `check-deployed-version.sh` | is the new image actually serving | the served footer |
+
+The two migration scripts are complementary, not alternatives, and step 5 runs both. Only
+the database knows which migrations are applied; only the log says why a run died.
+
+## Reading the schema state
+
+`schema_migrations` is the primary source for which migrations are applied: it is the
+table Rails itself consults to decide what is still pending. Read it with
+`rake db:migrate:status` whenever the question is *is the schema where it should be*,
+rather than inferring it from a migrate task's log. The table survives log retention, does
+not depend on the wording of Rails' output, and after a partial failure states exactly
+which migrations are missing.
+
+The database is only reachable from inside the VPC, so this runs as a one-off ECS task and
+its output still arrives via CloudWatch. That is not the same as scraping the migrate run's
+narration: the answer originates in the database, not in a process's claim about itself.
+
+**Do not register a task definition revision to read status.** Step 6 treats revisions of
+the `-App-migrate` family as the audit trail of what migrated, so a status-only revision
+would look exactly like a migration run for that version. `run-task --overrides` can
+change the command (just not the image), which is all this needs.
+
+**Which task definition to override decides the argv**, because the two families differ in
+`entryPoint`. Verified on both environments: the container is named `App` in each.
+
+```bash
+# The App family runs with an empty entryPoint, so command is the whole argv.
+CMD='["bundle","exec","rake","db:migrate:status"]'; TD="${STACK}-App"
+# A migrate revision from step 5 already has entryPoint ["bundle","exec"].
+CMD='["rake","db:migrate:status"]';                 TD="${STACK}-App-migrate:${REV}"
+
+aws ecs run-task --cluster "$CLUSTER" --launch-type EC2 --count 1 \
+  --started-by "lara-migrate-status" --task-definition "$TD" \
+  --overrides "{\"containerOverrides\":[{\"name\":\"App\",\"command\":${CMD}}]}" \
+  --query '{taskArn:tasks[0].taskArn,failures:failures}'
+
+STATUS_TASK=<last path segment of taskArn>
+until [ "$(aws ecs describe-tasks --cluster "$CLUSTER" --tasks "$STATUS_TASK" \
+        --query 'tasks[0].lastStatus' --output text)" = "STOPPED" ]; do sleep 10; done
+```
+
+**The image decides the file list, the database decides the applied list.** Both halves of
+the status table come from different places, so a version can read as absent purely because
+the task ran an older image. That is why a pre-flight read against the still-deployed image
+reports the release's new migrations as `NOT IN IMAGE`, and why it is not an error there.
+
+Then assert with the script, passing **version timestamps, not class names**:
+
+```bash
+"$SKILL_DIR"/scripts/check-migration-status.sh "$LOG_GROUP" "$STATUS_TASK" applied <version ...>
+```
+
+Mode `applied` requires every migration file in the image to be up. Mode `report` prints
+the same state without failing on pending migrations, for reads taken before migrating.
+
+The version is the timestamp, derived from the same filenames as step 3a:
+
+```bash
+git diff --name-only "$FROM_TAG".."$TARGET_REF" -- db/migrate/ \
+  | sed -n 's#.*/\([0-9]\{14\}\)_.*#\1#p'
+```
+
+Class names are wrong here, and the reason is in Rails rather than in the script:
+`db:migrate` logs the camelized name (`AddFooToBars`) while `db:migrate:status` humanizes
+the same name (`Add foo to bars`). A class name therefore matches `verify-migration.sh`'s
+input and never this one. The version is identical in both outputs and in the filename.
 
 ## Steps
 
@@ -159,6 +231,13 @@ git diff --name-only "$FROM_TAG".."$TARGET_REF" -- db/migrate/
 
 Empty output means step 5 is skipped entirely. Say so in the report rather than running
 the migrate task as a no-op.
+
+This is a diff of files, not a reading of the database, so it says what the release *adds*
+and not what is already applied. When the two could disagree, and they do whenever staging
+was migrated ahead of the tag or a commit is being re-tagged, confirm the starting point
+against `schema_migrations` (see Reading the schema state) in `report` mode. A clean
+pre-flight read is zero pending migrations for the deployed image; anything pending before
+you start is a leftover from an earlier release and needs explaining first.
 
 **b. CloudFormation template drift.** `--use-previous-template` in step 6 means template
 changes in the release are *not* applied. If the template changed, that is silent and
@@ -381,6 +460,21 @@ Pass the class names derived in step 3a. The script polls, because the CloudWatc
 can lag the task by up to a minute, and it treats "no migrations applied" as a warning
 rather than success.
 
+Then **confirm the schema itself**, because the log only reports what Rails narrated:
+
+```bash
+# reuse this release's migrate revision, overriding just the command (see Reading the
+# schema state); do not register another revision
+"$SKILL_DIR"/scripts/check-migration-status.sh "$LOG_GROUP" "$STATUS_TASK" applied <version ...>
+```
+
+Pass the version timestamps for the same migrations, not their class names. This is the
+assertion that actually establishes the schema is current: `verify-migration.sh` can only
+report that a run printed success, while this reads `schema_migrations` and fails if any
+migration in the image is still pending. Requiring both closes the case where the migrate
+task exits 0 having silently applied nothing, which the log check reports as a warning that
+is easy to read past.
+
 **Record `$TASK_ID` in the step 9 report.** It is the only cheap handle on this run's log
 once the task ages out of ECS, and the next release may need it.
 
@@ -388,9 +482,15 @@ once the task ages out of ECS, and the next release may need it.
 MySQL, where DDL is not transactional, so a run that fails partway through several
 migrations leaves the earlier ones committed and recorded in `schema_migrations` while the
 later ones are not. The schema is then consistent with neither the old nor the new image.
-Compare the verifier's `applied:` line against the expected list from step 3a to establish
-exactly how far it got, report that to the user, and resolve forward. Do not re-run
-blindly and do not start the stack update.
+Establish exactly how far it got and report that to the user before resolving forward. Do
+not re-run blindly and do not start the stack update.
+
+**Use `check-migration-status.sh` in `report` mode to establish this**, rather than the
+migrate log. A run that died partway logs only what printed before the abort, and its last
+line may be a migration that was committed, one that was rolled back, or neither, whereas
+the pending list is the schema's own account of what remains. Compare that against the
+expected list from step 3a; the verifier's `applied:` line is corroboration, not the
+primary record.
 
 #### Verifying a migration that already ran
 
@@ -398,6 +498,13 @@ Releases frequently reach this step with the migration already applied: staging 
 migrated days earlier, or the same commit is being re-tagged and promoted. The user may
 also simply ask you to double-check. **Do not re-run the task to find out.** Establish it
 from the durable records instead.
+
+**Read `schema_migrations` first.** It answers the question directly and it is the only
+record here that cannot go stale: see Reading the schema state, in `applied` mode, against
+the App family. The two checks below are inference from surrounding artifacts, and are
+worth keeping for the history they show, but neither is evidence of the schema's contents.
+This is also the case the log check handles worst, since a migration applied days ago may
+have aged out of CloudWatch entirely.
 
 **The migrate family's task definition revisions are the audit trail.** Every release
 registers one, and its image tag says which version it migrated:
@@ -442,6 +549,11 @@ aws logs get-log-events --log-group-name "$LOG_GROUP" \
 ```
 
 A successful run shows `== <timestamp> <Class>: migrated`.
+
+Correlating a stream by timestamp is guesswork, and it fails outright once the events have
+aged out. If the matching stream is ambiguous or missing, stop reconstructing history and
+read the schema instead: a `report`-mode status task answers what is applied today for a
+few cents, with no correlation step at all.
 
 **Never scan the whole log group.** `aws logs filter-log-events` across the group walks
 every stream and times out even with a filter pattern and a `--start-time`. Always target
@@ -557,8 +669,8 @@ pre-release one.
 ### 9. Report
 
 State the environment, the version deployed, the from-version, which migrations applied
-(with the migrate task ID from step 5, or that there were none), and the three
-verification results. Summarize what actually shipped, per step 2, rather than only the
+(with the migrate task ID from step 5, or that there were none), the schema state
+confirmed from `schema_migrations`, and the three verification results. Summarize what actually shipped, per step 2, rather than only the
 ticket that prompted the release. Mention anything deferred or skipped, including a
 GitHub Release you did not create and any template drift left in place.
 
