@@ -194,8 +194,20 @@ losing, not just that it diverged.
 
 ### 1. Preconditions
 
-- Working tree clean and `git pull` done, on whichever ref this release is cut from. See
-  Releasing from a branch: **production is master-only, staging is not.**
+- **Working tree clean, and on the ref this release is cut from with `git pull` done.**
+  **Production is master-only**, so a production release starts here, every time, with no
+  exceptions:
+
+  ```bash
+  git checkout master && git pull
+  git log --oneline -1        # confirm this is the commit you mean to tag
+  ```
+
+  Do this even when you believe you are already on master. A release run right after
+  merging its own PR is the common case, and the merge happened on the remote, so the local
+  master is stale until pulled and would tag the commit *before* the merge.
+
+  Staging may be cut from a branch and usually is: see Releasing from a branch.
 - `aws sts get-caller-identity` returns account `612297603577`.
 - Report what is currently deployed before changing anything:
 
