@@ -9,6 +9,7 @@ import { Add } from "../../shared/components/icons/add-icon";
 import { SectionItemPicker } from "./section-item-picker";
 import { usePageAPI } from "../hooks/use-api-provider";
 import { snakeToCamelCaseKeys } from "../../shared/convert-keys";
+import { labelForColumn } from "../util/section-layout-utils";
 
 import "./section-column.scss";
 
@@ -34,6 +35,16 @@ export interface ISectionColumnProps {
   columnNumber: number;
 
   /**
+   * Which column role to label this column with, or undefined to render no header:
+   * single-column layouts, where the distinction has no author-visible meaning, and
+   * unrecognized layouts, where LARA and the Activity Player disagree about which column
+   * is primary. Undefined must suppress the header, the role, and the aria-labelledby
+   * together: a group whose aria-labelledby points at a missing ID has no accessible name,
+   * which is worse than a plain container.
+   */
+  columnRole?: SectionColumns;
+
+  /**
    * DraggingContext
    */
   draggableProvided?: DraggableProvided;
@@ -55,6 +66,7 @@ export const SectionColumn: React.FC<ISectionColumnProps> = ({
   className,
   column,
   columnNumber,
+  columnRole,
   items,
   sectionId
   }: ISectionColumnProps) => {
@@ -116,10 +128,24 @@ export const SectionColumn: React.FC<ISectionColumnProps> = ({
     return ["questionWrapper", "interactives"].indexOf(itemData.componentLabel) !== -1;
   };
 
+  // Unique per COLUMN, not per section: a section renders two headers, and an ID that is
+  // merely unique per section gives both columns the accessible name of the first one, so no
+  // column is announced as Secondary.
+  const columnHeaderId = `section-${sectionId}-column-${columnNumber}-label`;
+
   return (
     <>
       <DragDropContext onDragEnd={onDragEnd}>
-        <div className={`edit-page-grid-container col-${columnNumber} ${className}`}>
+        <div
+          className={`edit-page-grid-container col-${columnNumber} ${className}${columnRole ? " hasColumnHeader" : ""}`}
+          role={columnRole ? "group" : undefined}
+          aria-labelledby={columnRole ? columnHeaderId : undefined}
+        >
+          { columnRole &&
+            <div className="columnHeader full-row" id={columnHeaderId}>
+              {labelForColumn(columnRole)}
+            </div>
+          }
           <Droppable droppableId={`droppableCol${columnNumber}`}>
             {(droppableProvided) => (
               <div

@@ -8,6 +8,11 @@ import { ICreatePageItem, ISection, SectionColumns, SectionLayouts } from "../ap
 import { UserInterfaceContext } from "../containers/user-interface-provider";
 import { usePageAPI } from "../hooks/use-api-provider";
 import { changeLayout } from "../util/change-layout-utils";
+import {
+  columnLabelRoleForIndex,
+  columnValueForIndex,
+  displayTextForLayout
+} from "../util/section-layout-utils";
 import { sectionName } from "../util/sections";
 
 import "./authoring-section.scss";
@@ -207,34 +212,6 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
     return items.filter(i => i.column === column);
   };
 
-  const columnValueForIndex = (columnNumber: number): SectionColumns => {
-    // if our layout is full-width we are SectionColumns.primary
-    // if our layout is responsive, 30_70 or 40_60 and index is 0 → SectionColumns.secondary
-    // if our layout is responsive, 30_70 or 40_60 and index is >0 → SectionColumns.primary
-    // if our layout is 70_30 or 60_40 and index is 0 -> SectionColumns.primary
-    // if our layout is 70_30 or 60_40 and index is >0 -> SectionColumns.secondary
-    if (layout === SectionLayouts.LAYOUT_FULL_WIDTH ||
-        layout === SectionLayouts.LAYOUT_RESPONSIVE_FULL_WIDTH) {
-      return SectionColumns.PRIMARY;
-    }
-    if (layout === SectionLayouts.LAYOUT_30_70 ||
-        layout === SectionLayouts.LAYOUT_40_60 ||
-        layout === SectionLayouts.LAYOUT_RESPONSIVE_30_70 ||
-        layout === SectionLayouts.LAYOUT_RESPONSIVE_50_50) {
-          if (columnNumber === 0) {
-            return SectionColumns.SECONDARY;
-          } else {
-            return SectionColumns.PRIMARY;
-          }
-        }
-    else { // Layout is bigger section first
-      if (columnNumber === 0) {
-        return SectionColumns.PRIMARY;
-      }
-    }
-    return SectionColumns.SECONDARY;
-  };
-
   const addItem = (column: SectionColumns) => {
     const nextId = `section-${id}-item-${items.length}`;
     const itemPosition = items.length + 1;
@@ -279,6 +256,9 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
     disabled: toggleSecondaryColumnDisabled
   });
 
+  const layoutSelectId = `section-layout-${id}`;
+  const toggleSecondaryColumnId = `toggle-secondary-column-${id}`;
+
   return (
     <div className={sectionClassNames()}>
       <header className="sectionMenu full-row">
@@ -292,9 +272,9 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
             position={position}
             onSave={handleSaveSectionName}
            />
-          <label htmlFor="section_layout">Layout: </label>
+          <label htmlFor={layoutSelectId}>Layout: </label>
           <select
-            id="section_layout"
+            id={layoutSelectId}
             name="section[layout]"
             onChange={layoutChanged}
             defaultValue={layout}
@@ -302,17 +282,17 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
             {
               Object.values(SectionLayouts).map( (l) => {
                 return (
-                  <option key={l} value={l}>{l}</option>
+                  <option key={l} value={l}>{displayTextForLayout(l)}</option>
                 );
               })
             }
           </select>
-          <label className={toggleSecondaryColumnOptionClass} htmlFor="toggle-secondary-column">
+          <label className={toggleSecondaryColumnOptionClass} htmlFor={toggleSecondaryColumnId}>
             <input
-              data-testid="toggle-secondary-column-checkbox" // Added data-testid
+              data-testid="toggle-secondary-column-checkbox"
               defaultChecked={can_collapse_small}
               disabled={toggleSecondaryColumnDisabled}
-              id="toggle-secondary-column"
+              id={toggleSecondaryColumnId}
               name="can_collapse_small"
               onChange={handleToggleSecondaryColumnChange}
               type="checkbox"
@@ -342,25 +322,25 @@ export const AuthoringSection: React.FC<ISectionProps> = ({
         </div>
       </header>
       {<SectionColumn
-        data-testid={`section-column-${layout}-1`}
         addItem={addItem}
         addPageItem={addPageItem}
         className={classNameForItem(layout, 0)}
-        column={columnValueForIndex(0)}
+        column={columnValueForIndex(layout, 0)}
         columnNumber={1}
-        items={getColumnItems(columnValueForIndex(0))}
+        columnRole={columnLabelRoleForIndex(layout, 0)}
+        items={getColumnItems(columnValueForIndex(layout, 0))}
         sectionId={id}
       />
       }
       {(layout !== "full-width" && layout !== "responsive-full-width") &&
         <SectionColumn
-          data-testid={`section-column-${layout}-2`}
           addItem={addItem}
           addPageItem={addPageItem}
           className={classNameForItem(layout, 1)}
-          column={columnValueForIndex(1)}
+          column={columnValueForIndex(layout, 1)}
           columnNumber={2}
-          items={getColumnItems(columnValueForIndex(1))}
+          columnRole={columnLabelRoleForIndex(layout, 1)}
+          items={getColumnItems(columnValueForIndex(layout, 1))}
           sectionId={id}
         />
       }
