@@ -159,10 +159,43 @@ input and never this one. The version is identical in both outputs and in the fi
 
 ## Releasing from a branch
 
-**Production is master-only.** Never tag production from anything else. Code reaches
-production having been reviewed and merged, and a production tag on a branch would ship
-work that no PR ever approved. If asked for a production release from a branch, stop and
-say the branch needs merging first.
+**Production is master-only**, with one exception, below. Code normally reaches production
+having been reviewed and merged, and a production tag on a branch ships work no PR
+approved. If asked for a production release from a branch without the word hotfix or an
+equivalent, treat it as an ordinary release and say the branch needs merging first.
+
+### The hotfix exception
+
+An urgent fix sometimes has to reach production before it can be merged. That is
+legitimate. It requires the user to ask for it as a hotfix explicitly; **never infer it**
+from urgency in their tone, from a branch name, or from a failing production check.
+
+**Cut the hotfix from the tag production is running, not from master.** This is the part
+that is easy to get wrong under time pressure, and getting it wrong is how a hotfix becomes
+an incident. Master's tip carries every unreleased commit since the last production
+release, which here is routinely dozens across many tickets, none of it what the fix was
+meant to ship and none of it necessarily verified. Branching from the deployed tag keeps
+the release to the fix alone, and it makes step 3d read FORWARD rather than dragging
+unrelated work along behind a one-line change.
+
+```bash
+git fetch --tags
+git checkout -b "hotfix-<desc>" "v${DEPLOYED_VER}"   # the tag production runs right now
+```
+
+Then:
+
+- **Version is a patch bump from the deployed version**, not master's next minor. A fix on
+  top of `v2.19.0` is `v2.19.1`, even if master is heading for `v2.20.0`.
+- **Put the same image through staging first unless the urgency genuinely forbids it.** If
+  you skip it, say so plainly in the report. That is a real reduction in confidence, not a
+  formality to be waved through.
+- **The fix still has to be merged to master, and the report must name that as
+  outstanding.** An unmerged hotfix is silently undone by the next release cut from master,
+  and it will not be obvious why the bug came back.
+- Everything else is unchanged: all four pre-flight checks, the migration steps, the
+  confirmation immediately before step 6, and the GitHub Release, since a hotfix is a final
+  version rather than a pre-release.
 
 **Staging is routinely cut from a branch**, and that is the normal way to test work in
 progress. It is what pre-release tags are for. Nothing below is an exception to be
@@ -195,8 +228,8 @@ losing, not just that it diverged.
 ### 1. Preconditions
 
 - **Working tree clean, and on the ref this release is cut from with `git pull` done.**
-  **Production is master-only**, so a production release starts here, every time, with no
-  exceptions:
+  **Production is master-only** apart from the hotfix exception below, so a production
+  release starts here:
 
   ```bash
   git checkout master && git pull
