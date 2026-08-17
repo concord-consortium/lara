@@ -1,6 +1,6 @@
 ---
 name: release-lara
-description: Release and deploy LARA authoring to staging or production on AWS ECS. Tags a version, waits for the image build, applies Rails migrations as a one-off ECS task, updates the CloudFormation stack to the new image, and verifies the deployed version end to end. Use when asked to release, deploy, cut a version, ship to staging or production, or push LARA to AWS.
+description: Release and deploy LARA authoring to staging or production on AWS ECS. Tags a version, waits for the image build, applies Rails migrations as a one-off ECS task, updates the CloudFormation stack to the new image, and verifies the deployed version end to end. Handles pre-releases cut from a feature branch as well as releases from master. Use when asked to release, deploy, cut a version, ship a branch to staging, or push LARA to AWS.
 ---
 
 # Release LARA
@@ -153,11 +153,45 @@ Class names are wrong here, and the reason is in Rails rather than in the script
 the same name (`Add foo to bars`). A class name therefore matches `verify-migration.sh`'s
 input and never this one. The version is identical in both outputs and in the filename.
 
+## Releasing from a branch
+
+**Production is master-only.** Never tag production from anything else. Code reaches
+production having been reviewed and merged, and a production tag on a branch would ship
+work that no PR ever approved. If asked for a production release from a branch, stop and
+say the branch needs merging first.
+
+**Staging is routinely cut from a branch**, and that is the normal way to test work in
+progress. It is what pre-release tags are for. Nothing below is an exception to be
+apologized for; it is the common case during development.
+
+Everything in the steps still applies. Only these differ:
+
+- **Push the branch before pushing the tag.** Pushing a tag alone does upload the commits,
+  but they are then reachable only from the tag, so deleting it can strand them. It also
+  keeps the PR showing what was actually deployed.
+- **`git log "$FROM_TAG"..HEAD` in step 2 must not be `..master`.** On a branch, `..master`
+  reports the wrong commit set entirely, usually an empty or misleadingly short list.
+- **Say the branch and SHA in the report.** A branch pre-release is not reproducible from
+  master's history, and if the PR is later squash-merged the tagged commit never lands on
+  master at all, so the tag becomes the only record of what that image contained.
+
+**The trap worth slowing down for is divergence.** Staging holds whatever was deployed
+last, which is usually master lineage. A branch that forked before commits already on
+staging will, when deployed, *remove* them from staging, and step 3d reports this as
+DIVERGENT rather than FORWARD. That is not a formality: staging is shared, so this silently
+takes away work someone else may be testing.
+
+Merge master into the branch before releasing (or rebase onto it) so the deploy reads as
+FORWARD and carries everything staging already had. Prefer this to overriding the check.
+When you do deploy something divergent deliberately, say which master commits staging is
+losing, not just that it diverged.
+
 ## Steps
 
 ### 1. Preconditions
 
-- Working tree clean, on `master`, and `git pull` done. Releases are cut from master.
+- Working tree clean and `git pull` done, on whichever ref this release is cut from. See
+  Releasing from a branch: **production is master-only, staging is not.**
 - `aws sts get-caller-identity` returns account `612297603577`.
 - Report what is currently deployed before changing anything:
 
@@ -177,7 +211,7 @@ Versioning is semver from the commits since the last release: any `feat:` commit
 minor bump, otherwise a patch bump. Check what is actually shipping:
 
 ```bash
-git log --oneline "$FROM_TAG"..master
+git log --oneline "$FROM_TAG"..HEAD      # HEAD, so this reads correctly on a branch too
 ```
 
 **Read that list, do not just count it.** Environments here routinely sit many weeks
@@ -319,7 +353,9 @@ elif git merge-base --is-ancestor "$TARGET_REF" "$DEPLOYED_TAG"; then
 elif git merge-base --is-ancestor "$DEPLOYED_TAG" "$TARGET_REF"; then
   echo "FORWARD: $DEPLOYED_TAG is an ancestor of $NEW_TAG"
 else
-  echo "DIVERGENT: $NEW_TAG and $DEPLOYED_TAG share no ancestry"
+  echo "DIVERGENT: neither $NEW_TAG nor $DEPLOYED_TAG is an ancestor of the other"
+  echo "  on staging would lose:"
+  git log --oneline "${TARGET_REF}..${DEPLOYED_TAG}" | head -20
 fi
 ```
 
@@ -343,16 +379,26 @@ How to treat each result:
   expect. Report which migrations sit between the two versions
   (`git diff --name-only "$TARGET_REF".."$DEPLOYED_TAG" -- db/migrate/`) so the decision is
   informed.
-- **DIVERGENT** or **UNKNOWN** means the tags are not comparable, usually a tag that was
-  never fetched or an image not built from a tag. Stop and ask; do not guess.
+- **DIVERGENT** means each side has commits the other lacks. Releasing a branch to staging
+  is the usual cause, and the consequence is concrete: staging *loses* the commits listed
+  under "would lose". Report that list, not just the word DIVERGENT, and prefer merging
+  master into the branch and re-tagging over deploying it as-is. See Releasing from a
+  branch.
+- **UNKNOWN** means the deployed tag is not in this repo at all, usually a tag never
+  fetched or an image not built from a tag. Stop and ask; do not guess.
 
 ### 4. Tag, push, and wait for the image
 
 ```bash
+git push origin HEAD          # branch releases: push the branch first, see below
 git tag -a "$NEW_TAG" -m "Version $NEW_TAG"
 git push origin "$NEW_TAG"
 VERSION_NO_V="${NEW_TAG#v}"   # image tags drop the v; used by steps 5 and 6
 ```
+
+On master that first push is a no-op if you already pulled. On a branch it matters: the
+tag alone would leave the commits reachable only from the tag. CI is `on: push` with no
+branch filter, so the tag triggers the build from any ref.
 
 CI builds on tag push. **Wait for it and confirm it is green** before deploying; do not
 deploy an untested image.
@@ -670,7 +716,9 @@ pre-release one.
 
 State the environment, the version deployed, the from-version, which migrations applied
 (with the migrate task ID from step 5, or that there were none), the schema state
-confirmed from `schema_migrations`, and the three verification results. Summarize what actually shipped, per step 2, rather than only the
+confirmed from `schema_migrations`, and the three verification results. For a branch
+release, state the branch and the commit SHA too, since the version number alone does not
+say what shipped. Summarize what actually shipped, per step 2, rather than only the
 ticket that prompted the release. Mention anything deferred or skipped, including a
 GitHub Release you did not create and any template drift left in place.
 
