@@ -111,11 +111,15 @@ change the command (just not the image), which is all this needs.
 **Which task definition to override decides the argv**, because the two families differ in
 `entryPoint`. Verified on both environments: the container is named `App` in each.
 
+**Pick exactly one of the next two lines.** They are alternatives, not a sequence, and
+running both leaves you on the second with a possibly-unset `$REV`.
+
 ```bash
-# The App family runs with an empty entryPoint, so command is the whole argv.
+# Any time: the App family has an empty entryPoint, so command is the whole argv.
 CMD='["bundle","exec","rake","db:migrate:status"]'; TD="${STACK}-App"
-# A migrate revision from step 5 already has entryPoint ["bundle","exec"].
-CMD='["rake","db:migrate:status"]';                 TD="${STACK}-App-migrate:${REV}"
+
+# Only right after step 5: that revision already has entryPoint ["bundle","exec"].
+CMD='["rake","db:migrate:status"]'; TD="${STACK}-App-migrate:${REV}"
 
 aws ecs run-task --cluster "$CLUSTER" --launch-type EC2 --count 1 \
   --started-by "lara-migrate-status" --task-definition "$TD" \
