@@ -18,4 +18,10 @@ The shared managed policy grants access to `models-resources/lara/` only, becaus
 
 ## Rails application deploys
 
-The LARA Rails application itself is deployed to AWS ECS by [`deploy_backend_to_aws.yml`](../.github/workflows/deploy_backend_to_aws.yml), which updates a CloudFormation stack and runs database migrations as a one-off ECS task. That workflow still authenticates with long-lived AWS access keys and has not been migrated to OIDC.
+The LARA Rails application is **not** deployed by GitHub Actions.
+
+GitHub Actions only builds the application image. The `build` job in [`ci.yml`](../.github/workflows/ci.yml) builds the Docker image on every push and pushes it to `ghcr.io/concord-consortium/lara`.
+
+The deploy itself is run by hand with the AWS CLI: pick a released version, apply the Rails migrations as a one-off ECS task, then update the environment CloudFormation stack so its `LaraDockerImage` parameter points at the new image. The stacks are `authoring-lara-staging` for staging and `lara-ecs-production` for production. The full procedure, including the environment-specific names and the verification steps, is written up in [`.claude/skills/release-lara/SKILL.md`](../.claude/skills/release-lara/SKILL.md).
+
+Because these deploys run under a person's own AWS credentials rather than in GitHub Actions, there is nothing here for OIDC to authenticate. A `deploy_backend_to_aws.yml` workflow that would have deployed the backend from Actions was written in early 2024 but never used, and was removed in favour of the process above.
