@@ -8,7 +8,7 @@ This is a Rails application intended to provide a platform for authoring and usi
 
 ## Deployment
 
-The Storybook and the example interactives are deployed to S3 by GitHub Actions using OIDC for AWS authentication. See [deploy-setup.md in starter-projects](https://github.com/concord-consortium/starter-projects/blob/main/doc/deploy-setup.md) for how the AWS side is set up, and [docs/deploy.md](docs/deploy.md) for how deploys work in this repo.
+The example interactives are deployed to S3 by GitHub Actions using OIDC for AWS authentication. See [deploy-setup.md in starter-projects](https://github.com/concord-consortium/starter-projects/blob/main/doc/deploy-setup.md) for how the AWS side is set up, and [docs/deploy.md](docs/deploy.md) for how deploys work in this repo.
 
 ## Getting started
 

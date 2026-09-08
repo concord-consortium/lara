@@ -2,9 +2,8 @@
 
 ## S3 deploys
 
-Two GitHub Actions workflows deploy static files to S3 on every push:
+One GitHub Actions workflow deploys static files to S3 on every push:
 
-- [`deploy-storybook.yml`](../.github/workflows/deploy-storybook.yml) builds the `lara-typescript` Storybook and deploys it to `models-resources/lara-storybook/`.
 - [`deploy-example-interactives.yml`](../.github/workflows/deploy-example-interactives.yml) builds the example interactives and deploys them to `models-resources/lara-example-interactives/`.
 
 ## AWS Access
@@ -15,7 +14,7 @@ See [deploy-setup.md in starter-projects](https://github.com/concord-consortium/
 
 ### Why this repo needs an extra policy
 
-The shared managed policy grants access to `models-resources/lara/` only, because the repository is named `lara`. This repo does not use that prefix — it deploys to `models-resources/lara-storybook/` and `models-resources/lara-example-interactives/`. The `lara` role therefore carries an additional inline policy, `lara-extra-s3-prefixes`, granting access to those two prefixes. Re-running `create-deploy-role.sh` updates the trust policy and leaves the inline policy alone.
+The shared managed policy grants access to `models-resources/lara/` only, because the repository is named `lara`. This repo does not use that prefix — it deploys to `models-resources/lara-example-interactives/`. The `lara` role therefore carries an additional inline policy, `lara-extra-s3-prefixes`, granting access to that prefix. Re-running `create-deploy-role.sh` updates the trust policy and leaves the inline policy alone.
 
 ## Rails application deploys
 
