@@ -18,6 +18,7 @@ RUN mkdir $APP_HOME
 WORKDIR $APP_HOME
 
 ADD Gemfile* $APP_HOME/
+ADD vendor/rails-assets $APP_HOME/vendor/rails-assets/
 
 # Determine Bundler version and install it, then copy the Gemfile.lock created during build so
 # it isn't overridden by the following add

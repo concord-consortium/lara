@@ -18,7 +18,8 @@ end
   gem "terser"
 # end
 
-source 'https://rails-assets.org' do
+# Unpacked rails-assets.org gems (plus drawing-tool's dependencies); that site is unreliable.
+path 'vendor/rails-assets' do
   gem 'rails-assets-drawing-tool', '1.3.2'
   gem 'rails-assets-modulejs', '1.6.0'
 end
