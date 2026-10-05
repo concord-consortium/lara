@@ -155,7 +155,6 @@ The base64url test asserts the encoded token really contains `-`, so it cannot p
    public isAnonymous() {
 -    // The client will be anonymous if firebaseJwt undefined
 -    return !this.firebaseJwt;
-+    // The client will be anonymous if it has neither a firebaseJwt nor a way to get one
 +    return !this.firebaseJwt && !this.getFirebaseJwt;
    }
  
@@ -201,8 +200,7 @@ The base64url test asserts the encoded token really contains `-`, so it cannot p
    }
  
 -  private async getFolderResource(folder: IAttachmentsFolder): Promise<S3Resource> {
-+  // Returns a client whose token is fresh, calling the token source when the cached token is stale.
-+  // Each public method calls this once and passes the client on, so one manager call makes at most one source call.
++  // Public methods call this once and pass the client on, so a manager call makes at most one source call.
 +  private async getTokenServiceClient(): Promise<TokenServiceClient> {
 +    if (this.getFirebaseJwt && !this.isFirebaseJwtFresh()) {
 +      const jwt = await this.fetchFirebaseJwt(this.getFirebaseJwt);
@@ -590,7 +588,7 @@ git tag -a interactive-api-host@v0.13.0-pre.0 -m "interactive-api-host 0.13.0-pr
 git push origin interactive-api-host@v0.13.0-pre.0
 ```
 
-`npm ci` first because the publish script runs the full `npm run build` (lint, webpack over every entry including the example interactives, rollup types), which fails on a stale install. The build runs webpack 4, so the legacy OpenSSL flag applies on Node 17+ (see `CLAUDE.md`). If the code changes after publishing, bump to `-pre.1` and republish rather than reusing a published version.
+`npm ci` first because the publish script runs the full `npm run build` (lint, webpack over every entry including the example interactives, rollup types), which fails on a stale install. The build runs webpack 4, so the legacy OpenSSL flag applies on Node 17+ (see `CLAUDE.md`); drop `NODE_OPTIONS` under Node 16 or earlier, where Node refuses the flag and exits. If the code changes after publishing, bump to `-pre.1` and republish rather than reusing a published version.
 
 ---
 
@@ -655,7 +653,7 @@ The plan defined the same `base64url` encoder in `helpers.test.ts` and `attachme
 ### Senior Engineer
 
 #### RESOLVED: the option's doc comment repeated the margin's value
-The `getTokenServiceFirestoreJWT` comment in `types.ts` said "within five minutes", restating `kTokenRefreshMarginSec` in a second file where it would go stale if the constant changed. Fixed in place: the comment now says "close to its `exp` claim".
+The `getTokenServiceFirestoreJWT` comment in `types.ts` said "within five minutes", restating `kTokenRefreshMarginSec` in a second file where it would go stale if the constant changed. Fixed in place: the comment no longer names the margin's value.
 
 ---
 
@@ -672,7 +670,7 @@ The `getTokenServiceFirestoreJWT` comment in `types.ts` said "within five minute
 R6 says a source failure reaches the interactive as `response.error`, which the plan supported only by reading the unchanged handler. A throwaway test confirmed it. Decision (Doug): add a test. The manager step now includes one that initializes the global manager with a rejecting source and asserts `handleGetAttachmentUrl` returns the error and no URL.
 
 #### RESOLVED: R11's `isAnonymous()` with both options was not asserted
-Decision (Doug): add the assertion. The "fresh static token first" test now asserts `isAnonymous()` is `false` before its first request.
+Decision (Doug): add the assertion. The "ignores a static token when a source is given" test asserts `isAnonymous()` is `false` before its first request.
 
 
 ---
