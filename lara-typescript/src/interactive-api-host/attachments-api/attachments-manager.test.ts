@@ -364,6 +364,25 @@ describe("AttachmentsManager", () => {
       expect(new Set(mockRequestJwts)).toEqual(new Set([token]));
     });
 
+    it("does not restart a token's lifetime when the source returns it after a different token", async () => {
+      const tokenA = makeJwt({ iat: nowSec(), exp: nowSec() + 60 * 60, n: "a" });
+      const tokenB = makeJwt({ iat: nowSec() + 56 * 60, exp: nowSec() + 116 * 60, n: "b" });
+      getToken
+        .mockImplementationOnce(() => Promise.resolve(tokenA))
+        .mockImplementationOnce(() => Promise.resolve(tokenB))
+        .mockImplementation(() => Promise.resolve(tokenA));
+      const mgr = makeManager();
+      await mgr.getSignedReadUrl(readInfo);
+      jest.setSystemTime(startMs + 56 * 60 * 1000);
+      await mgr.getSignedReadUrl(readInfo);
+      jest.setSystemTime(startMs + 112 * 60 * 1000);
+      await mgr.getSignedReadUrl(readInfo);
+      jest.setSystemTime(startMs + 113 * 60 * 1000);
+      await mgr.getSignedReadUrl(readInfo);
+      expect(getToken).toHaveBeenCalledTimes(4);
+      expect(mockRequestJwts[mockRequestJwts.length - 1]).toBe(tokenA);
+    });
+
     it("calls the source once per request when the token's expiry cannot be read", async () => {
       getToken.mockImplementation(() => Promise.resolve(`unreadable-${++tokenCount}`));
       const mgr = makeManager();
