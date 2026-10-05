@@ -217,7 +217,7 @@ by hand.
 | Feature | Do it yourself | Or use from the library |
 |---------|----------------|-------------------------|
 | **Capability advertising** | Set fields on `initInteractive.hostFeatures` (`IHostFeatures`) so the interactive knows what you support (e.g. `modal`, `getFirebaseJwt`). | — |
-| **Attachments** (large blobs via signed URLs, e.g. S3) | Handle `getAttachmentUrl`, generate a signed URL, reply `attachmentUrl`. | `initializeAttachmentsManager`, `handleGetAttachmentUrl`, `IAttachmentsManagerInitOptions`, `IReadableAttachmentInfo`. |
+| **Attachments** (large blobs via signed URLs, e.g. S3) | Handle `getAttachmentUrl`, generate a signed URL, reply `attachmentUrl`. | `initializeAttachmentsManager`, `handleGetAttachmentUrl`, `IAttachmentsManagerInitOptions`, `IReadableAttachmentInfo`. Pages that stay open longer than the token-service JWT lives (an hour for portal-issued tokens) should pass `getTokenServiceFirestoreJWT` so the manager can get a current token. |
 | **Pub/Sub** (interactives talking to each other) | Track channels/subscriptions and relay `publish`→`pubSubMessage`. | `PubSubManager`. |
 | **Jobs** (long-running async tasks) | Handle `createJob`/`cancelJob`, push `jobInfo` updates. | `JobManager` + implement the `IJobExecutor` interface (see AP's `firebase-job-executor.ts`). |
 | **Accessibility focus** (keyboard focus crossing the iframe boundary) | Exchange `focusEnter`/`focusExit`. | `FocusManager`, `FocusTransport`. |
