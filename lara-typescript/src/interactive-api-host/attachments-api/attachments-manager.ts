@@ -29,7 +29,7 @@ export class AttachmentsManager {
   private sessionId = uuid();
   private tokenServiceEnv: EnvironmentName;
   private firebaseJwt?: string;
-  private firebaseJwtStaleAtMs?: number;
+  private firebaseJwtStaleAtMs = new Map<string, number | undefined>();
   private getFirebaseJwt?: () => Promise<string>;
   private pendingFirebaseJwt?: Promise<string>;
   private tokenServiceClient: TokenServiceClient;
@@ -107,9 +107,11 @@ export class AttachmentsManager {
     if (this.getFirebaseJwt && !this.isFirebaseJwtFresh()) {
       const jwt = await this.fetchFirebaseJwt(this.getFirebaseJwt);
       // a token returned again keeps the stale time it got when it first arrived
+      if (!this.firebaseJwtStaleAtMs.has(jwt)) {
+        this.firebaseJwtStaleAtMs.set(jwt, this.getStaleAtMs(jwt));
+      }
       if (jwt !== this.firebaseJwt) {
         this.firebaseJwt = jwt;
-        this.firebaseJwtStaleAtMs = this.getStaleAtMs(jwt);
         this.tokenServiceClient = new TokenServiceClient({ env: this.tokenServiceEnv, jwt });
       }
     }
@@ -123,7 +125,8 @@ export class AttachmentsManager {
   }
 
   private isFirebaseJwtFresh() {
-    return this.firebaseJwtStaleAtMs !== undefined && Date.now() < this.firebaseJwtStaleAtMs;
+    const staleAtMs = this.firebaseJwt !== undefined ? this.firebaseJwtStaleAtMs.get(this.firebaseJwt) : undefined;
+    return staleAtMs !== undefined && Date.now() < staleAtMs;
   }
 
   // Concurrent callers share one call to the token source; a failed call is not reused.
@@ -137,7 +140,10 @@ export class AttachmentsManager {
           }
           return jwt;
         })
-        .finally(() => { this.pendingFirebaseJwt = undefined; });
+        .then(
+          jwt => { this.pendingFirebaseJwt = undefined; return jwt; },
+          error => { this.pendingFirebaseJwt = undefined; throw error; }
+        );
     }
     return this.pendingFirebaseJwt;
   }
