@@ -24,7 +24,7 @@ Students in the Activity Player who keep a page open for more than an hour can n
 - **R10. Anonymous path unchanged.** Requests authorized by a folder's `readWriteToken` behave as before; the token source does not change which credential the token service sees for them.
 - **R11. Tests.** Unit tests cover: the static-token path; the token-source path, including a token that changes between two requests; cache reuse while fresh; refresh once stale; staleness timed from receipt with the browser clock both fast and slow relative to the token's claims; a token returned again not getting a new lifetime; a static token not used when a source is given; a source rejection followed by a successful request; and `isAnonymous()` for none, static only, source only, and both.
 - **R12. Docs.** The `IAttachmentsManagerInitOptions` declaration documents the new option, including that the promise it returns must settle (a call that never settles blocks every later request, since they share it), and the attachments row of `interactive-api-host/interactive-host-guide.md` mentions it. The package `README.md` usage line, which named the nonexistent `initAttachmentsManager`, names `initializeAttachmentsManager`. *(The option's comment uses `//`, matching the neighboring options, so like them it does not appear in the published `.d.ts`.)*
-- **R13. Release.** A new `@concord-consortium/interactive-api-host` minor version is published, with `package.json` and `package-lock.json` versions in step: first `0.13.0-pre.0` on the `beta` tag for AP-143 to verify (a later `-pre.N` if the code changes after publishing), then 0.13.0, which AP-143 needs before it can merge because Activity Player pins exact versions of the package, each tagged `interactive-api-host@v<version>`. *(0.13.0 waits on AP-143 verifying a session longer than an hour against the beta.)*
+- **R13. Release.** A new `@concord-consortium/interactive-api-host` minor version is published, with `package.json` and `package-lock.json` versions in step: first `0.13.0-pre.0` on the `beta` tag for AP-143 to verify (a later `-pre.N` if the code changes after publishing), then 0.13.0, which AP-143 needs before it can merge because Activity Player pins exact versions of the package, each tagged `interactive-api-host@v<version>`. *(`0.13.0-pre.0` went out on `beta`, AP-143 verified a session longer than an hour against it, and 0.13.0 was then released from the same code.)*
 
 ## Technical Notes
 
@@ -50,10 +50,6 @@ Students in the Activity Player who keep a page open for more than an hour can n
 - Re-initializing the global manager (`initializeAttachmentsManager` stays resolve-once).
 - Caching S3 credentials, or changing signed-URL lifetimes.
 - Changes to the token service or the portal.
-
-## Not Yet Implemented
-
-- The final `0.13.0` release (version bump, publish and tag): waits until AP-143 has verified a session longer than an hour against `0.13.0-pre.0`.
 
 ## Decisions
 
