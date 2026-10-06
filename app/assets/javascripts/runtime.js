@@ -18,10 +18,6 @@
 //= require create-react-class-15.6.3
 //= require react-factories
 //= require jquery-ajax-csrf
-//= require fabric
-//= require hammer
-//= require eventemitter2
-//= require drawing-tool
 //= require jquery_ujs
 //= require jquery.placeholder
 //= require jquery.jcarousel
