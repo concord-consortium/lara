@@ -14,4 +14,4 @@ by combining the API client's readme file with auto-generated output.  If you wi
 
 Import helper functions useful for your host environment, for example:
 
-`import { initAttachmentsManager, handleGetAttachmentUrl } from "@concord-consortium/interactive-api-host"`
+`import { initializeAttachmentsManager, handleGetAttachmentUrl } from "@concord-consortium/interactive-api-host"`
