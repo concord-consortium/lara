@@ -1,8 +1,6 @@
 import { GetObjectCommand, PutObjectCommand } from "@aws-sdk/client-s3";
 import { Credentials, Resource, TokenServiceClient } from "@concord-consortium/token-service";
 import { AttachmentsManager, IS3SignedUrlOptions, ISignedWriteUrlOptions } from "./attachments-manager";
-import { initializeAttachmentsManager } from "./attachments-manager-global";
-import { handleGetAttachmentUrl } from "./handle-get-attachment-url";
 import { makeJwt } from "./test-utils";
 import { IAttachmentUrlRequest } from "../types";
 import { IAttachmentsFolder, IReadableAttachmentInfo } from "./types";
@@ -251,10 +249,17 @@ describe("AttachmentsManager", () => {
     });
 
     it("sends the static token with every request, without checking its expiry", async () => {
+      const nowSec = Math.floor(Date.now() / 1000);
+      const expiredJwt = makeJwt({ iat: nowSec - 2 * 60 * 60, exp: nowSec - 60 * 60 });
+      const expiredMgr = new AttachmentsManager({
+        tokenServiceEnv: "staging",
+        tokenServiceFirestoreJWT: expiredJwt,
+        writeOptions: { runRemoteEndpoint: mockRunRemoteEndpoint }
+      });
       const folder: IAttachmentsFolder = { id: "another-folder-id", ownerId: mockUserId };
-      await mgr.getSignedWriteUrl(folder, "foo");
-      await mgr.getSignedReadUrl({ folder, publicPath: mockResourcePublicPath, contentType: mockContentType });
-      expect(mockRequestJwts).toEqual([mockRawFirebaseJWT, mockRawFirebaseJWT, mockRawFirebaseJWT]);
+      await expiredMgr.getSignedWriteUrl(folder, "foo");
+      await expiredMgr.getSignedReadUrl({ folder, publicPath: mockResourcePublicPath, contentType: mockContentType });
+      expect(mockRequestJwts).toEqual([expiredJwt, expiredJwt, expiredJwt]);
     });
   });
 
@@ -323,14 +328,16 @@ describe("AttachmentsManager", () => {
       expect(mockRequestJwts).toEqual([secondToken]);
     });
 
-    it("ignores a static token when a source is given", async () => {
-      const token = makeJwt({ iat: nowSec(), exp: nowSec() + 60 * 60 });
-      getToken.mockImplementation(() => Promise.resolve(token));
-      const mgr = makeManager(token);
+    it("sends the source's token, not the static token, when both are given", async () => {
+      const staticToken = makeJwt({ iat: nowSec(), exp: nowSec() + 60 * 60, n: "static" });
+      const mgr = makeManager(staticToken);
       expect(mgr.isAnonymous()).toBe(false);
       await mgr.getSignedReadUrl(readInfo);
       await mgr.getSignedReadUrl(readInfo);
       expect(getToken).toHaveBeenCalledTimes(1);
+      const sourceToken = await getToken.mock.results[0].value;
+      expect(mockRequestJwts.length).toBeGreaterThan(1);
+      expect(new Set(mockRequestJwts)).toEqual(new Set([sourceToken]));
     });
 
     it.each([["fast", 2 * 60], ["slow", -10]])(
@@ -411,6 +418,19 @@ describe("AttachmentsManager", () => {
       expect(mockRequestJwts).toEqual([secondToken, secondToken]);
     });
 
+    it("fails every request waiting on a failed source call, and calls it again on the next request", async () => {
+      getToken.mockImplementationOnce(() => Promise.reject(new Error("portal unavailable")));
+      const mgr = makeManager();
+      const results = await Promise.all([1, 2, 3].map(() => mgr.getSignedReadUrl(readInfo).then(
+        () => "resolved", (error: Error) => error.message
+      )));
+      expect(results).toEqual(["portal unavailable", "portal unavailable", "portal unavailable"]);
+      expect(getToken).toHaveBeenCalledTimes(1);
+      expect(mockRequestJwts).toEqual([]);
+      await expect(mgr.getSignedReadUrl(readInfo)).resolves.toBe(mockSignedReadUrl);
+      expect(getToken).toHaveBeenCalledTimes(2);
+    });
+
     it("fails the request when the source returns no token", async () => {
       getToken.mockImplementationOnce(() => Promise.resolve(""));
       await expect(makeManager().getSignedReadUrl(readInfo)).rejects.toThrow("the token source returned no token");
@@ -419,10 +439,15 @@ describe("AttachmentsManager", () => {
 
     it("reports a source failure to the interactive as response.error", async () => {
       getToken.mockImplementationOnce(() => Promise.reject("portal unavailable"));
-      initializeAttachmentsManager({
-        tokenServiceEnv: "staging",
-        getTokenServiceFirestoreJWT: getToken,
-        writeOptions: { runRemoteEndpoint: mockRunRemoteEndpoint }
+      // a fresh module registry keeps this test's global manager out of every other test
+      let handleGetAttachmentUrl!: typeof import("./handle-get-attachment-url").handleGetAttachmentUrl;
+      jest.isolateModules(() => {
+        require("./attachments-manager-global").initializeAttachmentsManager({
+          tokenServiceEnv: "staging",
+          getTokenServiceFirestoreJWT: getToken,
+          writeOptions: { runRemoteEndpoint: mockRunRemoteEndpoint }
+        });
+        handleGetAttachmentUrl = require("./handle-get-attachment-url").handleGetAttachmentUrl;
       });
       const response = await handleGetAttachmentUrl({
         request: { name: "foo", operation: "read", requestId: 1 } as IAttachmentUrlRequest,
