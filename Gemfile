@@ -18,11 +18,6 @@ end
   gem "terser"
 # end
 
-source 'https://rails-assets.org' do
-  gem 'rails-assets-drawing-tool', '1.3.2'
-  gem 'rails-assets-modulejs', '1.6.0'
-end
-
 group :development do
   gem "better_errors", "~> 2.0.0", ">= 2.0.0"
   gem "web-console", "~> 3.7"
