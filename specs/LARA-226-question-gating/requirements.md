@@ -80,7 +80,7 @@ In LARA, per-item settings such as `is_half_width` and `hide_question_number` ar
 
 ### Release
 
-- **R15.** `@concord-consortium/lara-interactive-api` 1.15.0 and `@concord-consortium/interactive-api-host` 0.14.0 are published as their own release, nothing else bundled, with each `package.json` and `package-lock.json` in step and tags `interactive-api-client@v1.15.0` and `interactive-api-host@v0.14.0`. Publishing to npm waits for Doug's go-ahead.
+- **R15.** `@concord-consortium/lara-interactive-api` 1.15.0 and `@concord-consortium/interactive-api-host` 0.14.0 are published as their own release, nothing else bundled, with each `package.json` and `package-lock.json` in step. First `1.15.0-pre.0` and `0.14.0-pre.0` go out on the `beta` tag, so WM-66 can pin the client and be reviewed alongside this story (a later `-pre.N` if review changes the code), then the final versions from the same code. Each version is tagged `interactive-api-client@v<version>` or `interactive-api-host@v<version>`. Doug publishes from a terminal, since npm login uses browser auth.
 - **R16.** Before publishing, the packages are verified against the Activity Player through yalc in a new activity-player worktree, `~/projects/activity-player.worktrees/LARA-226-integration`, branched from `AP-76-disabled-questions-demo`: the testbed's button unlocks the demo's gated questions, for both a page-wide gate and a section-only gate, once that worktree listens for `unlockQuestions` and advertises the flag. None of that worktree's yalc changes or wiring are committed by this story.
 
 ### Rollout
@@ -142,13 +142,13 @@ In LARA, per-item settings such as `is_half_width` and `hide_question_number` ar
 
 ---
 
-### RESOLVED: Low confidence: should 1.15.0 / 0.14.0 go to the `beta` tag as `-pre.0` first?
+### RESOLVED: Should 1.15.0 / 0.14.0 go to the `beta` tag as `-pre.0` first?
 **Context**: LARA-223 published `0.13.0-pre.0` to `beta` for AP-143 to verify before the final version. Here the yalc check (R16) covers the Activity Player before anything is published, and WM-66 needs a stable client.
 **Options considered**:
 - A) Publish the final versions directly after the yalc check.
 - B) Publish `-pre.0` on `beta` first, then the final versions.
 
-**Decision**: A. The beta round in LARA-223 existed so AP-143 could test a published build over a long session; here the yalc check exercises the same built `dist/` packages in the Activity Player before anything is published, and WM-66 and the AP-76 pull request pin exact versions, so a pre-release would only add a second bump for them. Publishing still waits for Doug's go-ahead, who can ask for a beta then.
+**Decision**: B (Doug Martin, 2026-10-07). A was chosen first, since the yalc check exercises the built packages before anything is published. B replaced it once WM-66 was built: a branch linked to yalc cannot be pushed, built in CI or reviewed, and a protocol change found in review then costs a `-pre.N` instead of another public minor version. The end-to-end check against WM-66 passed before the pre-release.
 
 ---
 
