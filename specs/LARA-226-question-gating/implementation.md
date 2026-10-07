@@ -97,13 +97,13 @@ Testbed: `app.tsx` adds `questionGating: true` to its `setSupportedFeatures` cal
   <div>Host support: {initMessage.hostFeatures.questionGating
     ? `yes (version ${initMessage.hostFeatures.questionGating.version})` : "no"}</div>
   <label>
-    <input type="checkbox" checked={restored} onChange={e => setRestored(e.target.checked)} /> Restored
+    <input type="checkbox" checked={restored} onChange={handleRestoredChange} /> Restored
   </label>
-  <div><button onClick={() => unlockQuestions(restored ? { restored: true } : {})}>Unlock questions</button></div>
+  <div><button onClick={handleUnlockQuestions}>Unlock questions</button></div>
 </fieldset>
 ```
 
-The button needs the arrow function: `onClick={unlockQuestions}` would post the click event as the payload.
+`handleRestoredChange` sets `restored` from the checkbox, and `handleUnlockQuestions` calls `unlockQuestions(restored ? { restored: true } : {})`. Both are named handlers because tslint's `jsx-no-lambda` rejects inline arrow functions, and the button cannot take `onClick={unlockQuestions}` directly, which would post the click event as the payload.
 
 ---
 

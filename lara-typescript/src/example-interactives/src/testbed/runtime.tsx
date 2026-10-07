@@ -1,7 +1,7 @@
 import * as React from "react";
 const { useEffect, useState } = React;
 import { IRuntimeInitInteractive, getFirebaseJwt, useCustomMessages, ICustomMessage,
-         getInteractiveSnapshot } from "../../../interactive-api-client";
+         getInteractiveSnapshot, unlockQuestions } from "../../../interactive-api-client";
 import { IAuthoredState } from "../types";
 import { DecorateChildren } from "@concord-consortium/text-decorator";
 import { useGlossaryDecoration } from "../use-glossary-decoration";
@@ -14,6 +14,7 @@ export const RuntimeComponent: React.FC<Props> = ({initMessage}) => {
   const [rawFirebaseJwt, setRawFirebaseJWT] = useState<string>();
   const [snapshotSourceId, setSnapshotSourceId] = useState<string>("interactive_123");
   const [snapshotUrl, setSnapshotUrl] = useState<string>();
+  const [restored, setRestored] = useState(false);
   const { authoredState } = initMessage;
   const [ decorateOptions, decorateClassName ] = useGlossaryDecoration();
   useEffect(() => {
@@ -35,6 +36,14 @@ export const RuntimeComponent: React.FC<Props> = ({initMessage}) => {
 
   const handleSnapshotTargetChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSnapshotSourceId(event.target.value);
+  };
+
+  const handleRestoredChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setRestored(event.target.checked);
+  };
+
+  const handleUnlockQuestions = () => {
+    unlockQuestions(restored ? { restored: true } : {});
   };
 
   const handleTakeSnapshot = () => {
@@ -85,6 +94,15 @@ export const RuntimeComponent: React.FC<Props> = ({initMessage}) => {
           snapshotUrl &&
           <div>Snapshot URL: <a href={snapshotUrl} target="_blank" style={{fontSize: 10}}>{snapshotUrl}</a></div>
         }
+      </fieldset>
+      <fieldset>
+        <legend>Question Gating</legend>
+        <div>Host support: {initMessage.hostFeatures.questionGating
+          ? `yes (version ${initMessage.hostFeatures.questionGating.version})` : "no"}</div>
+        <label>
+          <input type="checkbox" checked={restored} onChange={handleRestoredChange} /> Restored
+        </label>
+        <div><button onClick={handleUnlockQuestions}>Unlock questions</button></div>
       </fieldset>
       <fieldset>
         <legend>Text Decoration</legend>

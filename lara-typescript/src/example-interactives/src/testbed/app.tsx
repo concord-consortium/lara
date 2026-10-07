@@ -19,7 +19,8 @@ export const AppComponent: React.FC<Props> = (props) => {
     if (initMessage) {
       setSupportedFeatures({
         authoredState: true,
-        interactiveState: true
+        interactiveState: true,
+        questionGating: true
       });
     }
   }, [initMessage]);

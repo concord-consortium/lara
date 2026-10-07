@@ -132,6 +132,15 @@ describe("api", () => {
     }]);
   });
 
+  it("supports unlockQuestions", () => {
+    api.unlockQuestions();
+    api.unlockQuestions({ restored: true });
+    expect(mockedPhone.messages).toEqual([
+      { type: "unlockQuestions", content: {} },
+      { type: "unlockQuestions", content: { restored: true } }
+    ]);
+  });
+
   it("supports getAuthInfo called multiple times", async () => {
     const requestContent = [
       {},

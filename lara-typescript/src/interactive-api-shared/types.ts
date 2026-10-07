@@ -43,6 +43,8 @@ export interface IHostModalSupport extends IHostFeatureSupport {
 export interface IHostFeatures extends Record<string, IHostFeatureSupport | string | undefined> {
   modal?: IHostModalSupport;
   getFirebaseJwt?: IHostFeatureSupport;
+  // Set by hosts that honor the "unlockQuestions" message.
+  questionGating?: IHostFeatureSupport;
   domain?: string;
 }
 
@@ -200,7 +202,8 @@ export type IRuntimeClientMessage = "interactiveState" |
                                        "unsubscribe" |
                                        "createJob" |
                                        "cancelJob" |
-                                       "focusExit"
+                                       "focusExit" |
+                                       "unlockQuestions"
                                       ;
 
 export type IRuntimeServerMessage = "attachmentUrl" |
@@ -301,6 +304,9 @@ export interface ISupportedFeatures {
   // When true, the interactive speaks the focus protocol (focusEnter/focusExit).
   // Absent/false => non-cooperating (host falls back to sentinel landing hints).
   focusProtocol?: boolean;
+  // When true, the interactive sends "unlockQuestions". Hosts lock questions only behind
+  // interactives that declare it.
+  questionGating?: boolean;
 }
 
 export interface ISupportedFeaturesRequest {
@@ -311,6 +317,15 @@ export interface ISupportedFeaturesRequest {
 export interface INavigationOptions {
   enableForwardNav?: boolean;
   message?: string;
+}
+
+// Sent by an interactive whose own condition for unlocking the questions it gates is met, both at
+// startup from saved state and after the triggering event. The rule for unlocking belongs to the
+// interactive, never to this payload.
+export interface IUnlockQuestionsMessage {
+  // True when the unlock comes from saved state at startup rather than from something the student
+  // just did, so the host shows no "now unlocked" feedback.
+  restored?: boolean;
 }
 
 export interface IHintRequest {
