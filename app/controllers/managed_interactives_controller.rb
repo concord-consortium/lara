@@ -28,7 +28,8 @@ class ManagedInteractivesController < InteractiveController
       :legacy_ref_id, :legacy_ref_type,
       :linked_interactives,
       :hide_question_number,
-      :save_interactive_state_history
+      :save_interactive_state_history,
+      :question_gating, :question_gating_locked_text, :question_gating_unlocked_text
     )
   end
 

@@ -5,6 +5,7 @@ class ManagedInteractive < ApplicationRecord
   include BaseInteractive
   include Embeddable
   include HasAspectRatio
+  include QuestionGating
 
 
   default_value_for :custom_native_width, ASPECT_RATIO_DEFAULT_WIDTH
@@ -143,7 +144,7 @@ class ManagedInteractive < ApplicationRecord
       custom_hide_question_number: custom_hide_question_number,
       inherit_save_interactive_state_history: inherit_save_interactive_state_history,
       custom_save_interactive_state_history: custom_save_interactive_state_history,
-    }
+    }.merge(question_gating_hash)
   end
 
   def to_authoring_preview_hash
@@ -166,7 +167,8 @@ class ManagedInteractive < ApplicationRecord
   # inherit_native_width, custom_native_width, inherit_native_height, custom_native_height,
   # inherit_click_to_play, custom_click_to_play, inherit_full_window, custom_full_window,
   # inherit_click_to_play_prompt, custom_click_to_play_prompt, inherit_image_url, custom_image_url,
-  # linked_interactives, inherit_hide_question_number, save_interactive_state_history, custom_question_number
+  # linked_interactives, inherit_hide_question_number, save_interactive_state_history, custom_question_number,
+  # question_gating, question_gating_locked_text, question_gating_unlocked_text
 
   def to_interactive
     # NOTE: model_library_url is missing as there is no analog

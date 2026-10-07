@@ -2,6 +2,7 @@ require 'spec_helper'
 
 describe MwInteractive do
   it_behaves_like "a base interactive", :mw_interactive
+  it_behaves_like "a question gating interactive", :mw_interactive
 
   let (:interactive_options) { {linked_interactive_id: 1} }
   let (:interactive) { FactoryBot.create(:mw_interactive, interactive_options) }
@@ -45,7 +46,10 @@ describe MwInteractive do
         no_snapshots: interactive.no_snapshots,
         linked_interactive_item_id: interactive.linked_interactive_item_id,
         linked_interactives: [],
-        report_item_url: interactive.report_item_url
+        report_item_url: interactive.report_item_url,
+        question_gating: "none",
+        question_gating_locked_text: nil,
+        question_gating_unlocked_text: nil
       }
       hash = interactive.to_hash
       expect(hash).to eq(expected)

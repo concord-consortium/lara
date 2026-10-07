@@ -2,6 +2,7 @@ require 'spec_helper'
 
 describe ManagedInteractive do
   it_behaves_like "a base interactive", :managed_interactive
+  it_behaves_like "a question gating interactive", :managed_interactive
 
   let(:enable_learner_state) { true }
   let(:hide_question_number) { false }
@@ -76,7 +77,10 @@ describe ManagedInteractive do
         inherit_hide_question_number: managed_interactive.inherit_hide_question_number,
         custom_hide_question_number: managed_interactive.custom_hide_question_number,
         inherit_save_interactive_state_history: managed_interactive.inherit_save_interactive_state_history,
-        custom_save_interactive_state_history: managed_interactive.custom_save_interactive_state_history
+        custom_save_interactive_state_history: managed_interactive.custom_save_interactive_state_history,
+        question_gating: "none",
+        question_gating_locked_text: nil,
+        question_gating_unlocked_text: nil
        }
       expect(managed_interactive.to_hash).to eq(expected)
     end

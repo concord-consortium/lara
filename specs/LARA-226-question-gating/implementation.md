@@ -118,6 +118,7 @@ Testbed: `app.tsx` adds `questionGating: true` to its `setSupportedFeatures` cal
 - `app/models/mw_interactive.rb`, `app/models/managed_interactive.rb`: include the concern, `to_hash`, MW `export`
 - `app/controllers/api/v1/interactive_pages_controller.rb`: `data_update_params`
 - `app/controllers/mw_interactives_controller.rb`, `app/controllers/managed_interactives_controller.rb`: permit lists
+- `spec/support/shared_examples/question_gating.rb`: new, the `question gating` examples both model specs include
 - `spec/models/mw_interactive_spec.rb`, `spec/models/managed_interactive_spec.rb`, `spec/controllers/api/v1/interactive_pages_controller_spec.rb`: tests
 
 **Estimated diff size**: ~220 lines
@@ -141,8 +142,8 @@ Run it in the dev container (`docker compose run --rm app bundle exec rails db:m
 `app/models/question_gating.rb`:
 
 ```ruby
-# Per-item "questions after this item start locked" setting (page-wide or the item's own section), read by the Activity Player from the
-# activity export. Consumers treat a missing, null or unknown question_gating as "none".
+# Per-item "questions after this item start locked" setting (page-wide or the item's own section), read by
+# the Activity Player from the activity export. Consumers treat a missing, null or unknown value as "none".
 module QuestionGating
   extend ActiveSupport::Concern
 
@@ -175,8 +176,8 @@ Models: `include QuestionGating` beside `include BaseInteractive`. `to_hash` in 
 Controllers: add `:question_gating, :question_gating_locked_text, :question_gating_unlocked_text` to `data_update_params` and to both legacy permit lists.
 
 Tests:
-- Both model specs: the `#to_hash` expected hashes gain the three fields; `#duplicate` copies a gated item with both texts; `#export` includes the fields (MW gets an `#export` example, it has none); a new `question gating` block checks the default `"none"` on a new record, that `save` fails on `"sometimes"`, that blank and whitespace texts save as `nil` while `"Locked!"` is kept, and that `import` of a hash with `question_gating: nil` and with `"disable_following_in_activity"` (a value this LARA does not know) each saves `"none"` (without the `before_save` the first raises `NotNullViolation` and the second stores the unknown value). An import without the key gets `"none"` from the column default, which the new-record default example already covers.
-- `LaraSerializationHelper` round trip in the MW spec: export a gated item through the helper and import it, asserting all three fields survive.
+- Both model specs: the `#to_hash` expected hashes gain the three fields, and both include `it_behaves_like "a question gating interactive"` from the shared examples, in which `#duplicate` copies a gated item with both texts; `#export` includes the fields (MW gets an `#export` example, it has none); a new `question gating` block checks the default `"none"` on a new record, that `save` fails on `"sometimes"`, that blank and whitespace texts save as `nil` while `"Locked!"` is kept, and that `import` of a hash with `question_gating: nil` and with `"disable_following_in_activity"` (a value this LARA does not know) each saves `"none"` (without the `before_save` the first raises `NotNullViolation` and the second stores the unknown value). An import without the key gets `"none"` from the column default, which the new-record default example already covers.
+- `LaraSerializationHelper` round trip, in the shared examples so both models run it: export a gated item through the helper and import it, asserting all three fields survive.
 - Controller spec: an `update_page_item` example for an `MwInteractive` sets `question_gating` and a locked text, and asserts the stored values and the returned `data`.
 
 ---
