@@ -158,17 +158,18 @@ class ManagedInteractive < ApplicationRecord
   # is deprecated. It is not used in LARA 2 and we plan to remove it when LARA 2 is moved to production.
   #
   # It differs from to_hash by including:
-  # id, url, native_width, native_height, enable_learner_state, show_delete_data_button, has_report_url,
-  # click_to_play, click_to_play_prompt, full_window, image_url, aspect_ratio, aspect_ratio_method,
-  # no_snapshots, linked_interactive_id, linked_interactive_type
+  # id, url, native_width, native_height, enable_learner_state, hide_question_number, save_interactive_state_history,
+  # show_delete_data_button, has_report_url, click_to_play, click_to_play_prompt, full_window, image_url, aspect_ratio,
+  # aspect_ratio_method, no_snapshots, linked_interactive_id, linked_interactive_type
   #
   # It also differs from to_hash by not including:
-  # library_interactive_id, url_fragment, inherit_aspect_ratio_method, custom_aspect_ratio_method,
-  # inherit_native_width, custom_native_width, inherit_native_height, custom_native_height,
-  # inherit_click_to_play, custom_click_to_play, inherit_full_window, custom_full_window,
-  # inherit_click_to_play_prompt, custom_click_to_play_prompt, inherit_image_url, custom_image_url,
-  # linked_interactives, inherit_hide_question_number, save_interactive_state_history, custom_question_number,
-  # question_gating, question_gating_locked_text, question_gating_unlocked_text
+  # library_interactive_id, library_interactive_name, library_interactive_base_url, url_fragment,
+  # inherit_aspect_ratio_method, custom_aspect_ratio_method, inherit_native_width, custom_native_width,
+  # inherit_native_height, custom_native_height, inherit_click_to_play, custom_click_to_play, inherit_full_window,
+  # custom_full_window, inherit_click_to_play_prompt, custom_click_to_play_prompt, inherit_image_url, custom_image_url,
+  # linked_interactives, linked_interactive_item_id, inherit_hide_question_number, custom_hide_question_number,
+  # inherit_save_interactive_state_history, custom_save_interactive_state_history, question_gating,
+  # question_gating_locked_text, question_gating_unlocked_text
 
   def to_interactive
     # NOTE: model_library_url is missing as there is no analog
