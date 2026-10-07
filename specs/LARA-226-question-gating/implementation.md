@@ -189,6 +189,7 @@ Tests:
 **Files affected**:
 - `lara-typescript/src/page-item-authoring/common/components/question-gating-options.tsx`: new
 - `lara-typescript/src/page-item-authoring/common/components/question-gating-options.spec.tsx`: new
+- `lara-typescript/src/section-authoring/components/item-edit-dialog.scss`: `.question-gating-text` spacing
 - `lara-typescript/src/page-item-authoring/mw-interactives/customize.tsx`: render inside `renderInteractiveStateOptions`
 - `lara-typescript/src/page-item-authoring/managed-interactives/customize.tsx`: render when `libraryInteractive.enable_learner_state`
 - `lara-typescript/src/page-item-authoring/mw-interactives/customize.spec.tsx`, `managed-interactives/customize.spec.tsx`: new, when each form shows the setting
@@ -237,12 +238,16 @@ export const QuestionGatingOptions: React.FC<Props> = ({ questionGating, lockedT
         unlocking questions.
       </div>
       {gating !== "none" && <>
-        <label htmlFor="question_gating_locked_text">Locked banner text</label>
-        <input type="text" id="question_gating_locked_text" name="question_gating_locked_text"
-          defaultValue={lockedText || ""} aria-describedby="question_gating_text_note" />
-        <label htmlFor="question_gating_unlocked_text">Unlocked banner text</label>
-        <input type="text" id="question_gating_unlocked_text" name="question_gating_unlocked_text"
-          defaultValue={unlockedText || ""} aria-describedby="question_gating_text_note" />
+        <div className="question-gating-text">
+          <label htmlFor="question_gating_locked_text">Locked banner text</label>
+          <input type="text" id="question_gating_locked_text" name="question_gating_locked_text"
+            defaultValue={lockedText || ""} aria-describedby="question_gating_text_note" />
+        </div>
+        <div className="question-gating-text">
+          <label htmlFor="question_gating_unlocked_text">Unlocked banner text</label>
+          <input type="text" id="question_gating_unlocked_text" name="question_gating_unlocked_text"
+            defaultValue={unlockedText || ""} aria-describedby="question_gating_text_note" />
+        </div>
         <div id="question_gating_text_note" className="inputNote">
           Leave a banner text blank to use the Activity Player's default.
         </div>
@@ -251,6 +256,8 @@ export const QuestionGatingOptions: React.FC<Props> = ({ questionGating, lockedT
   );
 };
 ```
+
+Each banner text field sits in a `.question-gating-text` wrapper, which `item-edit-dialog.scss` gives a 15px top margin so the fields are spaced like the rest of the dialog.
 
 Wiring: both interfaces gain `question_gating?: string; question_gating_locked_text?: string | null; question_gating_unlocked_text?: string | null;`. Each customize form renders `<QuestionGatingOptions questionGating={...} lockedText={...} unlockedText={...} />` from its interactive prop: in the MW form as the last element of `renderInteractiveStateOptions` (so it follows "Enable save state"), in the managed form through a `renderQuestionGatingOptions()` helper that renders it only when `libraryInteractive.enable_learner_state`, placed after "Save Answer History" and also in the early return for a non-customizable library interactive (after "Link Saved Work From"), since gating is a per-item setting rather than one of the inherited options that branch shows read-only. `ItemEditDialog#handleSubmit` needs no change: the select's value goes through its `default` branch as a string, and unrendered fields are absent from the update. `mock-api-provider.ts` gives its interactive items `question_gating: "none"`.
 

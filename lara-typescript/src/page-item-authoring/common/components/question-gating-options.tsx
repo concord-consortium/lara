@@ -34,12 +34,16 @@ export const QuestionGatingOptions: React.FC<Props> = ({ questionGating, lockedT
         unlocking questions.
       </div>
       {gating !== "none" && <>
-        <label htmlFor="question_gating_locked_text">Locked banner text</label>
-        <input type="text" id="question_gating_locked_text" name="question_gating_locked_text"
-          defaultValue={lockedText || ""} aria-describedby="question_gating_text_note" />
-        <label htmlFor="question_gating_unlocked_text">Unlocked banner text</label>
-        <input type="text" id="question_gating_unlocked_text" name="question_gating_unlocked_text"
-          defaultValue={unlockedText || ""} aria-describedby="question_gating_text_note" />
+        <div className="question-gating-text">
+          <label htmlFor="question_gating_locked_text">Locked banner text</label>
+          <input type="text" id="question_gating_locked_text" name="question_gating_locked_text"
+            defaultValue={lockedText || ""} aria-describedby="question_gating_text_note" />
+        </div>
+        <div className="question-gating-text">
+          <label htmlFor="question_gating_unlocked_text">Unlocked banner text</label>
+          <input type="text" id="question_gating_unlocked_text" name="question_gating_unlocked_text"
+            defaultValue={unlockedText || ""} aria-describedby="question_gating_text_note" />
+        </div>
         <div id="question_gating_text_note" className="inputNote">
           Leave a banner text blank to use the Activity Player's default.
         </div>
