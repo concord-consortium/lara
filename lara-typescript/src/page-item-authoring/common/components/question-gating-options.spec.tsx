@@ -1,6 +1,6 @@
 import * as React from "react";
 import { fireEvent, render, screen } from "@testing-library/react";
-import { QuestionGatingOptions } from "./question-gating-options";
+import { QUESTION_GATING_OPTIONS, QuestionGatingOptions } from "./question-gating-options";
 
 const renderInForm = (props: React.ComponentProps<typeof QuestionGatingOptions>) => {
   render(<form data-testid="form"><QuestionGatingOptions {...props} /></form>);
@@ -51,10 +51,28 @@ describe("QuestionGatingOptions", () => {
     });
   });
 
+  it("shows the hint for the selected option", () => {
+    renderInForm({ questionGating: "none" });
+    const note = () => document.getElementById("question_gating_note")?.textContent;
+    const hints = QUESTION_GATING_OPTIONS.map(o => o.hint);
+    expect(new Set(hints).size).toBe(QUESTION_GATING_OPTIONS.length);
+    expect(note()).toBe(hints[0]);
+    expect(note()).toContain("No questions are locked");
+
+    fireEvent.change(getSelect(), { target: { value: "disable_following_on_page" } });
+    expect(note()).toBe(hints[1]);
+    expect(note()).toContain("including those in later sections");
+    expect(note()).toContain("other column");
+
+    fireEvent.change(getSelect(), { target: { value: "disable_following_in_section" } });
+    expect(note()).toBe(hints[2]);
+    expect(note()).toContain("later sections stay open");
+    expect(note()).toContain("other column");
+  });
+
   it("ties the notes to their controls", () => {
     renderInForm({ questionGating: "disable_following_on_page" });
     expect(getSelect().getAttribute("aria-describedby")).toBe("question_gating_note");
-    expect(document.getElementById("question_gating_note")?.textContent).toContain("other column");
     ["Locked banner text", "Unlocked banner text"].forEach(label => {
       expect(screen.getByLabelText(label).getAttribute("aria-describedby")).toBe("question_gating_text_note");
     });

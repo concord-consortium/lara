@@ -3,10 +3,29 @@ import { useState } from "react";
 
 export type QuestionGating = "none" | "disable_following_on_page" | "disable_following_in_section";
 
-export const QUESTION_GATING_OPTIONS: Array<{ value: QuestionGating, label: string }> = [
-  { value: "none", label: "No questions" },
-  { value: "disable_following_on_page", label: "All questions after this on the page" },
-  { value: "disable_following_in_section", label: "Only questions after this in this section" }
+const TWO_COLUMN_HINT = "In a two-column section, every question in the other column counts as after this " +
+  "interactive, so put a question that should stay open in a separate section.";
+const SUPPORT_HINT = "The interactive must support unlocking questions.";
+
+export const QUESTION_GATING_OPTIONS: Array<{ value: QuestionGating, label: string, hint: string }> = [
+  {
+    value: "none",
+    label: "No questions",
+    hint: "No questions are locked. Choose another option to lock the questions after this interactive in the " +
+      `Activity Player until it unlocks them. ${SUPPORT_HINT}`
+  },
+  {
+    value: "disable_following_on_page",
+    label: "All questions after this on the page",
+    hint: "In the Activity Player, every question after this interactive on the page, including those in later " +
+      `sections, starts locked until this interactive unlocks them. ${TWO_COLUMN_HINT} ${SUPPORT_HINT}`
+  },
+  {
+    value: "disable_following_in_section",
+    label: "Only questions after this in this section",
+    hint: "In the Activity Player, the questions after this interactive in this section start locked until it " +
+      `unlocks them, and later sections stay open. ${TWO_COLUMN_HINT} ${SUPPORT_HINT}`
+  }
 ];
 
 interface Props {
@@ -28,10 +47,7 @@ export const QuestionGatingOptions: React.FC<Props> = ({ questionGating, lockedT
         {QUESTION_GATING_OPTIONS.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
       </select>
       <div id="question_gating_note" className="warning">
-        In the Activity Player, the chosen questions start locked until this interactive unlocks them.
-        In a two-column section, every question in the other column counts as after this interactive,
-        so put a question that should stay open in a separate section. The interactive must support
-        unlocking questions.
+        {(QUESTION_GATING_OPTIONS.find(o => o.value === gating) ?? QUESTION_GATING_OPTIONS[0]).hint}
       </div>
       {gating !== "none" && <>
         <div className="question-gating-text">

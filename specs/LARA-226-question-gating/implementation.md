@@ -207,10 +207,29 @@ import { useState } from "react";
 
 export type QuestionGating = "none" | "disable_following_on_page" | "disable_following_in_section";
 
-export const QUESTION_GATING_OPTIONS: Array<{ value: QuestionGating, label: string }> = [
-  { value: "none", label: "No questions" },
-  { value: "disable_following_on_page", label: "All questions after this on the page" },
-  { value: "disable_following_in_section", label: "Only questions after this in this section" }
+const TWO_COLUMN_HINT = "In a two-column section, every question in the other column counts as after this " +
+  "interactive, so put a question that should stay open in a separate section.";
+const SUPPORT_HINT = "The interactive must support unlocking questions.";
+
+export const QUESTION_GATING_OPTIONS: Array<{ value: QuestionGating, label: string, hint: string }> = [
+  {
+    value: "none",
+    label: "No questions",
+    hint: "No questions are locked. Choose another option to lock the questions after this interactive in the " +
+      `Activity Player until it unlocks them. ${SUPPORT_HINT}`
+  },
+  {
+    value: "disable_following_on_page",
+    label: "All questions after this on the page",
+    hint: "In the Activity Player, every question after this interactive on the page, including those in later " +
+      `sections, starts locked until this interactive unlocks them. ${TWO_COLUMN_HINT} ${SUPPORT_HINT}`
+  },
+  {
+    value: "disable_following_in_section",
+    label: "Only questions after this in this section",
+    hint: "In the Activity Player, the questions after this interactive in this section start locked until it " +
+      `unlocks them, and later sections stay open. ${TWO_COLUMN_HINT} ${SUPPORT_HINT}`
+  }
 ];
 
 interface Props {
@@ -232,10 +251,7 @@ export const QuestionGatingOptions: React.FC<Props> = ({ questionGating, lockedT
         {QUESTION_GATING_OPTIONS.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
       </select>
       <div id="question_gating_note" className="warning">
-        In the Activity Player, the chosen questions start locked until this interactive unlocks them.
-        In a two-column section, every question in the other column counts as after this interactive,
-        so put a question that should stay open in a separate section. The interactive must support
-        unlocking questions.
+        {(QUESTION_GATING_OPTIONS.find(o => o.value === gating) ?? QUESTION_GATING_OPTIONS[0]).hint}
       </div>
       {gating !== "none" && <>
         <div className="question-gating-text">
@@ -264,7 +280,8 @@ Wiring: both interfaces gain `question_gating?: string; question_gating_locked_t
 `question-gating-options.spec.tsx` (React Testing Library inside a `<form>`, reading `form.elements`):
 - `null` gating shows "No questions" and submits only `question_gating=none`, with no text inputs.
 - Changing the select to each locking value shows both inputs prefilled from the props, and the form submits all three fields; changing back to "No questions" removes the texts from the submission.
-- The select is found by its label and has `aria-describedby="question_gating_note"`, and that element exists and mentions the other column.
+- The note under the select shows the selected option's own hint and changes with the select: "No questions are locked" for `"none"`, the later-sections wording for the page value, "later sections stay open" for the section value, and the two-column caveat on both locking values. The three hints are distinct.
+- The select is found by its label and has `aria-describedby="question_gating_note"`.
 
 The customize specs check that the MW form shows the select, with its saved value, only while "Enable save state" is checked and that it appears and disappears with the checkbox, and that the managed form shows it only when the library interactive enables learner state, for customizable and non-customizable library interactives alike.
 
