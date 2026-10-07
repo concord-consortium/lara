@@ -208,7 +208,7 @@ import { useState } from "react";
 export type QuestionGating = "none" | "disable_following_on_page" | "disable_following_in_section";
 
 export const QUESTION_GATING_OPTIONS: Array<{ value: QuestionGating, label: string }> = [
-  { value: "none", label: "None" },
+  { value: "none", label: "No questions" },
   { value: "disable_following_on_page", label: "All questions after this on the page" },
   { value: "disable_following_in_section", label: "Only questions after this in this section" }
 ];
@@ -231,7 +231,7 @@ export const QuestionGatingOptions: React.FC<Props> = ({ questionGating, lockedT
         aria-describedby="question_gating_note">
         {QUESTION_GATING_OPTIONS.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
       </select>
-      <div id="question_gating_note" className="inputNote">
+      <div id="question_gating_note" className="warning">
         In the Activity Player, the chosen questions start locked until this interactive unlocks them.
         In a two-column section, every question in the other column counts as after this interactive,
         so put a question that should stay open in a separate section. The interactive must support
@@ -248,7 +248,7 @@ export const QuestionGatingOptions: React.FC<Props> = ({ questionGating, lockedT
           <input type="text" id="question_gating_unlocked_text" name="question_gating_unlocked_text"
             defaultValue={unlockedText || ""} aria-describedby="question_gating_text_note" />
         </div>
-        <div id="question_gating_text_note" className="inputNote">
+        <div id="question_gating_text_note" className="warning">
           Leave a banner text blank to use the Activity Player's default.
         </div>
       </>}
@@ -262,8 +262,8 @@ Each banner text field sits in a `.question-gating-text` wrapper, which `item-ed
 Wiring: both interfaces gain `question_gating?: string; question_gating_locked_text?: string | null; question_gating_unlocked_text?: string | null;`. Each customize form renders `<QuestionGatingOptions questionGating={...} lockedText={...} unlockedText={...} />` from its interactive prop: in the MW form as the last element of `renderInteractiveStateOptions` (so it follows "Enable save state"), in the managed form through a `renderQuestionGatingOptions()` helper that renders it only when `libraryInteractive.enable_learner_state`, placed after "Save Answer History" and also in the early return for a non-customizable library interactive (after "Link Saved Work From"), since gating is a per-item setting rather than one of the inherited options that branch shows read-only. `ItemEditDialog#handleSubmit` needs no change: the select's value goes through its `default` branch as a string, and unrendered fields are absent from the update. `mock-api-provider.ts` gives its interactive items `question_gating: "none"`.
 
 `question-gating-options.spec.tsx` (React Testing Library inside a `<form>`, reading `form.elements`):
-- `null` gating shows "None" and submits only `question_gating=none`, with no text inputs.
-- Changing the select to each locking value shows both inputs prefilled from the props, and the form submits all three fields; changing back to "None" removes the texts from the submission.
+- `null` gating shows "No questions" and submits only `question_gating=none`, with no text inputs.
+- Changing the select to each locking value shows both inputs prefilled from the props, and the form submits all three fields; changing back to "No questions" removes the texts from the submission.
 - The select is found by its label and has `aria-describedby="question_gating_note"`, and that element exists and mentions the other column.
 
 The customize specs check that the MW form shows the select, with its saved value, only while "Enable save state" is checked and that it appears and disappears with the checkbox, and that the managed form shows it only when the library interactive enables learner state, for customizable and non-customizable library interactives alike.

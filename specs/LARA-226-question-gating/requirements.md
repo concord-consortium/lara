@@ -66,8 +66,8 @@ In LARA, per-item settings such as `is_half_width` and `hide_question_number` ar
 ### Authoring form
 
 - **R6.** The Advanced Options tab of both interactive edit forms shows a "Question gating" select whenever the item saves learner state: for an iframe interactive, while "Enable save state" is checked (it appears and disappears with that checkbox, like the other state options); for a library interactive, when its library interactive enables learner state. Otherwise the select and texts are not shown, and the saved values are left as they are.
-- **R7.** The control sits in a fieldset with the legend "Question Gating". The select is labeled "Locked until this interactive unlocks them" and has three options, in this order: "None" (`"none"`), "All questions after this on the page" (`"disable_following_on_page"`) and "Only questions after this in this section" (`"disable_following_in_section"`). Its note says the chosen questions start locked in the Activity Player; that in a two-column section every question in the other column counts as after this interactive, so a question meant to stay open belongs in a separate section; and that the interactive must support unlocking them.
-- **R8.** While the select is on either locking value, two single-line text fields follow it: "Locked banner text" and "Unlocked banner text", each noting that leaving it blank uses the Activity Player's default. The fields hide while the select is on "None", keeping their saved values. LARA does not repeat the Activity Player's default wording.
+- **R7.** The control sits in a fieldset with the legend "Question Gating". The select is labeled "Locked until this interactive unlocks them" and has three options, in this order: "No questions" (`"none"`), "All questions after this on the page" (`"disable_following_on_page"`) and "Only questions after this in this section" (`"disable_following_in_section"`). Its note says the chosen questions start locked in the Activity Player; that in a two-column section every question in the other column counts as after this interactive, so a question meant to stay open belongs in a separate section; and that the interactive must support unlocking them.
+- **R8.** While the select is on either locking value, two single-line text fields follow it: "Locked banner text" and "Unlocked banner text", each noting that leaving it blank uses the Activity Player's default. The fields hide while the select is on "No questions", keeping their saved values. LARA does not repeat the Activity Player's default wording.
 - **R9.** The select and fields have visible labels tied to the controls, each note is tied to its control with `aria-describedby` (the existing `Checkbox` gets this for free by putting its note inside the label; a select's note sits outside it), and the conditional fields follow the select in tab order.
 
 ### Interactive API
@@ -158,7 +158,7 @@ In LARA, per-item settings such as `is_half_width` and `hide_question_number` ar
 - A) One long option label per value, such as "Disable the questions after this item on its page until this interactive unlocks them".
 - B) A select label carrying the shared phrase, with short option labels.
 
-**Decision**: B. The select reads "Locked until this interactive unlocks them: None / All questions after this on the page / Only questions after this in this section", the option wording suggested in PI feedback (Trudi Lord, 2026-10-07), under a "Question Gating" legend, with the explanation in the note (R7).
+**Decision**: B. The select reads "Locked until this interactive unlocks them: No questions / All questions after this on the page / Only questions after this in this section", the option wording suggested in PI feedback (Trudi Lord, 2026-10-07) except that Doug Martin changed "None" to "No questions" after seeing the form, so every option names which questions are locked, under a "Question Gating" legend, with the explanation in the note (R7).
 
 ---
 

@@ -4,7 +4,7 @@ import { useState } from "react";
 export type QuestionGating = "none" | "disable_following_on_page" | "disable_following_in_section";
 
 export const QUESTION_GATING_OPTIONS: Array<{ value: QuestionGating, label: string }> = [
-  { value: "none", label: "None" },
+  { value: "none", label: "No questions" },
   { value: "disable_following_on_page", label: "All questions after this on the page" },
   { value: "disable_following_in_section", label: "Only questions after this in this section" }
 ];
@@ -27,7 +27,7 @@ export const QuestionGatingOptions: React.FC<Props> = ({ questionGating, lockedT
         aria-describedby="question_gating_note">
         {QUESTION_GATING_OPTIONS.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
       </select>
-      <div id="question_gating_note" className="inputNote">
+      <div id="question_gating_note" className="warning">
         In the Activity Player, the chosen questions start locked until this interactive unlocks them.
         In a two-column section, every question in the other column counts as after this interactive,
         so put a question that should stay open in a separate section. The interactive must support
@@ -44,7 +44,7 @@ export const QuestionGatingOptions: React.FC<Props> = ({ questionGating, lockedT
           <input type="text" id="question_gating_unlocked_text" name="question_gating_unlocked_text"
             defaultValue={unlockedText || ""} aria-describedby="question_gating_text_note" />
         </div>
-        <div id="question_gating_text_note" className="inputNote">
+        <div id="question_gating_text_note" className="warning">
           Leave a banner text blank to use the Activity Player's default.
         </div>
       </>}

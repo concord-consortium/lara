@@ -16,7 +16,7 @@ const submitted = (form: HTMLFormElement) => {
 const getSelect = () => screen.getByLabelText("Locked until this interactive unlocks them") as HTMLSelectElement;
 
 describe("QuestionGatingOptions", () => {
-  it("shows None for a null setting and submits only question_gating", () => {
+  it("shows No questions for a null setting and submits only question_gating", () => {
     const form = renderInForm({ questionGating: null, lockedText: "Locked", unlockedText: "Unlocked" });
     expect(getSelect().value).toBe("none");
     expect(screen.queryByLabelText("Locked banner text")).toBeNull();
@@ -28,7 +28,7 @@ describe("QuestionGatingOptions", () => {
     renderInForm({});
     const options = Array.from(getSelect().options).map(o => [o.value, o.textContent]);
     expect(options).toEqual([
-      ["none", "None"],
+      ["none", "No questions"],
       ["disable_following_on_page", "All questions after this on the page"],
       ["disable_following_in_section", "Only questions after this in this section"]
     ]);
