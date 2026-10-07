@@ -60,6 +60,9 @@ export interface IManagedInteractive {
   custom_hide_question_number: boolean;
   inherit_save_interactive_state_history: boolean;
   custom_save_interactive_state_history: boolean;
+  question_gating?: string;
+  question_gating_locked_text?: string | null;
+  question_gating_unlocked_text?: string | null;
 }
 
 export const ManagedInteractiveAuthoring: React.FC<Props> = (props) => {

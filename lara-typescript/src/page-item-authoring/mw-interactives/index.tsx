@@ -30,6 +30,9 @@ export interface IMWInteractive {
   enable_learner_state: boolean;
   hide_question_number: boolean;
   save_interactive_state_history: boolean;
+  question_gating?: string;
+  question_gating_locked_text?: string | null;
+  question_gating_unlocked_text?: string | null;
   show_delete_data_button: boolean;
   has_report_url: boolean;
   click_to_play: boolean;

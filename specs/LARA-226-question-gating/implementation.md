@@ -191,6 +191,7 @@ Tests:
 - `lara-typescript/src/page-item-authoring/common/components/question-gating-options.spec.tsx`: new
 - `lara-typescript/src/page-item-authoring/mw-interactives/customize.tsx`: render inside `renderInteractiveStateOptions`
 - `lara-typescript/src/page-item-authoring/managed-interactives/customize.tsx`: render when `libraryInteractive.enable_learner_state`
+- `lara-typescript/src/page-item-authoring/mw-interactives/customize.spec.tsx`, `managed-interactives/customize.spec.tsx`: new, when each form shows the setting
 - `lara-typescript/src/page-item-authoring/mw-interactives/index.tsx`, `managed-interactives/index.tsx`: interface fields
 - `lara-typescript/src/section-authoring/api/mock-api-provider.ts`: mock item data
 - `spec/models/question_gating_options_agreement_spec.rb`: new
@@ -251,12 +252,14 @@ export const QuestionGatingOptions: React.FC<Props> = ({ questionGating, lockedT
 };
 ```
 
-Wiring: both interfaces gain `question_gating?: string; question_gating_locked_text?: string | null; question_gating_unlocked_text?: string | null;`. Each customize form renders `<QuestionGatingOptions questionGating={...} lockedText={...} unlockedText={...} />` from its interactive prop: in the MW form as the last element of `renderInteractiveStateOptions` (so it follows "Enable save state"), in the managed form as a new `{libraryInteractive.enable_learner_state && ...}` block after "Save Answer History". `ItemEditDialog#handleSubmit` needs no change: the select's value goes through its `default` branch as a string, and unrendered fields are absent from the update. `mock-api-provider.ts` gives its interactive items `question_gating: "none"`.
+Wiring: both interfaces gain `question_gating?: string; question_gating_locked_text?: string | null; question_gating_unlocked_text?: string | null;`. Each customize form renders `<QuestionGatingOptions questionGating={...} lockedText={...} unlockedText={...} />` from its interactive prop: in the MW form as the last element of `renderInteractiveStateOptions` (so it follows "Enable save state"), in the managed form through a `renderQuestionGatingOptions()` helper that renders it only when `libraryInteractive.enable_learner_state`, placed after "Save Answer History" and also in the early return for a non-customizable library interactive (after "Link Saved Work From"), since gating is a per-item setting rather than one of the inherited options that branch shows read-only. `ItemEditDialog#handleSubmit` needs no change: the select's value goes through its `default` branch as a string, and unrendered fields are absent from the update. `mock-api-provider.ts` gives its interactive items `question_gating: "none"`.
 
 `question-gating-options.spec.tsx` (React Testing Library inside a `<form>`, reading `form.elements`):
 - `null` gating shows "None" and submits only `question_gating=none`, with no text inputs.
 - Changing the select to each locking value shows both inputs prefilled from the props, and the form submits all three fields; changing back to "None" removes the texts from the submission.
 - The select is found by its label and has `aria-describedby="question_gating_note"`, and that element exists and mentions the other column.
+
+The customize specs check that the MW form shows the select, with its saved value, only while "Enable save state" is checked and that it appears and disappears with the checkbox, and that the managed form shows it only when the library interactive enables learner state, for customizable and non-customizable library interactives alike.
 
 `question_gating_options_agreement_spec.rb` reads `question-gating-options.tsx`, collects the `value: "..."` entries of `QUESTION_GATING_OPTIONS`, and expects them to equal `QuestionGating::VALUES`, so the two lists cannot drift.
 

@@ -11,6 +11,7 @@ import { AspectRatioChooser,
 import { CustomizableOption } from "../common/components/customizable-option";
 import { Checkbox } from "../common/components/checkbox";
 import { DataSourceInteractive } from "../common/components/data-source-interactive";
+import { QuestionGatingOptions } from "../common/components/question-gating-options";
 
 interface Props {
   managedInteractive: IManagedInteractive;
@@ -37,7 +38,10 @@ export const CustomizeManagedInteractive: React.FC<Props> = (props) => {
     custom_hide_question_number,
     inherit_save_interactive_state_history,
     custom_save_interactive_state_history,
-    linked_interactives
+    linked_interactives,
+    question_gating,
+    question_gating_locked_text,
+    question_gating_unlocked_text
   } = managedInteractive;
 
   const [inheritAspectRatio, setInheritAspectRatio] = useState(inherit_aspect_ratio_method);
@@ -107,6 +111,15 @@ export const CustomizeManagedInteractive: React.FC<Props> = (props) => {
     </>;
   };
 
+  const renderQuestionGatingOptions = () => {
+    return libraryInteractive.enable_learner_state &&
+      <QuestionGatingOptions
+        questionGating={question_gating}
+        lockedText={question_gating_locked_text}
+        unlockedText={question_gating_unlocked_text}
+      />;
+  };
+
   const renderCommonBottomFields = () => {
     return <>
       <DataSourceInteractive linked_interactives={linked_interactives} />
@@ -133,6 +146,7 @@ export const CustomizeManagedInteractive: React.FC<Props> = (props) => {
     return (
       <div>
         {renderCommonTopFields()}
+        {renderQuestionGatingOptions()}
         {renderCommonBottomFields()}
 
         <p>
@@ -428,6 +442,8 @@ export const CustomizeManagedInteractive: React.FC<Props> = (props) => {
       </div>
     </fieldset>
     }
+
+    {renderQuestionGatingOptions()}
 
     {renderCommonBottomFields()}
   </>;
