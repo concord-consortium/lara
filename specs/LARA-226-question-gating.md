@@ -62,7 +62,7 @@ Hazbot pages need students to run the Wildfire model before answering the questi
 
 ### Release
 
-- **R15.** `@concord-consortium/lara-interactive-api` 1.15.0 and `@concord-consortium/interactive-api-host` 0.14.0 are published as their own release, nothing else bundled, with each `package.json` and `package-lock.json` in step. First `1.15.0-pre.0` and `0.14.0-pre.0` go out on the `beta` tag, so WM-66 can pin the client and be reviewed alongside this story (a later `-pre.N` if review changes the code), then the final versions from the same code. Only the final versions are tagged, as `interactive-api-client@v1.15.0` and `interactive-api-host@v0.14.0`; prereleases are for development and get no git tag. Doug publishes from a terminal, since npm login uses browser auth. *(partial: `1.15.0-pre.0` and `0.14.0-pre.0` were published on `beta` on 2026-10-07 from commit `3c866927`; the final versions wait on WM-66 review, see Not Yet Implemented.)*
+- **R15.** `@concord-consortium/lara-interactive-api` 1.15.0 and `@concord-consortium/interactive-api-host` 0.14.0 are published as their own release, nothing else bundled, with each `package.json` and `package-lock.json` in step. First `1.15.0-pre.0` and `0.14.0-pre.0` go out on the `beta` tag, so WM-66 can pin the client and be reviewed alongside this story (a later `-pre.N` if review changes the code), then the final versions from the same code. Only the final versions are tagged, as `lara-interactive-api@v1.15.0` and `interactive-api-host@v0.14.0` on the pull request's merge commit in `master`; prereleases are for development and get no git tag. Doug publishes from a terminal, since npm login uses browser auth. *(`1.15.0-pre.0` and `0.14.0-pre.0` were published on `beta` on 2026-10-07 for WM-66 review; WM-66 was approved against them, and 1.15.0 and 0.14.0 were published on 2026-10-08 from the same package sources, commit `1f8e6a10`. The tags wait for the merge, see Not Yet Implemented.)*
 - **R16.** Before publishing, the packages are verified against the Activity Player through yalc in a throwaway activity-player worktree branched from `AP-76-disabled-questions-demo`: the testbed's button unlocks the demo's gated questions, for both a page-wide gate and a section-only gate. None of that worktree's yalc changes or wiring are committed by this story. *(Done, and extended: the same worktree, changed to read the authored fields and follow the protocol, also ran an end-to-end check against the WM-66 Wildfire build, including AP-145's re-init fix for Wildfire's top-bar reload.)*
 
 ### Rollout
@@ -95,7 +95,7 @@ Hazbot pages need students to run the Wildfire model before answering the questi
 
 ## Not Yet Implemented
 
-- The final `lara-interactive-api` 1.15.0 and `interactive-api-host` 0.14.0 releases: the version bump, publish and the `interactive-api-client@v1.15.0` / `interactive-api-host@v0.14.0` tags. They wait until WM-66 has been reviewed against `1.15.0-pre.0`; if review changes the protocol, a `-pre.1` comes first (R15).
+- The `lara-interactive-api@v1.15.0` and `interactive-api-host@v0.14.0` git tags, which go on this pull request's merge commit in `master` once it merges (R15).
 
 ## Decisions
 
