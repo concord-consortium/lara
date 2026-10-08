@@ -161,9 +161,10 @@ message. Names come from `IRuntimeClientMessage` / `IRuntimeServerMessage` in
 |---------|---------|
 | `interactiveState` | Student work (save it). |
 | `height` | Requested iframe height. |
-| `supportedFeatures` | Interactive advertises what it supports (aspect ratio, whether it saves state, custom-message handling, focus protocol). |
+| `supportedFeatures` | Interactive advertises what it supports (aspect ratio, whether it saves state, custom-message handling, focus protocol, question gating). |
 | `hint` | Text hint to surface in host chrome. |
 | `navigation` | Request to enable/disable forward navigation, show a message. |
+| `unlockQuestions` | The questions this interactive gates can be unlocked. May arrive at startup and more than once; treat it as idempotent and do not persist it. `restored: true` means the unlock came from saved state, so show no "now unlocked" feedback. Lock questions only behind interactives whose `supportedFeatures` declared `questionGating`, and advertise support with `hostFeatures.questionGating`. |
 | `setDirtyState` | Interactive has unsaved changes (block navigation, show "saving…"). |
 | `getAuthInfo` | Request current user's auth info → respond with `authInfo`. |
 | `getFirebaseJWT` | Request a Firebase JWT for a named app → respond with `firebaseJWT`. |
@@ -216,7 +217,7 @@ by hand.
 
 | Feature | Do it yourself | Or use from the library |
 |---------|----------------|-------------------------|
-| **Capability advertising** | Set fields on `initInteractive.hostFeatures` (`IHostFeatures`) so the interactive knows what you support (e.g. `modal`, `getFirebaseJwt`). | — |
+| **Capability advertising** | Set fields on `initInteractive.hostFeatures` (`IHostFeatures`) so the interactive knows what you support (e.g. `modal`, `getFirebaseJwt`, `questionGating`). | — |
 | **Attachments** (large blobs via signed URLs, e.g. S3) | Handle `getAttachmentUrl`, generate a signed URL, reply `attachmentUrl`. | `initializeAttachmentsManager`, `handleGetAttachmentUrl`, `IAttachmentsManagerInitOptions`, `IReadableAttachmentInfo`. Pages that stay open longer than the token-service JWT lives (an hour for portal-issued tokens) should pass `getTokenServiceFirestoreJWT` so the manager can get a current token. |
 | **Pub/Sub** (interactives talking to each other) | Track channels/subscriptions and relay `publish`→`pubSubMessage`. | `PubSubManager`. |
 | **Jobs** (long-running async tasks) | Handle `createJob`/`cancelJob`, push `jobInfo` updates. | `JobManager` + implement the `IJobExecutor` interface (see AP's `firebase-job-executor.ts`). |

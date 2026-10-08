@@ -46,7 +46,8 @@ import {
   IJobInfo,
   IFocusEnterMessage,
   IFocusExitMessage,
-  FocusExitMode
+  FocusExitMode,
+  IUnlockQuestionsMessage
 } from "./types";
 import { getClient } from "./client";
 import { v4 as uuidv4 } from "uuid";
@@ -272,6 +273,17 @@ export const setHint = (hint: string | null) => {
 
 export const setNavigation = (options: INavigationOptions) => {
   getClient().post("navigation", options);
+};
+
+/**
+ * Tells the host that the questions this interactive gates can be unlocked. Declare
+ * `questionGating: true` in `setSupportedFeatures`, then send this whenever the interactive's own
+ * unlock condition holds: with `restored: true` at startup from saved state, and without it after
+ * the triggering event. Repeats are harmless and unlocking is one-way for the page visit. Hosts that
+ * do not set `hostFeatures.questionGating` ignore it.
+ */
+export const unlockQuestions = (options: IUnlockQuestionsMessage = {}) => {
+  getClient().post("unlockQuestions", options);
 };
 
 export const getAuthInfo = (): Promise<IAuthInfo> => {

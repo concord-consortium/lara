@@ -2,6 +2,7 @@ class MwInteractive < ApplicationRecord
   include BaseInteractive
   include Embeddable
   include HasAspectRatio
+  include QuestionGating
 
 
   default_value_for :native_width, ASPECT_RATIO_DEFAULT_WIDTH
@@ -68,7 +69,7 @@ class MwInteractive < ApplicationRecord
       linked_interactive_item_id: linked_interactive_item_id,
       linked_interactives: linked_interactives_list,
       report_item_url: report_item_url
-    }
+    }.merge(question_gating_hash)
   end
 
   def to_authoring_preview_hash
@@ -104,7 +105,8 @@ class MwInteractive < ApplicationRecord
                               :authored_state,
                               :aspect_ratio_method,
                               :no_snapshots,
-                              :report_item_url])
+                              :report_item_url,
+                              *QuestionGating::FIELDS])
   end
 
   def self.legacy_properties

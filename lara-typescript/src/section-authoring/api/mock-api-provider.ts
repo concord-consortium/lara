@@ -83,6 +83,7 @@ const makeNewEmbeddable = (attributes: ICreatePageItem) => {
           enable_learner_state: false,
           hide_question_number: false,
           save_interactive_state_history: false,
+          question_gating: "none",
           linked_interactive_type: "",
           inherit_aspect_ratio_method: true,
           custom_aspect_ratio_method: "",

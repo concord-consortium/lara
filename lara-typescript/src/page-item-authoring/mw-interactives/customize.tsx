@@ -7,6 +7,7 @@ import { AspectRatioChooser,
        } from "../common/components/aspect-ratio-chooser";
 import { Checkbox } from "../common/components/checkbox";
 import { DataSourceInteractive } from "../common/components/data-source-interactive";
+import { QuestionGatingOptions } from "../common/components/question-gating-options";
 
 interface Props {
   checkboxHandler?: (name: string, checked: boolean) => void;
@@ -37,7 +38,10 @@ export const CustomizeMWInteractive: React.FC<Props> = (props) => {
     aspect_ratio_method,
     linked_interactive_item_id,
     report_item_url,
-    linked_interactives
+    linked_interactives,
+    question_gating,
+    question_gating_locked_text,
+    question_gating_unlocked_text
   } = interactive;
 
   const [aspectRatioValues, setAspectRatioValues] = useState<IAspectRatioChooserValues>({
@@ -184,6 +188,12 @@ export const CustomizeMWInteractive: React.FC<Props> = (props) => {
           be a partial URL relative to the iFrame interactive's URL.
         </div>
       </fieldset>
+
+      <QuestionGatingOptions
+        questionGating={question_gating}
+        lockedText={question_gating_locked_text}
+        unlockedText={question_gating_unlocked_text}
+      />
     </>;
   };
 

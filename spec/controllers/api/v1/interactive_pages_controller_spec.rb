@@ -550,6 +550,32 @@ describe Api::V1::InteractivePagesController do
         }.to_json
       )
     end
+
+    describe "for an MwInteractive" do
+      let(:embeddable) { FactoryBot.create(:mw_interactive) }
+      let(:embeddable_type) { "MwInteractive" }
+
+      it "stores and returns question gating" do
+        post :update_page_item, params: {id: page.id, page_item: {
+          id: page_item.id,
+          column: page_item.column,
+          position: page_item.position,
+          data: { question_gating: "disable_following_on_page", question_gating_locked_text: "Run the model first" },
+          type: embeddable_type
+        }}
+        expect(response.status).to eq(200)
+        embeddable.reload
+        expect(embeddable.question_gating).to eq "disable_following_on_page"
+        expect(embeddable.question_gating_locked_text).to eq "Run the model first"
+        expect(embeddable.question_gating_unlocked_text).to be_nil
+        returned_data = JSON.parse(response.body)["data"]
+        expect(returned_data).to include(
+          "question_gating" => "disable_following_on_page",
+          "question_gating_locked_text" => "Run the model first",
+          "question_gating_unlocked_text" => nil
+        )
+      end
+    end
   end
 
   describe "#get_pages" do

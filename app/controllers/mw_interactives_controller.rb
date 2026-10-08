@@ -20,7 +20,8 @@ class MwInteractivesController < InteractiveController
       :click_to_play_prompt, :image_url, :is_hidden, :linked_interactive_id, :linked_interactive_type,
       :full_window, :model_library_url, :authored_state, :no_snapshots,
       :show_delete_data_button, :is_half_width, :aspect_ratio_method, :linked_interactive_item_id,
-      :report_item_url, :linked_interactives, :hide_question_number, :save_interactive_state_history
+      :report_item_url, :linked_interactives, :hide_question_number, :save_interactive_state_history,
+      :question_gating, :question_gating_locked_text, :question_gating_unlocked_text
     )
   end
 

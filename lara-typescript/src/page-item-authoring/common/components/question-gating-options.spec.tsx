@@ -1,0 +1,81 @@
+import * as React from "react";
+import { fireEvent, render, screen } from "@testing-library/react";
+import { QUESTION_GATING_OPTIONS, QuestionGatingOptions } from "./question-gating-options";
+
+const renderInForm = (props: React.ComponentProps<typeof QuestionGatingOptions>) => {
+  render(<form data-testid="form"><QuestionGatingOptions {...props} /></form>);
+  return screen.getByTestId("form") as HTMLFormElement;
+};
+
+const submitted = (form: HTMLFormElement) => {
+  const entries: Record<string, string> = {};
+  new FormData(form).forEach((value, key) => { entries[key] = value as string; });
+  return entries;
+};
+
+const getSelect = () => screen.getByLabelText("Locked until this interactive unlocks them") as HTMLSelectElement;
+
+describe("QuestionGatingOptions", () => {
+  it("shows No questions for a null setting and submits only question_gating", () => {
+    const form = renderInForm({ questionGating: null, lockedText: "Locked", unlockedText: "Unlocked" });
+    expect(getSelect().value).toBe("none");
+    expect(screen.queryByLabelText("Locked banner text")).toBeNull();
+    expect(screen.queryByLabelText("Unlocked banner text")).toBeNull();
+    expect(submitted(form)).toEqual({ question_gating: "none" });
+  });
+
+  it("lists the options in order", () => {
+    renderInForm({});
+    const options = Array.from(getSelect().options).map(o => [o.value, o.textContent]);
+    expect(options).toEqual([
+      ["none", "No questions"],
+      ["disable_following_on_page", "All questions after this on the page"],
+      ["disable_following_in_section", "Only questions after this in this section"]
+    ]);
+  });
+
+  ["disable_following_on_page", "disable_following_in_section"].forEach(value => {
+    it(`shows the prefilled banner texts and submits them for ${value}`, () => {
+      const form = renderInForm({ questionGating: "none", lockedText: "Locked", unlockedText: "Unlocked" });
+      fireEvent.change(getSelect(), { target: { value } });
+      expect((screen.getByLabelText("Locked banner text") as HTMLInputElement).value).toBe("Locked");
+      expect((screen.getByLabelText("Unlocked banner text") as HTMLInputElement).value).toBe("Unlocked");
+      expect(submitted(form)).toEqual({
+        question_gating: value,
+        question_gating_locked_text: "Locked",
+        question_gating_unlocked_text: "Unlocked"
+      });
+
+      fireEvent.change(getSelect(), { target: { value: "none" } });
+      expect(submitted(form)).toEqual({ question_gating: "none" });
+    });
+  });
+
+  it("shows the hint for the selected option", () => {
+    renderInForm({ questionGating: "none" });
+    const note = () => document.getElementById("question_gating_note")?.textContent;
+    const hints = QUESTION_GATING_OPTIONS.map(o => o.hint);
+    expect(new Set(hints).size).toBe(QUESTION_GATING_OPTIONS.length);
+    expect(note()).toBe(hints[0]);
+    expect(note()).toContain("No questions are locked");
+
+    fireEvent.change(getSelect(), { target: { value: "disable_following_on_page" } });
+    expect(note()).toBe(hints[1]);
+    expect(note()).toContain("including those in later sections");
+    expect(note()).toContain("other column");
+
+    fireEvent.change(getSelect(), { target: { value: "disable_following_in_section" } });
+    expect(note()).toBe(hints[2]);
+    expect(note()).toContain("later sections stay open");
+    expect(note()).toContain("other column");
+  });
+
+  it("ties the notes to their controls", () => {
+    renderInForm({ questionGating: "disable_following_on_page" });
+    expect(getSelect().getAttribute("aria-describedby")).toBe("question_gating_note");
+    ["Locked banner text", "Unlocked banner text"].forEach(label => {
+      expect(screen.getByLabelText(label).getAttribute("aria-describedby")).toBe("question_gating_text_note");
+    });
+    expect(document.getElementById("question_gating_text_note")?.textContent).toContain("default");
+  });
+});
