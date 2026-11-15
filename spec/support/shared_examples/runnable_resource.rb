@@ -45,8 +45,6 @@ shared_examples "runnable launched without run_key" do |run_type|
         anon_run
       }
       it "creates a new #{run_type}, it does not use the existing #{run_type}" do
-        # we save the new_run during creation because sequence runs create
-        # activity runs on initialization and that requires a saved model
         expect(run_type).to receive(:create!) { new_run.save; new_run }
         get action, params: base_params
         expect(assigns[run_variable_name]).to eq(new_run)

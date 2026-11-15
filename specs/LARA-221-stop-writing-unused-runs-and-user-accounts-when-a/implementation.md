@@ -427,7 +427,7 @@ The `lookup_or_create` spec block, after: an existing run built without portal f
 
 ## Self-Review
 
-Verification harness: the `lara-app` image with the worktree mounted, against `mariadb:11.2` (CI's database), `RAILS_ENV=test`, lara-typescript built first. Master's full suite is 1563 examples; with all five steps, 1573 examples and 0 failures, also in random order (`--order rand:22111`). `Api::V1::InteractivePagesController#get_portal_list` fails when only `spec/models/run_spec.rb` and `spec/controllers` run together, on master too: an existing order dependency that passes in the full suite and alone.
+Verification harness: the `lara-app` image with the worktree mounted, against `mariadb:11.2` (CI's database), `RAILS_ENV=test`, lara-typescript built first. Master's full suite is 1563 examples; with all five steps, 1575 examples and 0 failures (the planned 1573 plus the sequence-membership and owner's-run examples code review added), also in random order (`--order rand:22111`). `Api::V1::InteractivePagesController#get_portal_list` fails when only `spec/models/run_spec.rb` and `spec/controllers` run together, on master too: an existing order dependency that passes in the full suite and alone.
 
 Earlier rounds (roles: commit reviewer, test writer, operator, security engineer, requirements-only reader, implementer, caller-hunting maintainer, release engineer, cross-file consistency reviewer, cold PR reviewer, LARA-222 data steward, test-reliability engineer, Rails-semantics reviewer, observability reviewer) are folded into the steps above: the portal-launch step, the sequence-page step's helper, model method and layout, `CollaborationRun#disable`, the remeasured diff sizes and mutation counts, and the `portal_run_count` note.
 
