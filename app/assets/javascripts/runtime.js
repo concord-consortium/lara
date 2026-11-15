@@ -40,7 +40,6 @@
 //= require profile
 //= require iframe-phone
 //= require prediction
-//= require activity-box-click
 //= require wait-message
 //= require external-scripts
 //= require interactive-manager
