@@ -1,10 +1,13 @@
 class LightweightActivitiesController < ApplicationController
 
   before_action :set_activity, except: [:index, :new, :create]
-  before_action :set_run_key_from_portal_launchable, only: [:summary, :show, :preview, :resubmit_answers, :single_page]
-  before_action :set_sequence, only: [:summary, :show, :single_page, :preview]
+  before_action :set_run_key_from_portal_launchable, only: [:summary, :preview, :resubmit_answers, :single_page]
+  before_action :set_sequence, only: [:summary, :single_page, :preview]
+  # show only redirects to the Activity Player, which receives no LARA identity,
+  # so signing the visitor in through the portal would only create an unused user.
+  skip_before_action :portal_login, only: [:show]
 
-  before_action :enable_js_logger, only: [:summary, :show, :preview, :single_page]
+  before_action :enable_js_logger, only: [:summary, :preview, :single_page]
 
   before_action :setup_abilities, only: [:new, :edit]
 

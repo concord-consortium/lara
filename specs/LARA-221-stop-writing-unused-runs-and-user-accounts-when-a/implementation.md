@@ -148,7 +148,7 @@ Notes for the tests:
 - `app/controllers/lightweight_activities_controller.rb`: the runtime filters at the top.
 - `spec/controllers/lightweight_activity_controller_spec.rb`: a new block inside `describe '#show'`.
 
-**Estimated diff size**: ~70 lines (3 added and 3 changed in the controller; 61 added in the spec).
+**Estimated diff size**: ~75 lines (3 added and 3 changed in the controller; 67 added in the spec).
 
 ```ruby
 # before
@@ -231,12 +231,18 @@ Spec, appended inside `describe '#show'` after "redirects to AP with a run key i
         expect { get :show, params: params }.not_to change { written_rows }
         expect(response).to have_http_status(:forbidden)
       end
+
+      it "refuses an activity the path's sequence does not contain" do
+        expect {
+          get :show, params: { sequence_id: sequence_with_activities.id, id: act.id }
+        }.to raise_error(ActiveRecord::RecordNotFound)
+      end
     end
 ```
 
-The private activity is built here rather than taken from the file's `private_act`, which uses the `:activity` factory's default `hidden` status and so is readable by anyone.
+The last example covers R6: with `set_sequence` gone from `show`, `set_activity` is the only filter that checks the activity belongs to the path's sequence, and it fails if `set_activity` falls back to `LightweightActivity.find`. The private activity is built here rather than taken from the file's `private_act`, which uses the `:activity` factory's default `hidden` status and so is readable by anyone.
 
-Mutations (R9): restoring the run filter on `show` fails all 8 examples (the private one too, because the filter writes before `authorize!`); removing `skip_before_action :portal_login` fails the two `domain` examples (the private one gets the OAuth redirect instead of 403).
+Mutations (R9): restoring the run filter on `show` fails the 8 write-counting examples (the private one too, because the filter writes before `authorize!`); removing `skip_before_action :portal_login` fails the two `domain` examples (the private one gets the OAuth redirect instead of 403).
 
 ---
 
