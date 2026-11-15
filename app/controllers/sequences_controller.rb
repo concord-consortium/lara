@@ -1,9 +1,9 @@
 
 class SequencesController < ApplicationController
   before_action :set_sequence, except: [:index, :new, :create]
-  before_action :find_or_create_sequence_run, only: [:show]
-
-  before_action :enable_js_logger, only: [:show]
+  # show only redirects to the Activity Player, which receives no LARA identity,
+  # so signing the visitor in through the portal would only create an unused user.
+  skip_before_action :portal_login, only: [:show]
 
   before_action :setup_abilities, only: [:new, :edit]
 
@@ -193,27 +193,6 @@ class SequencesController < ApplicationController
   private
   def set_sequence
     @sequence = Sequence.find(params[:id])
-  end
-
-  def find_or_create_sequence_run
-    if sequence_run_key = params['sequence_run_key']
-      @sequence_run = SequenceRun.where(key: sequence_run_key).first!
-      return @sequence_run
-    end
-
-    if params[:collaborators_data_url]
-      # Special case when collaborators_data_url is provided (usually as a GET param).
-      cc = CreateCollaboration.new(params[:collaborators_data_url], current_user, @sequence)
-      @sequence_run = cc.call
-    else
-      portal = RemotePortal.new(params)
-      @sequence_run = SequenceRun.lookup_or_create(@sequence, current_user, portal)
-      # If sequence is ran with "portal" params, it means that user wants to run it individually.
-      # Note that "portal" refers to individual student data endpoint, this name should be updated.
-      if portal.valid?
-        @sequence_run.disable_collaboration
-      end
-    end
   end
 
   def setup_abilities
