@@ -275,9 +275,9 @@ The `.sequence-page` and `.activity-bg` rules in `activity-sequences.scss`, `mw-
 - `app/models/sequence_run.rb`: delete `disable_collaboration` (8 lines); `lookup_or_create(sequence, user)` without its `portal` argument, its portal-only `raise` and its `update_platform_info` call; delete `include WithPlatformInfo` and its comment, which only that call used (3 added, 22 removed in all).
 - `app/models/run.rb`: `Run.for_user_activity_and_sequence` calls `SequenceRun.lookup_or_create(Sequence.find(seq_id), user)` (1 line).
 - `spec/models/sequence_run_spec.rb`: rewrite the `lookup_or_create` block for the two-argument call (17 added, 31 removed).
-- `spec/services/create_collaboration_spec.rb`: delete the `describe "when a sequence is provided as a material"` block (34 lines).
+- `spec/services/create_collaboration_spec.rb`: delete the `describe "when a sequence is provided as a material"` block (34 lines), and add "should return the owner's run" to the activity block, since `call` now returns `@owners_run` alone and nothing else checks what it returns (7 lines).
 
-**Estimated diff size**: ~125 lines (23 added, 102 removed).
+**Estimated diff size**: ~130 lines (28 added, 100 removed).
 
 `CreateCollaboration`, the lines that change (the `material` argument, its `is_a?(LightweightActivity)` check and `add_activity_run ... if @activity` stay as they are):
 

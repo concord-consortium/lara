@@ -6,26 +6,16 @@ class SequenceRun < ApplicationRecord
 
   before_save :add_key_if_nil
 
-  # /app/models/with_class_info.rb for #update_platform_info
-  include WithPlatformInfo
-
   def self.generate_key
     SecureRandom.hex(20)
   end
 
-  def self.lookup_or_create(sequence, user, portal)
-    if portal.valid? && user.nil?
-      raise ActiveRecord::RecordNotFound.new(
-        "user must be logged in to access a SequenceRun via portal parameters"
-      )
-    end
-
+  def self.lookup_or_create(sequence, user)
     conditions = {
-      remote_endpoint: portal.remote_endpoint,
-      remote_id:       portal.remote_id,
+      remote_endpoint: nil,
+      remote_id:       nil,
       user_id:         user ? user.id : nil,
       sequence_id:     sequence.id
-      #TODO: add domain
     }
     seq_run = nil
 
@@ -40,7 +30,6 @@ class SequenceRun < ApplicationRecord
       seq_run = self.create!(conditions)
     end
 
-    seq_run.update_platform_info(portal.platform_info)
     seq_run.make_or_update_runs
     seq_run
   end
@@ -85,14 +74,6 @@ class SequenceRun < ApplicationRecord
   def has_been_run
     a_position =  runs.detect { |r| r.has_been_run }
     return a_position.nil? ? false : true
-  end
-
-  def disable_collaboration
-    # In theory we could keep reference to collaboration run in sequence.
-    # However this approach seems to be more bulletproof, as it will definitely clear any possible
-    # collaboration (it's not likely, but it may happen that there are a few different collaborations
-    # related to different runs, not just single one).
-    runs.select { |r| r.collaboration_run }.each { |r| r.collaboration_run.disable }
   end
 
   def make_or_update_runs

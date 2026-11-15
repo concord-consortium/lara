@@ -9,14 +9,6 @@ describe SequenceRun do
   let(:remote_endpoint) { "http://someplace.com/return_data/4" }
   let(:remote_id)       { "23" }
 
-  let(:portal) do
-    double("portal",
-      remote_endpoint: remote_endpoint,
-      remote_id: remote_id,
-      platform_info: {},
-      valid?: true)
-  end
-
   let(:existing_seq_run) do
     SequenceRun.create!(
       sequence_id: sequence.id,
@@ -30,52 +22,46 @@ describe SequenceRun do
     subject { SequenceRun }
 
     describe "lookup_or_create" do
+      let(:existing_seq_run) do
+        SequenceRun.create!(sequence_id: sequence.id, user_id: user.id)
+      end
 
       before(:each) { make existing_seq_run }
 
-      describe "when the user has already run the sequence from the same portal" do
+      describe "when the user has already run the sequence" do
         it "should return the existing run" do
-          expect(subject.lookup_or_create(sequence, user, portal)).to eq(existing_seq_run)
+          expect(subject.lookup_or_create(sequence, user)).to eq(existing_seq_run)
         end
       end
 
       describe "when the sequence isn't the same as the existing" do
         let(:other_sequence) { FactoryBot.create(:sequence)  }
         it "should make a new run" do
-          expect(subject.lookup_or_create(other_sequence, user, portal)).not_to eq(existing_seq_run)
+          expect(subject.lookup_or_create(other_sequence, user)).not_to eq(existing_seq_run)
         end
       end
 
       describe "when the user isn't the same as the existing" do
         let(:other_user) { FactoryBot.create(:user) }
         it "should make a new run" do
-          expect(subject.lookup_or_create(sequence, other_user, portal)).not_to eq(existing_seq_run)
+          expect(subject.lookup_or_create(sequence, other_user)).not_to eq(existing_seq_run)
         end
       end
 
-      describe "when the portal isn't the same as the existing" do
-        let(:other_portal) {
-          double("portal",
-            remote_id: "something_else",
-            remote_endpoint: remote_endpoint,
-            platform_info: {},
-            valid?: true) }
+      describe "when the user's only run of the sequence was launched from a portal" do
+        let(:existing_seq_run) do
+          SequenceRun.create!(sequence_id: sequence.id, user_id: user.id,
+            remote_endpoint: remote_endpoint, remote_id: remote_id)
+        end
         it "should make a new run" do
-          expect(subject.lookup_or_create(sequence, user, other_portal)).not_to eq(existing_seq_run)
+          expect(subject.lookup_or_create(sequence, user)).not_to eq(existing_seq_run)
         end
       end
 
-      describe "when platform info is provided" do
-        let(:portal) {
-          double("portal",
-            remote_endpoint: remote_endpoint,
-            remote_id: remote_id,
-            platform_info: { platform_id: "test_platform" },
-            valid?: true
-          )
-        }
-        it "should save it" do
-          expect(subject.lookup_or_create(sequence, user, portal).platform_id).to eq("test_platform")
+      describe "when the visitor is anonymous" do
+        it "should make a new run every time" do
+          first = subject.lookup_or_create(sequence, nil)
+          expect(subject.lookup_or_create(sequence, nil)).not_to eq(first)
         end
       end
     end
