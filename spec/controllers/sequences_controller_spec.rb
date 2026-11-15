@@ -52,10 +52,6 @@ describe SequencesController do
       uri.to_s
     end
 
-    def written_rows
-      [SequenceRun.count, Run.count, CollaborationRun.count, User.count]
-    end
-
     before(:each) do
       sign_out @user
       sequence

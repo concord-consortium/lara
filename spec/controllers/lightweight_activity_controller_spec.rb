@@ -78,10 +78,6 @@ describe LightweightActivitiesController do
         end
       end
 
-      def written_rows
-        [SequenceRun.count, Run.count, CollaborationRun.count, User.count]
-      end
-
       def expect_redirect_without_writes(params)
         expect { get :show, params: params }.not_to change { written_rows }
         expect(response.location).to start_with(ENV['ACTIVITY_PLAYER_URL'].chomp('/'))

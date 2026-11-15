@@ -1,8 +1,7 @@
 
 class SequencesController < ApplicationController
   before_action :set_sequence, except: [:index, :new, :create]
-  # show only redirects to the Activity Player, which receives no LARA identity,
-  # so signing the visitor in through the portal would only create an unused user.
+  # show only redirects to the Activity Player, so a portal sign-in here would just create an unused user.
   skip_before_action :portal_login, only: [:show]
 
   before_action :setup_abilities, only: [:new, :edit]

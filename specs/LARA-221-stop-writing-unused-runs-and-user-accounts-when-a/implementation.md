@@ -15,6 +15,7 @@ Five commits. The first two change behavior, one redirect each, and carry the te
 **Files affected**:
 - `app/controllers/sequences_controller.rb`: filters at the top; delete `find_or_create_sequence_run`.
 - `spec/controllers/sequences_controller_spec.rb`: replace the `describe "GET show"` block.
+- `spec/support/redirect_write_counts.rb`: new; `written_rows`, the `[SequenceRun.count, Run.count, CollaborationRun.count, User.count]` the redirect specs compare, included in controller specs so the sequence and activity specs count the same tables.
 
 **Estimated diff size**: ~115 lines (3 added and 24 removed in the controller; 78 added and 13 removed in the spec).
 
@@ -31,8 +32,7 @@ Controller, top of the class:
 
 # after
   before_action :set_sequence, except: [:index, :new, :create]
-  # show only redirects to the Activity Player, which receives no LARA identity,
-  # so signing the visitor in through the portal would only create an unused user.
+  # show only redirects to the Activity Player, so a portal sign-in here would just create an unused user.
   skip_before_action :portal_login, only: [:show]
 
   before_action :setup_abilities, only: [:new, :edit]
@@ -55,10 +55,6 @@ Spec: replace the existing `describe "GET show"` block (its two examples, "assig
       query["sequence"] = "#{api_v1_sequence_url(sequence.id)}.json"
       uri.query = Rack::Utils.build_query(query)
       uri.to_s
-    end
-
-    def written_rows
-      [SequenceRun.count, Run.count, CollaborationRun.count, User.count]
     end
 
     before(:each) do
@@ -160,8 +156,7 @@ Notes for the tests:
 # after
   before_action :set_run_key_from_portal_launchable, only: [:summary, :preview, :resubmit_answers, :single_page]
   before_action :set_sequence, only: [:summary, :single_page, :preview]
-  # show only redirects to the Activity Player, which receives no LARA identity,
-  # so signing the visitor in through the portal would only create an unused user.
+  # show only redirects to the Activity Player, so a portal sign-in here would just create an unused user.
   skip_before_action :portal_login, only: [:show]
 
   before_action :enable_js_logger, only: [:summary, :preview, :single_page]
@@ -177,10 +172,6 @@ Spec, appended inside `describe '#show'` after "redirects to AP with a run key i
         FactoryBot.create(:sequence, publication_status: 'public').tap do |s|
           3.times { s.activities << FactoryBot.create(:public_activity) }
         end
-      end
-
-      def written_rows
-        [SequenceRun.count, Run.count, CollaborationRun.count, User.count]
       end
 
       def expect_redirect_without_writes(params)
