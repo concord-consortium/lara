@@ -354,7 +354,7 @@ The `lookup_or_create` spec block, after: an existing run built without portal f
 - `app/models/run.rb`: `lookup(key, activity, user, seq_id)`; delete `disable_collaboration`.
 - `app/models/collaboration_run.rb`: delete `disable` (4 lines).
 - `spec/models/run_spec.rb`: drop the `nil` portal argument from five calls, drop `portal` from the label `describe "self.lookup(key,activity,user=nil,portal,seq_id)"`, and delete the "with a remote endpoint" example.
-- `spec/support/shared_examples/runnable_resource.rb`: delete `"runnable launched with portal parameters"` and `"runnable resource launchable by the portal"`, which no spec includes, and the unused `portal_launchable` block parameter of `"runnable launched with run_key"`.
+- `spec/support/shared_examples/runnable_resource.rb`: delete `"runnable launched with portal parameters"` and `"runnable resource launchable by the portal"`, which no spec includes, and the unused `portal_launchable` block parameter of `"runnable launched with run_key"`; cut the file header to the three routes that still include these examples, with `Run` as the only run type.
 
 **Estimated diff size**: ~215 lines (13 added; 121 of the removals are the two shared examples).
 

@@ -149,25 +149,17 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def set_run_key(opts)
+  def set_run_key
     # Special case when collaborators_data_url is provided (usually as a GET param).
     # New collaboration will be created and setup and call finally returns collaboration owner
     if params[:collaborators_data_url]
       cc = CreateCollaboration.new(params[:collaborators_data_url], current_user, @activity)
       @run = cc.call
     else
-      portal = RemotePortal.new(params)
-      if portal.valid? && !opts[:portal_launchable]
-        raise(ActiveRecord::RecordNotFound)
-      end
+      raise(ActiveRecord::RecordNotFound) if RemotePortal.new(params).valid?
 
       # This creates a new key if one didn't exist before
-      @run = Run.lookup(params[:run_key], @activity, current_user, portal, params[:sequence_id])
-      # If activity is ran with "portal" params, it means that user wants to run it individually.
-      # Note that "portal" refers to individual student data endpoint, this name should be updated.
-      if portal.valid?
-        @run.disable_collaboration
-      end
+      @run = Run.lookup(params[:run_key], @activity, current_user, params[:sequence_id])
     end
 
     @sequence_run = @run.sequence_run if @run.sequence_run

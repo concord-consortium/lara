@@ -281,16 +281,16 @@ describe Run do
     end
   end
 
-  describe "self.lookup(key,activity,user=nil,portal,seq_id)" do
+  describe "self.lookup(key,activity,user=nil,seq_id)" do
     describe "with a key" do
       it "should simply use the key" do
-        expect(Run.lookup(run.key,activity, user, nil,nil)).to eq(run)
+        expect(Run.lookup(run.key, activity, user, nil)).to eq(run)
       end
     end
 
     describe "with a sequence, activity and user" do
       it "should return the run with our user, activity, and sequence" do
-        found = Run.lookup(nil,activity,user,nil,seq.id)
+        found = Run.lookup(nil, activity, user, seq.id)
         expect(run_in_sequence.sequence).to eq(found.sequence)
         expect(run_in_sequence.user).to eq(found.user)
         expect(run_in_sequence.activity).to eq(found.activity)
@@ -300,7 +300,7 @@ describe Run do
       describe "with no user" do
         it "should create a new run" do
           expect(Run).to receive(:create!).and_return(run)
-          expect(Run.lookup(nil,activity,nil,nil,nil)).to eq(run)
+          expect(Run.lookup(nil, activity, nil, nil)).to eq(run)
         end
       end
 
@@ -311,40 +311,16 @@ describe Run do
             it "should find the existing user's run for the activity" do
               # need to create run before looking it up
               run
-              expect(Run.lookup(nil,activity,user,nil,nil)).to eq(run)
+              expect(Run.lookup(nil, activity, user, nil)).to eq(run)
             end
           end
 
           describe "when this is the first time for the user" do
             it "should create a new run for the user and activity" do
               expect(Run).to receive(:create!).and_return("fake_run")
-              expect(Run.lookup(nil,activity,user,nil,nil)).to eq("fake_run")
+              expect(Run.lookup(nil, activity, user, nil)).to eq("fake_run")
             end
           end
-        end
-      end
-
-      describe "with a remote endpoint" do
-        let(:remote) {
-          RemotePortal.new({
-            externalId: "23",
-            returnUrl: "http://foo.bar/",
-            domain: "blah"
-          })
-        }
-        let(:remote_run) {
-          FactoryBot.create(:run,
-            activity: activity,
-            remote_endpoint: remote.remote_endpoint,
-            remote_id: remote.remote_id,
-            user: user
-          )
-        }
-
-        it "should find a run by using a remote_endpoint" do
-          # create the run first
-          remote_run
-          expect(Run.lookup(nil,activity, user, remote,nil)).to eq(remote_run)
         end
       end
     end
