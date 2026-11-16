@@ -1,19 +1,11 @@
-# These shared examples are used for 6 show actions:
-# /sequences/:id
-# /sequences/:sequence_id/activities/:id
-# /sequences/:sequence_id/activities/:activity_id/pages/:id
-# /activities/:id
+# These shared examples are used for the actions that render a run:
 # /activities/:id/single_page
 # /activities/:activity_id/pages/:id
-
-# the /sequences/:id is the only one that works directly with sequence runs
-# the rest work with activity runs and if they are part of sequence they will indirectly
-# work with sequence runs
+# /sequences/:sequence_id/activities/:activity_id/pages/:id
 
 # this should be included in a controller test and needs the following context
 #
-# The type of run being tested should be passed as an argument currently supported are
-#   SequenceRun and Run
+# The type of run being tested (Run) should be passed as an argument
 #
 # The following variables should be defined with let statements
 #
@@ -53,8 +45,6 @@ shared_examples "runnable launched without run_key" do |run_type|
         anon_run
       }
       it "creates a new #{run_type}, it does not use the existing #{run_type}" do
-        # we save the new_run during creation because sequence runs create
-        # activity runs on initialization and that requires a saved model
         expect(run_type).to receive(:create!) { new_run.save; new_run }
         get action, params: base_params
         expect(assigns[run_variable_name]).to eq(new_run)
@@ -95,7 +85,7 @@ shared_examples "runnable launched without run_key" do |run_type|
   end
 end
 
-shared_examples "runnable launched with run_key" do |run_type, portal_launchable|
+shared_examples "runnable launched with run_key" do |run_type|
   let (:running_user) { FactoryBot.create(:user) }
   let (:run_factory_type) { run_type.model_name.to_s.underscore.to_sym}
   describe "when there is no #{run_type} with this key" do
@@ -230,127 +220,6 @@ shared_examples "runnable launched with run_key" do |run_type, portal_launchable
       end
     end
   end
-end
-
-shared_examples "runnable launched with portal parameters" do |run_type|
-  let (:run_factory_type) { run_type.model_name.to_s.underscore.to_sym}
-  let (:running_user) { FactoryBot.create(:user) }
-  let (:request_params_with_portal_properties) {
-    base_params.merge(returnUrl: 'https:/example.com', externalId: 1)
-  }
-  let (:run_factory_portal_params) {
-    { remote_endpoint: 'https:/example.com', remote_id: 1 }
-  }
-  let (:lookup_method) {
-    if run_type == Run
-      :lookup
-    elsif run_type == SequenceRun
-      :lookup_or_create
-    end
-  }
-
-  # this test is applicable to every route in the application but it is particularly
-  # important here
-  describe "when called with a domain parameter" do
-    let(:domain)    { 'http://portal.org/' }
-    let(:auth_path) { Concord::AuthPortal.strategy_name_for_url(domain) }
-    it "should force a new user session" do
-      expect(controller).to receive(:sign_out).and_return(:true)
-
-      # the order of the params gets reversed so we are just adding one fakeParam here
-      # instead of the two normal portal params
-      get action, params: base_params.merge(domain: domain, fakeParam: 'testing-pass-through')
-      expect(response).to redirect_to user_omniauth_authorize_path(auth_path, origin: request.url)
-    end
-  end
-
-  describe "when the user is anonymous" do
-    # perhaps this should be a 403, but perhaps we don't want people thinking they
-    # can fish for valid portal properties
-    it "returns 404" do
-      expect {
-        get action, params: request_params_with_portal_properties
-      }.to raise_error(ActiveRecord::RecordNotFound)
-    end
-  end
-  describe "when a user is signed in" do
-    before(:each) do
-      sign_in running_user
-    end
-    describe "when there is not a #{run_type} with matching user and portal params" do
-      let(:anon_run_with_same_portal_params) {
-        params = base_factory_params.merge(user_id: nil)
-        params = params.merge(run_factory_portal_params)
-        FactoryBot.create(run_factory_type, params)
-      }
-      let(:other_user) { FactoryBot.create(:user) }
-      let(:other_user_run_with_same_portal_params) {
-        params = base_factory_params.merge(user_id: other_user.id)
-        params = params.merge(run_factory_portal_params)
-        FactoryBot.create(run_factory_type, params)
-      }
-      let (:new_run) {
-        params = base_factory_params.merge(user_id: running_user.id)
-        params = params.merge(run_factory_portal_params)
-        FactoryBot.build(run_factory_type, params)
-      }
-
-      it "redirects with a #{run_type} key in the URL" do
-        result = get action, params: request_params_with_portal_properties
-        redirect_params = base_params.clone
-        redirect_params[run_key_param_name] = assigns[run_variable_name]
-        expect(result).to redirect_to(send(run_path_helper, redirect_params))
-      end
-
-      it "creates a #{run_type}" do
-        expect(run_type).to receive(:create!) { new_run.save; new_run }
-        get action, params: request_params_with_portal_properties
-        expect(assigns[run_variable_name]).to eq(new_run)
-      end
-    end
-    describe "when there is a #{run_type} with matching portal params" do
-      let (:matching_run) {
-        params = base_factory_params.merge(user_id: running_user.id)
-        params = params.merge(run_factory_portal_params)
-        FactoryBot.create(run_factory_type, params)
-      }
-      describe "when this #{run_type} is owned by the current user" do
-        it "redirects to a URL with the #{run_type} key" do
-          result = get action, params: request_params_with_portal_properties
-          redirect_params = base_params.clone
-          redirect_params[run_key_param_name] = assigns[run_variable_name]
-          expect(result).to redirect_to(send(run_path_helper, redirect_params))
-        end
-        it "should call disable_collaboration" do
-          allow(run_type).to receive(lookup_method).and_return(matching_run)
-          expect(matching_run).to receive(:disable_collaboration)
-          get action, params: request_params_with_portal_properties
-        end
-      end
-    end
-
-    describe "when a collaborative activity has a collaborators_data_url param" do
-      let (:collaboration_run) {
-        params = base_factory_params.merge(user_id: running_user.id)
-        params = params.merge(run_factory_portal_params)
-        FactoryBot.create(run_factory_type, params)
-      }
-
-      it "should call CreateCollaboration" do
-        allow_any_instance_of(CreateCollaboration).to receive(:call).and_return(collaboration_run)
-        expect_any_instance_of(CreateCollaboration).to receive(:call)
-        get action, params: base_params.merge(collaborators_data_url: "http://example.com/")
-      end
-    end
-
-  end
-end
-
-
-shared_examples "runnable resource launchable by the portal" do |run_type|
-  it_behaves_like "runnable launched without run_key", run_type
-  it_behaves_like "runnable launched with run_key", run_type
-  it_behaves_like "runnable launched with portal parameters", run_type
 end
 
 shared_examples "runnable resource not launchable by the portal" do |run_type|

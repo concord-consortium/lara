@@ -37,10 +37,6 @@ class CollaborationRun < ApplicationRecord
     end
   end
 
-  def disable
-    runs.clear
-  end
-
   private
 
   # Returns all answers to the same question that belong to other collaborators.

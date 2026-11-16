@@ -27,12 +27,6 @@ describe Sequence do
     expect(sequence).to be_valid
   end
 
-  it 'calculates a cumulative time-to-complete' do
-    expect(sequence.time_to_complete).to be(0)
-    sequence.lightweight_activities = [activity1, activity2]
-    expect(sequence.time_to_complete).to be(activity1.time_to_complete + activity2.time_to_complete)
-  end
-
   it 'returns the same items for #activities as #lightweight_activities' do
     expect(sequence.activities).to eq(sequence.lightweight_activities)
     sequence.lightweight_activities = [activity1, activity2]

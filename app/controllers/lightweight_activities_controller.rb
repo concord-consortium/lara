@@ -1,10 +1,12 @@
 class LightweightActivitiesController < ApplicationController
 
   before_action :set_activity, except: [:index, :new, :create]
-  before_action :set_run_key_from_portal_launchable, only: [:summary, :show, :preview, :resubmit_answers, :single_page]
-  before_action :set_sequence, only: [:summary, :show, :single_page, :preview]
+  before_action :set_run_key, only: [:summary, :preview, :resubmit_answers, :single_page]
+  before_action :set_sequence, only: [:summary, :single_page, :preview]
+  # show only redirects to the Activity Player, so a portal sign-in here would just create an unused user.
+  skip_before_action :portal_login, only: [:show]
 
-  before_action :enable_js_logger, only: [:summary, :show, :preview, :single_page]
+  before_action :enable_js_logger, only: [:summary, :preview, :single_page]
 
   before_action :setup_abilities, only: [:new, :edit]
 
@@ -283,11 +285,6 @@ class LightweightActivitiesController < ApplicationController
   end
 
   private
-  def set_run_key_from_portal_launchable
-    portal_launchable = (action_name == 'show' && params[:sequence_id].blank?)
-    set_run_key(portal_launchable: portal_launchable)
-  end
-
   def set_layout
     case params[:action]
     when 'show'

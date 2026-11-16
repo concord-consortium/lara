@@ -19,12 +19,6 @@ class Sequence < ApplicationRecord
     # activities have names, so to be consistent ...
     self.title
   end
-  def time_to_complete
-    time = 0
-    lightweight_activities.map { |a| time = time + (a.time_to_complete ? a.time_to_complete : 0) }
-    time
-  end
-
   def activities
     lightweight_activities
   end

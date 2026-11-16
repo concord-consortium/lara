@@ -70,6 +70,69 @@ describe LightweightActivitiesController do
       get :show, params: { id: act[:id], run_key: ar_run.key }
       expect(response).to redirect_to uri.to_s
     end
+
+    describe "writing nothing on the way to the Activity Player" do
+      let(:sequence_with_activities) do
+        FactoryBot.create(:sequence, publication_status: 'public').tap do |s|
+          3.times { s.activities << FactoryBot.create(:public_activity) }
+        end
+      end
+
+      def expect_redirect_without_writes(params)
+        expect { get :show, params: params }.not_to change { written_rows }
+        expect(response.location).to start_with(ENV['ACTIVITY_PLAYER_URL'].chomp('/'))
+      end
+
+      before(:each) do
+        act
+        sequence_with_activities
+      end
+
+      it "when anonymous" do
+        expect_redirect_without_writes(id: act.id)
+      end
+
+      it "when signed in" do
+        sign_in user
+        expect_redirect_without_writes(id: act.id)
+      end
+
+      it "when opened inside a sequence" do
+        expect_redirect_without_writes(sequence_id: sequence_with_activities.id, id: sequence_with_activities.activities[0].id)
+      end
+
+      it "with a run key that matches no run" do
+        expect_redirect_without_writes(id: act.id, run_key: UUIDTools::UUID.random_create.to_s)
+      end
+
+      it "with portal parameters" do
+        sign_in user
+        expect_redirect_without_writes(id: act.id, returnUrl: "http://portal.example/return", externalId: "1")
+      end
+
+      it "with a collaborators_data_url" do
+        expect_redirect_without_writes(id: act.id, collaborators_data_url: "http://portal.example/collaborations/1")
+      end
+
+      it "with portal sign-in parameters, keeping a signed-in visitor signed in" do
+        sign_in user
+        expect_redirect_without_writes(id: act.id, domain: Concord::AuthPortal.all.values.first.url, domain_uid: "42")
+        expect(controller.current_user).to eq(user)
+      end
+
+      it "refuses a private activity opened through a portal sign-in link, without writing or signing in" do
+        private_activity = FactoryBot.create(:activity, publication_status: 'private')
+        params = { id: private_activity.id, domain: Concord::AuthPortal.all.values.first.url, domain_uid: "42" }
+        expect { get :show, params: params }.not_to change { written_rows }
+        expect(response).to have_http_status(:forbidden)
+      end
+
+      it "refuses an activity the path's sequence does not contain" do
+        expect {
+          get :show, params: { sequence_id: sequence_with_activities.id, id: act.id }
+        }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+    end
   end
 
     describe '#preview' do

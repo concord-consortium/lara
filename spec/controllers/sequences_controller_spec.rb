@@ -39,26 +39,87 @@ describe SequencesController do
   end
 
   describe "GET show" do
-    let(:user) { FactoryBot.create(:user) }
-    before(:each) do
-      # the run lookup logic is based on the current_user so it is better to start
-      # anonymously
-      sign_out @user
+    let(:sequence) do
+      FactoryBot.create(:sequence, publication_status: 'public', project: project, user: user).tap do |s|
+        3.times { s.activities << FactoryBot.create(:public_activity) }
+      end
     end
-
-    it "assigns the requested sequence as @sequence" do
-      get :show, params: { id: sequence.to_param }
-      expect(assigns(:sequence)).to eq(sequence)
-    end
-
-    it "redirects to the activity player" do
+    let(:activity_player_url) do
       uri = URI.parse(ENV['ACTIVITY_PLAYER_URL'])
       query = Rack::Utils.parse_query(uri.query)
       query["sequence"] = "#{api_v1_sequence_url(sequence.id)}.json"
       uri.query = Rack::Utils.build_query(query)
+      uri.to_s
+    end
 
-      get :show, params: {id: sequence.to_param }
-      expect(response).to redirect_to(uri.to_s)
+    before(:each) do
+      sign_out @user
+      sequence
+    end
+
+    shared_examples "a redirect that writes nothing" do
+      it "redirects to the Activity Player without writing runs or users" do
+        expect { get :show, params: request_params }.not_to change { written_rows }
+        expect(response).to redirect_to(activity_player_url)
+      end
+    end
+
+    describe "when anonymous" do
+      let(:request_params) { { id: sequence.id } }
+      it_behaves_like "a redirect that writes nothing"
+    end
+
+    describe "when signed in" do
+      before(:each) { sign_in user }
+      let(:request_params) { { id: sequence.id } }
+      it_behaves_like "a redirect that writes nothing"
+    end
+
+    describe "with a sequence run key that matches no run" do
+      let(:request_params) { { id: sequence.id, sequence_run_key: "no-such-key" } }
+      it_behaves_like "a redirect that writes nothing"
+    end
+
+    describe "with portal parameters while anonymous" do
+      let(:request_params) { { id: sequence.id, returnUrl: "http://portal.example/return", externalId: "1" } }
+      it_behaves_like "a redirect that writes nothing"
+    end
+
+    describe "with a collaborators_data_url" do
+      let(:request_params) { { id: sequence.id, collaborators_data_url: "http://portal.example/collaborations/1" } }
+      it_behaves_like "a redirect that writes nothing"
+    end
+
+    describe "with portal sign-in parameters" do
+      let(:request_params) do
+        { id: sequence.id, domain: Concord::AuthPortal.all.values.first.url, domain_uid: "42" }
+      end
+      it_behaves_like "a redirect that writes nothing"
+
+      it "keeps a signed-in visitor signed in" do
+        sign_in user
+        get :show, params: request_params
+        expect(controller.current_user).to eq(user)
+      end
+    end
+
+    describe "when the sequence is private" do
+      let(:sequence) do
+        FactoryBot.create(:sequence, publication_status: 'private', project: project, user: user).tap do |s|
+          2.times { s.activities << FactoryBot.create(:public_activity) }
+        end
+      end
+
+      it "refuses an anonymous visitor without writing runs" do
+        expect { get :show, params: { id: sequence.id } }.not_to change { written_rows }
+        expect(response).to have_http_status(:forbidden)
+      end
+
+      it "refuses a visitor with portal sign-in parameters without starting a portal sign-in" do
+        params = { id: sequence.id, domain: Concord::AuthPortal.all.values.first.url, domain_uid: "42" }
+        expect { get :show, params: params }.not_to change { written_rows }
+        expect(response).to have_http_status(:forbidden)
+      end
     end
   end
 

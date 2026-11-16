@@ -106,29 +106,14 @@ class Run < ApplicationRecord
 
     # if no run has been found and there is a seq_id, create a sequence run too
     if seq_id
-      seq_run = SequenceRun.lookup_or_create(Sequence.find(seq_id), user, RemotePortal.new({}))
+      seq_run = SequenceRun.lookup_or_create(Sequence.find(seq_id), user)
       return seq_run.run_for_activity(activity)
     else
       return self.create!(conditions)
     end
   end
 
-  def self.lookup(key, activity, user, portal, seq_id)
-    if portal && portal.valid?
-      if user
-        # if the seq_id is set here, this is an un-handled state
-        if seq_id
-          # this should be be cut off before it even gets here see:
-          # portal_launchable in lightweight_activities_controller
-          raise Exception.new("portal launch of activity inside of a sequences")
-        end
-        return self.for_user_and_portal(user, activity, portal)
-      else
-        raise ActiveRecord::RecordNotFound.new(
-          "user must be logged in to access a Run via portal parameters"
-        )
-      end
-    end
+  def self.lookup(key, activity, user, seq_id)
     if key
       # error out if run can't be found
       run = self.where(key: key).first!
@@ -223,12 +208,6 @@ class Run < ApplicationRecord
 
   def all_responses_for_portal
     answers_hash.to_json
-  end
-
-  def disable_collaboration
-    if collaboration_run
-      collaboration_run.disable
-    end
   end
 
   # TODO: Alias to all_responses_for_portal

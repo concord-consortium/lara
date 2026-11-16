@@ -89,39 +89,12 @@ describe CreateCollaboration do
           expect(run.class_info_url).to eq("http://portal.concord.org/class/1")
         end
       end
-    end
 
-    describe "when a sequence is provided as a material" do
-      let(:material) {
-        s = FactoryBot.create(:sequence)
-        s.activities << FactoryBot.create(:activity)
-        s.activities << FactoryBot.create(:activity)
-        s.activities << FactoryBot.create(:activity)
-        s
-      }
-      it "should create new runs for each user and each activity" do
-        create_collaboration.call
-        cr = CollaborationRun.first
-        # 2 users x 3 activities
-        expect(cr.runs.count).to eq(6)
-      end
-
-      it "should save platform info for each run" do
-        create_collaboration.call
-        cr = CollaborationRun.first
-        # 2 users x 3 activities
-        expect(cr.runs[0].platform_user_id).to eq("123")
-        expect(cr.runs[1].platform_user_id).to eq("123")
-        expect(cr.runs[2].platform_user_id).to eq("123")
-        expect(cr.runs[3].platform_user_id).to eq("321")
-        expect(cr.runs[4].platform_user_id).to eq("321")
-        expect(cr.runs[5].platform_user_id).to eq("321")
-        cr.runs.each do |run|
-          expect(run.platform_id).to eq("http://portal.concord.org")
-          expect(run.resource_link_id).to eq("202")
-          expect(run.context_id).to eq("class_hash_123")
-          expect(run.class_info_url).to eq("http://portal.concord.org/class/1")
-        end
+      it "should return the owner's run" do
+        run = create_collaboration.call
+        expect(run.user).to eq(user)
+        expect(run.activity).to eq(material)
+        expect(run.collaboration_run).to eq(CollaborationRun.first)
       end
     end
 
